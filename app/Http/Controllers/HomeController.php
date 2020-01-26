@@ -26,9 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        echo Auth::user()->id;
-        echo auth()->user()->id;
         $videos = Video::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
-        return view('home');
+        return view('home', compact('videos'));
     }
 }

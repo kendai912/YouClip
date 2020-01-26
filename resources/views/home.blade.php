@@ -20,9 +20,9 @@
                         </div>
                     </div>
                     <div id="app-home">
-                        <search-result></search-result>
+                        {{-- <search-result v-for="video in videos"></search-result> --}}
+                        <test-component v-for="video in videos"></test-component>
                     </div>
-                    {{-- <div id="searchResults"></div> --}}
                 </div>
             </div>
         </div>
@@ -30,29 +30,47 @@
 </div>
 
 <script>
-    // //append用のHTML作成
-    // let videoSecHTML = "";
-    // videoSecHTML += '<div class="videoSec">';
-    // videoSecHTML += ' <div class="topIframeBox">';
-    // videoSecHTML +='   <iframe class="topIframe" src="https://www.youtube.com/embed/mlC_rBUpusc"></iframe>';
-    // videoSecHTML += ' </div>';
-    // videoSecHTML += '</div>';
+    //HomeControllerから受け取った変数をJSの変数に格納
+    let videoArray = [];
+    @foreach ($videos as $key => $video)
+        videoArray[{{ $key }}] = {
+            "videoId": '{{ $video->videoId }}',
+            "youtubeId": '{{ $video->youtubeId}}',
+            "user_id": '{{ $video->user_id}}',
+            "url": '{{ $video->url}}',
+            "title": '{{ $video->title}}',
+            "thumbnail": '{{ $video->thumbnail}}',
+            "duration": '{{ $video->duration}}',
+            "created_at": '{{ $video->created_at}}',
+            "updated_at": '{{ $video->updated_at}}',
+        }
+    @endforeach
 
-    // //HTMLへappend実行
-    // $("#searchResults").append(videoSecHTML);
+//--------------------------------------------------------------------
+// 動画一覧コンポーネント
+//--------------------------------------------------------------------
+    // Vue.component('search-result', {
+    //     template: `
+    //         <div v-for"video in videos" :key="video.videoId" class="videoSec">
+    //             <div class="topIframeBox">
+    //                 <iframe 
+    //                     class="topIframe" 
+    //                     :src="'https://www.youtube.com/embed/' + video.youtubeId">
+    //                 </iframe>
+    //             </div>
+    //         </div>`,
+    // })
 
-    //動画一覧コンポーネント
-    Vue.component('search-result', {
+    Vue.component('test-component', {
         template: `
-            <div class="videoSec">
-                <div class="topIframeBox">
-                    <iframe class="topIframe" src="https://www.youtube.com/embed/mlC_rBUpusc"></iframe>
-                </div>
-            </div>`
+            <p>test</p>`,
     })
 
     new Vue({
         el: "#app-home",
+        data: {
+            videos: videoArray,
+        }
     })
 </script>
 @endsection
