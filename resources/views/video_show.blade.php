@@ -1,0 +1,30 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+                    <div class="videoSec">
+                        <div class="topIframeBox">
+                            <iframe 
+                                class="topIframe" 
+                                src="https://www.youtube.com/embed/{{ $video->youtubeId }}">
+                            </iframe>
+                            <p>{{ $video->title }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+</script>
+@endsection

@@ -19,8 +19,16 @@ class VideoController extends Controller
             return view('video_create', compact('user_id'));
         } else {
             $message = '動画登録にはログインが必要です';
-            return view('create', compact('message'));
+            return view('video_create', compact('message'));
         }
+    }
+
+    //表示画面
+    public function show(Video $video)
+    {
+        return view('video_show', [
+            'video' => $video
+        ]);
     }
 
     //登録処理

@@ -5,8 +5,6 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
-
                 <div class="panel-body">
                     @if (session('status'))
                         <div class="alert alert-success">
@@ -20,21 +18,22 @@
                         </div>
                     </div>
                     <div id="app-home">
-                        {{-- <search-result v-for="video in videos"></search-result> --}}
-                        <test-component v-for="video in videos"></test-component>
+                        <search-result :videos = "videos"></search-result>
                     </div>
+                </div>
+                <div>
+                    {{ $videos->links()}}
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 <script>
     //HomeControllerから受け取った変数をJSの変数に格納
     let videoArray = [];
     @foreach ($videos as $key => $video)
         videoArray[{{ $key }}] = {
-            "videoId": '{{ $video->videoId }}',
+            "id": '{{ $video->id }}',
             "youtubeId": '{{ $video->youtubeId}}',
             "user_id": '{{ $video->user_id}}',
             "url": '{{ $video->url}}',
@@ -49,21 +48,30 @@
 //--------------------------------------------------------------------
 // 動画一覧コンポーネント
 //--------------------------------------------------------------------
-    // Vue.component('search-result', {
-    //     template: `
-    //         <div v-for"video in videos" :key="video.videoId" class="videoSec">
-    //             <div class="topIframeBox">
-    //                 <iframe 
-    //                     class="topIframe" 
-    //                     :src="'https://www.youtube.com/embed/' + video.youtubeId">
-    //                 </iframe>
-    //             </div>
-    //         </div>`,
-    // })
-
-    Vue.component('test-component', {
+    Vue.component('search-result', {
         template: `
-            <p>test</p>`,
+            <div>
+                <div class="videoSec" v-for="video in videos" :key="video.videoId" @click="handleClick" :video-id="video.id">
+                    <div class="topIframeBox">
+                        <iframe 
+                            class="topIframe" 
+                            :src="'https://www.youtube.com/embed/' + video.youtubeId">
+                        </iframe>
+                        <p>@{{ video.title }}</p>
+                    </div>
+                </div>
+            </div>`,
+        props: {
+            videos: {
+                type: Array
+            }
+        },
+        methods: {
+            handleClick: function(e){
+                let id = e.path.find(row => row.className == "videoSec").getAttribute('video-id')
+                window.location.href = "/video/"+id;
+            }
+        }
     })
 
     new Vue({
