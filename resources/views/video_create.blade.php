@@ -15,7 +15,7 @@
             </label>
           </div>
           <div>
-            <button type="button" @click="onSubmit()">登録e</button>
+            <button type="button" @click="onSubmit()">登録</button>
           </div>
         </div>
       </form>

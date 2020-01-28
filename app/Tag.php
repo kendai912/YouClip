@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
-use App\Tag;
+use App\Video;
 
-class Video extends Model
+class Tag extends Model
 {
     //
     public function user()
@@ -14,10 +14,10 @@ class Video extends Model
         //Userモデルのデータを引っ張ってくる
         return $this->belongsTo('App\User');
     }
-    
-    public function tag()
+
+    public function video()
     {
-        //Tagモデルのデータを引っ張ってくる
-        return $this->hasMany('App\Tag');
+        //Videoモデルのデータを引っ張ってくる
+        return $this->belongsTo('App\Video');
     }
 }

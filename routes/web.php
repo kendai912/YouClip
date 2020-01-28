@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth:user'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
-    Route::get('/video/{video}', 'VideoController@show');
+    Route::get('/video/play/{video}', 'VideoController@show');
     Route::get('/video/create', 'VideoController@create');
     Route::post('/video/store', 'VideoController@store');
 });

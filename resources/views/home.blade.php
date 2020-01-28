@@ -69,7 +69,7 @@
         methods: {
             handleClick: function(e){
                 let id = e.path.find(row => row.className == "videoSec").getAttribute('video-id')
-                window.location.href = "/video/"+id;
+                window.location.href = "/video/play/"+id;
             }
         }
     })
