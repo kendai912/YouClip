@@ -19,9 +19,11 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth:user'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/video/searchQuery={searchQuery}', 'HomeController@search');
     Route::get('/video/play/{video}', 'VideoController@show');
     Route::get('/video/create', 'VideoController@create');
     Route::post('/video/store', 'VideoController@store');
+    Route::post('/tag/store', 'TagController@store');
 });
 
 // admin認証不要

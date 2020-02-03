@@ -6,23 +6,23 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-body">
+                    <div id="app-home">
                     @if (session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}
                         </div>
                     @endif
                     <div>
-                        <input id="searchBox" type="text"/>
-                        <div id="searchBtn">
+                        <input id="searchBox" type="text" v-model="searchQuery" />
+                        <div id="searchBtn" @click="search">
                             <span><img alt="検索" src="{{ asset('/img/search.svg') }}"></span>
                         </div>
                     </div>
-                    <div id="app-home">
                         <search-result :videos = "videos"></search-result>
                     </div>
                 </div>
                 <div>
-                    {{ $videos->links()}}
+                    {{-- {{ $results->links()}} --}}
                 </div>
             </div>
         </div>
@@ -31,17 +31,20 @@
 <script>
     //HomeControllerから受け取った変数をJSの変数に格納
     let videoArray = [];
-    @foreach ($videos as $key => $video)
+    @foreach ($results as $key => $video)
         videoArray[{{ $key }}] = {
-            "id": '{{ $video->id }}',
-            "youtubeId": '{{ $video->youtubeId}}',
-            "user_id": '{{ $video->user_id}}',
-            "url": '{{ $video->url}}',
-            "title": '{{ $video->title}}',
-            "thumbnail": '{{ $video->thumbnail}}',
-            "duration": '{{ $video->duration}}',
-            "created_at": '{{ $video->created_at}}',
-            "updated_at": '{{ $video->updated_at}}',
+            "video_id": "{{ $video['video_id'] }}",
+            "youtubeId": "{{ $video['youtubeId'] }}",
+            "user_id": "{{ $video['user_id'] }}",
+            "url": "{{ $video['url'] }}",
+            "title": "{{ $video['title'] }}",
+            "thumbnail": "{{ $video['thumbnail'] }}",
+            "duration": "{{ $video['duration'] }}",
+            "tags": "{{ json_encode($video['tags']) }}",
+            "start": "{{ $video['start'] }}",
+            "end": "{{ $video['end'] }}",
+            "created_at": "{{ $video['created_at'] }}",
+            "updated_at": "{{ $video['updated_at'] }}",
         }
     @endforeach
 
@@ -51,7 +54,7 @@
     Vue.component('search-result', {
         template: `
             <div>
-                <div class="videoSec" v-for="video in videos" :key="video.videoId" @click="handleClick" :video-id="video.id">
+                <div class="videoSec" v-for="video in videos" :key="video.video_id" @click="handleClick" :video-id="video.video_id">
                     <div class="topIframeBox">
                         <iframe 
                             class="topIframe" 
@@ -78,6 +81,13 @@
         el: "#app-home",
         data: {
             videos: videoArray,
+            searchQuery: "",
+        },
+        methods: {
+            search() {
+                console.log(this.searchQuery);
+                window.location.href = "/video/searchQuery="+this.searchQuery;
+            },
         }
     })
 </script>
