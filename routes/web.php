@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth:user'], function () {
     Route::get('/video/create', 'VideoController@create');
     Route::post('/video/store', 'VideoController@store');
     Route::post('/tag/store', 'TagController@store');
+    Route::post('/home/searchCandidates', 'HomeController@searchCandidates');
 });
 
 // admin認証不要

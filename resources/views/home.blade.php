@@ -13,7 +13,11 @@
                         </div>
                     @endif
                     <div>
-                        <input id="searchBox" type="text" v-model="searchQuery" />
+                        <input id="searchBox" type="text" v-model="searchQuery" v-on:input="searchCandidates"/>
+                        <ul>
+                            <li v-for="candidate in candidates" v-if="candidate.tags && searchQuery!=''">@{{ candidate.tags }}</li>
+                            <li v-for="candidate in candidates" v-if="candidate.title && searchQuery!=''">@{{ candidate.title }}</li>
+                        </ul>
                         <div id="searchBtn" @click="search">
                             <span><img alt="検索" src="{{ asset('/img/search.svg') }}"></span>
                         </div>
@@ -61,6 +65,7 @@
                             :src="'https://www.youtube.com/embed/' + video.youtubeId">
                         </iframe>
                         <p>@{{ video.title }}</p>
+                        <p>@{{ video.tags }}</p>
                     </div>
                 </div>
             </div>`,
@@ -82,11 +87,40 @@
         data: {
             videos: videoArray,
             searchQuery: "",
+            candidates: [],
         },
         methods: {
             search() {
-                console.log(this.searchQuery);
                 window.location.href = "/video/searchQuery="+this.searchQuery;
+            },
+            searchCandidates(e) {
+                this.searchQuery = $("#searchBox").val();
+                var self = this;
+                var params = {
+                    searchQuery: this.searchQuery,
+                };
+                this.errors = {};
+
+                axios.post('/home/searchCandidates', params)
+                    .then(function(response){
+                        // 成功した時
+                        console.log(response.data.data)
+                        self.candidates = response.data.data;
+                    })
+                    .catch(function(error) {
+                        // 失敗したとき
+                        console.log(error);
+                        var errors = {};
+                        for(var key in error.response.data.errors) {
+                            errors[key] = error.response.data.errors[key].join('<br>');
+                        }
+                        self.errors = errors;
+                    })
+
+                // console.log(this.searchQuery);
+                // if(this.searchQuery == ''){
+
+                // }
             },
         }
     })
