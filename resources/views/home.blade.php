@@ -14,10 +14,16 @@
                     @endif
                     <div>
                         <input id="searchBox" type="text" v-model="searchQuery" v-on:input="searchCandidates"/>
-                        <ul>
-                            <li v-for="candidate in candidates" v-if="candidate.tags && searchQuery!=''">@{{ candidate.tags }}</li>
-                            <li v-for="candidate in candidates" v-if="candidate.title && searchQuery!=''">@{{ candidate.title }}</li>
-                        </ul>
+                        <div v-bind:class="{ candidatesWrap: candidates.length != 0 }" v-if="searchQuery!=''">
+                            <div v-for="(candidate, index) in candidates">
+                                <div v-if="index < 10 && candidate.tags" class="item" v-bind:class="{ isEven: index%2 == 1 }">
+                                    <p v-on:click="select(candidate.tags)">@{{ candidate.tags }}</p>
+                                </div>
+                                <div v-if="index < 10 && candidate.title" class="item" v-bind:class="{ isEven: index%2 == 1 }">
+                                    <p v-on:click="select(candidate.title)">@{{ candidate.title }}</p>
+                                </div>
+                            </div>
+                        </div>
                         <div id="searchBtn" @click="search">
                             <span><img alt="検索" src="{{ asset('/img/search.svg') }}"></span>
                         </div>
@@ -35,7 +41,13 @@
 <script>
     //HomeControllerから受け取った変数をJSの変数に格納
     let videoArray = [];
+    let tagArray = [];
     @foreach ($results as $key => $video)
+        tagArray = [];
+        @foreach($video['tags'] as $tagKey => $tag)
+            tagArray[{{ $tagKey }}] = "{{ $tag }}";
+            console.log("{{ $tag }}");
+        @endforeach
         videoArray[{{ $key }}] = {
             "video_id": "{{ $video['video_id'] }}",
             "youtubeId": "{{ $video['youtubeId'] }}",
@@ -44,7 +56,7 @@
             "title": "{{ $video['title'] }}",
             "thumbnail": "{{ $video['thumbnail'] }}",
             "duration": "{{ $video['duration'] }}",
-            "tags": "{{ json_encode($video['tags']) }}",
+            "tags": tagArray,
             "start": "{{ $video['start'] }}",
             "end": "{{ $video['end'] }}",
             "created_at": "{{ $video['created_at'] }}",
@@ -65,7 +77,7 @@
                             :src="'https://www.youtube.com/embed/' + video.youtubeId">
                         </iframe>
                         <p>@{{ video.title }}</p>
-                        <p>@{{ video.tags }}</p>
+                        <p v-for="tag in video.tags">@{{ tag }}</p>
                     </div>
                 </div>
             </div>`,
@@ -116,12 +128,11 @@
                         }
                         self.errors = errors;
                     })
-
-                // console.log(this.searchQuery);
-                // if(this.searchQuery == ''){
-
-                // }
             },
+            select(candidateName) {
+                this.searchQuery = candidateName;
+                this.candidates = [];
+            }
         }
     })
 </script>
