@@ -2,6 +2,7 @@ new Vue({
   el: "#app-video-show",
 
   data: {
+    //Youtube Player関連プロパティ
     player: {},
     startTime: "",
     endTime: "",
@@ -11,7 +12,9 @@ new Vue({
     tagStored: false,
     isAjaxError: false,
     isTagInputError: false,
-    isTimeInputError: false
+    isTimeInputError: false,
+    //タグ関連プロパティ
+    tags: tagArray,
   },
 
   methods: {
@@ -185,44 +188,3 @@ new Vue({
     });
   }
 });
-
-//保存ボタン
-// $("#saveBtn").on("click", function (e) {
-//   e.preventDefault();
-//   //保存時のバリデーション
-//   if (tagTimeValidate()) {
-//     if (tagNameValidate()) {
-//       database.ref(userId + "/" + movieId + "/sceneTags").push({
-//         startTime: $("#startTime").val(),
-//         endTime: $("#endTime").val(),
-//         sceneTags: $("#sceneTags").val()
-//       });
-
-//       $("#saveDoneBox")
-//         .text(
-//           $("#startTime").val() +
-//           "〜" +
-//           $("#endTime").val() +
-//           ": 「" +
-//           $("#sceneTags").val() +
-//           "」を保存しました"
-//         )
-//         .fadeIn(2000)
-//         .fadeOut(2000);
-//       $("#startTime").val("");
-//       $("#endTime").val("");
-//       $("#sceneTags").val("");
-//     } else {
-//       $("#saveDoneBox")
-//         .text("タグの入力が正しくありません")
-//         .fadeIn(2000)
-//         .fadeOut(2000);
-//     }
-//   } else {
-//     $("#saveDoneBox")
-//       .text("時間の入力が正しくありません")
-//       .fadeIn(2000)
-//       .fadeOut(2000);
-//   }
-// });
-// });

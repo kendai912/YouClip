@@ -13,7 +13,10 @@
                         </div>
                     @endif
                     <div>
-                        <input id="searchBox" type="text" v-model="searchQuery" v-on:input="searchCandidates"/>
+                        <div>
+                            <input id="searchBox" type="text" v-model="searchQuery" v-on:input="searchCandidates"/>
+                            <span id="searchBtn" @click="search"><img alt="検索" src="{{ asset('/img/search.svg') }}"></span>
+                        </div>
                         <div v-bind:class="{ candidatesWrap: candidates.length != 0 }" v-if="searchQuery!=''">
                             <div v-for="(candidate, index) in candidates">
                                 <div v-if="index < 10 && candidate.tags" class="item" v-bind:class="{ isEven: index%2 == 1 }">
@@ -23,9 +26,6 @@
                                     <p v-on:click="select(candidate.title)">@{{ candidate.title }}</p>
                                 </div>
                             </div>
-                        </div>
-                        <div id="searchBtn" @click="search">
-                            <span><img alt="検索" src="{{ asset('/img/search.svg') }}"></span>
                         </div>
                     </div>
                         <search-result :videos = "videos"></search-result>
@@ -45,8 +45,14 @@
     @foreach ($results as $key => $video)
         tagArray = [];
         @foreach($video['tags'] as $tagKey => $tag)
-            tagArray[{{ $tagKey }}] = "{{ $tag }}";
-            console.log("{{ $tag }}");
+            tagArray[{{ $tagKey }}] = {
+                'tag_id': "{{ $tag['tag_id'] }}",
+                'tagName': "{{ $tag['tagName'] }}",
+                'start': "{{ $tag['start'] }}",
+                'end': "{{ $tag['end'] }}",
+                'created_at': "{{ $tag['created_at'] }}",
+                'updated_at': "{{ $tag['updated_at'] }}",
+            }
         @endforeach
         videoArray[{{ $key }}] = {
             "video_id": "{{ $video['video_id'] }}",
@@ -57,8 +63,6 @@
             "thumbnail": "{{ $video['thumbnail'] }}",
             "duration": "{{ $video['duration'] }}",
             "tags": tagArray,
-            "start": "{{ $video['start'] }}",
-            "end": "{{ $video['end'] }}",
             "created_at": "{{ $video['created_at'] }}",
             "updated_at": "{{ $video['updated_at'] }}",
         }
@@ -70,15 +74,15 @@
     Vue.component('search-result', {
         template: `
             <div>
-                <div class="videoSec" v-for="video in videos" :key="video.video_id" @click="handleClick" :video-id="video.video_id">
-                    <div class="topIframeBox">
+                <div class="videoSec" v-for="video in videos" :key="video.video_id" >
+                    <div class="topIframeBox" @click="handleClick" :data-video-id="video.video_id">
                         <iframe 
                             class="topIframe" 
                             :src="'https://www.youtube.com/embed/' + video.youtubeId">
                         </iframe>
                         <p>@{{ video.title }}</p>
-                        <p v-for="tag in video.tags">@{{ tag }}</p>
                     </div>
+                        <p v-for="tag in video.tags" v-if="tag.tag_id"><a :href="'/video/play/video_id=' + video.video_id + '&tag_id=' + tag.tag_id">@{{ convertToMinSec(tag.start) + '〜' + convertToMinSec(tag.end) + ' ' + tag.tagName }}</a></p>
                 </div>
             </div>`,
         props: {
@@ -88,9 +92,18 @@
         },
         methods: {
             handleClick: function(e){
-                let id = e.path.find(row => row.className == "videoSec").getAttribute('video-id')
-                window.location.href = "/video/play/"+id;
-            }
+                let id = e.path.find(row => row.className == "topIframeBox").getAttribute('data-video-id')
+                console.log("id="+id)
+                window.location.href = "/video/play/video_id=" + id + "&tag_id=null";
+            },
+            convertToSec: function(His) {
+                return parseInt(His.split(":")[0], 10) * 3600 + parseInt(His.split(":")[1], 10) * 60 + parseInt(His.split(":")[2], 10);
+            },
+            convertToMinSec: function(His) {
+                let min = parseInt(His.split(":")[0], 10) * 60 + parseInt(His.split(":")[1], 10);
+                let sec = parseInt(His.split(":")[2], 10);
+                return min + ":" + sec;
+            },
         }
     })
 

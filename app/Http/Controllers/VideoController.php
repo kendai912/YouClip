@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\VideoStoreRequest;
 use Illuminate\Http\Request;
 use App\Video;
+use App\Tag;
 use App\User;
+use App\Http\Controllers\TagController;
 
 class VideoController extends Controller
 {
@@ -24,10 +26,36 @@ class VideoController extends Controller
     }
 
     //表示画面
-    public function show(Video $video)
+    public function show($video_id, $tag_id)
     {
+        //該当動画のタグが存在するか判定
+        if (Tag::where('video_id', intval($video_id))->exists()) {
+            //存在する場合、動画とタグ一覧をテーブルから取得
+            $result = Video::where('videos.id', intval($video_id))->join('tags', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'videos.youtubeId', 'videos.user_id', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'tags.id as tag_id', 'tags', 'start', 'end', 'videos.created_at', 'videos.updated_at')->get();
+        } else {
+            //存在しない場合、動画をテーブルから取得
+            $result = Video::where('videos.id', intval($video_id))->select('videos.id as video_id', 'videos.youtubeId', 'videos.user_id', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.created_at', 'videos.updated_at')->get();
+        }
+        
+        //動画毎にタグをまとめて非正規化
+        $video = Video::denormalizeVideoTagTable($result);
+
+        if ($tag_id == "null") {
+            $startSec = "";
+            $endSec = "";
+        } else {
+            //該当タグをテーブルから取得
+            $tag = Tag::where('id', intval($tag_id))->get();
+       
+            //YTplayerで再生するために開始時間と終了時間を秒数に変換
+            $startSec = TagController::convertToSec($tag[0]->start);
+            $endSec = TagController::convertToSec($tag[0]->end);
+        }
+
         return view('video_show', [
-            'video' => $video
+            'video' => $video,
+            'startSec' => $startSec,
+            'endSec' => $endSec,
         ]);
     }
 

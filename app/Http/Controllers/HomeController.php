@@ -28,13 +28,13 @@ class HomeController extends Controller
     public function index()
     {
         //タグ名で検索ワードに一致するものを抽出
-        $tagResults = Tag::where('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags', 'start', 'end', 'videos.created_at', 'videos.updated_at');
+        $tagResults = Tag::where('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags.id as tag_id', 'tags', 'start', 'end', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at');
         
         //タイトルで検索ワードに一致するものを抽出し、完全外部結合
-        $videoResults = Video::where('videos.user_id', Auth::user()->id)->leftJoin('tags', 'videos.id', '=', 'tags.video_id')->select('video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags', 'start', 'end', 'videos.created_at', 'videos.updated_at')->union($tagResults)->orderBy('video_id', 'desc')->get();
+        $videoResults = Video::where('videos.user_id', Auth::user()->id)->leftJoin('tags', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags.id as tag_id', 'tags', 'start', 'end', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at')->union($tagResults)->orderBy('video_id', 'desc')->get();
 
         //タグを動画毎にまとめて非正規化
-        $results = $this->denormalizeTable($videoResults);
+        $results = Video::denormalizeVideoTagTable($videoResults);
 
         return view('home', compact('results'));
     }
@@ -42,58 +42,15 @@ class HomeController extends Controller
     public function search($searchQuery)
     {
         //タグ名で検索ワードに一致するものを抽出
-        $tagResults = Tag::where('tags', 'LIKE', "%$searchQuery%")->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags', 'start', 'end', 'videos.created_at', 'videos.updated_at');
+        $tagResults = Tag::where('tags', 'LIKE', "%$searchQuery%")->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags.id as tag_id', 'tags', 'start', 'end', 'videos.created_at as video_created_at', 'videos.updated_at  as video_updated_at');
         
         //タイトルで検索ワードに一致するものを抽出し、完全外部結合
-        $videoResults = Video::where('title', 'LIKE', "%$searchQuery%")->leftJoin('tags', 'videos.id', '=', 'tags.video_id')->select('video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags', 'start', 'end', 'videos.created_at', 'videos.updated_at')->union($tagResults)->orderBy('video_id', 'desc')->get();
+        $videoResults = Video::where('title', 'LIKE', "%$searchQuery%")->leftJoin('tags', 'videos.id', '=', 'tags.video_id')->select('video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags.id as tag_id', 'tags', 'start', 'end', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at')->union($tagResults)->orderBy('video_id', 'desc')->get();
 
         //タグを動画毎にまとめて非正規化
-        $results = $this->denormalizeTable($videoResults);
+        $results = Video::denormalizeVideoTagTable($videoResults);
 
         return view('home', compact('results'));
-    }
-
-    //タグを動画毎にまとめて非正規化するメソッド
-    public function denormalizeTable($videosResult)
-    {
-        $index = 0;
-        $videoArray = array();
-        foreach ($videosResult as $key => $value) {
-            if ($key == 0) {
-                $videoArray[$index++] = [
-                    'video_id'=>$value->video_id,
-                    'youtubeId'=>$value->youtubeId,
-                    'user_id'=>$value->user_id,
-                    'url'=>$value->url,
-                    'title'=>$value->title,
-                    'thumbnail'=>$value->thumbnail,
-                    'duration'=>$value->duration,
-                    'tags'=>[$value->tags],
-                    'start'=>$value->start,
-                    'end'=>$value->end,
-                    'created_at'=>$value->created_at,
-                    'updated_at'=>$value->updated_at,
-                ];
-            } elseif ($value->title != $videosResult[$key-1]->title) {
-                $videoArray[$index++] = [
-                    'video_id'=>$value->video_id,
-                    'youtubeId'=>$value->youtubeId,
-                    'user_id'=>$value->user_id,
-                    'url'=>$value->url,
-                    'title'=>$value->title,
-                    'thumbnail'=>$value->thumbnail,
-                    'duration'=>$value->duration,
-                    'tags'=>[$value->tags],
-                    'start'=>$value->start,
-                    'end'=>$value->end,
-                    'created_at'=>$value->created_at,
-                    'updated_at'=>$value->updated_at,
-                ];
-            } else {
-                $videoArray[$index-1]['tags'][] = $value->tags;
-            }
-        }
-        return $videoArray;
     }
 
     public function searchCandidates(Request $request)

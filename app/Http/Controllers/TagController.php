@@ -40,10 +40,9 @@ class TagController extends Controller
         $tags->video_id = $request->video_id;
         $tags->user_id = $request->user_id;
         $tags->tags = $request->tags;
-        $tags->start = $request->start;
-        $tags->end = $request->end;
+        $tags->start = "00:".$request->start;
+        $tags->end = "00:".$request->end;
         $tags->save();
-        return "テスト";
     }
 
     /**
@@ -89,5 +88,10 @@ class TagController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public static function convertToSec($time)
+    {
+        return 3600 * intval(date("H", strtotime($time))) + 60 * intval(date("i", strtotime($time))) + intval(date("s", strtotime($time)));
     }
 }
