@@ -15,6 +15,7 @@ new Vue({
     isTimeInputError: false,
     //タグ関連プロパティ
     tags: tagArray,
+    currentTagIndex: ""
   },
 
   methods: {
@@ -26,7 +27,7 @@ new Vue({
       this.isStarting = false;
       this.isEnding = true;
     },
-    //タブ終了ボタン
+    //タグ終了ボタン
     end(e) {
       e.preventDefault();
       this.endTime = this.formatTime(player.getCurrentTime());
@@ -34,23 +35,30 @@ new Vue({
       this.isStarting = true;
       player.pauseVideo();
     },
-    //保存ボタン
+    //タグ保存ボタン
     save(e) {
       e.preventDefault();
+
       //保存時のバリデーション
-      if (this.tagTimeValidate()) {
-        console.log("時間のvalidation OK");
-        if (this.tagNameValidate()) {
-          console.log("タグ名のvalidation OK");
-          this.submit(e);
-          if (this.error == "") {
-            console.log("タグを保存しました");
-          }
-        } else {
-          this.isTagInputError = true;
-        }
-      } else {
+      if (!this.tagTimeValidate(this.startTime, this.endTime)) {
         this.isTimeInputError = true;
+        return;
+      } else {
+        console.log("時間のvalidation OK");
+        this.isTimeInputError = false;
+      }
+      if (!this.tagNameValidate(this.sceneTags)) {
+        this.isTagInputError = true;
+        return;
+      } else {
+        console.log("タグ名のvalidation OK");
+        this.isTagInputError = false;
+      }
+
+      //保存処理
+      this.submit(e);
+      if (this.error == "") {
+        console.log("タグを保存しました");
       }
     },
     //ajax保存処理
@@ -94,16 +102,16 @@ new Vue({
       return minutes + ":" + seconds;
     },
     //開始・終了時間のバリデーション
-    tagTimeValidate() {
+    tagTimeValidate(start, end) {
       //空白チェック
-      if (this.startTime == "" || this.endTime == "") {
+      if (start == "" || end == "") {
         return false;
       }
 
       //時刻型かチェック
       if (
-        !this.startTime.match(/^\d{1,2}\:\d{1,2}$/) ||
-        !this.endTime.match(/^\d{1,2}\:\d{1,2}$/)
+        !start.match(/^\d{1,2}\:\d{1,2}$/) ||
+        !end.match(/^\d{1,2}\:\d{1,2}$/)
       ) {
         return false;
       }
@@ -111,8 +119,8 @@ new Vue({
       //再生時間内かチェック
       let duration = this.formatTime(player.getDuration());
       let durationSec = this.convertToSec(duration);
-      let startSec = this.convertToSec(this.startTime);
-      let endSec = this.convertToSec(this.endTime);
+      let startSec = this.convertToSec(start);
+      let endSec = this.convertToSec(end);
 
       if (
         startSec < 0 ||
@@ -130,9 +138,9 @@ new Vue({
       return true;
     },
     //タグ名のバリデーション
-    tagNameValidate() {
+    tagNameValidate(sceneTags) {
       if (
-        !this.sceneTags.match(
+        !sceneTags.match(
           /^[＃|#|♯][ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z0-9_]*[ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z]+[ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z0-9_]*(?:[\s| |　]+[＃|#|♯][ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z0-9_]+)*[\s| |　]*$/u
         )
       ) {
@@ -142,11 +150,92 @@ new Vue({
       return true;
     },
     //秒数に変換
-    convertToSec(timeMinSec) {
+    convertToSec(is) {
       return (
-        parseInt(timeMinSec.split(":")[0], 10) * 60 +
-        parseInt(timeMinSec.split(":")[1], 10)
+        parseInt(is.split(":")[0], 10) * 60 + parseInt(is.split(":")[1], 10)
       );
+    },
+    //i:sにフォーマット
+    formatToMinSec(His) {
+      let min =
+        parseInt(His.split(":")[0], 10) * 60 + parseInt(His.split(":")[1], 10);
+      let sec = parseInt(His.split(":")[2], 10);
+      return min + ":" + sec;
+    },
+    //タグの編集
+    editTag(e) {
+      let index = e.currentTarget.getAttribute("data-tag-index");
+      this.currentTagIndex = index;
+      this.tags[index].isEditMode = true;
+      this.tags[index].start = this.formatToMinSec(this.tags[index].start);
+      this.tags[index].end = this.formatToMinSec(this.tags[index].end);
+    },
+    //タグの更新処理
+    updateTag(e) {
+      var self = this;
+      var index = e.currentTarget.getAttribute("data-tag-index");
+      var params = {
+        id: this.tags[index].tag_id,
+        tags: this.tags[index].tagName,
+        start: this.tags[index].start,
+        end: this.tags[index].end
+      };
+      this.errors = {};
+
+      //タグ更新時のバリデーション
+      if (!this.tagTimeValidate(params.start, params.end)) {
+        this.tags[index].isTimeInputError = true;
+        return;
+      } else {
+        console.log("時間のvalidation OK");
+        this.tags[index].isTimeInputError = false;
+      }
+      if (!this.tagNameValidate(params.tags)) {
+        this.tags[index].isTagInputError = true;
+        return;
+      } else {
+        console.log("タグ名のvalidation OK");
+        this.tags[index].isTagInputError = false;
+      }
+
+      axios
+        .post("/api/tag/update", params)
+        .then(function(response) {
+          //成功した時
+          self.tags[index].isEditMode = false;
+          self.tags[index].start = "00:" + self.tags[index].start;
+          self.tags[index].end = "00:" + self.tags[index].end;
+        })
+        .catch(function(error) {
+          self.tags[index].isEditAjaxError = true;
+          console.log("ajax通信失敗");
+          console.log(error);
+        });
+    },
+    //タグの削除
+    deleteTag(e) {
+      let index = e.currentTarget.getAttribute("data-tag-index");
+      this.currentTagIndex = index;
+      var self = this;
+
+      //DBから削除
+      var params = {
+        id: this.tags[index].tag_id
+      };
+      this.errors = {};
+
+      axios
+        .post("/api/tag/delete", params)
+        .then(function(response) {
+          //成功した時
+          //tags配列から削除
+          self.tags.splice(index, 1);
+        })
+        .catch(function(error) {
+          self.tags[index].isDeleteAjaxError = true;
+          console.log("ajax通信失敗");
+          console.log(error);
+        });
     }
   },
   mounted: function() {
@@ -186,5 +275,13 @@ new Vue({
       player.mute();
       player.playVideo();
     });
+  },
+  computed: {
+    formattedStartTime: function() {
+      return this.formatToMinSec(this.tags[this.currentTagIndex].start);
+    },
+    formattedEndTime: function() {
+      return this.formatToMinSec(this.tags[this.currentTagIndex].end);
+    }
   }
 });

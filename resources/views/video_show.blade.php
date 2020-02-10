@@ -58,7 +58,7 @@
                                     v-model="sceneTags"
                                 />
                                 <div class="saveBtnBox">
-                                    <button id="saveBtn" type="button" class="btn btn-primary" @click="save" v-bind:data-video-id="{{ $video[0]['video_id'] }}" v-bind:data-user-id="{{ $video[0]['user_id'] }}">
+                                    <button id="saveBtn" type="button" class="btn btn-primary" @click="save" v-bind:data-video-id="{{ $video[0]['video_id'] }}" v-bind:data-user-id="{{ $loginUserId }}">
                                         保存
                                     </button>
                                 </div>
@@ -69,11 +69,34 @@
                             </div>
                         </div>
                         <div id="tagBox">
-                            @if (isset($video[0]['tags'][0]['tag_id']))
-                                @foreach($video[0]['tags'] as $tag)
-                                    <div> <a href="{{ '/video/play/video_id='.$video[0]['video_id'].'&tag_id='.$tag['tag_id'] }}">{{ date('i:s', strtotime($tag['start']))."〜".date('i:s', strtotime($tag['end']))." ".$tag['tagName'] }} </a></div>
-                                @endforeach
-                            @endif
+                            {{-- @if (isset($video[0]['tags'][0]['tag_id']))
+                            @foreach($video[0]['tags'] as $tag)
+                            <div> <a href="{{ '/video/play/video_id='.$video[0]['video_id'].'&tag_id='.$tag['tag_id'] }}">{{ date('i:s', strtotime($tag['start']))."〜".date('i:s', strtotime($tag['end']))." ".$tag['tagName'] }} </a></div>
+                            @endforeach
+                            @endif --}}
+                            <div v-if="tags[0]">
+                                <div v-for="(tag, index) in tags">
+                                    <div v-if="tag.isEditMode != true">
+                                        <a v-bind:href="'/video/play/video_id={{ $video[0]['video_id'] }}&tag_id=' + tag.tag_id">@{{ formatToMinSec(tag.start) }} 〜 @{{ formatToMinSec(tag.end) }} @{{ tag.tagName }} </a>
+                                        <span v-if="{{ $loginUserId }} == tag.user_id" v-on:click="editTag" v-bind:data-tag-index="index">編集</span>
+                                        <span v-if="{{ $loginUserId }} == tag.user_id" v-on:click="deleteTag" v-bind:data-tag-index="index">削除</span>
+                                        <div>
+                                            <span v-if="tag.isDeleteAjaxError == true">タグの削除に失敗しました</span>
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        <input type="text" v-model="tag.start">
+                                        <input type="text" v-model="tag.end">
+                                        <input type="text" v-model="tag.tagName">
+                                        <span v-on:click="updateTag" v-bind:data-tag-index="index">更新</span>
+                                        <div>
+                                            <span v-if="tag.isTimeInputError == true">時間の入力が正しくありません</span>
+                                            <span v-if="tag.isTagInputError == true">タグの入力が正しくありません</span>
+                                            <span v-if="tag.isEditAjaxError == true">タグの更新に失敗しました</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -82,19 +105,28 @@
         </div>
     </div>
 </div>
-<!-- Vueに渡す変数 -->
+<!-- Vueに渡すタグ関連変数 -->
 <script>
     let tagArray = [];
-    @foreach($video[0]['tags'] as $key => $tag)
-        tagArray[{{ $key }}] = {
-            'tag_id': {{ $tag['tag_id'] }},
-            'tagName': "{{ $tag['tagName'] }}",
-            'start': "{{ $tag['start'] }}",
-            'end': "{{ $tag['end'] }}",
-            'created_at': "{{ $tag['created_at'] }}",
-            'updated_at': "{{ $tag['updated_at'] }}",
-        }
-    @endforeach
+    @if (isset($video[0]['tags'][0]['tag_id']))
+        @foreach($video[0]['tags'] as $key => $tag)
+            tagArray[{{ $key }}] = {
+                'tag_id': {{ $tag['tag_id'] }},
+                'video_id': {{ $tag['video_id'] }},
+                'user_id': {{ $tag['user_id'] }},
+                'tagName': "{{ $tag['tagName'] }}",
+                'start': "{{ $tag['start'] }}",
+                'end': "{{ $tag['end'] }}",
+                'created_at': "{{ $tag['created_at'] }}",
+                'updated_at': "{{ $tag['updated_at'] }}",
+                'isEditMode': false,
+                'isTimeInputError': false,
+                'isTagInputError': false,
+                'isEditAjaxError': false,
+                'isDeleteAjaxError': false,
+            }
+        @endforeach
+    @endif
 </script>
 <!-- Scripts -->
 <script src="{{ asset('js/video_show.js') }}"></script>

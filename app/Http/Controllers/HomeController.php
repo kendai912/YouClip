@@ -27,14 +27,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        //タグ名で検索ワードに一致するものを抽出
-        $tagResults = Tag::where('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags.id as tag_id', 'tags', 'start', 'end', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at');
-        
-        //タイトルで検索ワードに一致するものを抽出し、完全外部結合
-        $videoResults = Video::where('videos.user_id', Auth::user()->id)->leftJoin('tags', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags.id as tag_id', 'tags', 'start', 'end', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at')->union($tagResults)->orderBy('video_id', 'desc')->get();
+        //動画・タグの全データを完全外部結合し抽出
+        $allResults = Video::leftJoin('tags', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags.id as tag_id', 'tags', 'start', 'end', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at')->orderBy('video_id', 'desc')->get();
 
         //タグを動画毎にまとめて非正規化
-        $results = Video::denormalizeVideoTagTable($videoResults);
+        $results = Video::denormalizeVideoTagTable($allResults);
 
         return view('home', compact('results'));
     }

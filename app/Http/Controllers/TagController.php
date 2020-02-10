@@ -36,13 +36,13 @@ class TagController extends Controller
     public function store(Request $request)
     {
         //DBに保存
-        $tags = new Tag;
-        $tags->video_id = $request->video_id;
-        $tags->user_id = $request->user_id;
-        $tags->tags = $request->tags;
-        $tags->start = "00:".$request->start;
-        $tags->end = "00:".$request->end;
-        $tags->save();
+        $tag = new Tag;
+        $tag->video_id = $request->video_id;
+        $tag->user_id = $request->user_id;
+        $tag->tags = $request->tags;
+        $tag->start = "00:".$request->start;
+        $tag->end = "00:".$request->end;
+        $tag->save();
     }
 
     /**
@@ -74,9 +74,14 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        //DBを更新
+        $tag = Tag::find($request->id);
+        $tag->tags = $request->tags;
+        $tag->start = "00:".$request->start;
+        $tag->end = "00:".$request->end;
+        $tag->save();
     }
 
     /**
