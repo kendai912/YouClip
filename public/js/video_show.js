@@ -77,6 +77,23 @@ new Vue({
         .post("/tag/store", params)
         .then(function(response) {
           //成功した時
+          //tags配列プロパティの末尾に追加
+          let data = response.data.data;
+          self.tags.push({
+            tag_id: data.id,
+            video_id: data.video_id,
+            user_id: data.user_id,
+            tagName: data.tags,
+            start: data.start,
+            end: data.end,
+            created_at: data.created_at,
+            updated_at: data.updated_at,
+            isEditMode: false,
+            isTimeInputError: false,
+            isTagInputError: false,
+            isEditAjaxError: false,
+            isDeleteAjaxError: false
+          });
           self.tagStored = true;
           self.sceneTags = "";
           self.startTime = "";
@@ -207,6 +224,7 @@ new Vue({
           self.tags[index].end = "00:" + self.tags[index].end;
         })
         .catch(function(error) {
+          //失敗した時
           self.tags[index].isEditAjaxError = true;
           console.log("ajax通信失敗");
           console.log(error);
@@ -232,6 +250,7 @@ new Vue({
           self.tags.splice(index, 1);
         })
         .catch(function(error) {
+          //失敗した時
           self.tags[index].isDeleteAjaxError = true;
           console.log("ajax通信失敗");
           console.log(error);

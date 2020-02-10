@@ -43,6 +43,16 @@ class TagController extends Controller
         $tag->start = "00:".$request->start;
         $tag->end = "00:".$request->end;
         $tag->save();
+
+        //保存したタグデータをリターン
+        return response()->json(
+            [
+                'data' => $tag
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 
     /**
@@ -71,7 +81,6 @@ class TagController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
@@ -87,12 +96,13 @@ class TagController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        //DBから削除
+        $tag = Tag::find($request->id);
+        $tag->delete();
     }
 
     public static function convertToSec($time)
