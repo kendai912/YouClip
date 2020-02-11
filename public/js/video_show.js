@@ -258,12 +258,22 @@ new Vue({
     }
   },
   mounted: function() {
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement("script");
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName("script")[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
     //Youtube Playerの初期処理
     window.onYouTubeIframeAPIReady = () => {
-      console.log("onYouTubeIframeAPIReadyを呼び出し");
-      self.player = new YT.Player("iframeBox", {
+      this.player = new YT.Player("player", {
+        height: "315",
+        width: "560",
+        videoId: youtubeId,
         playerVars: {
-          color: "white"
+          start: startSec,
+          end: endSec
         },
         events: {
           onReady: onPlayerReady,
@@ -271,6 +281,17 @@ new Vue({
         }
       });
     };
+    // window.onYouTubeIframeAPIReady = () => {
+    //   this.player = new YT.Player("iframeBox", {
+    //     playerVars: {
+    //       color: "white"
+    //     },
+    //     events: {
+    //       onReady: onPlayerReady,
+    //       onStateChange: onPlayerStateChange
+    //     }
+    //   });
+    // };
 
     window.onPlayerReady = event => {
       event.target.mute();
@@ -280,20 +301,20 @@ new Vue({
     window.onPlayerStateChange = event => {};
 
     //DOM更新後にこのコードに到達する
-    this.$nextTick(() => {
-      player = new YT.Player("iframeBox", {
-        playerVars: {
-          color: "white"
-        },
-        events: {
-          onReady: onPlayerReady,
-          onStateChange: onPlayerStateChange
-        }
-      });
+    // this.$nextTick(() => {
+    //   this.player = new YT.Player("iframeBox", {
+    //     playerVars: {
+    //       color: "white"
+    //     },
+    //     events: {
+    //       onReady: onPlayerReady,
+    //       onStateChange: onPlayerStateChange
+    //     }
+    //   });
 
-      player.mute();
-      player.playVideo();
-    });
+    //   this.player.mute();
+    //   this.player.playVideo();
+    // });
   },
   computed: {
     formattedStartTime: function() {

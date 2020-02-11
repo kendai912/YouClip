@@ -14,10 +14,11 @@
 
                     <div id="app-video-show">
                         <div id="videoSec">
-                            <iframe 
+                            <div id="player"></div>
+                            {{-- <iframe 
                                 id="iframeBox" 
                                 src="https://www.youtube.com/embed/{{ $video[0]['youtubeId'] }}?enablejsapi=1&start={{ $startSec }}&end={{ $endSec }}"  allow="autoplay; encrypted-media" allowfullscreenf>
-                            </iframe>
+                            </iframe> --}}
                             <p>{{ $video[0]['title'] }}</p>
                         </div>
 
@@ -107,6 +108,10 @@
 </div>
 <!-- Vueに渡すタグ関連変数 -->
 <script>
+    let youtubeId = "{{ $video[0]['youtubeId'] }}";
+    let startSec = {{ $startSec }};
+    let endSec = {{ $endSec }};
+
     let tagArray = [];
     @if (isset($video[0]['tags'][0]['tag_id']))
         @foreach($video[0]['tags'] as $key => $tag)
