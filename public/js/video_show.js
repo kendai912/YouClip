@@ -421,7 +421,19 @@ new Vue({
       event.target.playVideo();
     };
 
-    window.onPlayerStateChange = event => {};
+    window.onPlayerStateChange = event => {
+      if (event.data == 0) {
+        if (playlist_id != "" && nextVideoId != "" && nextTagId != "") {
+          window.location.href =
+            "/video/play/video_id=" +
+            nextVideoId +
+            "&tag_id=" +
+            nextTagId +
+            "&playlist_id=" +
+            playlist_id;
+        }
+      }
+    };
 
     //DOM更新後にこのコードに到達する
     // this.$nextTick(() => {

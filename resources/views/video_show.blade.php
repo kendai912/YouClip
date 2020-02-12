@@ -153,7 +153,10 @@
     //ログインユーザーID
     let loginUserId = "{{ $loginUserId }}";
 
-    //次に再生する動画・タグのID
+    //プレイリストおよび次に再生する動画・タグのID
+    let playlist_id = "{{ $playlist_id }}";
+    let nextVideoId = "{{ $nextVideoId }}";
+    let nextTagId = "{{ $nextTagId }}";
 
     //タグ情報(配列)
     let tagArray = [];

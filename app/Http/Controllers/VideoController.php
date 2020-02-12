@@ -85,6 +85,7 @@ class VideoController extends Controller
             'startSec' => $startSec,
             'endSec' => $endSec,
             'loginUserId' => $loginUserId,
+            'playlist_id' => $playlist_id,
             'nextVideoId' => $nextVideoId,
             'nextTagId' => $nextTagId,
         ]);
