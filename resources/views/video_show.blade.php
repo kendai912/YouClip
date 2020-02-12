@@ -59,7 +59,7 @@
                                     v-model="sceneTags"
                                 />
                                 <div class="saveBtnBox">
-                                    <button id="saveBtn" type="button" class="btn btn-primary" @click="save" v-bind:data-video-id="{{ $video[0]['video_id'] }}" v-bind:data-user-id="{{ $loginUserId }}">
+                                    <button id="saveBtn" type="button" class="btn btn-primary" @click="save" v-bind:data-video-id="{{ $video[0]['video_id'] }}">
                                         保存
                                     </button>
                                 </div>
@@ -79,6 +79,7 @@
                                 <div v-for="(tag, index) in tags">
                                     <div v-if="tag.isEditMode != true">
                                         <a v-bind:href="'/video/play/video_id={{ $video[0]['video_id'] }}&tag_id=' + tag.tag_id">@{{ formatToMinSec(tag.start) }} 〜 @{{ formatToMinSec(tag.end) }} @{{ tag.tagName }} </a>
+                                        <span v-on:click="saveInPlaylist" v-bind:data-tag-index="index">保存</span>
                                         <span v-if="{{ $loginUserId }} == tag.user_id" v-on:click="editTag" v-bind:data-tag-index="index">編集</span>
                                         <span v-if="{{ $loginUserId }} == tag.user_id" v-on:click="deleteTag" v-bind:data-tag-index="index">削除</span>
                                         <div>
@@ -99,6 +100,38 @@
                                 </div>
                             </div>
                         </div>
+                        <!------------------------------------------ 
+                            modal
+                        ------------------------------------------>
+                        <div id="js-modal" class="v-modal" v-if="isModal"  v-on:click="closeModal">
+                            <div class="text-dark shadow rounded mb-7 modal-in-box" v-on:click.stop>
+                                <div id="existingPlaylists" v-if="isPlaylistExisting == true">
+                                    <span v-on:click="closeModal">✕</span>
+                                    <div v-for="(playlist, index) in playlists">
+                                        <div>
+                                            <input type="checkbox" v-bind:id="playlist.id" v-bind:value="playlist.id" v-model="checkedPlaylists">
+                                            <label v-bind:for="playlist.id">@{{ playlist.playlistName }}</label>
+                                        </div>
+                                    </div>
+                                    <div v-on:click.stop="addToPlaylists">完了</div>
+                                </div>
+                                <div id="newPlaylists">
+                                    <div class="form-group mb-4">
+                                        新規プレイリスト名<input type="type" class="form-control" v-model="playlistName">
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        プライバシー設定
+                                        <select name="playlistPrivacy" v-model="privacySetting"  size="1">
+                                            <option value="open">公開</option>
+                                            <option value="private">非公開</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <span v-on:click.stop="createPlaylist">作成</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -108,10 +141,21 @@
 </div>
 <!-- Vueに渡すタグ関連変数 -->
 <script>
+    //開始・終了秒数
     let youtubeId = "{{ $video[0]['youtubeId'] }}";
-    let startSec = {{ $startSec }};
-    let endSec = {{ $endSec }};
+    let startSec = "";
+    let endSec = "";
+    @if($startSec != null && $endSec !=null) 
+        startSec = {{ $startSec }};
+        endSec = {{ $endSec }};
+    @endif
 
+    //ログインユーザーID
+    let loginUserId = "{{ $loginUserId }}";
+
+    //次に再生する動画・タグのID
+
+    //タグ情報(配列)
     let tagArray = [];
     @if (isset($video[0]['tags'][0]['tag_id']))
         @foreach($video[0]['tags'] as $key => $tag)

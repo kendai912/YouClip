@@ -15,25 +15,34 @@ new Vue({
     isTimeInputError: false,
     //タグ関連プロパティ
     tags: tagArray,
-    currentTagIndex: ""
+    currentTagIndex: "",
+    //プレイリスト関連プロパティ
+    isModal: false,
+    isPlaylistExisting: false,
+    playlistName: "",
+    privacySetting: "open",
+    isPlaylistAjaxError: false,
+    playlists: "",
+    playlistIdsOfTag: "",
+    checkedPlaylists: []
   },
 
   methods: {
     //タグ開始ボタン
     start(e) {
       e.preventDefault();
-      player.playVideo();
-      this.startTime = this.formatTime(player.getCurrentTime());
+      this.player.playVideo();
+      this.startTime = this.formatTime(this.player.getCurrentTime());
       this.isStarting = false;
       this.isEnding = true;
     },
     //タグ終了ボタン
     end(e) {
       e.preventDefault();
-      this.endTime = this.formatTime(player.getCurrentTime());
+      this.endTime = this.formatTime(this.player.getCurrentTime());
       this.isEnding = false;
       this.isStarting = true;
-      player.pauseVideo();
+      this.player.pauseVideo();
     },
     //タグ保存ボタン
     save(e) {
@@ -44,14 +53,12 @@ new Vue({
         this.isTimeInputError = true;
         return;
       } else {
-        console.log("時間のvalidation OK");
         this.isTimeInputError = false;
       }
       if (!this.tagNameValidate(this.sceneTags)) {
         this.isTagInputError = true;
         return;
       } else {
-        console.log("タグ名のvalidation OK");
         this.isTagInputError = false;
       }
 
@@ -66,7 +73,7 @@ new Vue({
       var self = this;
       var params = {
         video_id: e.currentTarget.getAttribute("data-video-id"),
-        user_id: e.currentTarget.getAttribute("data-user-id"),
+        user_id: loginUserId,
         tags: this.sceneTags,
         start: this.startTime,
         end: this.endTime
@@ -101,7 +108,7 @@ new Vue({
           self.isTimeInputError = false;
           self.isTagInputError = false;
           self.isAjaxError = false;
-          player.playVideo();
+          self.player.playVideo();
         })
         .catch(function(error) {
           self.isAjaxError = true;
@@ -134,7 +141,7 @@ new Vue({
       }
 
       //再生時間内かチェック
-      let duration = this.formatTime(player.getDuration());
+      let duration = this.formatTime(this.player.getDuration());
       let durationSec = this.convertToSec(duration);
       let startSec = this.convertToSec(start);
       let endSec = this.convertToSec(end);
@@ -255,10 +262,126 @@ new Vue({
           console.log("ajax通信失敗");
           console.log(error);
         });
+    },
+    //プレイリストへの保存
+    saveInPlaylist(e) {
+      this.currentTagIndex = e.currentTarget.getAttribute("data-tag-index");
+      //ユーザーが保存済のプレイリスト一覧を取得
+      this.getPlaylists();
+      //選択したタグを追加済のプレイリストにチェックを入れてからモーダルを表示
+      this.getPlaylistIdsOfTag();
+    },
+    //プレイリストの作成
+    createPlaylist() {
+      var self = this;
+      // Toastrオプション変更
+      toastr.options = {
+        positionClass: "toast-bottom-left",
+        timeOut: "5000"
+      };
+
+      //DBに新規プレイリストを作成
+      var params = {
+        playlistName: this.playlistName,
+        privacySetting: this.privacySetting,
+        user_id: loginUserId,
+        tag_id: this.tags[this.currentTagIndex].tag_id
+      };
+      this.errors = {};
+
+      axios
+        .post("/playlist/create", params)
+        .then(function(response) {
+          //成功した時
+          self.isModal = false;
+
+          //ポップアップでプレイリストの作成完了を通知
+          toastr.success("[" + params.playlistName + "]に保存しました");
+        })
+        .catch(function(error) {
+          //失敗した時
+          self.isPlaylistAjaxError = true;
+          console.log(error);
+          toastr.error("プレイリストの作成に失敗しました");
+        });
+    },
+    //ユーザーの登録したプレイリストのリストを取得
+    getPlaylists() {
+      var self = this;
+      this.errors = {};
+
+      axios
+        .post("/playlist/index")
+        .then(function(response) {
+          //成功した時
+          self.playlists = response.data.playlists;
+        })
+        .catch(function(error) {
+          //失敗した時
+          console.log(error);
+        });
+
+      if (this.playlists != null) {
+        this.isPlaylistExisting = true;
+      }
+    },
+    //選択されたタグが追加済のユーザーのプレイリストIDを取得
+    getPlaylistIdsOfTag() {
+      var self = this;
+      this.errors = {};
+      let tag_id = this.tags[this.currentTagIndex].tag_id;
+
+      axios
+        .get("/tag/getPlaylists/" + tag_id)
+        .then(function(response) {
+          //成功した時
+          self.playlistIdsOfTag = response.data.playlistIds;
+          //追加済のプレイリストのチェックボックスにチェック
+          self.checkedPlaylists = self.playlistIdsOfTag;
+          //チェックが入ってからモーダルを表示
+          self.isModal = true;
+        })
+        .catch(function(error) {
+          //失敗した時
+          console.log(error);
+        });
+    },
+    //完了ボタンを押したらチェックの入ったプレイリストにタグを追加
+    addToPlaylists() {
+      var self = this;
+      this.errors = {};
+      let tag_id = this.tags[this.currentTagIndex].tag_id;
+      // Toastrオプション変更
+      toastr.options = {
+        positionClass: "toast-bottom-left",
+        timeOut: "5000"
+      };
+      //チェックの入ったプレイリストをパラメータとして格納
+      var params = {
+        checkedPlaylistIds: this.checkedPlaylists
+      };
+
+      axios
+        .post("/tag/addToPlaylists/" + tag_id, params)
+        .then(function(response) {
+          //成功した時
+          self.closeModal();
+
+          //ポップアップでプレイリストの作成完了を通知
+          toastr.success("プレイリストに保存しました");
+        })
+        .catch(function(error) {
+          //失敗した時
+          console.log(error);
+          toastr.error("プレイリストへの保存に失敗しました");
+        });
+    },
+    closeModal() {
+      this.isModal = false;
     }
   },
   mounted: function() {
-    // 2. This code loads the IFrame Player API code asynchronously.
+    // This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement("script");
 
     tag.src = "https://www.youtube.com/iframe_api";

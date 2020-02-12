@@ -19,12 +19,22 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth:user'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::post('/home/searchCandidates', 'HomeController@searchCandidates');
+    
     Route::get('/video/searchQuery={searchQuery}', 'HomeController@search');
-    Route::get('/video/play/video_id={video_id}&tag_id={tag_id}', 'VideoController@show');
+    Route::get('/video/play/video_id={video_id}&tag_id={tag_id}&playlist_id={playlist_id}', 'VideoController@show');
     Route::get('/video/create', 'VideoController@create');
     Route::post('/video/store', 'VideoController@store');
+    
+    Route::get('/tag/getPlaylists/{tag}', 'TagController@getPlaylists');
     Route::post('/tag/store', 'TagController@store');
-    Route::post('/home/searchCandidates', 'HomeController@searchCandidates');
+    Route::post('/tag/addToPlaylists/{tag}', 'TagController@addToPlaylists');
+    
+    Route::post('/playlist/create', 'PlaylistController@create');
+    Route::post('/playlist/index', 'PlaylistController@index');
+
+    Route::get('/playlist/show', 'PlaylistController@show');
+    Route::post('/playlist/getFirstTagVideoIds', 'PlaylistController@getFirstTagVideoIds');
 });
 
 // admin認証不要

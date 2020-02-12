@@ -8,6 +8,7 @@ use Auth;
 use App\Video;
 use App\Tag;
 use App\User;
+use App\Playlist;
 use App\Http\Controllers\TagController;
 
 class VideoController extends Controller
@@ -27,7 +28,7 @@ class VideoController extends Controller
     }
 
     //表示画面
-    public function show($video_id, $tag_id)
+    public function show($video_id, $tag_id, $playlist_id)
     {
         //該当動画のタグが存在するか判定
         if (Tag::where('video_id', intval($video_id))->exists()) {
@@ -56,11 +57,36 @@ class VideoController extends Controller
         //ログインユーザーIDを取得
         $loginUserId = Auth::user()->id;
 
+        //次に再生するタグのIDをplaylist_idより取得
+        $videoIdArray = array();
+        $tagIdArray = array();
+        if ($playlist_id == "null") {
+            $nextVideoId = "";
+            $nextTagId = "";
+        } else {
+            foreach (Playlist::find($playlist_id)->tags as $index => $tag) {
+                $tagIdArray[] = $tag->pivot->tag_id;
+            }
+            //次のタグIDをセット
+            $key = array_search($tag_id, $tagIdArray);
+            if (array_key_exists(++$key, $tagIdArray)) {
+                $nextTagId = $tagIdArray[$key];
+
+                //次に再生する動画のIDを$nextTagIdより取得
+                $nextVideoId = Tag::find($nextTagId)->user_id;
+            } else {
+                $nextTagId = "";
+                $nextVideoId = "";
+            }
+        }
+
         return view('video_show', [
             'video' => $video,
             'startSec' => $startSec,
             'endSec' => $endSec,
             'loginUserId' => $loginUserId,
+            'nextVideoId' => $nextVideoId,
+            'nextTagId' => $nextTagId,
         ]);
     }
 

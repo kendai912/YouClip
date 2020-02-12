@@ -82,7 +82,7 @@
                         </iframe>
                         <p>@{{ video.title }}</p>
                     </div>
-                        <p v-for="tag in video.tags" v-if="tag.tag_id"><a :href="'/video/play/video_id=' + video.video_id + '&tag_id=' + tag.tag_id">@{{ convertToMinSec(tag.start) + '〜' + convertToMinSec(tag.end) + ' ' + tag.tagName }}</a></p>
+                        <p v-for="tag in video.tags" v-if="tag.tag_id"><a :href="'/video/play/video_id=' + video.video_id + '&tag_id=' + tag.tag_id + '&playlist_id=null'">@{{ convertToMinSec(tag.start) + '〜' + convertToMinSec(tag.end) + ' ' + tag.tagName }}</a></p>
                 </div>
             </div>`,
         props: {
@@ -94,7 +94,7 @@
             handleClick: function(e){
                 let id = e.path.find(row => row.className == "topIframeBox").getAttribute('data-video-id')
                 console.log("id="+id)
-                window.location.href = "/video/play/video_id=" + id + "&tag_id=null";
+                window.location.href = "/video/play/video_id=" + id + "&tag_id=null&playlist_id=null";
             },
             convertToSec: function(His) {
                 return parseInt(His.split(":")[0], 10) * 3600 + parseInt(His.split(":")[1], 10) * 60 + parseInt(His.split(":")[2], 10);
