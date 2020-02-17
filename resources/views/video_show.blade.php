@@ -15,20 +15,16 @@
                     <div id="app-video-show">
                         <div id="videoSec">
                             <div id="player"></div>
-                            {{-- <iframe 
-                                id="iframeBox" 
-                                src="https://www.youtube.com/embed/{{ $video[0]['youtubeId'] }}?enablejsapi=1&start={{ $startSec }}&end={{ $endSec }}"  allow="autoplay; encrypted-media" allowfullscreenf>
-                            </iframe> --}}
                             <div>{{ $video[0]['title'] }}</div>
                             <div v-for="tag in playingTags">
-                                @{{ tag.tagName }}
+                                @{{ tag.tagName }} <span v-on:click="toggleLike" v-bind:data-tag-id="tag.tag_id" v-bind:data-tag-index="tag.index" v-bind:class="{ isLiked: tag.isLiked}">[Like] @{{ tag.likeCount }}</span>
                             </div>
                         </div>
-
+                        <br>
                         <div>
-                            <p class="slide-down" data-slide="slide-1">シーンにタグ付け</p>
+                            シーンにタグ付け
                             <div class="slide-1">
-                                <p class="pSceneSelect">１．タグ付けするシーンを指定</p>
+                                １．タグ付けする時間を指定
                                 <div class="timeBtnBox">
                                     <button 
                                     v-if="isStarting"
@@ -73,11 +69,6 @@
                             </div>
                         </div>
                         <div id="tagBox">
-                            {{-- @if (isset($video[0]['tags'][0]['tag_id']))
-                            @foreach($video[0]['tags'] as $tag)
-                            <div> <a href="{{ '/video/play/video_id='.$video[0]['video_id'].'&tag_id='.$tag['tag_id'] }}">{{ date('i:s', strtotime($tag['start']))."〜".date('i:s', strtotime($tag['end']))." ".$tag['tagName'] }} </a></div>
-                            @endforeach
-                            @endif --}}
                             <div v-if="tags[0]">
                                 <div v-for="(tag, index) in tags">
                                     <div v-if="tag.isEditMode != true">
@@ -166,6 +157,7 @@
     @if (isset($video[0]['tags'][0]['tag_id']))
         @foreach($video[0]['tags'] as $key => $tag)
             tagArray[{{ $key }}] = {
+                'index': {{ $key }},
                 'tag_id': {{ $tag['tag_id'] }},
                 'video_id': {{ $tag['video_id'] }},
                 'user_id': {{ $tag['user_id'] }},
@@ -179,6 +171,8 @@
                 'isTagInputError': false,
                 'isEditAjaxError': false,
                 'isDeleteAjaxError': false,
+                'isLiked': false,
+                'likeCount': "",
             }
         @endforeach
     @endif

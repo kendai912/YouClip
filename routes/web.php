@@ -35,6 +35,10 @@ Route::group(['middleware' => 'auth:user'], function () {
 
     Route::get('/playlist/show', 'PlaylistController@show');
     Route::post('/playlist/getFirstTagVideoIds', 'PlaylistController@getFirstTagVideoIds');
+    
+    Route::post('/like', 'LikeController@toggle');
+    Route::post('/like/getIsLikedFlag', 'LikeController@getIsLikedFlag');
+    Route::post('/like/getLikeCount', 'LikeController@getLikeCount');
 });
 
 // admin認証不要

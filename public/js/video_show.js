@@ -378,9 +378,93 @@ new Vue({
           toastr.error("プレイリストへの保存に失敗しました");
         });
     },
+    toggleLike(e) {
+      var self = this;
+      this.errors = {};
+      //tagsプロパティのindexを取得
+      let index = e.currentTarget.getAttribute("data-tag-index");
+      //LikeするタグIDをパラメータとして格納
+      let tag_id = e.currentTarget.getAttribute("data-tag-id");
+      var params = {
+        tag_id: tag_id
+      };
+
+      axios
+        .post("/like", params)
+        .then(function(response) {
+          //成功した時
+          //isLikedステータスを切り替え
+          if (self.tags[index].isLiked == true) {
+            //既にLike済の場合
+            self.tags[index].isLiked = false;
+            self.tags[index].likeCount -= 1;
+          } else {
+            //未だLikeしていない場合
+            self.tags[index].isLiked = true;
+            self.tags[index].likeCount += 1;
+          }
+        })
+        .catch(function(error) {
+          //失敗した時
+          console.log(error);
+          toastr.error("Likeに失敗しました");
+        });
+    },
+    setLikeStatus() {
+      this.tags.forEach((value, index) => {
+        //isLikeフラグを初期設定
+        this.setIsLiked(value.tag_id, index);
+        //Like数を初期設定
+        this.setLikeCount(value.tag_id, index);
+      });
+    },
+    setIsLiked(tag_id, index) {
+      var self = this;
+      this.errors = {};
+      var params = {
+        tag_id: tag_id
+      };
+
+      axios
+        .post("/like/getIsLikedFlag", params)
+        .then(function(response) {
+          //成功した時
+          if (response.data.data) {
+            self.tags[index].isLiked = true;
+          } else {
+            self.tags[index].isLiked = false;
+          }
+        })
+        .catch(function(error) {
+          //失敗した時
+          console.log(error);
+        });
+    },
+    setLikeCount(tag_id, index) {
+      var self = this;
+      this.errors = {};
+      var params = {
+        tag_id: tag_id
+      };
+
+      axios
+        .post("/like/getLikeCount", params)
+        .then(function(response) {
+          //成功した時
+          self.tags[index].likeCount = response.data.data;
+        })
+        .catch(function(error) {
+          //失敗した時
+          console.log(error);
+        });
+    },
     closeModal() {
       this.isModal = false;
     }
+  },
+  created: function() {
+    //like関連プロパティをtagsの中にセット
+    this.setLikeStatus();
   },
   mounted: function() {
     // This code loads the IFrame Player API code asynchronously.
@@ -398,7 +482,7 @@ new Vue({
         videoId: youtubeId,
         playerVars: {
           start: startSec,
-          end: endSec
+          end: endSec,
         },
         events: {
           onReady: onPlayerReady,
@@ -406,17 +490,6 @@ new Vue({
         }
       });
     };
-    // window.onYouTubeIframeAPIReady = () => {
-    //   this.player = new YT.Player("iframeBox", {
-    //     playerVars: {
-    //       color: "white"
-    //     },
-    //     events: {
-    //       onReady: onPlayerReady,
-    //       onStateChange: onPlayerStateChange
-    //     }
-    //   });
-    // };
 
     window.onPlayerReady = event => {
       let self = this;
@@ -444,22 +517,6 @@ new Vue({
         }
       }
     };
-
-    //DOM更新後にこのコードに到達する
-    // this.$nextTick(() => {
-    //   this.player = new YT.Player("iframeBox", {
-    //     playerVars: {
-    //       color: "white"
-    //     },
-    //     events: {
-    //       onReady: onPlayerReady,
-    //       onStateChange: onPlayerStateChange
-    //     }
-    //   });
-
-    //   this.player.mute();
-    //   this.player.playVideo();
-    // });
   },
   computed: {
     playingTags: function() {

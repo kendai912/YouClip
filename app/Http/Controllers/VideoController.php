@@ -73,7 +73,7 @@ class VideoController extends Controller
                 $nextTagId = $tagIdArray[$key];
 
                 //次に再生する動画のIDを$nextTagIdより取得
-                $nextVideoId = Tag::find($nextTagId)->user_id;
+                $nextVideoId = Tag::find($nextTagId)->video_id;
             } else {
                 $nextTagId = "";
                 $nextVideoId = "";

@@ -34,3 +34,7 @@
 .info-area {
   align-items: center;
 }
+
+.isLiked {
+  color: red;
+}
