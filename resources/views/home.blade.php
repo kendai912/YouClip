@@ -93,7 +93,6 @@
         methods: {
             handleClick: function(e){
                 let id = e.path.find(row => row.className == "topIframeBox").getAttribute('data-video-id')
-                console.log("id="+id)
                 window.location.href = "/video/play/video_id=" + id + "&tag_id=null&playlist_id=null";
             },
             convertToSec: function(His) {

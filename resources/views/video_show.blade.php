@@ -19,7 +19,10 @@
                                 id="iframeBox" 
                                 src="https://www.youtube.com/embed/{{ $video[0]['youtubeId'] }}?enablejsapi=1&start={{ $startSec }}&end={{ $endSec }}"  allow="autoplay; encrypted-media" allowfullscreenf>
                             </iframe> --}}
-                            <p>{{ $video[0]['title'] }}</p>
+                            <div>{{ $video[0]['title'] }}</div>
+                            <div v-for="tag in playingTags">
+                                @{{ tag.tagName }}
+                            </div>
                         </div>
 
                         <div>
@@ -78,7 +81,7 @@
                             <div v-if="tags[0]">
                                 <div v-for="(tag, index) in tags">
                                     <div v-if="tag.isEditMode != true">
-                                        <a v-bind:href="'/video/play/video_id={{ $video[0]['video_id'] }}&tag_id=' + tag.tag_id">@{{ formatToMinSec(tag.start) }} 〜 @{{ formatToMinSec(tag.end) }} @{{ tag.tagName }} </a>
+                                        <a v-bind:href="'/video/play/video_id={{ $video[0]['video_id'] }}&tag_id=' + tag.tag_id + '&playlist_id=null'">@{{ formatToMinSec(tag.start) }} 〜 @{{ formatToMinSec(tag.end) }} @{{ tag.tagName }} </a>
                                         <span v-on:click="saveInPlaylist" v-bind:data-tag-index="index">保存</span>
                                         <span v-if="{{ $loginUserId }} == tag.user_id" v-on:click="editTag" v-bind:data-tag-index="index">編集</span>
                                         <span v-if="{{ $loginUserId }} == tag.user_id" v-on:click="deleteTag" v-bind:data-tag-index="index">削除</span>

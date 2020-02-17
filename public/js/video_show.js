@@ -24,7 +24,9 @@ new Vue({
     isPlaylistAjaxError: false,
     playlists: "",
     playlistIdsOfTag: "",
-    checkedPlaylists: []
+    checkedPlaylists: [],
+    //Like関連プロパティ
+    currentTime: ""
   },
 
   methods: {
@@ -417,8 +419,16 @@ new Vue({
     // };
 
     window.onPlayerReady = event => {
+      let self = this;
       event.target.mute();
       event.target.playVideo();
+
+      //1秒毎に現在の再生時間を取得
+      setInterval(function() {
+        self.currentTime = self.convertToSec(
+          self.formatTime(event.target.getCurrentTime())
+        );
+      }, 1000);
     };
 
     window.onPlayerStateChange = event => {
@@ -452,11 +462,13 @@ new Vue({
     // });
   },
   computed: {
-    formattedStartTime: function() {
-      return this.formatToMinSec(this.tags[this.currentTagIndex].start);
-    },
-    formattedEndTime: function() {
-      return this.formatToMinSec(this.tags[this.currentTagIndex].end);
+    playingTags: function() {
+      return this.tags.filter(
+        tag =>
+          this.convertToSec(this.formatToMinSec(tag.start)) <=
+            this.currentTime &&
+          this.convertToSec(this.formatToMinSec(tag.end)) >= this.currentTime
+      );
     }
   }
 });
