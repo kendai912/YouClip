@@ -9,7 +9,7 @@ use App\Tag;
 class Video extends Model
 {
     //
-    public function users()
+    public function user()
     {
         //Userモデルのデータを引っ張ってくる
         return $this->belongsTo('App\User');

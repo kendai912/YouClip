@@ -115,7 +115,7 @@
         },
         methods: {
             search() {
-                window.location.href = "/video/searchQuery="+this.searchQuery;
+                window.location.href = "/video/searchQuery="+encodeURIComponent(this.searchQuery);
             },
             searchCandidates(e) {
                 this.searchQuery = $("#searchBox").val();

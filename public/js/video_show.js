@@ -2,6 +2,10 @@ new Vue({
   el: "#app-video-show",
 
   data: {
+    //共通プロパティ
+    currentTitle: currentTitle,
+    currentVideoId: currentVideoId,
+    currentPlaylistId: playlist_id,
     //Youtube Player関連プロパティ
     player: {},
     startTime: "",
@@ -25,8 +29,14 @@ new Vue({
     playlists: "",
     playlistIdsOfTag: "",
     checkedPlaylists: [],
+    firstVideoId: firstVideoId,
+    firstTagId: firstTagId,
     //Like関連プロパティ
-    currentTime: ""
+    currentTime: "",
+    //共有関連プロパティ
+    isShare: false,
+    shareUrl: "",
+    shareText: ""
   },
 
   methods: {
@@ -458,8 +468,117 @@ new Vue({
           console.log(error);
         });
     },
+    sharePlaylist() {
+      //Share用のパラメーターを設定
+      this.shareUrl =
+        location.hostname +
+        "/video/play/video_id=" +
+        this.firstVideoId +
+        "&tag_id=" +
+        this.firstTagId +
+        "&playlist_id=" +
+        this.currentPlaylistId;
+      this.shareText = this.currentTitle;
+
+      if (navigator.share) {
+        //スマホでのシェア
+        navigator
+          .share({
+            title: "ScenePicks",
+            text: this.shareText,
+            url: this.shareUrl
+          })
+          .then(() => {
+            console.log("Share succeeded");
+          })
+          .catch(error => {
+            console.log("Share fialed", error);
+          });
+      } else {
+        //スマホ以外でのシェア
+        this.isShare = true;
+      }
+    },
+    shareTag(e) {
+      //tagsプロパティのindexを取得
+      let index = e.currentTarget.getAttribute("data-tag-index");
+
+      //Share用のパラメーターを設定
+      this.shareUrl =
+        location.hostname +
+        "/video/play/video_id=" +
+        this.currentVideoId +
+        "&tag_id=" +
+        this.tags[index].tag_id +
+        "&playlist_id=" +
+        this.currentPlaylistId;
+      this.shareText = this.currentTitle + ": " + this.tags[index].tagName;
+
+      if (navigator.share) {
+        //スマホでのシェア
+        navigator
+          .share({
+            title: "ScenePicks",
+            text: this.shareText,
+            url: this.shareUrl
+          })
+          .then(() => {
+            console.log("Share succeeded");
+          })
+          .catch(error => {
+            console.log("Share fialed", error);
+          });
+      } else {
+        //スマホ以外でのシェア
+        this.isShare = true;
+      }
+    },
+    copySelectedTagURL() {
+      //strを含んだtextareaをbodyタグの末尾に設置
+      $(document.body).append(
+        '<textarea id="tmp_copy" style="position:fixed;right:100vw;font-size:16px;" readonly="readonly">' +
+          this.shareUrl +
+          "</textarea>"
+      );
+
+      //elmはtextareaノード
+      var elm = $("#tmp_copy")[0];
+
+      //select()でtextarea内の文字を選択
+      elm.select();
+
+      //rangeでtextarea内の文字を選択
+      var range = document.createRange();
+      range.selectNodeContents(elm);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      elm.setSelectionRange(0, 999999);
+
+      //execCommandを実施
+      document.execCommand("copy");
+
+      //textareaを削除
+      $(elm).remove();
+
+      //モーダルを閉じる
+      this.isShare = false;
+    },
+    shareOnSNS(e) {
+      e.preventDefault();
+
+      //共有先SNSのリンクを取得
+      let URI = e.currentTarget.getAttribute("href");
+
+      window.open(
+        URI,
+        "SNS_window",
+        "width=600, height=500, menubar=no, toolbar=no, scrollbars=yes"
+      );
+    },
     closeModal() {
       this.isModal = false;
+      this.isShare = false;
     }
   },
   created: function() {
@@ -482,7 +601,7 @@ new Vue({
         videoId: youtubeId,
         playerVars: {
           start: startSec,
-          end: endSec,
+          end: endSec
         },
         events: {
           onReady: onPlayerReady,
@@ -526,6 +645,9 @@ new Vue({
             this.currentTime &&
           this.convertToSec(this.formatToMinSec(tag.end)) >= this.currentTime
       );
+    },
+    encodedShareURI: function() {
+      return encodeURI(this.shareUrl);
     }
   }
 });

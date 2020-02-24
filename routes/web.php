@@ -17,16 +17,17 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/home/searchCandidates', 'HomeController@searchCandidates');
+Route::get('/video/searchQuery={searchQuery}', 'HomeController@search');
+Route::get('/video/play/video_id={video_id}&tag_id={tag_id}&playlist_id={playlist_id}', 'VideoController@show');
+Route::get('/tag/getPlaylists/{tag}', 'TagController@getPlaylists');
+
 Route::group(['middleware' => 'auth:user'], function () {
-    Route::get('/home', 'HomeController@index')->name('home');
-    Route::post('/home/searchCandidates', 'HomeController@searchCandidates');
     
-    Route::get('/video/searchQuery={searchQuery}', 'HomeController@search');
-    Route::get('/video/play/video_id={video_id}&tag_id={tag_id}&playlist_id={playlist_id}', 'VideoController@show');
     Route::get('/video/create', 'VideoController@create');
     Route::post('/video/store', 'VideoController@store');
     
-    Route::get('/tag/getPlaylists/{tag}', 'TagController@getPlaylists');
     Route::post('/tag/store', 'TagController@store');
     Route::post('/tag/addToPlaylists/{tag}', 'TagController@addToPlaylists');
     
@@ -37,6 +38,7 @@ Route::group(['middleware' => 'auth:user'], function () {
     Route::post('/playlist/getFirstTagVideoIds', 'PlaylistController@getFirstTagVideoIds');
     
     Route::post('/like', 'LikeController@toggle');
+    Route::get('/like/index', 'LikeController@index');
     Route::post('/like/getIsLikedFlag', 'LikeController@getIsLikedFlag');
     Route::post('/like/getLikeCount', 'LikeController@getLikeCount');
 });

@@ -15,9 +15,12 @@
                     <div id="app-video-show">
                         <div id="videoSec">
                             <div id="player"></div>
+                            @if($playlistName != null)
+                            <div>{{ $playlistName }} <span v-on:click="sharePlaylist">共有</span></div>
+                            @endif 
                             <div>{{ $video[0]['title'] }}</div>
                             <div v-for="tag in playingTags">
-                                @{{ tag.tagName }} <span v-on:click="toggleLike" v-bind:data-tag-id="tag.tag_id" v-bind:data-tag-index="tag.index" v-bind:class="{ isLiked: tag.isLiked}">[Like] @{{ tag.likeCount }}</span>
+                                @{{ tag.tagName }} <span v-on:click="shareTag" v-bind:data-tag-index="tag.index">共有</span><span v-on:click="toggleLike" v-bind:data-tag-id="tag.tag_id" v-bind:data-tag-index="tag.index" v-bind:class="{ isLiked: tag.isLiked}">[Like] @{{ tag.likeCount }}</span>
                             </div>
                         </div>
                         <br>
@@ -126,6 +129,22 @@
                                 </div>
                             </div>
                         </div>
+                        <!------------------------------------------ 
+                            share
+                        ------------------------------------------>
+                        <div id="js-modal" class="v-modal" v-if="isShare"  v-on:click="closeModal">
+                            <div class="text-dark shadow rounded mb-7 modal-in-box" v-on:click.stop>
+                                <span v-on:click="copySelectedTagURL">コピーする</span>
+                                {{-- LINE --}}
+                                <a v-on:click="shareOnSNS" v-bind:href="'https://social-plugins.line.me/lineit/share?url=' + encodedShareURI"><img src="{{ asset('img/wide-default.png') }}" alt="LINEで送る"></a>
+                                {{-- Facebook --}}
+                                <a v-on:click="shareOnSNS" v-bind:href="'http://www.facebook.com/sharer.php?u=' + encodedShareURI"><i class="fab fa-facebook-square  fa-2x" style="color: #339af0;"></i></a>
+                                {{-- Twitter --}}
+                                <a v-on:click="shareOnSNS" v-bind:href="'http://twitter.com/share?url=' + encodedShareURI + '&text=[ScenePicks] ' + shareText"><i class="fab fa-twitter  fa-2x" style="color: #339af0;"></i></a>
+                                {{-- はてブ --}}
+                                <a v-on:click="shareOnSNS" v-bind:href="'https://b.hatena.ne.jp/entry/panel/?url=' + encodedShareURI"><img src="{{ asset('img/hatebu.svg') }}" alt="はてブ!で共有"></a>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -151,6 +170,12 @@
     let playlist_id = "{{ $playlist_id }}";
     let nextVideoId = "{{ $nextVideoId }}";
     let nextTagId = "{{ $nextTagId }}";
+    let currentVideoId = {{ $video[0]['video_id'] }};
+    let currentTitle = "{{ $video[0]['title'] }}";
+
+    //プレイリストの最初のvideoIdとtagIdをセット
+    let firstVideoId = "{{ $firstVideoId }}"
+    let firstTagId = "{{ $firstTagId }}"
 
     //タグ情報(配列)
     let tagArray = [];

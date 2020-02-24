@@ -19,6 +19,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 <body>
     <div id="app">
@@ -71,6 +72,7 @@
                                         </form>
                                     </li>
                                     <li><a href="/video/create">動画登録</a></li>
+                                    <li><a href="/like/index">お気に入り</a></li>
                                     <li><a href="/playlist/show">プレイリスト</a></li>
                                 </ul>
                             </li>

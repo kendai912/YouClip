@@ -61,12 +61,24 @@ class VideoController extends Controller
         $videoIdArray = array();
         $tagIdArray = array();
         if ($playlist_id == "null") {
+            $playlistName = "";
             $nextVideoId = "";
             $nextTagId = "";
+            $firstTagId = "";
+            $firstVideoId = "";
         } else {
+            //プレイリスト名を取得
+            $playlistName = Playlist::find($playlist_id)->playlistName;
+
+            //プレイリストの最初のvideoIdとtagIdを取得
+            $firstTagId = Playlist::find($playlist_id)->tags()->first()->id;
+            $firstVideoId = Tag::find($firstTagId)->video_id;
+
+            //プレイリストのタグ一覧を取得
             foreach (Playlist::find($playlist_id)->tags as $index => $tag) {
                 $tagIdArray[] = $tag->pivot->tag_id;
             }
+
             //次のタグIDをセット
             $key = array_search($tag_id, $tagIdArray);
             if (array_key_exists(++$key, $tagIdArray)) {
@@ -85,9 +97,12 @@ class VideoController extends Controller
             'startSec' => $startSec,
             'endSec' => $endSec,
             'loginUserId' => $loginUserId,
+            'playlistName' => $playlistName,
             'playlist_id' => $playlist_id,
             'nextVideoId' => $nextVideoId,
             'nextTagId' => $nextTagId,
+            'firstVideoId' => $firstVideoId,
+            'firstTagId' => $firstTagId,
         ]);
     }
 
