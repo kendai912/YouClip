@@ -22,9 +22,14 @@ Route::post('/home/searchCandidates', 'HomeController@searchCandidates');
 Route::get('/video/searchQuery={searchQuery}', 'HomeController@search');
 Route::get('/video/play/video_id={video_id}&tag_id={tag_id}&playlist_id={playlist_id}', 'VideoController@show');
 Route::get('/tag/getPlaylists/{tag}', 'TagController@getPlaylists');
+Route::post('/like/getIsLikedFlag', 'LikeController@getIsLikedFlag');
+Route::post('/like/getLikeCount', 'LikeController@getLikeCount');
+
+Route::post('/playlist/index', 'PlaylistController@index');
+Route::get('/playlist/show', 'PlaylistController@show');
+Route::post('/playlist/getFirstTagVideoIds', 'PlaylistController@getFirstTagVideoIds');
 
 Route::group(['middleware' => 'auth:user'], function () {
-    
     Route::get('/video/create', 'VideoController@create');
     Route::post('/video/store', 'VideoController@store');
     
@@ -32,15 +37,9 @@ Route::group(['middleware' => 'auth:user'], function () {
     Route::post('/tag/addToPlaylists/{tag}', 'TagController@addToPlaylists');
     
     Route::post('/playlist/create', 'PlaylistController@create');
-    Route::post('/playlist/index', 'PlaylistController@index');
 
-    Route::get('/playlist/show', 'PlaylistController@show');
-    Route::post('/playlist/getFirstTagVideoIds', 'PlaylistController@getFirstTagVideoIds');
-    
     Route::post('/like', 'LikeController@toggle');
     Route::get('/like/index', 'LikeController@index');
-    Route::post('/like/getIsLikedFlag', 'LikeController@getIsLikedFlag');
-    Route::post('/like/getLikeCount', 'LikeController@getLikeCount');
 });
 
 // admin認証不要

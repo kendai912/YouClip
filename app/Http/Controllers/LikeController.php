@@ -76,16 +76,22 @@ class LikeController extends Controller
 
     public function getIsLikedFlag(Request $request)
     {
-        //ログインユーザーIDを取得
-        $user_id = Auth::user()->id;
+        if (Auth::check()) {
+            //ログイン済の場合の処理
+            //ログインユーザーIDを取得
+            $user_id = Auth::user()->id;
 
-        //既にLike済みかチェック
-        if (!$this->checkLiked($user_id, $request->tag_id)) {
-            //未だLikeしていない場合
-            $data = false;
+            //既にLike済みかチェック
+            if (!$this->checkLiked($user_id, $request->tag_id)) {
+                //未だLikeしていない場合
+                $data = false;
+            } else {
+                //Like済みの場合
+                $data = true;
+            }
         } else {
-            //Like済みの場合
-            $data = true;
+            //未ログインの場合の処理
+            $data = false;
         }
 
         return response()->json(
@@ -100,9 +106,6 @@ class LikeController extends Controller
 
     public function getLikeCount(Request $request)
     {
-        //ログインユーザーIDを取得
-        $user_id = Auth::user()->id;
-
         //Likeの件数を取得
         $like = Like::where('tag_id', $request->tag_id)->get();
         $likeCount = $like->count();

@@ -54,13 +54,20 @@ class VideoController extends Controller
             $endSec = TagController::convertToSec($tag[0]->end);
         }
 
-        //ログインユーザーIDを取得
-        $loginUserId = Auth::user()->id;
+        if (Auth::check()) {
+            //ログイン済の場合
+            //ログインユーザーIDを取得
+            $loginUserId = Auth::user()->id;
+        } else {
+            //未ログインの場合
+            $loginUserId = "";
+        }
 
         //次に再生するタグのIDをplaylist_idより取得
         $videoIdArray = array();
         $tagIdArray = array();
         if ($playlist_id == "null") {
+            $loginUserId = "";
             $playlistName = "";
             $nextVideoId = "";
             $nextTagId = "";

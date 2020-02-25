@@ -52,7 +52,6 @@
               .then(function(response){
                   // 成功した時
                   self.playlists = response.data.playlists;
-                  console.log(self.playlists);
               })
               .catch(function(error){
                   // 失敗したとき

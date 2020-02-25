@@ -6,6 +6,9 @@ new Vue({
     currentTitle: currentTitle,
     currentVideoId: currentVideoId,
     currentPlaylistId: playlist_id,
+    //ログイン関連プロパティ
+    isNotLogined: false,
+    messageWhenNotLogined: "",
     //Youtube Player関連プロパティ
     player: {},
     startTime: "",
@@ -277,6 +280,15 @@ new Vue({
     },
     //プレイリストへの保存
     saveInPlaylist(e) {
+      //未ログイン時は、ログインへ誘導
+      if (loginUserId == "") {
+        this.isNotLogined = true;
+        this.messageWhenNotLogined =
+          "このシーンをプレイリストに追加するには、ログインしてください。";
+        return;
+      }
+
+      //選択したタグのインデックスを取得
       this.currentTagIndex = e.currentTarget.getAttribute("data-tag-index");
       //ユーザーが保存済のプレイリスト一覧を取得
       this.getPlaylists();
@@ -398,6 +410,14 @@ new Vue({
       var params = {
         tag_id: tag_id
       };
+
+      //未ログイン時は、ログインへ誘導
+      if (loginUserId == "") {
+        this.isNotLogined = true;
+        this.messageWhenNotLogined =
+          "このシーンを評価するには、ログインしてください。";
+        return;
+      }
 
       axios
         .post("/like", params)
@@ -579,6 +599,7 @@ new Vue({
     closeModal() {
       this.isModal = false;
       this.isShare = false;
+      this.isNotLogined = false;
     }
   },
   created: function() {

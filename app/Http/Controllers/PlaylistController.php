@@ -65,18 +65,10 @@ class PlaylistController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function show()
     {
-        //ログインユーザーを取得
-        $user = Auth::user();
-
-        //ユーザーが保存したプレイリストのリストを取得
-        $playlists = $user->playlists;
+        //プレイリストを全件取得
+        $playlists = Playlist::all();
 
         return view('playlist_show', compact('playlists'));
     }

@@ -77,8 +77,8 @@
                                     <div v-if="tag.isEditMode != true">
                                         <a v-bind:href="'/video/play/video_id={{ $video[0]['video_id'] }}&tag_id=' + tag.tag_id + '&playlist_id=null'">@{{ formatToMinSec(tag.start) }} 〜 @{{ formatToMinSec(tag.end) }} @{{ tag.tagName }} </a>
                                         <span v-on:click="saveInPlaylist" v-bind:data-tag-index="index">保存</span>
-                                        <span v-if="{{ $loginUserId }} == tag.user_id" v-on:click="editTag" v-bind:data-tag-index="index">編集</span>
-                                        <span v-if="{{ $loginUserId }} == tag.user_id" v-on:click="deleteTag" v-bind:data-tag-index="index">削除</span>
+                                        <span v-if="'{{ $loginUserId }}' == tag.user_id" v-on:click="editTag" v-bind:data-tag-index="index">編集</span>
+                                        <span v-if="'{{ $loginUserId }}' == tag.user_id" v-on:click="deleteTag" v-bind:data-tag-index="index">削除</span>
                                         <div>
                                             <span v-if="tag.isDeleteAjaxError == true">タグの削除に失敗しました</span>
                                         </div>
@@ -98,7 +98,7 @@
                             </div>
                         </div>
                         <!------------------------------------------ 
-                            modal
+                            playlistへの追加
                         ------------------------------------------>
                         <div id="js-modal" class="v-modal" v-if="isModal"  v-on:click="closeModal">
                             <div class="text-dark shadow rounded mb-7 modal-in-box" v-on:click.stop>
@@ -130,7 +130,7 @@
                             </div>
                         </div>
                         <!------------------------------------------ 
-                            share
+                            シェア
                         ------------------------------------------>
                         <div id="js-modal" class="v-modal" v-if="isShare"  v-on:click="closeModal">
                             <div class="text-dark shadow rounded mb-7 modal-in-box" v-on:click.stop>
@@ -143,6 +143,18 @@
                                 <a v-on:click="shareOnSNS" v-bind:href="'http://twitter.com/share?url=' + encodedShareURI + '&text=[ScenePicks] ' + shareText"><i class="fab fa-twitter  fa-2x" style="color: #339af0;"></i></a>
                                 {{-- はてブ --}}
                                 <a v-on:click="shareOnSNS" v-bind:href="'https://b.hatena.ne.jp/entry/panel/?url=' + encodedShareURI"><img src="{{ asset('img/hatebu.svg') }}" alt="はてブ!で共有"></a>
+                            </div>
+                        </div>
+                        <!------------------------------------------ 
+                            Like/保存押下時のログイン誘導
+                        ------------------------------------------>
+                        <div id="js-modal" class="v-modal" v-if="isNotLogined"  v-on:click="closeModal">
+                            <div class="text-dark shadow rounded mb-7 modal-in-box" v-on:click.stop>
+                                <div>@{{ messageWhenNotLogined }}</div>
+                                <div>
+                                    <span v-on:click="closeModal">キャンセル</span>
+                                    <span><a href="{{ route('login') }}">ログイン</a></span>
+                                </div>
                             </div>
                         </div>
                     </div>
