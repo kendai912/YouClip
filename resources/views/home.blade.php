@@ -28,7 +28,7 @@
                             </div>
                         </div>
                     </div>
-                        <search-result :videos = "videos"></search-result>
+                        <search-result v-bind:videos="videos" v-bind:playlists-and-tag-thumbs="playlistsAndTagThumbs"></search-result>
                     </div>
                 </div>
                 <div>
@@ -74,26 +74,37 @@
     Vue.component('search-result', {
         template: `
             <div>
-                <div class="videoSec" v-for="video in videos" :key="video.video_id" >
-                    <div class="topIframeBox" @click="handleClick" :data-video-id="video.video_id">
-                        <iframe 
-                            class="topIframe" 
-                            :src="'https://www.youtube.com/embed/' + video.youtubeId">
-                        </iframe>
-                        <p>@{{ video.title }}</p>
+                <div v-for="(playlist, index) in playlistsAndTagThumbs" v-bind:key="'playlist' + playlist.playlistId">
+                    <div v-on:click="handlePlaylistClick" :data-playlist-index="index">
+                        <div><img v-bind:src="playlist.thumbnail"></div>
+                        <div>@{{ playlist.playlistName }}</div>
                     </div>
-                        <p v-for="tag in video.tags" v-if="tag.tag_id"><a :href="'/video/play/video_id=' + video.video_id + '&tag_id=' + tag.tag_id + '&playlist_id=null'">@{{ convertToMinSec(tag.start) + '〜' + convertToMinSec(tag.end) + ' ' + tag.tagName }}</a></p>
+                </div>
+                <div class="videoSec" v-for="video in videos" :key="'video' + video.video_id" >
+                    <div v-for="tag in video.tags" v-on:click="handleTagClick" :data-video-id="video.video_id" :data-tag-id="tag.tag_id" v-if="tag.tag_id">
+                            <div><img v-bind:src="video.thumbnail"></div>
+                            <div>@{{ video.title }}</div>
+                            <div>@{{ convertToMinSec(tag.start) + '〜' + convertToMinSec(tag.end) + ' ' + tag.tagName }}</div>
+                    </div>
                 </div>
             </div>`,
         props: {
             videos: {
                 type: Array
+            },
+            playlistsAndTagThumbs: {
+                type: Array
             }
         },
         methods: {
-            handleClick: function(e){
-                let id = e.path.find(row => row.className == "topIframeBox").getAttribute('data-video-id')
-                window.location.href = "/video/play/video_id=" + id + "&tag_id=null&playlist_id=null";
+            handleTagClick: function(e){
+                let video_id = e.currentTarget.getAttribute('data-video-id')
+                let tag_id = e.currentTarget.getAttribute('data-tag-id')
+                window.location.href = "/video/play/video_id=" + video_id + "&tag_id=" + tag_id + "&playlist_id=null";
+            },
+            handlePlaylistClick: function(e) {
+                let index= e.currentTarget.getAttribute('data-playlist-index')
+                window.location.href = "/video/play/video_id=" + this.playlistsAndTagThumbs[index].first_video_id + "&tag_id=" + this.playlistsAndTagThumbs[index].first_tag_id + "&playlist_id=" + this.playlistsAndTagThumbs[index].playlistId;
             },
             convertToSec: function(His) {
                 return parseInt(His.split(":")[0], 10) * 3600 + parseInt(His.split(":")[1], 10) * 60 + parseInt(His.split(":")[2], 10);
@@ -103,7 +114,7 @@
                 let sec = parseInt(His.split(":")[2], 10);
                 return min + ":" + sec;
             },
-        }
+        },
     })
 
     new Vue({
@@ -112,6 +123,7 @@
             videos: videoArray,
             searchQuery: "",
             candidates: [],
+            playlistsAndTagThumbs: JSON.parse('{!! $jsonPlaylistsAndTagThumbs !!}'),
         },
         methods: {
             search() {
@@ -145,7 +157,33 @@
                 this.searchQuery = candidateName;
                 this.candidates = [];
             }
-        }
+        },
+        mounted: function() {
+          var self = this;
+          this.errors = {};
+
+          this.playlistsAndTagThumbs.forEach(function(value, index) {
+              var params = {
+                playlistId: value.playlistId,
+              };
+    
+              axios.post('/playlist/getFirstTagVideoId', params)
+                  .then(function(response){
+                      // 成功した時
+                      //first_tag_idとfirst_video_idを新たにセット
+                      self.$set(self.playlistsAndTagThumbs[index], 'first_tag_id', response.data.first_tag_id)
+                      self.$set(self.playlistsAndTagThumbs[index], 'first_video_id', response.data.first_video_id)
+                  })
+                  .catch(function(error){
+                      // 失敗したとき
+                      var errors = {};
+                      for(var key in error.response.data.errors) {
+                          errors[key] = error.response.data.errors[key].join('<br>');
+                      }
+                      self.errors = errors;
+                  });
+          });
+        },
     })
 </script>
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Video;
 use App\Tag;
+use App\Playlist;
 use Auth;
 use Debugbar;
 
@@ -27,13 +28,25 @@ class HomeController extends Controller
      */
     public function index()
     {
-        //動画・タグの全データを完全外部結合し抽出
+        //動画・タグの全データを外部結合し抽出
         $allResults = Video::leftJoin('tags', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags.id as tag_id', 'tags', 'start', 'end', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at')->orderBy('video_id', 'desc')->get();
 
         //タグを動画毎にまとめて非正規化
         $results = Video::denormalizeVideoTagTable($allResults);
 
-        return view('home', compact('results'));
+        //プレイリストと最初のタグのサムネイルを結合
+        $playlistsAndTagThumbs = array();
+        $playlists = Playlist::all();
+        foreach ($playlists as $key => $playlist) {
+            $playlistsAndTagThumbs[$key]["thumbnail"] = Video::find($playlist->tags()->first()->video_id)->thumbnail;
+            $playlistsAndTagThumbs[$key]["playlistId"] = $playlist->id;
+            $playlistsAndTagThumbs[$key]["playlistName"] = $playlist->playlistName;
+            $playlistsAndTagThumbs[$key]["privacySetting"] = $playlist->privacySetting;
+            $playlistsAndTagThumbs[$key]["user_id"] = $playlist->user_id;
+        }
+        $jsonPlaylistsAndTagThumbs = json_encode($playlistsAndTagThumbs);
+
+        return view('home', compact('results', 'jsonPlaylistsAndTagThumbs'));
     }
     
     public function search($searchQuery)

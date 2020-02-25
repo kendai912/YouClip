@@ -67,8 +67,11 @@ class PlaylistController extends Controller
 
     public function show()
     {
-        //プレイリストを全件取得
-        $playlists = Playlist::all();
+        //ログインユーザーを取得
+        $user = Auth::user();
+
+        //ユーザーが保存したプレイリストのリストを取得
+        $playlists = $user->playlists;
 
         return view('playlist_show', compact('playlists'));
     }
@@ -107,7 +110,7 @@ class PlaylistController extends Controller
         //
     }
 
-    //プレイリストの最初のタグと動画のIDを取得
+    //プレイリストの最初のタグと動画のIDを取得(複数プレイリストをリターン)
     public function getFirstTagVideoIds(Request $request)
     {
         $playlists = [[]];
@@ -122,6 +125,24 @@ class PlaylistController extends Controller
         return response()->json(
             [
                 'playlists' => $playlists
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    //プレイリストの最初のタグと動画のIDを取得
+    public function getFirstTagVideoId(Request $request)
+    {
+        $first_tag_id = Playlist::find($request->playlistId)->tags()->first()->id;
+        $first_video_id = Tag::find($first_tag_id)->video_id;
+
+        //取得したデータをリターン
+        return response()->json(
+            [
+                'first_tag_id' => $first_tag_id,
+                'first_video_id' => $first_video_id,
             ],
             200,
             [],
