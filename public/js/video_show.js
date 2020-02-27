@@ -7,6 +7,7 @@ new Vue({
     currentVideoId: currentVideoId,
     currentPlaylistId: playlist_id,
     //ログイン関連プロパティ
+    loginUserId: loginUserId,
     isNotLogined: false,
     messageWhenNotLogined: "",
     //Youtube Player関連プロパティ
@@ -99,13 +100,14 @@ new Vue({
         .post("/tag/store", params)
         .then(function(response) {
           //成功した時
-          //tags配列プロパティの末尾に追加
+          //tags配列プロパティの先頭に追加
           let data = response.data.data;
-          self.tags.push({
+          self.tags.unshift({
             tag_id: data.id,
             video_id: data.video_id,
             user_id: data.user_id,
             tagName: data.tags,
+            tagNameArray: data.tags.split(/[\s| |　]/),
             start: data.start,
             end: data.end,
             created_at: data.created_at,
@@ -180,7 +182,7 @@ new Vue({
     tagNameValidate(sceneTags) {
       if (
         !sceneTags.match(
-          /^[＃|#|♯][ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z0-9_]*[ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z]+[ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z0-9_]*(?:[\s| |　]+[＃|#|♯][ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z0-9_]+)*[\s| |　]*$/u
+          /^[＃#♯ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z0-9_\-]*[ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z]+[＃#♯ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z0-9_\-]*(?:[\s| |　]+[＃#♯ｦ-ﾟー゛゜々ヾヽぁ-ヶ一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z0-9_\-]+)*[\s| |　]*$/u
         )
       ) {
         return false;
@@ -226,14 +228,12 @@ new Vue({
         this.tags[index].isTimeInputError = true;
         return;
       } else {
-        console.log("時間のvalidation OK");
         this.tags[index].isTimeInputError = false;
       }
       if (!this.tagNameValidate(params.tags)) {
         this.tags[index].isTagInputError = true;
         return;
       } else {
-        console.log("タグ名のvalidation OK");
         this.tags[index].isTagInputError = false;
       }
 
@@ -242,6 +242,9 @@ new Vue({
         .then(function(response) {
           //成功した時
           self.tags[index].isEditMode = false;
+          self.tags[index].tagNameArray = self.tags[index].tagName.split(
+            /[\s| |　]/
+          );
           self.tags[index].start = "00:" + self.tags[index].start;
           self.tags[index].end = "00:" + self.tags[index].end;
         })
@@ -281,7 +284,7 @@ new Vue({
     //プレイリストへの保存
     saveInPlaylist(e) {
       //未ログイン時は、ログインへ誘導
-      if (loginUserId == "") {
+      if (this.loginUserId == "") {
         this.isNotLogined = true;
         this.messageWhenNotLogined =
           "このシーンをプレイリストに追加するには、ログインしてください。";
@@ -308,7 +311,7 @@ new Vue({
       var params = {
         playlistName: this.playlistName,
         privacySetting: this.privacySetting,
-        user_id: loginUserId,
+        user_id: self.loginUserId,
         tag_id: this.tags[this.currentTagIndex].tag_id
       };
       this.errors = {};
@@ -412,7 +415,7 @@ new Vue({
       };
 
       //未ログイン時は、ログインへ誘導
-      if (loginUserId == "") {
+      if (this.loginUserId == "") {
         this.isNotLogined = true;
         this.messageWhenNotLogined =
           "このシーンを評価するには、ログインしてください。";

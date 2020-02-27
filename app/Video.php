@@ -21,13 +21,13 @@ class Video extends Model
         return $this->hasMany('App\Tag');
     }
 
-    //タグを動画毎にまとめて非正規化するメソッド
+    //タグを動画毎にまとめる(非正規化)
     public static function denormalizeVideoTagTable($videosResult)
     {
         $index = 0;
         $videoArray = array();
         foreach ($videosResult as $key => $value) {
-            //タグの指定がある場合
+            //配列の一番最初の場合
             if ($key == 0) {
                 $videoArray[$index++] = [
                         'video_id'=>$value->video_id,
@@ -52,6 +52,7 @@ class Video extends Model
                         'created_at'=>$value->video_created_at,
                         'updated_at'=>$value->video_updated_at,
                     ];
+            //配列の一つ前と動画タイトルが違う場合は追加
             } elseif ($value->title != $videosResult[$key-1]->title) {
                 $videoArray[$index++] = [
                         'video_id'=>$value->video_id,
@@ -76,6 +77,7 @@ class Video extends Model
                         'created_at'=>$value->video_created_at,
                         'updated_at'=>$value->video_updated_at,
                     ];
+            // 配列の一つ前と動画タイトルが同じ場合はまとめる
             } else {
                 $videoArray[$index-1]['tags'][] = [
                             'tag_id'=> $value->tag_id,

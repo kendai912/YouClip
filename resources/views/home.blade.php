@@ -45,12 +45,19 @@
     //HomeControllerから受け取った変数をJSの変数に格納
     let videoArray = [];
     let tagArray = [];
+    let originalTagName;
+    let tagNameArray;
     @foreach ($results as $key => $video)
         tagArray = [];
         @foreach($video['tags'] as $tagKey => $tag)
+            //タグ名はスペースで分割したものを配列に格納
+            originalTagName = "{{ $tag['tagName'] }}"
+            tagNameArray = originalTagName.split(/[\s| |　]/);
+
             tagArray[{{ $tagKey }}] = {
                 'tag_id': "{{ $tag['tag_id'] }}",
                 'tagName': "{{ $tag['tagName'] }}",
+                'tagNameArray': tagNameArray,
                 'start': "{{ $tag['start'] }}",
                 'end': "{{ $tag['end'] }}",
                 'created_at': "{{ $tag['created_at'] }}",
@@ -87,7 +94,7 @@
                     <div v-for="tag in video.tags" v-on:click="handleTagClick" :data-video-id="video.video_id" :data-tag-id="tag.tag_id" v-if="tag.tag_id">
                             <div><img v-bind:src="video.thumbnail"></div>
                             <div>@{{ video.title }}</div>
-                            <div>@{{ convertToMinSec(tag.start) + '〜' + convertToMinSec(tag.end) + ' ' + tag.tagName }}</div>
+                            <div>@{{ convertToMinSec(tag.start) + '〜' + convertToMinSec(tag.end) }} <span v-for="tagNameSeparetedBySpace in tag.tagNameArray" class="tag">@{{ tagNameSeparetedBySpace }}</span> </div>
                     </div>
                 </div>
             </div>`,

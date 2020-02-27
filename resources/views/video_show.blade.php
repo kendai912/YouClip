@@ -20,11 +20,11 @@
                             @endif 
                             <div>{{ $video[0]['title'] }}</div>
                             <div v-for="tag in playingTags">
-                                @{{ tag.tagName }} <span v-on:click="shareTag" v-bind:data-tag-index="tag.index">共有</span><span v-on:click="toggleLike" v-bind:data-tag-id="tag.tag_id" v-bind:data-tag-index="tag.index" v-bind:class="{ isLiked: tag.isLiked}">[Like] @{{ tag.likeCount }}</span>
+                                <span v-for="tagNameSeparetedBySpace in tag.tagNameArray" class="tag">@{{ tagNameSeparetedBySpace }}</span> <span v-on:click="shareTag" v-bind:data-tag-index="tag.index">共有</span><span v-on:click="toggleLike" v-bind:data-tag-id="tag.tag_id" v-bind:data-tag-index="tag.index" v-bind:class="{ isLiked: tag.isLiked}">[Like] @{{ tag.likeCount }}</span>
                             </div>
                         </div>
                         <br>
-                        <div>
+                        <div v-if="loginUserId">
                             シーンにタグ付け
                             <div class="slide-1">
                                 １．タグ付けする時間を指定
@@ -75,7 +75,10 @@
                             <div v-if="tags[0]">
                                 <div v-for="(tag, index) in tags">
                                     <div v-if="tag.isEditMode != true">
-                                        <a v-bind:href="'/video/play/video_id={{ $video[0]['video_id'] }}&tag_id=' + tag.tag_id + '&playlist_id=null'">@{{ formatToMinSec(tag.start) }} 〜 @{{ formatToMinSec(tag.end) }} @{{ tag.tagName }} </a>
+                                        <a v-bind:href="'/video/play/video_id={{ $video[0]['video_id'] }}&tag_id=' + tag.tag_id + '&playlist_id=null'">
+                                            @{{ formatToMinSec(tag.start) }} 〜 @{{ formatToMinSec(tag.end) }} 
+                                            <span v-for="tagNameSeparetedBySpace in tag.tagNameArray" class="tag">@{{ tagNameSeparetedBySpace }}</span>
+                                        </a>
                                         <span v-on:click="saveInPlaylist" v-bind:data-tag-index="index">保存</span>
                                         <span v-if="'{{ $loginUserId }}' == tag.user_id" v-on:click="editTag" v-bind:data-tag-index="index">編集</span>
                                         <span v-if="'{{ $loginUserId }}' == tag.user_id" v-on:click="deleteTag" v-bind:data-tag-index="index">削除</span>
@@ -186,19 +189,25 @@
     let currentTitle = "{{ $video[0]['title'] }}";
 
     //プレイリストの最初のvideoIdとtagIdをセット
-    let firstVideoId = "{{ $firstVideoId }}"
-    let firstTagId = "{{ $firstTagId }}"
+    let firstVideoId = "{{ $firstVideoId }}";
+    let firstTagId = "{{ $firstTagId }}";
 
-    //タグ情報(配列)
+    let originalTagName;
+    let tagNameArray;
     let tagArray = [];
     @if (isset($video[0]['tags'][0]['tag_id']))
-        @foreach($video[0]['tags'] as $key => $tag)
+    @foreach($video[0]['tags'] as $key => $tag)
+        //タグ名はスペースで分割したものを配列に格納
+        originalTagName = "{{ $tag['tagName'] }}"
+        tagNameArray = originalTagName.split(/[\s| |　]/);
+        
             tagArray[{{ $key }}] = {
                 'index': {{ $key }},
                 'tag_id': {{ $tag['tag_id'] }},
                 'video_id': {{ $tag['video_id'] }},
                 'user_id': {{ $tag['user_id'] }},
                 'tagName': "{{ $tag['tagName'] }}",
+                'tagNameArray': tagNameArray,
                 'start': "{{ $tag['start'] }}",
                 'end': "{{ $tag['end'] }}",
                 'created_at': "{{ $tag['created_at'] }}",
