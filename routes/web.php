@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-//閲覧は未ログインでも可
+//検索・再生は未ログインでも可
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/home/searchCandidates', 'HomeController@searchCandidates');
 Route::get('/video/searchQuery={searchQuery}', 'HomeController@search');

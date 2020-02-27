@@ -27,7 +27,7 @@ class VideoController extends Controller
         }
     }
 
-    //表示画面
+    //再生画面
     public function show($video_id, $tag_id, $playlist_id)
     {
         //該当動画のタグが存在するか判定
@@ -56,8 +56,7 @@ class VideoController extends Controller
 
         if (Auth::check()) {
             //ログイン済の場合
-            //ログインユーザーIDを取得
-            $loginUserId = Auth::user()->id;
+            $loginUserId = Auth::user()->id; //ログインユーザーIDを取得
         } else {
             //未ログインの場合
             $loginUserId = "";
@@ -89,13 +88,13 @@ class VideoController extends Controller
             //次のタグIDをセット
             $key = array_search($tag_id, $tagIdArray);
             if (array_key_exists(++$key, $tagIdArray)) {
+                //次のタグIDがある場合
                 $nextTagId = $tagIdArray[$key];
-
-                //次に再生する動画のIDを$nextTagIdより取得
                 $nextVideoId = Tag::find($nextTagId)->video_id;
             } else {
-                $nextTagId = "";
-                $nextVideoId = "";
+                //次のタグIDがない(現在のタグが一番最後)の場合、一番最初に戻る
+                $nextTagId = $firstTagId;
+                $nextVideoId = $firstVideoId;
             }
         }
 
