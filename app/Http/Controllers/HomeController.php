@@ -60,7 +60,40 @@ class HomeController extends Controller
         //タグを動画毎にまとめて非正規化
         $results = Video::denormalizeVideoTagTable($videoResults);
 
-        return view('home', compact('results'));
+        //プレイリスト名で検索ワードに一致するものを抽出
+        $playlistsMatchingKeyword = Playlist::where('playlistName', 'LIKE', "%$searchQuery%")->get();
+
+        //プレイリストと最初のタグのサムネイルを結合
+        $playlistsAndTagThumbs = array();
+        foreach ($playlistsMatchingKeyword as $key => $playlist) {
+            $playlistsAndTagThumbs[$key]["thumbnail"] = Video::find($playlist->tags()->first()->video_id)->thumbnail;
+            $playlistsAndTagThumbs[$key]["playlistId"] = $playlist->id;
+            $playlistsAndTagThumbs[$key]["playlistName"] = $playlist->playlistName;
+            $playlistsAndTagThumbs[$key]["privacySetting"] = $playlist->privacySetting;
+            $playlistsAndTagThumbs[$key]["user_id"] = $playlist->user_id;
+        }
+
+        //検索ワードに一致するタグを含むプレイリストを抽出
+        $tagsMatchingKeyword = Tag::where('tags', 'LIKE', "%$searchQuery%")->get();
+        foreach ($tagsMatchingKeyword as $tag) {
+            foreach ($tag->playlists()->get() as $playlist) {
+                $playlistsAndTagThumbs[] = [
+                    'thumbnail' => Video::find($playlist->tags()->first()->video_id)->thumbnail,
+                    'playlistId' => $playlist->id,
+                    'playlistName' => $playlist->playlistName,
+                    'privacySetting' => $playlist->privacySetting,
+                    'user_id' => $playlist->user_id
+                ];
+            }
+        }
+
+        //プレイリストの重複を削除
+        $playlistsAndTagThumbs = array_unique($playlistsAndTagThumbs, SORT_REGULAR);
+
+        //Json形式へ変換
+        $jsonPlaylistsAndTagThumbs = json_encode($playlistsAndTagThumbs);
+
+        return view('home', compact('results', 'jsonPlaylistsAndTagThumbs'));
     }
 
     public function searchCandidates(Request $request)
@@ -71,8 +104,11 @@ class HomeController extends Controller
         //searchQueryを含むタイトル一覧を抽出
         $titleCandidates = Video::where('title', 'LIKE', "%$request->searchQuery%")->select('title')->get();
 
-        //タグ名一覧とタイトル一覧をマージ
-        $candidates = collect($tagCandidates)->merge($titleCandidates);
+        //searchQueryをプレイリスト名に含むプレイリスト一覧を抽出
+        $playlistCandidates = Playlist::where('playlistName', 'LIKE', "%$request->searchQuery%")->select('playlistName')->get();
+
+        //タグ名一覧とタイトル一覧とプレイリスト名をマージ
+        $candidates = collect($tagCandidates)->merge($titleCandidates)->merge($playlistCandidates);
         
         return response()->json(
             [

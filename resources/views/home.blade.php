@@ -19,6 +19,9 @@
                         </div>
                         <div v-bind:class="{ candidatesWrap: candidates.length != 0 }" v-if="searchQuery!=''">
                             <div v-for="(candidate, index) in candidates">
+                                <div v-if="index < 10 && candidate.playlistName" class="item" v-bind:class="{ isEven: index%2 == 1 }">
+                                    <p v-on:click="select(candidate.playlistName)">@{{ candidate.playlistName }}</p>
+                                </div>
                                 <div v-if="index < 10 && candidate.tags" class="item" v-bind:class="{ isEven: index%2 == 1 }">
                                     <p v-on:click="select(candidate.tags)">@{{ candidate.tags }}</p>
                                 </div>
@@ -140,7 +143,6 @@
                 axios.post('/home/searchCandidates', params)
                     .then(function(response){
                         // 成功した時
-                        console.log(response.data.data)
                         self.candidates = response.data.data;
                     })
                     .catch(function(error) {
