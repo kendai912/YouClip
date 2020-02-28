@@ -150,5 +150,14 @@ class VideoController extends Controller
         $videos->thumbnail = $thumbnail;
         $videos->duration = $duration;
         $videos->save();
+        
+        return response()->json(
+            [
+                'video_id' => $videos->id,
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 }

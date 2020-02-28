@@ -22,7 +22,13 @@
 <script>
 //Controllerから受け取った変数をJSの変数に格納
 let likes = [];
+let originalTagName;
+let tagNameArray;
 @foreach ($likes as $key => $like)
+    //タグ名はスペースで分割したものを配列に格納
+    originalTagName = "{{ $like[0]->tags }}"
+    tagNameArray = originalTagName.split(/[\s| |　]/);
+
     likes[{{ $key }}] = {
         'video_id': {{ $like[0]->video_id }},
         'youtubeId': "{{ $like[0]->youtubeId }}",
@@ -32,6 +38,7 @@ let likes = [];
         'duration': "{{ $like[0]->duration }}",
         'tag_id': {{ $like[0]->tag_id }},
         'tags': "{{ $like[0]->tags }}",
+        'tagNameArray': tagNameArray,
         'start': "{{ $like[0]->start }}",
         'end': "{{ $like[0]->end }}",
     }
@@ -49,7 +56,7 @@ let likes = [];
                     </div>
                     <div>
                         <div>@{{ like.title }}</div>
-                        <p>@{{ convertToMinSec(like.start) }}〜@{{ convertToMinSec(like.end) }} @{{ like.tags }}</p>
+                        <p>@{{ convertToMinSec(like.start) }}〜@{{ convertToMinSec(like.end) }} <span v-for="tagNameSeparetedBySpace in like.tagNameArray" class="tag">@{{ tagNameSeparetedBySpace }}</span></p>
                     </div>
                 </div>
             </div>`,

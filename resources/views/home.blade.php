@@ -94,7 +94,7 @@
                     <div v-for="tag in video.tags" v-on:click="handleTagClick" :data-video-id="video.video_id" :data-tag-id="tag.tag_id" v-if="tag.tag_id">
                             <div><img v-bind:src="video.thumbnail"></div>
                             <div>@{{ video.title }}</div>
-                            <div>@{{ convertToMinSec(tag.start) + '〜' + convertToMinSec(tag.end) }} <span v-for="tagNameSeparetedBySpace in tag.tagNameArray" class="tag">@{{ tagNameSeparetedBySpace }}</span> </div>
+                            <div>@{{ convertToMinSec(tag.start) + '〜' + convertToMinSec(tag.end) }} <span v-for="tagNameSeparetedBySpace in tag.tagNameArray" class="tag">@{{ tagNameSeparetedBySpace }}</span></div>
                     </div>
                 </div>
             </div>`,
