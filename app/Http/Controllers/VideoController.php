@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\VideoStoreRequest;
 use Illuminate\Http\Request;
+use Auth;
 use App\Video;
+use App\Tag;
 use App\User;
+use App\Playlist;
+use App\Http\Controllers\TagController;
 
 class VideoController extends Controller
 {
@@ -19,8 +23,92 @@ class VideoController extends Controller
             return view('video_create', compact('user_id'));
         } else {
             $message = '動画登録にはログインが必要です';
-            return view('create', compact('message'));
+            return view('video_create', compact('message'));
         }
+    }
+
+    //再生画面
+    public function show($video_id, $tag_id, $playlist_id)
+    {
+        //該当動画のタグが存在するか判定
+        if (Tag::where('video_id', intval($video_id))->exists()) {
+            //存在する場合、動画とタグ一覧をテーブルから取得
+            $result = Video::where('videos.id', intval($video_id))->join('tags', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'videos.youtubeId', 'videos.user_id', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags.user_id as tag_user_id', 'tags', 'start', 'end', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('start', 'asc')->get();
+        } else {
+            //存在しない場合、動画をテーブルから取得
+            $result = Video::where('videos.id', intval($video_id))->select('videos.id as video_id', 'videos.youtubeId', 'videos.user_id', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at')->get();
+        }
+        
+        //動画毎にタグをまとめる
+        $video = Video::denormalizeVideoTagTable($result);
+
+        if ($tag_id == "null") {
+            $startSec = "";
+            $endSec = "";
+        } else {
+            //該当タグをテーブルから取得
+            $tag = Tag::where('id', intval($tag_id))->get();
+       
+            //YTplayerで再生するために開始時間と終了時間を秒数に変換
+            $startSec = TagController::convertToSec($tag[0]->start);
+            $endSec = TagController::convertToSec($tag[0]->end);
+        }
+
+        if (Auth::check()) {
+            //ログイン済の場合
+            $loginUserId = Auth::user()->id; //ログインユーザーIDを取得
+        } else {
+            //未ログインの場合
+            $loginUserId = "";
+        }
+
+        //次に再生するタグのIDをplaylist_idより取得
+        $videoIdArray = array();
+        $tagIdArray = array();
+        if ($playlist_id == "null") {
+            $playlistName = "";
+            $nextVideoId = "";
+            $nextTagId = "";
+            $firstTagId = "";
+            $firstVideoId = "";
+        } else {
+            //プレイリスト名を取得
+            $playlistName = Playlist::find($playlist_id)->playlistName;
+
+            //プレイリストの最初のvideoIdとtagIdを取得
+            $firstTagId = Playlist::find($playlist_id)->tags()->first()->id;
+            $firstVideoId = Tag::find($firstTagId)->video_id;
+
+            //プレイリストのタグ一覧を取得
+            foreach (Playlist::find($playlist_id)->tags as $index => $tag) {
+                $tagIdArray[] = $tag->pivot->tag_id;
+            }
+
+            //次のタグIDをセット
+            $key = array_search($tag_id, $tagIdArray);
+            if (array_key_exists(++$key, $tagIdArray)) {
+                //次のタグIDがある場合
+                $nextTagId = $tagIdArray[$key];
+                $nextVideoId = Tag::find($nextTagId)->video_id;
+            } else {
+                //次のタグIDがない(現在のタグが一番最後)の場合、一番最初に戻る
+                $nextTagId = $firstTagId;
+                $nextVideoId = $firstVideoId;
+            }
+        }
+
+        return view('video_show', [
+            'video' => $video,
+            'startSec' => $startSec,
+            'endSec' => $endSec,
+            'loginUserId' => $loginUserId,
+            'playlistName' => $playlistName,
+            'playlist_id' => $playlist_id,
+            'nextVideoId' => $nextVideoId,
+            'nextTagId' => $nextTagId,
+            'firstVideoId' => $firstVideoId,
+            'firstTagId' => $firstTagId,
+        ]);
     }
 
     //登録処理
@@ -62,5 +150,14 @@ class VideoController extends Controller
         $videos->thumbnail = $thumbnail;
         $videos->duration = $duration;
         $videos->save();
+        
+        return response()->json(
+            [
+                'video_id' => $videos->id,
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 }

@@ -6,16 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="
+    -token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'ScenePicks') }}</title>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 <body>
     <div id="app">
@@ -33,7 +37,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        {{ config('app.name', 'ScenePicks') }}
                     </a>
                 </div>
 
@@ -68,6 +72,8 @@
                                         </form>
                                     </li>
                                     <li><a href="/video/create">動画登録</a></li>
+                                    <li><a href="/like/index">お気に入り</a></li>
+                                    <li><a href="/playlist/show">プレイリスト</a></li>
                                 </ul>
                             </li>
                         @endguest
@@ -76,9 +82,9 @@
             </div>
         </nav>
     </div>
-    
+        
         @yield('content')
-
+        
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 </body>

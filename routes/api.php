@@ -16,3 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//後でweb.phpに移す
+Route::post('/tag/update', 'TagController@update');
+Route::post('/tag/delete', 'TagController@delete');
