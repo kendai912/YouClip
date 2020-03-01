@@ -13,7 +13,7 @@
                         </div>
                     @endif
                       <div v-for="playlist in playlists">
-                        <a v-bind:href="'/video/play/video_id=' + playlist.first_video_id + '&tag_id=' + playlist.first_tag_id + '&playlist_id=' + playlist.playlist_id">@{{ playlist.playlist_name }}</a>
+                        <a v-bind:href="'{{ url('/video/play/video_id=') }}' + playlist.first_video_id + '&tag_id=' + playlist.first_tag_id + '&playlist_id=' + playlist.playlist_id">@{{ playlist.playlist_name }}</a>
                       </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
             playlists: this.playlists
           };
 
-          axios.post('/playlist/getFirstTagVideoIds', params)
+          axios.post("{{ url('/playlist/getFirstTagVideoIds') }}", params)
               .then(function(response){
                   // 成功した時
                   self.playlists = response.data.playlists;

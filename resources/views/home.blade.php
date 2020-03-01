@@ -110,11 +110,11 @@
             handleTagClick: function(e){
                 let video_id = e.currentTarget.getAttribute('data-video-id')
                 let tag_id = e.currentTarget.getAttribute('data-tag-id')
-                window.location.href = "/video/play/video_id=" + video_id + "&tag_id=" + tag_id + "&playlist_id=null";
+                window.location.href = "{{ url('/video/play/video_id=') }}" + video_id + "&tag_id=" + tag_id + "&playlist_id=null";
             },
             handlePlaylistClick: function(e) {
                 let index= e.currentTarget.getAttribute('data-playlist-index')
-                window.location.href = "/video/play/video_id=" + this.playlistsAndTagThumbs[index].first_video_id + "&tag_id=" + this.playlistsAndTagThumbs[index].first_tag_id + "&playlist_id=" + this.playlistsAndTagThumbs[index].playlistId;
+                window.location.href = "{{ url('/video/play/video_id=') }}" + this.playlistsAndTagThumbs[index].first_video_id + "&tag_id=" + this.playlistsAndTagThumbs[index].first_tag_id + "&playlist_id=" + this.playlistsAndTagThumbs[index].playlistId;
             },
             convertToSec: function(His) {
                 return parseInt(His.split(":")[0], 10) * 3600 + parseInt(His.split(":")[1], 10) * 60 + parseInt(His.split(":")[2], 10);
@@ -137,7 +137,7 @@
         },
         methods: {
             search() {
-                window.location.href = "/video/searchQuery="+encodeURIComponent(this.searchQuery);
+                window.location.href = "{{ url('/video/searchQuery=') }}" + encodeURIComponent(this.searchQuery);
             },
             searchCandidates(e) {
                 this.searchQuery = $("#searchBox").val();
@@ -147,7 +147,7 @@
                 };
                 this.errors = {};
 
-                axios.post('/home/searchCandidates', params)
+                axios.post("{{ url('/home/searchCandidates') }}", params)
                     .then(function(response){
                         // 成功した時
                         self.candidates = response.data.data;
@@ -176,7 +176,7 @@
                 playlistId: value.playlistId,
               };
     
-              axios.post('/playlist/getFirstTagVideoId', params)
+              axios.post("{{ url('/playlist/getFirstTagVideoId') }}", params)
                   .then(function(response){
                       // 成功した時
                       //first_tag_idとfirst_video_idを新たにセット

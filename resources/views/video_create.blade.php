@@ -53,12 +53,12 @@
                     };
                     this.errors = {};
 
-                    axios.post('/video/store', params)
+                    axios.post("{{ url('/video/store') }}", params)
                         .then(function(response){
                             // 成功した時
                             self.videoStored = true;
                             console.log(response.data.video_id);
-                            window.location.href = "/video/play/video_id=" + response.data.video_id + "&tag_id=null&playlist_id=null";
+                            window.location.href = "{{ url('/video/play/video_id=') }}" + response.data.video_id + "&tag_id=null&playlist_id=null";
                         })
                         .catch(function(error){
                             // 失敗したとき
