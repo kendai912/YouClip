@@ -654,6 +654,7 @@ new Vue({
       if (event.data == 0) {
         if (playlist_id != "" && nextVideoId != "" && nextTagId != "") {
           window.location.href =
+            window.axios.defaults.baseURL +
             "/video/play/video_id=" +
             nextVideoId +
             "&tag_id=" +
