@@ -606,6 +606,9 @@ new Vue({
     }
   },
   created: function() {
+    window.axios.defaults.baseURL = document.head.querySelector(
+      'meta[name="api-base-url"]'
+    ).content;
     //like関連プロパティをtagsの中にセット
     this.setLikeStatus();
   },

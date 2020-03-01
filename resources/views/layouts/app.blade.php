@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
-    <meta name="
-    -token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="api-base-url" content="{{ url('/') }}" />
 
     <title>{{ config('app.name', 'ScenePicks') }}</title>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -71,9 +71,9 @@
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
-                                    <li><a href="/video/create">動画登録</a></li>
-                                    <li><a href="/like/index">お気に入り</a></li>
-                                    <li><a href="/playlist/show">プレイリスト</a></li>
+                                    <li><a href="{{ url('/video/create') }}">動画登録</a></li>
+                                    <li><a href="{{ url('/like/index') }}">お気に入り</a></li>
+                                    <li><a href="{{ url('/playlist/show') }}">プレイリスト</a></li>
                                 </ul>
                             </li>
                         @endguest

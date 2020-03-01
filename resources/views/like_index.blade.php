@@ -68,7 +68,7 @@ let tagNameArray;
         methods: {
             handleClick: function(e){
                 let index = e.currentTarget.getAttribute("data-like-index");
-                window.location.href = "/video/play/video_id=" + this.likes[index].video_id + "&tag_id=" + this.likes[index].tag_id + "&playlist_id=null";
+                window.location.href = "{{ url('/video/play/video_id=') }}" + this.likes[index].video_id + "&tag_id=" + this.likes[index].tag_id + "&playlist_id=null";
             },
              convertToMinSec: function(His) {
                 let min = parseInt(His.split(":")[0], 10) * 60 + parseInt(His.split(":")[1], 10);

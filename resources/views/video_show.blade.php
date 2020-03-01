@@ -75,7 +75,7 @@
                             <div v-if="tags[0]">
                                 <div v-for="(tag, index) in tags">
                                     <div v-if="tag.isEditMode != true">
-                                        <a v-bind:href="'/video/play/video_id={{ $video[0]['video_id'] }}&tag_id=' + tag.tag_id + '&playlist_id=null'">
+                                        <a v-bind:href="'{{ url('/video/play/video_id=') }}{{ $video[0]['video_id'] }}' + '&tag_id=' + tag.tag_id + '&playlist_id=null'">
                                             @{{ formatToMinSec(tag.start) }} 〜 @{{ formatToMinSec(tag.end) }} 
                                             <span v-for="tagNameSeparetedBySpace in tag.tagNameArray" class="tag">@{{ tagNameSeparetedBySpace }}</span>
                                         </a>
