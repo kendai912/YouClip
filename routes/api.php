@@ -13,10 +13,20 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// 会員登録
+Route::post('/register', 'Auth\RegisterController@register')->name('register');
 
-//後でweb.phpに移す
-Route::post('/tag/update', 'TagController@update');
-Route::post('/tag/delete', 'TagController@delete');
+// ログイン
+Route::post('/login', 'Auth\LoginController@login')->name('login');
+
+// ログアウト
+Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+
+
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+// //後でweb.phpに移す
+// Route::post('/tag/update', 'TagController@update');
+// Route::post('/tag/delete', 'TagController@delete');
