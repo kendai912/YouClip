@@ -19,6 +19,11 @@ Route::post('/register', 'Auth\RegisterController@register')->name('register');
 // ログイン
 Route::post('/login', 'Auth\LoginController@login')->name('login');
 
+//ログインユーザー
+Route::get('/user', function () {
+    return Auth::user();
+})->name('user');
+
 // ログアウト
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
