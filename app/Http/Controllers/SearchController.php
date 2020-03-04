@@ -79,14 +79,14 @@ class SearchController extends Controller
 
     public function searchCandidates(Request $request)
     {
-        //searchQueryを含むタグ名一覧を抽出
-        $tagCandidates = Tag::where('tags', 'LIKE', "%$request->searchQuery%")->select('tags')->get();
+        //inputを含むタグ名一覧を抽出
+        $tagCandidates = Tag::where('tags', 'LIKE', "%$request->input%")->select('tags')->get();
         
-        //searchQueryを含むタイトル一覧を抽出
-        $titleCandidates = Video::where('title', 'LIKE', "%$request->searchQuery%")->select('title')->get();
+        //inputを含むタイトル一覧を抽出
+        $titleCandidates = Video::where('title', 'LIKE', "%$request->input%")->select('title')->get();
 
-        //searchQueryをプレイリスト名に含むプレイリスト一覧を抽出
-        $playlistCandidates = Playlist::where('playlistName', 'LIKE', "%$request->searchQuery%")->select('playlistName')->get();
+        //inputをプレイリスト名に含むプレイリスト一覧を抽出
+        $playlistCandidates = Playlist::where('playlistName', 'LIKE', "%$request->input%")->select('playlistName')->get();
 
         //タグ名一覧とタイトル一覧とプレイリスト名をマージ
         $candidates = collect($tagCandidates)->merge($titleCandidates)->merge($playlistCandidates);
