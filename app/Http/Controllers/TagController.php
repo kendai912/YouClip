@@ -20,6 +20,14 @@ class TagController extends Controller
     {
         //
     }
+    
+    public function load()
+    {
+        //動画・タグの全データを外部結合し抽出
+        $tagVideoData = Tag::leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
+
+        return $tagVideoData;
+    }
 
     //タグが保存されているユーザーのプレイリストIDをリターン
     public function getPlaylists(Tag $tag)

@@ -2,8 +2,11 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 // ページコンポーネントをインポートする
-import PhotoList from "./pages/PhotoList.vue";
+import Home from "./pages/Home.vue";
 import Login from "./pages/Login.vue";
+import Search from "./pages/Search.vue";
+import Tagging from "./pages/Tagging.vue";
+import Mypage from "./pages/Mypage.vue";
 import SystemError from "./pages/errors/System.vue";
 
 import store from "./store";
@@ -16,7 +19,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    component: PhotoList
+    component: Home
   },
   {
     path: "/login",
@@ -28,6 +31,22 @@ const routes = [
         next();
       }
     }
+  },
+  {
+    path: "/home",
+    redirect: "/"
+  },
+  {
+    path: "/search",
+    component: Search
+  },
+  {
+    path: "/tagging",
+    component: Tagging
+  },
+  {
+    path: "/mypage",
+    component: Mypage
   },
   {
     path: "/500",

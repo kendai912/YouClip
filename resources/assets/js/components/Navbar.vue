@@ -5,14 +5,10 @@
     </RouterLink>
     <div class="navbar__menu">
       <div v-if="isLogin" class="navbar__item">
-        <button class="button">
-          <i class="icon ion-md-add"></i>
-          Submit a photo
+        <button v-if="isLogin" class="button button--link" v-on:click="logout">
+          Logout
         </button>
       </div>
-      <span v-if="isLogin" class="navbar__item">
-        {{ username }}
-      </span>
       <div v-else class="navbar__item">
         <RouterLink class="button button--link" to="/login">
           Login / Register
@@ -23,14 +19,33 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex";
+
 export default {
-  computed: {
-    isLogin() {
-      return this.$store.getters["auth/check"];
-    },
-    username() {
-      return this.$store.getters["auth/username"];
+  methods: {
+    async logout() {
+      await this.$store.dispatch("auth/logout");
+      if (this.apiStatus) {
+        this.$router.push("/login");
+      }
     }
+  },
+  computed: {
+    // username() {
+    //   return this.$store.getters["auth/username"];
+    // },
+    // isLogin() {
+    //   return this.$store.getters["auth/check"];
+    // }
+    ...mapGetters({
+      username: "auth/username"
+    }),
+    ...mapState({
+      apiStatus: state => state.auth.apiStatus
+    }),
+    ...mapGetters({
+      isLogin: "auth/check"
+    })
   }
 };
 </script>

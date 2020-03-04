@@ -27,7 +27,7 @@ export default {
       return this.$store.state.error.code;
     }
   },
-  watach: {
+  watch: {
     errorCode: {
       handler(val) {
         if (val === INTERNAL_SERVER_ERROR) {
@@ -42,3 +42,8 @@ export default {
   }
 };
 </script>
+<style>
+/* ファイルパスに従って@importntの後にファイルパスを書き込む */
+@import "../css/styles.css";
+
+</style>

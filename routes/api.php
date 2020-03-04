@@ -27,6 +27,15 @@ Route::get('/user', function () {
 // ログアウト
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
+//タグデータのロード
+Route::get('/load/tagVideo', 'TagController@load');
+
+//プレイリストデータのロード
+Route::get('/load/playlist', 'PlaylistController@load');
+
+//検索候補
+Route::post('/search/candidates', 'SearchController@searchCandidates');
+
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();

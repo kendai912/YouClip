@@ -1,11 +1,25 @@
 <template>
   <footer class="footer">
-    <button v-if="isLogin" class="button button--link" v-on:click="logout">
-      Logout
-    </button>
-    <RouterLink v-else class="button button--link" to="/login"
-      >Login / Register</RouterLink
-    >
+    <div>
+      <div>
+        <RouterLink class="button button--link" to="/home"
+          >レコメンド</RouterLink
+        >
+      </div>
+      <div>
+        <RouterLink class="button button--link" to="/search">検索</RouterLink>
+      </div>
+      <div>
+        <RouterLink class="button button--link" to="/tagging"
+          >シーン登録</RouterLink
+        >
+      </div>
+      <div>
+        <RouterLink class="button button--link" to="/mypage"
+          >マイページ</RouterLink
+        >
+      </div>
+    </div>
   </footer>
 </template>
 

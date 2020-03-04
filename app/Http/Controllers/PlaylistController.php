@@ -35,6 +35,22 @@ class PlaylistController extends Controller
         );
     }
 
+    public function load()
+    {
+        $playlistMetaData = Playlist::all();
+        $playlistContentData = Playlist::with('tags')->get();
+
+        return response()->json(
+            [
+            'meta' => $playlistMetaData,
+            'content' => $playlistContentData,
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
     /**
      * Show the form for creating a new resource.
      *
