@@ -29,53 +29,89 @@ class SearchController extends Controller
     public function index()
     {
     }
-    
-    public function search($searchQuery)
+
+    public function searchTag(Request $request)
     {
-        //タグ名で検索ワードに一致するものを抽出
-        $tagResults = Tag::where('tags', 'LIKE', "%$searchQuery%")->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags.id as tag_id', 'tags', 'start', 'end', 'videos.created_at as video_created_at', 'videos.updated_at  as video_updated_at');
+        //検索ワード
+        $searchQuery = $request->searchQuery;
+
+        //検索ワードに一致する動画・タグの全データを外部結合し取得
+        $tagVideoResult = Tag::leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags', 'LIKE', "%$searchQuery%")->orWhere('title', 'LIKE', "%$searchQuery%")->orderBy('tag_created_at', 'desc')->get();
         
-        //タイトルで検索ワードに一致するものを抽出し、完全外部結合
-        $videoResults = Video::where('title', 'LIKE', "%$searchQuery%")->leftJoin('tags', 'videos.id', '=', 'tags.video_id')->select('video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags.id as tag_id', 'tags', 'start', 'end', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at')->union($tagResults)->orderBy('video_id', 'desc')->get();
-
-        //タグを動画毎にまとめて非正規化
-        $results = Video::denormalizeVideoTagTable($videoResults);
-
-        //プレイリスト名で検索ワードに一致するものを抽出
-        $playlistsMatchingKeyword = Playlist::where('playlistName', 'LIKE', "%$searchQuery%")->get();
-
-        //プレイリストと最初のタグのサムネイルを結合
-        $playlistsAndTagThumbs = array();
-        foreach ($playlistsMatchingKeyword as $key => $playlist) {
-            $playlistsAndTagThumbs[$key]["thumbnail"] = Video::find($playlist->tags()->first()->video_id)->thumbnail;
-            $playlistsAndTagThumbs[$key]["playlistId"] = $playlist->id;
-            $playlistsAndTagThumbs[$key]["playlistName"] = $playlist->playlistName;
-            $playlistsAndTagThumbs[$key]["privacySetting"] = $playlist->privacySetting;
-            $playlistsAndTagThumbs[$key]["user_id"] = $playlist->user_id;
-        }
-
-        //検索ワードに一致するタグを含むプレイリストを抽出
-        $tagsMatchingKeyword = Tag::where('tags', 'LIKE', "%$searchQuery%")->get();
-        foreach ($tagsMatchingKeyword as $tag) {
-            foreach ($tag->playlists()->get() as $playlist) {
-                $playlistsAndTagThumbs[] = [
-                    'thumbnail' => Video::find($playlist->tags()->first()->video_id)->thumbnail,
-                    'playlistId' => $playlist->id,
-                    'playlistName' => $playlist->playlistName,
-                    'privacySetting' => $playlist->privacySetting,
-                    'user_id' => $playlist->user_id
-                ];
-            }
-        }
-
-        //プレイリストの重複を削除
-        $playlistsAndTagThumbs = array_unique($playlistsAndTagThumbs, SORT_REGULAR);
-
-        //Json形式へ変換
-        $jsonPlaylistsAndTagThumbs = json_encode($playlistsAndTagThumbs);
-
-        return view('home', compact('results', 'jsonPlaylistsAndTagThumbs'));
+        return response()->json(
+            [
+                'tagVideoResult' => $tagVideoResult
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
+    
+    public function searchPlaylist(Request $request)
+    {
+        //検索ワード
+        $searchQuery = $request->searchQuery;
+
+        //検索ワードにプレイリスト・タグのデータを取得
+        $playlistTagResult = Playlist::with('tags')->where('playlistName', 'LIKE', "%$searchQuery%")->get();
+
+        return response()->json(
+            [
+                'playlistTagResult' => $playlistTagResult
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+    
+    // public function search($searchQuery)
+    // {
+    //     //タグ名で検索ワードに一致するものを抽出
+    //     $tagResults = Tag::where('tags', 'LIKE', "%$searchQuery%")->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags.id as tag_id', 'tags', 'start', 'end', 'videos.created_at as video_created_at', 'videos.updated_at  as video_updated_at');
+        
+    //     //タイトルで検索ワードに一致するものを抽出し、完全外部結合
+    //     $videoResults = Video::where('title', 'LIKE', "%$searchQuery%")->leftJoin('tags', 'videos.id', '=', 'tags.video_id')->select('video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'tags.id as tag_id', 'tags', 'start', 'end', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at')->union($tagResults)->orderBy('video_id', 'desc')->get();
+
+    //     //タグを動画毎にまとめて非正規化
+    //     $results = Video::denormalizeVideoTagTable($videoResults);
+
+    //     //プレイリスト名で検索ワードに一致するものを抽出
+    //     $playlistsMatchingKeyword = Playlist::where('playlistName', 'LIKE', "%$searchQuery%")->get();
+
+    //     //プレイリストと最初のタグのサムネイルを結合
+    //     $playlistsAndTagThumbs = array();
+    //     foreach ($playlistsMatchingKeyword as $key => $playlist) {
+    //         $playlistsAndTagThumbs[$key]["thumbnail"] = Video::find($playlist->tags()->first()->video_id)->thumbnail;
+    //         $playlistsAndTagThumbs[$key]["playlistId"] = $playlist->id;
+    //         $playlistsAndTagThumbs[$key]["playlistName"] = $playlist->playlistName;
+    //         $playlistsAndTagThumbs[$key]["privacySetting"] = $playlist->privacySetting;
+    //         $playlistsAndTagThumbs[$key]["user_id"] = $playlist->user_id;
+    //     }
+
+    //     //検索ワードに一致するタグを含むプレイリストを抽出
+    //     $tagsMatchingKeyword = Tag::where('tags', 'LIKE', "%$searchQuery%")->get();
+    //     foreach ($tagsMatchingKeyword as $tag) {
+    //         foreach ($tag->playlists()->get() as $playlist) {
+    //             $playlistsAndTagThumbs[] = [
+    //                 'thumbnail' => Video::find($playlist->tags()->first()->video_id)->thumbnail,
+    //                 'playlistId' => $playlist->id,
+    //                 'playlistName' => $playlist->playlistName,
+    //                 'privacySetting' => $playlist->privacySetting,
+    //                 'user_id' => $playlist->user_id
+    //             ];
+    //         }
+    //     }
+
+    //     //プレイリストの重複を削除
+    //     $playlistsAndTagThumbs = array_unique($playlistsAndTagThumbs, SORT_REGULAR);
+
+    //     //Json形式へ変換
+    //     $jsonPlaylistsAndTagThumbs = json_encode($playlistsAndTagThumbs);
+
+    //     return view('home', compact('results', 'jsonPlaylistsAndTagThumbs'));
+    // }
 
     public function searchCandidates(Request $request)
     {

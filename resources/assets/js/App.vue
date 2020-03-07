@@ -43,7 +43,5 @@ export default {
 };
 </script>
 <style>
-/* ファイルパスに従って@importntの後にファイルパスを書き込む */
 @import "../css/styles.css";
-
 </style>

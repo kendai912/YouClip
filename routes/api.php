@@ -33,8 +33,12 @@ Route::get('/load/tagVideo', 'TagController@load');
 //プレイリストデータのロード
 Route::get('/load/playlist', 'PlaylistController@load');
 
-//検索候補
+//検索ワード候補取得
 Route::post('/search/candidates', 'SearchController@searchCandidates');
+//タグの検索結果取得
+Route::post('/search/tag', 'SearchController@searchTag');
+//プレイリストの検索結果取得
+Route::post('/search/playlist', 'SearchController@searchPlaylist');
 
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {

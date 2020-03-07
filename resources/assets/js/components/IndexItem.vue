@@ -10,9 +10,13 @@
       </div>
       <div class="info">
         <div>{{ item.title }}</div>
-        <div v-if="item.tag">
+        <div v-if="item.tagArray">
           {{ item.start }}〜{{ item.end }}
-          <span class="tag">{{ item.tag }}</span>
+          <span
+            v-for="tag in item.tagArray"
+            v-bind:key="item + '.' + tag"
+            class="tag"
+          >{{ tag }}</span>
         </div>
       </div>
       <br />

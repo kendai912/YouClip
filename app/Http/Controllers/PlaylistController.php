@@ -37,13 +37,12 @@ class PlaylistController extends Controller
 
     public function load()
     {
-        $playlistMetaData = Playlist::all();
-        $playlistContentData = Playlist::with('tags')->get();
+        //プレイリストにタグのデータを結合
+        $playlistTagData = Playlist::with('tags')->get();
 
         return response()->json(
             [
-            'meta' => $playlistMetaData,
-            'content' => $playlistContentData,
+            'playlistTagData' => $playlistTagData
             ],
             200,
             [],

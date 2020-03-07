@@ -1,29 +1,23 @@
 import axios from "axios";
 
 const state = {
-  playlistMetaData: null,
-  playlistContentData: null
+  playlistTagData: null
 };
 
 const getters = {
-  playlistMetaData: state => state.playlistMetaData,
-  playlistContentData: state => state.playlistContentData
+  playlistTagData: state => state.playlistTagData
 };
 
 const mutations = {
-  setPlaylistMetaData(state, data) {
-    state.playlistMetaData = data;
-  },
-  setPlaylistContentData(state, data) {
-    state.playlistContentData = data;
+  setPlaylistTagData(state, data) {
+    state.playlistTagData = data;
   }
 };
 
 const actions = {
   async loadPlaylist(context) {
     const response = await axios.get("api/load/playlist");
-    context.commit("setPlaylistMetaData", response.data.meta);
-    context.commit("setPlaylistContentData", response.data.content);
+    context.commit("setPlaylistTagData", response.data.playlistTagData);
   }
 };
 

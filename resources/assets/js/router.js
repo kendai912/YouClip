@@ -5,6 +5,7 @@ import VueRouter from "vue-router";
 import Home from "./pages/Home.vue";
 import Login from "./pages/Login.vue";
 import Search from "./pages/Search.vue";
+import Result from "./pages/Result.vue";
 import Tagging from "./pages/Tagging.vue";
 import Mypage from "./pages/Mypage.vue";
 import SystemError from "./pages/errors/System.vue";
@@ -39,6 +40,10 @@ const routes = [
   {
     path: "/search",
     component: Search
+  },
+  {
+    path: "/result",
+    component: Result
   },
   {
     path: "/tagging",

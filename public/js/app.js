@@ -1798,6 +1798,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -1950,8 +1954,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   })),
   methods: {
     search: function search() {
+      if (this.searchWord == "") return;
       this.$store.commit("search/setSearchQuery", this.searchWord);
       this.$store.dispatch("search/search");
+      this.searchResultTransit();
     },
 
     //入力を元に検索候補を取得
@@ -1962,8 +1968,25 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
     //検索候補をクリックするとそのまま検索
     select: function select(candidateName) {
+      this.searchWord = candidateName;
       this.$store.commit("search/setSearchQuery", candidateName);
       this.$store.dispatch("search/search");
+      this.searchResultTransit();
+    },
+
+    //検索結果表示ページに遷移
+    searchResultTransit: function searchResultTransit() {
+      var path = "/result";
+      if (this.$route.path != path) {
+        this.$router.push({
+          path: "result",
+          query: { search_query: this.searchWord }
+        }).catch(function (err) {});
+      } else {
+        this.$router.push({
+          query: { search_query: this.searchWord }
+        }).catch(function (err) {});
+      }
     }
   },
   created: function created() {}
@@ -1981,6 +2004,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue__ = __webpack_require__("./resources/assets/js/components/IndexItem.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./resources/assets/js/util.js");
 
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -2016,12 +2040,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
-//
-//
-//
-//
-//
+
 
 
 
@@ -2034,10 +2053,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     return {
       tab: 1,
       tagVideoData: null,
-      playlistContentData: null
+      playlistTagData: null
     };
   },
 
+  mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["e" /* default */]],
   methods: {
     //i:s形式に変換
     formatToMinSec: function formatToMinSec(His) {
@@ -2062,7 +2082,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             case 4:
 
               this.tagVideoData = this.$store.getters["tag/tagVideoData"];
-              this.playlistContentData = this.$store.getters["playlist/playlistContentData"];
+              this.playlistTagData = this.$store.getters["playlist/playlistTagData"];
 
             case 6:
             case "end":
@@ -2082,41 +2102,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   computed: {
     //レコメンド画面に表示するアイテム
     mediaItems: function mediaItems() {
-      var _this = this;
-
       var mediaItems = [];
 
-      //タグデータをレコメンド画面に表示するアイテムに格納
-      if (this.tagVideoData) {
-        this.tagVideoData.forEach(function (value) {
-          mediaItems.push({
-            category: "tag",
-            id: value.tag_id,
-            title: value.title,
-            thumbnail: value.thumbnail,
-            created_at: value.tag_created_at,
-            tag: value.tags,
-            start: _this.formatToMinSec(value.start),
-            end: _this.formatToMinSec(value.end)
-          });
-        });
-      }
+      //タグデータをレコメンド画面に表示するメディアアイテムに格納
+      this.putTagVideoIntoMediaItems(mediaItems, this.tagVideoData);
 
-      //プレイリストデータを同じアイテムに追加格納
-      if (this.playlistContentData) {
-        this.playlistContentData.forEach(function (value) {
-          mediaItems.push({
-            category: "playlist",
-            id: value.id,
-            title: value.playlistName,
-            thumbnail: "https://watanabeseiji.com/wordpress/wp-content/themes/cyber/images/noimage.jpg",
-            created_at: value.created_at,
-            tag: "",
-            start: "",
-            end: ""
-          });
-        });
-      }
+      //プレイリストデータをメディアアイテムに追加格納
+      this.putPlaylistTagIntoMediaItems(mediaItems, this.playlistTagData);
 
       //作成日の降順(新しい日付が上)に並び替え
       return mediaItems.sort(function (a, b) {
@@ -2355,6 +2347,76 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       return state.auth.registerErrorMessages;
     }
   }))
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/Result.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_SearchBox_vue__ = __webpack_require__("./resources/assets/js/components/SearchBox.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_SearchBox_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_SearchBox_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue__ = __webpack_require__("./resources/assets/js/components/IndexItem.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./resources/assets/js/util.js");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    SearchBox: __WEBPACK_IMPORTED_MODULE_1__components_SearchBox_vue___default.a,
+    IndexItem: __WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue___default.a
+  },
+  mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["e" /* default */]],
+  methods: {
+    //i:s形式に変換
+    formatToMinSec: function formatToMinSec(His) {
+      var min = parseInt(His.split(":")[0], 10) * 60 + parseInt(His.split(":")[1], 10);
+      var sec = parseInt(His.split(":")[2], 10);
+      return min + ":" + sec;
+    }
+  },
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    tagVideoResult: "search/tagVideoResult"
+  }), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    playlistTagResult: "search/playlistTagResult"
+  }), {
+    //レコメンド画面に表示するアイテム
+    mediaItems: function mediaItems() {
+      var mediaItems = [];
+
+      //タグデータをレコメンド画面に表示するメディアアイテムに格納
+      this.putTagVideoIntoMediaItems(mediaItems, this.tagVideoResult);
+
+      //プレイリストデータをメディアアイテムに追加格納
+      this.putPlaylistTagIntoMediaItems(mediaItems, this.playlistTagResult);
+
+      //作成日の降順(新しい日付が上)に並び替え
+      return mediaItems.sort(function (a, b) {
+        return a.created_at < b.created_at ? 1 : a.created_at > b.created_at ? -1 : 0;
+      });
+    }
+  })
 });
 
 /***/ }),
@@ -4991,7 +5053,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 exports.i(__webpack_require__("./node_modules/css-loader/index.js!./resources/assets/css/styles.css"), "");
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* ファイルパスに従って@importntの後にファイルパスを書き込む */\n\n", ""]);
+exports.push([module.i, "\n", ""]);
 
 // exports
 
@@ -34305,7 +34367,7 @@ var render = function() {
             }
           }
         },
-        [_vm._v("\n      カテゴリ1\n    ")]
+        [_vm._v("カテゴリ1")]
       ),
       _vm._v(" "),
       _c(
@@ -34319,7 +34381,7 @@ var render = function() {
             }
           }
         },
-        [_vm._v("\n      カテゴリ2\n    ")]
+        [_vm._v("カテゴリ2")]
       ),
       _vm._v(" "),
       _c(
@@ -34333,7 +34395,7 @@ var render = function() {
             }
           }
         },
-        [_vm._v("\n      カテゴリ3\n    ")]
+        [_vm._v("カテゴリ3")]
       )
     ]),
     _vm._v(" "),
@@ -34806,6 +34868,33 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5ff7ce1a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/Result.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container--small" }, [
+    _c("h1", [_vm._v("Result")]),
+    _vm._v(" "),
+    _c("div", [_c("SearchBox")], 1),
+    _vm._v(" "),
+    _c("div", [_c("IndexItem", { attrs: { mediaItems: _vm.mediaItems } })], 1)
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5ff7ce1a", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-6634fd90\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/Mypage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -34881,17 +34970,27 @@ var render = function() {
         _c("div", { staticClass: "info" }, [
           _c("div", [_vm._v(_vm._s(item.title))]),
           _vm._v(" "),
-          item.tag
-            ? _c("div", [
-                _vm._v(
-                  "\n        " +
-                    _vm._s(item.start) +
-                    "〜" +
-                    _vm._s(item.end) +
-                    "\n        "
-                ),
-                _c("span", { staticClass: "tag" }, [_vm._v(_vm._s(item.tag))])
-              ])
+          item.tagArray
+            ? _c(
+                "div",
+                [
+                  _vm._v(
+                    "\n        " +
+                      _vm._s(item.start) +
+                      "〜" +
+                      _vm._s(item.end) +
+                      "\n        "
+                  ),
+                  _vm._l(item.tagArray, function(tag) {
+                    return _c(
+                      "span",
+                      { key: item + "." + tag, staticClass: "tag" },
+                      [_vm._v(_vm._s(tag))]
+                    )
+                  })
+                ],
+                2
+              )
             : _vm._e()
         ]),
         _vm._v(" "),
@@ -35001,7 +35100,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("@" + _vm._s(candidate.playlistName))]
+                        [_vm._v(_vm._s(candidate.playlistName))]
                       )
                     ]
                   )
@@ -35021,7 +35120,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("@" + _vm._s(candidate.tags))]
+                        [_vm._v(_vm._s(candidate.tags))]
                       )
                     ]
                   )
@@ -35041,7 +35140,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("@" + _vm._s(candidate.title))]
+                        [_vm._v(_vm._s(candidate.title))]
                       )
                     ]
                   )
@@ -51510,6 +51609,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__store__ = __webpack_require__("./resources/assets/js/store/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__App_vue__ = __webpack_require__("./resources/assets/js/App.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__App_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__util__ = __webpack_require__("./resources/assets/js/util.js");
 
 
 var _this = this;
@@ -51521,6 +51621,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+
 
 
 
@@ -51617,7 +51718,7 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 window.axios.interceptors.request.use(function (config) {
   // クッキーからトークンを取り出してヘッダーに添付する
-  config.headers["X-XSRF-TOKEN"] = Object(__WEBPACK_IMPORTED_MODULE_0__util__["e" /* getCookieValue */])("XSRF-TOKEN");
+  config.headers["X-XSRF-TOKEN"] = Object(__WEBPACK_IMPORTED_MODULE_0__util__["f" /* getCookieValue */])("XSRF-TOKEN");
 
   return config;
 });
@@ -51999,6 +52100,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/pages/Result.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/Result.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5ff7ce1a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/Result.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/pages/Result.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5ff7ce1a", Component.options)
+  } else {
+    hotAPI.reload("data-v-5ff7ce1a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/pages/Search.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -52156,17 +52305,20 @@ module.exports = Component.exports
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_Login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__pages_Login_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_Search_vue__ = __webpack_require__("./resources/assets/js/pages/Search.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_Search_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__pages_Search_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_Tagging_vue__ = __webpack_require__("./resources/assets/js/pages/Tagging.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_Tagging_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__pages_Tagging_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_Mypage_vue__ = __webpack_require__("./resources/assets/js/pages/Mypage.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_Mypage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__pages_Mypage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_errors_System_vue__ = __webpack_require__("./resources/assets/js/pages/errors/System.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_errors_System_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__pages_errors_System_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__store__ = __webpack_require__("./resources/assets/js/store/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_Result_vue__ = __webpack_require__("./resources/assets/js/pages/Result.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_Result_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__pages_Result_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_Tagging_vue__ = __webpack_require__("./resources/assets/js/pages/Tagging.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_Tagging_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__pages_Tagging_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_Mypage_vue__ = __webpack_require__("./resources/assets/js/pages/Mypage.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_Mypage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__pages_Mypage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_errors_System_vue__ = __webpack_require__("./resources/assets/js/pages/errors/System.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_errors_System_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__pages_errors_System_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__store__ = __webpack_require__("./resources/assets/js/store/index.js");
 
 
 
 // ページコンポーネントをインポートする
+
 
 
 
@@ -52188,7 +52340,7 @@ var routes = [{
   path: "/login",
   component: __WEBPACK_IMPORTED_MODULE_3__pages_Login_vue___default.a,
   beforeEnter: function beforeEnter(to, from, next) {
-    if (__WEBPACK_IMPORTED_MODULE_8__store__["a" /* default */].getters["auth/check"]) {
+    if (__WEBPACK_IMPORTED_MODULE_9__store__["a" /* default */].getters["auth/check"]) {
       next("/");
     } else {
       next();
@@ -52201,14 +52353,17 @@ var routes = [{
   path: "/search",
   component: __WEBPACK_IMPORTED_MODULE_4__pages_Search_vue___default.a
 }, {
+  path: "/result",
+  component: __WEBPACK_IMPORTED_MODULE_5__pages_Result_vue___default.a
+}, {
   path: "/tagging",
-  component: __WEBPACK_IMPORTED_MODULE_5__pages_Tagging_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_6__pages_Tagging_vue___default.a
 }, {
   path: "/mypage",
-  component: __WEBPACK_IMPORTED_MODULE_6__pages_Mypage_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_7__pages_Mypage_vue___default.a
 }, {
   path: "/500",
-  component: __WEBPACK_IMPORTED_MODULE_7__pages_errors_System_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_8__pages_errors_System_vue___default.a
 }];
 
 // VueRouterインスタンスを作成する
@@ -52506,25 +52661,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
 var state = {
-  playlistMetaData: null,
-  playlistContentData: null
+  playlistTagData: null
 };
 
 var getters = {
-  playlistMetaData: function playlistMetaData(state) {
-    return state.playlistMetaData;
-  },
-  playlistContentData: function playlistContentData(state) {
-    return state.playlistContentData;
+  playlistTagData: function playlistTagData(state) {
+    return state.playlistTagData;
   }
 };
 
 var mutations = {
-  setPlaylistMetaData: function setPlaylistMetaData(state, data) {
-    state.playlistMetaData = data;
-  },
-  setPlaylistContentData: function setPlaylistContentData(state, data) {
-    state.playlistContentData = data;
+  setPlaylistTagData: function setPlaylistTagData(state, data) {
+    state.playlistTagData = data;
   }
 };
 
@@ -52542,10 +52690,9 @@ var actions = {
             case 2:
               response = _context.sent;
 
-              context.commit("setPlaylistMetaData", response.data.meta);
-              context.commit("setPlaylistContentData", response.data.content);
+              context.commit("setPlaylistTagData", response.data.playlistTagData);
 
-            case 5:
+            case 4:
             case "end":
               return _context.stop();
           }
@@ -52575,15 +52722,23 @@ var actions = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__("./node_modules/axios/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__router__ = __webpack_require__("./resources/assets/js/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__("./resources/assets/js/router.js");
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 
 
 
 var state = {
   searchQuery: null,
-  candidates: []
+  candidates: [],
+  tagVideoResult: [],
+  playlistTagResult: []
 };
 
 var getters = {
@@ -52592,6 +52747,12 @@ var getters = {
   },
   candidates: function candidates(state) {
     return state.candidates;
+  },
+  tagVideoResult: function tagVideoResult(state) {
+    return state.tagVideoResult;
+  },
+  playlistTagResult: function playlistTagResult(state) {
+    return state.playlistTagResult;
   }
 };
 
@@ -52601,28 +52762,86 @@ var mutations = {
   },
   setCandidates: function setCandidates(state, data) {
     state.candidates = data;
+  },
+  setTagVideoResult: function setTagVideoResult(state, data) {
+    state.tagVideoResult = data;
+  },
+  setPlaylistTagResult: function setPlaylistTagResult(state, data) {
+    state.playlistTagResult = data;
   }
 };
 
 var actions = {
-  search: function search() {
-    console.log(state.searchQuery);
-    __WEBPACK_IMPORTED_MODULE_1__router__["a" /* default */].push("/result?search_query=${searchQuery}");
-    // router.push("/");
+  //検索結果データを取得
+  search: function search(context) {
+    actions.searchTagVideoResult(context);
+    actions.searchPlaylistTagResult(context);
   },
+
+  //検索ワード候補を取得(インクリメンタルサーチ)
   searchCandidates: function searchCandidates(context, input) {
     var params = {
       input: input
     };
 
-    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post("api/search/candidates", params).then(function (response) {
+    __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/candidates", params).then(function (response) {
       // 成功した時
       context.commit("setCandidates", response.data.candidates);
     }).catch(function (error) {
       // 失敗した時
-      context.commit("error/setCode", response.status, { root: true });
+      context.commit("error/setCode", error.status, { root: true });
     });
-  }
+  },
+
+  //検索ワードを含むタグ単体を検索
+  searchTagVideoResult: function searchTagVideoResult(context) {
+    var params = {
+      searchQuery: state.searchQuery
+    };
+
+    __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/tag", params).then(function (response) {
+      // 成功した時
+      context.commit("setTagVideoResult", response.data.tagVideoResult);
+    }).catch(function (error) {
+      // 失敗した時
+      context.commit("error/setCode", error.status, { root: true });
+    });
+  },
+
+  //検索ワードを含むプレイリストを検索
+  searchPlaylistTagResult: function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context) {
+      var params;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              params = {
+                searchQuery: state.searchQuery
+              };
+              _context.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/playlist", params).then(function (response) {
+                // 成功した時
+                context.commit("setPlaylistTagResult", response.data.playlistTagResult);
+              }).catch(function (error) {
+                // 失敗した時
+                context.commit("error/setCode", error.status, { root: true });
+              });
+
+            case 3:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function searchPlaylistTagResult(_x) {
+      return _ref.apply(this, arguments);
+    }
+
+    return searchPlaylistTagResult;
+  }()
 };
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -52715,7 +52934,7 @@ var actions = {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CREATED; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return INTERNAL_SERVER_ERROR; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return UNPROCESSABLE_ENTITY; });
-/* harmony export (immutable) */ __webpack_exports__["e"] = getCookieValue;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getCookieValue;
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 //システムエラー定義
@@ -52751,6 +52970,51 @@ function getCookieValue(searchKey) {
 
   return val;
 }
+
+// ミックスインオブジェクトを定義
+/* harmony default export */ __webpack_exports__["e"] = ({
+  // var myMixin = {
+  methods: {
+    //タグデータをレコメンド画面に表示するメディアアイテムに格納
+    putTagVideoIntoMediaItems: function putTagVideoIntoMediaItems(mediaItems, tagVideo) {
+      var _this = this;
+
+      if (tagVideo) {
+        tagVideo.forEach(function (value) {
+          mediaItems.push({
+            category: "tag",
+            id: value.tag_id,
+            title: value.title,
+            thumbnail: value.thumbnail,
+            created_at: value.tag_created_at,
+            tags: value.tags,
+            tagArray: value.tags.split(/[\s| |　]/),
+            start: _this.formatToMinSec(value.start),
+            end: _this.formatToMinSec(value.end)
+          });
+        });
+      }
+    },
+    //プレイリストデータをメディアアイテムに追加格納
+    putPlaylistTagIntoMediaItems: function putPlaylistTagIntoMediaItems(mediaItems, playlistTag) {
+      if (playlistTag) {
+        playlistTag.forEach(function (value) {
+          mediaItems.push({
+            category: "playlist",
+            id: value.id,
+            title: value.playlistName,
+            thumbnail: "https://watanabeseiji.com/wordpress/wp-content/themes/cyber/images/noimage.jpg",
+            created_at: value.created_at,
+            tags: "",
+            tagArray: "",
+            start: "",
+            end: ""
+          });
+        });
+      }
+    }
+    // };
+  } });
 
 /***/ }),
 

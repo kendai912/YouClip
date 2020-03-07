@@ -5,23 +5,17 @@
         class="tab__item"
         v-bind:class="{ 'tab__item--active': tab == 1 }"
         v-on:click="tab = 1"
-      >
-        カテゴリ1
-      </li>
+      >カテゴリ1</li>
       <li
         class="tab__item"
         v-bind:class="{ 'tab__item--active': tab == 2 }"
         v-on:click="tab = 2"
-      >
-        カテゴリ2
-      </li>
+      >カテゴリ2</li>
       <li
         class="tab__item"
         v-bind:class="{ 'tab__item--active': tab == 3 }"
         v-on:click="tab = 3"
-      >
-        カテゴリ3
-      </li>
+      >カテゴリ3</li>
     </ul>
     <div class="panel" v-show="tab === 1">
       <IndexItem v-bind:mediaItems="mediaItems" />
@@ -38,6 +32,7 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import IndexItem from "../components/IndexItem.vue";
+import myMixin from "../util";
 
 export default {
   components: {
@@ -47,9 +42,10 @@ export default {
     return {
       tab: 1,
       tagVideoData: null,
-      playlistContentData: null
+      playlistTagData: null
     };
   },
+  mixins: [myMixin],
   methods: {
     //i:s形式に変換
     formatToMinSec(His) {
@@ -64,47 +60,18 @@ export default {
     await this.$store.dispatch("playlist/loadPlaylist");
 
     this.tagVideoData = this.$store.getters["tag/tagVideoData"];
-    this.playlistContentData = this.$store.getters[
-      "playlist/playlistContentData"
-    ];
+    this.playlistTagData = this.$store.getters["playlist/playlistTagData"];
   },
   computed: {
     //レコメンド画面に表示するアイテム
     mediaItems() {
       let mediaItems = [];
 
-      //タグデータをレコメンド画面に表示するアイテムに格納
-      if (this.tagVideoData) {
-        this.tagVideoData.forEach(value => {
-          mediaItems.push({
-            category: "tag",
-            id: value.tag_id,
-            title: value.title,
-            thumbnail: value.thumbnail,
-            created_at: value.tag_created_at,
-            tag: value.tags,
-            start: this.formatToMinSec(value.start),
-            end: this.formatToMinSec(value.end)
-          });
-        });
-      }
+      //タグデータをレコメンド画面に表示するメディアアイテムに格納
+      this.putTagVideoIntoMediaItems(mediaItems, this.tagVideoData);
 
-      //プレイリストデータを同じアイテムに追加格納
-      if (this.playlistContentData) {
-        this.playlistContentData.forEach(value => {
-          mediaItems.push({
-            category: "playlist",
-            id: value.id,
-            title: value.playlistName,
-            thumbnail:
-              "https://watanabeseiji.com/wordpress/wp-content/themes/cyber/images/noimage.jpg",
-            created_at: value.created_at,
-            tag: "",
-            start: "",
-            end: ""
-          });
-        });
-      }
+      //プレイリストデータをメディアアイテムに追加格納
+      this.putPlaylistTagIntoMediaItems(mediaItems, this.playlistTagData);
 
       //作成日の降順(新しい日付が上)に並び替え
       return mediaItems.sort((a, b) => {
