@@ -7,6 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Video;
 use App\Tag;
 use App\Playlist;
+use App\Searchquery;
+use App\Playlistlog;
+use App\Taglog;
 
 class User extends Authenticatable
 {
@@ -46,5 +49,23 @@ class User extends Authenticatable
     {
         //Playlistモデルのデータを引っ張ってくる
         return $this->hasMany('App\Playlist');
+    }
+
+    public function searchqueries()
+    {
+        //Searchqueryモデルのデータを引っ張ってくる
+        return $this->belongsToMany('App\Searchquery');
+    }
+
+    public function playlistlogs()
+    {
+        //Taglogモデルのデータを引っ張ってくる
+        return $this->hasMany('App\Playlistlog');
+    }
+
+    public function taglogs()
+    {
+        //Taglogモデルのデータを引っ張ってくる
+        return $this->hasMany('App\Taglog');
     }
 }

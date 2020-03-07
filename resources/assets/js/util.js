@@ -28,9 +28,8 @@ export function getCookieValue(searchKey) {
   return val;
 }
 
-// ミックスインオブジェクトを定義
+// ミックスインを定義
 export default {
-  // var myMixin = {
   methods: {
     //タグデータをレコメンド画面に表示するメディアアイテムに格納
     putTagVideoIntoMediaItems: function(mediaItems, tagVideo) {
@@ -70,5 +69,4 @@ export default {
       }
     }
   }
-  // };
 };

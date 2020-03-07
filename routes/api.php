@@ -39,6 +39,8 @@ Route::post('/search/candidates', 'SearchController@searchCandidates');
 Route::post('/search/tag', 'SearchController@searchTag');
 //プレイリストの検索結果取得
 Route::post('/search/playlist', 'SearchController@searchPlaylist');
+//検索レコードの保存
+Route::post('/store/searchrecord', 'SearchController@storeSearchRecord');
 
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {

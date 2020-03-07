@@ -21,6 +21,7 @@ class CreateVideosTable extends Migration
             $table->string('title')->nullable();
             $table->string('thumbnail')->nullable();
             $table->time('duration')->nullable();
+            $table->string('category')->nullable();
             $table->timestamps();
         });
     }

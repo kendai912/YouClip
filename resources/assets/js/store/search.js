@@ -1,5 +1,5 @@
 import axios from "axios";
-import router from "../router";
+import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
 
 const state = {
   searchQuery: null,
@@ -35,40 +35,43 @@ const actions = {
   search(context) {
     actions.searchTagVideoResult(context);
     actions.searchPlaylistTagResult(context);
+    actions.storeSearchRecord(context);
   },
   //検索ワード候補を取得(インクリメンタルサーチ)
-  searchCandidates(context, input) {
+  async searchCandidates(context, input) {
     let params = {
       input: input
     };
 
-    axios
-      .post("api/search/candidates", params)
-      .then(function(response) {
-        // 成功した時
-        context.commit("setCandidates", response.data.candidates);
-      })
-      .catch(function(error) {
-        // 失敗した時
-        context.commit("error/setCode", error.status, { root: true });
-      });
+    const response = await axios.post("api/search/candidates", params);
+    if (response.status == OK) {
+      // 成功した時
+      context.commit("setCandidates", response.data.candidates);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
   },
   //検索ワードを含むタグ単体を検索
-  searchTagVideoResult(context) {
+  async searchTagVideoResult(context) {
     let params = {
       searchQuery: state.searchQuery
     };
 
-    axios
-      .post("api/search/tag", params)
-      .then(function(response) {
-        // 成功した時
-        context.commit("setTagVideoResult", response.data.tagVideoResult);
-      })
-      .catch(function(error) {
-        // 失敗した時
-        context.commit("error/setCode", error.status, { root: true });
-      });
+    const response = await axios.post("api/search/tag", params);
+    if (response.status == OK) {
+      // 成功した時
+      context.commit("setTagVideoResult", response.data.tagVideoResult);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
   },
   //検索ワードを含むプレイリストを検索
   async searchPlaylistTagResult(context) {
@@ -76,16 +79,30 @@ const actions = {
       searchQuery: state.searchQuery
     };
 
-    await axios
-      .post("api/search/playlist", params)
-      .then(function(response) {
-        // 成功した時
-        context.commit("setPlaylistTagResult", response.data.playlistTagResult);
-      })
-      .catch(function(error) {
-        // 失敗した時
-        context.commit("error/setCode", error.status, { root: true });
-      });
+    const response = await axios.post("api/search/playlist", params);
+    if (response.status == OK) {
+      // 成功した時
+      context.commit("setPlaylistTagResult", response.data.playlistTagResult);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  //検索キーワードおよび検索履歴をテーブルに保存
+  async storeSearchRecord(context) {
+    let params = {
+      searchQuery: state.searchQuery
+    };
+
+    const response = await axios.post("api/store/searchrecord", params);
+    if (response.status == CREATED) {
+      // 成功した時
+    } else {
+      // 上記以外で失敗した時
+    }
   }
 };
 

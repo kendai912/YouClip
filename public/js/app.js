@@ -52726,7 +52726,7 @@ var actions = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__("./resources/assets/js/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
 
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -52776,59 +52776,38 @@ var actions = {
   search: function search(context) {
     actions.searchTagVideoResult(context);
     actions.searchPlaylistTagResult(context);
+    actions.storeSearchRecord(context);
   },
 
   //検索ワード候補を取得(インクリメンタルサーチ)
-  searchCandidates: function searchCandidates(context, input) {
-    var params = {
-      input: input
-    };
-
-    __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/candidates", params).then(function (response) {
-      // 成功した時
-      context.commit("setCandidates", response.data.candidates);
-    }).catch(function (error) {
-      // 失敗した時
-      context.commit("error/setCode", error.status, { root: true });
-    });
-  },
-
-  //検索ワードを含むタグ単体を検索
-  searchTagVideoResult: function searchTagVideoResult(context) {
-    var params = {
-      searchQuery: state.searchQuery
-    };
-
-    __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/tag", params).then(function (response) {
-      // 成功した時
-      context.commit("setTagVideoResult", response.data.tagVideoResult);
-    }).catch(function (error) {
-      // 失敗した時
-      context.commit("error/setCode", error.status, { root: true });
-    });
-  },
-
-  //検索ワードを含むプレイリストを検索
-  searchPlaylistTagResult: function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context) {
-      var params;
+  searchCandidates: function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context, input) {
+      var params, response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               params = {
-                searchQuery: state.searchQuery
+                input: input
               };
               _context.next = 3;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/playlist", params).then(function (response) {
-                // 成功した時
-                context.commit("setPlaylistTagResult", response.data.playlistTagResult);
-              }).catch(function (error) {
-                // 失敗した時
-                context.commit("error/setCode", error.status, { root: true });
-              });
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/candidates", params);
 
             case 3:
+              response = _context.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+                // 成功した時
+                context.commit("setCandidates", response.data.candidates);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 5:
             case "end":
               return _context.stop();
           }
@@ -52836,11 +52815,135 @@ var actions = {
       }, _callee, this);
     }));
 
-    function searchPlaylistTagResult(_x) {
+    function searchCandidates(_x, _x2) {
       return _ref.apply(this, arguments);
     }
 
+    return searchCandidates;
+  }(),
+
+  //検索ワードを含むタグ単体を検索
+  searchTagVideoResult: function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context) {
+      var params, response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              params = {
+                searchQuery: state.searchQuery
+              };
+              _context2.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/tag", params);
+
+            case 3:
+              response = _context2.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+                // 成功した時
+                context.commit("setTagVideoResult", response.data.tagVideoResult);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 5:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+
+    function searchTagVideoResult(_x3) {
+      return _ref2.apply(this, arguments);
+    }
+
+    return searchTagVideoResult;
+  }(),
+
+  //検索ワードを含むプレイリストを検索
+  searchPlaylistTagResult: function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(context) {
+      var params, response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              params = {
+                searchQuery: state.searchQuery
+              };
+              _context3.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/playlist", params);
+
+            case 3:
+              response = _context3.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+                // 成功した時
+                context.commit("setPlaylistTagResult", response.data.playlistTagResult);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 5:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3, this);
+    }));
+
+    function searchPlaylistTagResult(_x4) {
+      return _ref3.apply(this, arguments);
+    }
+
     return searchPlaylistTagResult;
+  }(),
+
+  //検索キーワードおよび検索履歴をテーブルに保存
+  storeSearchRecord: function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4(context) {
+      var params, response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              params = {
+                searchQuery: state.searchQuery
+              };
+              _context4.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/store/searchrecord", params);
+
+            case 3:
+              response = _context4.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
+                // 成功した時
+              } else {
+                  // 上記以外で失敗した時
+                }
+
+            case 5:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4, this);
+    }));
+
+    function storeSearchRecord(_x5) {
+      return _ref4.apply(this, arguments);
+    }
+
+    return storeSearchRecord;
   }()
 };
 
@@ -52971,9 +53074,8 @@ function getCookieValue(searchKey) {
   return val;
 }
 
-// ミックスインオブジェクトを定義
+// ミックスインを定義
 /* harmony default export */ __webpack_exports__["e"] = ({
-  // var myMixin = {
   methods: {
     //タグデータをレコメンド画面に表示するメディアアイテムに格納
     putTagVideoIntoMediaItems: function putTagVideoIntoMediaItems(mediaItems, tagVideo) {
@@ -53013,8 +53115,8 @@ function getCookieValue(searchKey) {
         });
       }
     }
-    // };
-  } });
+  }
+});
 
 /***/ }),
 

@@ -7,6 +7,7 @@ use App\User;
 use App\Video;
 use App\Like;
 use App\Playlist;
+use App\Taglog;
 
 class Tag extends Model
 {
@@ -32,5 +33,11 @@ class Tag extends Model
     {
         //Likeモデルのデータを引っ張ってくる
         return $this->hasMany('App\Like');
+    }
+
+    public function taglogs()
+    {
+        //Taglogモデルのデータを引っ張ってくる
+        return $this->hasMany('App\Taglog');
     }
 }
