@@ -54,7 +54,7 @@ class User extends Authenticatable
     public function searchqueries()
     {
         //Searchqueryモデルのデータを引っ張ってくる
-        return $this->belongsToMany('App\Searchquery');
+        return $this->belongsToMany('App\Searchquery')->using('App\SearchqueryUser');
     }
 
     public function playlistlogs()

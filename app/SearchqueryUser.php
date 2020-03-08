@@ -2,15 +2,9 @@
 
 namespace App;
 
-use App\Searchquerylog;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-use Illuminate\Database\Eloquent\Model;
-
-class SearchqueryUser extends Model
+class SearchqueryUser extends Pivot
 {
-    public function searchquerylogs()
-    {
-        //Searchquerylogモデルのデータを引っ張ってくる
-        return $this->hasMany('App\searchquerylog');
-    }
+    //
 }

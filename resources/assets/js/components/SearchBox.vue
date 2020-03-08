@@ -59,7 +59,7 @@ export default {
       if (this.searchWord == "") return;
       this.$store.commit("search/setSearchQuery", this.searchWord);
       this.$store.dispatch("search/search");
-      this.searchResultTransit();
+      this.searchResultPageTransit();
     },
     //入力を元に検索候補を取得
     searchCandidates() {
@@ -71,10 +71,10 @@ export default {
       this.searchWord = candidateName;
       this.$store.commit("search/setSearchQuery", candidateName);
       this.$store.dispatch("search/search");
-      this.searchResultTransit();
+      this.searchResultPageTransit();
     },
     //検索結果表示ページに遷移
-    searchResultTransit() {
+    searchResultPageTransit() {
       const path = "/result";
       if (this.$route.path != path) {
         this.$router

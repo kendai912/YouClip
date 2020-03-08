@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
+use Debugbar;
+use Carbon\Carbon;
 use App\Video;
 use App\Tag;
 use App\Playlist;
 use App\Searchquery;
 use App\SearchqueryUser;
-use Auth;
-use Debugbar;
+use App\Topsearchquery;
 
 class SearchController extends Controller
 {
@@ -95,8 +97,12 @@ class SearchController extends Controller
     //検索ワードの履歴データを各テーブルに保存
     public function storeSearchRecord(Request $request)
     {
+        //検索クエリテーブルに保存
         $storedSearchquery = $this->storeSearchQuery($request->searchQuery);
-        $this->storeSearchqueryUser($storedSearchquery);
+        //検索クエリとユーザーの中間ログテーブルに保存
+        $this->storeSearchLog($storedSearchquery);
+        //人気の検索クエリランキングを更新
+        $this->updateTopSearchqueries();
         return response()->json(
             [
                 'storedSearchQuery' => $storedSearchquery
@@ -110,20 +116,61 @@ class SearchController extends Controller
     //検索クエリテーブルに保存
     public function storeSearchQuery($searchQuery)
     {
-        $searchquery = new Searchquery;
-        $searchquery->searchQuery = $searchQuery;
-        $searchquery->save();
-
-        return $searchquery;
+        $searchquery = Searchquery::where('searchQuery', $searchQuery);
+        if ($searchquery->get()->isEmpty()) {
+            //新規に作成する場合
+            $searchquery = new Searchquery;
+            $searchquery->searchQuery = $searchQuery;
+            $searchquery->save();
+            return $searchquery;
+        } else {
+            //既に検索クエリがテーブルに存在する場合
+            $searchquery->update([
+                'updated_at' => Carbon::now()
+            ]);
+            return $searchquery->first();
+        }
     }
 
-    //検索クエリとユーザーの中間テーブルに保存
-    public function storeSearchqueryUser($searchqueryModel)
+    //検索クエリとユーザーの中間ログテーブルに保存
+    public function storeSearchLog($searchqueryModel)
     {
         //ユーザーがログインしている場合のみ保存対象
         if (Auth::check()) {
             $user = Auth::user();
-            $user->searchqueries()->attach($searchqueryModel->id);
+            $user->searchqueries()->attach(
+                ['searchquery_id' => $searchqueryModel->id],
+                ['created_at' => Carbon::now()],
+            );
+        }
+    }
+
+    //人気の検索クエリランキングを更新
+    public function updateTopSearchqueries()
+    {
+        $topSearchqueries = [];
+
+        //直近一ヶ月の検索クエリを取得
+        $recentSearchqueries = Searchquery::where('created_at', '>=', Carbon::now()->subMonthNoOverflow())->get();
+        
+        //各検索クエリのユニークユーザー数を取得
+        foreach ($recentSearchqueries as $recentSearchquery) {
+            $user_id_count = SearchqueryUser::where('searchquery_id', $recentSearchquery->id)->distinct()->count('user_id');
+            $topSearchqueries[] = [
+                'searchquery_id' => $recentSearchquery->id,
+                'user_id_count' => $user_id_count,
+            ];
+        }
+
+        //TopSearchqueriesテーブルをクリア
+        Topsearchquery::query()->delete();
+
+        //TopSearchqueriesテーブルに格納
+        foreach ($topSearchqueries as $topSearchquery) {
+            $record = new Topsearchquery;
+            $record->searchquery_id = $topSearchquery['searchquery_id'];
+            $record->user_id_count = $topSearchquery['user_id_count'];
+            $record->save();
         }
     }
 }

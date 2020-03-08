@@ -8,6 +8,7 @@ use App\Video;
 use App\Tag;
 use App\User;
 use App\Playlist;
+use Carbon\Carbon;
 
 class TagController extends Controller
 {
@@ -80,7 +81,11 @@ class TagController extends Controller
                 }
             }
         };
-        $tag->playlists()->attach($checkedPlaylistIds);
+        $tag->playlists()->attach(
+            ['playlist_id' => $checkedPlaylistIds],
+            ['created_at' => Carbon::now()],
+            ['updated_at' => Carbon::now()],
+        );
     }
 
     /**

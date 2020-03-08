@@ -8,6 +8,7 @@ use App\Video;
 use App\Tag;
 use App\User;
 use App\Playlist;
+use Carbon\Carbon;
 
 class PlaylistController extends Controller
 {
@@ -66,7 +67,11 @@ class PlaylistController extends Controller
         $playlist->save();
 
         //playlist_tagテーブルに保存
-        $playlist->tags()->attach($request->tag_id);
+        $playlist->tags()->attach(
+            ['tag_id' => $request->tag_id],
+            ['created_at' => Carbon::now()],
+            ['updated_at' => Carbon::now()],
+        );
     }
 
     /**

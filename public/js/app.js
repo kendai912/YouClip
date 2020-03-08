@@ -1957,7 +1957,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       if (this.searchWord == "") return;
       this.$store.commit("search/setSearchQuery", this.searchWord);
       this.$store.dispatch("search/search");
-      this.searchResultTransit();
+      this.searchResultPageTransit();
     },
 
     //入力を元に検索候補を取得
@@ -1971,11 +1971,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       this.searchWord = candidateName;
       this.$store.commit("search/setSearchQuery", candidateName);
       this.$store.dispatch("search/search");
-      this.searchResultTransit();
+      this.searchResultPageTransit();
     },
 
     //検索結果表示ページに遷移
-    searchResultTransit: function searchResultTransit() {
+    searchResultPageTransit: function searchResultPageTransit() {
       var path = "/result";
       if (this.$route.path != path) {
         this.$router.push({
