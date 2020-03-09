@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Auth;
 use Debugbar;
@@ -103,6 +104,7 @@ class SearchController extends Controller
         $this->storeSearchLog($storedSearchquery);
         //人気の検索クエリランキングを更新
         $this->updateTopSearchqueries();
+
         return response()->json(
             [
                 'storedSearchQuery' => $storedSearchquery
@@ -172,5 +174,73 @@ class SearchController extends Controller
             $record->user_id_count = $topSearchquery['user_id_count'];
             $record->save();
         }
+    }
+
+    //人気の検索ワードを取得
+    public function getTopSearchqueries()
+    {
+        //user_id_countが上位10件を取得
+        $topSearchqueryDataArray = Topsearchquery::leftJoin('searchqueries', 'searchqueries.id', '=', 'topsearchqueries.searchquery_id')->select('topsearchqueries.id as topsearchqueries_id', 'topsearchqueries.searchquery_id', 'topsearchqueries.user_id_count', 'searchqueries.created_at')->orderBy('user_id_count', 'DESC')->orderBy('created_at', 'DESC')->take(10)->get();
+
+        //上位10件の検索ワードを取得
+        $topSearchqueries = [];
+        foreach ($topSearchqueryDataArray as $topSearchqueryData) {
+            $topSearchqueries[] = $topSearchqueryData->searchquery->searchQuery;
+        }
+
+        return response()->json(
+            [
+                'topSearchqueries' => $topSearchqueries
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    //検索履歴を取得
+    public function getSearchHistories()
+    {
+        //ログインしていなければ何もしない
+        if (!Auth::check()) {
+            return;
+        }
+
+        //直近の検索履歴10件を取得
+        $searchHistoryArray = SearchqueryUser::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->distinct()->get();
+
+        //直近10件の検索ワードを取得
+        $searchHistories = [];
+        $count = 0;
+        foreach ($searchHistoryArray as $searchHistoryData) {
+            //配列に追加する検索ワード
+            $addingSearchQuery = Searchquery::find($searchHistoryData->searchquery_id)->searchQuery;
+
+            //既に同じ検索ワードが配列内にないかチェック
+            $duplicate_flag = false;
+            foreach ($searchHistories as $searchHistory) {
+                $addingSearchQuery == $searchHistory ? $duplicate_flag = true : "";
+            }
+
+            //重複がなければ10件まで追加
+            if (!$duplicate_flag && $count < 10) {
+                $searchHistories[] = $addingSearchQuery;
+                $count++;
+            }
+
+            // $array_value = array_count_values($searchHistories);
+            // if ($array_value[$addingSearchQuery] == 0) {
+            //     $searchHistories[] = $addingSearchQuery;
+            // }
+        }
+
+        return response()->json(
+            [
+                'searchHistories' => $searchHistories
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 }

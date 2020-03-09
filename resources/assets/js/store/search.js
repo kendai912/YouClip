@@ -1,18 +1,23 @@
 import axios from "axios";
 import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
+import router from "../router";
 
 const state = {
   searchQuery: null,
   candidates: [],
   tagVideoResult: [],
-  playlistTagResult: []
+  playlistTagResult: [],
+  topSearchqueries: [],
+  searchHistories: []
 };
 
 const getters = {
   searchQuery: state => state.searchQuery,
   candidates: state => state.candidates,
   tagVideoResult: state => state.tagVideoResult,
-  playlistTagResult: state => state.playlistTagResult
+  playlistTagResult: state => state.playlistTagResult,
+  topSearchqueries: state => state.topSearchqueries,
+  searchHistories: state => state.searchHistories
 };
 
 const mutations = {
@@ -27,6 +32,30 @@ const mutations = {
   },
   setPlaylistTagResult(state, data) {
     state.playlistTagResult = data;
+  },
+  setTopSearchqueries(state, data) {
+    state.topSearchqueries = data;
+  },
+  setSearchHistories(state, data) {
+    state.searchHistories = data;
+  },
+  //検索結果表示ページに遷移
+  searchResultPageTransit() {
+    const path = "/result";
+    if (location.pathname != path) {
+      router
+        .push({
+          path: "result",
+          query: { search_query: state.searchQuery }
+        })
+        .catch(err => {});
+    } else {
+      router
+        .push({
+          query: { search_query: state.searchQuery }
+        })
+        .catch(err => {});
+    }
   }
 };
 
@@ -100,8 +129,40 @@ const actions = {
     const response = await axios.post("api/store/searchrecord", params);
     if (response.status == CREATED) {
       // 成功した時
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
     } else {
       // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  //人気の検索ワードを取得
+  async getTopSearchqueries(context) {
+    const response = await axios.get("api/topSearchqueries");
+    if (response.status == OK) {
+      // 成功した時
+      context.commit("setTopSearchqueries", response.data.topSearchqueries);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  //検索履歴を取得
+  async getSearchHistories(context) {
+    const response = await axios.get("api/searchHistories");
+    if (response.status == OK) {
+      // 成功した時
+      context.commit("setSearchHistories", response.data.searchHistories);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
     }
   }
 };

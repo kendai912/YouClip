@@ -1839,12 +1839,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
@@ -1957,7 +1951,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       if (this.searchWord == "") return;
       this.$store.commit("search/setSearchQuery", this.searchWord);
       this.$store.dispatch("search/search");
-      this.searchResultPageTransit();
+      this.$store.commit("search/searchResultPageTransit");
     },
 
     //入力を元に検索候補を取得
@@ -1971,25 +1965,43 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       this.searchWord = candidateName;
       this.$store.commit("search/setSearchQuery", candidateName);
       this.$store.dispatch("search/search");
-      this.searchResultPageTransit();
-    },
-
-    //検索結果表示ページに遷移
-    searchResultPageTransit: function searchResultPageTransit() {
-      var path = "/result";
-      if (this.$route.path != path) {
-        this.$router.push({
-          path: "result",
-          query: { search_query: this.searchWord }
-        }).catch(function (err) {});
-      } else {
-        this.$router.push({
-          query: { search_query: this.searchWord }
-        }).catch(function (err) {});
-      }
+      this.$store.commit("search/searchResultPageTransit");
     }
   },
   created: function created() {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/SearchHint.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    searchHints: Array,
+    hintCategory: String
+  },
+  methods: {
+    //クリックするとそのまま検索
+    select: function select(searchHint) {
+      this.$store.commit("search/setSearchQuery", searchHint);
+      this.$store.dispatch("search/search");
+      this.$store.commit("search/searchResultPageTransit");
+    }
+  }
 });
 
 /***/ }),
@@ -2429,6 +2441,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_SearchBox_vue__ = __webpack_require__("./resources/assets/js/components/SearchBox.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_SearchBox_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_SearchBox_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_SearchHint_vue__ = __webpack_require__("./resources/assets/js/components/SearchHint.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_SearchHint_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_SearchHint_vue__);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 //
 //
 //
@@ -2438,13 +2454,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    SearchBox: __WEBPACK_IMPORTED_MODULE_1__components_SearchBox_vue___default.a
+    SearchBox: __WEBPACK_IMPORTED_MODULE_1__components_SearchBox_vue___default.a,
+    SearchHint: __WEBPACK_IMPORTED_MODULE_2__components_SearchHint_vue___default.a
+  },
+  data: function data() {
+    return {
+      topSearchquery: "人気の検索",
+      searchHistory: "検索履歴"
+    };
+  },
+
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    isLogin: "auth/check"
+  }), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    topSearchqueries: "search/topSearchqueries"
+  }), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    searchHistories: "search/searchHistories"
+  })),
+  created: function created() {
+    //人気の検索ワードを取得
+    this.$store.dispatch("search/getTopSearchqueries");
+    //検索履歴を取得
+    this.$store.dispatch("search/getSearchHistories");
   }
 });
 
@@ -34276,6 +34320,48 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-03de3246\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/SearchHint.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("p", [_vm._v(_vm._s(_vm.hintCategory))]),
+      _vm._v(" "),
+      _vm._l(_vm.searchHints, function(searchHint) {
+        return _c(
+          "div",
+          {
+            key: searchHint,
+            on: {
+              click: function($event) {
+                return _vm.select(searchHint)
+              }
+            }
+          },
+          [_vm._v(_vm._s(searchHint))]
+        )
+      })
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-03de3246", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-083ff5dc\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Footer.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -34471,7 +34557,29 @@ var render = function() {
   return _c("div", { staticClass: "container--small" }, [
     _c("h1", [_vm._v("Search")]),
     _vm._v(" "),
-    _c("div", [_c("SearchBox")], 1)
+    _c(
+      "div",
+      [
+        _c("SearchBox"),
+        _vm._v(" "),
+        _c("SearchHint", {
+          attrs: {
+            searchHints: _vm.topSearchqueries,
+            hintCategory: _vm.topSearchquery
+          }
+        }),
+        _vm._v(" "),
+        _vm.isLogin
+          ? _c("SearchHint", {
+              attrs: {
+                searchHints: _vm.searchHistories,
+                hintCategory: _vm.searchHistory
+              }
+            })
+          : _vm._e()
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = []
@@ -35176,7 +35284,7 @@ var render = function() {
     { staticClass: "navbar" },
     [
       _c("RouterLink", { staticClass: "navbar__brand", attrs: { to: "/" } }, [
-        _vm._v("\n    ScenePicks\n  ")
+        _vm._v("ScenePicks")
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "navbar__menu" }, [
@@ -35189,7 +35297,7 @@ var render = function() {
                       staticClass: "button button--link",
                       on: { click: _vm.logout }
                     },
-                    [_vm._v("\n        Logout\n      ")]
+                    [_vm._v("Logout")]
                   )
                 : _vm._e()
             ])
@@ -35203,7 +35311,7 @@ var render = function() {
                     staticClass: "button button--link",
                     attrs: { to: "/login" }
                   },
-                  [_vm._v("\n        Login / Register\n      ")]
+                  [_vm._v("Login / Register")]
                 )
               ],
               1
@@ -51956,6 +52064,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/SearchHint.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/SearchHint.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-03de3246\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/SearchHint.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/SearchHint.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-03de3246", Component.options)
+  } else {
+    hotAPI.reload("data-v-03de3246", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/pages/Home.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -52727,9 +52883,11 @@ var actions = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__router__ = __webpack_require__("./resources/assets/js/router.js");
 
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 
 
 
@@ -52738,7 +52896,9 @@ var state = {
   searchQuery: null,
   candidates: [],
   tagVideoResult: [],
-  playlistTagResult: []
+  playlistTagResult: [],
+  topSearchqueries: [],
+  searchHistories: []
 };
 
 var getters = {
@@ -52753,6 +52913,12 @@ var getters = {
   },
   playlistTagResult: function playlistTagResult(state) {
     return state.playlistTagResult;
+  },
+  topSearchqueries: function topSearchqueries(state) {
+    return state.topSearchqueries;
+  },
+  searchHistories: function searchHistories(state) {
+    return state.searchHistories;
   }
 };
 
@@ -52768,6 +52934,27 @@ var mutations = {
   },
   setPlaylistTagResult: function setPlaylistTagResult(state, data) {
     state.playlistTagResult = data;
+  },
+  setTopSearchqueries: function setTopSearchqueries(state, data) {
+    state.topSearchqueries = data;
+  },
+  setSearchHistories: function setSearchHistories(state, data) {
+    state.searchHistories = data;
+  },
+
+  //検索結果表示ページに遷移
+  searchResultPageTransit: function searchResultPageTransit() {
+    var path = "/result";
+    if (location.pathname != path) {
+      __WEBPACK_IMPORTED_MODULE_3__router__["a" /* default */].push({
+        path: "result",
+        query: { search_query: state.searchQuery }
+      }).catch(function (err) {});
+    } else {
+      __WEBPACK_IMPORTED_MODULE_3__router__["a" /* default */].push({
+        query: { search_query: state.searchQuery }
+      }).catch(function (err) {});
+    }
   }
 };
 
@@ -52927,9 +53114,13 @@ var actions = {
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
                 // 成功した時
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
               } else {
-                  // 上記以外で失敗した時
-                }
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
 
             case 5:
             case "end":
@@ -52944,6 +53135,86 @@ var actions = {
     }
 
     return storeSearchRecord;
+  }(),
+
+  //人気の検索ワードを取得
+  getTopSearchqueries: function () {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5(context) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.next = 2;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/topSearchqueries");
+
+            case 2:
+              response = _context5.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+                // 成功した時
+                context.commit("setTopSearchqueries", response.data.topSearchqueries);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 4:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, _callee5, this);
+    }));
+
+    function getTopSearchqueries(_x6) {
+      return _ref5.apply(this, arguments);
+    }
+
+    return getTopSearchqueries;
+  }(),
+
+  //検索履歴を取得
+  getSearchHistories: function () {
+    var _ref6 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee6(context) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee6$(_context6) {
+        while (1) {
+          switch (_context6.prev = _context6.next) {
+            case 0:
+              _context6.next = 2;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/searchHistories");
+
+            case 2:
+              response = _context6.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+                // 成功した時
+                context.commit("setSearchHistories", response.data.searchHistories);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 4:
+            case "end":
+              return _context6.stop();
+          }
+        }
+      }, _callee6, this);
+    }));
+
+    function getSearchHistories(_x7) {
+      return _ref6.apply(this, arguments);
+    }
+
+    return getSearchHistories;
   }()
 };
 

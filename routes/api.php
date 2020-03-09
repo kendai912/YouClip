@@ -41,6 +41,10 @@ Route::post('/search/tag', 'SearchController@searchTag');
 Route::post('/search/playlist', 'SearchController@searchPlaylist');
 //検索レコードの保存
 Route::post('/store/searchrecord', 'SearchController@storeSearchRecord');
+//人気の検索ワードの取得
+Route::get('/topSearchqueries', 'SearchController@getTopSearchqueries');
+//検索履歴の取得
+Route::get('/searchHistories', 'SearchController@getSearchHistories');
 
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
