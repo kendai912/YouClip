@@ -1721,12 +1721,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
@@ -1777,6 +1771,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+//
+//
+//
+//
 //
 //
 //
@@ -1803,9 +1808,103 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     mediaItems: Array
+  },
+  methods: {
+    select: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(mediaItem) {
+        var _this = this;
+
+        var playlistTagArray, playlistTagVideoArray, tag_id, video_id, tagList, indivisualTagVideoArray;
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                //プレイリストの場合
+                if (mediaItem.category == "playlist") {
+                  //プレイリストのIDと名前をwatchストアにセット
+                  this.$store.commit("watch/setCurrentPlaylistId", mediaItem.id);
+                  this.$store.commit("watch/setCurrentPlaylistName", mediaItem.title);
+
+                  //プレイリストIDからplaylistストアのplaylistTagDataに格納されているtagデータを取得
+                  playlistTagArray = this.$store.getters["playlist/getPlaylistTagContentById"](mediaItem.id).tags;
+
+                  //tagデータとvideoデータを結合
+
+                  playlistTagVideoArray = [];
+
+                  playlistTagArray.forEach(function (value) {
+                    playlistTagVideoArray.push(_this.$store.getters["tag/getTagVideoContentById"](value.id));
+                  });
+
+                  //Watchストアに再生のためのパラメータをセット
+                  this.$store.commit("watch/setPlaylistParameters", playlistTagVideoArray);
+                }
+
+                //タグの場合
+
+                if (!(mediaItem.category == "tag")) {
+                  _context.next = 12;
+                  break;
+                }
+
+                //tagIDからVideoIDを取得
+                tag_id = mediaItem.id;
+                video_id = this.$store.getters["tag/getTagVideoContentById"](tag_id).video_id;
+
+                //tagIDとvideIDをwatchストアにセット
+
+                this.$store.commit("watch/setCurrentVideoId", video_id);
+                this.$store.commit("watch/setCurrentTagId", tag_id);
+
+                //VideoIDからtagデータ一覧を取得
+                _context.next = 8;
+                return this.$store.dispatch("video/getTagListByVideoId", video_id);
+
+              case 8:
+                tagList = this.$store.getters["video/tagListOfVideo"];
+
+                //tagデータとvideoデータを結合
+
+                indivisualTagVideoArray = [];
+
+                tagList.forEach(function (value) {
+                  indivisualTagVideoArray.push(_this.$store.getters["tag/getTagVideoContentById"](value.id));
+                });
+
+                //Watchストアに再生のためのパラメータをセット
+                this.$store.commit("watch/setIndivisualParameters", indivisualTagVideoArray);
+
+              case 12:
+
+                //再生ページを表示
+                this.$router.push({
+                  path: "/watch",
+                  query: {
+                    playlist: "1",
+                    tag: "2",
+                    radio: "3"
+                  }
+                }).catch(function (err) {});
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function select(_x) {
+        return _ref.apply(this, arguments);
+      }
+
+      return select;
+    }()
   }
 });
 
@@ -2217,47 +2316,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -2490,6 +2548,38 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     //検索履歴を取得
     this.$store.dispatch("search/getSearchHistories");
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/Watch.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./resources/assets/js/util.js");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {},
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
+  methods: {},
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    watchList: "watch/watchList",
+    listIndex: "watch/listIndex"
+  }))
 });
 
 /***/ }),
@@ -34614,7 +34704,7 @@ var render = function() {
             }
           }
         },
-        [_vm._v("\n      Login\n    ")]
+        [_vm._v("Login")]
       ),
       _vm._v(" "),
       _c(
@@ -34628,7 +34718,7 @@ var render = function() {
             }
           }
         },
-        [_vm._v("\n      Register\n    ")]
+        [_vm._v("Register")]
       )
     ]),
     _vm._v(" "),
@@ -34664,11 +34754,7 @@ var render = function() {
                     ? _c(
                         "ul",
                         _vm._l(_vm.loginErrors.email, function(msg) {
-                          return _c("li", { key: msg }, [
-                            _vm._v(
-                              "\n            " + _vm._s(msg) + "\n          "
-                            )
-                          ])
+                          return _c("li", { key: msg }, [_vm._v(_vm._s(msg))])
                         }),
                         0
                       )
@@ -34678,11 +34764,7 @@ var render = function() {
                     ? _c(
                         "ul",
                         _vm._l(_vm.loginErrors.password, function(msg) {
-                          return _c("li", { key: msg }, [
-                            _vm._v(
-                              "\n            " + _vm._s(msg) + "\n          "
-                            )
-                          ])
+                          return _c("li", { key: msg }, [_vm._v(_vm._s(msg))])
                         }),
                         0
                       )
@@ -34781,11 +34863,7 @@ var render = function() {
                               "ul",
                               _vm._l(_vm.registerErrors.name, function(msg) {
                                 return _c("li", { key: msg }, [
-                                  _vm._v(
-                                    "\n              " +
-                                      _vm._s(msg) +
-                                      "\n            "
-                                  )
+                                  _vm._v(_vm._s(msg))
                                 ])
                               }),
                               0
@@ -34797,11 +34875,7 @@ var render = function() {
                               "ul",
                               _vm._l(_vm.registerErrors.email, function(msg) {
                                 return _c("li", { key: msg }, [
-                                  _vm._v(
-                                    "\n              " +
-                                      _vm._s(msg) +
-                                      "\n            "
-                                  )
+                                  _vm._v(_vm._s(msg))
                                 ])
                               }),
                               0
@@ -34815,11 +34889,7 @@ var render = function() {
                                 msg
                               ) {
                                 return _c("li", { key: msg }, [
-                                  _vm._v(
-                                    "\n              " +
-                                      _vm._s(msg) +
-                                      "\n            "
-                                  )
+                                  _vm._v(_vm._s(msg))
                                 ])
                               }),
                               0
@@ -34960,7 +35030,7 @@ var staticRenderFns = [
       _c(
         "button",
         { staticClass: "button button--inverse", attrs: { type: "submit" } },
-        [_vm._v("\n          register\n        ")]
+        [_vm._v("register")]
       )
     ])
   }
@@ -35067,43 +35137,54 @@ var render = function() {
   return _c(
     "div",
     _vm._l(_vm.mediaItems, function(item, index) {
-      return _c("div", { key: item.category + index }, [
-        _c("div", { staticClass: "thumbnail" }, [
-          _c("img", {
-            staticStyle: { width: "300px", height: "auto" },
-            attrs: { src: item.thumbnail, alt: item.title + "-thumbnail" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "info" }, [
-          _c("div", [_vm._v(_vm._s(item.title))]),
+      return _c(
+        "div",
+        {
+          key: item.category + index,
+          on: {
+            click: function($event) {
+              return _vm.select(item)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "thumbnail" }, [
+            _c("img", {
+              staticStyle: { width: "300px", height: "auto" },
+              attrs: { src: item.thumbnail, alt: item.title + "-thumbnail" }
+            })
+          ]),
           _vm._v(" "),
-          item.tagArray
-            ? _c(
-                "div",
-                [
-                  _vm._v(
-                    "\n        " +
-                      _vm._s(item.start) +
-                      "〜" +
-                      _vm._s(item.end) +
-                      "\n        "
-                  ),
-                  _vm._l(item.tagArray, function(tag) {
-                    return _c(
-                      "span",
-                      { key: item + "." + tag, staticClass: "tag" },
-                      [_vm._v(_vm._s(tag))]
-                    )
-                  })
-                ],
-                2
-              )
-            : _vm._e()
-        ]),
-        _vm._v(" "),
-        _c("br")
-      ])
+          _c("div", { staticClass: "info" }, [
+            _c("div", [_vm._v(_vm._s(item.title))]),
+            _vm._v(" "),
+            item.tagArray
+              ? _c(
+                  "div",
+                  [
+                    _vm._v(
+                      "\n        " +
+                        _vm._s(item.start) +
+                        "〜" +
+                        _vm._s(item.end) +
+                        "\n        "
+                    ),
+                    _vm._l(item.tagArray, function(tag) {
+                      return _c(
+                        "span",
+                        { key: item + "." + tag, staticClass: "tag" },
+                        [_vm._v(_vm._s(tag))]
+                      )
+                    })
+                  ],
+                  2
+                )
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("br")
+        ]
+      )
     }),
     0
   )
@@ -35115,6 +35196,38 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-80dbd744", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-9d53053c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/Watch.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "container--small" }, [
+      _c("h1", [_vm._v("Watch")]),
+      _vm._v(" "),
+      _c("div")
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-9d53053c", module.exports)
   }
 }
 
@@ -51717,7 +51830,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__store__ = __webpack_require__("./resources/assets/js/store/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__App_vue__ = __webpack_require__("./resources/assets/js/App.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__App_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__util__ = __webpack_require__("./resources/assets/js/util.js");
 
 
 var _this = this;
@@ -51729,7 +51841,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
 
 
 
@@ -52400,6 +52511,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/pages/Watch.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/Watch.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-9d53053c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/Watch.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/pages/Watch.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-9d53053c", Component.options)
+  } else {
+    hotAPI.reload("data-v-9d53053c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/pages/errors/System.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -52465,15 +52624,18 @@ module.exports = Component.exports
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_Result_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__pages_Result_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_Tagging_vue__ = __webpack_require__("./resources/assets/js/pages/Tagging.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_Tagging_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__pages_Tagging_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_Mypage_vue__ = __webpack_require__("./resources/assets/js/pages/Mypage.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_Mypage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__pages_Mypage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_errors_System_vue__ = __webpack_require__("./resources/assets/js/pages/errors/System.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_errors_System_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__pages_errors_System_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__store__ = __webpack_require__("./resources/assets/js/store/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_Watch_vue__ = __webpack_require__("./resources/assets/js/pages/Watch.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_Watch_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__pages_Watch_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_Mypage_vue__ = __webpack_require__("./resources/assets/js/pages/Mypage.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_Mypage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__pages_Mypage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_errors_System_vue__ = __webpack_require__("./resources/assets/js/pages/errors/System.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_errors_System_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__pages_errors_System_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__store__ = __webpack_require__("./resources/assets/js/store/index.js");
 
 
 
 // ページコンポーネントをインポートする
+
 
 
 
@@ -52496,7 +52658,7 @@ var routes = [{
   path: "/login",
   component: __WEBPACK_IMPORTED_MODULE_3__pages_Login_vue___default.a,
   beforeEnter: function beforeEnter(to, from, next) {
-    if (__WEBPACK_IMPORTED_MODULE_9__store__["a" /* default */].getters["auth/check"]) {
+    if (__WEBPACK_IMPORTED_MODULE_10__store__["a" /* default */].getters["auth/check"]) {
       next("/");
     } else {
       next();
@@ -52515,11 +52677,14 @@ var routes = [{
   path: "/tagging",
   component: __WEBPACK_IMPORTED_MODULE_6__pages_Tagging_vue___default.a
 }, {
+  path: "/watch",
+  component: __WEBPACK_IMPORTED_MODULE_7__pages_Watch_vue___default.a
+}, {
   path: "/mypage",
-  component: __WEBPACK_IMPORTED_MODULE_7__pages_Mypage_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_8__pages_Mypage_vue___default.a
 }, {
   path: "/500",
-  component: __WEBPACK_IMPORTED_MODULE_8__pages_errors_System_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_9__pages_errors_System_vue___default.a
 }];
 
 // VueRouterインスタンスを作成する
@@ -52773,10 +52938,14 @@ var mutations = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth__ = __webpack_require__("./resources/assets/js/store/auth.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tag__ = __webpack_require__("./resources/assets/js/store/tag.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__playlist__ = __webpack_require__("./resources/assets/js/store/playlist.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__search__ = __webpack_require__("./resources/assets/js/store/search.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__watch__ = __webpack_require__("./resources/assets/js/store/watch.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__video__ = __webpack_require__("./resources/assets/js/store/video.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__tag__ = __webpack_require__("./resources/assets/js/store/tag.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__playlist__ = __webpack_require__("./resources/assets/js/store/playlist.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__search__ = __webpack_require__("./resources/assets/js/store/search.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+
+
 
 
 
@@ -52791,10 +52960,12 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
   modules: {
     auth: __WEBPACK_IMPORTED_MODULE_2__auth__["a" /* default */],
-    tag: __WEBPACK_IMPORTED_MODULE_3__tag__["a" /* default */],
-    playlist: __WEBPACK_IMPORTED_MODULE_4__playlist__["a" /* default */],
-    search: __WEBPACK_IMPORTED_MODULE_5__search__["a" /* default */],
-    error: __WEBPACK_IMPORTED_MODULE_6__error__["a" /* default */]
+    watch: __WEBPACK_IMPORTED_MODULE_3__watch__["a" /* default */],
+    video: __WEBPACK_IMPORTED_MODULE_4__video__["a" /* default */],
+    tag: __WEBPACK_IMPORTED_MODULE_5__tag__["a" /* default */],
+    playlist: __WEBPACK_IMPORTED_MODULE_6__playlist__["a" /* default */],
+    search: __WEBPACK_IMPORTED_MODULE_7__search__["a" /* default */],
+    error: __WEBPACK_IMPORTED_MODULE_8__error__["a" /* default */]
   }
 });
 
@@ -52823,6 +52994,13 @@ var state = {
 var getters = {
   playlistTagData: function playlistTagData(state) {
     return state.playlistTagData;
+  },
+  getPlaylistTagContentById: function getPlaylistTagContentById(state) {
+    return function (playlistId) {
+      return state.playlistTagData.find(function (playlistTag) {
+        return playlistTag.id == playlistId;
+      });
+    };
   }
 };
 
@@ -53249,6 +53427,13 @@ var state = {
 var getters = {
   tagVideoData: function tagVideoData(state) {
     return state.tagVideoData;
+  },
+  getTagVideoContentById: function getTagVideoContentById(state) {
+    return function (tagId) {
+      return state.tagVideoData.find(function (tagVideo) {
+        return tagVideo.tag_id == tagId;
+      });
+    };
   }
 };
 
@@ -53259,6 +53444,7 @@ var mutations = {
 };
 
 var actions = {
+  //tagとvideoが紐付いたデータ一覧をロード
   loadTagVideo: function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context) {
       var response;
@@ -53289,6 +53475,166 @@ var actions = {
     return loadTagVideo;
   }()
 };
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/video.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+
+
+var state = {
+  tagListOfVideo: null
+};
+
+var getters = {
+  tagListOfVideo: function tagListOfVideo(state) {
+    return state.tagListOfVideo;
+  }
+};
+
+var mutations = {
+  setTagListOfVideo: function setTagListOfVideo(state, data) {
+    state.tagListOfVideo = data;
+  }
+};
+
+var actions = {
+  //VideoIdから関連するタグ一覧を取得
+  getTagListByVideoId: function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context, video_id) {
+      var queries, response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              queries = {
+                id: video_id
+              };
+              _context.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/taglist/video", { params: queries });
+
+            case 3:
+              response = _context.sent;
+
+              context.commit("setTagListOfVideo", response.data.tagList);
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function getTagListByVideoId(_x, _x2) {
+      return _ref.apply(this, arguments);
+    }
+
+    return getTagListByVideoId;
+  }()
+};
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/watch.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__("./node_modules/axios/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+
+
+var state = {
+  watchList: null,
+  listIndex: 0,
+  currentPlaylistId: "",
+  currentPlaylistName: "",
+  currentVideoId: "",
+  currentTagId: "",
+  start: "",
+  end: ""
+};
+
+var getters = {
+  watchList: function watchList(state) {
+    return state.watchList;
+  },
+  listIndex: function listIndex(state) {
+    return state.listIndex;
+  },
+  currentPlaylistId: function currentPlaylistId(state) {
+    return state.currentPlaylistId;
+  },
+  currentPlaylistName: function currentPlaylistName(state) {
+    return state.currentPlaylistName;
+  },
+  currentVideoId: function currentVideoId(state) {
+    return state.currentVideoId;
+  },
+  currentTagId: function currentTagId(state) {
+    return state.currentTagId;
+  }
+};
+
+var mutations = {
+  setPlaylistParameters: function setPlaylistParameters(state, playlistTagVideoArray) {
+    //watchlistにコンテンツをセット
+    state.watchList = playlistTagVideoArray;
+
+    //プレイリストの場合はlistIndexは0からスタート
+    state.listIndex = 0;
+  },
+  setIndivisualParameters: function setIndivisualParameters(state, indivisualTagVideoArray) {
+    //watchlistにコンテンツをセット
+    state.watchList = indivisualTagVideoArray;
+
+    //watchlistからクリックしたタグIDのインデックスを検索しlistIndexにセット
+    state.listIndex = state.watchList.findIndex(function (_ref) {
+      var tag_id = _ref.tag_id;
+      return tag_id == state.currentTagId;
+    });
+  },
+  setCurrentPlaylistId: function setCurrentPlaylistId(state, data) {
+    state.currentPlaylistId = data;
+  },
+  setCurrentPlaylistName: function setCurrentPlaylistName(state, data) {
+    state.currentPlaylistName = data;
+  },
+  setCurrentVideoId: function setCurrentVideoId(state, data) {
+    state.currentVideoId = data;
+  },
+  setCurrentTagId: function setCurrentTagId(state, data) {
+    state.currentTagId = data;
+  }
+};
+
+var actions = {};
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   namespaced: true,
@@ -53353,7 +53699,7 @@ function getCookieValue(searchKey) {
       var _this = this;
 
       if (tagVideo) {
-        tagVideo.forEach(function (value) {
+        tagVideo.forEach(function (value, index) {
           mediaItems.push({
             category: "tag",
             id: value.tag_id,
@@ -53371,7 +53717,7 @@ function getCookieValue(searchKey) {
     //プレイリストデータをメディアアイテムに追加格納
     putPlaylistTagIntoMediaItems: function putPlaylistTagIntoMediaItems(mediaItems, playlistTag) {
       if (playlistTag) {
-        playlistTag.forEach(function (value) {
+        playlistTag.forEach(function (value, index) {
           mediaItems.push({
             category: "playlist",
             id: value.id,

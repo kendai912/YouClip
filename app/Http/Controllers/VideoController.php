@@ -3,16 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\VideoStoreRequest;
+use App\Http\Controllers\TagController;
 use Illuminate\Http\Request;
-use Auth;
+use App\Playlist;
 use App\Video;
 use App\Tag;
 use App\User;
-use App\Playlist;
-use App\Http\Controllers\TagController;
+use Auth;
 
 class VideoController extends Controller
 {
+    //動画のタグ一覧の取得
+    public function getTagList(Request $request)
+    {
+        $tagList = Tag::where('video_id', $request->input('id'))->get();
+
+        return response()->json(
+            [
+                'tagList' => $tagList
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
     //登録画面
     public function create()
     {

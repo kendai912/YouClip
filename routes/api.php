@@ -46,6 +46,10 @@ Route::get('/topSearchqueries', 'SearchController@getTopSearchqueries');
 //検索履歴の取得
 Route::get('/searchHistories', 'SearchController@getSearchHistories');
 
+//動画のタグ一覧の取得
+// Route::get('/video?id={video_id}/taglist', 'VideoController@getTagList');
+Route::get("/taglist/video", 'VideoController@getTagList');
+
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();

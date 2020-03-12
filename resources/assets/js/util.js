@@ -34,7 +34,7 @@ export default {
     //タグデータをレコメンド画面に表示するメディアアイテムに格納
     putTagVideoIntoMediaItems: function(mediaItems, tagVideo) {
       if (tagVideo) {
-        tagVideo.forEach(value => {
+        tagVideo.forEach((value, index) => {
           mediaItems.push({
             category: "tag",
             id: value.tag_id,
@@ -52,7 +52,7 @@ export default {
     //プレイリストデータをメディアアイテムに追加格納
     putPlaylistTagIntoMediaItems: function(mediaItems, playlistTag) {
       if (playlistTag) {
-        playlistTag.forEach(value => {
+        playlistTag.forEach((value, index) => {
           mediaItems.push({
             category: "playlist",
             id: value.id,

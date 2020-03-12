@@ -5,7 +5,12 @@ const state = {
 };
 
 const getters = {
-  playlistTagData: state => state.playlistTagData
+  playlistTagData: state => state.playlistTagData,
+  getPlaylistTagContentById: state => playlistId => {
+    return state.playlistTagData.find(
+      playlistTag => playlistTag.id == playlistId
+    );
+  }
 };
 
 const mutations = {

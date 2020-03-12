@@ -2,22 +2,16 @@
   <footer class="footer">
     <div>
       <div>
-        <RouterLink class="button button--link" to="/home"
-          >レコメンド</RouterLink
-        >
+        <RouterLink class="button button--link" to="/home">レコメンド</RouterLink>
       </div>
       <div>
         <RouterLink class="button button--link" to="/search">検索</RouterLink>
       </div>
       <div>
-        <RouterLink class="button button--link" to="/tagging"
-          >シーン登録</RouterLink
-        >
+        <RouterLink class="button button--link" to="/tagging">シーン登録</RouterLink>
       </div>
       <div>
-        <RouterLink class="button button--link" to="/mypage"
-          >マイページ</RouterLink
-        >
+        <RouterLink class="button button--link" to="/mypage">マイページ</RouterLink>
       </div>
     </div>
   </footer>
@@ -36,9 +30,6 @@ export default {
     }
   },
   computed: {
-    // isLogin() {
-    //   return this.$store.getters["auth/check"];
-    // }
     ...mapState({
       apiStatus: state => state.auth.apiStatus
     }),

@@ -5,7 +5,10 @@ const state = {
 };
 
 const getters = {
-  tagVideoData: state => state.tagVideoData
+  tagVideoData: state => state.tagVideoData,
+  getTagVideoContentById: state => tagId => {
+    return state.tagVideoData.find(tagVideo => tagVideo.tag_id == tagId);
+  }
 };
 
 const mutations = {
@@ -15,6 +18,7 @@ const mutations = {
 };
 
 const actions = {
+  //tagとvideoが紐付いたデータ一覧をロード
   async loadTagVideo(context) {
     const response = await axios.get("api/load/tagVideo");
     context.commit("setTagVideoData", response.data);

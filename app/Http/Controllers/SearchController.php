@@ -201,19 +201,19 @@ class SearchController extends Controller
     //検索履歴を取得
     public function getSearchHistories()
     {
-        //ログインしていなければ何もしない
+        //未ログインなら何もしない
         if (!Auth::check()) {
             return;
         }
 
-        //直近の検索履歴10件を取得
+        //検索履歴を取得
         $searchHistoryArray = SearchqueryUser::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->distinct()->get();
 
-        //直近10件の検索ワードを取得
+        //直近10件の検索履歴を取得
         $searchHistories = [];
         $count = 0;
         foreach ($searchHistoryArray as $searchHistoryData) {
-            //配列に追加する検索ワード
+            //配列に追加する検索履歴をセット
             $addingSearchQuery = Searchquery::find($searchHistoryData->searchquery_id)->searchQuery;
 
             //既に同じ検索ワードが配列内にないかチェック
@@ -227,11 +227,6 @@ class SearchController extends Controller
                 $searchHistories[] = $addingSearchQuery;
                 $count++;
             }
-
-            // $array_value = array_count_values($searchHistories);
-            // if ($array_value[$addingSearchQuery] == 0) {
-            //     $searchHistories[] = $addingSearchQuery;
-            // }
         }
 
         return response()->json(
