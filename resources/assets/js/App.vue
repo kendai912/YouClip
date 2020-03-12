@@ -16,12 +16,14 @@
 import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
 import { INTERNAL_SERVER_ERROR } from "./util";
+import myMixin from "./util";
 
 export default {
   components: {
     Navbar,
     Footer
   },
+  mixins: [myMixin],
   computed: {
     errorCode() {
       return this.$store.state.error.code;
@@ -39,6 +41,10 @@ export default {
     $route() {
       this.$store.commit("error/setCode", null);
     }
+  },
+  created() {
+    this.$store.dispatch("tag/loadTagVideo");
+    this.$store.dispatch("playlist/loadPlaylist");
   }
 };
 </script>

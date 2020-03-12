@@ -3,9 +3,9 @@ import axios from "axios";
 const state = {
   watchList: null,
   listIndex: 0,
-  currentPlaylistId: "",
-  currentPlaylistName: "",
-  currentVideoId: "",
+  playlistId: "",
+  playlistName: "",
+  currentYoutubeId: "",
   currentTagId: "",
   start: "",
   end: ""
@@ -14,19 +14,24 @@ const state = {
 const getters = {
   watchList: state => state.watchList,
   listIndex: state => state.listIndex,
-  currentPlaylistId: state => state.currentPlaylistId,
-  currentPlaylistName: state => state.currentPlaylistName,
-  currentVideoId: state => state.currentVideoId,
-  currentTagId: state => state.currentTagId
+  playlistId: state => state.playlistId,
+  playlistName: state => state.playlistName,
+  currentYoutubeId: state => state.currentYoutubeId,
+  currentTagId: state => state.currentTagId,
+  start: state => state.start,
+  end: state => state.end
 };
 
 const mutations = {
-  setPlaylistParameters(state, playlistTagVideoArray) {
+  setPlaylistParameters(state, {playlistTagVideoArray, index}) {
     //watchlistにコンテンツをセット
     state.watchList = playlistTagVideoArray;
 
     //プレイリストの場合はlistIndexは0からスタート
-    state.listIndex = 0;
+    state.listIndex = index;
+
+    //watchlistのlistIndexのデータを再生関連パラメーターにセット
+    mutations.setYTPlayerParameters(state);
   },
   setIndivisualParameters(state, indivisualTagVideoArray) {
     //watchlistにコンテンツをセット
@@ -36,15 +41,26 @@ const mutations = {
     state.listIndex = state.watchList.findIndex(
       ({ tag_id }) => tag_id == state.currentTagId
     );
+
+    //watchlistのlistIndexのデータを再生関連パラメーターにセット
+    mutations.setYTPlayerParameters(state);
   },
-  setCurrentPlaylistId(state, data) {
-    state.currentPlaylistId = data;
+  setYTPlayerParameters(state) {
+    //YTPlayerに必要なYoutubeIDをセット
+    state.currentYoutubeId = state.watchList[state.listIndex].youtubeId;
+    //YTPlayerに必要なstartをセット
+    state.start = state.watchList[state.listIndex].start;
+    //YTPlayerに必要なendをセット
+    state.end = state.watchList[state.listIndex].end;
   },
-  setCurrentPlaylistName(state, data) {
-    state.currentPlaylistName = data;
+  setPlaylistId(state, data) {
+    state.playlistId = data;
   },
-  setCurrentVideoId(state, data) {
-    state.currentVideoId = data;
+  setPlaylistName(state, data) {
+    state.playlistName = data;
+  },
+  setCurrentYoutubeId(state, data) {
+    state.currentYoutubeId = data;
   },
   setCurrentTagId(state, data) {
     state.currentTagId = data;

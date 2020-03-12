@@ -1660,11 +1660,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     Navbar: __WEBPACK_IMPORTED_MODULE_0__components_Navbar_vue___default.a,
     Footer: __WEBPACK_IMPORTED_MODULE_1__components_Footer_vue___default.a
   },
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
   computed: {
     errorCode: function errorCode() {
       return this.$store.state.error.code;
@@ -1683,6 +1685,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     $route: function $route() {
       this.$store.commit("error/setCode", null);
     }
+  },
+  created: function created() {
+    this.$store.dispatch("tag/loadTagVideo");
+    this.$store.dispatch("playlist/loadPlaylist");
   }
 });
 
@@ -1774,6 +1780,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
 
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -1810,88 +1817,69 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     mediaItems: Array
   },
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
   methods: {
     select: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(mediaItem) {
-        var _this = this;
-
-        var playlistTagArray, playlistTagVideoArray, tag_id, video_id, tagList, indivisualTagVideoArray;
         return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 //プレイリストの場合
                 if (mediaItem.category == "playlist") {
-                  //プレイリストのIDと名前をwatchストアにセット
-                  this.$store.commit("watch/setCurrentPlaylistId", mediaItem.id);
-                  this.$store.commit("watch/setCurrentPlaylistName", mediaItem.title);
+                  // //プレイリストのIDと名前をwatchストアにセット
+                  // this.$store.commit("watch/setPlaylistId", mediaItem.id);
+                  // this.$store.commit("watch/setPlaylistName", mediaItem.title);
 
-                  //プレイリストIDからplaylistストアのplaylistTagDataに格納されているtagデータを取得
-                  playlistTagArray = this.$store.getters["playlist/getPlaylistTagContentById"](mediaItem.id).tags;
+                  // //プレイリストIDからplaylistストアのplaylistTagDataに格納されているtagデータを取得
+                  // let playlistTagArray = this.$store.getters[
+                  //   "playlist/getPlaylistTagContentById"
+                  // ](mediaItem.id).tags;
 
-                  //tagデータとvideoデータを結合
+                  // //tagデータとvideoデータを結合
+                  // let playlistTagVideoArray = [];
+                  // playlistTagArray.forEach(value => {
+                  //   playlistTagVideoArray.push(
+                  //     this.$store.getters["tag/getTagVideoContentById"](value.id)
+                  //   );
+                  // });
 
-                  playlistTagVideoArray = [];
+                  // //Watchストアに再生のためのパラメータをセット
+                  // this.$store.commit(
+                  //   "watch/setPlaylistParameters",
+                  //   playlistTagVideoArray
+                  // );
 
-                  playlistTagArray.forEach(function (value) {
-                    playlistTagVideoArray.push(_this.$store.getters["tag/getTagVideoContentById"](value.id));
-                  });
-
-                  //Watchストアに再生のためのパラメータをセット
-                  this.$store.commit("watch/setPlaylistParameters", playlistTagVideoArray);
+                  //再生ページを表示
+                  this.$router.push({
+                    path: "/watch",
+                    query: {
+                      playlist: mediaItem.id,
+                      index: "0"
+                    }
+                  }).catch(function (err) {});
                 }
 
                 //タグの場合
-
-                if (!(mediaItem.category == "tag")) {
-                  _context.next = 12;
-                  break;
+                if (mediaItem.category == "tag") {
+                  //再生ページを表示
+                  this.$router.push({
+                    path: "/watch",
+                    query: {
+                      tag: mediaItem.id
+                    }
+                  }).catch(function (err) {});
                 }
 
-                //tagIDからVideoIDを取得
-                tag_id = mediaItem.id;
-                video_id = this.$store.getters["tag/getTagVideoContentById"](tag_id).video_id;
+                // IFrame Player APIを呼び出すためにページをリロード
+                window.location.reload();
 
-                //tagIDとvideIDをwatchストアにセット
-
-                this.$store.commit("watch/setCurrentVideoId", video_id);
-                this.$store.commit("watch/setCurrentTagId", tag_id);
-
-                //VideoIDからtagデータ一覧を取得
-                _context.next = 8;
-                return this.$store.dispatch("video/getTagListByVideoId", video_id);
-
-              case 8:
-                tagList = this.$store.getters["video/tagListOfVideo"];
-
-                //tagデータとvideoデータを結合
-
-                indivisualTagVideoArray = [];
-
-                tagList.forEach(function (value) {
-                  indivisualTagVideoArray.push(_this.$store.getters["tag/getTagVideoContentById"](value.id));
-                });
-
-                //Watchストアに再生のためのパラメータをセット
-                this.$store.commit("watch/setIndivisualParameters", indivisualTagVideoArray);
-
-              case 12:
-
-                //再生ページを表示
-                this.$router.push({
-                  path: "/watch",
-                  query: {
-                    playlist: "1",
-                    tag: "2",
-                    radio: "3"
-                  }
-                }).catch(function (err) {});
-
-              case 13:
+              case 3:
               case "end":
                 return _context.stop();
             }
@@ -2110,15 +2098,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue__ = __webpack_require__("./resources/assets/js/components/IndexItem.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./resources/assets/js/util.js");
-
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_IndexItem_vue__ = __webpack_require__("./resources/assets/js/components/IndexItem.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_IndexItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_IndexItem_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
 //
@@ -2158,17 +2142,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    IndexItem: __WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue___default.a
+    IndexItem: __WEBPACK_IMPORTED_MODULE_1__components_IndexItem_vue___default.a
   },
   data: function data() {
     return {
-      tab: 1,
-      tagVideoData: null,
-      playlistTagData: null
+      tab: 1
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
   methods: {
     //i:s形式に変換
     formatToMinSec: function formatToMinSec(His) {
@@ -2177,40 +2159,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       return min + ":" + sec;
     }
   },
-  created: function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return this.$store.dispatch("tag/loadTagVideo");
-
-            case 2:
-              _context.next = 4;
-              return this.$store.dispatch("playlist/loadPlaylist");
-
-            case 4:
-
-              this.tagVideoData = this.$store.getters["tag/tagVideoData"];
-              this.playlistTagData = this.$store.getters["playlist/playlistTagData"];
-
-            case 6:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, this);
-    }));
-
-    function created() {
-      return _ref.apply(this, arguments);
-    }
-
-    return created;
-  }(),
-
-  computed: {
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    tagVideoData: "tag/tagVideoData",
+    playlistTagData: "playlist/playlistTagData"
+  }), {
     //レコメンド画面に表示するアイテム
     mediaItems: function mediaItems() {
       var mediaItems = [];
@@ -2226,7 +2178,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         return a.created_at < b.created_at ? 1 : a.created_at > b.created_at ? -1 : 0;
       });
     }
-  }
+  })
 });
 
 /***/ }),
@@ -2557,10 +2509,20 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+
+
+var _components$data$mixi;
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 //
 //
 //
@@ -2572,15 +2534,140 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 
-/* harmony default export */ __webpack_exports__["default"] = ({
+/* harmony default export */ __webpack_exports__["default"] = (_components$data$mixi = {
   components: {},
-  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
+  data: function data() {
+    return {
+      currentTime: ""
+    };
+  },
+
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
   methods: {},
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     watchList: "watch/watchList",
     listIndex: "watch/listIndex"
   }))
-});
+}, _defineProperty(_components$data$mixi, "mixins", [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]]), _defineProperty(_components$data$mixi, "mounted", function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+    var _this = this;
+
+    var playlistId, index, currentTagId, tag, firstScriptTag;
+    return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            if (!(!this.$store.getters["tag/tagVideoData"] || !this.$store.getters["playlist/playlistTagData"])) {
+              _context.next = 5;
+              break;
+            }
+
+            _context.next = 3;
+            return this.$store.dispatch("tag/loadTagVideo");
+
+          case 3:
+            _context.next = 5;
+            return this.$store.dispatch("playlist/loadPlaylist");
+
+          case 5:
+            if (!this.$route.query.playlist) {
+              _context.next = 11;
+              break;
+            }
+
+            //単独タグ再生の場合
+            //URLのクエリパラメータからプレイリストIDとインデックスを取得
+            playlistId = this.$route.query.playlist;
+            index = this.$route.query.index;
+
+            //YTPlayerのプレイリストの再生に必要なパラメータをセット
+
+            this.setPlaylistParameters(playlistId, index);
+            _context.next = 15;
+            break;
+
+          case 11:
+            if (!this.$route.query.tag) {
+              _context.next = 15;
+              break;
+            }
+
+            //プレイリスト再生の場合
+            //URLのクエリパラメータからプレイリストIDとインデックスを取得
+            currentTagId = this.$route.query.tag;
+
+            //YTPlayerのタグの再生に必要なパラメータをセット
+
+            _context.next = 15;
+            return this.setIndivisualParameters(currentTagId);
+
+          case 15:
+
+            // This code loads the IFrame Player API code asynchronously.
+            tag = document.createElement("script");
+
+            tag.src = "https://www.youtube.com/iframe_api";
+            firstScriptTag = document.getElementsByTagName("script")[0];
+
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+            //Youtube Playerの初期処理
+            window.onYouTubeIframeAPIReady = function () {
+              _this.player = new YT.Player("player", {
+                width: "560",
+                height: "315",
+                videoId: _this.$store.getters["watch/currentYoutubeId"],
+                playerVars: {
+                  start: _this.convertToSec(_this.formatToMinSec(_this.$store.getters["watch/start"])),
+                  end: _this.convertToSec(_this.formatToMinSec(_this.$store.getters["watch/end"]))
+                },
+                events: {
+                  onReady: onPlayerReady,
+                  onStateChange: onPlayerStateChange
+                }
+              });
+            };
+
+            window.onPlayerReady = function (event) {
+              var self = _this;
+              event.target.mute();
+              event.target.playVideo();
+
+              //1秒毎に現在の再生時間を取得
+              setInterval(function () {
+                self.currentTime = self.convertToSec(self.formatTime(event.target.getCurrentTime()));
+              }, 1000);
+            };
+
+            window.onPlayerStateChange = function (event) {
+              if (event.data == 0) {
+                // if (playlist_id != "" && nextVideoId != "" && nextTagId != "") {
+                //   window.location.href =
+                //     window.axios.defaults.baseURL +
+                //     "/video/play/video_id=" +
+                //     nextVideoId +
+                //     "&tag_id=" +
+                //     nextTagId +
+                //     "&playlist_id=" +
+                //     playlist_id;
+                // }
+              }
+            };
+
+          case 22:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  function mounted() {
+    return _ref.apply(this, arguments);
+  }
+
+  return mounted;
+}()), _components$data$mixi);
 
 /***/ }),
 
@@ -35218,7 +35305,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "container--small" }, [
       _c("h1", [_vm._v("Watch")]),
       _vm._v(" "),
-      _c("div")
+      _c("div", { attrs: { id: "player" } })
     ])
   }
 ]
@@ -53573,9 +53660,9 @@ var actions = {
 var state = {
   watchList: null,
   listIndex: 0,
-  currentPlaylistId: "",
-  currentPlaylistName: "",
-  currentVideoId: "",
+  playlistId: "",
+  playlistName: "",
+  currentYoutubeId: "",
   currentTagId: "",
   start: "",
   end: ""
@@ -53588,46 +53675,69 @@ var getters = {
   listIndex: function listIndex(state) {
     return state.listIndex;
   },
-  currentPlaylistId: function currentPlaylistId(state) {
-    return state.currentPlaylistId;
+  playlistId: function playlistId(state) {
+    return state.playlistId;
   },
-  currentPlaylistName: function currentPlaylistName(state) {
-    return state.currentPlaylistName;
+  playlistName: function playlistName(state) {
+    return state.playlistName;
   },
-  currentVideoId: function currentVideoId(state) {
-    return state.currentVideoId;
+  currentYoutubeId: function currentYoutubeId(state) {
+    return state.currentYoutubeId;
   },
   currentTagId: function currentTagId(state) {
     return state.currentTagId;
+  },
+  start: function start(state) {
+    return state.start;
+  },
+  end: function end(state) {
+    return state.end;
   }
 };
 
 var mutations = {
-  setPlaylistParameters: function setPlaylistParameters(state, playlistTagVideoArray) {
+  setPlaylistParameters: function setPlaylistParameters(state, _ref) {
+    var playlistTagVideoArray = _ref.playlistTagVideoArray,
+        index = _ref.index;
+
     //watchlistにコンテンツをセット
     state.watchList = playlistTagVideoArray;
 
     //プレイリストの場合はlistIndexは0からスタート
-    state.listIndex = 0;
+    state.listIndex = index;
+
+    //watchlistのlistIndexのデータを再生関連パラメーターにセット
+    mutations.setYTPlayerParameters(state);
   },
   setIndivisualParameters: function setIndivisualParameters(state, indivisualTagVideoArray) {
     //watchlistにコンテンツをセット
     state.watchList = indivisualTagVideoArray;
 
     //watchlistからクリックしたタグIDのインデックスを検索しlistIndexにセット
-    state.listIndex = state.watchList.findIndex(function (_ref) {
-      var tag_id = _ref.tag_id;
+    state.listIndex = state.watchList.findIndex(function (_ref2) {
+      var tag_id = _ref2.tag_id;
       return tag_id == state.currentTagId;
     });
+
+    //watchlistのlistIndexのデータを再生関連パラメーターにセット
+    mutations.setYTPlayerParameters(state);
   },
-  setCurrentPlaylistId: function setCurrentPlaylistId(state, data) {
-    state.currentPlaylistId = data;
+  setYTPlayerParameters: function setYTPlayerParameters(state) {
+    //YTPlayerに必要なYoutubeIDをセット
+    state.currentYoutubeId = state.watchList[state.listIndex].youtubeId;
+    //YTPlayerに必要なstartをセット
+    state.start = state.watchList[state.listIndex].start;
+    //YTPlayerに必要なendをセット
+    state.end = state.watchList[state.listIndex].end;
   },
-  setCurrentPlaylistName: function setCurrentPlaylistName(state, data) {
-    state.currentPlaylistName = data;
+  setPlaylistId: function setPlaylistId(state, data) {
+    state.playlistId = data;
   },
-  setCurrentVideoId: function setCurrentVideoId(state, data) {
-    state.currentVideoId = data;
+  setPlaylistName: function setPlaylistName(state, data) {
+    state.playlistName = data;
+  },
+  setCurrentYoutubeId: function setCurrentYoutubeId(state, data) {
+    state.currentYoutubeId = data;
   },
   setCurrentTagId: function setCurrentTagId(state, data) {
     state.currentTagId = data;
@@ -53655,7 +53765,13 @@ var actions = {};
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return INTERNAL_SERVER_ERROR; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return UNPROCESSABLE_ENTITY; });
 /* harmony export (immutable) */ __webpack_exports__["f"] = getCookieValue;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+
+
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 //システムエラー定義
 var OK = 200;
@@ -53731,7 +53847,102 @@ function getCookieValue(searchKey) {
           });
         });
       }
-    }
+    },
+    //i:s表記から秒数に変換
+    convertToSec: function convertToSec(is) {
+      return parseInt(is.split(":")[0], 10) * 60 + parseInt(is.split(":")[1], 10);
+    },
+
+    //H:i:sをi:s表記にフォーマット
+    formatToMinSec: function formatToMinSec(His) {
+      var min = parseInt(His.split(":")[0], 10) * 60 + parseInt(His.split(":")[1], 10);
+      var sec = parseInt(His.split(":")[2], 10);
+      return min + ":" + sec;
+    },
+
+    //playerが取得した時間を「分:秒」に整形
+    formatTime: function formatTime(time) {
+      time = Math.round(time);
+      var minutes = Math.floor(time / 60),
+          seconds = time - minutes * 60;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+
+      return minutes + ":" + seconds;
+    },
+    setPlaylistParameters: function setPlaylistParameters(playlistId, index) {
+      var _this2 = this;
+
+      //プレイリストIDからプレイリスト名を取得
+      var playlistName = this.$store.getters["playlist/getPlaylistTagContentById"](playlistId).playlistName;
+
+      //プレイリストのIDと名前をwatchストアにセット
+      this.$store.commit("watch/setPlaylistId", playlistId);
+      this.$store.commit("watch/setPlaylistName", playlistName);
+
+      //プレイリストIDからplaylistストアのplaylistTagDataに格納されているtagデータを取得
+      var playlistTagArray = this.$store.getters["playlist/getPlaylistTagContentById"](playlistId).tags;
+
+      //tagデータとvideoデータを結合
+      var playlistTagVideoArray = [];
+      playlistTagArray.forEach(function (value) {
+        playlistTagVideoArray.push(_this2.$store.getters["tag/getTagVideoContentById"](value.id));
+      });
+
+      //Watchストアに再生のためのパラメータをセット
+      this.$store.commit("watch/setPlaylistParameters", {
+        playlistTagVideoArray: playlistTagVideoArray,
+        index: index
+      });
+    },
+
+    //YTPlayerのタグの再生に必要なパラメータをセット
+    setIndivisualParameters: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(currentTagId) {
+        var _this3 = this;
+
+        var video_id, tagList, indivisualTagVideoArray;
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                video_id = this.$store.getters["tag/getTagVideoContentById"](currentTagId).video_id;
+
+                // //再生するtagIDをwatchストアにセット
+
+                this.$store.commit("watch/setCurrentTagId", currentTagId);
+
+                //VideoIDからtagデータ一覧を取得
+                _context.next = 4;
+                return this.$store.dispatch("video/getTagListByVideoId", video_id);
+
+              case 4:
+                tagList = this.$store.getters["video/tagListOfVideo"];
+
+                //tagデータとvideoデータを結合
+
+                indivisualTagVideoArray = [];
+
+                tagList.forEach(function (value) {
+                  indivisualTagVideoArray.push(_this3.$store.getters["tag/getTagVideoContentById"](value.id));
+                });
+
+                //Watchストアに再生のためのパラメータをセット
+                this.$store.commit("watch/setIndivisualParameters", indivisualTagVideoArray);
+
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function setIndivisualParameters(_x) {
+        return _ref.apply(this, arguments);
+      }
+
+      return setIndivisualParameters;
+    }()
   }
 });
 

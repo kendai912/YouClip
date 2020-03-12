@@ -40,9 +40,7 @@ export default {
   },
   data() {
     return {
-      tab: 1,
-      tagVideoData: null,
-      playlistTagData: null
+      tab: 1
     };
   },
   mixins: [myMixin],
@@ -55,14 +53,11 @@ export default {
       return min + ":" + sec;
     }
   },
-  async created() {
-    await this.$store.dispatch("tag/loadTagVideo");
-    await this.$store.dispatch("playlist/loadPlaylist");
-
-    this.tagVideoData = this.$store.getters["tag/tagVideoData"];
-    this.playlistTagData = this.$store.getters["playlist/playlistTagData"];
-  },
   computed: {
+    ...mapGetters({
+      tagVideoData: "tag/tagVideoData",
+      playlistTagData: "playlist/playlistTagData"
+    }),
     //レコメンド画面に表示するアイテム
     mediaItems() {
       let mediaItems = [];
