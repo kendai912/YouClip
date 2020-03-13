@@ -40,29 +40,6 @@ export default {
     async select(mediaItem) {
       //プレイリストの場合
       if (mediaItem.category == "playlist") {
-        // //プレイリストのIDと名前をwatchストアにセット
-        // this.$store.commit("watch/setPlaylistId", mediaItem.id);
-        // this.$store.commit("watch/setPlaylistName", mediaItem.title);
-
-        // //プレイリストIDからplaylistストアのplaylistTagDataに格納されているtagデータを取得
-        // let playlistTagArray = this.$store.getters[
-        //   "playlist/getPlaylistTagContentById"
-        // ](mediaItem.id).tags;
-
-        // //tagデータとvideoデータを結合
-        // let playlistTagVideoArray = [];
-        // playlistTagArray.forEach(value => {
-        //   playlistTagVideoArray.push(
-        //     this.$store.getters["tag/getTagVideoContentById"](value.id)
-        //   );
-        // });
-
-        // //Watchストアに再生のためのパラメータをセット
-        // this.$store.commit(
-        //   "watch/setPlaylistParameters",
-        //   playlistTagVideoArray
-        // );
-
         //再生ページを表示
         this.$router
           .push({

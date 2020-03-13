@@ -1832,29 +1832,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
               case 0:
                 //プレイリストの場合
                 if (mediaItem.category == "playlist") {
-                  // //プレイリストのIDと名前をwatchストアにセット
-                  // this.$store.commit("watch/setPlaylistId", mediaItem.id);
-                  // this.$store.commit("watch/setPlaylistName", mediaItem.title);
-
-                  // //プレイリストIDからplaylistストアのplaylistTagDataに格納されているtagデータを取得
-                  // let playlistTagArray = this.$store.getters[
-                  //   "playlist/getPlaylistTagContentById"
-                  // ](mediaItem.id).tags;
-
-                  // //tagデータとvideoデータを結合
-                  // let playlistTagVideoArray = [];
-                  // playlistTagArray.forEach(value => {
-                  //   playlistTagVideoArray.push(
-                  //     this.$store.getters["tag/getTagVideoContentById"](value.id)
-                  //   );
-                  // });
-
-                  // //Watchストアに再生のためのパラメータをセット
-                  // this.$store.commit(
-                  //   "watch/setPlaylistParameters",
-                  //   playlistTagVideoArray
-                  // );
-
                   //再生ページを表示
                   this.$router.push({
                     path: "/watch",
@@ -2538,21 +2515,69 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   components: {},
   data: function data() {
     return {
-      currentTime: ""
+      currentTime: "",
+      playlistId: "",
+      index: 0,
+      currentTagId: "",
+      isPlaying: true
     };
   },
 
   mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
-  methods: {},
+  methods: {
+    playPlaylist: function playPlaylist(playlistId, index) {
+      //最後のシーンでない場合は次のシーンのパラメータをセット
+      this.setPlaylistParameters(playlistId, index);
+
+      //URLを更新
+      this.$router.push({
+        query: {
+          playlist: playlistId,
+          index: index
+        }
+      }).catch(function (err) {});
+
+      //次のシーンをロードし再生
+      this.player.loadVideoById({
+        videoId: this.youtubeId,
+        startSeconds: this.convertToSec(this.formatToMinSec(this.startHis)),
+        endSeconds: this.convertToSec(this.formatToMinSec(this.endHis))
+      });
+    },
+    playSpecificScene: function playSpecificScene(tagId) {
+      //特定シーンのパラメータをセット
+      this.setIndivisualParameters(tagId);
+
+      //別のシーンの場合はURLを更新
+      if (this.$route.query.tag != this.currentTagId) {
+        this.$router.push({
+          query: {
+            tag: tagId
+          }
+        }).catch(function (err) {});
+      }
+
+      //次のシーンをロードし再生
+      this.player.loadVideoById({
+        videoId: this.youtubeId,
+        startSeconds: this.convertToSec(this.formatToMinSec(this.startHis)),
+        endSeconds: this.convertToSec(this.formatToMinSec(this.endHis))
+      });
+    }
+  },
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     watchList: "watch/watchList",
-    listIndex: "watch/listIndex"
+    listIndex: "watch/listIndex",
+    youtubeId: "watch/currentYoutubeId",
+    startHis: "watch/start",
+    endHis: "watch/end",
+    isPlaylist: "watch/isPlaylist"
   }))
 }, _defineProperty(_components$data$mixi, "mixins", [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]]), _defineProperty(_components$data$mixi, "mounted", function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
     var _this = this;
 
-    var playlistId, index, currentTagId, tag, firstScriptTag;
+    var tag, firstScriptTag;
     return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -2575,14 +2600,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
               break;
             }
 
-            //単独タグ再生の場合
+            //特定シーン再生の場合
             //URLのクエリパラメータからプレイリストIDとインデックスを取得
-            playlistId = this.$route.query.playlist;
-            index = this.$route.query.index;
+            this.playlistId = this.$route.query.playlist;
+            this.index = this.$route.query.index;
 
             //YTPlayerのプレイリストの再生に必要なパラメータをセット
-
-            this.setPlaylistParameters(playlistId, index);
+            this.setPlaylistParameters(this.playlistId, this.index);
             _context.next = 15;
             break;
 
@@ -2594,12 +2618,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
             //プレイリスト再生の場合
             //URLのクエリパラメータからプレイリストIDとインデックスを取得
-            currentTagId = this.$route.query.tag;
+            this.currentTagId = this.$route.query.tag;
 
             //YTPlayerのタグの再生に必要なパラメータをセット
-
             _context.next = 15;
-            return this.setIndivisualParameters(currentTagId);
+            return this.setIndivisualParameters(this.currentTagId);
 
           case 15:
 
@@ -2616,10 +2639,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
               _this.player = new YT.Player("player", {
                 width: "560",
                 height: "315",
-                videoId: _this.$store.getters["watch/currentYoutubeId"],
+                videoId: _this.youtubeId,
                 playerVars: {
-                  start: _this.convertToSec(_this.formatToMinSec(_this.$store.getters["watch/start"])),
-                  end: _this.convertToSec(_this.formatToMinSec(_this.$store.getters["watch/end"]))
+                  start: _this.convertToSec(_this.formatToMinSec(_this.startHis)),
+                  end: _this.convertToSec(_this.formatToMinSec(_this.endHis))
                 },
                 events: {
                   onReady: onPlayerReady,
@@ -2640,17 +2663,32 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             };
 
             window.onPlayerStateChange = function (event) {
-              if (event.data == 0) {
-                // if (playlist_id != "" && nextVideoId != "" && nextTagId != "") {
-                //   window.location.href =
-                //     window.axios.defaults.baseURL +
-                //     "/video/play/video_id=" +
-                //     nextVideoId +
-                //     "&tag_id=" +
-                //     nextTagId +
-                //     "&playlist_id=" +
-                //     playlist_id;
-                // }
+              if (event.data == YT.PlayerState.ENDED && _this.isPlaying) {
+                //フラグを停止中に反転
+                _this.isPlaying = !_this.isPlaying;
+
+                //プレイリスト再生の場合
+                if (_this.$route.query.playlist) {
+                  if (_this.index < _this.watchList.length - 1) {
+                    // //最後のシーンでない場合は次のシーンのパラメータをセット
+                    _this.playPlaylist(_this.playlistId, ++_this.index);
+                  } else if (_this.index == _this.watchList.length - 1) {
+                    //最後のシーンの場合は先頭に戻る
+                    _this.index = 0;
+                    _this.playPlaylist(_this.playlistId, _this.index);
+                  }
+                }
+
+                //特定シーン再生の場合
+                if (_this.$route.query.tag) {
+                  //現在と同じシーンをリピート
+                  _this.playSpecificScene(_this.currentTagId);
+                }
+              }
+
+              if (event.data == YT.PlayerState.PLAYING) {
+                //フラグを再生中にセット
+                _this.isPlaying = true;
               }
             };
 
@@ -53692,6 +53730,9 @@ var getters = {
   },
   end: function end(state) {
     return state.end;
+  },
+  isPlaylist: function isPlaylist(state) {
+    return state.playlistId ? true : false;
   }
 };
 

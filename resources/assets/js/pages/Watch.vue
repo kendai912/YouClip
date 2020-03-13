@@ -13,15 +13,67 @@ export default {
   components: {},
   data() {
     return {
-      currentTime: ""
+      currentTime: "",
+      playlistId: "",
+      index: 0,
+      currentTagId: "",
+      isPlaying: true
     };
   },
   mixins: [myMixin],
-  methods: {},
+  methods: {
+    playPlaylist(playlistId, index) {
+      //最後のシーンでない場合は次のシーンのパラメータをセット
+      this.setPlaylistParameters(playlistId, index);
+
+      //URLを更新
+      this.$router
+        .push({
+          query: {
+            playlist: playlistId,
+            index: index
+          }
+        })
+        .catch(err => {});
+
+      //次のシーンをロードし再生
+      this.player.loadVideoById({
+        videoId: this.youtubeId,
+        startSeconds: this.convertToSec(this.formatToMinSec(this.startHis)),
+        endSeconds: this.convertToSec(this.formatToMinSec(this.endHis))
+      });
+    },
+    playSpecificScene(tagId) {
+      //特定シーンのパラメータをセット
+      this.setIndivisualParameters(tagId);
+
+      //別のシーンの場合はURLを更新
+      if (this.$route.query.tag != this.currentTagId) {
+        this.$router
+          .push({
+            query: {
+              tag: tagId
+            }
+          })
+          .catch(err => {});
+      }
+
+      //次のシーンをロードし再生
+      this.player.loadVideoById({
+        videoId: this.youtubeId,
+        startSeconds: this.convertToSec(this.formatToMinSec(this.startHis)),
+        endSeconds: this.convertToSec(this.formatToMinSec(this.endHis))
+      });
+    }
+  },
   computed: {
     ...mapGetters({
       watchList: "watch/watchList",
-      listIndex: "watch/listIndex"
+      listIndex: "watch/listIndex",
+      youtubeId: "watch/currentYoutubeId",
+      startHis: "watch/start",
+      endHis: "watch/end",
+      isPlaylist: "watch/isPlaylist"
     })
   },
   mixins: [myMixin],
@@ -36,20 +88,20 @@ export default {
     }
 
     if (this.$route.query.playlist) {
-      //単独タグ再生の場合
+      //特定シーン再生の場合
       //URLのクエリパラメータからプレイリストIDとインデックスを取得
-      let playlistId = this.$route.query.playlist;
-      let index = this.$route.query.index;
+      this.playlistId = this.$route.query.playlist;
+      this.index = this.$route.query.index;
 
       //YTPlayerのプレイリストの再生に必要なパラメータをセット
-      this.setPlaylistParameters(playlistId, index);
+      this.setPlaylistParameters(this.playlistId, this.index);
     } else if (this.$route.query.tag) {
       //プレイリスト再生の場合
       //URLのクエリパラメータからプレイリストIDとインデックスを取得
-      let currentTagId = this.$route.query.tag;
+      this.currentTagId = this.$route.query.tag;
 
       //YTPlayerのタグの再生に必要なパラメータをセット
-      await this.setIndivisualParameters(currentTagId);
+      await this.setIndivisualParameters(this.currentTagId);
     }
 
     // This code loads the IFrame Player API code asynchronously.
@@ -63,14 +115,10 @@ export default {
       this.player = new YT.Player("player", {
         width: "560",
         height: "315",
-        videoId: this.$store.getters["watch/currentYoutubeId"],
+        videoId: this.youtubeId,
         playerVars: {
-          start: this.convertToSec(
-            this.formatToMinSec(this.$store.getters["watch/start"])
-          ),
-          end: this.convertToSec(
-            this.formatToMinSec(this.$store.getters["watch/end"])
-          )
+          start: this.convertToSec(this.formatToMinSec(this.startHis)),
+          end: this.convertToSec(this.formatToMinSec(this.endHis))
         },
         events: {
           onReady: onPlayerReady,
@@ -93,17 +141,32 @@ export default {
     };
 
     window.onPlayerStateChange = event => {
-      if (event.data == 0) {
-        // if (playlist_id != "" && nextVideoId != "" && nextTagId != "") {
-        //   window.location.href =
-        //     window.axios.defaults.baseURL +
-        //     "/video/play/video_id=" +
-        //     nextVideoId +
-        //     "&tag_id=" +
-        //     nextTagId +
-        //     "&playlist_id=" +
-        //     playlist_id;
-        // }
+      if (event.data == YT.PlayerState.ENDED && this.isPlaying) {
+        //フラグを停止中に反転
+        this.isPlaying = !this.isPlaying;
+
+        //プレイリスト再生の場合
+        if (this.$route.query.playlist) {
+          if (this.index < this.watchList.length - 1) {
+            // //最後のシーンでない場合は次のシーンのパラメータをセット
+            this.playPlaylist(this.playlistId, ++this.index);
+          } else if (this.index == this.watchList.length - 1) {
+            //最後のシーンの場合は先頭に戻る
+            this.index = 0;
+            this.playPlaylist(this.playlistId, this.index);
+          }
+        }
+
+        //特定シーン再生の場合
+        if (this.$route.query.tag) {
+          //現在と同じシーンをリピート
+          this.playSpecificScene(this.currentTagId);
+        }
+      }
+
+      if (event.data == YT.PlayerState.PLAYING) {
+        //フラグを再生中にセット
+        this.isPlaying = true;
       }
     };
   }

@@ -19,11 +19,12 @@ const getters = {
   currentYoutubeId: state => state.currentYoutubeId,
   currentTagId: state => state.currentTagId,
   start: state => state.start,
-  end: state => state.end
+  end: state => state.end,
+  isPlaylist: state => (state.playlistId ? true : false)
 };
 
 const mutations = {
-  setPlaylistParameters(state, {playlistTagVideoArray, index}) {
+  setPlaylistParameters(state, { playlistTagVideoArray, index }) {
     //watchlistにコンテンツをセット
     state.watchList = playlistTagVideoArray;
 
