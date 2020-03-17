@@ -2525,6 +2525,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
 
 
 
@@ -35412,7 +35413,9 @@ var render = function() {
                 on: { click: _vm.toggleLike }
               },
               [_vm._v("[Like]")]
-            )
+            ),
+            _vm._v(" "),
+            _c("span", [_vm._v(_vm._s(_vm.likeCount))])
           ])
         ])
       : _vm._e()
@@ -53181,10 +53184,17 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./resources/assets/js/util.js");
 
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -53208,7 +53218,11 @@ var getters = {
   },
   likeCount: function likeCount(state) {
     return function (tag_id) {
-      return state.tagLikeData[tag_id].likeCount;
+      if (state.tagLikeData != null && state.tagLikeData[tag_id]) {
+        return state.tagLikeData[tag_id].likeCount;
+      } else {
+        return 0;
+      }
     };
   }
 };
@@ -53217,8 +53231,23 @@ var mutations = {
   setTagLikeData: function setTagLikeData(state, data) {
     state.tagLikeData = data;
   },
+  setIsLiked: function setIsLiked(state, _ref) {
+    var tag_id = _ref.tag_id,
+        data = _ref.data;
+
+    state.tagLikeData[tag_id].isLiked = data;
+  },
   toggleIsLiked: function toggleIsLiked(state, tag_id) {
+    if (!state.tagLikeData[tag_id]) {
+      state.tagLikeData = _extends({}, state.tagLikeData, _defineProperty({}, tag_id, { isLiked: false, likeCount: 0 }));
+    }
     state.tagLikeData[tag_id].isLiked = !state.tagLikeData[tag_id].isLiked;
+  },
+  setLikeCount: function setLikeCount(state, _ref2) {
+    var tag_id = _ref2.tag_id,
+        data = _ref2.data;
+
+    state.tagLikeData[tag_id].likeCount = data;
   },
   incrementLikeCount: function incrementLikeCount(state, tag_id) {
     state.tagLikeData[tag_id].likeCount += 1;
@@ -53231,7 +53260,7 @@ var mutations = {
 var actions = {
   //タグへのLikeデータのロード
   loadTagLike: function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context) {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context) {
       var response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
         while (1) {
@@ -53243,10 +53272,10 @@ var actions = {
             case 2:
               response = _context.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_3__util__["c" /* OK */]) {
                 // 成功した時
                 context.commit("setTagLikeData", response.data.tagLike);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_3__util__["b" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -53263,13 +53292,13 @@ var actions = {
     }));
 
     function loadTagLike(_x) {
-      return _ref.apply(this, arguments);
+      return _ref3.apply(this, arguments);
     }
 
     return loadTagLike;
   }(),
   toggleLike: function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context, tag_id) {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context, tag_id) {
       var params, response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
         while (1) {
@@ -53285,9 +53314,9 @@ var actions = {
             case 4:
               response = _context2.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_3__util__["a" /* CREATED */]) {
                 // 成功した時
-                if (getters["isLiked"](tag_id)) {
+                if (context.getters["isLiked"](tag_id)) {
                   // 既にLike済の場合: isLikedステータスをfalseにし、likeCountを-1
                   context.commit("toggleIsLiked", tag_id);
                   context.commit("decrementLikeCount", tag_id);
@@ -53296,7 +53325,7 @@ var actions = {
                   context.commit("toggleIsLiked", tag_id);
                   context.commit("incrementLikeCount", tag_id);
                 }
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_3__util__["b" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -53313,7 +53342,7 @@ var actions = {
     }));
 
     function toggleLike(_x2, _x3) {
-      return _ref2.apply(this, arguments);
+      return _ref4.apply(this, arguments);
     }
 
     return toggleLike;

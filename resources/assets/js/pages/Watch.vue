@@ -17,6 +17,7 @@
       </div>
       <div>
         <span v-on:click="toggleLike" v-bind:class="{ isLiked: isLiked}">[Like]</span>
+        <span>{{ likeCount }}</span>
       </div>
     </div>
   </div>

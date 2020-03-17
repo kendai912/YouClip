@@ -1,4 +1,5 @@
 import axios from "axios";
+import Vue from "vue";
 import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
 
 const state = {
@@ -15,7 +16,11 @@ const getters = {
     }
   },
   likeCount: state => tag_id => {
-    return state.tagLikeData[tag_id].likeCount;
+    if (state.tagLikeData != null && state.tagLikeData[tag_id]) {
+      return state.tagLikeData[tag_id].likeCount;
+    } else {
+      return 0;
+    }
   }
 };
 
@@ -23,8 +28,20 @@ const mutations = {
   setTagLikeData(state, data) {
     state.tagLikeData = data;
   },
+  setIsLiked(state, { tag_id, data }) {
+    state.tagLikeData[tag_id].isLiked = data;
+  },
   toggleIsLiked(state, tag_id) {
+    if (!state.tagLikeData[tag_id]) {
+      state.tagLikeData = {
+        ...state.tagLikeData,
+        [tag_id]: { isLiked: false, likeCount: 0 }
+      };
+    }
     state.tagLikeData[tag_id].isLiked = !state.tagLikeData[tag_id].isLiked;
+  },
+  setLikeCount(state, { tag_id, data }) {
+    state.tagLikeData[tag_id].likeCount = data;
   },
   incrementLikeCount(state, tag_id) {
     state.tagLikeData[tag_id].likeCount += 1;
@@ -58,7 +75,7 @@ const actions = {
     const response = await axios.post("/api/toggleLike", params);
     if (response.status == CREATED) {
       // 成功した時
-      if (getters["isLiked"](tag_id)) {
+      if (context.getters["isLiked"](tag_id)) {
         // 既にLike済の場合: isLikedステータスをfalseにし、likeCountを-1
         context.commit("toggleIsLiked", tag_id);
         context.commit("decrementLikeCount", tag_id);
