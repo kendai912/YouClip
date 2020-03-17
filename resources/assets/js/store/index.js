@@ -6,6 +6,7 @@ import watch from "./watch";
 import video from "./video";
 import tag from "./tag";
 import playlist from "./playlist";
+import like from "./like";
 import search from "./search";
 import error from "./error";
 
@@ -18,6 +19,7 @@ const store = new Vuex.Store({
     video,
     tag,
     playlist,
+    like,
     search,
     error
   }

@@ -29,9 +29,11 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
 //タグデータのロード
 Route::get('/load/tagVideo', 'TagController@load');
-
 //プレイリストデータのロード
 Route::get('/load/playlist', 'PlaylistController@load');
+//タグへのLikeデータのロード
+Route::get("/load/tagLike", 'LikeController@loadTagLike');
+
 
 //検索ワード候補取得
 Route::post('/search/candidates', 'SearchController@searchCandidates');
@@ -47,9 +49,10 @@ Route::get('/topSearchqueries', 'SearchController@getTopSearchqueries');
 Route::get('/searchHistories', 'SearchController@getSearchHistories');
 
 //動画のタグ一覧の取得
-// Route::get('/video?id={video_id}/taglist', 'VideoController@getTagList');
 Route::get("/taglist/video", 'VideoController@getTagList');
 
+//タグへのLike
+Route::post("/toggleLike", 'LikeController@toggleLike');
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();

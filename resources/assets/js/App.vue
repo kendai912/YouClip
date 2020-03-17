@@ -45,6 +45,7 @@ export default {
   created() {
     this.$store.dispatch("tag/loadTagVideo");
     this.$store.dispatch("playlist/loadPlaylist");
+    this.$store.dispatch("like/loadTagLike");
   }
 };
 </script>

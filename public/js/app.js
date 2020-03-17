@@ -1689,6 +1689,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     this.$store.dispatch("tag/loadTagVideo");
     this.$store.dispatch("playlist/loadPlaylist");
+    this.$store.dispatch("like/loadTagLike");
   }
 });
 
@@ -2507,6 +2508,23 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2515,11 +2533,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   components: {},
   data: function data() {
     return {
-      currentTime: "",
-      playlistId: "",
-      index: 0,
-      currentTagId: "",
-      isPlaying: true
+      playlistIdUrl: "",
+      indexUrl: 0,
+      tagIdUrl: "",
+      isPlaying: true,
+      isPlayerReady: false
     };
   },
 
@@ -2539,7 +2557,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
       //次のシーンをロードし再生
       this.player.loadVideoById({
-        videoId: this.youtubeId,
+        videoId: this.currentYoutubeId,
         startSeconds: this.convertToSec(this.formatToMinSec(this.startHis)),
         endSeconds: this.convertToSec(this.formatToMinSec(this.endHis))
       });
@@ -2559,20 +2577,43 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
       //次のシーンをロードし再生
       this.player.loadVideoById({
-        videoId: this.youtubeId,
+        videoId: this.currentYoutubeId,
         startSeconds: this.convertToSec(this.formatToMinSec(this.startHis)),
         endSeconds: this.convertToSec(this.formatToMinSec(this.endHis))
       });
+    },
+    toggleLike: function toggleLike() {
+      this.$store.dispatch("like/toggleLike", this.currentTagId);
     }
   },
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     watchList: "watch/watchList",
     listIndex: "watch/listIndex",
-    youtubeId: "watch/currentYoutubeId",
+    currentYoutubeId: "watch/currentYoutubeId",
+    currentTitle: "watch/currentTitle",
     startHis: "watch/start",
     endHis: "watch/end",
-    isPlaylist: "watch/isPlaylist"
-  }))
+    isPlaylist: "watch/isPlaylist",
+    playlistName: "watch/playlistName",
+    currentTagName: "watch/currentTagName",
+    currentTagNameArray: "watch/currentTagNameArray"
+  }), {
+    currentTagId: function currentTagId() {
+      return this.watchList[this.listIndex].tag_id;
+    },
+    isLiked: function isLiked() {
+      return this.$store.getters["like/isLiked"](this.currentTagId);
+    },
+    likeCount: function likeCount() {
+      return this.$store.getters["like/likeCount"](this.currentTagId);
+    },
+    startIs: function startIs() {
+      return this.formatToMinSec(this.startHis);
+    },
+    endIs: function endIs() {
+      return this.formatToMinSec(this.endHis);
+    }
+  })
 }, _defineProperty(_components$data$mixi, "mixins", [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]]), _defineProperty(_components$data$mixi, "mounted", function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
     var _this = this;
@@ -2602,11 +2643,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
             //特定シーン再生の場合
             //URLのクエリパラメータからプレイリストIDとインデックスを取得
-            this.playlistId = this.$route.query.playlist;
-            this.index = this.$route.query.index;
+            this.playlistIdUrl = this.$route.query.playlist;
+            this.indexUrl = this.$route.query.index;
 
             //YTPlayerのプレイリストの再生に必要なパラメータをセット
-            this.setPlaylistParameters(this.playlistId, this.index);
+            this.setPlaylistParameters(this.playlistIdUrl, this.indexUrl);
             _context.next = 15;
             break;
 
@@ -2618,11 +2659,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
             //プレイリスト再生の場合
             //URLのクエリパラメータからプレイリストIDとインデックスを取得
-            this.currentTagId = this.$route.query.tag;
+            this.tagIdUrl = this.$route.query.tag;
 
             //YTPlayerのタグの再生に必要なパラメータをセット
             _context.next = 15;
-            return this.setIndivisualParameters(this.currentTagId);
+            return this.setIndivisualParameters(this.tagIdUrl);
 
           case 15:
 
@@ -2639,7 +2680,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
               _this.player = new YT.Player("player", {
                 width: "560",
                 height: "315",
-                videoId: _this.youtubeId,
+                videoId: _this.currentYoutubeId,
                 playerVars: {
                   start: _this.convertToSec(_this.formatToMinSec(_this.startHis)),
                   end: _this.convertToSec(_this.formatToMinSec(_this.endHis))
@@ -2655,6 +2696,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
               var self = _this;
               event.target.mute();
               event.target.playVideo();
+              _this.isPlayerReady = true;
 
               //1秒毎に現在の再生時間を取得
               setInterval(function () {
@@ -2669,20 +2711,20 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
                 //プレイリスト再生の場合
                 if (_this.$route.query.playlist) {
-                  if (_this.index < _this.watchList.length - 1) {
+                  if (_this.indexUrl < _this.watchList.length - 1) {
                     // //最後のシーンでない場合は次のシーンのパラメータをセット
-                    _this.playPlaylist(_this.playlistId, ++_this.index);
-                  } else if (_this.index == _this.watchList.length - 1) {
+                    _this.playPlaylist(_this.playlistIdUrl, ++_this.indexUrl);
+                  } else if (_this.indexUrl == _this.watchList.length - 1) {
                     //最後のシーンの場合は先頭に戻る
-                    _this.index = 0;
-                    _this.playPlaylist(_this.playlistId, _this.index);
+                    _this.indexUrl = 0;
+                    _this.playPlaylist(_this.playlistIdUrl, _this.indexUrl);
                   }
                 }
 
                 //特定シーン再生の場合
                 if (_this.$route.query.tag) {
                   //現在と同じシーンをリピート
-                  _this.playSpecificScene(_this.currentTagId);
+                  _this.playSpecificScene(_this.tagIdUrl);
                 }
               }
 
@@ -35333,20 +35375,50 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container--small" }, [
+    _c("div", { attrs: { id: "player" } }),
+    _vm._v(" "),
+    _vm.isPlayerReady
+      ? _c("div", [
+          _c("div", [_vm._v(_vm._s(_vm.playlistName))]),
+          _vm._v(" "),
+          _c("div", [
+            _c("span", [_vm._v("[Now Playing]")]),
+            _vm._v(" "),
+            _c("span", [_vm._v(_vm._s(_vm.currentTitle))])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            [
+              _c("span", [
+                _vm._v(_vm._s(_vm.startIs) + "〜" + _vm._s(_vm.endIs))
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.currentTagNameArray, function(currentTagName) {
+                return _c("span", { key: currentTagName, staticClass: "tag" }, [
+                  _vm._v(_vm._s(currentTagName))
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c("div", [
+            _c(
+              "span",
+              {
+                class: { isLiked: _vm.isLiked },
+                on: { click: _vm.toggleLike }
+              },
+              [_vm._v("[Like]")]
+            )
+          ])
+        ])
+      : _vm._e()
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container--small" }, [
-      _c("h1", [_vm._v("Watch")]),
-      _vm._v(" "),
-      _c("div", { attrs: { id: "player" } })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -53067,8 +53139,10 @@ var mutations = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__video__ = __webpack_require__("./resources/assets/js/store/video.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__tag__ = __webpack_require__("./resources/assets/js/store/tag.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__playlist__ = __webpack_require__("./resources/assets/js/store/playlist.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__search__ = __webpack_require__("./resources/assets/js/store/search.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__like__ = __webpack_require__("./resources/assets/js/store/like.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__search__ = __webpack_require__("./resources/assets/js/store/search.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+
 
 
 
@@ -53089,12 +53163,170 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     video: __WEBPACK_IMPORTED_MODULE_4__video__["a" /* default */],
     tag: __WEBPACK_IMPORTED_MODULE_5__tag__["a" /* default */],
     playlist: __WEBPACK_IMPORTED_MODULE_6__playlist__["a" /* default */],
-    search: __WEBPACK_IMPORTED_MODULE_7__search__["a" /* default */],
-    error: __WEBPACK_IMPORTED_MODULE_8__error__["a" /* default */]
+    like: __WEBPACK_IMPORTED_MODULE_7__like__["a" /* default */],
+    search: __WEBPACK_IMPORTED_MODULE_8__search__["a" /* default */],
+    error: __WEBPACK_IMPORTED_MODULE_9__error__["a" /* default */]
   }
 });
 
 /* harmony default export */ __webpack_exports__["a"] = (store);
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/like.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+
+
+
+var state = {
+  tagLikeData: null
+};
+
+var getters = {
+  tagLikeData: function tagLikeData(state) {
+    return state.tagLikeData;
+  },
+  isLiked: function isLiked(state) {
+    return function (tag_id) {
+      if (state.tagLikeData != null && state.tagLikeData[tag_id]) {
+        return state.tagLikeData[tag_id].isLiked;
+      } else {
+        return false;
+      }
+    };
+  },
+  likeCount: function likeCount(state) {
+    return function (tag_id) {
+      return state.tagLikeData[tag_id].likeCount;
+    };
+  }
+};
+
+var mutations = {
+  setTagLikeData: function setTagLikeData(state, data) {
+    state.tagLikeData = data;
+  },
+  toggleIsLiked: function toggleIsLiked(state, tag_id) {
+    state.tagLikeData[tag_id].isLiked = !state.tagLikeData[tag_id].isLiked;
+  },
+  incrementLikeCount: function incrementLikeCount(state, tag_id) {
+    state.tagLikeData[tag_id].likeCount += 1;
+  },
+  decrementLikeCount: function decrementLikeCount(state, tag_id) {
+    state.tagLikeData[tag_id].likeCount -= 1;
+  }
+};
+
+var actions = {
+  //タグへのLikeデータのロード
+  loadTagLike: function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("/api/load/tagLike");
+
+            case 2:
+              response = _context.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+                // 成功した時
+                context.commit("setTagLikeData", response.data.tagLike);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function loadTagLike(_x) {
+      return _ref.apply(this, arguments);
+    }
+
+    return loadTagLike;
+  }(),
+  toggleLike: function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context, tag_id) {
+      var params, response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              this.errors = {};
+              params = {
+                tag_id: tag_id
+              };
+              _context2.next = 4;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/toggleLike", params);
+
+            case 4:
+              response = _context2.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
+                // 成功した時
+                if (getters["isLiked"](tag_id)) {
+                  // 既にLike済の場合: isLikedステータスをfalseにし、likeCountを-1
+                  context.commit("toggleIsLiked", tag_id);
+                  context.commit("decrementLikeCount", tag_id);
+                } else {
+                  // 未だLikeしていない場合: isLikedステータスをtrueにし、likeCountを+1
+                  context.commit("toggleIsLiked", tag_id);
+                  context.commit("incrementLikeCount", tag_id);
+                }
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 6:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+
+    function toggleLike(_x2, _x3) {
+      return _ref2.apply(this, arguments);
+    }
+
+    return toggleLike;
+  }()
+};
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
 
 /***/ }),
 
@@ -53724,6 +53956,15 @@ var getters = {
   },
   currentTagId: function currentTagId(state) {
     return state.currentTagId;
+  },
+  currentTagName: function currentTagName(state) {
+    return state.watchList ? state.watchList[state.listIndex].tags : "";
+  },
+  currentTagNameArray: function currentTagNameArray(state, getters) {
+    return state.watchList ? getters.currentTagName.split(/[\s| |　]/) : "";
+  },
+  currentTitle: function currentTitle(state) {
+    return state.watchList ? state.watchList[state.listIndex].title : "";
   },
   start: function start(state) {
     return state.start;

@@ -18,6 +18,12 @@ const getters = {
   playlistName: state => state.playlistName,
   currentYoutubeId: state => state.currentYoutubeId,
   currentTagId: state => state.currentTagId,
+  currentTagName: state =>
+    state.watchList ? state.watchList[state.listIndex].tags : "",
+  currentTagNameArray: (state, getters) =>
+    state.watchList ? getters.currentTagName.split(/[\s| |　]/) : "",
+  currentTitle: state =>
+    state.watchList ? state.watchList[state.listIndex].title : "",
   start: state => state.start,
   end: state => state.end,
   isPlaylist: state => (state.playlistId ? true : false)

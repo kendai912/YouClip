@@ -1,7 +1,24 @@
 <template>
   <div class="container--small">
-    <h1>Watch</h1>
     <div id="player"></div>
+    <div v-if="isPlayerReady">
+      <div>{{ playlistName }}</div>
+      <div>
+        <span>[Now Playing]</span>
+        <span>{{ currentTitle }}</span>
+      </div>
+      <div>
+        <span>{{ startIs }}〜{{ endIs }}</span>
+        <span
+          v-for="currentTagName in currentTagNameArray"
+          class="tag"
+          v-bind:key="currentTagName"
+        >{{ currentTagName }}</span>
+      </div>
+      <div>
+        <span v-on:click="toggleLike" v-bind:class="{ isLiked: isLiked}">[Like]</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -13,11 +30,11 @@ export default {
   components: {},
   data() {
     return {
-      currentTime: "",
-      playlistId: "",
-      index: 0,
-      currentTagId: "",
-      isPlaying: true
+      playlistIdUrl: "",
+      indexUrl: 0,
+      tagIdUrl: "",
+      isPlaying: true,
+      isPlayerReady: false
     };
   },
   mixins: [myMixin],
@@ -38,7 +55,7 @@ export default {
 
       //次のシーンをロードし再生
       this.player.loadVideoById({
-        videoId: this.youtubeId,
+        videoId: this.currentYoutubeId,
         startSeconds: this.convertToSec(this.formatToMinSec(this.startHis)),
         endSeconds: this.convertToSec(this.formatToMinSec(this.endHis))
       });
@@ -60,21 +77,43 @@ export default {
 
       //次のシーンをロードし再生
       this.player.loadVideoById({
-        videoId: this.youtubeId,
+        videoId: this.currentYoutubeId,
         startSeconds: this.convertToSec(this.formatToMinSec(this.startHis)),
         endSeconds: this.convertToSec(this.formatToMinSec(this.endHis))
       });
+    },
+    toggleLike() {
+      this.$store.dispatch("like/toggleLike", this.currentTagId);
     }
   },
   computed: {
     ...mapGetters({
       watchList: "watch/watchList",
       listIndex: "watch/listIndex",
-      youtubeId: "watch/currentYoutubeId",
+      currentYoutubeId: "watch/currentYoutubeId",
+      currentTitle: "watch/currentTitle",
       startHis: "watch/start",
       endHis: "watch/end",
-      isPlaylist: "watch/isPlaylist"
-    })
+      isPlaylist: "watch/isPlaylist",
+      playlistName: "watch/playlistName",
+      currentTagName: "watch/currentTagName",
+      currentTagNameArray: "watch/currentTagNameArray"
+    }),
+    currentTagId() {
+      return this.watchList[this.listIndex].tag_id;
+    },
+    isLiked() {
+      return this.$store.getters["like/isLiked"](this.currentTagId);
+    },
+    likeCount() {
+      return this.$store.getters["like/likeCount"](this.currentTagId);
+    },
+    startIs() {
+      return this.formatToMinSec(this.startHis);
+    },
+    endIs() {
+      return this.formatToMinSec(this.endHis);
+    }
   },
   mixins: [myMixin],
   mounted: async function() {
@@ -90,18 +129,18 @@ export default {
     if (this.$route.query.playlist) {
       //特定シーン再生の場合
       //URLのクエリパラメータからプレイリストIDとインデックスを取得
-      this.playlistId = this.$route.query.playlist;
-      this.index = this.$route.query.index;
+      this.playlistIdUrl = this.$route.query.playlist;
+      this.indexUrl = this.$route.query.index;
 
       //YTPlayerのプレイリストの再生に必要なパラメータをセット
-      this.setPlaylistParameters(this.playlistId, this.index);
+      this.setPlaylistParameters(this.playlistIdUrl, this.indexUrl);
     } else if (this.$route.query.tag) {
       //プレイリスト再生の場合
       //URLのクエリパラメータからプレイリストIDとインデックスを取得
-      this.currentTagId = this.$route.query.tag;
+      this.tagIdUrl = this.$route.query.tag;
 
       //YTPlayerのタグの再生に必要なパラメータをセット
-      await this.setIndivisualParameters(this.currentTagId);
+      await this.setIndivisualParameters(this.tagIdUrl);
     }
 
     // This code loads the IFrame Player API code asynchronously.
@@ -115,7 +154,7 @@ export default {
       this.player = new YT.Player("player", {
         width: "560",
         height: "315",
-        videoId: this.youtubeId,
+        videoId: this.currentYoutubeId,
         playerVars: {
           start: this.convertToSec(this.formatToMinSec(this.startHis)),
           end: this.convertToSec(this.formatToMinSec(this.endHis))
@@ -131,6 +170,7 @@ export default {
       let self = this;
       event.target.mute();
       event.target.playVideo();
+      this.isPlayerReady = true;
 
       //1秒毎に現在の再生時間を取得
       setInterval(function() {
@@ -147,20 +187,20 @@ export default {
 
         //プレイリスト再生の場合
         if (this.$route.query.playlist) {
-          if (this.index < this.watchList.length - 1) {
+          if (this.indexUrl < this.watchList.length - 1) {
             // //最後のシーンでない場合は次のシーンのパラメータをセット
-            this.playPlaylist(this.playlistId, ++this.index);
-          } else if (this.index == this.watchList.length - 1) {
+            this.playPlaylist(this.playlistIdUrl, ++this.indexUrl);
+          } else if (this.indexUrl == this.watchList.length - 1) {
             //最後のシーンの場合は先頭に戻る
-            this.index = 0;
-            this.playPlaylist(this.playlistId, this.index);
+            this.indexUrl = 0;
+            this.playPlaylist(this.playlistIdUrl, this.indexUrl);
           }
         }
 
         //特定シーン再生の場合
         if (this.$route.query.tag) {
           //現在と同じシーンをリピート
-          this.playSpecificScene(this.currentTagId);
+          this.playSpecificScene(this.tagIdUrl);
         }
       }
 
