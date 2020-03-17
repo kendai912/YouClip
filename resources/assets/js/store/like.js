@@ -1,5 +1,4 @@
 import axios from "axios";
-import Vue from "vue";
 import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
 
 const state = {

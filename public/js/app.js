@@ -1762,7 +1762,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       return logout;
     }()
   },
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["c" /* mapState */])({
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["d" /* mapState */])({
     apiStatus: function apiStatus(state) {
       return state.auth.apiStatus;
     }
@@ -1940,13 +1940,49 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   },
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     username: "auth/username"
-  }), Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["c" /* mapState */])({
+  }), Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["d" /* mapState */])({
     apiStatus: function apiStatus(state) {
       return state.auth.apiStatus;
     }
   }), Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     isLogin: "auth/check"
   }))
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/NoLoginModal.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {},
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    messageWhenNotLogined: "noLoginModal/messageWhenNotLogined"
+  })),
+  methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapMutations */])({
+    closeLoginModal: "noLoginModal/closeLoginModal"
+  })),
+  created: function created() {}
 });
 
 /***/ }),
@@ -2067,6 +2103,104 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$store.commit("search/searchResultPageTransit");
     }
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ShareModal.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {},
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    showShareModal: "shareModal/showShareModal",
+    shareUrl: "shareModal/shareUrl",
+    shareText: "shareModal/shareText"
+  }), {
+    encodedShareURI: function encodedShareURI() {
+      return encodeURIComponent(this.shareUrl);
+    }
+  }),
+  methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapMutations */])({
+    closeShareModal: "shareModal/closeShareModal"
+  }), {
+    shareOnSNS: function shareOnSNS(e) {
+      e.preventDefault();
+
+      //共有先SNSのリンクを取得
+      var URI = e.currentTarget.getAttribute("href");
+
+      window.open(URI, "SNS_window", "width=600, height=500, menubar=no, toolbar=no, scrollbars=yes");
+    },
+    copySelectedTagURL: function copySelectedTagURL() {
+      //strを含んだtextareaをbodyタグの末尾に設置
+      $(document.body).append('<textarea id="tmp_copy" style="position:fixed;right:100vw;font-size:16px;" readonly="readonly">' + this.shareUrl + "</textarea>");
+
+      //elmはtextareaノード
+      var elm = $("#tmp_copy")[0];
+
+      //select()でtextarea内の文字を選択
+      elm.select();
+
+      //rangeでtextarea内の文字を選択
+      var range = document.createRange();
+      range.selectNodeContents(elm);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      elm.setSelectionRange(0, 999999);
+
+      //execCommandを実施
+      document.execCommand("copy");
+
+      //textareaを削除
+      $(elm).remove();
+
+      //モーダルを閉じる
+      this.closeShareModal();
+    }
+  })
 });
 
 /***/ }),
@@ -2336,7 +2470,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     this.clearError();
   },
 
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["c" /* mapState */])({
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["d" /* mapState */])({
     apiStatus: function apiStatus(state) {
       return state.auth.apiStatus;
     },
@@ -2490,7 +2624,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_NoLoginModal_vue__ = __webpack_require__("./resources/assets/js/components/NoLoginModal.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_NoLoginModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_NoLoginModal_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_ShareModal_vue__ = __webpack_require__("./resources/assets/js/components/ShareModal.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_ShareModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_ShareModal_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__util__ = __webpack_require__("./resources/assets/js/util.js");
 
 
 var _components$data$mixi;
@@ -2526,12 +2664,23 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = (_components$data$mixi = {
-  components: {},
+  components: {
+    NoLoginModal: __WEBPACK_IMPORTED_MODULE_2__components_NoLoginModal_vue___default.a,
+    ShareModal: __WEBPACK_IMPORTED_MODULE_3__components_ShareModal_vue___default.a
+  },
   data: function data() {
     return {
       playlistIdUrl: "",
@@ -2542,8 +2691,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
-  methods: {
+  mixins: [__WEBPACK_IMPORTED_MODULE_4__util__["e" /* default */]],
+  methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["c" /* mapMutations */])({
+    openShareModal: "shareModal/openShareModal"
+  }), {
     playPlaylist: function playPlaylist(playlistId, index) {
       //最後のシーンでない場合は次のシーンのパラメータをセット
       this.setPlaylistParameters(playlistId, index);
@@ -2584,10 +2735,32 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       });
     },
     toggleLike: function toggleLike() {
-      this.$store.dispatch("like/toggleLike", this.currentTagId);
+      if (!this.isLogin) {
+        //未ログインの場合
+        this.$store.commit("noLoginModal/openLoginModal");
+        this.$store.commit("noLoginModal/setMessageWhenNotLogined", "このシーンを評価するには、ログインしてください。");
+      } else {
+        //ログイン済の場合
+        this.$store.dispatch("like/toggleLike", this.currentTagId);
+      }
+    },
+    sharePlaylist: function sharePlaylist() {
+      //Playlist Share用のパラメーターを設定
+      this.$store.commit("shareModal/setShareUrl", location.href);
+      this.$store.commit("shareModal/setShareText", this.playlistName);
+
+      this.openShareModal();
+    },
+    shareTag: function shareTag() {
+      //Tag Share用のパラメーターを設定
+      this.$store.commit("shareModal/setShareUrl", location.protocol + "//" + location.hostname + "/watch?tag=" + this.currentTagId);
+      this.$store.commit("shareModal/setShareText", this.currentTitle + " " + this.currentTagName);
+
+      this.openShareModal();
     }
-  },
+  }),
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
+    isLogin: "auth/check",
     watchList: "watch/watchList",
     listIndex: "watch/listIndex",
     currentYoutubeId: "watch/currentYoutubeId",
@@ -2597,7 +2770,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     isPlaylist: "watch/isPlaylist",
     playlistName: "watch/playlistName",
     currentTagName: "watch/currentTagName",
-    currentTagNameArray: "watch/currentTagNameArray"
+    currentTagNameArray: "watch/currentTagNameArray",
+    showLoginModal: "noLoginModal/showLoginModal",
+    messageWhenNotLogined: "noLoginModal/messageWhenNotLogined",
+    showShareModal: "shareModal/showShareModal"
   }), {
     currentTagId: function currentTagId() {
       return this.watchList[this.listIndex].tag_id;
@@ -2615,11 +2791,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       return this.formatToMinSec(this.endHis);
     }
   })
-}, _defineProperty(_components$data$mixi, "mixins", [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]]), _defineProperty(_components$data$mixi, "mounted", function () {
+}, _defineProperty(_components$data$mixi, "mixins", [__WEBPACK_IMPORTED_MODULE_4__util__["e" /* default */]]), _defineProperty(_components$data$mixi, "mounted", function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
     var _this = this;
 
-    var tag, firstScriptTag;
+    var tag, firstScriptTag, from, self;
     return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -2735,7 +2911,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
               }
             };
 
-          case 22:
+            //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
+            from = this.$route.path;
+            self = this;
+
+            window.addEventListener("popstate", function (e) {
+              var to = self.$route.path;
+              if (from == "/watch" && to == "/watch") {
+                location.reload();
+              }
+            });
+
+          case 25:
           case "end":
             return _context.stop();
         }
@@ -35295,6 +35482,173 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-6e1d36f6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ShareModal.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "v-modal", on: { click: _vm.closeShareModal } },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "text-dark shadow rounded mb-7 modal-in-box",
+          on: {
+            click: function($event) {
+              $event.stopPropagation()
+            }
+          }
+        },
+        [
+          _c("span", { on: { click: _vm.copySelectedTagURL } }, [
+            _vm._v("コピーする")
+          ]),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              attrs: {
+                href:
+                  "https://social-plugins.line.me/lineit/share?url=" +
+                  _vm.encodedShareURI
+              },
+              on: { click: _vm.shareOnSNS }
+            },
+            [
+              _c("img", {
+                attrs: { src: "/img/wide-default.png", alt: "LINEで送る" }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              attrs: {
+                href:
+                  "http://www.facebook.com/sharer.php?u=" + _vm.encodedShareURI
+              },
+              on: { click: _vm.shareOnSNS }
+            },
+            [
+              _c("i", {
+                staticClass: "fab fa-facebook-square fa-2x",
+                staticStyle: { color: "#339af0" }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              attrs: {
+                href:
+                  "https://twitter.com/intent/tweet?url=" +
+                  _vm.encodedShareURI +
+                  "&text=[ScenePicks] " +
+                  _vm.shareText
+              },
+              on: { click: _vm.shareOnSNS }
+            },
+            [
+              _c("i", {
+                staticClass: "fab fa-twitter fa-2x",
+                staticStyle: { color: "#339af0" }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              attrs: {
+                href:
+                  "https://b.hatena.ne.jp/entry/panel/?url=" +
+                  _vm.encodedShareURI
+              },
+              on: { click: _vm.shareOnSNS }
+            },
+            [
+              _c("img", {
+                attrs: { src: "/img/hatebu.svg", alt: "はてブ!で共有" }
+              })
+            ]
+          )
+        ]
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6e1d36f6", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7c06989c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/NoLoginModal.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "v-modal", on: { click: _vm.closeLoginModal } },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "text-dark shadow rounded mb-7 modal-in-box",
+          on: {
+            click: function($event) {
+              $event.stopPropagation()
+            }
+          }
+        },
+        [
+          _c("div", [_vm._v(_vm._s(_vm.messageWhenNotLogined))]),
+          _vm._v(" "),
+          _c(
+            "div",
+            [
+              _c("span", { on: { click: _vm.closeLoginModal } }, [
+                _vm._v("キャンセル")
+              ]),
+              _vm._v(" "),
+              _c("router-link", { attrs: { to: "/login" } }, [
+                _vm._v("ログイン")
+              ])
+            ],
+            1
+          )
+        ]
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7c06989c", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-80dbd744\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/IndexItem.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -35380,44 +35734,64 @@ var render = function() {
     _c("div", { attrs: { id: "player" } }),
     _vm._v(" "),
     _vm.isPlayerReady
-      ? _c("div", [
-          _c("div", [_vm._v(_vm._s(_vm.playlistName))]),
-          _vm._v(" "),
-          _c("div", [
-            _c("span", [_vm._v("[Now Playing]")]),
-            _vm._v(" "),
-            _c("span", [_vm._v(_vm._s(_vm.currentTitle))])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            [
-              _c("span", [
-                _vm._v(_vm._s(_vm.startIs) + "〜" + _vm._s(_vm.endIs))
-              ]),
+      ? _c(
+          "div",
+          [
+            _c("div", [
+              _c("span", [_vm._v(_vm._s(_vm.playlistName))]),
               _vm._v(" "),
-              _vm._l(_vm.currentTagNameArray, function(currentTagName) {
-                return _c("span", { key: currentTagName, staticClass: "tag" }, [
-                  _vm._v(_vm._s(currentTagName))
-                ])
-              })
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _c("div", [
+              _vm.isPlaylist
+                ? _c("span", { on: { click: _vm.sharePlaylist } }, [
+                    _vm._v("[Share]")
+                  ])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("div", [
+              _c("span", [_vm._v("[Now Playing]")]),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.currentTitle))])
+            ]),
+            _vm._v(" "),
             _c(
-              "span",
-              {
-                class: { isLiked: _vm.isLiked },
-                on: { click: _vm.toggleLike }
-              },
-              [_vm._v("[Like]")]
+              "div",
+              [
+                _c("span", [
+                  _vm._v(_vm._s(_vm.startIs) + "〜" + _vm._s(_vm.endIs))
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.currentTagNameArray, function(currentTagName) {
+                  return _c(
+                    "span",
+                    { key: currentTagName, staticClass: "tag" },
+                    [_vm._v(_vm._s(currentTagName))]
+                  )
+                })
+              ],
+              2
             ),
             _vm._v(" "),
-            _c("span", [_vm._v(_vm._s(_vm.likeCount))])
-          ])
-        ])
+            _c("div", [
+              _c(
+                "span",
+                {
+                  class: { isLiked: _vm.isLiked },
+                  on: { click: _vm.toggleLike }
+                },
+                [_vm._v("[Like]")]
+              ),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.likeCount))]),
+              _vm._v(" "),
+              _c("span", { on: { click: _vm.shareTag } }, [_vm._v("[Share]")])
+            ]),
+            _vm._v(" "),
+            _vm.showLoginModal ? _c("NoLoginModal") : _vm._e(),
+            _vm._v(" "),
+            _vm.showShareModal ? _c("ShareModal") : _vm._e()
+          ],
+          1
+        )
       : _vm._e()
   ])
 }
@@ -50848,8 +51222,8 @@ if (false) {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/* unused harmony export Store */
 /* unused harmony export install */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return mapState; });
-/* unused harmony export mapMutations */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return mapState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return mapMutations; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return mapGetters; });
 /* unused harmony export mapActions */
 /* unused harmony export createNamespacedHelpers */
@@ -52327,6 +52701,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/NoLoginModal.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/NoLoginModal.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7c06989c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/NoLoginModal.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/NoLoginModal.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7c06989c", Component.options)
+  } else {
+    hotAPI.reload("data-v-7c06989c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/SearchBox.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -52412,6 +52834,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-03de3246", Component.options)
   } else {
     hotAPI.reload("data-v-03de3246", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/ShareModal.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ShareModal.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-6e1d36f6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ShareModal.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/ShareModal.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6e1d36f6", Component.options)
+  } else {
+    hotAPI.reload("data-v-6e1d36f6", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -53144,7 +53614,11 @@ var mutations = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__playlist__ = __webpack_require__("./resources/assets/js/store/playlist.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__like__ = __webpack_require__("./resources/assets/js/store/like.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__search__ = __webpack_require__("./resources/assets/js/store/search.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__noLoginModal__ = __webpack_require__("./resources/assets/js/store/noLoginModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__shareModal__ = __webpack_require__("./resources/assets/js/store/shareModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+
+
 
 
 
@@ -53168,7 +53642,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     playlist: __WEBPACK_IMPORTED_MODULE_6__playlist__["a" /* default */],
     like: __WEBPACK_IMPORTED_MODULE_7__like__["a" /* default */],
     search: __WEBPACK_IMPORTED_MODULE_8__search__["a" /* default */],
-    error: __WEBPACK_IMPORTED_MODULE_9__error__["a" /* default */]
+    noLoginModal: __WEBPACK_IMPORTED_MODULE_9__noLoginModal__["a" /* default */],
+    shareModal: __WEBPACK_IMPORTED_MODULE_10__shareModal__["a" /* default */],
+    error: __WEBPACK_IMPORTED_MODULE_11__error__["a" /* default */]
   }
 });
 
@@ -53184,9 +53660,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__("./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
 
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -53194,7 +53668,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 
@@ -53272,10 +53745,10 @@ var actions = {
             case 2:
               response = _context.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_3__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
                 // 成功した時
                 context.commit("setTagLikeData", response.data.tagLike);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_3__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -53314,7 +53787,7 @@ var actions = {
             case 4:
               response = _context2.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_3__util__["a" /* CREATED */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
                 // 成功した時
                 if (context.getters["isLiked"](tag_id)) {
                   // 既にLike済の場合: isLikedステータスをfalseにし、likeCountを-1
@@ -53325,7 +53798,7 @@ var actions = {
                   context.commit("toggleIsLiked", tag_id);
                   context.commit("incrementLikeCount", tag_id);
                 }
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_3__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -53348,6 +53821,48 @@ var actions = {
     return toggleLike;
   }()
 };
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/noLoginModal.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var state = {
+  showLoginModal: false,
+  messageWhenNotLogined: ""
+};
+
+var getters = {
+  showLoginModal: function showLoginModal(state) {
+    return state.showLoginModal;
+  },
+  messageWhenNotLogined: function messageWhenNotLogined(state) {
+    return state.messageWhenNotLogined;
+  }
+};
+
+var mutations = {
+  openLoginModal: function openLoginModal(state) {
+    state.showLoginModal = true;
+  },
+  closeLoginModal: function closeLoginModal(state) {
+    state.showLoginModal = false;
+  },
+  setMessageWhenNotLogined: function setMessageWhenNotLogined(state, data) {
+    state.messageWhenNotLogined = data;
+  }
+};
+
+var actions = {};
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   namespaced: true,
@@ -53781,6 +54296,69 @@ var actions = {
     return getSearchHistories;
   }()
 };
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/shareModal.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var state = {
+  showShareModal: false,
+  shareUrl: "",
+  shareText: ""
+};
+
+var getters = {
+  showShareModal: function showShareModal(state) {
+    return state.showShareModal;
+  },
+  shareUrl: function shareUrl(state) {
+    return state.shareUrl;
+  },
+  shareText: function shareText(state) {
+    return state.shareText;
+  }
+};
+
+var mutations = {
+  openShareModal: function openShareModal(state) {
+    if (navigator.share) {
+      //スマホでのシェア
+      navigator.share({
+        title: "ScenePicks",
+        text: state.shareText,
+        url: state.shareUrl
+      }).then(function () {
+        console.log("Share succeeded");
+      }).catch(function (error) {
+        console.log("Share failed", error);
+      });
+    } else {
+      //スマホ以外でのシェア
+      state.showShareModal = true;
+    }
+  },
+  closeShareModal: function closeShareModal(state) {
+    state.showShareModal = false;
+  },
+  setShareUrl: function setShareUrl(state, data) {
+    state.shareUrl = data;
+  },
+  setShareText: function setShareText(state, data) {
+    state.shareText = data;
+  }
+};
+
+var actions = {};
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   namespaced: true,

@@ -2,7 +2,10 @@
   <div class="container--small">
     <div id="player"></div>
     <div v-if="isPlayerReady">
-      <div>{{ playlistName }}</div>
+      <div>
+        <span>{{ playlistName }}</span>
+        <span v-if="isPlaylist" v-on:click="sharePlaylist">[Share]</span>
+      </div>
       <div>
         <span>[Now Playing]</span>
         <span>{{ currentTitle }}</span>
@@ -18,17 +21,25 @@
       <div>
         <span v-on:click="toggleLike" v-bind:class="{ isLiked: isLiked}">[Like]</span>
         <span>{{ likeCount }}</span>
+        <span v-on:click="shareTag">[Share]</span>
       </div>
+      <NoLoginModal v-if="showLoginModal" />
+      <ShareModal v-if="showShareModal" />
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
+import NoLoginModal from "../components/NoLoginModal.vue";
+import ShareModal from "../components/ShareModal.vue";
 import myMixin from "../util";
 
 export default {
-  components: {},
+  components: {
+    NoLoginModal,
+    ShareModal
+  },
   data() {
     return {
       playlistIdUrl: "",
@@ -40,6 +51,9 @@ export default {
   },
   mixins: [myMixin],
   methods: {
+    ...mapMutations({
+      openShareModal: "shareModal/openShareModal"
+    }),
     playPlaylist(playlistId, index) {
       //最後のシーンでない場合は次のシーンのパラメータをセット
       this.setPlaylistParameters(playlistId, index);
@@ -84,11 +98,46 @@ export default {
       });
     },
     toggleLike() {
-      this.$store.dispatch("like/toggleLike", this.currentTagId);
+      if (!this.isLogin) {
+        //未ログインの場合
+        this.$store.commit("noLoginModal/openLoginModal");
+        this.$store.commit(
+          "noLoginModal/setMessageWhenNotLogined",
+          "このシーンを評価するには、ログインしてください。"
+        );
+      } else {
+        //ログイン済の場合
+        this.$store.dispatch("like/toggleLike", this.currentTagId);
+      }
+    },
+    sharePlaylist() {
+      //Playlist Share用のパラメーターを設定
+      this.$store.commit("shareModal/setShareUrl", location.href);
+      this.$store.commit("shareModal/setShareText", this.playlistName);
+
+      this.openShareModal();
+    },
+    shareTag() {
+      //Tag Share用のパラメーターを設定
+      this.$store.commit(
+        "shareModal/setShareUrl",
+        location.protocol +
+          "//" +
+          location.hostname +
+          "/watch?tag=" +
+          this.currentTagId
+      );
+      this.$store.commit(
+        "shareModal/setShareText",
+        this.currentTitle + " " + this.currentTagName
+      );
+
+      this.openShareModal();
     }
   },
   computed: {
     ...mapGetters({
+      isLogin: "auth/check",
       watchList: "watch/watchList",
       listIndex: "watch/listIndex",
       currentYoutubeId: "watch/currentYoutubeId",
@@ -98,7 +147,10 @@ export default {
       isPlaylist: "watch/isPlaylist",
       playlistName: "watch/playlistName",
       currentTagName: "watch/currentTagName",
-      currentTagNameArray: "watch/currentTagNameArray"
+      currentTagNameArray: "watch/currentTagNameArray",
+      showLoginModal: "noLoginModal/showLoginModal",
+      messageWhenNotLogined: "noLoginModal/messageWhenNotLogined",
+      showShareModal: "shareModal/showShareModal"
     }),
     currentTagId() {
       return this.watchList[this.listIndex].tag_id;
@@ -210,6 +262,16 @@ export default {
         this.isPlaying = true;
       }
     };
+
+    //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
+    let from = this.$route.path;
+    let self = this;
+    window.addEventListener("popstate", function(e) {
+      let to = self.$route.path;
+      if (from == "/watch" && to == "/watch") {
+        location.reload();
+      }
+    });
   }
 };
 </script>

@@ -8,6 +8,8 @@ import tag from "./tag";
 import playlist from "./playlist";
 import like from "./like";
 import search from "./search";
+import noLoginModal from "./noLoginModal";
+import shareModal from "./shareModal";
 import error from "./error";
 
 Vue.use(Vuex);
@@ -21,6 +23,8 @@ const store = new Vuex.Store({
     playlist,
     like,
     search,
+    noLoginModal,
+    shareModal,
     error
   }
 });
