@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Video;
 use App\Tag;
+use App\Like;
 use App\Playlist;
 use App\Searchquery;
 use App\Playlistlog;
@@ -43,6 +44,12 @@ class User extends Authenticatable
     {
         //Tagモデルのデータを引っ張ってくる
         return $this->hasMany('App\Tag');
+    }
+
+    public function likes()
+    {
+        //Likeモデルのデータを引っ張ってくる
+        return $this->hasMany('App\Like');
     }
 
     public function playlists()

@@ -22,9 +22,11 @@
         <span v-on:click="toggleLike" v-bind:class="{ isLiked: isLiked}">[Like]</span>
         <span>{{ likeCount }}</span>
         <span v-on:click="shareTag">[Share]</span>
+        <span v-on:click="addPlaylist">[＋]</span>
       </div>
       <NoLoginModal v-if="showLoginModal" />
-      <ShareModal v-if="showShareModal" />
+      <ShareModal v-if="showShareModal" v-bind:player="player" />
+      <AddPlaylistModal v-if="showAddPlaylistModal" v-bind:player="player" />
     </div>
   </div>
 </template>
@@ -33,12 +35,14 @@
 import { mapState, mapGetters, mapMutations } from "vuex";
 import NoLoginModal from "../components/NoLoginModal.vue";
 import ShareModal from "../components/ShareModal.vue";
+import AddPlaylistModal from "../components/AddPlaylistModal.vue";
 import myMixin from "../util";
 
 export default {
   components: {
     NoLoginModal,
-    ShareModal
+    ShareModal,
+    AddPlaylistModal
   },
   data() {
     return {
@@ -46,7 +50,8 @@ export default {
       indexUrl: 0,
       tagIdUrl: "",
       isPlaying: true,
-      isPlayerReady: false
+      isPlayerReady: false,
+      player: null
     };
   },
   mixins: [myMixin],
@@ -115,10 +120,14 @@ export default {
       this.$store.commit("shareModal/setShareUrl", location.href);
       this.$store.commit("shareModal/setShareText", this.playlistName);
 
+      //プレイヤーを一時停止
+      this.player.pauseVideo();
+
+      //シェアモーダルを開く
       this.openShareModal();
     },
     shareTag() {
-      //Tag Share用のパラメーターを設定
+      //Tagシェア用のパラメーターを設定
       this.$store.commit(
         "shareModal/setShareUrl",
         location.protocol +
@@ -132,7 +141,37 @@ export default {
         this.currentTitle + " " + this.currentTagName
       );
 
+      //プレイヤーを一時停止
+      this.player.pauseVideo();
+
+      //シェアモーダルを開く
       this.openShareModal();
+    },
+    async addPlaylist() {
+      if (!this.isLogin) {
+        //未ログインの場合
+        this.$store.commit("noLoginModal/openLoginModal");
+        this.$store.commit(
+          "noLoginModal/setMessageWhenNotLogined",
+          "このシーンをプレイリストに追加するには、ログインしてください。"
+        );
+      } else {
+        //ログイン済の場合
+        //ユーザーのプレイリストをロード
+        this.$store.dispatch("playlist/loadPlaylist");
+
+        //選択されたタグが追加済のユーザーのプレイリストIDを取得
+        await this.$store.dispatch(
+          "playlist/getPlaylistIdsOfTag",
+          this.currentTagId
+        );
+
+        //プレイヤーを一時停止
+        this.player.pauseVideo();
+
+        //プレイリスト追加モーダルを表示
+        this.$store.commit("playlist/openAddPlaylistModal");
+      }
     }
   },
   computed: {
@@ -142,6 +181,7 @@ export default {
       listIndex: "watch/listIndex",
       currentYoutubeId: "watch/currentYoutubeId",
       currentTitle: "watch/currentTitle",
+      currentTagId: "watch/currentTagId",
       startHis: "watch/start",
       endHis: "watch/end",
       isPlaylist: "watch/isPlaylist",
@@ -150,11 +190,9 @@ export default {
       currentTagNameArray: "watch/currentTagNameArray",
       showLoginModal: "noLoginModal/showLoginModal",
       messageWhenNotLogined: "noLoginModal/messageWhenNotLogined",
-      showShareModal: "shareModal/showShareModal"
+      showShareModal: "shareModal/showShareModal",
+      showAddPlaylistModal: "playlist/showAddPlaylistModal"
     }),
-    currentTagId() {
-      return this.watchList[this.listIndex].tag_id;
-    },
     isLiked() {
       return this.$store.getters["like/isLiked"](this.currentTagId);
     },
@@ -220,7 +258,6 @@ export default {
     };
 
     window.onPlayerReady = event => {
-      let self = this;
       event.target.mute();
       event.target.playVideo();
       this.isPlayerReady = true;
@@ -264,8 +301,8 @@ export default {
     };
 
     //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
-    let from = this.$route.path;
     let self = this;
+    let from = this.$route.path;
     window.addEventListener("popstate", function(e) {
       let to = self.$route.path;
       if (from == "/watch" && to == "/watch") {

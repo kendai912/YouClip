@@ -54,6 +54,15 @@ Route::get("/taglist/video", 'VideoController@getTagList');
 //タグへのLike
 Route::post("/toggleLike", 'LikeController@toggleLike');
 
+//タグが保存されている既存プレイリストIDの取得
+Route::get('/tag/getPlaylists/{tag}', 'TagController@getPlaylists');
+
+//既存プレイリストへの追加
+Route::post('/tag/addToPlaylists/{tag}', 'TagController@addToPlaylists');
+//新規プレイリストの作成とタグの追加
+Route::post('/playlist/create', 'PlaylistController@create');
+
+
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });

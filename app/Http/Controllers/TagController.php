@@ -81,10 +81,22 @@ class TagController extends Controller
                 }
             }
         };
-        $tag->playlists()->attach(
-            ['playlist_id' => $checkedPlaylistIds],
-            ['created_at' => Carbon::now()],
-            ['updated_at' => Carbon::now()],
+
+        foreach ($checkedPlaylistIds as $playlistId) {
+            $tag->playlists()->attach(
+                ['playlist_id' => $playlistId],
+                ['created_at' => Carbon::now()],
+            );
+        }
+
+        //保存したプレイリストデータをリターン
+        return response()->json(
+            [
+                'playlists' => $tag->playlists
+            ],
+            201,
+            [],
+            JSON_UNESCAPED_UNICODE
         );
     }
 

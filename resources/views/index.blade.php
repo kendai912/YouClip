@@ -6,7 +6,9 @@
   <title>{{ config('app.name') }}</title>
 
   <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="{{ mix('js/app.js') }}" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
   <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather|Roboto:400">
@@ -17,6 +19,8 @@
   
   <!-- Styles -->
   <link rel="stylesheet" href="https://hypertext-candy.s3-ap-northeast-1.amazonaws.com/posts/vue-laravel-tutorial/app.css">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+
 </head>
 <body>
   <div id="app"></div>

@@ -10,7 +10,10 @@
         <img src="/img/wide-default.png" alt="LINEで送る" />
       </a>
       <!-- Facebook -->
-      <a v-on:click="shareOnSNS" v-bind:href="'http://www.facebook.com/sharer.php?u=' + encodedShareURI">
+      <a
+        v-on:click="shareOnSNS"
+        v-bind:href="'http://www.facebook.com/sharer.php?u=' + encodedShareURI"
+      >
         <i class="fab fa-facebook-square fa-2x" style="color: #339af0;"></i>
       </a>
       <!-- twitter -->
@@ -35,7 +38,9 @@
 import { mapState, mapGetters, mapMutations } from "vuex";
 
 export default {
-  props: {},
+  props: {
+    player: Object
+  },
   computed: {
     ...mapGetters({
       showShareModal: "shareModal/showShareModal",
@@ -47,9 +52,12 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({
-      closeShareModal: "shareModal/closeShareModal"
-    }),
+    closeShareModal() {
+      this.$store.commit("shareModal/closeShareModal");
+
+      //プレイヤーを再開
+      this.player.playVideo();
+    },
     shareOnSNS(e) {
       e.preventDefault();
 

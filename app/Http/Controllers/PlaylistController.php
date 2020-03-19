@@ -61,16 +61,25 @@ class PlaylistController extends Controller
     {
         //playlistテーブルに保存
         $playlist = new Playlist;
-        $playlist->playlistName = $request->playlistName;
+        $playlist->playlistName = $request->newPlaylistName;
         $playlist->privacySetting = $request->privacySetting;
-        $playlist->user_id = $request->user_id;
+        $playlist->user_id = Auth::user()->id;
         $playlist->save();
 
         //playlist_tagテーブルに保存
         $playlist->tags()->attach(
-            ['tag_id' => $request->tag_id],
+            ['tag_id' => $request->currentTagId],
             ['created_at' => Carbon::now()],
             ['updated_at' => Carbon::now()],
+        );
+
+        return response()->json(
+            [
+            'newPlaylist' => $playlist
+            ],
+            201,
+            [],
+            JSON_UNESCAPED_UNICODE
         );
     }
 

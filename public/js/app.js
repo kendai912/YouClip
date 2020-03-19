@@ -1695,6 +1695,119 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AddPlaylistModal.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    player: Object
+  },
+  data: function data() {
+    return {
+      checkedPlaylistIds: [],
+      newPlaylistName: "",
+      privacySetting: ""
+    };
+  },
+
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    user_id: "auth/user_id",
+    currentTagId: "watch/currentTagId",
+    playlistIdsOfTag: "playlist/playlistIdsOfTag"
+  }), {
+    hasMyPlaylists: function hasMyPlaylists() {
+      return this.$store.getters["playlist/hasMyPlaylists"](this.user_id);
+    },
+    myPlaylistTagData: function myPlaylistTagData() {
+      return this.$store.getters["playlist/myPlaylistTagData"](this.user_id);
+    }
+  }),
+  methods: {
+    //モーダルを閉じてプレイヤーを再開
+    closeAddPlaylistModal: function closeAddPlaylistModal() {
+      this.$store.commit("playlist/closeAddPlaylistModal");
+
+      //プレイヤーを再開
+      this.player.playVideo();
+    },
+
+    //既存プレイリストへの追加
+    addMyPlaylists: function addMyPlaylists() {
+      this.$store.dispatch("playlist/addMyPlaylists", {
+        checkedPlaylistIds: this.checkedPlaylistIds,
+        currentTagId: this.currentTagId
+      });
+
+      //プレイヤーを再開
+      this.player.playVideo();
+    },
+
+    //プレイリスト新規作成と選択中のタグの保存
+    createPlaylist: function createPlaylist() {
+      this.$store.dispatch("playlist/createPlaylist", {
+        newPlaylistName: this.newPlaylistName,
+        privacySetting: this.privacySetting,
+        currentTagId: this.currentTagId
+      });
+
+      //プレイヤーを再開
+      this.player.playVideo();
+    }
+  },
+  created: function created() {
+    this.checkedPlaylistIds = this.playlistIdsOfTag;
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Footer.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2148,11 +2261,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {},
+  props: {
+    player: Object
+  },
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
     showShareModal: "shareModal/showShareModal",
     shareUrl: "shareModal/shareUrl",
@@ -2162,9 +2280,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       return encodeURIComponent(this.shareUrl);
     }
   }),
-  methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapMutations */])({
-    closeShareModal: "shareModal/closeShareModal"
-  }), {
+  methods: {
+    closeShareModal: function closeShareModal() {
+      this.$store.commit("shareModal/closeShareModal");
+
+      //プレイヤーを再開
+      this.player.playVideo();
+    },
     shareOnSNS: function shareOnSNS(e) {
       e.preventDefault();
 
@@ -2200,7 +2322,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       //モーダルを閉じる
       this.closeShareModal();
     }
-  })
+  }
 });
 
 /***/ }),
@@ -2628,7 +2750,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_NoLoginModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_NoLoginModal_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_ShareModal_vue__ = __webpack_require__("./resources/assets/js/components/ShareModal.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_ShareModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_ShareModal_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_AddPlaylistModal_vue__ = __webpack_require__("./resources/assets/js/components/AddPlaylistModal.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_AddPlaylistModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_AddPlaylistModal_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__util__ = __webpack_require__("./resources/assets/js/util.js");
 
 
 var _components$data$mixi;
@@ -2670,6 +2794,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+
 
 
 
@@ -2679,7 +2806,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 /* harmony default export */ __webpack_exports__["default"] = (_components$data$mixi = {
   components: {
     NoLoginModal: __WEBPACK_IMPORTED_MODULE_2__components_NoLoginModal_vue___default.a,
-    ShareModal: __WEBPACK_IMPORTED_MODULE_3__components_ShareModal_vue___default.a
+    ShareModal: __WEBPACK_IMPORTED_MODULE_3__components_ShareModal_vue___default.a,
+    AddPlaylistModal: __WEBPACK_IMPORTED_MODULE_4__components_AddPlaylistModal_vue___default.a
   },
   data: function data() {
     return {
@@ -2687,11 +2815,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       indexUrl: 0,
       tagIdUrl: "",
       isPlaying: true,
-      isPlayerReady: false
+      isPlayerReady: false,
+      player: null
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_4__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_5__util__["e" /* default */]],
   methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["c" /* mapMutations */])({
     openShareModal: "shareModal/openShareModal"
   }), {
@@ -2749,15 +2878,71 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       this.$store.commit("shareModal/setShareUrl", location.href);
       this.$store.commit("shareModal/setShareText", this.playlistName);
 
+      //プレイヤーを一時停止
+      this.player.pauseVideo();
+
+      //シェアモーダルを開く
       this.openShareModal();
     },
     shareTag: function shareTag() {
-      //Tag Share用のパラメーターを設定
+      //Tagシェア用のパラメーターを設定
       this.$store.commit("shareModal/setShareUrl", location.protocol + "//" + location.hostname + "/watch?tag=" + this.currentTagId);
       this.$store.commit("shareModal/setShareText", this.currentTitle + " " + this.currentTagName);
 
+      //プレイヤーを一時停止
+      this.player.pauseVideo();
+
+      //シェアモーダルを開く
       this.openShareModal();
-    }
+    },
+    addPlaylist: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (this.isLogin) {
+                  _context.next = 5;
+                  break;
+                }
+
+                //未ログインの場合
+                this.$store.commit("noLoginModal/openLoginModal");
+                this.$store.commit("noLoginModal/setMessageWhenNotLogined", "このシーンをプレイリストに追加するには、ログインしてください。");
+                _context.next = 10;
+                break;
+
+              case 5:
+                //ログイン済の場合
+                //ユーザーのプレイリストをロード
+                this.$store.dispatch("playlist/loadPlaylist");
+
+                //選択されたタグが追加済のユーザーのプレイリストIDを取得
+                _context.next = 8;
+                return this.$store.dispatch("playlist/getPlaylistIdsOfTag", this.currentTagId);
+
+              case 8:
+
+                //プレイヤーを一時停止
+                this.player.pauseVideo();
+
+                //プレイリスト追加モーダルを表示
+                this.$store.commit("playlist/openAddPlaylistModal");
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function addPlaylist() {
+        return _ref.apply(this, arguments);
+      }
+
+      return addPlaylist;
+    }()
   }),
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     isLogin: "auth/check",
@@ -2765,6 +2950,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     listIndex: "watch/listIndex",
     currentYoutubeId: "watch/currentYoutubeId",
     currentTitle: "watch/currentTitle",
+    currentTagId: "watch/currentTagId",
     startHis: "watch/start",
     endHis: "watch/end",
     isPlaylist: "watch/isPlaylist",
@@ -2773,11 +2959,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     currentTagNameArray: "watch/currentTagNameArray",
     showLoginModal: "noLoginModal/showLoginModal",
     messageWhenNotLogined: "noLoginModal/messageWhenNotLogined",
-    showShareModal: "shareModal/showShareModal"
+    showShareModal: "shareModal/showShareModal",
+    showAddPlaylistModal: "playlist/showAddPlaylistModal"
   }), {
-    currentTagId: function currentTagId() {
-      return this.watchList[this.listIndex].tag_id;
-    },
     isLiked: function isLiked() {
       return this.$store.getters["like/isLiked"](this.currentTagId);
     },
@@ -2791,30 +2975,30 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       return this.formatToMinSec(this.endHis);
     }
   })
-}, _defineProperty(_components$data$mixi, "mixins", [__WEBPACK_IMPORTED_MODULE_4__util__["e" /* default */]]), _defineProperty(_components$data$mixi, "mounted", function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+}, _defineProperty(_components$data$mixi, "mixins", [__WEBPACK_IMPORTED_MODULE_5__util__["e" /* default */]]), _defineProperty(_components$data$mixi, "mounted", function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
     var _this = this;
 
-    var tag, firstScriptTag, from, self;
-    return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+    var tag, firstScriptTag, self, from;
+    return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
       while (1) {
-        switch (_context.prev = _context.next) {
+        switch (_context2.prev = _context2.next) {
           case 0:
             if (!(!this.$store.getters["tag/tagVideoData"] || !this.$store.getters["playlist/playlistTagData"])) {
-              _context.next = 5;
+              _context2.next = 5;
               break;
             }
 
-            _context.next = 3;
+            _context2.next = 3;
             return this.$store.dispatch("tag/loadTagVideo");
 
           case 3:
-            _context.next = 5;
+            _context2.next = 5;
             return this.$store.dispatch("playlist/loadPlaylist");
 
           case 5:
             if (!this.$route.query.playlist) {
-              _context.next = 11;
+              _context2.next = 11;
               break;
             }
 
@@ -2825,12 +3009,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
             //YTPlayerのプレイリストの再生に必要なパラメータをセット
             this.setPlaylistParameters(this.playlistIdUrl, this.indexUrl);
-            _context.next = 15;
+            _context2.next = 15;
             break;
 
           case 11:
             if (!this.$route.query.tag) {
-              _context.next = 15;
+              _context2.next = 15;
               break;
             }
 
@@ -2839,7 +3023,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             this.tagIdUrl = this.$route.query.tag;
 
             //YTPlayerのタグの再生に必要なパラメータをセット
-            _context.next = 15;
+            _context2.next = 15;
             return this.setIndivisualParameters(this.tagIdUrl);
 
           case 15:
@@ -2870,7 +3054,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             };
 
             window.onPlayerReady = function (event) {
-              var self = _this;
               event.target.mute();
               event.target.playVideo();
               _this.isPlayerReady = true;
@@ -2912,8 +3095,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             };
 
             //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
-            from = this.$route.path;
             self = this;
+            from = this.$route.path;
 
             window.addEventListener("popstate", function (e) {
               var to = self.$route.path;
@@ -2924,14 +3107,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
           case 25:
           case "end":
-            return _context.stop();
+            return _context2.stop();
         }
       }
-    }, _callee, this);
+    }, _callee2, this);
   }));
 
   function mounted() {
-    return _ref.apply(this, arguments);
+    return _ref2.apply(this, arguments);
   }
 
   return mounted;
@@ -34878,6 +35061,205 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-257e63de\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AddPlaylistModal.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "v-modal", on: { click: _vm.closeAddPlaylistModal } },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "text-dark shadow rounded mb-7 modal-in-box",
+          on: {
+            click: function($event) {
+              $event.stopPropagation()
+            }
+          }
+        },
+        [
+          _vm.hasMyPlaylists
+            ? _c(
+                "div",
+                { attrs: { id: "myPlaylists" } },
+                [
+                  _c("span", { on: { click: _vm.closeAddPlaylistModal } }, [
+                    _vm._v("✕")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.myPlaylistTagData, function(myPlaylistTag, index) {
+                    return _c("div", { key: index }, [
+                      _c("div", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.checkedPlaylistIds,
+                              expression: "checkedPlaylistIds"
+                            }
+                          ],
+                          attrs: { type: "checkbox", id: myPlaylistTag.id },
+                          domProps: {
+                            value: myPlaylistTag.id,
+                            checked: Array.isArray(_vm.checkedPlaylistIds)
+                              ? _vm._i(
+                                  _vm.checkedPlaylistIds,
+                                  myPlaylistTag.id
+                                ) > -1
+                              : _vm.checkedPlaylistIds
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$a = _vm.checkedPlaylistIds,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = myPlaylistTag.id,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 &&
+                                    (_vm.checkedPlaylistIds = $$a.concat([$$v]))
+                                } else {
+                                  $$i > -1 &&
+                                    (_vm.checkedPlaylistIds = $$a
+                                      .slice(0, $$i)
+                                      .concat($$a.slice($$i + 1)))
+                                }
+                              } else {
+                                _vm.checkedPlaylistIds = $$c
+                              }
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: myPlaylistTag.id } }, [
+                          _vm._v(_vm._s(myPlaylistTag.playlistName))
+                        ])
+                      ])
+                    ])
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      on: {
+                        click: function($event) {
+                          $event.stopPropagation()
+                          return _vm.addMyPlaylists($event)
+                        }
+                      }
+                    },
+                    [_vm._v("完了")]
+                  )
+                ],
+                2
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { attrs: { id: "newPlaylists" } }, [
+            _c("div", { staticClass: "form-group mb-4" }, [
+              _vm._v("\n        新規プレイリスト名\n        "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.newPlaylistName,
+                    expression: "newPlaylistName"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "type" },
+                domProps: { value: _vm.newPlaylistName },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.newPlaylistName = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group mb-4" }, [
+              _vm._v("\n        プライバシー設定\n        "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.privacySetting,
+                      expression: "privacySetting"
+                    }
+                  ],
+                  attrs: { name: "playlistPrivacy", size: "1" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.privacySetting = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "open" } }, [_vm._v("公開")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "private" } }, [
+                    _vm._v("非公開")
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group mb-4" }, [
+              _c(
+                "span",
+                {
+                  on: {
+                    click: function($event) {
+                      $event.stopPropagation()
+                      return _vm.createPlaylist($event)
+                    }
+                  }
+                },
+                [_vm._v("作成")]
+              )
+            ])
+          ])
+        ]
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-257e63de", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-440dff1c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/Home.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -35783,12 +36165,20 @@ var render = function() {
               _vm._v(" "),
               _c("span", [_vm._v(_vm._s(_vm.likeCount))]),
               _vm._v(" "),
-              _c("span", { on: { click: _vm.shareTag } }, [_vm._v("[Share]")])
+              _c("span", { on: { click: _vm.shareTag } }, [_vm._v("[Share]")]),
+              _vm._v(" "),
+              _c("span", { on: { click: _vm.addPlaylist } }, [_vm._v("[＋]")])
             ]),
             _vm._v(" "),
             _vm.showLoginModal ? _c("NoLoginModal") : _vm._e(),
             _vm._v(" "),
-            _vm.showShareModal ? _c("ShareModal") : _vm._e()
+            _vm.showShareModal
+              ? _c("ShareModal", { attrs: { player: _vm.player } })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.showAddPlaylistModal
+              ? _c("AddPlaylistModal", { attrs: { player: _vm.player } })
+              : _vm._e()
           ],
           1
         )
@@ -52557,6 +52947,54 @@ window.axios.interceptors.response.use(function (response) {
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/AddPlaylistModal.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AddPlaylistModal.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-257e63de\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AddPlaylistModal.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/AddPlaylistModal.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-257e63de", Component.options)
+  } else {
+    hotAPI.reload("data-v-257e63de", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/Footer.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53394,6 +53832,9 @@ var getters = {
   },
   username: function username(state) {
     return state.user ? state.user.name : "";
+  },
+  user_id: function user_id(state) {
+    return state.user ? state.user.id : "";
   }
 };
 
@@ -53882,24 +54323,48 @@ var actions = {};
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
 
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 
 
+
 var state = {
-  playlistTagData: null
+  playlistTagData: null,
+  showAddPlaylistModal: false,
+  playlistIdsOfTag: null
 };
 
 var getters = {
   playlistTagData: function playlistTagData(state) {
     return state.playlistTagData;
   },
+  showAddPlaylistModal: function showAddPlaylistModal(state) {
+    return state.showAddPlaylistModal;
+  },
+  playlistIdsOfTag: function playlistIdsOfTag(state) {
+    return state.playlistIdsOfTag;
+  },
   getPlaylistTagContentById: function getPlaylistTagContentById(state) {
     return function (playlistId) {
       return state.playlistTagData.find(function (playlistTag) {
         return playlistTag.id == playlistId;
+      });
+    };
+  },
+  myPlaylistTagData: function myPlaylistTagData(state) {
+    return function (user_id) {
+      return state.playlistTagData.filter(function (playlistTag) {
+        return playlistTag.user_id == user_id;
+      });
+    };
+  },
+  hasMyPlaylists: function hasMyPlaylists(state) {
+    return function (user_id) {
+      return !!state.playlistTagData.filter(function (playlistTag) {
+        return playlistTag.user_id == user_id;
       });
     };
   }
@@ -53908,6 +54373,15 @@ var getters = {
 var mutations = {
   setPlaylistTagData: function setPlaylistTagData(state, data) {
     state.playlistTagData = data;
+  },
+  openAddPlaylistModal: function openAddPlaylistModal(state) {
+    state.showAddPlaylistModal = true;
+  },
+  closeAddPlaylistModal: function closeAddPlaylistModal(state) {
+    state.showAddPlaylistModal = false;
+  },
+  setPlaylistIdsOfTag: function setPlaylistIdsOfTag(state, data) {
+    state.playlistIdsOfTag = data;
   }
 };
 
@@ -53940,6 +54414,167 @@ var actions = {
     }
 
     return loadPlaylist;
+  }(),
+
+  //完了ボタンを押したらチェックの入ったプレイリストにタグを追加
+  addMyPlaylists: function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context, input) {
+      var params, response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              this.errors = {};
+
+              // Toastrオプション変更
+              toastr.options = {
+                positionClass: "toast-bottom-left",
+                timeOut: "5000"
+              };
+
+              //チェックの入ったプレイリストをパラメータとして格納
+              params = {
+                checkedPlaylistIds: input.checkedPlaylistIds
+              };
+              _context2.next = 5;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/tag/addToPlaylists/" + input.currentTagId, params);
+
+            case 5:
+              response = _context2.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
+                // 成功した時
+                context.commit("closeAddPlaylistModal");
+
+                //ポップアップでプレイリストの作成完了を通知
+                toastr.success("プレイリストに保存しました");
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+                toastr.error("プレイリストへの保存に失敗しました");
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+                toastr.error("プレイリストへの保存に失敗しました");
+              }
+
+            case 7:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+
+    function addMyPlaylists(_x2, _x3) {
+      return _ref2.apply(this, arguments);
+    }
+
+    return addMyPlaylists;
+  }(),
+
+  //プレイリスト新規作成と選択中のタグの保存
+  createPlaylist: function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(context, input) {
+      var params, response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              this.errors = {};
+
+              // Toastrオプション変更
+              toastr.options = {
+                positionClass: "toast-bottom-left",
+                timeOut: "5000"
+              };
+
+              //チェックの入ったプレイリストをパラメータとして格納
+              params = {
+                newPlaylistName: input.newPlaylistName,
+                privacySetting: input.privacySetting,
+                currentTagId: input.currentTagId
+              };
+              _context3.next = 5;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/playlist/create", params);
+
+            case 5:
+              response = _context3.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
+                // 成功した時
+                context.commit("closeAddPlaylistModal");
+
+                //ポップアップでプレイリストの作成完了を通知
+                toastr.success("[" + params.newPlaylistName + "]に保存しました");
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+                toastr.error("プレイリストへの作成に失敗しました");
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+                toastr.error("プレイリストへの作成に失敗しました");
+              }
+
+            case 7:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3, this);
+    }));
+
+    function createPlaylist(_x4, _x5) {
+      return _ref3.apply(this, arguments);
+    }
+
+    return createPlaylist;
+  }(),
+
+  //選択されたタグが追加済のユーザーのプレイリストIDを取得
+  getPlaylistIdsOfTag: function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4(context, tag_id) {
+      var response, playlistIdsOfTag;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              this.errors = {};
+
+              _context4.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("/api/tag/getPlaylists/" + tag_id);
+
+            case 3:
+              response = _context4.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+                // 成功した時
+                playlistIdsOfTag = response.data.playlistIds;
+                //追加済のプレイリストのチェックボックスにチェック
+
+                context.commit("setPlaylistIdsOfTag", playlistIdsOfTag);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 5:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4, this);
+    }));
+
+    function getPlaylistIdsOfTag(_x6, _x7) {
+      return _ref4.apply(this, arguments);
+    }
+
+    return getPlaylistIdsOfTag;
   }()
 };
 
@@ -54562,7 +55197,7 @@ var getters = {
     return state.currentYoutubeId;
   },
   currentTagId: function currentTagId(state) {
-    return state.currentTagId;
+    return state.watchList[state.listIndex].tag_id;
   },
   currentTagName: function currentTagName(state) {
     return state.watchList ? state.watchList[state.listIndex].tags : "";
