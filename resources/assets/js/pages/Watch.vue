@@ -2,9 +2,11 @@
   <div class="container--small">
     <div id="player"></div>
     <div v-if="isPlayerReady">
-      <div>
+      <div v-if="isPlaylist">
         <span>{{ playlistName }}</span>
-        <span v-if="isPlaylist" v-on:click="sharePlaylist">[Share]</span>
+        <span v-on:click="sharePlaylist">[Share]</span>
+        <span v-on:click="toggleLikePlaylist" v-bind:class="{ isLiked: isLikedPlaylist}">[Like]</span>
+        <span>{{ likePlaylistCount }}</span>
       </div>
       <div>
         <span>[Now Playing]</span>
@@ -19,10 +21,10 @@
         >{{ currentTagName }}</span>
       </div>
       <div>
+        <span v-on:click="addPlaylist">[＋]</span>
+        <span v-on:click="shareTag">[Share]</span>
         <span v-on:click="toggleLike" v-bind:class="{ isLiked: isLiked}">[Like]</span>
         <span>{{ likeCount }}</span>
-        <span v-on:click="shareTag">[Share]</span>
-        <span v-on:click="addPlaylist">[＋]</span>
       </div>
       <NoLoginModal v-if="showLoginModal" />
       <ShareModal v-if="showShareModal" v-bind:player="player" />
@@ -115,6 +117,22 @@ export default {
         this.$store.dispatch("like/toggleLike", this.currentTagId);
       }
     },
+    toggleLikePlaylist() {
+      if (!this.isLogin) {
+        //未ログインの場合
+        this.$store.commit("noLoginModal/openLoginModal");
+        this.$store.commit(
+          "noLoginModal/setMessageWhenNotLogined",
+          "プレイリストを評価するには、ログインしてください。"
+        );
+      } else {
+        //ログイン済の場合
+        this.$store.dispatch(
+          "likePlaylist/toggleLikePlaylist",
+          this.playlistIdUrl
+        );
+      }
+    },
     sharePlaylist() {
       //Playlist Share用のパラメーターを設定
       this.$store.commit("shareModal/setShareUrl", location.href);
@@ -198,6 +216,16 @@ export default {
     },
     likeCount() {
       return this.$store.getters["like/likeCount"](this.currentTagId);
+    },
+    isLikedPlaylist() {
+      return this.$store.getters["likePlaylist/isLikedPlaylist"](
+        this.playlistIdUrl
+      );
+    },
+    likePlaylistCount() {
+      return this.$store.getters["likePlaylist/likePlaylistCount"](
+        this.playlistIdUrl
+      );
     },
     startIs() {
       return this.formatToMinSec(this.startHis);

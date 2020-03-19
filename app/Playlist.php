@@ -28,4 +28,10 @@ class Playlist extends Model
         //Playlistlogモデルのデータを引っ張ってくる
         return $this->hasMany('App\Playlistlog');
     }
+
+    public function likesPlaylist()
+    {
+        //LikesPlaylistモデルのデータを引っ張ってくる
+        return $this->hasMany('App\LikesPlaylist');
+    }
 }

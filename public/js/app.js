@@ -1690,6 +1690,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     this.$store.dispatch("tag/loadTagVideo");
     this.$store.dispatch("playlist/loadPlaylist");
     this.$store.dispatch("like/loadTagLike");
+    this.$store.dispatch("likePlaylist/loadPlaylistLike");
   }
 });
 
@@ -2796,6 +2797,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
 
 
 
@@ -2871,6 +2874,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       } else {
         //ログイン済の場合
         this.$store.dispatch("like/toggleLike", this.currentTagId);
+      }
+    },
+    toggleLikePlaylist: function toggleLikePlaylist() {
+      if (!this.isLogin) {
+        //未ログインの場合
+        this.$store.commit("noLoginModal/openLoginModal");
+        this.$store.commit("noLoginModal/setMessageWhenNotLogined", "プレイリストを評価するには、ログインしてください。");
+      } else {
+        //ログイン済の場合
+        this.$store.dispatch("likePlaylist/toggleLikePlaylist", this.playlistIdUrl);
       }
     },
     sharePlaylist: function sharePlaylist() {
@@ -2967,6 +2980,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
     likeCount: function likeCount() {
       return this.$store.getters["like/likeCount"](this.currentTagId);
+    },
+    isLikedPlaylist: function isLikedPlaylist() {
+      return this.$store.getters["likePlaylist/isLikedPlaylist"](this.playlistIdUrl);
+    },
+    likePlaylistCount: function likePlaylistCount() {
+      return this.$store.getters["likePlaylist/likePlaylistCount"](this.playlistIdUrl);
     },
     startIs: function startIs() {
       return this.formatToMinSec(this.startHis);
@@ -36119,15 +36138,26 @@ var render = function() {
       ? _c(
           "div",
           [
-            _c("div", [
-              _c("span", [_vm._v(_vm._s(_vm.playlistName))]),
-              _vm._v(" "),
-              _vm.isPlaylist
-                ? _c("span", { on: { click: _vm.sharePlaylist } }, [
+            _vm.isPlaylist
+              ? _c("div", [
+                  _c("span", [_vm._v(_vm._s(_vm.playlistName))]),
+                  _vm._v(" "),
+                  _c("span", { on: { click: _vm.sharePlaylist } }, [
                     _vm._v("[Share]")
-                  ])
-                : _vm._e()
-            ]),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    {
+                      class: { isLiked: _vm.isLikedPlaylist },
+                      on: { click: _vm.toggleLikePlaylist }
+                    },
+                    [_vm._v("[Like]")]
+                  ),
+                  _vm._v(" "),
+                  _c("span", [_vm._v(_vm._s(_vm.likePlaylistCount))])
+                ])
+              : _vm._e(),
             _vm._v(" "),
             _c("div", [
               _c("span", [_vm._v("[Now Playing]")]),
@@ -36154,6 +36184,10 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", [
+              _c("span", { on: { click: _vm.addPlaylist } }, [_vm._v("[＋]")]),
+              _vm._v(" "),
+              _c("span", { on: { click: _vm.shareTag } }, [_vm._v("[Share]")]),
+              _vm._v(" "),
               _c(
                 "span",
                 {
@@ -36163,11 +36197,7 @@ var render = function() {
                 [_vm._v("[Like]")]
               ),
               _vm._v(" "),
-              _c("span", [_vm._v(_vm._s(_vm.likeCount))]),
-              _vm._v(" "),
-              _c("span", { on: { click: _vm.shareTag } }, [_vm._v("[Share]")]),
-              _vm._v(" "),
-              _c("span", { on: { click: _vm.addPlaylist } }, [_vm._v("[＋]")])
+              _c("span", [_vm._v(_vm._s(_vm.likeCount))])
             ]),
             _vm._v(" "),
             _vm.showLoginModal ? _c("NoLoginModal") : _vm._e(),
@@ -54054,10 +54084,12 @@ var mutations = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__tag__ = __webpack_require__("./resources/assets/js/store/tag.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__playlist__ = __webpack_require__("./resources/assets/js/store/playlist.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__like__ = __webpack_require__("./resources/assets/js/store/like.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__search__ = __webpack_require__("./resources/assets/js/store/search.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__noLoginModal__ = __webpack_require__("./resources/assets/js/store/noLoginModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__shareModal__ = __webpack_require__("./resources/assets/js/store/shareModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__likePlaylist__ = __webpack_require__("./resources/assets/js/store/likePlaylist.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__search__ = __webpack_require__("./resources/assets/js/store/search.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__noLoginModal__ = __webpack_require__("./resources/assets/js/store/noLoginModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shareModal__ = __webpack_require__("./resources/assets/js/store/shareModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+
 
 
 
@@ -54082,10 +54114,11 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     tag: __WEBPACK_IMPORTED_MODULE_5__tag__["a" /* default */],
     playlist: __WEBPACK_IMPORTED_MODULE_6__playlist__["a" /* default */],
     like: __WEBPACK_IMPORTED_MODULE_7__like__["a" /* default */],
-    search: __WEBPACK_IMPORTED_MODULE_8__search__["a" /* default */],
-    noLoginModal: __WEBPACK_IMPORTED_MODULE_9__noLoginModal__["a" /* default */],
-    shareModal: __WEBPACK_IMPORTED_MODULE_10__shareModal__["a" /* default */],
-    error: __WEBPACK_IMPORTED_MODULE_11__error__["a" /* default */]
+    likePlaylist: __WEBPACK_IMPORTED_MODULE_8__likePlaylist__["a" /* default */],
+    search: __WEBPACK_IMPORTED_MODULE_9__search__["a" /* default */],
+    noLoginModal: __WEBPACK_IMPORTED_MODULE_10__noLoginModal__["a" /* default */],
+    shareModal: __WEBPACK_IMPORTED_MODULE_11__shareModal__["a" /* default */],
+    error: __WEBPACK_IMPORTED_MODULE_12__error__["a" /* default */]
   }
 });
 
@@ -54260,6 +54293,186 @@ var actions = {
     }
 
     return toggleLike;
+  }()
+};
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/likePlaylist.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+var state = {
+  playlistLikeData: null
+};
+
+var getters = {
+  playlistLikeData: function playlistLikeData(state) {
+    return state.playlistLikeData;
+  },
+  isLikedPlaylist: function isLikedPlaylist(state) {
+    return function (playlist_id) {
+      if (state.playlistLikeData != null && state.playlistLikeData[playlist_id]) {
+        return state.playlistLikeData[playlist_id].isLiked;
+      } else {
+        return false;
+      }
+    };
+  },
+  likePlaylistCount: function likePlaylistCount(state) {
+    return function (playlist_id) {
+      if (state.playlistLikeData != null && state.playlistLikeData[playlist_id]) {
+        return state.playlistLikeData[playlist_id].likeCount;
+      } else {
+        return 0;
+      }
+    };
+  }
+};
+
+var mutations = {
+  setPlaylistLikeData: function setPlaylistLikeData(state, data) {
+    state.playlistLikeData = data;
+  },
+  setIsLiked: function setIsLiked(state, _ref) {
+    var playlist_id = _ref.playlist_id,
+        data = _ref.data;
+
+    state.playlistLikeData[playlist_id].isLiked = data;
+  },
+  toggleIsLiked: function toggleIsLiked(state, playlist_id) {
+    if (!state.playlistLikeData[playlist_id]) {
+      state.playlistLikeData = _extends({}, state.playlistLikeData, _defineProperty({}, playlist_id, { isLiked: false, likeCount: 0 }));
+    }
+    state.playlistLikeData[playlist_id].isLiked = !state.playlistLikeData[playlist_id].isLiked;
+  },
+  setLikeCount: function setLikeCount(state, _ref2) {
+    var playlist_id = _ref2.playlist_id,
+        data = _ref2.data;
+
+    state.playlistLikeData[playlist_id].likeCount = data;
+  },
+  incrementLikeCount: function incrementLikeCount(state, playlist_id) {
+    state.playlistLikeData[playlist_id].likeCount += 1;
+  },
+  decrementLikeCount: function decrementLikeCount(state, playlist_id) {
+    state.playlistLikeData[playlist_id].likeCount -= 1;
+  }
+};
+
+var actions = {
+  //タグへのLikeデータのロード
+  loadPlaylistLike: function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("/api/load/playlistLike");
+
+            case 2:
+              response = _context.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+                // 成功した時
+                context.commit("setPlaylistLikeData", response.data.playlistLike);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function loadPlaylistLike(_x) {
+      return _ref3.apply(this, arguments);
+    }
+
+    return loadPlaylistLike;
+  }(),
+  toggleLikePlaylist: function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context, playlist_id) {
+      var params, response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              this.errors = {};
+              params = {
+                playlist_id: playlist_id
+              };
+              _context2.next = 4;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/toggleLikePlaylist", params);
+
+            case 4:
+              response = _context2.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
+                // 成功した時
+                if (context.getters["isLikedPlaylist"](playlist_id)) {
+                  // 既にLike済の場合: isLikedステータスをfalseにし、likeCountを-1
+                  context.commit("toggleIsLiked", playlist_id);
+                  context.commit("decrementLikeCount", playlist_id);
+                } else {
+                  // 未だLikeしていない場合: isLikedステータスをtrueにし、likeCountを+1
+                  context.commit("toggleIsLiked", playlist_id);
+                  context.commit("incrementLikeCount", playlist_id);
+                }
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 6:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+
+    function toggleLikePlaylist(_x2, _x3) {
+      return _ref4.apply(this, arguments);
+    }
+
+    return toggleLikePlaylist;
   }()
 };
 

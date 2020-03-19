@@ -52,6 +52,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Like');
     }
 
+    public function likesPlaylist()
+    {
+        //LikesPlaylistモデルのデータを引っ張ってくる
+        return $this->hasMany('App\LikesPlaylist');
+    }
+
     public function playlists()
     {
         //Playlistモデルのデータを引っ張ってくる

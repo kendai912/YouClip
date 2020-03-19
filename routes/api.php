@@ -33,6 +33,8 @@ Route::get('/load/tagVideo', 'TagController@load');
 Route::get('/load/playlist', 'PlaylistController@load');
 //タグへのLikeデータのロード
 Route::get("/load/tagLike", 'LikeController@loadTagLike');
+//プレイリストへのLikeデータのロード
+Route::get("/load/playlistLike", 'LikesPlaylistController@loadPlaylistLike');
 
 
 //検索ワード候補取得
@@ -53,6 +55,8 @@ Route::get("/taglist/video", 'VideoController@getTagList');
 
 //タグへのLike
 Route::post("/toggleLike", 'LikeController@toggleLike');
+//プレイリストへのLike
+Route::post("/toggleLikePlaylist", 'LikesPlaylistController@toggleLikePlaylist');
 
 //タグが保存されている既存プレイリストIDの取得
 Route::get('/tag/getPlaylists/{tag}', 'TagController@getPlaylists');

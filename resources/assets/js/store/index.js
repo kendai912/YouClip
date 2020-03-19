@@ -7,6 +7,7 @@ import video from "./video";
 import tag from "./tag";
 import playlist from "./playlist";
 import like from "./like";
+import likePlaylist from "./likePlaylist";
 import search from "./search";
 import noLoginModal from "./noLoginModal";
 import shareModal from "./shareModal";
@@ -22,6 +23,7 @@ const store = new Vuex.Store({
     tag,
     playlist,
     like,
+    likePlaylist,
     search,
     noLoginModal,
     shareModal,
