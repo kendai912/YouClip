@@ -6,7 +6,9 @@ import Home from "./pages/Home.vue";
 import Login from "./pages/Login.vue";
 import Search from "./pages/Search.vue";
 import Result from "./pages/Result.vue";
+import YTresult from "./pages/YTresult.vue";
 import Tagging from "./pages/Tagging.vue";
+import Youtube from "./pages/Youtube.vue";
 import Watch from "./pages/Watch.vue";
 import Mypage from "./pages/Mypage.vue";
 import SystemError from "./pages/errors/System.vue";
@@ -49,6 +51,14 @@ const routes = [
   {
     path: "/tagging",
     component: Tagging
+  },
+  {
+    path: "/YTresult",
+    component: YTresult
+  },
+  {
+    path: "/youtube",
+    component: Youtube
   },
   {
     path: "/watch",

@@ -45,10 +45,6 @@ export default {
     };
   },
   computed: {
-    //検索ワード
-    ...mapGetters({
-      searchQuery: "search/searchQuery"
-    }),
     //検索候補
     ...mapGetters({
       candidates: "search/candidates"

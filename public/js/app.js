@@ -2157,8 +2157,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   },
 
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
-    searchQuery: "search/searchQuery"
-  }), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
     candidates: "search/candidates"
   })),
   methods: {
@@ -2323,6 +2321,169 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       //モーダルを閉じる
       this.closeShareModal();
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/YTSearchBox.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__router__ = __webpack_require__("./resources/assets/js/router.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      YTsearchWord: ""
+    };
+  },
+
+  computed: {
+    // //検索候補
+    // ...mapGetters({
+    //   candidates: "search/candidates"
+    // })
+  },
+  methods: {
+    YTsearch: function YTsearch() {
+      if (this.YTsearchWord == "") return;
+
+      //入力内容がYoutubeのURLかキーワードか判定
+      var youtubeId = this.YTsearchWord.match(/(\?v=|youtu.be\/)([^&]+)/);
+      if (youtubeId) {
+        __WEBPACK_IMPORTED_MODULE_1__router__["a" /* default */].push({
+          path: "/youtube",
+          query: { v: youtubeId[2] }
+        }).catch(function (err) {});
+      } else {
+        this.$store.commit("YTsearch/setYTsearchQuery", this.YTsearchWord);
+        this.$store.dispatch("YTsearch/YTsearch");
+        this.$store.commit("YTsearch/YTsearchResultPageTransit");
+      }
+    },
+
+    //入力を元に検索候補を取得
+    YTsearchCandidates: function YTsearchCandidates() {
+      var input = $("#YTsearchBox").val();
+      // this.$store.dispatch("search/searchCandidates", input);
+    }
+    //検索候補をクリックするとそのまま検索
+    // select(candidateName) {
+    //   this.YTsearchWord = candidateName;
+    //   this.$store.commit("search/setSearchQuery", candidateName);
+    //   this.$store.dispatch("search/search");
+    //   this.$store.commit("search/searchResultPageTransit");
+    // }
+
+  },
+  created: function created() {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/YTitem.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    YTitems: Array
+  },
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
+  methods: {
+    select: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(item) {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                //シーンタグ付けページを表示
+                this.$router.push({
+                  path: "/youtube",
+                  query: {
+                    v: item.id.videoId
+                  }
+                }).catch(function (err) {});
+
+              case 1:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function select(_x) {
+        return _ref.apply(this, arguments);
+      }
+
+      return select;
+    }()
   }
 });
 
@@ -2739,6 +2900,41 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/Tagging.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_YTSearchBox_vue__ = __webpack_require__("./resources/assets/js/components/YTSearchBox.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_YTSearchBox_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_YTSearchBox_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    YTSearchBox: __WEBPACK_IMPORTED_MODULE_1__components_YTSearchBox_vue___default.a
+  },
+  data: function data() {
+    return {};
+  },
+
+  computed: {},
+  created: function created() {}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/Watch.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3138,6 +3334,78 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
   return mounted;
 }()), _components$data$mixi);
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/YTresult.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_YTSearchBox_vue__ = __webpack_require__("./resources/assets/js/components/YTSearchBox.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_YTSearchBox_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_YTSearchBox_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_YTitem_vue__ = __webpack_require__("./resources/assets/js/components/YTitem.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_YTitem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_YTitem_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./resources/assets/js/util.js");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    YTSearchBox: __WEBPACK_IMPORTED_MODULE_1__components_YTSearchBox_vue___default.a,
+    YTitem: __WEBPACK_IMPORTED_MODULE_2__components_YTitem_vue___default.a
+  },
+  mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["e" /* default */]],
+  methods: {},
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    YTresult: "YTsearch/YTresult"
+  }))
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/Youtube.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {},
+  data: function data() {
+    return {};
+  },
+
+  computed: {},
+  created: function created() {}
+});
 
 /***/ }),
 
@@ -35080,6 +35348,60 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0a8e3285\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/YTitem.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    _vm._l(_vm.YTitems, function(item) {
+      return _c(
+        "div",
+        {
+          key: item.etag,
+          on: {
+            click: function($event) {
+              return _vm.select(item)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "thumbnail" }, [
+            _c("img", {
+              staticStyle: { width: "480px", height: "360px" },
+              attrs: {
+                src: item.snippet.thumbnails.high.url,
+                alt: item.snippet.title + "-thumbnail"
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "info" }, [
+            _c("div", [_vm._v(_vm._s(item.snippet.title))])
+          ]),
+          _vm._v(" "),
+          _c("br")
+        ]
+      )
+    }),
+    0
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0a8e3285", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-257e63de\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AddPlaylistModal.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -35802,6 +36124,33 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5e128bd6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/YTresult.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container--small" }, [
+    _c("h1", [_vm._v("YTResult")]),
+    _vm._v(" "),
+    _c("div", [_c("YTSearchBox")], 1),
+    _vm._v(" "),
+    _c("div", [_c("YTitem", { attrs: { YTitems: _vm.YTresult } })], 1)
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5e128bd6", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5ff7ce1a\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/Result.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -36124,6 +36473,36 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-85dfb214\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/Youtube.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "container--small" }, [
+      _c("h1", [_vm._v("Youtube tagging")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-85dfb214", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-9d53053c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/Watch.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -36234,24 +36613,76 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container--small" }, [
+    _c("h1", [_vm._v("Tagging")]),
+    _vm._v(" "),
+    _c("div", [_c("YTSearchBox")], 1)
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container--small" }, [
-      _c("div", [_vm._v("Tagging")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-9f9aa0f0", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-b734ac3e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/YTSearchBox.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.YTsearchWord,
+            expression: "YTsearchWord"
+          }
+        ],
+        attrs: {
+          id: "YTsearchBox",
+          type: "text",
+          placeholder: "キーワードまたはYoutubeのURLを入力"
+        },
+        domProps: { value: _vm.YTsearchWord },
+        on: {
+          input: [
+            function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.YTsearchWord = $event.target.value
+            },
+            _vm.YTsearchCandidates
+          ]
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "span",
+        { attrs: { id: "YTsearchBtn" }, on: { click: _vm.YTsearch } },
+        [_c("img", { attrs: { alt: "検索", src: "/img/search.svg" } })]
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-b734ac3e", module.exports)
   }
 }
 
@@ -53361,6 +53792,102 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/YTSearchBox.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/YTSearchBox.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-b734ac3e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/YTSearchBox.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/YTSearchBox.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b734ac3e", Component.options)
+  } else {
+    hotAPI.reload("data-v-b734ac3e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/YTitem.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/YTitem.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-0a8e3285\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/YTitem.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/YTitem.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0a8e3285", Component.options)
+  } else {
+    hotAPI.reload("data-v-0a8e3285", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/pages/Home.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53607,7 +54134,7 @@ module.exports = Component.exports
 var disposed = false
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
-var __vue_script__ = null
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/Tagging.vue")
 /* template */
 var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-9f9aa0f0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/Tagging.vue")
 /* template functional */
@@ -53697,6 +54224,102 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/pages/YTresult.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/YTresult.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5e128bd6\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/YTresult.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/pages/YTresult.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5e128bd6", Component.options)
+  } else {
+    hotAPI.reload("data-v-5e128bd6", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/pages/Youtube.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/Youtube.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-85dfb214\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/Youtube.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/pages/Youtube.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-85dfb214", Component.options)
+  } else {
+    hotAPI.reload("data-v-85dfb214", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/pages/errors/System.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53760,19 +54383,25 @@ module.exports = Component.exports
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_Search_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__pages_Search_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_Result_vue__ = __webpack_require__("./resources/assets/js/pages/Result.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_Result_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__pages_Result_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_Tagging_vue__ = __webpack_require__("./resources/assets/js/pages/Tagging.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_Tagging_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__pages_Tagging_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_Watch_vue__ = __webpack_require__("./resources/assets/js/pages/Watch.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_Watch_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__pages_Watch_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_Mypage_vue__ = __webpack_require__("./resources/assets/js/pages/Mypage.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_Mypage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__pages_Mypage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_errors_System_vue__ = __webpack_require__("./resources/assets/js/pages/errors/System.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_errors_System_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__pages_errors_System_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__store__ = __webpack_require__("./resources/assets/js/store/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_YTresult_vue__ = __webpack_require__("./resources/assets/js/pages/YTresult.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_YTresult_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__pages_YTresult_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_Tagging_vue__ = __webpack_require__("./resources/assets/js/pages/Tagging.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_Tagging_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__pages_Tagging_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_Youtube_vue__ = __webpack_require__("./resources/assets/js/pages/Youtube.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_Youtube_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__pages_Youtube_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_Watch_vue__ = __webpack_require__("./resources/assets/js/pages/Watch.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_Watch_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__pages_Watch_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_Mypage_vue__ = __webpack_require__("./resources/assets/js/pages/Mypage.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_Mypage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__pages_Mypage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_errors_System_vue__ = __webpack_require__("./resources/assets/js/pages/errors/System.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_errors_System_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__pages_errors_System_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__store__ = __webpack_require__("./resources/assets/js/store/index.js");
 
 
 
 // ページコンポーネントをインポートする
+
+
 
 
 
@@ -53796,7 +54425,7 @@ var routes = [{
   path: "/login",
   component: __WEBPACK_IMPORTED_MODULE_3__pages_Login_vue___default.a,
   beforeEnter: function beforeEnter(to, from, next) {
-    if (__WEBPACK_IMPORTED_MODULE_10__store__["a" /* default */].getters["auth/check"]) {
+    if (__WEBPACK_IMPORTED_MODULE_12__store__["a" /* default */].getters["auth/check"]) {
       next("/");
     } else {
       next();
@@ -53813,16 +54442,22 @@ var routes = [{
   component: __WEBPACK_IMPORTED_MODULE_5__pages_Result_vue___default.a
 }, {
   path: "/tagging",
-  component: __WEBPACK_IMPORTED_MODULE_6__pages_Tagging_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_7__pages_Tagging_vue___default.a
+}, {
+  path: "/YTresult",
+  component: __WEBPACK_IMPORTED_MODULE_6__pages_YTresult_vue___default.a
+}, {
+  path: "/youtube",
+  component: __WEBPACK_IMPORTED_MODULE_8__pages_Youtube_vue___default.a
 }, {
   path: "/watch",
-  component: __WEBPACK_IMPORTED_MODULE_7__pages_Watch_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_9__pages_Watch_vue___default.a
 }, {
   path: "/mypage",
-  component: __WEBPACK_IMPORTED_MODULE_8__pages_Mypage_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_10__pages_Mypage_vue___default.a
 }, {
   path: "/500",
-  component: __WEBPACK_IMPORTED_MODULE_9__pages_errors_System_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_11__pages_errors_System_vue___default.a
 }];
 
 // VueRouterインスタンスを作成する
@@ -53834,6 +54469,318 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
 // VueRouterインスタンスをエクスポートする
 // app.jsでインポートするため
 /* harmony default export */ __webpack_exports__["a"] = (router);
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/YTsearch.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__router__ = __webpack_require__("./resources/assets/js/router.js");
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+
+
+
+
+var state = {
+  YTsearchQuery: null,
+  candidates: [],
+  YTresult: [],
+  topYTSearchqueries: [],
+  YTsearchHistories: [],
+  api: "https://www.googleapis.com/youtube/v3/search",
+  params: {
+    part: "snippet",
+    q: "",
+    type: "video",
+    order: "viewCount", // 再生回数の多い順
+    maxResults: "20", // 最大検索数
+    videoEmbeddable: true,
+    key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk"
+  }
+};
+
+var getters = {
+  YTsearchQuery: function YTsearchQuery(state) {
+    return state.YTsearchQuery;
+  },
+  candidates: function candidates(state) {
+    return state.candidates;
+  },
+  YTresult: function YTresult(state) {
+    return state.YTresult;
+  },
+  topYTSearchqueries: function topYTSearchqueries(state) {
+    return state.topYTSearchqueries;
+  },
+  YTsearchHistories: function YTsearchHistories(state) {
+    return state.YTsearchHistories;
+  }
+};
+
+var mutations = {
+  setYTsearchQuery: function setYTsearchQuery(state, data) {
+    state.YTsearchQuery = data;
+    state.params.q = state.YTsearchQuery;
+  },
+  setCandidates: function setCandidates(state, data) {
+    state.candidates = data;
+  },
+  setYTResult: function setYTResult(state, data) {
+    state.YTresult = data;
+  },
+  setTopYTSearchqueries: function setTopYTSearchqueries(state, data) {
+    state.topYTSearchqueries = data;
+  },
+  setYTsearchHistories: function setYTsearchHistories(state, data) {
+    state.YTsearchHistories = data;
+  },
+
+  //検索結果表示ページに遷移
+  YTsearchResultPageTransit: function YTsearchResultPageTransit() {
+    var path = "/YTresult";
+    if (location.pathname != path) {
+      __WEBPACK_IMPORTED_MODULE_3__router__["a" /* default */].push({
+        path: "/YTresult",
+        query: { search_query: state.YTsearchQuery }
+      }).catch(function (err) {});
+    } else {
+      __WEBPACK_IMPORTED_MODULE_3__router__["a" /* default */].push({
+        query: { search_query: state.YTsearchQuery }
+      }).catch(function (err) {});
+    }
+  }
+};
+
+var actions = {
+  //検索結果データを取得
+  YTsearch: function YTsearch(context) {
+    actions.searchYTResult(context);
+    // actions.storeYTSearchRecord(context);
+  },
+
+  //検索ワード候補を取得(インクリメンタルサーチ)
+  searchCandidates: function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context, input) {
+      var params, response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              params = {
+                input: input
+              };
+              _context.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/candidates", params);
+
+            case 3:
+              response = _context.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+                // 成功した時
+                context.commit("setCandidates", response.data.candidates);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function searchCandidates(_x, _x2) {
+      return _ref.apply(this, arguments);
+    }
+
+    return searchCandidates;
+  }(),
+
+  //検索ワードをYoutube動画を検索
+  searchYTResult: function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(state.api, { params: state.params });
+
+            case 2:
+              response = _context2.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+                // 成功した時
+                console.log(response);
+                context.commit("setYTResult", response.data.items);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 4:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+
+    function searchYTResult(_x3) {
+      return _ref2.apply(this, arguments);
+    }
+
+    return searchYTResult;
+  }(),
+
+  //検索キーワードおよび検索履歴をテーブルに保存
+  storeYTSearchRecord: function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(context) {
+      var params, response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              params = {
+                YTsearchQuery: state.YTsearchQuery
+              };
+              _context3.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/store/YTsearchrecord", params);
+
+            case 3:
+              response = _context3.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
+                // 成功した時
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 5:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3, this);
+    }));
+
+    function storeYTSearchRecord(_x4) {
+      return _ref3.apply(this, arguments);
+    }
+
+    return storeYTSearchRecord;
+  }(),
+
+  //人気の検索ワードを取得
+  getTopYTSearchqueries: function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4(context) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.next = 2;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/topYTSearchqueries");
+
+            case 2:
+              response = _context4.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+                // 成功した時
+                context.commit("setTopYTSearchqueries", response.data.topYTSearchqueries);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 4:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4, this);
+    }));
+
+    function getTopYTSearchqueries(_x5) {
+      return _ref4.apply(this, arguments);
+    }
+
+    return getTopYTSearchqueries;
+  }(),
+
+  //検索履歴を取得
+  getYTsearchHistories: function () {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5(context) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.next = 2;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/YTsearchHistories");
+
+            case 2:
+              response = _context5.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+                // 成功した時
+                context.commit("setYTsearchHistories", response.data.YTsearchHistories);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 4:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, _callee5, this);
+    }));
+
+    function getYTsearchHistories(_x6) {
+      return _ref5.apply(this, arguments);
+    }
+
+    return getYTsearchHistories;
+  }()
+};
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
 
 /***/ }),
 
@@ -54086,9 +55033,13 @@ var mutations = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__like__ = __webpack_require__("./resources/assets/js/store/like.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__likePlaylist__ = __webpack_require__("./resources/assets/js/store/likePlaylist.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__search__ = __webpack_require__("./resources/assets/js/store/search.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__noLoginModal__ = __webpack_require__("./resources/assets/js/store/noLoginModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shareModal__ = __webpack_require__("./resources/assets/js/store/shareModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__YTsearch__ = __webpack_require__("./resources/assets/js/store/YTsearch.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__youtube__ = __webpack_require__("./resources/assets/js/store/youtube.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__noLoginModal__ = __webpack_require__("./resources/assets/js/store/noLoginModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__shareModal__ = __webpack_require__("./resources/assets/js/store/shareModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+
+
 
 
 
@@ -54116,9 +55067,11 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     like: __WEBPACK_IMPORTED_MODULE_7__like__["a" /* default */],
     likePlaylist: __WEBPACK_IMPORTED_MODULE_8__likePlaylist__["a" /* default */],
     search: __WEBPACK_IMPORTED_MODULE_9__search__["a" /* default */],
-    noLoginModal: __WEBPACK_IMPORTED_MODULE_10__noLoginModal__["a" /* default */],
-    shareModal: __WEBPACK_IMPORTED_MODULE_11__shareModal__["a" /* default */],
-    error: __WEBPACK_IMPORTED_MODULE_12__error__["a" /* default */]
+    YTsearch: __WEBPACK_IMPORTED_MODULE_10__YTsearch__["a" /* default */],
+    youtube: __WEBPACK_IMPORTED_MODULE_11__youtube__["a" /* default */],
+    noLoginModal: __WEBPACK_IMPORTED_MODULE_12__noLoginModal__["a" /* default */],
+    shareModal: __WEBPACK_IMPORTED_MODULE_13__shareModal__["a" /* default */],
+    error: __WEBPACK_IMPORTED_MODULE_14__error__["a" /* default */]
   }
 });
 
@@ -55478,6 +56431,42 @@ var mutations = {
   },
   setCurrentTagId: function setCurrentTagId(state, data) {
     state.currentTagId = data;
+  }
+};
+
+var actions = {};
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/youtube.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__("./node_modules/axios/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+
+
+var state = {
+  youtubeId: ""
+};
+
+var getters = {
+  youtubeId: function youtubeId(state) {
+    return state.youtubeId;
+  }
+};
+
+var mutations = {
+  setYoutubeId: function setYoutubeId(state, data) {
+    state.youtubeId = data;
   }
 };
 
