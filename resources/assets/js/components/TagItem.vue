@@ -1,15 +1,23 @@
 <template>
   <div v-if="isReady" class="container">
-    <div>{{ videoData.title }}</div>
+    <div>
+      <span v-if="isNew">{{ newVideoData.title }}</span
+      ><span v-else>{{ videoData.title }}</span>
+    </div>
     <transition-group name="tag-list" tag="p" class="tag__list">
       <ul v-for="tagData in showTagDataArray" v-bind:key="tagData.id">
         <li class="tag__list__item">
-          <span>{{ formatToMinSec(tagData.start) }}〜{{ formatToMinSec(tagData.end) }}</span>
+          <span
+            >{{ formatToMinSec(tagData.start) }}〜{{
+              formatToMinSec(tagData.end)
+            }}</span
+          >
           <span
             class="tag"
             v-for="tag in tagData.tags.split(/[\s| |　]/)"
             v-bind:key="tagData + '.' + tag"
-          >{{ tag }}</span>
+            >{{ tag }}</span
+          >
         </li>
       </ul>
     </transition-group>
@@ -30,7 +38,9 @@ export default {
     ...mapGetters({
       currentTime: "youtube/currentTime",
       videoData: "youtube/videoData",
+      newVideoData: "youtube/newVideoData",
       tagDataArray: "youtube/tagDataArray",
+      isNew: "youtube/isNew",
       isReady: "youtube/isReady"
     }),
     playingTagIndex() {

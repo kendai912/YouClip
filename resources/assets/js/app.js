@@ -8,6 +8,10 @@ import Vue from "vue";
 import router from "./router";
 import store from "./store";
 import App from "./App.vue";
+import Vuetify from "vuetify";
+import "vuetify/dist/vuetify.min.css";
+
+Vue.use(Vuetify);
 
 const createApp = async () => {
   await store.dispatch("auth/currentUser");
@@ -15,6 +19,7 @@ const createApp = async () => {
   new Vue({
     el: "#app",
     router, // ルーティングの定義を読み込む
+    vuetify: new Vuetify(),
     store,
     components: { App }, // ルートコンポーネントの使用を宣言する
     template: "<App />" // ルートコンポーネントを描画する

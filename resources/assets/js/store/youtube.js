@@ -6,13 +6,21 @@ const state = {
   videoData: null,
   tagDataArray: null,
   isNew: "",
+  newVideoData: {
+    title: "",
+    thumbnail: "",
+    duration: "",
+    category: ""
+  },
   currentTime: null,
-  isReady: false
+  isReady: false,
+  key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk"
 };
 
 const getters = {
   youtubeId: state => state.youtubeId,
   videoData: state => state.videoData,
+  newVideoData: state => state.newVideoData,
   tagDataArray: state => state.tagDataArray,
   isNew: state => state.isNew,
   currentTime: state => state.currentTime,
@@ -25,6 +33,21 @@ const mutations = {
   },
   setVideoData(state, data) {
     state.videoData = data;
+  },
+  setNewVideoTitle(state, data) {
+    state.newVideoData.title = data;
+  },
+  setNewVideoThumbnail(state, data) {
+    state.newVideoData.thumbnail = data;
+  },
+  setNewVideoDuration(state, data) {
+    let result = data.match(/PT(\d*)M(\d*)S/);
+    let min = result[1];
+    let sec = result[2];
+    state.newVideoData.duration = min + ":" + sec;
+  },
+  setNewVideoCategory(state, data) {
+    state.newVideoData.category = data;
   },
   setTagDataArray(state, data) {
     state.tagDataArray = data;
@@ -97,6 +120,64 @@ const actions = {
       });
 
       context.commit("setTagDataArray", tags);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  //YoutubeIDを元にData APIから動画情報を取得
+  async getNewVideoData(context) {
+    let api = "https://www.googleapis.com/youtube/v3/videos";
+    let params = {
+      id: state.youtubeId,
+      key: state.key,
+      part: "snippet, contentDetails"
+    };
+
+    const response = await axios.get(api, { params: params });
+    if (response.status == OK) {
+      // 成功した時
+      context.commit("setNewVideoTitle", response.data.items[0].snippet.title);
+      context.commit(
+        "setNewVideoThumbnail",
+        response.data.items[0].snippet.thumbnails.high.url
+      );
+      context.commit(
+        "setNewVideoDuration",
+        response.data.items[0].contentDetails.duration
+      );
+      context.dispatch(
+        "getVideoCategoryTitleById",
+        response.data.items[0].snippet.categoryId
+      );
+      // context.commit("setYTResult", response.data.items);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  //Data APIでCategoryIDからカテゴリ名を取得
+  async getVideoCategoryTitleById(context, categoryId) {
+    let api = "https://www.googleapis.com/youtube/v3/videoCategories";
+    let params = {
+      part: "snippet",
+      id: categoryId,
+      key: state.key
+    };
+
+    const response = await axios.get(api, { params: params });
+    if (response.status == OK) {
+      // 成功した時
+      context.commit(
+        "setNewVideoCategory",
+        response.data.items[0].snippet.title
+      );
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });

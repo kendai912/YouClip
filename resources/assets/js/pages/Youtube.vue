@@ -5,17 +5,22 @@
     <div>
       <TagItem />
     </div>
+    <div>
+      <TimeControl />
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
 import TagItem from "../components/TagItem.vue";
+import TimeControl from "../components/TimeControl.vue";
 import myMixin from "../util";
 
 export default {
   components: {
-    TagItem
+    TagItem,
+    TimeControl
   },
   data() {
     return {};
@@ -30,11 +35,22 @@ export default {
     })
   },
   async created() {
+    //必要データを取得するまでTagItemは非表示
     this.$store.commit("youtube/setIsReady", false);
+
+    //URLからyoutubeIdを格納
     let youtubeId = this.$route.query.v;
+
+    //必要データを取得
     this.$store.commit("youtube/setYoutubeId", youtubeId);
     await this.$store.dispatch("youtube/getVideo");
     await this.$store.dispatch("youtube/getTag");
+    if (this.isNew) {
+      //新規動画・タグの場合はData APIから取得
+      await this.$store.dispatch("youtube/getNewVideoData");
+    }
+
+    //TagItemを表示に切り替え
     this.$store.commit("youtube/setIsReady", true);
 
     // This code loads the IFrame Player API code asynchronously.
