@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+  <div v-if="isReady" class="container">
+    <div>{{ videoData.title }}</div>
     <transition-group name="tag-list" tag="p" class="tag__list">
       <ul v-for="tagData in showTagDataArray" v-bind:key="tagData.id">
         <li class="tag__list__item">
@@ -28,7 +29,9 @@ export default {
   computed: {
     ...mapGetters({
       currentTime: "youtube/currentTime",
-      tagDataArray: "youtube/tagDataArray"
+      videoData: "youtube/videoData",
+      tagDataArray: "youtube/tagDataArray",
+      isReady: "youtube/isReady"
     }),
     playingTagIndex() {
       let index = 0;

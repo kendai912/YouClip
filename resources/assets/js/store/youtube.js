@@ -6,7 +6,8 @@ const state = {
   videoData: null,
   tagDataArray: null,
   isNew: "",
-  currentTime: null
+  currentTime: null,
+  isReady: false
 };
 
 const getters = {
@@ -14,7 +15,8 @@ const getters = {
   videoData: state => state.videoData,
   tagDataArray: state => state.tagDataArray,
   isNew: state => state.isNew,
-  currentTime: state => state.currentTime
+  currentTime: state => state.currentTime,
+  isReady: state => state.isReady
 };
 
 const mutations = {
@@ -32,6 +34,9 @@ const mutations = {
   },
   setCurrentTime(state, data) {
     state.currentTime = data;
+  },
+  setIsReady(state, data) {
+    state.isReady = data;
   }
 };
 
@@ -53,7 +58,7 @@ const actions = {
       } else {
         //既存の動画・タグの場合
         context.commit("setIsNew", false);
-        context.commit("setVideoData", response.data.video);
+        context.commit("setVideoData", response.data.video[0]);
       }
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
@@ -69,7 +74,8 @@ const actions = {
     if (state.isNew) return;
 
     let params = {
-      videoId: state.videoData[0].id
+      // videoId: state.videoData[0].id
+      videoId: state.videoData.id
     };
 
     const response = await axios.get("api/youtube/getTag", {

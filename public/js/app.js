@@ -2351,6 +2351,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
 
 
 
@@ -2365,7 +2366,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
     currentTime: "youtube/currentTime",
-    tagDataArray: "youtube/tagDataArray"
+    videoData: "youtube/videoData",
+    tagDataArray: "youtube/tagDataArray",
+    isReady: "youtube/isReady"
   }), {
     playingTagIndex: function playingTagIndex() {
       var _this = this;
@@ -2465,6 +2468,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.$store.dispatch("YTsearch/YTsearch");
         this.$store.commit("YTsearch/YTsearchResultPageTransit");
       }
+
+      // IFrame Player APIを呼び出すためにページをリロード
+      window.location.reload();
     },
 
     //入力を元に検索候補を取得
@@ -3509,17 +3515,19 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              this.$store.commit("youtube/setIsReady", false);
               youtubeId = this.$route.query.v;
 
               this.$store.commit("youtube/setYoutubeId", youtubeId);
-              _context.next = 4;
+              _context.next = 5;
               return this.$store.dispatch("youtube/getVideo");
 
-            case 4:
-              _context.next = 6;
+            case 5:
+              _context.next = 7;
               return this.$store.dispatch("youtube/getTag");
 
-            case 6:
+            case 7:
+              this.$store.commit("youtube/setIsReady", true);
 
               // This code loads the IFrame Player API code asynchronously.
               tag = document.createElement("script");
@@ -3571,7 +3579,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 }
               });
 
-            case 16:
+            case 18:
             case "end":
               return _context.stop();
           }
@@ -35800,44 +35808,48 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container" },
-    [
-      _c(
-        "transition-group",
-        { staticClass: "tag__list", attrs: { name: "tag-list", tag: "p" } },
-        _vm._l(_vm.showTagDataArray, function(tagData) {
-          return _c("ul", { key: tagData.id }, [
-            _c(
-              "li",
-              { staticClass: "tag__list__item" },
-              [
-                _c("span", [
-                  _vm._v(
-                    _vm._s(_vm.formatToMinSec(tagData.start)) +
-                      "〜" +
-                      _vm._s(_vm.formatToMinSec(tagData.end))
-                  )
-                ]),
-                _vm._v(" "),
-                _vm._l(tagData.tags.split(/[\s| |　]/), function(tag) {
-                  return _c(
-                    "span",
-                    { key: tagData + "." + tag, staticClass: "tag" },
-                    [_vm._v(_vm._s(tag))]
-                  )
-                })
-              ],
-              2
-            )
-          ])
-        }),
-        0
+  return _vm.isReady
+    ? _c(
+        "div",
+        { staticClass: "container" },
+        [
+          _c("div", [_vm._v(_vm._s(_vm.videoData.title))]),
+          _vm._v(" "),
+          _c(
+            "transition-group",
+            { staticClass: "tag__list", attrs: { name: "tag-list", tag: "p" } },
+            _vm._l(_vm.showTagDataArray, function(tagData) {
+              return _c("ul", { key: tagData.id }, [
+                _c(
+                  "li",
+                  { staticClass: "tag__list__item" },
+                  [
+                    _c("span", [
+                      _vm._v(
+                        _vm._s(_vm.formatToMinSec(tagData.start)) +
+                          "〜" +
+                          _vm._s(_vm.formatToMinSec(tagData.end))
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(tagData.tags.split(/[\s| |　]/), function(tag) {
+                      return _c(
+                        "span",
+                        { key: tagData + "." + tag, staticClass: "tag" },
+                        [_vm._v(_vm._s(tag))]
+                      )
+                    })
+                  ],
+                  2
+                )
+              ])
+            }),
+            0
+          )
+        ],
+        1
       )
-    ],
-    1
-  )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -56770,7 +56782,8 @@ var state = {
   videoData: null,
   tagDataArray: null,
   isNew: "",
-  currentTime: null
+  currentTime: null,
+  isReady: false
 };
 
 var getters = {
@@ -56788,6 +56801,9 @@ var getters = {
   },
   currentTime: function currentTime(state) {
     return state.currentTime;
+  },
+  isReady: function isReady(state) {
+    return state.isReady;
   }
 };
 
@@ -56806,6 +56822,9 @@ var mutations = {
   },
   setCurrentTime: function setCurrentTime(state, data) {
     state.currentTime = data;
+  },
+  setIsReady: function setIsReady(state, data) {
+    state.isReady = data;
   }
 };
 
@@ -56837,7 +56856,7 @@ var actions = {
                 } else {
                   //既存の動画・タグの場合
                   context.commit("setIsNew", false);
-                  context.commit("setVideoData", response.data.video);
+                  context.commit("setVideoData", response.data.video[0]);
                 }
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
@@ -56879,7 +56898,8 @@ var actions = {
 
             case 2:
               params = {
-                videoId: state.videoData[0].id
+                // videoId: state.videoData[0].id
+                videoId: state.videoData.id
               };
               _context2.next = 5;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/youtube/getTag", {

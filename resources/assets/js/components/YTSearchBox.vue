@@ -61,6 +61,9 @@ export default {
         this.$store.dispatch("YTsearch/YTsearch");
         this.$store.commit("YTsearch/YTsearchResultPageTransit");
       }
+
+      // IFrame Player APIを呼び出すためにページをリロード
+      window.location.reload();
     },
     //入力を元に検索候補を取得
     YTsearchCandidates() {

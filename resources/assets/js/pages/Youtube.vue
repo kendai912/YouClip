@@ -30,10 +30,12 @@ export default {
     })
   },
   async created() {
+    this.$store.commit("youtube/setIsReady", false);
     let youtubeId = this.$route.query.v;
     this.$store.commit("youtube/setYoutubeId", youtubeId);
     await this.$store.dispatch("youtube/getVideo");
     await this.$store.dispatch("youtube/getTag");
+    this.$store.commit("youtube/setIsReady", true);
 
     // This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement("script");
