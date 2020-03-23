@@ -28,6 +28,22 @@ class VideoController extends Controller
         );
     }
 
+    //youtubeIdから動画データを取得
+    public function getVideoByYoutubeId(Request $request)
+    {
+        $youtubeId = $request->youtubeId;
+        $video = Video::where('youtubeId', $youtubeId)->get();
+
+        return response()->json(
+            [
+                'video' => $video
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
     //登録画面
     public function create()
     {

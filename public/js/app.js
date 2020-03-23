@@ -2326,6 +2326,76 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/TagItem.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./resources/assets/js/util.js");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      showTagIndex: 0
+    };
+  },
+
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    currentTime: "youtube/currentTime",
+    tagDataArray: "youtube/tagDataArray"
+  }), {
+    playingTagIndex: function playingTagIndex() {
+      var _this = this;
+
+      var index = 0;
+      if (this.tagDataArray) {
+        //現在再生中のタグのインデックスを取得(なしの場合は-1)
+        index = this.tagDataArray.findIndex(function (tagData) {
+          return _this.convertToSec(_this.formatToMinSec(tagData.start)) <= _this.currentTime && _this.convertToSec(_this.formatToMinSec(tagData.end)) >= _this.currentTime;
+        });
+
+        //現在再生中のタグがある場合はshowTagIndexに格納
+        if (index != -1) {
+          this.showTagIndex = index;
+        }
+        return this.showTagIndex;
+      }
+    },
+
+    //現在再生中のタグから5個まで表示
+    showTagDataArray: function showTagDataArray() {
+      return this.tagDataArray ? this.tagDataArray.slice(this.playingTagIndex, this.playingTagIndex + 5) : "";
+    }
+  }),
+  methods: {},
+  created: function created() {}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/YTSearchBox.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2421,14 +2491,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./resources/assets/js/util.js");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2454,36 +2526,20 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   props: {
     YTitems: Array
   },
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    YTloading: "YTsearch/YTloading"
+  })),
   methods: {
-    select: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(item) {
-        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                //シーンタグ付けページを表示
-                this.$router.push({
-                  path: "/youtube",
-                  query: {
-                    v: item.id.videoId
-                  }
-                }).catch(function (err) {});
-
-              case 1:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function select(_x) {
-        return _ref.apply(this, arguments);
-      }
-
-      return select;
-    }()
+    select: function select(item) {
+      //シーンタグ付けページを表示
+      this.$router.push({
+        path: "/youtube",
+        query: {
+          v: item.id.videoId
+        }
+      }).catch(function (err) {});
+    }
   }
 });
 
@@ -2815,8 +2871,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     }
   },
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
-    tagVideoResult: "search/tagVideoResult"
-  }), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    searchQuery: "search/searchQuery",
+    tagVideoResult: "search/tagVideoResult",
     playlistTagResult: "search/playlistTagResult"
   }), {
     //レコメンド画面に表示するアイテム
@@ -2834,7 +2890,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         return a.created_at < b.created_at ? 1 : a.created_at > b.created_at ? -1 : 0;
       });
     }
-  })
+  }),
+  created: function created() {
+    //リロードされた場合はURLのsearch_queryを元に再度検索を実行
+    if (!this.searchQuery) {
+      this.$store.commit("search/setSearchQuery", this.$route.query.search_query);
+      this.$store.dispatch("search/search");
+    }
+  }
 });
 
 /***/ }),
@@ -3376,8 +3439,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["e" /* default */]],
   methods: {},
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    YTsearchQuery: "YTsearch/YTsearchQuery",
     YTresult: "YTsearch/YTresult"
-  }))
+  })),
+  created: function created() {
+    //リロードされた場合はURLのsearch_queryを元に再度検索を実行
+    if (!this.YTsearchQuery) {
+      this.$store.commit("YTsearch/setYTsearchQuery", this.$route.query.search_query);
+      this.$store.dispatch("YTsearch/YTsearch");
+    }
+  }
 });
 
 /***/ }),
@@ -3387,24 +3458,133 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_TagItem_vue__ = __webpack_require__("./resources/assets/js/components/TagItem.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_TagItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_TagItem_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./resources/assets/js/util.js");
+
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 //
 //
 //
 //
 //
 //
+//
+//
+//
+//
+
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: {},
+  components: {
+    TagItem: __WEBPACK_IMPORTED_MODULE_2__components_TagItem_vue___default.a
+  },
   data: function data() {
     return {};
   },
 
-  computed: {},
-  created: function created() {}
+  mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["e" /* default */]],
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
+    youtubeId: "youtube/youtubeId",
+    videoData: "youtube/videoData",
+    tagDataArray: "youtube/tagDataArray",
+    isNew: "youtube/isNew"
+  })),
+  created: function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+      var _this = this;
+
+      var youtubeId, tag, firstScriptTag, self, from;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              youtubeId = this.$route.query.v;
+
+              this.$store.commit("youtube/setYoutubeId", youtubeId);
+              _context.next = 4;
+              return this.$store.dispatch("youtube/getVideo");
+
+            case 4:
+              _context.next = 6;
+              return this.$store.dispatch("youtube/getTag");
+
+            case 6:
+
+              // This code loads the IFrame Player API code asynchronously.
+              tag = document.createElement("script");
+
+              tag.src = "https://www.youtube.com/iframe_api";
+              firstScriptTag = document.getElementsByTagName("script")[0];
+
+              firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+              self = this;
+
+              //Youtube Playerの初期処理
+
+              window.onYouTubeIframeAPIReady = function () {
+                _this.player = new YT.Player("player", {
+                  width: "560",
+                  height: "315",
+                  videoId: _this.youtubeId,
+                  events: {
+                    onReady: onPlayerReady,
+                    onStateChange: onPlayerStateChange
+                  }
+                });
+              };
+
+              window.onPlayerReady = function (event) {
+                event.target.mute();
+                event.target.playVideo();
+                _this.isPlayerReady = true;
+
+                //1秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
+                setInterval(function () {
+                  //playerが取得した時間を「分:秒」に整形しcurrentTimeに格納
+                  var currentTime = self.convertToSec(self.formatTime(event.target.getCurrentTime()));
+
+                  //currentTimeをyoutubeストアにセット
+                  self.$store.commit("youtube/setCurrentTime", currentTime);
+                }, 1000);
+              };
+
+              window.onPlayerStateChange = function (event) {};
+
+              //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
+              from = this.$route.path;
+
+              window.addEventListener("popstate", function (e) {
+                var to = self.$route.path;
+                if (from == "/youtube" && to == "/youtube") {
+                  location.reload();
+                }
+              });
+
+            case 16:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function created() {
+      return _ref.apply(this, arguments);
+    }
+
+    return created;
+  }()
 });
 
 /***/ }),
@@ -6027,7 +6207,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, ".candidatesWrap {\n  /* width: 300px; */\n  border: solid 1px #000000;\n}\n\n.item p {\n  margin: 0px;\n}\n\n.isEven {\n  background-color: #dddddd;\n}\n\n.v-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: 1000;\n  transition: 0.3s;\n}\n\n.v-modal .modal-in-box {\n  width: 50%;\n  padding: 1.2rem;\n  background-color: #ffffff;\n}\n\n.info-area {\n  align-items: center;\n}\n\n.isLiked {\n  color: red;\n}\n\n.tag {\n  display: inline-block;\n  margin: 0 0.1em 0.6em 0;\n  padding: 0.6em;\n  line-height: 1;\n  text-decoration: none;\n  color: #0000ee;\n  background-color: #fff;\n  border: 1px solid #0000ee;\n  border-radius: 2em;\n}\n", ""]);
+exports.push([module.i, ".candidatesWrap {\n  /* width: 300px; */\n  border: solid 1px #000000;\n}\n\n.item p {\n  margin: 0px;\n}\n\n.isEven {\n  background-color: #dddddd;\n}\n\n.v-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: 1000;\n  transition: 0.3s;\n}\n\n.v-modal .modal-in-box {\n  width: 50%;\n  padding: 1.2rem;\n  background-color: #ffffff;\n}\n\n.info-area {\n  align-items: center;\n}\n\n.isLiked {\n  color: red;\n}\n\n.tag {\n  display: inline-block;\n  margin: 0 0.1em 0.6em 0;\n  padding: 0.6em;\n  line-height: 1;\n  text-decoration: none;\n  color: #0000ee;\n  background-color: #fff;\n  border: 1px solid #0000ee;\n  border-radius: 2em;\n}\n\n.tag-list-move {\n  transition: all 1s;\n}\n\n.tag-list-enter-to {\n  transition: all 1s;\n}\n\n.tag-list-enter {\n  opacity: 0;\n  transform: translateY(35px);\n}\n\n.tag-list-leave-to {\n  opacity: 0;\n  transform: translateY(-35px);\n}\n\n.tag-list-leave-active {\n  position: absolute;\n  transition: all 1s;\n}\n", ""]);
 
 // exports
 
@@ -35357,37 +35537,49 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    _vm._l(_vm.YTitems, function(item) {
-      return _c(
-        "div",
-        {
-          key: item.etag,
-          on: {
-            click: function($event) {
-              return _vm.select(item)
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "thumbnail" }, [
+    [
+      _vm.YTloading
+        ? _c("div", { staticClass: "loader" }, [
             _c("img", {
-              staticStyle: { width: "480px", height: "360px" },
               attrs: {
-                src: item.snippet.thumbnails.high.url,
-                alt: item.snippet.title + "-thumbnail"
+                src:
+                  "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif",
+                alt: "loader"
               }
             })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "info" }, [
-            _c("div", [_vm._v(_vm._s(item.snippet.title))])
-          ]),
-          _vm._v(" "),
-          _c("br")
-        ]
-      )
-    }),
-    0
+          ])
+        : _vm._l(_vm.YTitems, function(item) {
+            return _c(
+              "div",
+              {
+                key: item.etag,
+                on: {
+                  click: function($event) {
+                    return _vm.select(item)
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "thumbnail" }, [
+                  _c("img", {
+                    staticStyle: { width: "480px", height: "360px" },
+                    attrs: {
+                      src: item.snippet.thumbnails.high.url,
+                      alt: item.snippet.title + "-thumbnail"
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "info" }, [
+                  _c("div", [_vm._v(_vm._s(item.snippet.title))])
+                ]),
+                _vm._v(" "),
+                _c("br")
+              ]
+            )
+          })
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -35596,6 +35788,64 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-257e63de", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3a4dbf66\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/TagItem.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container" },
+    [
+      _c(
+        "transition-group",
+        { staticClass: "tag__list", attrs: { name: "tag-list", tag: "p" } },
+        _vm._l(_vm.showTagDataArray, function(tagData) {
+          return _c("ul", { key: tagData.id }, [
+            _c(
+              "li",
+              { staticClass: "tag__list__item" },
+              [
+                _c("span", [
+                  _vm._v(
+                    _vm._s(_vm.formatToMinSec(tagData.start)) +
+                      "〜" +
+                      _vm._s(_vm.formatToMinSec(tagData.end))
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._l(tagData.tags.split(/[\s| |　]/), function(tag) {
+                  return _c(
+                    "span",
+                    { key: tagData + "." + tag, staticClass: "tag" },
+                    [_vm._v(_vm._s(tag))]
+                  )
+                })
+              ],
+              2
+            )
+          ])
+        }),
+        0
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3a4dbf66", module.exports)
   }
 }
 
@@ -36480,18 +36730,15 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container--small" }, [
+    _c("h1", [_vm._v("Youtube tagging")]),
+    _vm._v(" "),
+    _c("div", { attrs: { id: "player" } }),
+    _vm._v(" "),
+    _c("div", [_c("TagItem")], 1)
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container--small" }, [
-      _c("h1", [_vm._v("Youtube tagging")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -53792,6 +54039,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/TagItem.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/TagItem.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3a4dbf66\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/TagItem.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/TagItem.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3a4dbf66", Component.options)
+  } else {
+    hotAPI.reload("data-v-3a4dbf66", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/YTSearchBox.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -54505,7 +54800,8 @@ var state = {
     maxResults: "20", // 最大検索数
     videoEmbeddable: true,
     key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk"
-  }
+  },
+  YTloading: true
 };
 
 var getters = {
@@ -54523,6 +54819,9 @@ var getters = {
   },
   YTsearchHistories: function YTsearchHistories(state) {
     return state.YTsearchHistories;
+  },
+  YTloading: function YTloading(state) {
+    return state.YTloading;
   }
 };
 
@@ -54542,6 +54841,9 @@ var mutations = {
   },
   setYTsearchHistories: function setYTsearchHistories(state, data) {
     state.YTsearchHistories = data;
+  },
+  setYTloading: function setYTloading(state, data) {
+    state.YTloading = data;
   },
 
   //検索結果表示ページに遷移
@@ -54563,6 +54865,7 @@ var mutations = {
 var actions = {
   //検索結果データを取得
   YTsearch: function YTsearch(context) {
+    context.commit("setYTloading", true);
     actions.searchYTResult(context);
     // actions.storeYTSearchRecord(context);
   },
@@ -54626,7 +54929,7 @@ var actions = {
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
                 // 成功した時
-                console.log(response);
+                context.commit("setYTloading", false);
                 context.commit("setYTResult", response.data.items);
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
@@ -56450,27 +56753,176 @@ var actions = {};
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__("./node_modules/axios/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+
 
 
 var state = {
-  youtubeId: ""
+  youtubeId: "",
+  videoData: null,
+  tagDataArray: null,
+  isNew: "",
+  currentTime: null
 };
 
 var getters = {
   youtubeId: function youtubeId(state) {
     return state.youtubeId;
+  },
+  videoData: function videoData(state) {
+    return state.videoData;
+  },
+  tagDataArray: function tagDataArray(state) {
+    return state.tagDataArray;
+  },
+  isNew: function isNew(state) {
+    return state.isNew;
+  },
+  currentTime: function currentTime(state) {
+    return state.currentTime;
   }
 };
 
 var mutations = {
   setYoutubeId: function setYoutubeId(state, data) {
     state.youtubeId = data;
+  },
+  setVideoData: function setVideoData(state, data) {
+    state.videoData = data;
+  },
+  setTagDataArray: function setTagDataArray(state, data) {
+    state.tagDataArray = data;
+  },
+  setIsNew: function setIsNew(state, data) {
+    state.isNew = data;
+  },
+  setCurrentTime: function setCurrentTime(state, data) {
+    state.currentTime = data;
   }
 };
 
-var actions = {};
+var actions = {
+  //youtubeIdからDBに既に登録済の動画IDを取得
+  getVideo: function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context) {
+      var params, response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              params = {
+                youtubeId: state.youtubeId
+              };
+              _context.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/youtube/getVideo", {
+                params: params
+              });
+
+            case 3:
+              response = _context.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+                // 成功した時
+                if (!response.data.video[0]) {
+                  //新規の動画・タグ場合
+                  context.commit("setIsNew", true);
+                } else {
+                  //既存の動画・タグの場合
+                  context.commit("setIsNew", false);
+                  context.commit("setVideoData", response.data.video);
+                }
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function getVideo(_x) {
+      return _ref.apply(this, arguments);
+    }
+
+    return getVideo;
+  }(),
+
+  //動画IDから既存のタグをロード
+  getTag: function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context) {
+      var params, response, tags;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              if (!state.isNew) {
+                _context2.next = 2;
+                break;
+              }
+
+              return _context2.abrupt("return");
+
+            case 2:
+              params = {
+                videoId: state.videoData[0].id
+              };
+              _context2.next = 5;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/youtube/getTag", {
+                params: params
+              });
+
+            case 5:
+              response = _context2.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+                // 成功した時
+                tags = response.data.tag;
+
+                //開始時間の昇順に並び替え
+
+                tags.sort(function (a, b) {
+                  return a.start > b.start ? 1 : a.start < b.start ? -1 : a.end > b.end ? 1 : -1;
+                });
+
+                context.commit("setTagDataArray", tags);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 7:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+
+    function getTag(_x2) {
+      return _ref2.apply(this, arguments);
+    }
+
+    return getTag;
+  }()
+};
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   namespaced: true,

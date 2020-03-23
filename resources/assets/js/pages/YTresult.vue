@@ -25,8 +25,19 @@ export default {
   methods: {},
   computed: {
     ...mapGetters({
+      YTsearchQuery: "YTsearch/YTsearchQuery",
       YTresult: "YTsearch/YTresult"
     })
+  },
+  created() {
+    //リロードされた場合はURLのsearch_queryを元に再度検索を実行
+    if (!this.YTsearchQuery) {
+      this.$store.commit(
+        "YTsearch/setYTsearchQuery",
+        this.$route.query.search_query
+      );
+      this.$store.dispatch("YTsearch/YTsearch");
+    }
   }
 };
 </script>

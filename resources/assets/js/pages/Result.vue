@@ -33,9 +33,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      tagVideoResult: "search/tagVideoResult"
-    }),
-    ...mapGetters({
+      searchQuery: "search/searchQuery",
+      tagVideoResult: "search/tagVideoResult",
       playlistTagResult: "search/playlistTagResult"
     }),
     //レコメンド画面に表示するアイテム
@@ -56,6 +55,16 @@ export default {
           ? -1
           : 0;
       });
+    }
+  },
+  created() {
+    //リロードされた場合はURLのsearch_queryを元に再度検索を実行
+    if (!this.searchQuery) {
+      this.$store.commit(
+        "search/setSearchQuery",
+        this.$route.query.search_query
+      );
+      this.$store.dispatch("search/search");
     }
   }
 };

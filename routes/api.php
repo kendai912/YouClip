@@ -36,7 +36,6 @@ Route::get("/load/tagLike", 'LikeController@loadTagLike');
 //プレイリストへのLikeデータのロード
 Route::get("/load/playlistLike", 'LikesPlaylistController@loadPlaylistLike');
 
-
 //検索ワード候補取得
 Route::post('/search/candidates', 'SearchController@searchCandidates');
 //タグの検索結果取得
@@ -65,6 +64,11 @@ Route::get('/tag/getPlaylists/{tag}', 'TagController@getPlaylists');
 Route::post('/tag/addToPlaylists/{tag}', 'TagController@addToPlaylists');
 //新規プレイリストの作成とタグの追加
 Route::post('/playlist/create', 'PlaylistController@create');
+
+//シーン登録におけるyoutubeIdから既存のvideoIdの取得
+Route::get('/youtube/getVideo', 'VideoController@getVideoByYoutubeId');
+//シーン登録における動画IDから既存のタグの取得
+Route::get('/youtube/getTag', 'TagController@getTagByVideoId');
 
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {

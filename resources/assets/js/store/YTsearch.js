@@ -17,7 +17,8 @@ const state = {
     maxResults: "20", // 最大検索数
     videoEmbeddable: true,
     key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk"
-  }
+  },
+  YTloading: true
 };
 
 const getters = {
@@ -25,7 +26,8 @@ const getters = {
   candidates: state => state.candidates,
   YTresult: state => state.YTresult,
   topYTSearchqueries: state => state.topYTSearchqueries,
-  YTsearchHistories: state => state.YTsearchHistories
+  YTsearchHistories: state => state.YTsearchHistories,
+  YTloading: state => state.YTloading
 };
 
 const mutations = {
@@ -44,6 +46,9 @@ const mutations = {
   },
   setYTsearchHistories(state, data) {
     state.YTsearchHistories = data;
+  },
+  setYTloading(state, data) {
+    state.YTloading = data;
   },
   //検索結果表示ページに遷移
   YTsearchResultPageTransit() {
@@ -68,6 +73,7 @@ const mutations = {
 const actions = {
   //検索結果データを取得
   YTsearch(context) {
+    context.commit("setYTloading", true);
     actions.searchYTResult(context);
     // actions.storeYTSearchRecord(context);
   },
@@ -94,7 +100,7 @@ const actions = {
     const response = await axios.get(state.api, { params: state.params });
     if (response.status == OK) {
       // 成功した時
-      console.log(response);
+      context.commit("setYTloading", false);
       context.commit("setYTResult", response.data.items);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時

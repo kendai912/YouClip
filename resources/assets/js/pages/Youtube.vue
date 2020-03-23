@@ -1,18 +1,87 @@
 <template>
   <div class="container--small">
     <h1>Youtube tagging</h1>
+    <div id="player"></div>
+    <div>
+      <TagItem />
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import TagItem from "../components/TagItem.vue";
+import myMixin from "../util";
 
 export default {
-  components: {},
+  components: {
+    TagItem
+  },
   data() {
     return {};
   },
-  computed: {},
-  created() {}
+  mixins: [myMixin],
+  computed: {
+    ...mapGetters({
+      youtubeId: "youtube/youtubeId",
+      videoData: "youtube/videoData",
+      tagDataArray: "youtube/tagDataArray",
+      isNew: "youtube/isNew"
+    })
+  },
+  async created() {
+    let youtubeId = this.$route.query.v;
+    this.$store.commit("youtube/setYoutubeId", youtubeId);
+    await this.$store.dispatch("youtube/getVideo");
+    await this.$store.dispatch("youtube/getTag");
+
+    // This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName("script")[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    let self = this;
+
+    //Youtube Playerの初期処理
+    window.onYouTubeIframeAPIReady = () => {
+      this.player = new YT.Player("player", {
+        width: "560",
+        height: "315",
+        videoId: this.youtubeId,
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange
+        }
+      });
+    };
+
+    window.onPlayerReady = event => {
+      event.target.mute();
+      event.target.playVideo();
+      this.isPlayerReady = true;
+
+      //1秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
+      setInterval(function() {
+        //playerが取得した時間を「分:秒」に整形しcurrentTimeに格納
+        let currentTime = self.convertToSec(
+          self.formatTime(event.target.getCurrentTime())
+        );
+
+        //currentTimeをyoutubeストアにセット
+        self.$store.commit("youtube/setCurrentTime", currentTime);
+      }, 1000);
+    };
+
+    window.onPlayerStateChange = event => {};
+
+    //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
+    let from = this.$route.path;
+    window.addEventListener("popstate", function(e) {
+      let to = self.$route.path;
+      if (from == "/youtube" && to == "/youtube") {
+        location.reload();
+      }
+    });
+  }
 };
 </script>

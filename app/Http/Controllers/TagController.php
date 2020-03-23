@@ -12,6 +12,22 @@ use Carbon\Carbon;
 
 class TagController extends Controller
 {
+    //動画IDから既存のタグデータを取得
+    public function getTagByVideoId(Request $request)
+    {
+        $videoId = $request->videoId;
+        $tag = Tag::where('video_id', $videoId)->get();
+
+        return response()->json(
+            [
+                'tag' => $tag
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
     /**
      * Display a listing of the resource.
      *
