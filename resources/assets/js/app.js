@@ -10,6 +10,7 @@ import store from "./store";
 import App from "./App.vue";
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
+import "@fortawesome/fontawesome-free/css/all.css";
 
 Vue.use(Vuetify);
 
@@ -21,6 +22,9 @@ const createApp = async () => {
     router, // ルーティングの定義を読み込む
     vuetify: new Vuetify(),
     store,
+    icons: {
+      iconfont: "fa"
+    },
     components: { App }, // ルートコンポーネントの使用を宣言する
     template: "<App />" // ルートコンポーネントを描画する
   });

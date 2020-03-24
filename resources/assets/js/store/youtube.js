@@ -12,7 +12,7 @@ const state = {
     duration: "",
     category: ""
   },
-  currentTime: null,
+  currentTime: "0:00",
   isReady: false,
   key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk"
 };

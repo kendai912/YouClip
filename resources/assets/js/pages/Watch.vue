@@ -5,7 +5,11 @@
       <div v-if="isPlaylist">
         <span>{{ playlistName }}</span>
         <span v-on:click="sharePlaylist">[Share]</span>
-        <span v-on:click="toggleLikePlaylist" v-bind:class="{ isLiked: isLikedPlaylist}">[Like]</span>
+        <span
+          v-on:click="toggleLikePlaylist"
+          v-bind:class="{ isLiked: isLikedPlaylist }"
+          >[Like]</span
+        >
         <span>{{ likePlaylistCount }}</span>
       </div>
       <div>
@@ -18,12 +22,15 @@
           v-for="currentTagName in currentTagNameArray"
           class="tag"
           v-bind:key="currentTagName"
-        >{{ currentTagName }}</span>
+          >{{ currentTagName }}</span
+        >
       </div>
       <div>
         <span v-on:click="addPlaylist">[＋]</span>
         <span v-on:click="shareTag">[Share]</span>
-        <span v-on:click="toggleLike" v-bind:class="{ isLiked: isLiked}">[Like]</span>
+        <span v-on:click="toggleLike" v-bind:class="{ isLiked: isLiked }"
+          >[Like]</span
+        >
         <span>{{ likeCount }}</span>
       </div>
       <NoLoginModal v-if="showLoginModal" />
@@ -290,12 +297,12 @@ export default {
       event.target.playVideo();
       this.isPlayerReady = true;
 
-      //1秒毎に現在の再生時間を取得
+      //0.4秒毎に現在の再生時間を取得
       setInterval(function() {
         self.currentTime = self.convertToSec(
           self.formatTime(event.target.getCurrentTime())
         );
-      }, 1000);
+      }, 400);
     };
 
     window.onPlayerStateChange = event => {

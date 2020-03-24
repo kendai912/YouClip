@@ -1,12 +1,11 @@
 <template>
   <div class="container--small">
-    <h1>Youtube tagging</h1>
     <div id="player"></div>
     <div>
       <TagItem />
     </div>
     <div>
-      <TimeControl />
+      <!-- <TimeControl v-bind:player="player" /> -->
     </div>
   </div>
 </template>
@@ -23,7 +22,9 @@ export default {
     TimeControl
   },
   data() {
-    return {};
+    return {
+      player: null
+    };
   },
   mixins: [myMixin],
   computed: {
@@ -50,9 +51,6 @@ export default {
       await this.$store.dispatch("youtube/getNewVideoData");
     }
 
-    //TagItemを表示に切り替え
-    this.$store.commit("youtube/setIsReady", true);
-
     // This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
@@ -62,7 +60,7 @@ export default {
 
     //Youtube Playerの初期処理
     window.onYouTubeIframeAPIReady = () => {
-      this.player = new YT.Player("player", {
+      self.player = new YT.Player("player", {
         width: "560",
         height: "315",
         videoId: this.youtubeId,
@@ -78,16 +76,16 @@ export default {
       event.target.playVideo();
       this.isPlayerReady = true;
 
-      //1秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
+      //0.4秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
       setInterval(function() {
         //playerが取得した時間を「分:秒」に整形しcurrentTimeに格納
-        let currentTime = self.convertToSec(
-          self.formatTime(event.target.getCurrentTime())
-        );
-
+        let currentTime = self.formatTime(event.target.getCurrentTime());
         //currentTimeをyoutubeストアにセット
         self.$store.commit("youtube/setCurrentTime", currentTime);
-      }, 1000);
+      }, 400);
+
+      //TagItemを表示に切り替え
+      this.$store.commit("youtube/setIsReady", true);
     };
 
     window.onPlayerStateChange = event => {};
