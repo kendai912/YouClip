@@ -1,85 +1,95 @@
 <template>
-      <v-sheet class="text-center" height="450px">
-        <div>
-          <v-btn class="mt-6" text color="error">＜</v-btn>
-          <span>開始・終了時間を指定</span>
-        </div>
-        <v-slider
-          v-model="slider.val"
-          v-on:mousedown="stopUpdateSlider"
-          v-on:mouseup="seekToAndRestartMouseup"
-          v-on:end="seekToAndRestartEnd"
-          ticks="always"
-          tick-size="0.01"
-          :thumb-color="slider.color"
-          thumb-label="always"
-          step="0.01"
+  <v-sheet class="text-center" height="450px">
+    <div>
+      <v-btn class="mt-6" text color="error">＜</v-btn>
+      <span>開始・終了時間を指定</span>
+    </div>
+    <v-slider
+      v-model="slider.val"
+      v-on:mousedown="stopUpdateSlider"
+      v-on:mouseup="seekToAndRestartMouseup"
+      v-on:end="seekToAndRestartEnd"
+      ticks="always"
+      tick-size="0.01"
+      :thumb-color="slider.color"
+      thumb-label="always"
+      step="0.01"
+    >
+      <template v-slot:thumb-label="{ value }">{{
+        currentPositionTime
+      }}</template>
+    </v-slider>
+    <div>
+      <span v-on:click="backwardThirtySec">
+        30
+        <i class="fas fa-fast-backward"></i>
+      </span>
+      <span v-on:click="backwardFiveSec">
+        5
+        <i class="fas fa-step-backward"></i>
+      </span>
+      <span v-on:click="playVideo">
+        <i class="fas fa-play"></i>
+      </span>
+      <span v-on:click="pauseVideo">
+        <i class="fas fa-pause"></i>
+      </span>
+      <span v-on:click="forwardFiveSec">
+        <i class="fas fa-step-forward"></i>5
+      </span>
+      <span v-on:click="forwardThirtySec">
+        <i class="fas fa-fast-forward"></i>30
+      </span>
+    </div>
+    <div>
+      <span>{{ currentTime }} / {{ duration }}</span>
+    </div>
+    <div>
+      <div>
+        <v-btn
+          v-on:click="tapStartBtn"
+          class="mx-2"
+          dark
+          fab
+          elevation="0"
+          small
+          color="primary"
         >
-          <template v-slot:thumb-label="{ value }">{{ currentPositionTime }}</template>
-        </v-slider>
-        <div>
-          <span v-on:click="backwardThirtySec">
-            30
-            <i class="fas fa-fast-backward"></i>
-          </span>
-          <span v-on:click="backwardFiveSec">
-            5
-            <i class="fas fa-step-backward"></i>
-          </span>
-          <span v-on:click="playVideo">
-            <i class="fas fa-play"></i>
-          </span>
-          <span v-on:click="pauseVideo">
-            <i class="fas fa-pause"></i>
-          </span>
-          <span v-on:click="forwardFiveSec">
-            <i class="fas fa-step-forward"></i>5
-          </span>
-          <span v-on:click="forwardThirtySec">
-            <i class="fas fa-fast-forward"></i>30
-          </span>
-        </div>
-        <div>
-          <span>{{ currentTime }} / {{ duration }}</span>
-        </div>
-        <div>
-          <div>
-            <v-btn
-              v-on:click="tapStartBtn"
-              class="mx-2"
-              dark
-              fab
-              elevation="0"
-              small
-              color="primary"
-            >
-              <v-icon dark>START</v-icon>
-            </v-btn>
-          </div>
-          <div>
-            <v-text-field v-model="startTimeInput" placeholder="0:00" solo></v-text-field>
-          </div>
-        </div>
-        <div>
-          <div>
-            <v-btn
-              v-on:click="tapStopBtn"
-              class="mx-2"
-              dark
-              fab
-              elevation="0"
-              small
-              color="primary"
-            >
-              <v-icon dark>STOP</v-icon>
-            </v-btn>
-          </div>
-          <div>
-            <v-text-field v-model="endTimeInput" placeholder="0:00" solo></v-text-field>
-          </div>
-        </div>
-        <v-btn class="mt-6" text color="error" v-on:click="next">次へ</v-btn>
-      </v-sheet>
+          <v-icon dark>START</v-icon>
+        </v-btn>
+      </div>
+      <div>
+        <v-text-field
+          v-model="startTimeInput"
+          placeholder="0:00"
+          solo
+        ></v-text-field>
+      </div>
+    </div>
+    <div>
+      <div>
+        <v-btn
+          v-on:click="tapStopBtn"
+          class="mx-2"
+          dark
+          fab
+          elevation="0"
+          small
+          color="primary"
+        >
+          <v-icon dark>STOP</v-icon>
+        </v-btn>
+      </div>
+      <div>
+        <v-text-field
+          v-model="endTimeInput"
+          placeholder="0:00"
+          solo
+        ></v-text-field>
+      </div>
+    </div>
+    <v-btn class="mt-6" text color="error" v-on:click="next">次へ</v-btn>
+  </v-sheet>
 </template>
 
 <script>
@@ -187,6 +197,8 @@ export default {
     },
     // タグ入力へ進む
     next() {
+      this.$store.commit("tagging/setStart", this.startTimeInput);
+      this.$store.commit("tagging/setEnd", this.endTimeInput);
       this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
     }
   },

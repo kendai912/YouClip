@@ -11,6 +11,7 @@ import App from "./App.vue";
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
 import "@fortawesome/fontawesome-free/css/all.css";
+import "@mdi/font/css/materialdesignicons.css";
 
 Vue.use(Vuetify);
 
@@ -23,7 +24,7 @@ const createApp = async () => {
     vuetify: new Vuetify(),
     store,
     icons: {
-      iconfont: "fa"
+      iconfont: "fa mdi"
     },
     components: { App }, // ルートコンポーネントの使用を宣言する
     template: "<App />" // ルートコンポーネントを描画する

@@ -1,11 +1,10 @@
 <template>
   <v-sheet class="text-center" height="450px">
     <v-combobox
-      v-model="chips"
-      :items="items"
+      v-model="tags"
       chips
       clearable
-      label="Your favorite hobbies"
+      label="シーンタグを入力"
       multiple
       solo
     >
@@ -13,18 +12,20 @@
         <v-chip
           v-bind="attrs"
           :input-value="selected"
+          color="blue"
           close
           @click="select"
           @click:close="remove(item)"
         >
           <v-icon left>mdi-label</v-icon>
-          <strong>{{ item }}</strong>&nbsp;
+          <strong>{{ item }}</strong
+          >&nbsp;
           <span>(interest)</span>
         </v-chip>
       </template>
     </v-combobox>
     <div>
-      <v-btn class="mt-6" text color="error" @click="sheet = !sheet">完了</v-btn>
+      <v-btn class="mt-6" text color="error" v-on:click="submit">完了</v-btn>
     </div>
   </v-sheet>
 </template>
@@ -40,14 +41,7 @@ export default {
   data() {
     return {
       sheet: true,
-      tagsInput: "",
-      chips: [
-        "Programming",
-        "Playing video games",
-        "Watching movies",
-        "Sleeping"
-      ],
-      items: ["Streaming", "Eating"]
+      tags: []
     };
   },
   mixins: [myMixin],
@@ -62,8 +56,13 @@ export default {
   },
   methods: {
     remove(item) {
-      this.chips.splice(this.chips.indexOf(item), 1);
-      this.chips = [...this.chips];
+      this.tags.splice(this.tags.indexOf(item), 1);
+      this.tags = [...this.tags];
+    },
+    submit() {
+      console.log(this.tags);
+      this.$store.commit("tagging/setTags", this.tags);
+      this.$store.dispatch("tagging/storeSceneTags");
     }
   },
   created() {}
