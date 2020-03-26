@@ -11,6 +11,7 @@ import likePlaylist from "./likePlaylist";
 import search from "./search";
 import YTsearch from "./YTsearch";
 import youtube from "./youtube";
+import tagging from "./tagging";
 import noLoginModal from "./noLoginModal";
 import shareModal from "./shareModal";
 import error from "./error";
@@ -29,6 +30,7 @@ const store = new Vuex.Store({
     search,
     YTsearch,
     youtube,
+    tagging,
     noLoginModal,
     shareModal,
     error

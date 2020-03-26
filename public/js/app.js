@@ -2240,6 +2240,181 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/SceneTagControl.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_TimeControl_vue__ = __webpack_require__("./resources/assets/js/components/TimeControl.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_TimeControl_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_TimeControl_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_TaggingControl_vue__ = __webpack_require__("./resources/assets/js/components/TaggingControl.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_TaggingControl_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_TaggingControl_vue__);
+
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    TimeControl: __WEBPACK_IMPORTED_MODULE_3__components_TimeControl_vue___default.a,
+    TaggingControl: __WEBPACK_IMPORTED_MODULE_4__components_TaggingControl_vue___default.a
+  },
+  props: {
+    player: Object
+  },
+  data: function data() {
+    return {
+      sheet: true,
+      slider: { val: 0, color: "red" },
+      sliderInterval: null,
+      startTimeInput: null,
+      endTimeInput: null
+    };
+  },
+
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
+    currentTime: "youtube/currentTime",
+    videoData: "youtube/videoData",
+    newVideoData: "youtube/newVideoData",
+    isReady: "youtube/isReady",
+    isNew: "youtube/isNew",
+    showTaggingControl: "tagging/showTaggingControl"
+  }), {
+    currentPositionTime: function currentPositionTime() {
+      //sliderをドラッグした位置の秒数を取得
+      var currentPositionSec = this.convertToSec(this.duration) * (this.slider.val / 100);
+
+      //分:秒のフォーマットに変換
+      return this.formatTime(currentPositionSec);
+    },
+    duration: function duration() {
+      return this.isNew ? this.newVideoData.duration : this.formatToMinSec(this.videoData.duration);
+    }
+  }),
+  methods: {
+    //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
+    startUpdateSlider: function startUpdateSlider() {
+      var self = this;
+      self.sliderInterval = setInterval(function () {
+        var sliderPosition = 100 * (self.convertToSec(self.currentTime) / self.convertToSec(self.duration));
+
+        self.slider.val = sliderPosition;
+      }, 800);
+    },
+    stopUpdateSlider: function stopUpdateSlider() {
+      clearInterval(this.sliderInterval);
+    },
+
+    //sliderをクリックした場合、その地点までplayerの再生時間をジャンプ
+    seekToAndRestartMouseup: function seekToAndRestartMouseup(end) {
+      var self = this;
+      setTimeout(function () {
+        self.player.seekTo(self.convertToSec(self.duration) * (self.slider.val / 100));
+        self.startUpdateSlider();
+      }, 1000);
+    },
+
+    //sliderをドラッグした場合、その地点までplayerの再生時間をジャンプ
+    seekToAndRestartEnd: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(end) {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return this.player.seekTo(this.convertToSec(this.duration) * (end / 100));
+
+              case 2:
+                this.startUpdateSlider();
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function seekToAndRestartEnd(_x) {
+        return _ref.apply(this, arguments);
+      }
+
+      return seekToAndRestartEnd;
+    }(),
+    tapStartBtn: function tapStartBtn() {
+      this.startTimeInput = this.currentTime;
+      this.player.playVideo();
+    },
+    tapStopBtn: function tapStopBtn() {
+      this.endTimeInput = this.currentTime;
+      this.player.pauseVideo();
+    },
+
+    //再生
+    playVideo: function playVideo() {
+      this.player.playVideo();
+    },
+
+    //一時停止
+    pauseVideo: function pauseVideo() {
+      this.player.pauseVideo();
+    },
+
+    //30秒戻る
+    backwardThirtySec: function backwardThirtySec() {
+      this.player.seekTo(this.convertToSec(this.currentTime) - 30);
+    },
+
+    //5秒戻る
+    backwardFiveSec: function backwardFiveSec() {
+      this.player.seekTo(this.convertToSec(this.currentTime) - 5);
+    },
+
+    //30秒進む
+    forwardThirtySec: function forwardThirtySec() {
+      this.player.seekTo(this.convertToSec(this.currentTime) + 30);
+    },
+
+    //5秒進む
+    forwardFiveSec: function forwardFiveSec() {
+      this.player.seekTo(this.convertToSec(this.currentTime) + 5);
+    },
+
+    // タグ入力へ進む
+    next: function next() {
+      this.showTaggingControl = true;
+      // this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
+    }
+  },
+  created: function created() {
+    this.startUpdateSlider();
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/SearchBox.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2547,6 +2722,84 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/TaggingControl.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./resources/assets/js/util.js");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    player: Object
+  },
+  data: function data() {
+    return {
+      sheet: true,
+      tagsInput: "",
+      chips: ["Programming", "Playing video games", "Watching movies", "Sleeping"],
+      items: ["Streaming", "Eating"]
+    };
+  },
+
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    currentTime: "youtube/currentTime",
+    videoData: "youtube/videoData",
+    newVideoData: "youtube/newVideoData",
+    isReady: "youtube/isReady",
+    isNew: "youtube/isNew"
+  })),
+  methods: {
+    remove: function remove(item) {
+      this.chips.splice(this.chips.indexOf(item), 1);
+      this.chips = [].concat(_toConsumableArray(this.chips));
+    }
+  },
+  created: function created() {}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/TimeControl.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2562,17 +2815,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2678,23 +2920,28 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     currentTime: "youtube/currentTime",
+    videoData: "youtube/videoData",
     newVideoData: "youtube/newVideoData",
-    isReady: "youtube/isReady"
+    isReady: "youtube/isReady",
+    isNew: "youtube/isNew"
   }), {
     currentPositionTime: function currentPositionTime() {
       //sliderをドラッグした位置の秒数を取得
-      var currentPositionSec = this.convertToSec(this.newVideoData.duration) * (this.slider.val / 100);
+      var currentPositionSec = this.convertToSec(this.duration) * (this.slider.val / 100);
 
       //分:秒のフォーマットに変換
       return this.formatTime(currentPositionSec);
+    },
+    duration: function duration() {
+      return this.isNew ? this.newVideoData.duration : this.formatToMinSec(this.videoData.duration);
     }
   }),
   methods: {
-    //0.8秒に現在のplayerの再生時間を取得しv-sliderの位置に反映
+    //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
     startUpdateSlider: function startUpdateSlider() {
       var self = this;
       self.sliderInterval = setInterval(function () {
-        var sliderPosition = 100 * (self.convertToSec(self.currentTime) / self.convertToSec(self.newVideoData.duration));
+        var sliderPosition = 100 * (self.convertToSec(self.currentTime) / self.convertToSec(self.duration));
 
         self.slider.val = sliderPosition;
       }, 800);
@@ -2707,7 +2954,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     seekToAndRestartMouseup: function seekToAndRestartMouseup(end) {
       var self = this;
       setTimeout(function () {
-        self.player.seekTo(self.convertToSec(self.newVideoData.duration) * (self.slider.val / 100));
+        self.player.seekTo(self.convertToSec(self.duration) * (self.slider.val / 100));
         self.startUpdateSlider();
       }, 1000);
     },
@@ -2720,7 +2967,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return this.player.seekTo(this.convertToSec(this.newVideoData.duration) * (end / 100));
+                return this.player.seekTo(this.convertToSec(this.duration) * (end / 100));
 
               case 2:
                 this.startUpdateSlider();
@@ -2776,6 +3023,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     //5秒進む
     forwardFiveSec: function forwardFiveSec() {
       this.player.seekTo(this.convertToSec(this.currentTime) + 5);
+    },
+
+    // タグ入力へ進む
+    next: function next() {
+      this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
     }
   },
   created: function created() {
@@ -3862,8 +4114,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_TagItem_vue__ = __webpack_require__("./resources/assets/js/components/TagItem.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_TagItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_TagItem_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_TimeControl_vue__ = __webpack_require__("./resources/assets/js/components/TimeControl.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_TimeControl_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_TimeControl_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_SceneTagControl_vue__ = __webpack_require__("./resources/assets/js/components/SceneTagControl.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_SceneTagControl_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_SceneTagControl_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__util__ = __webpack_require__("./resources/assets/js/util.js");
 
 
@@ -3882,20 +4134,24 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
 
 
 
 
+// import TimeControl from "../components/TimeControl.vue";
+// import TaggingControl from "../components/TaggingControl.vue";
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     TagItem: __WEBPACK_IMPORTED_MODULE_2__components_TagItem_vue___default.a,
-    TimeControl: __WEBPACK_IMPORTED_MODULE_3__components_TimeControl_vue___default.a
+    SceneTagControl: __WEBPACK_IMPORTED_MODULE_3__components_SceneTagControl_vue___default.a
+    // TimeControl,
+    // TaggingControl
   },
   data: function data() {
     return {
+      show: true,
       player: null
     };
   },
@@ -3906,6 +4162,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     videoData: "youtube/videoData",
     tagDataArray: "youtube/tagDataArray",
     isNew: "youtube/isNew"
+    // showTaggingControl: "tagging/showTaggingControl"
   })),
   created: function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
@@ -3994,8 +4251,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                   location.reload();
                 }
               });
+              $("#btn").on("click", function () {
+                AnimateTransition({
+                  container: ".container",
+                  blockIn: ".newElement",
+                  blockOut: ".oldElement",
+                  animation: "slide-in"
+                });
+              });
 
-            case 20:
+            case 21:
             case "end":
               return _context.stop();
           }
@@ -6662,7 +6927,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, ".candidatesWrap {\n  /* width: 300px; */\n  border: solid 1px #000000;\n}\n\n.item p {\n  margin: 0px;\n}\n\n.isEven {\n  background-color: #dddddd;\n}\n\n.v-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: 1000;\n  transition: 0.3s;\n}\n\n.v-modal .modal-in-box {\n  width: 50%;\n  padding: 1.2rem;\n  background-color: #ffffff;\n}\n\n.info-area {\n  align-items: center;\n}\n\n.isLiked {\n  color: red;\n}\n\n.tag {\n  display: inline-block;\n  margin: 0 0.1em 0.6em 0;\n  padding: 0.6em;\n  line-height: 1;\n  text-decoration: none;\n  color: #0000ee;\n  background-color: #fff;\n  border: 1px solid #0000ee;\n  border-radius: 2em;\n}\n\n.tag-list-move {\n  transition: all 1s;\n}\n\n.tag-list-enter-to {\n  transition: all 1s;\n}\n\n.tag-list-enter {\n  opacity: 0;\n  transform: translateY(35px);\n}\n\n.tag-list-leave-to {\n  opacity: 0;\n  transform: translateY(-35px);\n}\n\n.tag-list-leave-active {\n  position: absolute;\n  transition: all 1s;\n}\n", ""]);
+exports.push([module.i, ".candidatesWrap {\n  /* width: 300px; */\n  border: solid 1px #000000;\n}\n\n.item p {\n  margin: 0px;\n}\n\n.isEven {\n  background-color: #dddddd;\n}\n\n.v-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: 1000;\n  transition: 0.3s;\n}\n\n.v-modal .modal-in-box {\n  width: 50%;\n  padding: 1.2rem;\n  background-color: #ffffff;\n}\n\n.info-area {\n  align-items: center;\n}\n\n.isLiked {\n  color: red;\n}\n\n.tag {\n  display: inline-block;\n  margin: 0 0.1em 0.6em 0;\n  padding: 0.6em;\n  line-height: 1;\n  text-decoration: none;\n  color: #0000ee;\n  background-color: #fff;\n  border: 1px solid #0000ee;\n  border-radius: 2em;\n}\n\n.tag-list-move {\n  transition: all 1s;\n}\n\n.tag-list-enter-to {\n  transition: all 1s;\n}\n\n.tag-list-enter {\n  opacity: 0;\n  transform: translateY(35px);\n}\n\n.tag-list-leave-to {\n  opacity: 0;\n  transform: translateY(-35px);\n}\n\n.tag-list-leave-active {\n  position: absolute;\n  transition: all 1s;\n}\n\n.scenetag-control-enter-active,\n.scenetag-control-leave-active {\n  transition: all 1s;\n}\n\n.scenetag-control-enter {\n  transform: translateX(100vw);\n}\n\n.scenetag-control-leave-active {\n  position: absolute;\n  transform: translateX(-100vw);\n}\n", ""]);
 
 // exports
 
@@ -36528,6 +36793,62 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-20db04b0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/SceneTagControl.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "text-center" },
+    [
+      _vm.isReady
+        ? _c(
+            "v-bottom-sheet",
+            {
+              attrs: { "hide-overlay": "", persistent: "" },
+              model: {
+                value: _vm.sheet,
+                callback: function($$v) {
+                  _vm.sheet = $$v
+                },
+                expression: "sheet"
+              }
+            },
+            [
+              _c(
+                "transition",
+                { attrs: { name: "scenetag-control" } },
+                [
+                  _c(_vm.showTaggingControl, {
+                    tag: "component",
+                    attrs: { player: _vm.player }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-20db04b0", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-257e63de\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AddPlaylistModal.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -36904,6 +37225,110 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-440dff1c", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-53f17cdf\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/TaggingControl.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-sheet",
+    { staticClass: "text-center", attrs: { height: "450px" } },
+    [
+      _c("v-combobox", {
+        attrs: {
+          items: _vm.items,
+          chips: "",
+          clearable: "",
+          label: "Your favorite hobbies",
+          multiple: "",
+          solo: ""
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "selection",
+            fn: function(ref) {
+              var attrs = ref.attrs
+              var item = ref.item
+              var select = ref.select
+              var selected = ref.selected
+              return [
+                _c(
+                  "v-chip",
+                  _vm._b(
+                    {
+                      attrs: { "input-value": selected, close: "" },
+                      on: {
+                        click: select,
+                        "click:close": function($event) {
+                          return _vm.remove(item)
+                        }
+                      }
+                    },
+                    "v-chip",
+                    attrs,
+                    false
+                  ),
+                  [
+                    _c("v-icon", { attrs: { left: "" } }, [
+                      _vm._v("mdi-label")
+                    ]),
+                    _vm._v(" "),
+                    _c("strong", [_vm._v(_vm._s(item))]),
+                    _vm._v(" \n        "),
+                    _c("span", [_vm._v("(interest)")])
+                  ],
+                  1
+                )
+              ]
+            }
+          }
+        ]),
+        model: {
+          value: _vm.chips,
+          callback: function($$v) {
+            _vm.chips = $$v
+          },
+          expression: "chips"
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "div",
+        [
+          _c(
+            "v-btn",
+            {
+              staticClass: "mt-6",
+              attrs: { text: "", color: "error" },
+              on: {
+                click: function($event) {
+                  _vm.sheet = !_vm.sheet
+                }
+              }
+            },
+            [_vm._v("完了")]
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-53f17cdf", module.exports)
   }
 }
 
@@ -37549,242 +37974,183 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
-    { staticClass: "text-center" },
+    "v-sheet",
+    { staticClass: "text-center", attrs: { height: "450px" } },
     [
-      _vm.isReady
-        ? _c(
-            "v-bottom-sheet",
-            {
-              attrs: { "hide-overlay": "", persistent: "" },
-              model: {
-                value: _vm.sheet,
-                callback: function($$v) {
-                  _vm.sheet = $$v
+      _c(
+        "div",
+        [
+          _c(
+            "v-btn",
+            { staticClass: "mt-6", attrs: { text: "", color: "error" } },
+            [_vm._v("＜")]
+          ),
+          _vm._v(" "),
+          _c("span", [_vm._v("開始・終了時間を指定")])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("v-slider", {
+        attrs: {
+          ticks: "always",
+          "tick-size": "0.01",
+          "thumb-color": _vm.slider.color,
+          "thumb-label": "always",
+          step: "0.01"
+        },
+        on: {
+          mousedown: _vm.stopUpdateSlider,
+          mouseup: _vm.seekToAndRestartMouseup,
+          end: _vm.seekToAndRestartEnd
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "thumb-label",
+            fn: function(ref) {
+              var value = ref.value
+              return [_vm._v(_vm._s(_vm.currentPositionTime))]
+            }
+          }
+        ]),
+        model: {
+          value: _vm.slider.val,
+          callback: function($$v) {
+            _vm.$set(_vm.slider, "val", $$v)
+          },
+          expression: "slider.val"
+        }
+      }),
+      _vm._v(" "),
+      _c("div", [
+        _c("span", { on: { click: _vm.backwardThirtySec } }, [
+          _vm._v("\n      30\n      "),
+          _c("i", { staticClass: "fas fa-fast-backward" })
+        ]),
+        _vm._v(" "),
+        _c("span", { on: { click: _vm.backwardFiveSec } }, [
+          _vm._v("\n      5\n      "),
+          _c("i", { staticClass: "fas fa-step-backward" })
+        ]),
+        _vm._v(" "),
+        _c("span", { on: { click: _vm.playVideo } }, [
+          _c("i", { staticClass: "fas fa-play" })
+        ]),
+        _vm._v(" "),
+        _c("span", { on: { click: _vm.pauseVideo } }, [
+          _c("i", { staticClass: "fas fa-pause" })
+        ]),
+        _vm._v(" "),
+        _c("span", { on: { click: _vm.forwardFiveSec } }, [
+          _c("i", { staticClass: "fas fa-step-forward" }),
+          _vm._v("5\n    ")
+        ]),
+        _vm._v(" "),
+        _c("span", { on: { click: _vm.forwardThirtySec } }, [
+          _c("i", { staticClass: "fas fa-fast-forward" }),
+          _vm._v("30\n    ")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c("span", [
+          _vm._v(_vm._s(_vm.currentTime) + " / " + _vm._s(_vm.duration))
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c(
+          "div",
+          [
+            _c(
+              "v-btn",
+              {
+                staticClass: "mx-2",
+                attrs: {
+                  dark: "",
+                  fab: "",
+                  elevation: "0",
+                  small: "",
+                  color: "primary"
                 },
-                expression: "sheet"
+                on: { click: _vm.tapStartBtn }
+              },
+              [_c("v-icon", { attrs: { dark: "" } }, [_vm._v("START")])],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          [
+            _c("v-text-field", {
+              attrs: { placeholder: "0:00", solo: "" },
+              model: {
+                value: _vm.startTimeInput,
+                callback: function($$v) {
+                  _vm.startTimeInput = $$v
+                },
+                expression: "startTimeInput"
               }
-            },
-            [
-              _c(
-                "v-sheet",
-                { staticClass: "text-center", attrs: { height: "450px" } },
-                [
-                  _c(
-                    "div",
-                    [
-                      _c(
-                        "v-btn",
-                        {
-                          staticClass: "mt-6",
-                          attrs: { text: "", color: "error" },
-                          on: {
-                            click: function($event) {
-                              _vm.sheet = !_vm.sheet
-                            }
-                          }
-                        },
-                        [_vm._v("＜")]
-                      ),
-                      _c("span", [_vm._v("開始・終了時間を指定")])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("v-slider", {
-                    attrs: {
-                      ticks: "always",
-                      "tick-size": "0.01",
-                      "thumb-color": _vm.slider.color,
-                      "thumb-label": "always",
-                      step: "0.01"
-                    },
-                    on: {
-                      mousedown: _vm.stopUpdateSlider,
-                      mouseup: _vm.seekToAndRestartMouseup,
-                      end: _vm.seekToAndRestartEnd
-                    },
-                    scopedSlots: _vm._u(
-                      [
-                        {
-                          key: "thumb-label",
-                          fn: function(ref) {
-                            var value = ref.value
-                            return [
-                              _vm._v(
-                                "\n          " +
-                                  _vm._s(_vm.currentPositionTime) +
-                                  "\n        "
-                              )
-                            ]
-                          }
-                        }
-                      ],
-                      null,
-                      false,
-                      1581978841
-                    ),
-                    model: {
-                      value: _vm.slider.val,
-                      callback: function($$v) {
-                        _vm.$set(_vm.slider, "val", $$v)
-                      },
-                      expression: "slider.val"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("div", [
-                    _c("span", { on: { click: _vm.backwardThirtySec } }, [
-                      _vm._v("30"),
-                      _c("i", { staticClass: "fas fa-fast-backward" })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { on: { click: _vm.backwardFiveSec } }, [
-                      _vm._v("5"),
-                      _c("i", { staticClass: "fas fa-step-backward" })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { on: { click: _vm.playVideo } }, [
-                      _c("i", { staticClass: "fas fa-play" })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { on: { click: _vm.pauseVideo } }, [
-                      _c("i", { staticClass: "fas fa-pause" })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { on: { click: _vm.forwardFiveSec } }, [
-                      _c("i", { staticClass: "fas fa-step-forward" }),
-                      _vm._v("5")
-                    ]),
-                    _vm._v(" "),
-                    _c("span", { on: { click: _vm.forwardThirtySec } }, [
-                      _c("i", { staticClass: "fas fa-fast-forward" }),
-                      _vm._v("30")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", [
-                    _c("span", [
-                      _vm._v(
-                        _vm._s(_vm.currentTime) +
-                          " / " +
-                          _vm._s(_vm.newVideoData.duration)
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", [
-                    _c(
-                      "div",
-                      [
-                        _c(
-                          "v-btn",
-                          {
-                            staticClass: "mx-2",
-                            attrs: {
-                              dark: "",
-                              fab: "",
-                              elevation: "0",
-                              small: "",
-                              color: "primary"
-                            },
-                            on: { click: _vm.tapStartBtn }
-                          },
-                          [
-                            _c("v-icon", { attrs: { dark: "" } }, [
-                              _vm._v("START")
-                            ])
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      [
-                        _c("v-text-field", {
-                          attrs: { placeholder: "0:00", solo: "" },
-                          model: {
-                            value: _vm.startTimeInput,
-                            callback: function($$v) {
-                              _vm.startTimeInput = $$v
-                            },
-                            expression: "startTimeInput"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", [
-                    _c(
-                      "div",
-                      [
-                        _c(
-                          "v-btn",
-                          {
-                            staticClass: "mx-2",
-                            attrs: {
-                              dark: "",
-                              fab: "",
-                              elevation: "0",
-                              small: "",
-                              color: "primary"
-                            },
-                            on: { click: _vm.tapStopBtn }
-                          },
-                          [
-                            _c("v-icon", { attrs: { dark: "" } }, [
-                              _vm._v("STOP")
-                            ])
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      [
-                        _c("v-text-field", {
-                          attrs: { placeholder: "0:00", solo: "" },
-                          model: {
-                            value: _vm.endTimeInput,
-                            callback: function($$v) {
-                              _vm.endTimeInput = $$v
-                            },
-                            expression: "endTimeInput"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      staticClass: "mt-6",
-                      attrs: { text: "", color: "error" },
-                      on: {
-                        click: function($event) {
-                          _vm.sheet = !_vm.sheet
-                        }
-                      }
-                    },
-                    [_vm._v("次へ")]
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        : _vm._e()
+            })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c(
+          "div",
+          [
+            _c(
+              "v-btn",
+              {
+                staticClass: "mx-2",
+                attrs: {
+                  dark: "",
+                  fab: "",
+                  elevation: "0",
+                  small: "",
+                  color: "primary"
+                },
+                on: { click: _vm.tapStopBtn }
+              },
+              [_c("v-icon", { attrs: { dark: "" } }, [_vm._v("STOP")])],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          [
+            _c("v-text-field", {
+              attrs: { placeholder: "0:00", solo: "" },
+              model: {
+                value: _vm.endTimeInput,
+                callback: function($$v) {
+                  _vm.endTimeInput = $$v
+                },
+                expression: "endTimeInput"
+              }
+            })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "v-btn",
+        {
+          staticClass: "mt-6",
+          attrs: { text: "", color: "error" },
+          on: { click: _vm.next }
+        },
+        [_vm._v("次へ")]
+      )
     ],
     1
   )
@@ -37936,13 +38302,18 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container--small" }, [
-    _c("div", { attrs: { id: "player" } }),
-    _vm._v(" "),
-    _c("div", [_c("TagItem")], 1),
-    _vm._v(" "),
-    _c("div")
-  ])
+  return _c(
+    "div",
+    { staticClass: "container--small" },
+    [
+      _c("div", { attrs: { id: "player" } }),
+      _vm._v(" "),
+      _c("div", [_c("TagItem")], 1),
+      _vm._v(" "),
+      _c("SceneTagControl", { attrs: { player: _vm.player } })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -96454,6 +96825,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/SceneTagControl.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/SceneTagControl.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-20db04b0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/SceneTagControl.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/SceneTagControl.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-20db04b0", Component.options)
+  } else {
+    hotAPI.reload("data-v-20db04b0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/SearchBox.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -96635,6 +97054,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-3a4dbf66", Component.options)
   } else {
     hotAPI.reload("data-v-3a4dbf66", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/TaggingControl.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/TaggingControl.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-53f17cdf\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/TaggingControl.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/TaggingControl.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-53f17cdf", Component.options)
+  } else {
+    hotAPI.reload("data-v-53f17cdf", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -97945,9 +98412,11 @@ var mutations = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__search__ = __webpack_require__("./resources/assets/js/store/search.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__YTsearch__ = __webpack_require__("./resources/assets/js/store/YTsearch.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__youtube__ = __webpack_require__("./resources/assets/js/store/youtube.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__noLoginModal__ = __webpack_require__("./resources/assets/js/store/noLoginModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__shareModal__ = __webpack_require__("./resources/assets/js/store/shareModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__tagging__ = __webpack_require__("./resources/assets/js/store/tagging.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__noLoginModal__ = __webpack_require__("./resources/assets/js/store/noLoginModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__shareModal__ = __webpack_require__("./resources/assets/js/store/shareModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+
 
 
 
@@ -97979,9 +98448,10 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     search: __WEBPACK_IMPORTED_MODULE_9__search__["a" /* default */],
     YTsearch: __WEBPACK_IMPORTED_MODULE_10__YTsearch__["a" /* default */],
     youtube: __WEBPACK_IMPORTED_MODULE_11__youtube__["a" /* default */],
-    noLoginModal: __WEBPACK_IMPORTED_MODULE_12__noLoginModal__["a" /* default */],
-    shareModal: __WEBPACK_IMPORTED_MODULE_13__shareModal__["a" /* default */],
-    error: __WEBPACK_IMPORTED_MODULE_14__error__["a" /* default */]
+    tagging: __WEBPACK_IMPORTED_MODULE_12__tagging__["a" /* default */],
+    noLoginModal: __WEBPACK_IMPORTED_MODULE_13__noLoginModal__["a" /* default */],
+    shareModal: __WEBPACK_IMPORTED_MODULE_14__shareModal__["a" /* default */],
+    error: __WEBPACK_IMPORTED_MODULE_15__error__["a" /* default */]
   }
 });
 
@@ -99150,6 +99620,67 @@ var actions = {
     return loadTagVideo;
   }()
 };
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/tagging.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__("./node_modules/axios/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__("./resources/assets/js/router.js");
+
+
+
+
+var state = {
+  showTaggingControl: "TimeControl",
+  tags: null,
+  start: null,
+  end: null
+};
+
+var getters = {
+  showTaggingControl: function showTaggingControl(state) {
+    return state.showTaggingControl;
+  },
+  tags: function tags(state) {
+    return state.tags;
+  },
+  start: function start(state) {
+    return state.start;
+  },
+  end: function end(state) {
+    return state.end;
+  }
+};
+
+var mutations = {
+  setShowTaggingControl: function setShowTaggingControl(state, data) {
+    state.showTaggingControl = data;
+  },
+  setTags: function setTags(state, data) {
+    state.tags = data;
+  },
+  setStart: function setStart(state, data) {
+    state.start = data;
+  },
+  setEnd: function setEnd(state, data) {
+    state.end = data;
+  }
+};
+
+var actions = {};
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   namespaced: true,

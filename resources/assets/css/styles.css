@@ -73,3 +73,17 @@
   position: absolute;
   transition: all 1s;
 }
+
+.scenetag-control-enter-active,
+.scenetag-control-leave-active {
+  transition: all 1s;
+}
+
+.scenetag-control-enter {
+  transform: translateX(100vw);
+}
+
+.scenetag-control-leave-active {
+  position: absolute;
+  transform: translateX(-100vw);
+}
