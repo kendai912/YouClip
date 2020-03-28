@@ -60,7 +60,6 @@ export default {
       this.tags = [...this.tags];
     },
     submit() {
-      console.log(this.tags);
       this.$store.commit("tagging/setTags", this.tags);
       this.$store.dispatch("tagging/storeSceneTags");
     }

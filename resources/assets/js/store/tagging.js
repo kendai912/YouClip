@@ -37,22 +37,24 @@ const actions = {
   async storeSceneTags(context) {
     let params = {
       youtubeId: store.getters["youtube/youtubeId"],
+      isNew: store.getters["youtube/isNew"],
+      newVideoData: store.getters["youtube/newVideoData"],
       tags: state.tags,
       start: state.start,
       end: state.end
     };
-    console.log(params);
 
-    // const response = await axios.post("/api/tag/store");
-    // if (response.status == OK) {
-    //   // 成功した時
-    // } else if (response.status == INTERNAL_SERVER_ERROR) {
-    //   // 失敗した時
-    //   context.commit("error/setCode", response.status, { root: true });
-    // } else {
-    //   // 上記以外で失敗した時
-    //   context.commit("error/setCode", response.status, { root: true });
-    // }
+    const response = await axios.post("/api/tag/store", params);
+    if (response.status == CREATED) {
+      // 成功した時
+      console.log(response.data);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
   }
 };
 

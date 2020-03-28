@@ -4,7 +4,6 @@
     <div>
       <TagItem />
     </div>
-    <!-- <component v-bind:is="showTaggingControl" v-bind:player="player"></component> -->
     <SceneTagControl v-bind:player="player" />
   </div>
 </template>
@@ -13,16 +12,12 @@
 import { mapState, mapGetters } from "vuex";
 import TagItem from "../components/TagItem.vue";
 import SceneTagControl from "../components/SceneTagControl.vue";
-// import TimeControl from "../components/TimeControl.vue";
-// import TaggingControl from "../components/TaggingControl.vue";
 import myMixin from "../util";
 
 export default {
   components: {
     TagItem,
     SceneTagControl
-    // TimeControl,
-    // TaggingControl
   },
   data() {
     return {
@@ -37,7 +32,6 @@ export default {
       videoData: "youtube/videoData",
       tagDataArray: "youtube/tagDataArray",
       isNew: "youtube/isNew"
-      // showTaggingControl: "tagging/showTaggingControl"
     })
   },
   async created() {

@@ -41,7 +41,7 @@ class TagController extends Controller
     public function load()
     {
         //動画・タグの全データを外部結合し抽出
-        $tagVideoData = Tag::leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'url', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
+        $tagVideoData = Tag::leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
 
         return $tagVideoData;
     }
@@ -134,11 +134,29 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //DBに保存
+        //新規の場合、最初に動画をDBに保存
+        if ($request->isNew) {
+            $video = new Video;
+            $video->youtubeId = $request->youtubeId;
+            $video->user_id = Auth::user()->id;
+            $video->title = $request->newVideoData['title'];
+            $video->thumbnail = $request->newVideoData['thumbnail'];
+            $video->duration = "00:".$request->newVideoData['duration'];
+            $video->category = $request->newVideoData['category'];
+            $video->save();
+        } else {
+            //既存の場合、テーブルからVideoオブジェクトを取得
+            $video = Video::where('youtubeId', $request->youtubeId)->first();
+        }
+
+        //タグの配列をスペース区切りの文字列に変換
+        $tags = implode(" ", $request->tags);
+
+        //タグをDBに保存
         $tag = new Tag;
-        $tag->video_id = $request->video_id;
-        $tag->user_id = $request->user_id;
-        $tag->tags = $request->tags;
+        $tag->video_id = $video->id;
+        $tag->user_id = Auth::user()->id;
+        $tag->tags = $tags;
         $tag->start = "00:".$request->start;
         $tag->end = "00:".$request->end;
         $tag->save();
@@ -146,9 +164,9 @@ class TagController extends Controller
         //保存したタグデータをリターン
         return response()->json(
             [
-                'data' => $tag
+                'tag' => $tag
             ],
-            200,
+            201,
             [],
             JSON_UNESCAPED_UNICODE
         );

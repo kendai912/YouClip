@@ -2861,7 +2861,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       this.tags = [].concat(_toConsumableArray(this.tags));
     },
     submit: function submit() {
-      console.log(this.tags);
       this.$store.commit("tagging/setTags", this.tags);
       this.$store.dispatch("tagging/storeSceneTags");
     }
@@ -4216,21 +4215,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
 
 
 
 
-// import TimeControl from "../components/TimeControl.vue";
-// import TaggingControl from "../components/TaggingControl.vue";
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     TagItem: __WEBPACK_IMPORTED_MODULE_2__components_TagItem_vue___default.a,
     SceneTagControl: __WEBPACK_IMPORTED_MODULE_3__components_SceneTagControl_vue___default.a
-    // TimeControl,
-    // TaggingControl
   },
   data: function data() {
     return {
@@ -4245,7 +4239,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     videoData: "youtube/videoData",
     tagDataArray: "youtube/tagDataArray",
     isNew: "youtube/isNew"
-    // showTaggingControl: "tagging/showTaggingControl"
   })),
   created: function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
@@ -99793,32 +99786,37 @@ var actions = {
   //シーンタグの保存
   storeSceneTags: function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context) {
-      var params;
+      var params, response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               params = {
                 youtubeId: __WEBPACK_IMPORTED_MODULE_4__store__["a" /* default */].getters["youtube/youtubeId"],
+                isNew: __WEBPACK_IMPORTED_MODULE_4__store__["a" /* default */].getters["youtube/isNew"],
+                newVideoData: __WEBPACK_IMPORTED_MODULE_4__store__["a" /* default */].getters["youtube/newVideoData"],
                 tags: state.tags,
                 start: state.start,
                 end: state.end
               };
+              _context.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/tag/store", params);
 
-              console.log(params);
+            case 3:
+              response = _context.sent;
 
-              // const response = await axios.post("/api/tag/store");
-              // if (response.status == OK) {
-              //   // 成功した時
-              // } else if (response.status == INTERNAL_SERVER_ERROR) {
-              //   // 失敗した時
-              //   context.commit("error/setCode", response.status, { root: true });
-              // } else {
-              //   // 上記以外で失敗した時
-              //   context.commit("error/setCode", response.status, { root: true });
-              // }
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
+                // 成功した時
+                console.log(response.data);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
 
-            case 2:
+            case 5:
             case "end":
               return _context.stop();
           }
