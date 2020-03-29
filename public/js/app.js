@@ -2336,6 +2336,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2356,7 +2368,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       slider: { val: 0, color: "red" },
       sliderInterval: null,
       startTimeInput: null,
-      endTimeInput: null
+      endTimeInput: null,
+      snackbar: false,
+      timeout: 3000,
+      text: "シーンタグを登録しました"
     };
   },
 
@@ -2367,7 +2382,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     newVideoData: "youtube/newVideoData",
     isReady: "youtube/isReady",
     isNew: "youtube/isNew",
-    showTaggingControl: "tagging/showTaggingControl"
+    showTaggingControl: "tagging/showTaggingControl",
+    controlTransitNext: "tagging/controlTransitNext"
   }), {
     currentPositionTime: function currentPositionTime() {
       //sliderをドラッグした位置の秒数を取得
@@ -2469,10 +2485,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       this.player.seekTo(this.convertToSec(this.currentTime) + 5);
     },
 
-    // タグ入力へ進む
-    next: function next() {
-      this.showTaggingControl = true;
-      // this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
+    //シーンタグ完了のトーストを表示
+    taggingSucceed: function taggingSucceed() {
+      this.snackbar = true;
     }
   },
   created: function created() {
@@ -2863,6 +2878,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     submit: function submit() {
       this.$store.commit("tagging/setTags", this.tags);
       this.$store.dispatch("tagging/storeSceneTags");
+      this.$emit("taggingSucceed");
     }
   },
   created: function created() {}
@@ -7019,7 +7035,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, ".candidatesWrap {\n  /* width: 300px; */\n  border: solid 1px #000000;\n}\n\n.item p {\n  margin: 0px;\n}\n\n.isEven {\n  background-color: #dddddd;\n}\n\n.v-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: 1000;\n  transition: 0.3s;\n}\n\n.v-modal .modal-in-box {\n  width: 50%;\n  padding: 1.2rem;\n  background-color: #ffffff;\n}\n\n.info-area {\n  align-items: center;\n}\n\n.isLiked {\n  color: red;\n}\n\n.tag {\n  display: inline-block;\n  margin: 0 0.1em 0.6em 0;\n  padding: 0.6em;\n  line-height: 1;\n  text-decoration: none;\n  color: #0000ee;\n  background-color: #fff;\n  border: 1px solid #0000ee;\n  border-radius: 2em;\n}\n\n.tag-list-move {\n  transition: all 1s;\n}\n\n.tag-list-enter-to {\n  transition: all 1s;\n}\n\n.tag-list-enter {\n  opacity: 0;\n  transform: translateY(35px);\n}\n\n.tag-list-leave-to {\n  opacity: 0;\n  transform: translateY(-35px);\n}\n\n.tag-list-leave-active {\n  position: absolute;\n  transition: all 1s;\n}\n\n.scenetag-control-enter-active,\n.scenetag-control-leave-active {\n  transition: all 1s;\n}\n\n.scenetag-control-enter {\n  transform: translateX(100vw);\n}\n\n.scenetag-control-leave-active {\n  position: absolute;\n  transform: translateX(-100vw);\n}\n", ""]);
+exports.push([module.i, ".candidatesWrap {\n  /* width: 300px; */\n  border: solid 1px #000000;\n}\n\n.item p {\n  margin: 0px;\n}\n\n.isEven {\n  background-color: #dddddd;\n}\n\n.v-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: 1000;\n  transition: 0.3s;\n}\n\n.v-modal .modal-in-box {\n  width: 50%;\n  padding: 1.2rem;\n  background-color: #ffffff;\n}\n\n.info-area {\n  align-items: center;\n}\n\n.isLiked {\n  color: red;\n}\n\n.tag {\n  display: inline-block;\n  margin: 0 0.1em 0.6em 0;\n  padding: 0.6em;\n  line-height: 1;\n  text-decoration: none;\n  color: #0000ee;\n  background-color: #fff;\n  border: 1px solid #0000ee;\n  border-radius: 2em;\n}\n\n.tag-list-move {\n  transition: all 1s;\n}\n\n.tag-list-enter-to {\n  transition: all 1s;\n}\n\n.tag-list-enter {\n  opacity: 0;\n  transform: translateY(35px);\n}\n\n.tag-list-leave-to {\n  opacity: 0;\n  transform: translateY(-35px);\n}\n\n.tag-list-leave-active {\n  position: absolute;\n  transition: all 1s;\n}\n\n.controle-next-enter-active,\n.controle-next-leave-active {\n  transition: all 1s;\n}\n\n.controle-next-enter {\n  transform: translateX(100vw);\n}\n\n.controle-next-leave-active {\n  position: absolute;\n  transform: translateX(-100vw);\n}\n\n.controle-previous-enter-active,\n.controle-previous-leave-active {\n  transition: all 1s;\n}\n\n.controle-previous-enter {\n  transform: translateX(-100vw);\n}\n\n.controle-previous-leave-active {\n  position: absolute;\n  transform: translateX(100vw);\n}\n", ""]);
 
 // exports
 
@@ -36912,11 +36928,18 @@ var render = function() {
             [
               _c(
                 "transition",
-                { attrs: { name: "scenetag-control" } },
+                {
+                  attrs: {
+                    name: _vm.controlTransitNext
+                      ? "controle-next"
+                      : "controle-previous"
+                  }
+                },
                 [
                   _c(_vm.showTaggingControl, {
                     tag: "component",
-                    attrs: { player: _vm.player }
+                    attrs: { player: _vm.player },
+                    on: { taggingSucceed: _vm.taggingSucceed }
                   })
                 ],
                 1
@@ -36924,7 +36947,37 @@ var render = function() {
             ],
             1
           )
-        : _vm._e()
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: _vm.timeout },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n    " + _vm._s(_vm.text) + "\n    "),
+          _c(
+            "v-btn",
+            {
+              attrs: { color: "blue", text: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_vm._v("\n      Close\n    ")]
+          )
+        ],
+        1
+      )
     ],
     1
   )
@@ -99749,7 +99802,8 @@ var state = {
   showTaggingControl: "TimeControl",
   tags: null,
   start: null,
-  end: null
+  end: null,
+  controlTransitNext: true
 };
 
 var getters = {
@@ -99764,6 +99818,9 @@ var getters = {
   },
   end: function end(state) {
     return state.end;
+  },
+  controlTransitNext: function controlTransitNext(state) {
+    return state.controlTransitNext;
   }
 };
 
@@ -99807,7 +99864,12 @@ var actions = {
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
                 // 成功した時
-                console.log(response.data);
+                //画面下部のシーンの遷移モードを変更
+                context.commit("setControlTransitNext", false);
+                //TimeControlのシートへ戻る
+                context.commit("setShowTaggingControl", "TimeControl");
+                //シーンタグ完了のトーストを表示
+                context.commit("setSnackbarStatus", true);
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });

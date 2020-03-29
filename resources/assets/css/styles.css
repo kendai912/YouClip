@@ -74,16 +74,30 @@
   transition: all 1s;
 }
 
-.scenetag-control-enter-active,
-.scenetag-control-leave-active {
+.controle-next-enter-active,
+.controle-next-leave-active {
   transition: all 1s;
 }
 
-.scenetag-control-enter {
+.controle-next-enter {
   transform: translateX(100vw);
 }
 
-.scenetag-control-leave-active {
+.controle-next-leave-active {
   position: absolute;
   transform: translateX(-100vw);
+}
+
+.controle-previous-enter-active,
+.controle-previous-leave-active {
+  transition: all 1s;
+}
+
+.controle-previous-enter {
+  transform: translateX(-100vw);
+}
+
+.controle-previous-leave-active {
+  position: absolute;
+  transform: translateX(100vw);
 }

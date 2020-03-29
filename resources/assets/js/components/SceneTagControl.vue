@@ -1,10 +1,22 @@
 <template>
   <div class="text-center">
     <v-bottom-sheet v-if="isReady" v-model="sheet" hide-overlay persistent>
-        <transition name="scenetag-control">
-          <component v-bind:is="showTaggingControl" v-bind:player="player"></component>
-        </transition>
+      <transition
+        v-bind:name="controlTransitNext ? 'controle-next' : 'controle-previous'"
+      >
+        <component
+          v-bind:is="showTaggingControl"
+          v-bind:player="player"
+          v-on:taggingSucceed="taggingSucceed"
+        ></component>
+      </transition>
     </v-bottom-sheet>
+    <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
+      {{ text }}
+      <v-btn color="blue" text v-on:click="snackbar = false">
+        Close
+      </v-btn>
+    </v-snackbar>
   </div>
 </template>
 
@@ -28,7 +40,10 @@ export default {
       slider: { val: 0, color: "red" },
       sliderInterval: null,
       startTimeInput: null,
-      endTimeInput: null
+      endTimeInput: null,
+      snackbar: false,
+      timeout: 3000,
+      text: "シーンタグを登録しました"
     };
   },
   mixins: [myMixin],
@@ -39,7 +54,8 @@ export default {
       newVideoData: "youtube/newVideoData",
       isReady: "youtube/isReady",
       isNew: "youtube/isNew",
-      showTaggingControl: "tagging/showTaggingControl"
+      showTaggingControl: "tagging/showTaggingControl",
+      controlTransitNext: "tagging/controlTransitNext"
     }),
     currentPositionTime() {
       //sliderをドラッグした位置の秒数を取得
@@ -118,10 +134,9 @@ export default {
     forwardFiveSec() {
       this.player.seekTo(this.convertToSec(this.currentTime) + 5);
     },
-    // タグ入力へ進む
-    next() {
-      this.showTaggingControl = true;
-      // this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
+    //シーンタグ完了のトーストを表示
+    taggingSucceed() {
+      this.snackbar = true;
     }
   },
   created() {

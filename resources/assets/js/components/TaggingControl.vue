@@ -62,6 +62,7 @@ export default {
     submit() {
       this.$store.commit("tagging/setTags", this.tags);
       this.$store.dispatch("tagging/storeSceneTags");
+      this.$emit("taggingSucceed");
     }
   },
   created() {}
