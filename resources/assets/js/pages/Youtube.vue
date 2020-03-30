@@ -97,14 +97,7 @@ export default {
         location.reload();
       }
     });
-    $("#btn").on("click", function() {
-      AnimateTransition({
-        container: ".container",
-        blockIn: ".newElement",
-        blockOut: ".oldElement",
-        animation: "slide-in"
-      });
-    });
+
   }
 };
 </script>

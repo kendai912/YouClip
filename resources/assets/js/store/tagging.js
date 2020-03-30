@@ -31,6 +31,9 @@ const mutations = {
   },
   setEnd(state, data) {
     state.end = data;
+  },
+  setControlTransitNext(state, data) {
+    state.controlTransitNext = data;
   }
 };
 
@@ -49,12 +52,15 @@ const actions = {
     const response = await axios.post("/api/tag/store", params);
     if (response.status == CREATED) {
       // 成功した時
-      //画面下部のシーンの遷移モードを変更
+      //入力フォームをクリア
+      context.commit("setTags", "");
+      context.commit("setStart", "");
+      context.commit("setEnd", "");
+
+      //画面下部のシーンの遷移モードを変更(true:右スライド, false:左スライド)
       context.commit("setControlTransitNext", false);
       //TimeControlのシートへ戻る
       context.commit("setShowTaggingControl", "TimeControl");
-      //シーンタグ完了のトーストを表示
-      context.commit("setSnackbarStatus", true);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });

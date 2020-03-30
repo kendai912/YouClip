@@ -2810,7 +2810,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_NoLoginModal_vue__ = __webpack_require__("./resources/assets/js/components/NoLoginModal.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_NoLoginModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_NoLoginModal_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -2847,28 +2849,49 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    NoLoginModal: __WEBPACK_IMPORTED_MODULE_1__components_NoLoginModal_vue___default.a
+  },
   props: {
     player: Object
   },
   data: function data() {
     return {
       sheet: true,
-      tags: []
+      tags: [],
+      tagsRules: [function (v) {
+        return !!v || "シーンタグを入力して下さい";
+      }]
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
     currentTime: "youtube/currentTime",
     videoData: "youtube/videoData",
     newVideoData: "youtube/newVideoData",
     isReady: "youtube/isReady",
-    isNew: "youtube/isNew"
+    isNew: "youtube/isNew",
+    isLogin: "auth/check",
+    showLoginModal: "noLoginModal/showLoginModal"
   })),
   methods: {
     remove: function remove(item) {
@@ -2876,12 +2899,44 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       this.tags = [].concat(_toConsumableArray(this.tags));
     },
     submit: function submit() {
+      if (this.isLogin) {
+        //ログイン済の場合
+        var self = this;
+        setTimeout(function () {
+          if (self.$refs.form.validate()) {
+            self.$store.commit("tagging/setTags", self.tags);
+            self.$store.dispatch("tagging/storeSceneTags");
+            self.$emit("taggingSucceed");
+          }
+        });
+      } else {
+        //未ログインの場合
+        this.$store.commit("noLoginModal/openLoginModal");
+        this.$store.commit("noLoginModal/setMessageWhenNotLogined", "このシーンにタグ付けするには、ログインしてください。");
+      }
+    },
+    returnToTimeControl: function returnToTimeControl() {
+      //入力中のシーンタグを保存
       this.$store.commit("tagging/setTags", this.tags);
-      this.$store.dispatch("tagging/storeSceneTags");
-      this.$emit("taggingSucceed");
+
+      //画面下部のシーンの遷移モードを変更(true:右スライド, false:左スライド)
+      this.$store.commit("tagging/setControlTransitNext", false);
+
+      //TimeControlのシートへ戻る
+      this.$store.commit("tagging/setShowTaggingControl", "TimeControl");
+    },
+    initialize: function initialize() {
+      //戻るボタンから表示された際の既入力値のセット
+      this.tags = this.$store.getters["tagging/tags"];
+    },
+    onUpdate: function onUpdate($event) {
+      this.tags = $event;
+      this.$refs.form.validate();
     }
   },
-  created: function created() {}
+  created: function created() {
+    this.initialize();
+  }
 });
 
 /***/ }),
@@ -2993,8 +3048,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
-//
 
 
 
@@ -3004,12 +3057,45 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     player: Object
   },
   data: function data() {
+    var _this = this;
+
     return {
       sheet: true,
       slider: { val: 0, color: "red" },
       sliderInterval: null,
       startTimeInput: null,
-      endTimeInput: null
+      endTimeInput: null,
+      startRules: [function (v) {
+        return !!v || "開始時間を入力して下さい";
+      }, function (v) {
+        var regex = /^\d+:\d{1,2}$/;
+        if (!v || regex.test(v)) {
+          return true;
+        }
+
+        if (!regex.test(v)) {
+          return "分:秒の形式で入力して下さい";
+        }
+      }],
+      endRules: [function (v) {
+        return !!v || "終了時間を入力して下さい";
+      }, function (v) {
+        var regex = /^\d+:\d{1,2}$/;
+        if (!v || regex.test(v)) {
+          return true;
+        }
+
+        if (!regex.test(v)) {
+          return "分:秒の形式で入力して下さい";
+        }
+      }, function (v) {
+        if (_this.startTimeInput) {
+          if (parseInt(_this.convertToSec(v)) <= parseInt(_this.convertToSec(_this.startTimeInput))) {
+            return "開始時間より後ろの時間を入力下さい";
+          }
+        }
+        return true;
+      }]
     };
   },
 
@@ -3084,10 +3170,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     }(),
     tapStartBtn: function tapStartBtn() {
       this.startTimeInput = this.currentTime;
+      //バリデーションチェックのためフォーカスを開始時間フォームに移す
+      this.$refs.startBtn.focus();
       this.player.playVideo();
     },
     tapStopBtn: function tapStopBtn() {
       this.endTimeInput = this.currentTime;
+      //バリデーションチェックのためフォーカスを終了時間フォームに移す
+      this.$refs.stopBtn.focus();
       this.player.pauseVideo();
     },
 
@@ -3123,13 +3213,28 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
     // タグ入力へ進む
     next: function next() {
-      this.$store.commit("tagging/setStart", this.startTimeInput);
-      this.$store.commit("tagging/setEnd", this.endTimeInput);
-      this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
+      if (this.$refs.form.validate()) {
+        this.$store.commit("tagging/setStart", this.startTimeInput);
+        this.$store.commit("tagging/setEnd", this.endTimeInput);
+        this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
+      }
+    },
+
+    //初期化処理
+    initialize: function initialize() {
+      //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
+      this.startUpdateSlider();
+
+      //戻るボタンから表示された際の既入力値のセット
+      this.startTimeInput = this.$store.getters["tagging/start"];
+      this.endTimeInput = this.$store.getters["tagging/end"];
+
+      //シーンタグの遷移モードを変更(true:右スライド, false:左スライド)
+      this.$store.commit("tagging/setControlTransitNext", true);
     }
   },
   created: function created() {
-    this.startUpdateSlider();
+    this.initialize();
   }
 });
 
@@ -3281,6 +3386,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
           v: item.id.videoId
         }
       }).catch(function (err) {});
+      location.reload();
     }
   }
 });
@@ -4343,16 +4449,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                   location.reload();
                 }
               });
-              $("#btn").on("click", function () {
-                AnimateTransition({
-                  container: ".container",
-                  blockIn: ".newElement",
-                  blockOut: ".oldElement",
-                  animation: "slide-in"
-                });
-              });
 
-            case 21:
+            case 20:
             case "end":
               return _context.stop();
           }
@@ -37386,66 +37484,85 @@ var render = function() {
     "v-sheet",
     { staticClass: "text-center", attrs: { height: "450px" } },
     [
-      _c("v-combobox", {
-        attrs: {
-          chips: "",
-          clearable: "",
-          label: "シーンタグを入力",
-          multiple: "",
-          solo: ""
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "selection",
-            fn: function(ref) {
-              var attrs = ref.attrs
-              var item = ref.item
-              var select = ref.select
-              var selected = ref.selected
-              return [
-                _c(
-                  "v-chip",
-                  _vm._b(
-                    {
-                      attrs: {
-                        "input-value": selected,
-                        color: "blue",
-                        close: ""
-                      },
-                      on: {
-                        click: select,
-                        "click:close": function($event) {
-                          return _vm.remove(item)
-                        }
-                      }
-                    },
-                    "v-chip",
-                    attrs,
-                    false
-                  ),
-                  [
-                    _c("v-icon", { attrs: { left: "" } }, [
-                      _vm._v("mdi-label")
-                    ]),
-                    _vm._v(" "),
-                    _c("strong", [_vm._v(_vm._s(item))]),
-                    _vm._v(" \n        "),
-                    _c("span", [_vm._v("(interest)")])
-                  ],
-                  1
-                )
-              ]
-            }
-          }
+      _c("div", [
+        _c("span", { on: { click: _vm.returnToTimeControl } }, [
+          _c("i", { staticClass: "fas fa-chevron-left" })
         ]),
-        model: {
-          value: _vm.tags,
-          callback: function($$v) {
-            _vm.tags = $$v
-          },
-          expression: "tags"
-        }
-      }),
+        _vm._v(" "),
+        _c("span", [_vm._v("シーンにタグ付け")])
+      ]),
+      _vm._v(" "),
+      _c(
+        "v-form",
+        { ref: "form" },
+        [
+          _c("v-combobox", {
+            attrs: {
+              rules: _vm.tagsRules,
+              required: "",
+              "validate-on-blur": "",
+              chips: "",
+              clearable: "",
+              label: "シーンタグを入力",
+              multiple: "",
+              solo: ""
+            },
+            on: { input: _vm.onUpdate },
+            scopedSlots: _vm._u([
+              {
+                key: "selection",
+                fn: function(ref) {
+                  var attrs = ref.attrs
+                  var item = ref.item
+                  var select = ref.select
+                  var selected = ref.selected
+                  return [
+                    _c(
+                      "v-chip",
+                      _vm._b(
+                        {
+                          attrs: {
+                            "input-value": selected,
+                            color: "blue",
+                            close: ""
+                          },
+                          on: {
+                            click: select,
+                            "click:close": function($event) {
+                              return _vm.remove(item)
+                            }
+                          }
+                        },
+                        "v-chip",
+                        attrs,
+                        false
+                      ),
+                      [
+                        _c("v-icon", { attrs: { left: "" } }, [
+                          _vm._v("mdi-label")
+                        ]),
+                        _vm._v(" "),
+                        _c("strong", [_vm._v(_vm._s(item))]),
+                        _vm._v(" \n          "),
+                        _c("span", [_vm._v("(interest)")])
+                      ],
+                      1
+                    )
+                  ]
+                }
+              }
+            ]),
+            model: {
+              value: _vm.tags,
+              callback: function($$v) {
+                _vm.tags = $$v
+              },
+              expression: "tags"
+            }
+          })
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -37461,7 +37578,9 @@ var render = function() {
           )
         ],
         1
-      )
+      ),
+      _vm._v(" "),
+      _vm.showLoginModal ? _c("NoLoginModal") : _vm._e()
     ],
     1
   )
@@ -38121,19 +38240,21 @@ var render = function() {
     "v-sheet",
     { staticClass: "text-center", attrs: { height: "450px" } },
     [
-      _c(
-        "div",
-        [
-          _c(
-            "v-btn",
-            { staticClass: "mt-6", attrs: { text: "", color: "error" } },
-            [_vm._v("＜")]
-          ),
-          _vm._v(" "),
-          _c("span", [_vm._v("開始・終了時間を指定")])
-        ],
-        1
-      ),
+      _c("div", [
+        _c(
+          "a",
+          {
+            on: {
+              click: function($event) {
+                return _vm.$router.go(-1)
+              }
+            }
+          },
+          [_c("i", { staticClass: "fas fa-chevron-left" })]
+        ),
+        _vm._v(" "),
+        _c("span", [_vm._v("開始・終了時間を指定")])
+      ]),
       _vm._v(" "),
       _c("v-slider", {
         attrs: {
@@ -38153,7 +38274,9 @@ var render = function() {
             key: "thumb-label",
             fn: function(ref) {
               var value = ref.value
-              return [_vm._v(_vm._s(_vm.currentPositionTime))]
+              return [
+                _vm._v("\n      " + _vm._s(_vm.currentPositionTime) + "\n    ")
+              ]
             }
           }
         ]),
@@ -38202,88 +38325,104 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          [
-            _c(
-              "v-btn",
-              {
-                staticClass: "mx-2",
+      _c("v-form", { ref: "form" }, [
+        _c("div", [
+          _c(
+            "div",
+            [
+              _c(
+                "v-btn",
+                {
+                  staticClass: "mx-2",
+                  attrs: {
+                    dark: "",
+                    fab: "",
+                    elevation: "0",
+                    small: "",
+                    color: "primary"
+                  },
+                  on: { click: _vm.tapStartBtn }
+                },
+                [_c("v-icon", { attrs: { dark: "" } }, [_vm._v("START")])],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            [
+              _c("v-text-field", {
+                ref: "startBtn",
                 attrs: {
-                  dark: "",
-                  fab: "",
-                  elevation: "0",
-                  small: "",
-                  color: "primary"
+                  rules: _vm.startRules,
+                  required: "",
+                  placeholder: "0:00",
+                  solo: "",
+                  "validate-on-blur": ""
                 },
-                on: { click: _vm.tapStartBtn }
-              },
-              [_c("v-icon", { attrs: { dark: "" } }, [_vm._v("START")])],
-              1
-            )
-          ],
-          1
-        ),
+                model: {
+                  value: _vm.startTimeInput,
+                  callback: function($$v) {
+                    _vm.startTimeInput = $$v
+                  },
+                  expression: "startTimeInput"
+                }
+              })
+            ],
+            1
+          )
+        ]),
         _vm._v(" "),
-        _c(
-          "div",
-          [
-            _c("v-text-field", {
-              attrs: { placeholder: "0:00", solo: "" },
-              model: {
-                value: _vm.startTimeInput,
-                callback: function($$v) {
-                  _vm.startTimeInput = $$v
+        _c("div", [
+          _c(
+            "div",
+            [
+              _c(
+                "v-btn",
+                {
+                  staticClass: "mx-2",
+                  attrs: {
+                    dark: "",
+                    fab: "",
+                    elevation: "0",
+                    small: "",
+                    color: "primary"
+                  },
+                  on: { click: _vm.tapStopBtn }
                 },
-                expression: "startTimeInput"
-              }
-            })
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          [
-            _c(
-              "v-btn",
-              {
-                staticClass: "mx-2",
+                [_c("v-icon", { attrs: { dark: "" } }, [_vm._v("STOP")])],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            [
+              _c("v-text-field", {
+                ref: "stopBtn",
                 attrs: {
-                  dark: "",
-                  fab: "",
-                  elevation: "0",
-                  small: "",
-                  color: "primary"
+                  rules: _vm.endRules,
+                  required: "",
+                  placeholder: "0:00",
+                  solo: "",
+                  "validate-on-blur": ""
                 },
-                on: { click: _vm.tapStopBtn }
-              },
-              [_c("v-icon", { attrs: { dark: "" } }, [_vm._v("STOP")])],
-              1
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          [
-            _c("v-text-field", {
-              attrs: { placeholder: "0:00", solo: "" },
-              model: {
-                value: _vm.endTimeInput,
-                callback: function($$v) {
-                  _vm.endTimeInput = $$v
-                },
-                expression: "endTimeInput"
-              }
-            })
-          ],
-          1
-        )
+                model: {
+                  value: _vm.endTimeInput,
+                  callback: function($$v) {
+                    _vm.endTimeInput = $$v
+                  },
+                  expression: "endTimeInput"
+                }
+              })
+            ],
+            1
+          )
+        ])
       ]),
       _vm._v(" "),
       _c(
@@ -99836,6 +99975,9 @@ var mutations = {
   },
   setEnd: function setEnd(state, data) {
     state.end = data;
+  },
+  setControlTransitNext: function setControlTransitNext(state, data) {
+    state.controlTransitNext = data;
   }
 };
 
@@ -99864,12 +100006,15 @@ var actions = {
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
                 // 成功した時
-                //画面下部のシーンの遷移モードを変更
+                //入力フォームをクリア
+                context.commit("setTags", "");
+                context.commit("setStart", "");
+                context.commit("setEnd", "");
+
+                //画面下部のシーンの遷移モードを変更(true:右スライド, false:左スライド)
                 context.commit("setControlTransitNext", false);
                 //TimeControlのシートへ戻る
                 context.commit("setShowTaggingControl", "TimeControl");
-                //シーンタグ完了のトーストを表示
-                context.commit("setSnackbarStatus", true);
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });

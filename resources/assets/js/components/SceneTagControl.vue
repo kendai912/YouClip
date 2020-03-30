@@ -19,7 +19,7 @@
     </v-snackbar>
   </div>
 </template>
-
+  
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
 import myMixin from "../util";

@@ -1,7 +1,9 @@
 <template>
   <v-sheet class="text-center" height="450px">
     <div>
-      <v-btn class="mt-6" text color="error">＜</v-btn>
+      <a v-on:click="$router.go(-1)">
+        <i class="fas fa-chevron-left"></i>
+      </a>
       <span>開始・終了時間を指定</span>
     </div>
     <v-slider
@@ -15,9 +17,11 @@
       thumb-label="always"
       step="0.01"
     >
-      <template v-slot:thumb-label="{ value }">{{
+      <template v-slot:thumb-label="{ value }">
+        {{
         currentPositionTime
-      }}</template>
+        }}
+      </template>
     </v-slider>
     <div>
       <span v-on:click="backwardThirtySec">
@@ -44,50 +48,44 @@
     <div>
       <span>{{ currentTime }} / {{ duration }}</span>
     </div>
-    <div>
+    <v-form ref="form">
       <div>
-        <v-btn
-          v-on:click="tapStartBtn"
-          class="mx-2"
-          dark
-          fab
-          elevation="0"
-          small
-          color="primary"
-        >
-          <v-icon dark>START</v-icon>
-        </v-btn>
+        <div>
+          <v-btn v-on:click="tapStartBtn" class="mx-2" dark fab elevation="0" small color="primary">
+            <v-icon dark>START</v-icon>
+          </v-btn>
+        </div>
+        <div>
+          <v-text-field
+            v-model="startTimeInput"
+            v-bind:rules="startRules"
+            ref="startBtn"
+            required
+            placeholder="0:00"
+            solo
+            validate-on-blur
+          ></v-text-field>
+        </div>
       </div>
       <div>
-        <v-text-field
-          v-model="startTimeInput"
-          placeholder="0:00"
-          solo
-        ></v-text-field>
+        <div>
+          <v-btn v-on:click="tapStopBtn" class="mx-2" dark fab elevation="0" small color="primary">
+            <v-icon dark>STOP</v-icon>
+          </v-btn>
+        </div>
+        <div>
+          <v-text-field
+            v-model="endTimeInput"
+            v-bind:rules="endRules"
+            ref="stopBtn"
+            required
+            placeholder="0:00"
+            solo
+            validate-on-blur
+          ></v-text-field>
+        </div>
       </div>
-    </div>
-    <div>
-      <div>
-        <v-btn
-          v-on:click="tapStopBtn"
-          class="mx-2"
-          dark
-          fab
-          elevation="0"
-          small
-          color="primary"
-        >
-          <v-icon dark>STOP</v-icon>
-        </v-btn>
-      </div>
-      <div>
-        <v-text-field
-          v-model="endTimeInput"
-          placeholder="0:00"
-          solo
-        ></v-text-field>
-      </div>
-    </div>
+    </v-form>
     <v-btn class="mt-6" text color="error" v-on:click="next">次へ</v-btn>
   </v-sheet>
 </template>
@@ -106,7 +104,44 @@ export default {
       slider: { val: 0, color: "red" },
       sliderInterval: null,
       startTimeInput: null,
-      endTimeInput: null
+      endTimeInput: null,
+      startRules: [
+        v => !!v || "開始時間を入力して下さい",
+        v => {
+          let regex = /^\d+:\d{1,2}$/;
+          if (!v || regex.test(v)) {
+            return true;
+          }
+
+          if (!regex.test(v)) {
+            return "分:秒の形式で入力して下さい";
+          }
+        }
+      ],
+      endRules: [
+        v => !!v || "終了時間を入力して下さい",
+        v => {
+          let regex = /^\d+:\d{1,2}$/;
+          if (!v || regex.test(v)) {
+            return true;
+          }
+
+          if (!regex.test(v)) {
+            return "分:秒の形式で入力して下さい";
+          }
+        },
+        v => {
+          if (this.startTimeInput) {
+            if (
+              parseInt(this.convertToSec(v)) <=
+              parseInt(this.convertToSec(this.startTimeInput))
+            ) {
+              return "開始時間より後ろの時間を入力下さい";
+            }
+          }
+          return true;
+        }
+      ]
     };
   },
   mixins: [myMixin],
@@ -165,10 +200,14 @@ export default {
     },
     tapStartBtn() {
       this.startTimeInput = this.currentTime;
+      //バリデーションチェックのためフォーカスを開始時間フォームに移す
+      this.$refs.startBtn.focus();
       this.player.playVideo();
     },
     tapStopBtn() {
       this.endTimeInput = this.currentTime;
+      //バリデーションチェックのためフォーカスを終了時間フォームに移す
+      this.$refs.stopBtn.focus();
       this.player.pauseVideo();
     },
     //再生
@@ -197,13 +236,27 @@ export default {
     },
     // タグ入力へ進む
     next() {
-      this.$store.commit("tagging/setStart", this.startTimeInput);
-      this.$store.commit("tagging/setEnd", this.endTimeInput);
-      this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
+      if (this.$refs.form.validate()) {
+        this.$store.commit("tagging/setStart", this.startTimeInput);
+        this.$store.commit("tagging/setEnd", this.endTimeInput);
+        this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
+      }
+    },
+    //初期化処理
+    initialize() {
+      //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
+      this.startUpdateSlider();
+
+      //戻るボタンから表示された際の既入力値のセット
+      this.startTimeInput = this.$store.getters["tagging/start"];
+      this.endTimeInput = this.$store.getters["tagging/end"];
+
+      //シーンタグの遷移モードを変更(true:右スライド, false:左スライド)
+      this.$store.commit("tagging/setControlTransitNext", true);
     }
   },
   created() {
-    this.startUpdateSlider();
+    this.initialize();
   }
 };
 </script>
