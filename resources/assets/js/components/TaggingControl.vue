@@ -9,8 +9,8 @@
     <v-form ref="form">
       <v-combobox
         v-model="tags"
+        v-bind:items="items"
         v-bind:rules="tagsRules"
-        v-on:input="onUpdate"
         required
         validate-on-blur
         chips
@@ -58,6 +58,7 @@ export default {
     return {
       sheet: true,
       tags: [],
+      items: [],
       tagsRules: [v => !!v || "シーンタグを入力して下さい"]
     };
   },
@@ -70,7 +71,8 @@ export default {
       isReady: "youtube/isReady",
       isNew: "youtube/isNew",
       isLogin: "auth/check",
-      showLoginModal: "noLoginModal/showLoginModal"
+      showLoginModal: "noLoginModal/showLoginModal",
+      itemsList: "tagging/itemsList"
     })
   },
   methods: {
@@ -84,9 +86,13 @@ export default {
         let self = this;
         setTimeout(function() {
           if (self.$refs.form.validate()) {
+            //シーンタグをセットして保存
             self.$store.commit("tagging/setTags", self.tags);
             self.$store.dispatch("tagging/storeSceneTags");
+            //シーン登録のトーストを表示
             self.$emit("taggingSucceed");
+            //シーンタグのフォームリストに入力した値を追加
+            self.$store.commit("tagging/setItemsList", self.tags);
           }
         });
       } else {
@@ -111,14 +117,11 @@ export default {
     initialize() {
       //戻るボタンから表示された際の既入力値のセット
       this.tags = this.$store.getters["tagging/tags"];
-    },
-    onUpdate($event) {
-      this.tags = $event;
-      this.$refs.form.validate();
     }
   },
   created() {
     this.initialize();
+    this.items = this.itemsList;
   }
 };
 </script>

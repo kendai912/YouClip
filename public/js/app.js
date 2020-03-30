@@ -2877,6 +2877,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     return {
       sheet: true,
       tags: [],
+      items: [],
       tagsRules: [function (v) {
         return !!v || "シーンタグを入力して下さい";
       }]
@@ -2891,7 +2892,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     isReady: "youtube/isReady",
     isNew: "youtube/isNew",
     isLogin: "auth/check",
-    showLoginModal: "noLoginModal/showLoginModal"
+    showLoginModal: "noLoginModal/showLoginModal",
+    itemsList: "tagging/itemsList"
   })),
   methods: {
     remove: function remove(item) {
@@ -2904,9 +2906,13 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         var self = this;
         setTimeout(function () {
           if (self.$refs.form.validate()) {
+            //シーンタグをセットして保存
             self.$store.commit("tagging/setTags", self.tags);
             self.$store.dispatch("tagging/storeSceneTags");
+            //シーン登録のトーストを表示
             self.$emit("taggingSucceed");
+            //シーンタグのフォームリストに入力した値を追加
+            self.$store.commit("tagging/setItemsList", self.tags);
           }
         });
       } else {
@@ -2928,14 +2934,11 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     initialize: function initialize() {
       //戻るボタンから表示された際の既入力値のセット
       this.tags = this.$store.getters["tagging/tags"];
-    },
-    onUpdate: function onUpdate($event) {
-      this.tags = $event;
-      this.$refs.form.validate();
     }
   },
   created: function created() {
     this.initialize();
+    this.items = this.itemsList;
   }
 });
 
@@ -37498,6 +37501,7 @@ var render = function() {
         [
           _c("v-combobox", {
             attrs: {
+              items: _vm.items,
               rules: _vm.tagsRules,
               required: "",
               "validate-on-blur": "",
@@ -37507,7 +37511,6 @@ var render = function() {
               multiple: "",
               solo: ""
             },
-            on: { input: _vm.onUpdate },
             scopedSlots: _vm._u([
               {
                 key: "selection",
@@ -99932,6 +99935,8 @@ var actions = {
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 
 
 
@@ -99942,7 +99947,8 @@ var state = {
   tags: null,
   start: null,
   end: null,
-  controlTransitNext: true
+  controlTransitNext: true,
+  itemsList: []
 };
 
 var getters = {
@@ -99960,6 +99966,9 @@ var getters = {
   },
   controlTransitNext: function controlTransitNext(state) {
     return state.controlTransitNext;
+  },
+  itemsList: function itemsList(state) {
+    return state.itemsList;
   }
 };
 
@@ -99978,6 +99987,11 @@ var mutations = {
   },
   setControlTransitNext: function setControlTransitNext(state, data) {
     state.controlTransitNext = data;
+  },
+  setItemsList: function setItemsList(state, data) {
+    var _state$itemsList;
+
+    (_state$itemsList = state.itemsList).push.apply(_state$itemsList, _toConsumableArray(data));
   }
 };
 

@@ -8,7 +8,8 @@ const state = {
   tags: null,
   start: null,
   end: null,
-  controlTransitNext: true
+  controlTransitNext: true,
+  itemsList: []
 };
 
 const getters = {
@@ -16,7 +17,8 @@ const getters = {
   tags: state => state.tags,
   start: state => state.start,
   end: state => state.end,
-  controlTransitNext: state => state.controlTransitNext
+  controlTransitNext: state => state.controlTransitNext,
+  itemsList: state => state.itemsList
 };
 
 const mutations = {
@@ -34,6 +36,9 @@ const mutations = {
   },
   setControlTransitNext(state, data) {
     state.controlTransitNext = data;
+  },
+  setItemsList(state, data) {
+    state.itemsList.push(...data);
   }
 };
 
