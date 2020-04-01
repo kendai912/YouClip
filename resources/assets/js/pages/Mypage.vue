@@ -32,6 +32,10 @@ export default {
       isLogin: "auth/check"
     })
   },
-  created() {}
+  created() {
+    //リンク先の検索結果ページを初期化
+    this.$store.commit("search/setTagVideoResult", null);
+    this.$store.commit("search/setPlaylistTagResult", null);
+  }
 };
 </script>

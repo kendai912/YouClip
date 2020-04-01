@@ -2268,22 +2268,27 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     myPlaylistTagDataLoaded: "playlist/myPlaylistTagDataLoaded",
     myTagVideoData: "tag/myTagVideoData"
   })),
-  methods: {},
+  methods: {
+    setActiveTab: function setActiveTab(key) {
+      //開いたタブをセッションストレージに保存
+      window.sessionStorage.setItem("tabIndex", JSON.stringify(key));
+    }
+  },
   created: function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              //以前に開いていたタブをセッションストレージからセット
+              this.tab = parseInt(window.sessionStorage.getItem("tabIndex"));
+              //Likeまたは作成したプレイリストをロード
+              _context.next = 3;
               return this.$store.dispatch("playlist/loadMyPlaylist");
 
-            case 2:
-              _context.next = 4;
+            case 3:
+              _context.next = 5;
               return this.$store.dispatch("tag/loadMyTagVideo");
-
-            case 4:
-              console.log(this.myTagVideoData);
 
             case 5:
             case "end":
@@ -2341,7 +2346,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   },
 
   mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({})),
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    activeTab: "mypage/activeTab"
+  })),
   methods: {
     select: function select() {
       //再生ページを表示
@@ -2352,15 +2359,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
           index: "0"
         }
       }).catch(function (err) {});
+
       // IFrame Player APIを呼び出すためにページをリロード
       window.location.reload();
     },
     search: function search(tags) {
+      //選択したタグの検索結果を表示
       this.$router.push({
         path: "result",
         query: { search_query: tags }
       }).catch(function (err) {});
-      window.location.reload();
     }
   },
   created: function created() {}
@@ -2403,7 +2411,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   },
 
   mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({})),
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    activeTab: "mypage/activeTab"
+  })),
   methods: {
     select: function select() {
       //再生ページを表示
@@ -2413,15 +2423,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
           tag: this.myTagVideo.tag_id
         }
       }).catch(function (err) {});
+
       // IFrame Player APIを呼び出すためにページをリロード
       window.location.reload();
     },
     search: function search(tag) {
+      //選択したタグの検索結果を表示
       this.$router.push({
         path: "result",
         query: { search_query: tag }
       }).catch(function (err) {});
-      window.location.reload();
     }
   },
   created: function created() {}
@@ -3950,7 +3961,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
     isLogin: "auth/check"
   })),
-  created: function created() {}
+  created: function created() {
+    //リンク先の検索結果ページを初期化
+    this.$store.commit("search/setTagVideoResult", null);
+    this.$store.commit("search/setPlaylistTagResult", null);
+  }
 });
 
 /***/ }),
@@ -3960,13 +3975,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_SearchBox_vue__ = __webpack_require__("./resources/assets/js/components/SearchBox.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_SearchBox_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_SearchBox_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue__ = __webpack_require__("./resources/assets/js/components/IndexItem.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_SearchBox_vue__ = __webpack_require__("./resources/assets/js/components/SearchBox.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_SearchBox_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_SearchBox_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_IndexItem_vue__ = __webpack_require__("./resources/assets/js/components/IndexItem.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_IndexItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_IndexItem_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__util__ = __webpack_require__("./resources/assets/js/util.js");
+
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 //
 //
@@ -3988,10 +4009,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    SearchBox: __WEBPACK_IMPORTED_MODULE_1__components_SearchBox_vue___default.a,
-    IndexItem: __WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue___default.a
+    SearchBox: __WEBPACK_IMPORTED_MODULE_2__components_SearchBox_vue___default.a,
+    IndexItem: __WEBPACK_IMPORTED_MODULE_3__components_IndexItem_vue___default.a
   },
-  mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["e" /* default */]],
+  data: function data() {
+    return {};
+  },
+
+  mixins: [__WEBPACK_IMPORTED_MODULE_4__util__["e" /* default */]],
   methods: {
     //i:s形式に変換
     formatToMinSec: function formatToMinSec(His) {
@@ -4000,11 +4025,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       return min + ":" + sec;
     }
   },
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     searchQuery: "search/searchQuery",
     tagVideoResult: "search/tagVideoResult",
-    playlistTagResult: "search/playlistTagResult",
-    showResults: "search/showResults"
+    playlistTagResult: "search/playlistTagResult"
   }), {
     //レコメンド画面に表示するアイテム
     mediaItems: function mediaItems() {
@@ -4022,16 +4046,45 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       });
     }
   }),
-  created: function created() {
-    //キャッシュされた検索結果を非表示化
-    this.$store.commit("search/setShowResults", false);
+  created: function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+      var self, from;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              //リロードされた場合はURLのsearch_queryを元に再度検索を実行
+              this.$store.commit("search/setSearchQuery", this.$route.query.search_query);
+              _context.next = 3;
+              return this.$store.dispatch("search/search");
 
-    //リロードされた場合はURLのsearch_queryを元に再度検索を実行
-    if (!this.searchQuery) {
-      this.$store.commit("search/setSearchQuery", this.$route.query.search_query);
-      this.$store.dispatch("search/search");
+            case 3:
+
+              //戻るor進むが押された場合は画面を再ロード
+              self = this;
+              from = this.$route.path;
+
+              window.addEventListener("popstate", function (e) {
+                var to = self.$route.path;
+                if (from == "/result" && to == "/result") {
+                  location.reload();
+                }
+              });
+
+            case 6:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function created() {
+      return _ref.apply(this, arguments);
     }
-  }
+
+    return created;
+  }()
 });
 
 /***/ }),
@@ -7419,7 +7472,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, ".candidatesWrap {\n  /* width: 300px; */\n  border: solid 1px #000000;\n}\n\n.item p {\n  margin: 0px;\n}\n\n.isEven {\n  background-color: #dddddd;\n}\n\n.v-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: 1000;\n  transition: 0.3s;\n}\n\n.v-modal .modal-in-box {\n  width: 50%;\n  padding: 1.2rem;\n  background-color: #ffffff;\n}\n\n.info-area {\n  align-items: center;\n}\n\n.isLiked {\n  color: red;\n}\n\n.tag {\n  display: inline-block;\n  margin: 0 0.1em 0.6em 0;\n  padding: 0.6em;\n  line-height: 1;\n  text-decoration: none;\n  color: #0000ee;\n  background-color: #fff;\n  border: 1px solid #0000ee;\n  border-radius: 2em;\n}\n\n.tag-list-move {\n  transition: all 1s;\n}\n\n.tag-list-enter-to {\n  transition: all 1s;\n}\n\n.tag-list-enter {\n  opacity: 0;\n  transform: translateY(35px);\n}\n\n.tag-list-leave-to {\n  opacity: 0;\n  transform: translateY(-35px);\n}\n\n.tag-list-leave-active {\n  position: absolute;\n  transition: all 1s;\n}\n\n.controle-next-enter-active,\n.controle-next-leave-active {\n  transition: all 1s;\n}\n\n.controle-next-enter {\n  transform: translateX(100vw);\n}\n\n.controle-next-leave-active {\n  position: absolute;\n  transform: translateX(-100vw);\n}\n\n.controle-previous-enter-active,\n.controle-previous-leave-active {\n  transition: all 1s;\n}\n\n.controle-previous-enter {\n  transform: translateX(-100vw);\n}\n\n.controle-previous-leave-active {\n  position: absolute;\n  transform: translateX(100vw);\n}\n", ""]);
+exports.push([module.i, ".candidatesWrap {\n  /* width: 300px; */\n  border: solid 1px #000000;\n}\n\n.item p {\n  margin: 0px;\n}\n\n.isEven {\n  background-color: #dddddd;\n}\n\n.v-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: 1000;\n  transition: 0.3s;\n}\n\n.v-modal .modal-in-box {\n  width: 50%;\n  padding: 1.2rem;\n  background-color: #ffffff;\n}\n\n.info-area {\n  align-items: center;\n}\n\n.isLiked {\n  color: red;\n}\n\n.tag {\n  display: inline-block;\n  margin: 0 0.1em 0.6em 0;\n  padding: 0.6em;\n  line-height: 1;\n  text-decoration: none;\n  color: #0000ee;\n  background-color: #fff;\n  border: 1px solid #0000ee;\n  border-radius: 2em;\n}\n\n.tag-list-move {\n  transition: all 1s;\n}\n\n.tag-list-enter-to {\n  transition: all 1s;\n}\n\n.tag-list-enter {\n  opacity: 0;\n  transform: translateY(35px);\n}\n\n.tag-list-leave-to {\n  opacity: 0;\n  transform: translateY(-35px);\n}\n\n.tag-list-leave-active {\n  position: absolute;\n  transition: all 1s;\n}\n\n.controle-next-enter-active,\n.controle-next-leave-active {\n  transition: all 1s;\n}\n\n.controle-next-enter {\n  transform: translateX(100vw);\n}\n\n.controle-next-leave-active {\n  position: absolute;\n  transform: translateX(-100vw);\n}\n\n.controle-previous-enter-active,\n.controle-previous-leave-active {\n  transition: all 1s;\n}\n\n.controle-previous-enter {\n  transform: translateX(-100vw);\n}\n\n.controle-previous-leave-active {\n  position: absolute;\n  transform: translateX(100vw);\n}\n\n", ""]);
 
 // exports
 
@@ -37366,8 +37419,19 @@ var render = function() {
             expression: "tab"
           }
         },
-        _vm._l(_vm.items, function(item) {
-          return _c("v-tab", { key: item }, [_vm._v(_vm._s(item))])
+        _vm._l(_vm.items, function(item, key) {
+          return _c(
+            "v-tab",
+            {
+              key: item,
+              on: {
+                click: function($event) {
+                  return _vm.setActiveTab(key)
+                }
+              }
+            },
+            [_vm._v(_vm._s(item))]
+          )
         }),
         1
       ),
@@ -38553,15 +38617,7 @@ var render = function() {
     _vm._v(" "),
     _c("div", [_c("SearchBox")], 1),
     _vm._v(" "),
-    _c(
-      "div",
-      [
-        _vm.showResults
-          ? _c("IndexItem", { attrs: { mediaItems: _vm.mediaItems } })
-          : _vm._e()
-      ],
-      1
-    )
+    _c("div", [_c("IndexItem", { attrs: { mediaItems: _vm.mediaItems } })], 1)
   ])
 }
 var staticRenderFns = []
@@ -100185,8 +100241,7 @@ var state = {
   tagVideoResult: [],
   playlistTagResult: [],
   topSearchqueries: [],
-  searchHistories: [],
-  showResults: false
+  searchHistories: []
 };
 
 var getters = {
@@ -100207,9 +100262,6 @@ var getters = {
   },
   searchHistories: function searchHistories(state) {
     return state.searchHistories;
-  },
-  showResults: function showResults(state) {
-    return state.showResults;
   }
 };
 
@@ -100231,9 +100283,6 @@ var mutations = {
   },
   setSearchHistories: function setSearchHistories(state, data) {
     state.searchHistories = data;
-  },
-  setShowResults: function setShowResults(state, data) {
-    state.showResults = data;
   },
 
   //検索結果表示ページに遷移
@@ -100257,7 +100306,6 @@ var actions = {
   search: function search(context) {
     actions.searchTagVideoResult(context);
     actions.searchPlaylistTagResult(context);
-    context.commit("setShowResults", true);
     actions.storeSearchRecord(context);
   },
 

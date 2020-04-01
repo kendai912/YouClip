@@ -24,7 +24,9 @@ export default {
   },
   mixins: [myMixin],
   computed: {
-    ...mapGetters({})
+    ...mapGetters({
+      activeTab: "mypage/activeTab"
+    })
   },
   methods: {
     select() {
@@ -37,17 +39,18 @@ export default {
           }
         })
         .catch(err => {});
+
       // IFrame Player APIを呼び出すためにページをリロード
       window.location.reload();
     },
     search(tag) {
+      //選択したタグの検索結果を表示
       this.$router
         .push({
           path: "result",
           query: { search_query: tag }
         })
         .catch(err => {});
-      window.location.reload();
     }
   },
   created() {}

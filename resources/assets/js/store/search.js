@@ -8,8 +8,7 @@ const state = {
   tagVideoResult: [],
   playlistTagResult: [],
   topSearchqueries: [],
-  searchHistories: [],
-  showResults: false
+  searchHistories: []
 };
 
 const getters = {
@@ -18,8 +17,7 @@ const getters = {
   tagVideoResult: state => state.tagVideoResult,
   playlistTagResult: state => state.playlistTagResult,
   topSearchqueries: state => state.topSearchqueries,
-  searchHistories: state => state.searchHistories,
-  showResults: state => state.showResults
+  searchHistories: state => state.searchHistories
 };
 
 const mutations = {
@@ -40,9 +38,6 @@ const mutations = {
   },
   setSearchHistories(state, data) {
     state.searchHistories = data;
-  },
-  setShowResults(state, data) {
-    state.showResults = data;
   },
   //検索結果表示ページに遷移
   searchResultPageTransit() {
@@ -69,7 +64,6 @@ const actions = {
   search(context) {
     actions.searchTagVideoResult(context);
     actions.searchPlaylistTagResult(context);
-    context.commit("setShowResults", true);
     actions.storeSearchRecord(context);
   },
   //検索ワード候補を取得(インクリメンタルサーチ)

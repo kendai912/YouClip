@@ -5,7 +5,7 @@
       <SearchBox />
     </div>
     <div>
-      <IndexItem v-if="showResults" v-bind:mediaItems="mediaItems" />
+      <IndexItem v-bind:mediaItems="mediaItems" />
     </div>
   </div>
 </template>
@@ -21,6 +21,10 @@ export default {
     SearchBox,
     IndexItem
   },
+  data() {
+    return {
+    };
+  },
   mixins: [myMixin],
   methods: {
     //i:s形式に変換
@@ -35,8 +39,7 @@ export default {
     ...mapGetters({
       searchQuery: "search/searchQuery",
       tagVideoResult: "search/tagVideoResult",
-      playlistTagResult: "search/playlistTagResult",
-      showResults: "search/showResults"
+      playlistTagResult: "search/playlistTagResult"
     }),
     //レコメンド画面に表示するアイテム
     mediaItems() {
@@ -58,18 +61,20 @@ export default {
       });
     }
   },
-  created() {
-    //キャッシュされた検索結果を非表示化
-    this.$store.commit("search/setShowResults", false);
-
+  async created() {
     //リロードされた場合はURLのsearch_queryを元に再度検索を実行
-    if (!this.searchQuery) {
-      this.$store.commit(
-        "search/setSearchQuery",
-        this.$route.query.search_query
-      );
-      this.$store.dispatch("search/search");
-    }
+    this.$store.commit("search/setSearchQuery", this.$route.query.search_query);
+    await this.$store.dispatch("search/search");
+
+    //戻るor進むが押された場合は画面を再ロード
+    let self = this;
+    let from = this.$route.path;
+    window.addEventListener("popstate", function(e) {
+      let to = self.$route.path;
+      if (from == "/result" && to == "/result") {
+        location.reload();
+      }
+    });
   }
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-tabs v-model="tab" background-color="transparent" grow>
-      <v-tab v-for="item in items" :key="item">{{ item }}</v-tab>
+      <v-tab v-for="(item, key) in items" :key="item" v-on:click="setActiveTab(key)">{{ item }}</v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab">
@@ -52,13 +52,19 @@ export default {
       myTagVideoData: "tag/myTagVideoData"
     })
   },
-  methods: {},
+  methods: {
+    setActiveTab(key) {
+      //開いたタブをセッションストレージに保存
+      window.sessionStorage.setItem("tabIndex", JSON.stringify(key));
+    }
+  },
   async created() {
+    //以前に開いていたタブをセッションストレージからセット
+    this.tab = parseInt(window.sessionStorage.getItem("tabIndex"));
     //Likeまたは作成したプレイリストをロード
     await this.$store.dispatch("playlist/loadMyPlaylist");
     //Likeまたは作成したタグをロード
     await this.$store.dispatch("tag/loadMyTagVideo");
-    console.log(this.myTagVideoData);
   }
 };
 </script>
