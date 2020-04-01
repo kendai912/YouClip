@@ -3,12 +3,14 @@ import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
 
 const state = {
   playlistTagData: null,
+  myPlaylistTagDataLoaded: null,
   showAddPlaylistModal: false,
   playlistIdsOfTag: null
 };
 
 const getters = {
   playlistTagData: state => state.playlistTagData,
+  myPlaylistTagDataLoaded: state => state.myPlaylistTagDataLoaded,
   showAddPlaylistModal: state => state.showAddPlaylistModal,
   playlistIdsOfTag: state => state.playlistIdsOfTag,
   getPlaylistTagContentById: state => playlistId => {
@@ -32,6 +34,9 @@ const mutations = {
   setPlaylistTagData(state, data) {
     state.playlistTagData = data;
   },
+  setMyPlaylistTagDataLoaded(state, data) {
+    state.myPlaylistTagDataLoaded = data;
+  },
   openAddPlaylistModal(state) {
     state.showAddPlaylistModal = true;
   },
@@ -44,9 +49,33 @@ const mutations = {
 };
 
 const actions = {
+  //全プレイリストをロード
   async loadPlaylist(context) {
     const response = await axios.get("api/load/playlist");
-    context.commit("setPlaylistTagData", response.data.playlistTagData);
+    if (response.status == OK) {
+      // 成功した時
+      context.commit("setPlaylistTagData", response.data.playlistTagData);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  //Likeまたは作成したプレイリストをロード
+  async loadMyPlaylist(context) {
+    const response = await axios.get("api/load/myPlaylist");
+    if (response.status == OK) {
+      // 成功した時
+      context.commit("setMyPlaylistTagDataLoaded", response.data.myPlaylist);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
   },
   //完了ボタンを押したらチェックの入ったプレイリストにタグを追加
   async addMyPlaylists(context, input) {

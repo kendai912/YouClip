@@ -5,7 +5,7 @@
       <SearchBox />
     </div>
     <div>
-      <IndexItem v-bind:mediaItems="mediaItems" />
+      <IndexItem v-if="showResults" v-bind:mediaItems="mediaItems" />
     </div>
   </div>
 </template>
@@ -35,7 +35,8 @@ export default {
     ...mapGetters({
       searchQuery: "search/searchQuery",
       tagVideoResult: "search/tagVideoResult",
-      playlistTagResult: "search/playlistTagResult"
+      playlistTagResult: "search/playlistTagResult",
+      showResults: "search/showResults"
     }),
     //レコメンド画面に表示するアイテム
     mediaItems() {
@@ -58,6 +59,9 @@ export default {
     }
   },
   created() {
+    //キャッシュされた検索結果を非表示化
+    this.$store.commit("search/setShowResults", false);
+
     //リロードされた場合はURLのsearch_queryを元に再度検索を実行
     if (!this.searchQuery) {
       this.$store.commit(

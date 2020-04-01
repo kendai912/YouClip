@@ -27,10 +27,14 @@ Route::get('/user', function () {
 // ログアウト
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
-//タグデータのロード
-Route::get('/load/tagVideo', 'TagController@load');
-//プレイリストデータのロード
-Route::get('/load/playlist', 'PlaylistController@load');
+//全タグデータのロード
+Route::get('/load/tagVideo', 'TagController@loadAllTag');
+//Likeまたは作成したタグデータのロード
+Route::get('/load/myTagVideo', 'TagController@loadMyTag');
+//全プレイリストデータのロード
+Route::get('/load/playlist', 'PlaylistController@loadAllPlaylist');
+//Likeまたは作成したプレイリストをロード
+Route::get('/load/myPlaylist', 'PlaylistController@loadMyPlaylist');
 //タグへのLikeデータのロード
 Route::get("/load/tagLike", 'LikeController@loadTagLike');
 //プレイリストへのLikeデータのロード

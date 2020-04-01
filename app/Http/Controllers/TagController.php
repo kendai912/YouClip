@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Video;
 use App\Tag;
+use App\Like;
 use App\User;
 use App\Playlist;
 use Carbon\Carbon;
@@ -38,12 +39,36 @@ class TagController extends Controller
         //
     }
     
-    public function load()
+    //全ターグデータをロード
+    public function loadAllTag()
     {
         //動画・タグの全データを外部結合し抽出
         $tagVideoData = Tag::leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
 
         return $tagVideoData;
+    }
+
+    //Likeまたは作成したタグデータをロード
+    public function loadMyTag()
+    {
+        //LikeしたタグIDを取得
+        $likes = Like::where('user_id', Auth::user()->id)->get();
+        $likesIds = [];
+        foreach ($likes as $like) {
+            $likesIds[] = $like->tag_id;
+        }
+        
+        // Likeしたタグデータと作成したタグデータを取得
+        $myTagVideoData = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
+
+        return response()->json(
+            [
+            'myTagVideoData' => $myTagVideoData
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 
     //タグが保存されているユーザーのプレイリストIDをリターン
