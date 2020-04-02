@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6bb6c45bda3b12406f498b524f2e2bf4",
+    "content-hash": "7db6355a21bfc6a4f57e5299ff13d84d",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -577,6 +577,64 @@
                 "trusted proxy"
             ],
             "time": "2017-06-15T17:19:42+00:00"
+        },
+        {
+            "name": "grabzit/grabzit",
+            "version": "3.4.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GrabzIt/grabzit-php.git",
+                "reference": "8f4e3c178a5e187ff12904267790007874891548"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GrabzIt/grabzit-php/zipball/8f4e3c178a5e187ff12904267790007874891548",
+                "reference": "8f4e3c178a5e187ff12904267790007874891548",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GrabzIt\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Use our API to allow your app to create images, DOCX documents, rendered HTML and PDF's from URL's or raw HTML. Additionally GrabzIt allows you to convert online videos into animated GIF's or HTML tables into CSV's.",
+            "homepage": "https://grabz.it/",
+            "keywords": [
+                "BMP",
+                "HTML to DOCX",
+                "Rendered HTML",
+                "URL to DOCX",
+                "URL to Image",
+                "URL to PDF",
+                "animated gif",
+                "api",
+                "capture",
+                "csv",
+                "docx",
+                "html",
+                "html to image",
+                "html to pdf",
+                "images",
+                "jpg",
+                "pdf",
+                "png",
+                "screenshots",
+                "table",
+                "tiff",
+                "video conversion",
+                "videos",
+                "web",
+                "xlsx"
+            ],
+            "time": "2020-02-14T13:31:29+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
