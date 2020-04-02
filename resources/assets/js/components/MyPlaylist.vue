@@ -2,7 +2,7 @@
   <div v-on:click="select">
     <div class="thumbnail">
       <img
-        src="https://watanabeseiji.com/wordpress/wp-content/themes/cyber/images/noimage.jpg"
+        v-bind:src="'/storage/img/' + myPlaylistTag.tags[0].preview"
         style="width: 300px; height:auto"
       />
     </div>

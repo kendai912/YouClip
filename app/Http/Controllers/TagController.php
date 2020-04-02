@@ -42,17 +42,8 @@ class TagController extends Controller
     //全ターグデータをロード
     public function loadAllTag()
     {
-        // $grabzIt = resolve('grabzit');
-
-        // $options = new \GrabzIt\GrabzItAnimationOptions();
-        // $options->setDuration(3);
-        // // $options->setStart(3);
-
-        // $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=XMR-JyEDdc4", $options);
-        // $grabzIt->SaveTo("../storage/app/public/img/" . rand() . ".gif");
-
         //動画・タグの全データを外部結合し抽出
-        $tagVideoData = Tag::leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
+        $tagVideoData = Tag::leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
 
         return $tagVideoData;
     }
@@ -68,7 +59,7 @@ class TagController extends Controller
         }
         
         // Likeしたタグデータと作成したタグデータを取得
-        $myTagVideoData = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
+        $myTagVideoData = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
 
         return response()->json(
             [
@@ -186,6 +177,9 @@ class TagController extends Controller
         //タグの配列をスペース区切りの文字列に変換
         $tags = implode(" ", $request->tags);
 
+        //プレビュー用のgifを取得しファイル名を変数に格納
+        $previewFileName = $this->getPreviewFile($request);
+
         //タグをDBに保存
         $tag = new Tag;
         $tag->video_id = $video->id;
@@ -193,6 +187,7 @@ class TagController extends Controller
         $tag->tags = $tags;
         $tag->start = "00:".$request->start;
         $tag->end = "00:".$request->end;
+        $tag->preview = $previewFileName;
         $tag->save();
 
         //保存したタグデータをリターン
@@ -204,6 +199,22 @@ class TagController extends Controller
             [],
             JSON_UNESCAPED_UNICODE
         );
+    }
+
+    public function getPreviewFile($request)
+    {
+        $grabzIt = resolve('grabzit');
+
+        $options = new \GrabzIt\GrabzItAnimationOptions();
+        $options->setDuration(3);
+        $startSec = $this->convertToSec("00:".$request->start);
+        $options->setStart($startSec);
+
+        $previewFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
+        $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=XMR-JyEDdc4", $options);
+        $grabzIt->SaveTo("../storage/app/public/img/" . $previewFileName);
+
+        return $previewFileName;
     }
 
     /**

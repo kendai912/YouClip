@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-// use GrabzIt;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Broadcast;
 

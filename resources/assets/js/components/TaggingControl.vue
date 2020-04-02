@@ -91,7 +91,7 @@ export default {
             self.$store.dispatch("tagging/storeSceneTags");
             //シーン登録のトーストを表示
             self.$emit("taggingSucceed");
-            //シーンタグのフォームリストに入力した値を追加
+            //シーンタグの入力フォームであるcomboboxのリストに入力した値を追加
             self.$store.commit("tagging/setItemsList", self.tags);
           }
         });

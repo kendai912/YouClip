@@ -7,8 +7,8 @@
     >
       <div class="thumbnail">
         <img
-          v-bind:src="item.thumbnail"
-          v-bind:alt="item.title + '-thumbnail'"
+          v-bind:src="'/storage/img/' + item.preview"
+          v-bind:alt="item.title + '-preview'"
           style="width: 300px; height:auto"
         />
       </div>

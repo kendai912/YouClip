@@ -44,7 +44,8 @@ export default {
             tags: value.tags,
             tagArray: value.tags.split(/[\s| |　]/),
             start: this.formatToMinSec(value.start),
-            end: this.formatToMinSec(value.end)
+            end: this.formatToMinSec(value.end),
+            preview: value.preview
           });
         });
       }
@@ -63,7 +64,8 @@ export default {
             tags: "",
             tagArray: "",
             start: "",
-            end: ""
+            end: "",
+            preview: value.tags[0].preview
           });
         });
       }

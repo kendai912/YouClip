@@ -3155,7 +3155,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             self.$store.dispatch("tagging/storeSceneTags");
             //シーン登録のトーストを表示
             self.$emit("taggingSucceed");
-            //シーンタグのフォームリストに入力した値を追加
+            //シーンタグの入力フォームであるcomboboxのリストに入力した値を追加
             self.$store.commit("tagging/setItemsList", self.tags);
           }
         });
@@ -37215,7 +37215,7 @@ var render = function() {
       _c("div", { staticClass: "thumbnail" }, [
         _c("img", {
           staticStyle: { width: "300px", height: "auto" },
-          attrs: { src: _vm.myTagVideo.thumbnail }
+          attrs: { src: "/storage/img/" + _vm.myTagVideo.preview }
         })
       ]),
       _vm._v(" "),
@@ -37606,7 +37606,12 @@ var render = function() {
     "div",
     { on: { click: _vm.select } },
     [
-      _vm._m(0),
+      _c("div", { staticClass: "thumbnail" }, [
+        _c("img", {
+          staticStyle: { width: "300px", height: "auto" },
+          attrs: { src: "/storage/img/" + _vm.myPlaylistTag.tags[0].preview }
+        })
+      ]),
       _vm._v(" "),
       _c("div", [_vm._v(_vm._s(_vm.myPlaylistTag.playlistName))]),
       _vm._v(" "),
@@ -37637,22 +37642,7 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "thumbnail" }, [
-      _c("img", {
-        staticStyle: { width: "300px", height: "auto" },
-        attrs: {
-          src:
-            "https://watanabeseiji.com/wordpress/wp-content/themes/cyber/images/noimage.jpg"
-        }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -39124,7 +39114,10 @@ var render = function() {
           _c("div", { staticClass: "thumbnail" }, [
             _c("img", {
               staticStyle: { width: "300px", height: "auto" },
-              attrs: { src: item.thumbnail, alt: item.title + "-thumbnail" }
+              attrs: {
+                src: "/storage/img/" + item.preview,
+                alt: item.title + "-preview"
+              }
             })
           ]),
           _vm._v(" "),
@@ -101493,7 +101486,8 @@ function getCookieValue(searchKey) {
             tags: value.tags,
             tagArray: value.tags.split(/[\s| |　]/),
             start: _this.formatToMinSec(value.start),
-            end: _this.formatToMinSec(value.end)
+            end: _this.formatToMinSec(value.end),
+            preview: value.preview
           });
         });
       }
@@ -101511,7 +101505,8 @@ function getCookieValue(searchKey) {
             tags: "",
             tagArray: "",
             start: "",
-            end: ""
+            end: "",
+            preview: value.tags[0].preview
           });
         });
       }
