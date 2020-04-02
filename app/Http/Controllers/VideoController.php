@@ -3,16 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\VideoStoreRequest;
+use App\Http\Controllers\TagController;
 use Illuminate\Http\Request;
-use Auth;
+use App\Playlist;
 use App\Video;
 use App\Tag;
 use App\User;
-use App\Playlist;
-use App\Http\Controllers\TagController;
+use Auth;
 
 class VideoController extends Controller
 {
+    //動画のタグ一覧の取得
+    public function getTagList(Request $request)
+    {
+        $tagList = Tag::where('video_id', $request->input('id'))->get();
+
+        return response()->json(
+            [
+                'tagList' => $tagList
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    //youtubeIdから動画データを取得
+    public function getVideoByYoutubeId(Request $request)
+    {
+        $youtubeId = $request->youtubeId;
+        $video = Video::where('youtubeId', $youtubeId)->get();
+
+        return response()->json(
+            [
+                'video' => $video
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
     //登録画面
     public function create()
     {
@@ -119,7 +150,8 @@ class VideoController extends Controller
         $youtubeId = $match['youtubeId'];
 
         // YouTubeAPIでタイトル・サムネイル・再生時間を取得
-        $apikey = 'AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU';
+        // $apikey = 'AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU';
+        $apikey = 'AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk';
         $googleApiUrl = 'https://www.googleapis.com/youtube/v3/videos?id=' . $youtubeId . '&key=' . $apikey . '&part=snippet,contentDetails';
         
         $ch = curl_init();
@@ -137,7 +169,7 @@ class VideoController extends Controller
         $value = json_decode(json_encode($data), true);
             
         $title = $value['items'][0]['snippet']['title'];
-        $thumbnail = $value['items'][0]['snippet']['thumbnails']['default']['url'];
+        $thumbnail = $value['items'][0]['snippet']['thumbnails']['high']['url'];
         preg_match('/PT(?<minutes>\d*)M(?<seconds>\d*)S/', $value['items'][0]['contentDetails']['duration'], $matches);
         $duration = date('H:i:s', strtotime("00:".$matches['minutes'].":".$matches['seconds']));
 

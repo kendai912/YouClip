@@ -10,17 +10,68 @@ use App\Like;
 
 class LikeController extends Controller
 {
-    public function index()
+    public function loadTagLike()
     {
-        //ログインユーザーIDを取得
-        $user_id = Auth::user()->id;
+        //Like数とLike有無フラグを格納する配列を宣言
+        $tagLike = [];
 
-        $likedScenes = Like::where('user_id', $user_id)->get();
-        foreach ($likedScenes as $likedScene) {
-            $likes[] = $likedScene->tag()->join('videos', 'tags.video_id', '=', 'videos.id')->select('videos.id as video_id', 'videos.youtubeId', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end')->get();
+        //全タグIDを取得
+        $likes = Like::all();
+
+        foreach ($likes as $like) {
+            //タグのlikes数を取得
+            $likeCount = $this->getLikeCountById($like->tag_id);
+            
+            //ユーザーによるタグへのlike有無フラグを判定
+            $isLiked = $this->getIsLikedFlagById($like->tag_id);
+
+            //tag_idをキーとした連想配列に格納
+            $tagLike[$like->tag_id] = [
+                'likeCount' => $likeCount,
+                'isLiked' => $isLiked
+            ];
         }
 
-        return view('like_index', compact('likes'));
+        return response()->json(
+            [
+                'tagLike' => $tagLike
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    //Likeの件数を取得
+    public function getLikeCountById($tag_id)
+    {
+        $like = Like::where('tag_id', $tag_id)->get();
+        $likeCount = $like->count();
+
+        return $likeCount;
+    }
+
+    public function getIsLikedFlagById($tag_id)
+    {
+        if (Auth::check()) {
+            //ログイン済の場合の処理
+            //ログインユーザーIDを取得
+            $user_id = Auth::user()->id;
+
+            //既にLike済みかチェック
+            if (!$this->checkLiked($user_id, $tag_id)) {
+                //未だLikeしていない場合
+                $isLiked = false;
+            } else {
+                //Like済みの場合
+                $isLiked = true;
+            }
+        } else {
+            //未ログインの場合の処理
+            $isLiked = false;
+        }
+
+        return $isLiked;
     }
 
     //既にLike済みかチェック
@@ -32,6 +83,45 @@ class LikeController extends Controller
         } else {
             return true;
         }
+    }
+
+    public function toggleLike(Request $request)
+    {
+        //ログインユーザーIDを取得
+        $user_id = Auth::user()->id;
+                
+        //既にLike済みかチェック
+        if (!$this->checkLiked($user_id, $request->tag_id)) {
+            //未だLikeしていない場合
+            $this->store($user_id, $request->tag_id);
+            $data = "like stored";
+        } else {
+            //Like済みの場合
+            $this->destroy($user_id, $request->tag_id);
+            $data = "like destroyed";
+        }
+
+        return response()->json(
+            [
+                'data' => $data
+            ],
+            201,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    public function index()
+    {
+        //ログインユーザーIDを取得
+        $user_id = Auth::user()->id;
+
+        $likedScenes = Like::where('user_id', $user_id)->get();
+        foreach ($likedScenes as $likedScene) {
+            $likes[] = $likedScene->tag()->join('videos', 'tags.video_id', '=', 'videos.id')->select('videos.id as video_id', 'videos.youtubeId', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end')->get();
+        }
+
+        return view('like_index', compact('likes'));
     }
 
     public function toggle(Request $request)

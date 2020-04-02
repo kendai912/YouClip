@@ -190,13 +190,13 @@ new Vue({
 
       return true;
     },
-    //秒数に変換
+    //i:s表記から秒数に変換
     convertToSec(is) {
       return (
         parseInt(is.split(":")[0], 10) * 60 + parseInt(is.split(":")[1], 10)
       );
     },
-    //i:sにフォーマット
+    //H:i:sをi:s表記にフォーマット
     formatToMinSec(His) {
       let min =
         parseInt(His.split(":")[0], 10) * 60 + parseInt(His.split(":")[1], 10);
@@ -654,6 +654,7 @@ new Vue({
       if (event.data == 0) {
         if (playlist_id != "" && nextVideoId != "" && nextTagId != "") {
           window.location.href =
+            window.axios.defaults.baseURL +
             "/video/play/video_id=" +
             nextVideoId +
             "&tag_id=" +

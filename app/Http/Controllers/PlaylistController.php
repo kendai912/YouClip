@@ -8,6 +8,8 @@ use App\Video;
 use App\Tag;
 use App\User;
 use App\Playlist;
+use App\LikesPlaylist;
+use Carbon\Carbon;
 
 class PlaylistController extends Controller
 {
@@ -35,6 +37,66 @@ class PlaylistController extends Controller
         );
     }
 
+    //全プレイリストデータのロード
+    public function loadAllPlaylist()
+    {
+        //プレイリストにタグのデータを結合
+        $playlistTagData = Playlist::with('tags')->get();
+
+        return response()->json(
+            [
+            'playlistTagData' => $playlistTagData
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    //Likeまたは作成したプレイリストをロード
+    public function loadMyPlaylist()
+    {
+        //Likeしたプレイリストを取得
+        $LikedPlaylist = $this->loadLikedPlaylist();
+
+        //作成したプレイリストを取得
+        $createdPlaylist = $this->loadCreatedPlaylist();
+
+        //Likeしたプレイリストと作成したプレイリストをマージ
+        $myPlaylist = $LikedPlaylist->merge($createdPlaylist);
+        
+        return response()->json(
+            [
+            'myPlaylist' => $myPlaylist
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    //Likeしたプレイリストを取得
+    public function loadLikedPlaylist()
+    {
+        $likesPlaylists = LikesPlaylist::where('user_id', Auth::user()->id)->get();
+        $likesPlaylistIds = [];
+        foreach ($likesPlaylists as $likesPlaylist) {
+            $likesPlaylistIds[] = $likesPlaylist->playlist_id;
+        }
+
+        $myLikedPlaylists = Playlist::with('tags')->find($likesPlaylistIds);
+
+        return $myLikedPlaylists;
+    }
+
+    //作成したプレイリストを取得
+    public function loadCreatedPlaylist()
+    {
+        $createdPlaylist = Playlist::with('tags')->where('user_id', Auth::user()->id)->get();
+
+        return $createdPlaylist;
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -45,13 +107,26 @@ class PlaylistController extends Controller
     {
         //playlistテーブルに保存
         $playlist = new Playlist;
-        $playlist->playlistName = $request->playlistName;
+        $playlist->playlistName = $request->newPlaylistName;
         $playlist->privacySetting = $request->privacySetting;
-        $playlist->user_id = $request->user_id;
+        $playlist->user_id = Auth::user()->id;
         $playlist->save();
 
         //playlist_tagテーブルに保存
-        $playlist->tags()->attach($request->tag_id);
+        $playlist->tags()->attach(
+            ['tag_id' => $request->currentTagId],
+            ['created_at' => Carbon::now()],
+            ['updated_at' => Carbon::now()],
+        );
+
+        return response()->json(
+            [
+            'newPlaylist' => $playlist
+            ],
+            201,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 
     /**
