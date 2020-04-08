@@ -211,8 +211,8 @@ class TagController extends Controller
         $options->setStart($startSec);
 
         $previewFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
-        $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=XMR-JyEDdc4", $options);
-        $grabzIt->SaveTo("../storage/app/public/img/" . $previewFileName);
+        $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=" . $request->youtubeId, $options);
+        $grabzIt->SaveTo(storage_path(). "/app/public/img/" . $previewFileName);
 
         return $previewFileName;
     }

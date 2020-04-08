@@ -1,9 +1,7 @@
 <template>
   <div class="text-center">
     <v-bottom-sheet v-if="isReady" v-model="sheet" hide-overlay persistent>
-      <transition
-        v-bind:name="controlTransitNext ? 'controle-next' : 'controle-previous'"
-      >
+      <transition v-bind:name="controlTransitNext ? 'controle-next' : 'controle-previous'">
         <component
           v-bind:is="showTaggingControl"
           v-bind:player="player"
@@ -13,9 +11,7 @@
     </v-bottom-sheet>
     <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
       {{ text }}
-      <v-btn color="blue" text v-on:click="snackbar = false">
-        Close
-      </v-btn>
+      <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
     </v-snackbar>
   </div>
 </template>

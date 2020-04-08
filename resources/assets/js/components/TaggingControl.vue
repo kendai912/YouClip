@@ -25,12 +25,11 @@
             :input-value="selected"
             color="blue"
             close
-            @click="select"
-            @click:close="remove(item)"
+            v-on:click="select"
+            v-on:click:close="remove(item)"
           >
             <v-icon left>mdi-label</v-icon>
             <strong>{{ item }}</strong>&nbsp;
-            <span>(interest)</span>
           </v-chip>
         </template>
       </v-combobox>

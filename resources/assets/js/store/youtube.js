@@ -10,21 +10,21 @@ const state = {
     title: "",
     thumbnail: "",
     duration: "",
-    category: ""
+    category: "",
   },
   currentTime: "0:00",
   isReady: false,
-  key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk"
+  key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk",
 };
 
 const getters = {
-  youtubeId: state => state.youtubeId,
-  videoData: state => state.videoData,
-  newVideoData: state => state.newVideoData,
-  tagDataArray: state => state.tagDataArray,
-  isNew: state => state.isNew,
-  currentTime: state => state.currentTime,
-  isReady: state => state.isReady
+  youtubeId: (state) => state.youtubeId,
+  videoData: (state) => state.videoData,
+  newVideoData: (state) => state.newVideoData,
+  tagDataArray: (state) => state.tagDataArray,
+  isNew: (state) => state.isNew,
+  currentTime: (state) => state.currentTime,
+  isReady: (state) => state.isReady,
 };
 
 const mutations = {
@@ -60,18 +60,18 @@ const mutations = {
   },
   setIsReady(state, data) {
     state.isReady = data;
-  }
+  },
 };
 
 const actions = {
   //youtubeIdからDBに既に登録済の動画IDを取得
   async getVideo(context) {
     let params = {
-      youtubeId: state.youtubeId
+      youtubeId: state.youtubeId,
     };
 
     const response = await axios.get("api/youtube/getVideo", {
-      params: params
+      params: params,
     });
     if (response.status == OK) {
       // 成功した時
@@ -97,12 +97,11 @@ const actions = {
     if (state.isNew) return;
 
     let params = {
-      // videoId: state.videoData[0].id
-      videoId: state.videoData.id
+      videoId: state.videoData.id,
     };
 
     const response = await axios.get("api/youtube/getTag", {
-      params: params
+      params: params,
     });
     if (response.status == OK) {
       // 成功した時
@@ -134,7 +133,7 @@ const actions = {
     let params = {
       id: state.youtubeId,
       key: state.key,
-      part: "snippet, contentDetails"
+      part: "snippet, contentDetails",
     };
 
     const response = await axios.get(api, { params: params });
@@ -168,7 +167,7 @@ const actions = {
     let params = {
       part: "snippet",
       id: categoryId,
-      key: state.key
+      key: state.key,
     };
 
     const response = await axios.get(api, { params: params });
@@ -185,7 +184,7 @@ const actions = {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
     }
-  }
+  },
 };
 
 export default {
@@ -193,5 +192,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

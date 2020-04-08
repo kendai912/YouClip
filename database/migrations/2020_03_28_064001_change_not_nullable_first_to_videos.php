@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ChangeNotNullableToVideos extends Migration
+class ChangeNotNullableFirstToVideos extends Migration
 {
     /**
      * Run the migrations.
@@ -17,7 +17,7 @@ class ChangeNotNullableToVideos extends Migration
             $table->string('title')->change();
             $table->string('thumbnail')->change();
             $table->time('duration')->change();
-            $table->string('category')->change();
+            $table->string('category');
         });
     }
 

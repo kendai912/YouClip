@@ -5,11 +5,7 @@
       <div v-if="isPlaylist">
         <span>{{ playlistName }}</span>
         <span v-on:click="sharePlaylist">[Share]</span>
-        <span
-          v-on:click="toggleLikePlaylist"
-          v-bind:class="{ isLiked: isLikedPlaylist }"
-          >[Like]</span
-        >
+        <span v-on:click="toggleLikePlaylist" v-bind:class="{ isLiked: isLikedPlaylist }">[Like]</span>
         <span>{{ likePlaylistCount }}</span>
       </div>
       <div>
@@ -22,20 +18,22 @@
           v-for="currentTagName in currentTagNameArray"
           class="tag"
           v-bind:key="currentTagName"
-          >{{ currentTagName }}</span
-        >
+        >{{ currentTagName }}</span>
+        <span v-on:click="openOtherActionModal">
+          <i class="fas fa-ellipsis-v"></i>
+        </span>
       </div>
       <div>
         <span v-on:click="addPlaylist">[＋]</span>
         <span v-on:click="shareTag">[Share]</span>
-        <span v-on:click="toggleLike" v-bind:class="{ isLiked: isLiked }"
-          >[Like]</span
-        >
+        <span v-on:click="toggleLike" v-bind:class="{ isLiked: isLiked }">[Like]</span>
         <span>{{ likeCount }}</span>
       </div>
       <NoLoginModal v-if="showLoginModal" />
       <ShareModal v-if="showShareModal" v-bind:player="player" />
       <AddPlaylistModal v-if="showAddPlaylistModal" v-bind:player="player" />
+      <OtherActionModal v-if="showOtherActionModal" />
+      <SceneTagControl v-if="showSceneTagControl" v-bind:player="player" />
     </div>
   </div>
 </template>
@@ -45,13 +43,17 @@ import { mapState, mapGetters, mapMutations } from "vuex";
 import NoLoginModal from "../components/NoLoginModal.vue";
 import ShareModal from "../components/ShareModal.vue";
 import AddPlaylistModal from "../components/AddPlaylistModal.vue";
+import OtherActionModal from "../components/OtherActionModal.vue";
+import SceneTagControl from "../components/SceneTagControl.vue";
 import myMixin from "../util";
 
 export default {
   components: {
     NoLoginModal,
     ShareModal,
-    AddPlaylistModal
+    AddPlaylistModal,
+    OtherActionModal,
+    SceneTagControl
   },
   data() {
     return {
@@ -60,14 +62,27 @@ export default {
       tagIdUrl: "",
       isPlaying: true,
       isPlayerReady: false,
-      player: null
+      player: null,
+      timer: null
     };
   },
   mixins: [myMixin],
   methods: {
     ...mapMutations({
-      openShareModal: "shareModal/openShareModal"
+      openShareModal: "shareModal/openShareModal",
+      openOtherActionModal: "otherActionModal/openOtherActionModal"
     }),
+    startTimer() {
+      let self = this;
+
+      this.timer = setInterval(function() {
+        //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
+        self.$store.commit(
+          "youtube/setCurrentTime",
+          self.formatTime(self.player.getCurrentTime())
+        );
+      }, 400);
+    },
     playPlaylist(playlistId, index) {
       //最後のシーンでない場合は次のシーンのパラメータをセット
       this.setPlaylistParameters(playlistId, index);
@@ -216,7 +231,10 @@ export default {
       showLoginModal: "noLoginModal/showLoginModal",
       messageWhenNotLogined: "noLoginModal/messageWhenNotLogined",
       showShareModal: "shareModal/showShareModal",
-      showAddPlaylistModal: "playlist/showAddPlaylistModal"
+      showAddPlaylistModal: "playlist/showAddPlaylistModal",
+      showOtherActionModal: "otherActionModal/showOtherActionModal",
+      showSceneTagControl: "tagging/showSceneTagControl",
+      isEditting: "tagging/isEditting"
     }),
     isLiked() {
       return this.$store.getters["like/isLiked"](this.currentTagId);
@@ -274,10 +292,11 @@ export default {
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    let self = this;
 
     //Youtube Playerの初期処理
     window.onYouTubeIframeAPIReady = () => {
-      this.player = new YT.Player("player", {
+      self.player = new YT.Player("player", {
         width: "560",
         height: "315",
         videoId: this.currentYoutubeId,
@@ -297,18 +316,20 @@ export default {
       event.target.playVideo();
       this.isPlayerReady = true;
 
-      //0.4秒毎に現在の再生時間を取得
-      setInterval(function() {
-        self.currentTime = self.convertToSec(
-          self.formatTime(event.target.getCurrentTime())
-        );
-      }, 400);
+      //0.4秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
+      this.startTimer();
     };
 
     window.onPlayerStateChange = event => {
       if (event.data == YT.PlayerState.ENDED && this.isPlaying) {
         //フラグを停止中に反転
         this.isPlaying = !this.isPlaying;
+
+        //シーンタグ編集の場合、一瞬開始時間が0秒になってしまうため、タイマーを一旦止める
+        if (this.isEditting) {
+          //Playerの再生時間を取得するタイマーを止める
+          clearInterval(this.timer);
+        }
 
         //プレイリスト再生の場合
         if (this.$route.query.playlist) {
@@ -332,11 +353,15 @@ export default {
       if (event.data == YT.PlayerState.PLAYING) {
         //フラグを再生中にセット
         this.isPlaying = true;
+
+        //シーンタグ編集の場合、タイマーを再開
+        if (this.isEditting) {
+          this.startTimer();
+        }
       }
     };
 
     //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
-    let self = this;
     let from = this.$route.path;
     window.addEventListener("popstate", function(e) {
       let to = self.$route.path;

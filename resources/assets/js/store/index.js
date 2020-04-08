@@ -14,6 +14,7 @@ import youtube from "./youtube";
 import tagging from "./tagging";
 import noLoginModal from "./noLoginModal";
 import shareModal from "./shareModal";
+import otherActionModal from "./otherActionModal";
 import error from "./error";
 
 Vue.use(Vuex);
@@ -33,8 +34,9 @@ const store = new Vuex.Store({
     tagging,
     noLoginModal,
     shareModal,
-    error
-  }
+    otherActionModal,
+    error,
+  },
 });
 
 export default store;

@@ -4,24 +4,31 @@ import router from "../router";
 import store from "../store";
 
 const state = {
+  showSceneTagControl: false,
   showTaggingControl: "TimeControl",
   tags: null,
   start: null,
   end: null,
   controlTransitNext: true,
-  itemsList: []
+  itemsList: [],
+  isEditting: false,
 };
 
 const getters = {
-  showTaggingControl: state => state.showTaggingControl,
-  tags: state => state.tags,
-  start: state => state.start,
-  end: state => state.end,
-  controlTransitNext: state => state.controlTransitNext,
-  itemsList: state => state.itemsList
+  showSceneTagControl: (state) => state.showSceneTagControl,
+  showTaggingControl: (state) => state.showTaggingControl,
+  tags: (state) => state.tags,
+  start: (state) => state.start,
+  end: (state) => state.end,
+  controlTransitNext: (state) => state.controlTransitNext,
+  itemsList: (state) => state.itemsList,
+  isEditting: (state) => state.isEditting,
 };
 
 const mutations = {
+  setShowSceneTagControl(state, data) {
+    state.showSceneTagControl = data;
+  },
   setShowTaggingControl(state, data) {
     state.showTaggingControl = data;
   },
@@ -39,19 +46,43 @@ const mutations = {
   },
   setItemsList(state, data) {
     state.itemsList.push(...data);
-  }
+  },
+  setIsEditting(state, data) {
+    state.isEditting = data;
+  },
 };
 
 const actions = {
   //シーンタグの保存
   async storeSceneTags(context) {
+    //シーンタグの余計なスペースを除去し整形
+    let tagsToSend = state.tags;
+    let valDividedBySpace;
+    for (let i = 0; i < tagsToSend.length; i++) {
+      //スペースが含まれる場合はシーンタグを分割し追加
+      if (tagsToSend[i].match(/[\s| |　]/)) {
+        valDividedBySpace = tagsToSend[i].split(/[\s| |　]/);
+        Array.prototype.splice.apply(
+          tagsToSend,
+          [i, 1].concat(valDividedBySpace)
+        );
+      }
+    }
+    //スペースのみのシーンタグを削除
+    for (let i = 0; i < tagsToSend.length; i++) {
+      if (tagsToSend[i] == "") {
+        tagsToSend.splice(i, 1);
+        i--;
+      }
+    }
+
     let params = {
       youtubeId: store.getters["youtube/youtubeId"],
       isNew: store.getters["youtube/isNew"],
       newVideoData: store.getters["youtube/newVideoData"],
-      tags: state.tags,
+      tags: tagsToSend,
       start: state.start,
-      end: state.end
+      end: state.end,
     };
 
     const response = await axios.post("/api/tag/store", params);
@@ -73,7 +104,7 @@ const actions = {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
     }
-  }
+  },
 };
 
 export default {
@@ -81,5 +112,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

@@ -2551,6 +2551,146 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/OtherActionModal.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      tiles: [{ img: "fas fa-trash", title: "削除", action: "delete" }, { img: "fas fa-pen", title: "編集", action: "edit" }, { img: "fas fa-flag", title: "報告", action: "report" }, { img: "fas fa-times", title: "キャンセル", action: "cancel" }]
+    };
+  },
+  props: {},
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
+    currentYoutubeId: "watch/currentYoutubeId",
+    startHis: "watch/start",
+    endHis: "watch/end",
+    currentTagNameArray: "watch/currentTagNameArray"
+  }), {
+    startIs: function startIs() {
+      return this.formatToMinSec(this.startHis);
+    },
+    endIs: function endIs() {
+      return this.formatToMinSec(this.endHis);
+    },
+
+    showOtherActionModal: {
+      get: function get() {
+        return this.$store.getters["otherActionModal/showOtherActionModal"];
+      },
+      set: function set() {
+        return this.$store.commit("otherActionModal/closeOtherActionModal");
+      }
+    }
+  }),
+  methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["c" /* mapMutations */])({
+    closeOtherActionModal: "otherActionModal/closeOtherActionModal"
+  }), {
+    tapTile: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(action) {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(action == "delete")) {
+                  _context.next = 3;
+                  break;
+                }
+
+                _context.next = 19;
+                break;
+
+              case 3:
+                if (!(action == "edit")) {
+                  _context.next = 18;
+                  break;
+                }
+
+                //otherActionModalを閉じる
+                this.closeOtherActionModal();
+
+                //「編集」に必要なyoutubeデータをロード
+                this.$store.commit("youtube/setYoutubeId", this.currentYoutubeId);
+                _context.next = 8;
+                return this.$store.dispatch("youtube/getVideo");
+
+              case 8:
+                _context.next = 10;
+                return this.$store.dispatch("youtube/getTag");
+
+              case 10:
+                this.$store.commit("youtube/setIsReady", true);
+
+                //編集モードフラグをセット
+                this.$store.commit("tagging/setIsEditting", true);
+
+                //編集前の開始時間・終了時間・シーンタグをセット
+                this.$store.commit("tagging/setStart", this.startIs);
+                this.$store.commit("tagging/setEnd", this.endIs);
+                this.$store.commit("tagging/setTags", this.currentTagNameArray);
+
+                //シーンコントールコンポーネントを表示
+                this.$store.commit("tagging/setShowSceneTagControl", true);
+                _context.next = 19;
+                break;
+
+              case 18:
+                if (action == "report") {} else if (action == "cancel") {
+                  this.closeOtherActionModal();
+                }
+
+              case 19:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function tapTile(_x) {
+        return _ref.apply(this, arguments);
+      }
+
+      return tapTile;
+    }()
+  }),
+  created: function created() {}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/SceneTagControl.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2570,10 +2710,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-//
-//
-//
-//
 //
 //
 //
@@ -3061,7 +3197,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-//
 //
 //
 //
@@ -4199,7 +4334,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_ShareModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_ShareModal_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_AddPlaylistModal_vue__ = __webpack_require__("./resources/assets/js/components/AddPlaylistModal.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_AddPlaylistModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_AddPlaylistModal_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_OtherActionModal_vue__ = __webpack_require__("./resources/assets/js/components/OtherActionModal.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_OtherActionModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_OtherActionModal_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_SceneTagControl_vue__ = __webpack_require__("./resources/assets/js/components/SceneTagControl.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_SceneTagControl_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_SceneTagControl_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__util__ = __webpack_require__("./resources/assets/js/util.js");
 
 
 var _components$data$mixi;
@@ -4250,8 +4389,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
-//
+
+
 
 
 
@@ -4263,7 +4402,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   components: {
     NoLoginModal: __WEBPACK_IMPORTED_MODULE_2__components_NoLoginModal_vue___default.a,
     ShareModal: __WEBPACK_IMPORTED_MODULE_3__components_ShareModal_vue___default.a,
-    AddPlaylistModal: __WEBPACK_IMPORTED_MODULE_4__components_AddPlaylistModal_vue___default.a
+    AddPlaylistModal: __WEBPACK_IMPORTED_MODULE_4__components_AddPlaylistModal_vue___default.a,
+    OtherActionModal: __WEBPACK_IMPORTED_MODULE_5__components_OtherActionModal_vue___default.a,
+    SceneTagControl: __WEBPACK_IMPORTED_MODULE_6__components_SceneTagControl_vue___default.a
   },
   data: function data() {
     return {
@@ -4272,14 +4413,24 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       tagIdUrl: "",
       isPlaying: true,
       isPlayerReady: false,
-      player: null
+      player: null,
+      timer: null
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_5__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_7__util__["e" /* default */]],
   methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["c" /* mapMutations */])({
-    openShareModal: "shareModal/openShareModal"
+    openShareModal: "shareModal/openShareModal",
+    openOtherActionModal: "otherActionModal/openOtherActionModal"
   }), {
+    startTimer: function startTimer() {
+      var self = this;
+
+      this.timer = setInterval(function () {
+        //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
+        self.$store.commit("youtube/setCurrentTime", self.formatTime(self.player.getCurrentTime()));
+      }, 400);
+    },
     playPlaylist: function playPlaylist(playlistId, index) {
       //最後のシーンでない場合は次のシーンのパラメータをセット
       this.setPlaylistParameters(playlistId, index);
@@ -4426,7 +4577,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     showLoginModal: "noLoginModal/showLoginModal",
     messageWhenNotLogined: "noLoginModal/messageWhenNotLogined",
     showShareModal: "shareModal/showShareModal",
-    showAddPlaylistModal: "playlist/showAddPlaylistModal"
+    showAddPlaylistModal: "playlist/showAddPlaylistModal",
+    showOtherActionModal: "otherActionModal/showOtherActionModal",
+    showSceneTagControl: "tagging/showSceneTagControl",
+    isEditting: "tagging/isEditting"
   }), {
     isLiked: function isLiked() {
       return this.$store.getters["like/isLiked"](this.currentTagId);
@@ -4447,7 +4601,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       return this.formatToMinSec(this.endHis);
     }
   })
-}, _defineProperty(_components$data$mixi, "mixins", [__WEBPACK_IMPORTED_MODULE_5__util__["e" /* default */]]), _defineProperty(_components$data$mixi, "mounted", function () {
+}, _defineProperty(_components$data$mixi, "mixins", [__WEBPACK_IMPORTED_MODULE_7__util__["e" /* default */]]), _defineProperty(_components$data$mixi, "mounted", function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
     var _this = this;
 
@@ -4507,10 +4661,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             firstScriptTag = document.getElementsByTagName("script")[0];
 
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            self = this;
 
             //Youtube Playerの初期処理
+
             window.onYouTubeIframeAPIReady = function () {
-              _this.player = new YT.Player("player", {
+              self.player = new YT.Player("player", {
                 width: "560",
                 height: "315",
                 videoId: _this.currentYoutubeId,
@@ -4530,16 +4686,20 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
               event.target.playVideo();
               _this.isPlayerReady = true;
 
-              //0.4秒毎に現在の再生時間を取得
-              setInterval(function () {
-                self.currentTime = self.convertToSec(self.formatTime(event.target.getCurrentTime()));
-              }, 400);
+              //0.4秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
+              _this.startTimer();
             };
 
             window.onPlayerStateChange = function (event) {
               if (event.data == YT.PlayerState.ENDED && _this.isPlaying) {
                 //フラグを停止中に反転
                 _this.isPlaying = !_this.isPlaying;
+
+                //シーンタグ編集の場合、一瞬開始時間が0秒になってしまうため、タイマーを一旦止める
+                if (_this.isEditting) {
+                  //Playerの再生時間を取得するタイマーを止める
+                  clearInterval(_this.timer);
+                }
 
                 //プレイリスト再生の場合
                 if (_this.$route.query.playlist) {
@@ -4563,11 +4723,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
               if (event.data == YT.PlayerState.PLAYING) {
                 //フラグを再生中にセット
                 _this.isPlaying = true;
+
+                //シーンタグ編集の場合、タイマーを再開
+                if (_this.isEditting) {
+                  _this.startTimer();
+                }
               }
             };
 
             //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
-            self = this;
             from = this.$route.path;
 
             window.addEventListener("popstate", function (e) {
@@ -37574,7 +37738,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n      Close\n    ")]
+            [_vm._v("Close")]
           )
         ],
         1
@@ -37853,6 +38017,71 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2eb2bb9e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/OtherActionModal.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "text-center" },
+    [
+      _c(
+        "v-bottom-sheet",
+        {
+          model: {
+            value: _vm.showOtherActionModal,
+            callback: function($$v) {
+              _vm.showOtherActionModal = $$v
+            },
+            expression: "showOtherActionModal"
+          }
+        },
+        [
+          _c(
+            "v-list",
+            _vm._l(_vm.tiles, function(tile) {
+              return _c(
+                "v-list-item",
+                {
+                  key: tile.title,
+                  on: {
+                    click: function($event) {
+                      return _vm.tapTile(tile.action)
+                    }
+                  }
+                },
+                [
+                  _c("v-list-item-avatar", [_c("i", { class: tile.img })]),
+                  _vm._v(" "),
+                  _c("v-list-item-title", [_vm._v(_vm._s(tile.title))])
+                ],
+                1
+              )
+            }),
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2eb2bb9e", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3a4dbf66\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/TagItem.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -38105,8 +38334,7 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("strong", [_vm._v(_vm._s(item))]),
-                        _vm._v(" \n          "),
-                        _c("span", [_vm._v("(interest)")])
+                        _vm._v(" \n        ")
                       ],
                       1
                     )
@@ -39253,7 +39481,11 @@ var render = function() {
                     { key: currentTagName, staticClass: "tag" },
                     [_vm._v(_vm._s(currentTagName))]
                   )
-                })
+                }),
+                _vm._v(" "),
+                _c("span", { on: { click: _vm.openOtherActionModal } }, [
+                  _c("i", { staticClass: "fas fa-ellipsis-v" })
+                ])
               ],
               2
             ),
@@ -39283,6 +39515,12 @@ var render = function() {
             _vm._v(" "),
             _vm.showAddPlaylistModal
               ? _c("AddPlaylistModal", { attrs: { player: _vm.player } })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.showOtherActionModal ? _c("OtherActionModal") : _vm._e(),
+            _vm._v(" "),
+            _vm.showSceneTagControl
+              ? _c("SceneTagControl", { attrs: { player: _vm.player } })
               : _vm._e()
           ],
           1
@@ -97844,6 +98082,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/OtherActionModal.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/OtherActionModal.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-2eb2bb9e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/OtherActionModal.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/OtherActionModal.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2eb2bb9e", Component.options)
+  } else {
+    hotAPI.reload("data-v-2eb2bb9e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/SceneTagControl.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -99434,7 +99720,9 @@ var mutations = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__tagging__ = __webpack_require__("./resources/assets/js/store/tagging.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__noLoginModal__ = __webpack_require__("./resources/assets/js/store/noLoginModal.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__shareModal__ = __webpack_require__("./resources/assets/js/store/shareModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__otherActionModal__ = __webpack_require__("./resources/assets/js/store/otherActionModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+
 
 
 
@@ -99470,7 +99758,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     tagging: __WEBPACK_IMPORTED_MODULE_12__tagging__["a" /* default */],
     noLoginModal: __WEBPACK_IMPORTED_MODULE_13__noLoginModal__["a" /* default */],
     shareModal: __WEBPACK_IMPORTED_MODULE_14__shareModal__["a" /* default */],
-    error: __WEBPACK_IMPORTED_MODULE_15__error__["a" /* default */]
+    otherActionModal: __WEBPACK_IMPORTED_MODULE_15__otherActionModal__["a" /* default */],
+    error: __WEBPACK_IMPORTED_MODULE_16__error__["a" /* default */]
   }
 });
 
@@ -99865,6 +100154,41 @@ var mutations = {
   },
   setMessageWhenNotLogined: function setMessageWhenNotLogined(state, data) {
     state.messageWhenNotLogined = data;
+  }
+};
+
+var actions = {};
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/otherActionModal.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var state = {
+  showOtherActionModal: false
+};
+
+var getters = {
+  showOtherActionModal: function showOtherActionModal(state) {
+    return state.showOtherActionModal;
+  }
+};
+
+var mutations = {
+  openOtherActionModal: function openOtherActionModal(state) {
+    state.showOtherActionModal = true;
+  },
+  closeOtherActionModal: function closeOtherActionModal(state) {
+    state.showOtherActionModal = false;
   }
 };
 
@@ -100788,15 +101112,20 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 
 var state = {
+  showSceneTagControl: false,
   showTaggingControl: "TimeControl",
   tags: null,
   start: null,
   end: null,
   controlTransitNext: true,
-  itemsList: []
+  itemsList: [],
+  isEditting: false
 };
 
 var getters = {
+  showSceneTagControl: function showSceneTagControl(state) {
+    return state.showSceneTagControl;
+  },
   showTaggingControl: function showTaggingControl(state) {
     return state.showTaggingControl;
   },
@@ -100814,10 +101143,16 @@ var getters = {
   },
   itemsList: function itemsList(state) {
     return state.itemsList;
+  },
+  isEditting: function isEditting(state) {
+    return state.isEditting;
   }
 };
 
 var mutations = {
+  setShowSceneTagControl: function setShowSceneTagControl(state, data) {
+    state.showSceneTagControl = data;
+  },
   setShowTaggingControl: function setShowTaggingControl(state, data) {
     state.showTaggingControl = data;
   },
@@ -100837,6 +101172,9 @@ var mutations = {
     var _state$itemsList;
 
     (_state$itemsList = state.itemsList).push.apply(_state$itemsList, _toConsumableArray(data));
+  },
+  setIsEditting: function setIsEditting(state, data) {
+    state.isEditting = data;
   }
 };
 
@@ -100844,23 +101182,43 @@ var actions = {
   //シーンタグの保存
   storeSceneTags: function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context) {
-      var params, response;
+      var tagsToSend, valDividedBySpace, i, _i, params, response;
+
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              //シーンタグの余計なスペースを除去し整形
+              tagsToSend = state.tags;
+              valDividedBySpace = void 0;
+
+              for (i = 0; i < tagsToSend.length; i++) {
+                //スペースが含まれる場合はシーンタグを分割し追加
+                if (tagsToSend[i].match(/[\s| |　]/)) {
+                  valDividedBySpace = tagsToSend[i].split(/[\s| |　]/);
+                  Array.prototype.splice.apply(tagsToSend, [i, 1].concat(valDividedBySpace));
+                }
+              }
+              //スペースのみのシーンタグを削除
+              for (_i = 0; _i < tagsToSend.length; _i++) {
+                if (tagsToSend[_i] == "") {
+                  tagsToSend.splice(_i, 1);
+                  _i--;
+                }
+              }
+
               params = {
                 youtubeId: __WEBPACK_IMPORTED_MODULE_4__store__["a" /* default */].getters["youtube/youtubeId"],
                 isNew: __WEBPACK_IMPORTED_MODULE_4__store__["a" /* default */].getters["youtube/isNew"],
                 newVideoData: __WEBPACK_IMPORTED_MODULE_4__store__["a" /* default */].getters["youtube/newVideoData"],
-                tags: state.tags,
+                tags: tagsToSend,
                 start: state.start,
                 end: state.end
               };
-              _context.next = 3;
+              _context.next = 7;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/tag/store", params);
 
-            case 3:
+            case 7:
               response = _context.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
@@ -100882,7 +101240,7 @@ var actions = {
                 context.commit("error/setCode", response.status, { root: true });
               }
 
-            case 5:
+            case 9:
             case "end":
               return _context.stop();
           }
@@ -101265,7 +101623,6 @@ var actions = {
 
             case 2:
               params = {
-                // videoId: state.videoData[0].id
                 videoId: state.videoData.id
               };
               _context2.next = 5;
