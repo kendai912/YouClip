@@ -101531,10 +101531,16 @@ var mutations = {
     state.newVideoData.thumbnail = data;
   },
   setNewVideoDuration: function setNewVideoDuration(state, data) {
-    var result = data.match(/PT(\d*)M(\d*)S/);
-    var min = result[1];
-    var sec = result[2];
-    state.newVideoData.duration = min + ":" + sec;
+    if (data.match(/PT(\d*)M(\d*)S/)) {
+      var result = data.match(/PT(\d*)M(\d*)S/);
+      var min = result[1];
+      var sec = result[2];
+      state.newVideoData.duration = min + ":" + sec;
+    } else if (data.match(/PT(\d*)S/)) {
+      var _result = data.match(/PT(\d*)S/);
+      var _sec = _result[1];
+      state.newVideoData.duration = "0:" + _sec;
+    }
   },
   setNewVideoCategory: function setNewVideoCategory(state, data) {
     state.newVideoData.category = data;
