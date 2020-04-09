@@ -341,18 +341,15 @@ export default {
         //フラグを停止中に反転
         this.isPlaying = !this.isPlaying;
 
-        //シーンタグ編集の場合、一瞬開始時間が0秒になってしまうため、タイマーを一旦止める
         if (this.isEditting) {
-          //Playerの再生時間を取得するタイマーを止める
-          clearInterval(this.timer);
-        }
-
-        //プレイリスト再生の場合
-        if (this.$route.query.playlist) {
+          //現在と同じシーンをリピート(開始時間に戻る)
+          this.player.seekTo(this.convertToSec(this.startIs));
+        } else if (this.$route.query.playlist) {
+          //プレイリスト再生の場合
           if (this.indexUrl < this.watchList.length - 1) {
             // //最後のシーンでない場合は次のシーンのパラメータをセット
             this.playPlaylist(this.playlistIdUrl, ++this.indexUrl);
-          } else if (this.indexUrl == this.watchList.length - 1) {
+          } else if (this.indexUrl >= this.watchList.length - 1) {
             //最後のシーンの場合は先頭に戻る
             this.indexUrl = 0;
             this.playPlaylist(this.playlistIdUrl, this.indexUrl);
@@ -361,19 +358,14 @@ export default {
 
         //特定シーン再生の場合
         if (this.$route.query.tag) {
-          //現在と同じシーンをリピート
-          this.playSpecificScene(this.tagIdUrl);
+          //現在と同じシーンをリピート(開始時間に戻る)
+          this.player.seekTo(this.convertToSec(this.startIs));
         }
       }
 
       if (event.data == YT.PlayerState.PLAYING) {
         //フラグを再生中にセット
         this.isPlaying = true;
-
-        //シーンタグ編集の場合、タイマーを再開
-        if (this.isEditting) {
-          this.startTimer();
-        }
       }
     };
 

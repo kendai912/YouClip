@@ -33,6 +33,7 @@ export default {
       currentYoutubeId: "watch/currentYoutubeId",
       startHis: "watch/start",
       endHis: "watch/end",
+      currentTagId: "watch/currentTagId",
       currentTagNameArray: "watch/currentTagNameArray"
     }),
     startIs() {
@@ -70,7 +71,7 @@ export default {
         this.$store.commit("tagging/setIsEditting", true);
 
         //編集前のタグID・開始時間・終了時間・シーンタグをセット
-        this.$store.commit("tagging/setTagId", this.$route.query.tag);
+        this.$store.commit("tagging/setTagId", this.currentTagId);
         this.$store.commit("tagging/setStart", this.startIs);
         this.$store.commit("tagging/setEnd", this.endIs);
         this.$store.commit("tagging/setTags", this.currentTagNameArray);

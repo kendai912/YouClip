@@ -2597,6 +2597,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     currentYoutubeId: "watch/currentYoutubeId",
     startHis: "watch/start",
     endHis: "watch/end",
+    currentTagId: "watch/currentTagId",
     currentTagNameArray: "watch/currentTagNameArray"
   }), {
     startIs: function startIs() {
@@ -2657,7 +2658,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 this.$store.commit("tagging/setIsEditting", true);
 
                 //編集前のタグID・開始時間・終了時間・シーンタグをセット
-                this.$store.commit("tagging/setTagId", this.$route.query.tag);
+                this.$store.commit("tagging/setTagId", this.currentTagId);
                 this.$store.commit("tagging/setStart", this.startIs);
                 this.$store.commit("tagging/setEnd", this.endIs);
                 this.$store.commit("tagging/setTags", this.currentTagNameArray);
@@ -4691,18 +4692,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 //フラグを停止中に反転
                 _this.isPlaying = !_this.isPlaying;
 
-                //シーンタグ編集の場合、一瞬開始時間が0秒になってしまうため、タイマーを一旦止める
                 if (_this.isEditting) {
-                  //Playerの再生時間を取得するタイマーを止める
-                  clearInterval(_this.timer);
-                }
-
-                //プレイリスト再生の場合
-                if (_this.$route.query.playlist) {
+                  //現在と同じシーンをリピート(開始時間に戻る)
+                  _this.player.seekTo(_this.convertToSec(_this.startIs));
+                } else if (_this.$route.query.playlist) {
+                  //プレイリスト再生の場合
                   if (_this.indexUrl < _this.watchList.length - 1) {
                     // //最後のシーンでない場合は次のシーンのパラメータをセット
                     _this.playPlaylist(_this.playlistIdUrl, ++_this.indexUrl);
-                  } else if (_this.indexUrl == _this.watchList.length - 1) {
+                  } else if (_this.indexUrl >= _this.watchList.length - 1) {
                     //最後のシーンの場合は先頭に戻る
                     _this.indexUrl = 0;
                     _this.playPlaylist(_this.playlistIdUrl, _this.indexUrl);
@@ -4711,19 +4709,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
                 //特定シーン再生の場合
                 if (_this.$route.query.tag) {
-                  //現在と同じシーンをリピート
-                  _this.playSpecificScene(_this.tagIdUrl);
+                  //現在と同じシーンをリピート(開始時間に戻る)
+                  _this.player.seekTo(_this.convertToSec(_this.startIs));
                 }
               }
 
               if (event.data == YT.PlayerState.PLAYING) {
                 //フラグを再生中にセット
                 _this.isPlaying = true;
-
-                //シーンタグ編集の場合、タイマーを再開
-                if (_this.isEditting) {
-                  _this.startTimer();
-                }
               }
             };
 
