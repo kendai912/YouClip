@@ -75,6 +75,8 @@ Route::get('/youtube/getVideo', 'VideoController@getVideoByYoutubeId');
 Route::get('/youtube/getTag', 'TagController@getTagByVideoId');
 //シーン登録における動画・タグの保存
 Route::post('/tag/store', 'TagController@store');
+//シーンタグの編集
+Route::post('/tag/update', 'TagController@update');
 
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {

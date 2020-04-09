@@ -15,9 +15,9 @@
       <div>
         <span>{{ startIs }}〜{{ endIs }}</span>
         <span
-          v-for="currentTagName in currentTagNameArray"
+          v-for="(currentTagName, index) in currentTagNameArray"
           class="tag"
-          v-bind:key="currentTagName"
+          v-bind:key="index + '.' +currentTagName"
         >{{ currentTagName }}</span>
         <span v-on:click="openOtherActionModal">
           <i class="fas fa-ellipsis-v"></i>
@@ -33,7 +33,15 @@
       <ShareModal v-if="showShareModal" v-bind:player="player" />
       <AddPlaylistModal v-if="showAddPlaylistModal" v-bind:player="player" />
       <OtherActionModal v-if="showOtherActionModal" />
-      <SceneTagControl v-if="showSceneTagControl" v-bind:player="player" />
+      <SceneTagControl
+        v-if="showSceneTagControl"
+        v-bind:player="player"
+        v-on:updateSucceed="updateSucceed"
+      />
+      <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
+        {{ text }}
+        <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
+      </v-snackbar>
     </div>
   </div>
 </template>
@@ -63,7 +71,10 @@ export default {
       isPlaying: true,
       isPlayerReady: false,
       player: null,
-      timer: null
+      timer: null,
+      snackbar: false,
+      timeout: 5000,
+      text: "シーンタグを更新しました"
     };
   },
   mixins: [myMixin],
@@ -212,6 +223,11 @@ export default {
         //プレイリスト追加モーダルを表示
         this.$store.commit("playlist/openAddPlaylistModal");
       }
+    },
+    //シーンタグ完了のトーストを表示
+    updateSucceed() {
+      this.snackbar = true;
+      location.reload();
     }
   },
   computed: {

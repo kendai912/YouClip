@@ -35,7 +35,10 @@
       </v-combobox>
     </v-form>
     <div>
-      <v-btn class="mt-6" text color="error" v-on:click="submit">完了</v-btn>
+      <v-btn class="mt-6" text color="error" v-on:click="submit">
+        <span v-if="isEditting">更新</span>
+        <span v-else>完了</span>
+      </v-btn>
     </div>
     <NoLoginModal v-if="showLoginModal" />
   </v-sheet>
@@ -71,7 +74,8 @@ export default {
       isNew: "youtube/isNew",
       isLogin: "auth/check",
       showLoginModal: "noLoginModal/showLoginModal",
-      itemsList: "tagging/itemsList"
+      itemsList: "tagging/itemsList",
+      isEditting: "tagging/isEditting"
     })
   },
   methods: {
@@ -85,11 +89,17 @@ export default {
         let self = this;
         setTimeout(function() {
           if (self.$refs.form.validate()) {
-            //シーンタグをセットして保存
+            //シーンタグをセットし保存＋トースト表示
             self.$store.commit("tagging/setTags", self.tags);
-            self.$store.dispatch("tagging/storeSceneTags");
-            //シーン登録のトーストを表示
-            self.$emit("taggingSucceed");
+            if (self.isEditting) {
+              //編集の場合
+              self.$store.dispatch("tagging/updateSceneTags");
+              self.$emit("updateSucceed");
+            } else {
+              //新規の場合
+              self.$store.dispatch("tagging/storeSceneTags");
+              self.$emit("taggingSucceed");
+            }
             //シーンタグの入力フォームであるcomboboxのリストに入力した値を追加
             self.$store.commit("tagging/setItemsList", self.tags);
           }

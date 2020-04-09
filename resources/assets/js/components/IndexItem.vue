@@ -17,8 +17,8 @@
         <div v-if="item.tagArray">
           {{ item.start }}〜{{ item.end }}
           <span
-            v-for="tag in item.tagArray"
-            v-bind:key="item + '.' + tag"
+            v-for="(tag,index) in item.tagArray"
+            v-bind:key="index + '.' + tag"
             class="tag"
           >{{ tag }}</span>
         </div>

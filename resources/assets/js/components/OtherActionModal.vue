@@ -69,12 +69,13 @@ export default {
         //編集モードフラグをセット
         this.$store.commit("tagging/setIsEditting", true);
 
-        //編集前の開始時間・終了時間・シーンタグをセット
+        //編集前のタグID・開始時間・終了時間・シーンタグをセット
+        this.$store.commit("tagging/setTagId", this.$route.query.tag);
         this.$store.commit("tagging/setStart", this.startIs);
         this.$store.commit("tagging/setEnd", this.endIs);
         this.$store.commit("tagging/setTags", this.currentTagNameArray);
 
-        //シーンコントールコンポーネントを表示
+        //シーンタグ付けコンポーネントを表示
         this.$store.commit("tagging/setShowSceneTagControl", true);
       } else if (action == "report") {
       } else if (action == "cancel") {

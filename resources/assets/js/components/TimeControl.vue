@@ -1,7 +1,7 @@
 <template>
   <v-sheet class="text-center" height="450px">
     <div>
-      <a v-on:click="$router.go(-1)">
+      <a v-on:click="back">
         <i class="fas fa-chevron-left"></i>
       </a>
       <span>開始・終了時間を指定</span>
@@ -151,7 +151,8 @@ export default {
       videoData: "youtube/videoData",
       newVideoData: "youtube/newVideoData",
       isReady: "youtube/isReady",
-      isNew: "youtube/isNew"
+      isNew: "youtube/isNew",
+      isEditting: "tagging/isEditting"
     }),
     currentPositionTime() {
       //sliderをドラッグした位置の秒数を取得
@@ -241,6 +242,11 @@ export default {
         this.$store.commit("tagging/setEnd", this.endTimeInput);
         this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
       }
+    },
+    back() {
+      this.isEditting
+        ? this.$store.commit("tagging/setShowSceneTagControl", false)
+        : this.$router.go(-1);
     },
     //初期化処理
     initialize() {

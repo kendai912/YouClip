@@ -2629,12 +2629,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                   break;
                 }
 
-                _context.next = 19;
+                _context.next = 20;
                 break;
 
               case 3:
                 if (!(action == "edit")) {
-                  _context.next = 18;
+                  _context.next = 19;
                   break;
                 }
 
@@ -2656,22 +2656,23 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 //編集モードフラグをセット
                 this.$store.commit("tagging/setIsEditting", true);
 
-                //編集前の開始時間・終了時間・シーンタグをセット
+                //編集前のタグID・開始時間・終了時間・シーンタグをセット
+                this.$store.commit("tagging/setTagId", this.$route.query.tag);
                 this.$store.commit("tagging/setStart", this.startIs);
                 this.$store.commit("tagging/setEnd", this.endIs);
                 this.$store.commit("tagging/setTags", this.currentTagNameArray);
 
-                //シーンコントールコンポーネントを表示
+                //シーンタグ付けコンポーネントを表示
                 this.$store.commit("tagging/setShowSceneTagControl", true);
-                _context.next = 19;
+                _context.next = 20;
                 break;
 
-              case 18:
+              case 19:
                 if (action == "report") {} else if (action == "cancel") {
                   this.closeOtherActionModal();
                 }
 
-              case 19:
+              case 20:
               case "end":
                 return _context.stop();
             }
@@ -2696,20 +2697,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_TimeControl_vue__ = __webpack_require__("./resources/assets/js/components/TimeControl.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_TimeControl_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_TimeControl_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_TaggingControl_vue__ = __webpack_require__("./resources/assets/js/components/TaggingControl.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_TaggingControl_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_TaggingControl_vue__);
-
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_TimeControl_vue__ = __webpack_require__("./resources/assets/js/components/TimeControl.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_TimeControl_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_TimeControl_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_TaggingControl_vue__ = __webpack_require__("./resources/assets/js/components/TaggingControl.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_TaggingControl_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_TaggingControl_vue__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
+//
 //
 //
 //
@@ -2736,8 +2732,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    TimeControl: __WEBPACK_IMPORTED_MODULE_3__components_TimeControl_vue___default.a,
-    TaggingControl: __WEBPACK_IMPORTED_MODULE_4__components_TaggingControl_vue___default.a
+    TimeControl: __WEBPACK_IMPORTED_MODULE_2__components_TimeControl_vue___default.a,
+    TaggingControl: __WEBPACK_IMPORTED_MODULE_3__components_TaggingControl_vue___default.a
   },
   props: {
     player: Object
@@ -2750,128 +2746,97 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       startTimeInput: null,
       endTimeInput: null,
       snackbar: false,
-      timeout: 3000,
+      timeout: 5000,
       text: "シーンタグを登録しました"
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
-    currentTime: "youtube/currentTime",
-    videoData: "youtube/videoData",
-    newVideoData: "youtube/newVideoData",
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    // currentTime: "youtube/currentTime",
+    // videoData: "youtube/videoData",
+    // newVideoData: "youtube/newVideoData",
+    // isNew: "youtube/isNew",
     isReady: "youtube/isReady",
-    isNew: "youtube/isNew",
     showTaggingControl: "tagging/showTaggingControl",
     controlTransitNext: "tagging/controlTransitNext"
-  }), {
-    currentPositionTime: function currentPositionTime() {
-      //sliderをドラッグした位置の秒数を取得
-      var currentPositionSec = this.convertToSec(this.duration) * (this.slider.val / 100);
-
-      //分:秒のフォーマットに変換
-      return this.formatTime(currentPositionSec);
-    },
-    duration: function duration() {
-      return this.isNew ? this.newVideoData.duration : this.formatToMinSec(this.videoData.duration);
-    }
-  }),
+  })),
   methods: {
-    //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
-    startUpdateSlider: function startUpdateSlider() {
-      var self = this;
-      self.sliderInterval = setInterval(function () {
-        var sliderPosition = 100 * (self.convertToSec(self.currentTime) / self.convertToSec(self.duration));
+    // //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
+    // startUpdateSlider() {
+    //   let self = this;
+    //   self.sliderInterval = setInterval(function() {
+    //     let sliderPosition =
+    //       100 *
+    //       (self.convertToSec(self.currentTime) /
+    //         self.convertToSec(self.duration));
 
-        self.slider.val = sliderPosition;
-      }, 800);
-    },
-    stopUpdateSlider: function stopUpdateSlider() {
-      clearInterval(this.sliderInterval);
-    },
-
-    //sliderをクリックした場合、その地点までplayerの再生時間をジャンプ
-    seekToAndRestartMouseup: function seekToAndRestartMouseup(end) {
-      var self = this;
-      setTimeout(function () {
-        self.player.seekTo(self.convertToSec(self.duration) * (self.slider.val / 100));
-        self.startUpdateSlider();
-      }, 1000);
-    },
-
-    //sliderをドラッグした場合、その地点までplayerの再生時間をジャンプ
-    seekToAndRestartEnd: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(end) {
-        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return this.player.seekTo(this.convertToSec(this.duration) * (end / 100));
-
-              case 2:
-                this.startUpdateSlider();
-
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function seekToAndRestartEnd(_x) {
-        return _ref.apply(this, arguments);
-      }
-
-      return seekToAndRestartEnd;
-    }(),
-    tapStartBtn: function tapStartBtn() {
-      this.startTimeInput = this.currentTime;
-      this.player.playVideo();
-    },
-    tapStopBtn: function tapStopBtn() {
-      this.endTimeInput = this.currentTime;
-      this.player.pauseVideo();
-    },
-
-    //再生
-    playVideo: function playVideo() {
-      this.player.playVideo();
-    },
-
-    //一時停止
-    pauseVideo: function pauseVideo() {
-      this.player.pauseVideo();
-    },
-
-    //30秒戻る
-    backwardThirtySec: function backwardThirtySec() {
-      this.player.seekTo(this.convertToSec(this.currentTime) - 30);
-    },
-
-    //5秒戻る
-    backwardFiveSec: function backwardFiveSec() {
-      this.player.seekTo(this.convertToSec(this.currentTime) - 5);
-    },
-
-    //30秒進む
-    forwardThirtySec: function forwardThirtySec() {
-      this.player.seekTo(this.convertToSec(this.currentTime) + 30);
-    },
-
-    //5秒進む
-    forwardFiveSec: function forwardFiveSec() {
-      this.player.seekTo(this.convertToSec(this.currentTime) + 5);
-    },
-
+    //     self.slider.val = sliderPosition;
+    //   }, 800);
+    // },
+    // stopUpdateSlider() {
+    //   clearInterval(this.sliderInterval);
+    // },
+    // //sliderをクリックした場合、その地点までplayerの再生時間をジャンプ
+    // seekToAndRestartMouseup(end) {
+    //   let self = this;
+    //   setTimeout(function() {
+    //     self.player.seekTo(
+    //       self.convertToSec(self.duration) * (self.slider.val / 100)
+    //     );
+    //     self.startUpdateSlider();
+    //   }, 1000);
+    // },
+    // //sliderをドラッグした場合、その地点までplayerの再生時間をジャンプ
+    // async seekToAndRestartEnd(end) {
+    //   await this.player.seekTo(this.convertToSec(this.duration) * (end / 100));
+    //   this.startUpdateSlider();
+    // },
+    // tapStartBtn() {
+    //   this.startTimeInput = this.currentTime;
+    //   this.player.playVideo();
+    // },
+    // tapStopBtn() {
+    //   this.endTimeInput = this.currentTime;
+    //   this.player.pauseVideo();
+    // },
+    // //再生
+    // playVideo() {
+    //   this.player.playVideo();
+    // },
+    // //一時停止
+    // pauseVideo() {
+    //   this.player.pauseVideo();
+    // },
+    // //30秒戻る
+    // backwardThirtySec() {
+    //   this.player.seekTo(this.convertToSec(this.currentTime) - 30);
+    // },
+    // //5秒戻る
+    // backwardFiveSec() {
+    //   this.player.seekTo(this.convertToSec(this.currentTime) - 5);
+    // },
+    // //30秒進む
+    // forwardThirtySec() {
+    //   this.player.seekTo(this.convertToSec(this.currentTime) + 30);
+    // },
+    // //5秒進む
+    // forwardFiveSec() {
+    //   this.player.seekTo(this.convertToSec(this.currentTime) + 5);
+    // },
     //シーンタグ完了のトーストを表示
     taggingSucceed: function taggingSucceed() {
-      this.snackbar = true;
+      // this.snackbar = true;
+      this.$emit("taggingSucceed");
+    },
+
+    //シーンタグ更新のトーストを表示
+    updateSucceed: function updateSucceed() {
+      this.$emit("updateSucceed");
     }
   },
   created: function created() {
-    this.startUpdateSlider();
+    // this.startUpdateSlider();
   }
 });
 
@@ -3240,6 +3205,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
 
 
 
@@ -3272,7 +3240,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     isNew: "youtube/isNew",
     isLogin: "auth/check",
     showLoginModal: "noLoginModal/showLoginModal",
-    itemsList: "tagging/itemsList"
+    itemsList: "tagging/itemsList",
+    isEditting: "tagging/isEditting"
   })),
   methods: {
     remove: function remove(item) {
@@ -3285,11 +3254,17 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         var self = this;
         setTimeout(function () {
           if (self.$refs.form.validate()) {
-            //シーンタグをセットして保存
+            //シーンタグをセットし保存＋トースト表示
             self.$store.commit("tagging/setTags", self.tags);
-            self.$store.dispatch("tagging/storeSceneTags");
-            //シーン登録のトーストを表示
-            self.$emit("taggingSucceed");
+            if (self.isEditting) {
+              //編集の場合
+              self.$store.dispatch("tagging/updateSceneTags");
+              self.$emit("updateSucceed");
+            } else {
+              //新規の場合
+              self.$store.dispatch("tagging/storeSceneTags");
+              self.$emit("taggingSucceed");
+            }
             //シーンタグの入力フォームであるcomboboxのリストに入力した値を追加
             self.$store.commit("tagging/setItemsList", self.tags);
           }
@@ -3487,7 +3462,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     videoData: "youtube/videoData",
     newVideoData: "youtube/newVideoData",
     isReady: "youtube/isReady",
-    isNew: "youtube/isNew"
+    isNew: "youtube/isNew",
+    isEditting: "tagging/isEditting"
   }), {
     currentPositionTime: function currentPositionTime() {
       //sliderをドラッグした位置の秒数を取得
@@ -3600,6 +3576,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         this.$store.commit("tagging/setEnd", this.endTimeInput);
         this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
       }
+    },
+    back: function back() {
+      this.isEditting ? this.$store.commit("tagging/setShowSceneTagControl", false) : this.$router.go(-1);
     },
 
     //初期化処理
@@ -4389,6 +4368,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4414,7 +4401,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       isPlaying: true,
       isPlayerReady: false,
       player: null,
-      timer: null
+      timer: null,
+      snackbar: false,
+      timeout: 5000,
+      text: "シーンタグを更新しました"
     };
   },
 
@@ -4559,7 +4549,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       }
 
       return addPlaylist;
-    }()
+    }(),
+
+    //シーンタグ完了のトーストを表示
+    updateSucceed: function updateSucceed() {
+      this.snackbar = true;
+      location.reload();
+    }
   }),
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     isLogin: "auth/check",
@@ -4840,6 +4836,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -4854,7 +4854,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   data: function data() {
     return {
       show: true,
-      player: null
+      player: null,
+      snackbar: false,
+      timeout: 5000,
+      text: "シーンタグを登録しました"
     };
   },
 
@@ -4865,6 +4868,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     tagDataArray: "youtube/tagDataArray",
     isNew: "youtube/isNew"
   })),
+  methods: {
+    //シーンタグ完了のトーストを表示
+    taggingSucceed: function taggingSucceed() {
+      this.snackbar = true;
+    }
+  },
   created: function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
       var _this = this;
@@ -37704,7 +37713,10 @@ var render = function() {
                   _c(_vm.showTaggingControl, {
                     tag: "component",
                     attrs: { player: _vm.player },
-                    on: { taggingSucceed: _vm.taggingSucceed }
+                    on: {
+                      taggingSucceed: _vm.taggingSucceed,
+                      updateSucceed: _vm.updateSucceed
+                    }
                   })
                 ],
                 1
@@ -37712,37 +37724,7 @@ var render = function() {
             ],
             1
           )
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "v-snackbar",
-        {
-          attrs: { timeout: _vm.timeout },
-          model: {
-            value: _vm.snackbar,
-            callback: function($$v) {
-              _vm.snackbar = $$v
-            },
-            expression: "snackbar"
-          }
-        },
-        [
-          _vm._v("\n    " + _vm._s(_vm.text) + "\n    "),
-          _c(
-            "v-btn",
-            {
-              attrs: { color: "blue", text: "" },
-              on: {
-                click: function($event) {
-                  _vm.snackbar = false
-                }
-              }
-            },
-            [_vm._v("Close")]
-          )
-        ],
-        1
-      )
+        : _vm._e()
     ],
     1
   )
@@ -38364,7 +38346,11 @@ var render = function() {
               attrs: { text: "", color: "error" },
               on: { click: _vm.submit }
             },
-            [_vm._v("完了")]
+            [
+              _vm.isEditting
+                ? _c("span", [_vm._v("更新")])
+                : _c("span", [_vm._v("完了")])
+            ]
           )
         ],
         1
@@ -39055,17 +39041,9 @@ var render = function() {
     { staticClass: "text-center", attrs: { height: "450px" } },
     [
       _c("div", [
-        _c(
-          "a",
-          {
-            on: {
-              click: function($event) {
-                return _vm.$router.go(-1)
-              }
-            }
-          },
-          [_c("i", { staticClass: "fas fa-chevron-left" })]
-        ),
+        _c("a", { on: { click: _vm.back } }, [
+          _c("i", { staticClass: "fas fa-chevron-left" })
+        ]),
         _vm._v(" "),
         _c("span", [_vm._v("開始・終了時間を指定")])
       ]),
@@ -39363,10 +39341,10 @@ var render = function() {
                         _vm._s(item.end) +
                         "\n        "
                     ),
-                    _vm._l(item.tagArray, function(tag) {
+                    _vm._l(item.tagArray, function(tag, index) {
                       return _c(
                         "span",
-                        { key: item + "." + tag, staticClass: "tag" },
+                        { key: index + "." + tag, staticClass: "tag" },
                         [_vm._v(_vm._s(tag))]
                       )
                     })
@@ -39410,7 +39388,40 @@ var render = function() {
       _vm._v(" "),
       _c("div", [_c("TagItem")], 1),
       _vm._v(" "),
-      _c("SceneTagControl", { attrs: { player: _vm.player } })
+      _c("SceneTagControl", {
+        attrs: { player: _vm.player },
+        on: { taggingSucceed: _vm.taggingSucceed }
+      }),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          attrs: { timeout: _vm.timeout },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n    " + _vm._s(_vm.text) + "\n    "),
+          _c(
+            "v-btn",
+            {
+              attrs: { color: "blue", text: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_vm._v("Close")]
+          )
+        ],
+        1
+      )
     ],
     1
   )
@@ -39475,10 +39486,13 @@ var render = function() {
                   _vm._v(_vm._s(_vm.startIs) + "〜" + _vm._s(_vm.endIs))
                 ]),
                 _vm._v(" "),
-                _vm._l(_vm.currentTagNameArray, function(currentTagName) {
+                _vm._l(_vm.currentTagNameArray, function(
+                  currentTagName,
+                  index
+                ) {
                   return _c(
                     "span",
-                    { key: currentTagName, staticClass: "tag" },
+                    { key: index + "." + currentTagName, staticClass: "tag" },
                     [_vm._v(_vm._s(currentTagName))]
                   )
                 }),
@@ -39520,8 +39534,41 @@ var render = function() {
             _vm.showOtherActionModal ? _c("OtherActionModal") : _vm._e(),
             _vm._v(" "),
             _vm.showSceneTagControl
-              ? _c("SceneTagControl", { attrs: { player: _vm.player } })
-              : _vm._e()
+              ? _c("SceneTagControl", {
+                  attrs: { player: _vm.player },
+                  on: { updateSucceed: _vm.updateSucceed }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _c(
+              "v-snackbar",
+              {
+                attrs: { timeout: _vm.timeout },
+                model: {
+                  value: _vm.snackbar,
+                  callback: function($$v) {
+                    _vm.snackbar = $$v
+                  },
+                  expression: "snackbar"
+                }
+              },
+              [
+                _vm._v("\n      " + _vm._s(_vm.text) + "\n      "),
+                _c(
+                  "v-btn",
+                  {
+                    attrs: { color: "blue", text: "" },
+                    on: {
+                      click: function($event) {
+                        _vm.snackbar = false
+                      }
+                    }
+                  },
+                  [_vm._v("Close")]
+                )
+              ],
+              1
+            )
           ],
           1
         )
@@ -101114,6 +101161,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var state = {
   showSceneTagControl: false,
   showTaggingControl: "TimeControl",
+  tagId: null,
   tags: null,
   start: null,
   end: null,
@@ -101128,6 +101176,9 @@ var getters = {
   },
   showTaggingControl: function showTaggingControl(state) {
     return state.showTaggingControl;
+  },
+  tagId: function tagId(state) {
+    return state.tagId;
   },
   tags: function tags(state) {
     return state.tags;
@@ -101156,6 +101207,9 @@ var mutations = {
   setShowTaggingControl: function setShowTaggingControl(state, data) {
     state.showTaggingControl = data;
   },
+  setTagId: function setTagId(state, data) {
+    state.tagId = data;
+  },
   setTags: function setTags(state, data) {
     state.tags = data;
   },
@@ -101175,6 +101229,25 @@ var mutations = {
   },
   setIsEditting: function setIsEditting(state, data) {
     state.isEditting = data;
+  },
+
+  //シーンタグの余計なスペースを除去し整形
+  formatSceneTags: function formatSceneTags(state) {
+    var valDividedBySpace = void 0;
+    for (var i = 0; i < state.tags.length; i++) {
+      //スペースが含まれる場合はシーンタグを分割し追加
+      if (state.tags[i].match(/[\s| |　]/)) {
+        valDividedBySpace = state.tags[i].split(/[\s| |　]/);
+        Array.prototype.splice.apply(state.tags, [i, 1].concat(valDividedBySpace));
+      }
+    }
+    //スペースのみのシーンタグを削除
+    for (var _i = 0; _i < state.tags.length; _i++) {
+      if (state.tags[_i] == "") {
+        state.tags.splice(_i, 1);
+        _i--;
+      }
+    }
   }
 };
 
@@ -101182,43 +101255,26 @@ var actions = {
   //シーンタグの保存
   storeSceneTags: function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context) {
-      var tagsToSend, valDividedBySpace, i, _i, params, response;
-
+      var params, response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              //シーンタグの余計なスペースを除去し整形
-              tagsToSend = state.tags;
-              valDividedBySpace = void 0;
-
-              for (i = 0; i < tagsToSend.length; i++) {
-                //スペースが含まれる場合はシーンタグを分割し追加
-                if (tagsToSend[i].match(/[\s| |　]/)) {
-                  valDividedBySpace = tagsToSend[i].split(/[\s| |　]/);
-                  Array.prototype.splice.apply(tagsToSend, [i, 1].concat(valDividedBySpace));
-                }
-              }
-              //スペースのみのシーンタグを削除
-              for (_i = 0; _i < tagsToSend.length; _i++) {
-                if (tagsToSend[_i] == "") {
-                  tagsToSend.splice(_i, 1);
-                  _i--;
-                }
-              }
+              // //シーンタグの余計なスペースを除去し整形
+              context.commit("formatSceneTags");
 
               params = {
                 youtubeId: __WEBPACK_IMPORTED_MODULE_4__store__["a" /* default */].getters["youtube/youtubeId"],
                 isNew: __WEBPACK_IMPORTED_MODULE_4__store__["a" /* default */].getters["youtube/isNew"],
                 newVideoData: __WEBPACK_IMPORTED_MODULE_4__store__["a" /* default */].getters["youtube/newVideoData"],
-                tags: tagsToSend,
+                tags: state.tags,
                 start: state.start,
                 end: state.end
               };
-              _context.next = 7;
+              _context.next = 4;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/tag/store", params);
 
-            case 7:
+            case 4:
               response = _context.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
@@ -101240,7 +101296,7 @@ var actions = {
                 context.commit("error/setCode", response.status, { root: true });
               }
 
-            case 9:
+            case 6:
             case "end":
               return _context.stop();
           }
@@ -101253,6 +101309,65 @@ var actions = {
     }
 
     return storeSceneTags;
+  }(),
+
+  //シーンタグの更新
+  updateSceneTags: function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context) {
+      var params, response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              // //シーンタグの余計なスペースを除去し整形
+              context.commit("formatSceneTags");
+
+              params = {
+                youtubeId: __WEBPACK_IMPORTED_MODULE_4__store__["a" /* default */].getters["youtube/youtubeId"],
+                tagId: state.tagId,
+                tags: state.tags,
+                start: state.start,
+                end: state.end
+              };
+              _context2.next = 4;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/tag/update", params);
+
+            case 4:
+              response = _context2.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
+                // 成功した時
+                //入力フォームをクリア
+                context.commit("setTags", "");
+                context.commit("setStart", "");
+                context.commit("setEnd", "");
+
+                //画面下部のシーンの遷移モードを変更(true:右スライド, false:左スライド)
+                context.commit("setControlTransitNext", false);
+                context.commit("setShowTaggingControl", "TimeControl");
+                //シーンタグ付けコンポーネントを非表示にし再生画面に戻る
+                context.commit("setShowSceneTagControl", false);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 6:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+
+    function updateSceneTags(_x2) {
+      return _ref2.apply(this, arguments);
+    }
+
+    return updateSceneTags;
   }()
 };
 

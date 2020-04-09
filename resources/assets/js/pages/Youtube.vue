@@ -4,7 +4,11 @@
     <div>
       <TagItem />
     </div>
-    <SceneTagControl v-bind:player="player" />
+    <SceneTagControl v-bind:player="player" v-on:taggingSucceed="taggingSucceed" />
+    <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
+      {{ text }}
+      <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
+    </v-snackbar>
   </div>
 </template>
 
@@ -22,7 +26,10 @@ export default {
   data() {
     return {
       show: true,
-      player: null
+      player: null,
+      snackbar: false,
+      timeout: 5000,
+      text: "シーンタグを登録しました"
     };
   },
   mixins: [myMixin],
@@ -33,6 +40,12 @@ export default {
       tagDataArray: "youtube/tagDataArray",
       isNew: "youtube/isNew"
     })
+  },
+  methods: {
+    //シーンタグ完了のトーストを表示
+    taggingSucceed() {
+      this.snackbar = true;
+    }
   },
   async created() {
     //必要データを取得するまでTagItemは非表示
@@ -97,7 +110,6 @@ export default {
         location.reload();
       }
     });
-
   }
 };
 </script>

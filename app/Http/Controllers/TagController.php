@@ -248,11 +248,31 @@ class TagController extends Controller
     public function update(Request $request)
     {
         //DBを更新
-        $tag = Tag::find($request->id);
-        $tag->tags = $request->tags;
+        $tag = Tag::find($request->tagId);
+        // 開始or終了時間が更新された場合はpreview用のgifを再取得
+        if ($this->convertToSec($tag->start) != $this->convertToSec("00:".$request->start) || $this->convertToSec($tag->end) != $this->convertToSec("00:".$request->end)) {
+            //既存のpreview用gifを削除
+            unlink(storage_path(). "/app/public/img/" . $tag->preview);
+
+            //更新したpreview用のgifを再取得
+            $previewFileName = $this->getPreviewFile($request);
+            $tag->preview = $previewFileName;
+        }
+        $tag->tags = implode(" ", $request->tags);
+        $start = $request->start;
         $tag->start = "00:".$request->start;
         $tag->end = "00:".$request->end;
         $tag->save();
+
+        //保存したタグデータをリターン
+        return response()->json(
+            [
+                'tag' => $tag
+            ],
+            201,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 
     /**
