@@ -32,7 +32,11 @@
       <NoLoginModal v-if="showLoginModal" />
       <ShareModal v-if="showShareModal" v-bind:player="player" />
       <AddPlaylistModal v-if="showAddPlaylistModal" v-bind:player="player" />
-      <OtherActionModal v-if="showOtherActionModal" />
+      <OtherActionModal
+        v-if="showOtherActionModal"
+        v-bind:player="player"
+        v-on:deleteSucceed="deleteSucceed"
+      />
       <SceneTagControl
         v-if="showSceneTagControl"
         v-bind:player="player"
@@ -40,7 +44,7 @@
       />
       <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
         {{ text }}
-        <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
+        <v-btn v-bind:color="color" text v-on:click="snackbar = false">Close</v-btn>
       </v-snackbar>
     </div>
   </div>
@@ -74,7 +78,8 @@ export default {
       timer: null,
       snackbar: false,
       timeout: 5000,
-      text: "シーンタグを更新しました"
+      color: "blue",
+      text: ""
     };
   },
   mixins: [myMixin],
@@ -101,34 +106,13 @@ export default {
       //URLを更新
       this.$router
         .push({
+          path: "/watch",
           query: {
             playlist: playlistId,
             index: index
           }
         })
         .catch(err => {});
-
-      //次のシーンをロードし再生
-      this.player.loadVideoById({
-        videoId: this.currentYoutubeId,
-        startSeconds: this.convertToSec(this.formatToMinSec(this.startHis)),
-        endSeconds: this.convertToSec(this.formatToMinSec(this.endHis))
-      });
-    },
-    playSpecificScene(tagId) {
-      //特定シーンのパラメータをセット
-      this.setIndivisualParameters(tagId);
-
-      //別のシーンの場合はURLを更新
-      if (this.$route.query.tag != this.currentTagId) {
-        this.$router
-          .push({
-            query: {
-              tag: tagId
-            }
-          })
-          .catch(err => {});
-      }
 
       //次のシーンをロードし再生
       this.player.loadVideoById({
@@ -224,9 +208,49 @@ export default {
         this.$store.commit("playlist/openAddPlaylistModal");
       }
     },
-    //シーンタグ完了のトーストを表示
+    //シーンタグ更新完了のトーストを表示しリロード
     updateSucceed() {
+      this.color = "blue";
+      this.text = "シーンタグを更新しました";
       this.snackbar = true;
+      location.reload();
+    },
+    //シーンタグ削除完了のトーストを表示し戻る＆リロード
+    deleteSucceed() {
+      this.color = "grey lighten-1";
+      this.text = "シーンタグを削除しました";
+      this.snackbar = true;
+      this.transitAfterDelete();
+    },
+    //シーンタグ削除後のページ遷移
+    transitAfterDelete() {
+      if (this.$route.query.playlist) {
+        //プレイリスト再生の場合
+        if (
+          this.watchList.length >= 2 &&
+          this.indexUrl == this.watchList.length - 1
+        ) {
+          //  削除後も他のシーンがあり、かつ一番最後の場合、先頭に戻る
+          this.indexUrl = 0;
+          this.playPlaylist(this.playlistIdUrl, this.indexUrl);
+        } else if (this.watchList.length < 2) {
+          // 削除後に他のシーンがない場合、トップページに遷移
+          this.$router
+            .push({
+              path: "/home"
+            })
+            .catch(err => {});
+        }
+      } else if (this.$route.query.tag) {
+        //タグ再生の場合、トップページに戻る
+        this.$router
+          .push({
+            path: "/home"
+          })
+          .catch(err => {});
+      }
+
+      //削除後のデータをリロード
       location.reload();
     }
   },

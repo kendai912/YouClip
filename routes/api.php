@@ -77,6 +77,8 @@ Route::get('/youtube/getTag', 'TagController@getTagByVideoId');
 Route::post('/tag/store', 'TagController@store');
 //シーンタグの編集
 Route::post('/tag/update', 'TagController@update');
+//シーンタグの削除
+Route::post('/tag/delete', 'TagController@delete');
 
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {

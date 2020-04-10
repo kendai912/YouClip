@@ -274,7 +274,7 @@ class TagController extends Controller
             JSON_UNESCAPED_UNICODE
         );
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -283,8 +283,10 @@ class TagController extends Controller
     public function delete(Request $request)
     {
         //DBから削除
-        $tag = Tag::find($request->id);
+        $tag = Tag::find($request->tagId);
         $tag->delete();
+
+        return response(null, 204);
     }
 
     public static function convertToSec($time)

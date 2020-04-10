@@ -26,7 +26,9 @@ export default {
       { img: "fas fa-times", title: "キャンセル", action: "cancel" }
     ]
   }),
-  props: {},
+  props: {
+    player: Object
+  },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
@@ -34,7 +36,7 @@ export default {
       startHis: "watch/start",
       endHis: "watch/end",
       currentTagId: "watch/currentTagId",
-      currentTagNameArray: "watch/currentTagNameArray"
+      currentTagNameArray: "watch/currentTagNameArray",
     }),
     startIs() {
       return this.formatToMinSec(this.startHis);
@@ -44,9 +46,11 @@ export default {
     },
     showOtherActionModal: {
       get() {
+        this.player.pauseVideo();
         return this.$store.getters["otherActionModal/showOtherActionModal"];
       },
       set() {
+        this.player.playVideo();
         return this.$store.commit("otherActionModal/closeOtherActionModal");
       }
     }
@@ -57,6 +61,13 @@ export default {
     }),
     async tapTile(action) {
       if (action == "delete") {
+        //otherActionModalを閉じる
+        this.closeOtherActionModal();
+        this.$store.commit("tagging/setTagId", this.currentTagId);
+        this.$store.dispatch("tagging/deleteTag");
+
+        //シーンタグ削除完了のトーストを表示し遷移
+        this.$emit("deleteSucceed");
       } else if (action == "edit") {
         //otherActionModalを閉じる
         this.closeOtherActionModal();

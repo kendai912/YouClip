@@ -136,7 +136,7 @@ export default {
       // this.snackbar = true;
       this.$emit("taggingSucceed");
     },
-    //シーンタグ更新のトーストを表示
+    //シーンタグ更新完了のトーストを表示
     updateSucceed() {
       this.$emit("updateSucceed");
     }

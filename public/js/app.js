@@ -1872,7 +1872,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     Navbar: __WEBPACK_IMPORTED_MODULE_0__components_Navbar_vue___default.a,
     Footer: __WEBPACK_IMPORTED_MODULE_1__components_Footer_vue___default.a
   },
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["f" /* default */]],
   computed: {
     errorCode: function errorCode() {
       return this.$store.state.error.code;
@@ -1881,7 +1881,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   watch: {
     errorCode: {
       handler: function handler(val) {
-        if (val === __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+        if (val === __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
           this.$router.push("/500");
         }
       },
@@ -2143,7 +2143,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   props: {
     mediaItems: Array
   },
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["f" /* default */]],
   methods: {
     select: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(mediaItem) {
@@ -2263,7 +2263,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_4__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_4__util__["f" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     myPlaylistTagDataLoaded: "playlist/myPlaylistTagDataLoaded",
     myTagVideoData: "tag/myTagVideoData"
@@ -2345,7 +2345,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     return {};
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["f" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
     activeTab: "mypage/activeTab"
   })),
@@ -2410,7 +2410,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     return {};
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["f" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
     activeTab: "mypage/activeTab"
   })),
@@ -2591,8 +2591,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       tiles: [{ img: "fas fa-trash", title: "削除", action: "delete" }, { img: "fas fa-pen", title: "編集", action: "edit" }, { img: "fas fa-flag", title: "報告", action: "report" }, { img: "fas fa-times", title: "キャンセル", action: "cancel" }]
     };
   },
-  props: {},
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
+  props: {
+    player: Object
+  },
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["f" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     currentYoutubeId: "watch/currentYoutubeId",
     startHis: "watch/start",
@@ -2609,9 +2611,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
     showOtherActionModal: {
       get: function get() {
+        this.player.pauseVideo();
         return this.$store.getters["otherActionModal/showOtherActionModal"];
       },
       set: function set() {
+        this.player.playVideo();
         return this.$store.commit("otherActionModal/closeOtherActionModal");
       }
     }
@@ -2626,16 +2630,23 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             switch (_context.prev = _context.next) {
               case 0:
                 if (!(action == "delete")) {
-                  _context.next = 3;
+                  _context.next = 7;
                   break;
                 }
 
-                _context.next = 20;
+                //otherActionModalを閉じる
+                this.closeOtherActionModal();
+                this.$store.commit("tagging/setTagId", this.currentTagId);
+                this.$store.dispatch("tagging/deleteTag");
+
+                //シーンタグ削除完了のトーストを表示し遷移
+                this.$emit("deleteSucceed");
+                _context.next = 24;
                 break;
 
-              case 3:
+              case 7:
                 if (!(action == "edit")) {
-                  _context.next = 19;
+                  _context.next = 23;
                   break;
                 }
 
@@ -2644,14 +2655,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
                 //「編集」に必要なyoutubeデータをロード
                 this.$store.commit("youtube/setYoutubeId", this.currentYoutubeId);
-                _context.next = 8;
+                _context.next = 12;
                 return this.$store.dispatch("youtube/getVideo");
 
-              case 8:
-                _context.next = 10;
+              case 12:
+                _context.next = 14;
                 return this.$store.dispatch("youtube/getTag");
 
-              case 10:
+              case 14:
                 this.$store.commit("youtube/setIsReady", true);
 
                 //編集モードフラグをセット
@@ -2665,15 +2676,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
                 //シーンタグ付けコンポーネントを表示
                 this.$store.commit("tagging/setShowSceneTagControl", true);
-                _context.next = 20;
+                _context.next = 24;
                 break;
 
-              case 19:
+              case 23:
                 if (action == "report") {} else if (action == "cancel") {
                   this.closeOtherActionModal();
                 }
 
-              case 20:
+              case 24:
               case "end":
                 return _context.stop();
             }
@@ -2752,7 +2763,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["f" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
     // currentTime: "youtube/currentTime",
     // videoData: "youtube/videoData",
@@ -2831,7 +2842,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       this.$emit("taggingSucceed");
     },
 
-    //シーンタグ更新のトーストを表示
+    //シーンタグ更新完了のトーストを表示
     updateSucceed: function updateSucceed() {
       this.$emit("updateSucceed");
     }
@@ -3112,7 +3123,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["f" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
     currentTime: "youtube/currentTime",
     videoData: "youtube/videoData",
@@ -3232,7 +3243,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["f" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
     currentTime: "youtube/currentTime",
     videoData: "youtube/videoData",
@@ -3457,7 +3468,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["f" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     currentTime: "youtube/currentTime",
     videoData: "youtube/videoData",
@@ -3735,7 +3746,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   props: {
     YTitems: Array
   },
-  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["f" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
     YTloading: "YTsearch/YTloading"
   })),
@@ -3812,7 +3823,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["f" /* default */]],
   methods: {
     //i:s形式に変換
     formatToMinSec: function formatToMinSec(His) {
@@ -4071,7 +4082,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     MyList: __WEBPACK_IMPORTED_MODULE_1__components_MyList_vue___default.a
   },
   props: {},
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["f" /* default */]],
   methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapMutations */])({})),
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
     isLogin: "auth/check"
@@ -4131,7 +4142,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     return {};
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_4__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_4__util__["f" /* default */]],
   methods: {
     //i:s形式に変換
     formatToMinSec: function formatToMinSec(His) {
@@ -4377,6 +4388,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -4405,11 +4420,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       timer: null,
       snackbar: false,
       timeout: 5000,
-      text: "シーンタグを更新しました"
+      color: "blue",
+      text: ""
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_7__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_7__util__["f" /* default */]],
   methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["c" /* mapMutations */])({
     openShareModal: "shareModal/openShareModal",
     openOtherActionModal: "otherActionModal/openOtherActionModal"
@@ -4428,31 +4444,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
       //URLを更新
       this.$router.push({
+        path: "/watch",
         query: {
           playlist: playlistId,
           index: index
         }
       }).catch(function (err) {});
-
-      //次のシーンをロードし再生
-      this.player.loadVideoById({
-        videoId: this.currentYoutubeId,
-        startSeconds: this.convertToSec(this.formatToMinSec(this.startHis)),
-        endSeconds: this.convertToSec(this.formatToMinSec(this.endHis))
-      });
-    },
-    playSpecificScene: function playSpecificScene(tagId) {
-      //特定シーンのパラメータをセット
-      this.setIndivisualParameters(tagId);
-
-      //別のシーンの場合はURLを更新
-      if (this.$route.query.tag != this.currentTagId) {
-        this.$router.push({
-          query: {
-            tag: tagId
-          }
-        }).catch(function (err) {});
-      }
 
       //次のシーンをロードし再生
       this.player.loadVideoById({
@@ -4552,9 +4549,44 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       return addPlaylist;
     }(),
 
-    //シーンタグ完了のトーストを表示
+    //シーンタグ更新完了のトーストを表示しリロード
     updateSucceed: function updateSucceed() {
+      this.color = "blue";
+      this.text = "シーンタグを更新しました";
       this.snackbar = true;
+      location.reload();
+    },
+
+    //シーンタグ削除完了のトーストを表示し戻る＆リロード
+    deleteSucceed: function deleteSucceed() {
+      this.color = "grey lighten-1";
+      this.text = "シーンタグを削除しました";
+      this.snackbar = true;
+      this.transitAfterDelete();
+    },
+
+    //シーンタグ削除後のページ遷移
+    transitAfterDelete: function transitAfterDelete() {
+      if (this.$route.query.playlist) {
+        //プレイリスト再生の場合
+        if (this.watchList.length >= 2 && this.indexUrl == this.watchList.length - 1) {
+          //  削除後も他のシーンがあり、かつ一番最後の場合、先頭に戻る
+          this.indexUrl = 0;
+          this.playPlaylist(this.playlistIdUrl, this.indexUrl);
+        } else if (this.watchList.length < 2) {
+          // 削除後に他のシーンがない場合、トップページに遷移
+          this.$router.push({
+            path: "/home"
+          }).catch(function (err) {});
+        }
+      } else if (this.$route.query.tag) {
+        //タグ再生の場合、トップページに戻る
+        this.$router.push({
+          path: "/home"
+        }).catch(function (err) {});
+      }
+
+      //削除後のデータをリロード
       location.reload();
     }
   }),
@@ -4598,7 +4630,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       return this.formatToMinSec(this.endHis);
     }
   })
-}, _defineProperty(_components$data$mixi, "mixins", [__WEBPACK_IMPORTED_MODULE_7__util__["e" /* default */]]), _defineProperty(_components$data$mixi, "mounted", function () {
+}, _defineProperty(_components$data$mixi, "mixins", [__WEBPACK_IMPORTED_MODULE_7__util__["f" /* default */]]), _defineProperty(_components$data$mixi, "mounted", function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
     var _this = this;
 
@@ -4783,7 +4815,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     YTSearchBox: __WEBPACK_IMPORTED_MODULE_1__components_YTSearchBox_vue___default.a,
     YTitem: __WEBPACK_IMPORTED_MODULE_2__components_YTitem_vue___default.a
   },
-  mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["f" /* default */]],
   methods: {},
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
     YTsearchQuery: "YTsearch/YTsearchQuery",
@@ -4854,7 +4886,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_4__util__["e" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_4__util__["f" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     youtubeId: "youtube/youtubeId",
     videoData: "youtube/videoData",
@@ -39524,7 +39556,12 @@ var render = function() {
               ? _c("AddPlaylistModal", { attrs: { player: _vm.player } })
               : _vm._e(),
             _vm._v(" "),
-            _vm.showOtherActionModal ? _c("OtherActionModal") : _vm._e(),
+            _vm.showOtherActionModal
+              ? _c("OtherActionModal", {
+                  attrs: { player: _vm.player },
+                  on: { deleteSucceed: _vm.deleteSucceed }
+                })
+              : _vm._e(),
             _vm._v(" "),
             _vm.showSceneTagControl
               ? _c("SceneTagControl", {
@@ -39550,7 +39587,7 @@ var render = function() {
                 _c(
                   "v-btn",
                   {
-                    attrs: { color: "blue", text: "" },
+                    attrs: { color: _vm.color, text: "" },
                     on: {
                       click: function($event) {
                         _vm.snackbar = false
@@ -97692,7 +97729,7 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 window.axios.interceptors.request.use(function (config) {
   // クッキーからトークンを取り出してヘッダーに添付する
-  config.headers["X-XSRF-TOKEN"] = Object(__WEBPACK_IMPORTED_MODULE_0__util__["f" /* getCookieValue */])("XSRF-TOKEN");
+  config.headers["X-XSRF-TOKEN"] = Object(__WEBPACK_IMPORTED_MODULE_0__util__["g" /* getCookieValue */])("XSRF-TOKEN");
 
   return config;
 });
@@ -99306,10 +99343,10 @@ var actions = {
             case 3:
               response = _context.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setCandidates", response.data.candidates);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -99346,11 +99383,11 @@ var actions = {
             case 2:
               response = _context2.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setYTloading", false);
                 context.commit("setYTResult", response.data.items);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -99392,7 +99429,7 @@ var actions = {
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
                 // 成功した時
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -99429,10 +99466,10 @@ var actions = {
             case 2:
               response = _context4.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setTopYTSearchqueries", response.data.topYTSearchqueries);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -99469,10 +99506,10 @@ var actions = {
             case 2:
               response = _context5.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setYTsearchHistories", response.data.YTsearchHistories);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -99579,7 +99616,7 @@ var actions = {
             case 8:
 
               context.commit("setApiStatus", false);
-              if (response.status === __WEBPACK_IMPORTED_MODULE_1__util__["d" /* UNPROCESSABLE_ENTITY */]) {
+              if (response.status === __WEBPACK_IMPORTED_MODULE_1__util__["e" /* UNPROCESSABLE_ENTITY */]) {
                 context.commit("setRegisterErrorMessages", response.data.errors);
               } else {
                 context.commit("error/setCode", response.status, { root: true });
@@ -99615,7 +99652,7 @@ var actions = {
             case 3:
               response = _context2.sent;
 
-              if (!(response.status == __WEBPACK_IMPORTED_MODULE_1__util__["c" /* OK */])) {
+              if (!(response.status == __WEBPACK_IMPORTED_MODULE_1__util__["d" /* OK */])) {
                 _context2.next = 8;
                 break;
               }
@@ -99627,7 +99664,7 @@ var actions = {
             case 8:
 
               context.commit("setApiStatus", false);
-              if (response.status === __WEBPACK_IMPORTED_MODULE_1__util__["d" /* UNPROCESSABLE_ENTITY */]) {
+              if (response.status === __WEBPACK_IMPORTED_MODULE_1__util__["e" /* UNPROCESSABLE_ENTITY */]) {
                 context.commit("setLoginErrorMessages", response.data.errors);
               } else {
                 context.commit("error/setCode", response.status, { root: true });
@@ -99900,10 +99937,10 @@ var actions = {
             case 2:
               response = _context.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setTagLikeData", response.data.tagLike);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -99953,7 +99990,7 @@ var actions = {
                   context.commit("toggleIsLiked", tag_id);
                   context.commit("incrementLikeCount", tag_id);
                 }
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -100080,10 +100117,10 @@ var actions = {
             case 2:
               response = _context.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setPlaylistLikeData", response.data.playlistLike);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -100133,7 +100170,7 @@ var actions = {
                   context.commit("toggleIsLiked", playlist_id);
                   context.commit("incrementLikeCount", playlist_id);
                 }
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -100336,10 +100373,10 @@ var actions = {
             case 2:
               response = _context.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setPlaylistTagData", response.data.playlistTagData);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -100376,10 +100413,10 @@ var actions = {
             case 2:
               response = _context2.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setMyPlaylistTagDataLoaded", response.data.myPlaylist);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -100434,7 +100471,7 @@ var actions = {
 
                 //ポップアップでプレイリストの作成完了を通知
                 toastr.success("プレイリストに保存しました");
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
                 toastr.error("プレイリストへの保存に失敗しました");
@@ -100493,7 +100530,7 @@ var actions = {
 
                 //ポップアップでプレイリストの作成完了を通知
                 toastr.success("[" + params.newPlaylistName + "]に保存しました");
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
                 toastr.error("プレイリストへの作成に失敗しました");
@@ -100534,13 +100571,13 @@ var actions = {
             case 3:
               response = _context5.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 playlistIdsOfTag = response.data.playlistIds;
                 //追加済のプレイリストのチェックボックスにチェック
 
                 context.commit("setPlaylistIdsOfTag", playlistIdsOfTag);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -100683,10 +100720,10 @@ var actions = {
             case 3:
               response = _context.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setCandidates", response.data.candidates);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -100726,10 +100763,10 @@ var actions = {
             case 3:
               response = _context2.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setTagVideoResult", response.data.tagVideoResult);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -100769,10 +100806,10 @@ var actions = {
             case 3:
               response = _context3.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setPlaylistTagResult", response.data.playlistTagResult);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -100814,7 +100851,7 @@ var actions = {
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
                 // 成功した時
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -100851,10 +100888,10 @@ var actions = {
             case 2:
               response = _context5.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setTopSearchqueries", response.data.topSearchqueries);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -100891,10 +100928,10 @@ var actions = {
             case 2:
               response = _context6.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setSearchHistories", response.data.searchHistories);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -101052,10 +101089,10 @@ var actions = {
             case 2:
               response = _context.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setTagVideoData", response.data);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -101092,10 +101129,10 @@ var actions = {
             case 2:
               response = _context2.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setMyTagVideoData", response.data.myTagVideoData);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -101281,7 +101318,7 @@ var actions = {
                 context.commit("setControlTransitNext", false);
                 //TimeControlのシートへ戻る
                 context.commit("setShowTaggingControl", "TimeControl");
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -101340,7 +101377,7 @@ var actions = {
                 context.commit("setShowTaggingControl", "TimeControl");
                 //シーンタグ付けコンポーネントを非表示にし再生画面に戻る
                 context.commit("setShowSceneTagControl", false);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -101361,6 +101398,46 @@ var actions = {
     }
 
     return updateSceneTags;
+  }(),
+  deleteTag: function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(context) {
+      var params, response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              params = {
+                tagId: state.tagId
+              };
+              _context3.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/tag/delete", params);
+
+            case 3:
+              response = _context3.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* DELETED */]) {
+                // 成功した時
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 5:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3, this);
+    }));
+
+    function deleteTag(_x3) {
+      return _ref3.apply(this, arguments);
+    }
+
+    return deleteTag;
   }()
 };
 
@@ -101687,7 +101764,7 @@ var actions = {
             case 3:
               response = _context.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 if (!response.data.video[0]) {
                   //新規の動画・タグ場合
@@ -101697,7 +101774,7 @@ var actions = {
                   context.commit("setIsNew", false);
                   context.commit("setVideoData", response.data.video[0]);
                 }
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -101747,7 +101824,7 @@ var actions = {
             case 5:
               response = _context2.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 tags = response.data.tag;
 
@@ -101758,7 +101835,7 @@ var actions = {
                 });
 
                 context.commit("setTagDataArray", tags);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -101801,14 +101878,14 @@ var actions = {
             case 4:
               response = _context3.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setNewVideoTitle", response.data.items[0].snippet.title);
                 context.commit("setNewVideoThumbnail", response.data.items[0].snippet.thumbnails.high.url);
                 context.commit("setNewVideoDuration", response.data.items[0].contentDetails.duration);
                 context.dispatch("getVideoCategoryTitleById", response.data.items[0].snippet.categoryId);
                 // context.commit("setYTResult", response.data.items);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -101851,10 +101928,10 @@ var actions = {
             case 4:
               response = _context4.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 context.commit("setNewVideoCategory", response.data.items[0].snippet.title);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["b" /* INTERNAL_SERVER_ERROR */]) {
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
               } else {
@@ -101892,11 +101969,12 @@ var actions = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return OK; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return OK; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CREATED; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return INTERNAL_SERVER_ERROR; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return UNPROCESSABLE_ENTITY; });
-/* harmony export (immutable) */ __webpack_exports__["f"] = getCookieValue;
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return DELETED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return INTERNAL_SERVER_ERROR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return UNPROCESSABLE_ENTITY; });
+/* harmony export (immutable) */ __webpack_exports__["g"] = getCookieValue;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 
@@ -101908,6 +101986,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //システムエラー定義
 var OK = 200;
 var CREATED = 201;
+var DELETED = 204;
 var INTERNAL_SERVER_ERROR = 500;
 
 //バリデーションエラー定義
@@ -101940,7 +102019,7 @@ function getCookieValue(searchKey) {
 }
 
 // ミックスインを定義
-/* harmony default export */ __webpack_exports__["e"] = ({
+/* harmony default export */ __webpack_exports__["f"] = ({
   methods: {
     //タグデータをレコメンド画面に表示するメディアアイテムに格納
     putTagVideoIntoMediaItems: function putTagVideoIntoMediaItems(mediaItems, tagVideo) {
@@ -101967,18 +102046,20 @@ function getCookieValue(searchKey) {
     putPlaylistTagIntoMediaItems: function putPlaylistTagIntoMediaItems(mediaItems, playlistTag) {
       if (playlistTag) {
         playlistTag.forEach(function (value, index) {
-          mediaItems.push({
-            category: "playlist",
-            id: value.id,
-            title: value.playlistName,
-            thumbnail: "https://watanabeseiji.com/wordpress/wp-content/themes/cyber/images/noimage.jpg",
-            created_at: value.created_at,
-            tags: "",
-            tagArray: "",
-            start: "",
-            end: "",
-            preview: value.tags[0].preview
-          });
+          if (value.tags[0]) {
+            mediaItems.push({
+              category: "playlist",
+              id: value.id,
+              title: value.playlistName,
+              thumbnail: "https://watanabeseiji.com/wordpress/wp-content/themes/cyber/images/noimage.jpg",
+              created_at: value.created_at,
+              tags: "",
+              tagArray: "",
+              start: "",
+              end: "",
+              preview: value.tags[0].preview
+            });
+          }
         });
       }
     },

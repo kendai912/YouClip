@@ -1,6 +1,7 @@
 //システムエラー定義
 export const OK = 200;
 export const CREATED = 201;
+export const DELETED = 204;
 export const INTERNAL_SERVER_ERROR = 500;
 
 //バリデーションエラー定義
@@ -18,7 +19,7 @@ export function getCookieValue(searchKey) {
 
   let val = "";
 
-  document.cookie.split(";").forEach(cookie => {
+  document.cookie.split(";").forEach((cookie) => {
     const [key, value] = cookie.split("=");
     if (key === searchKey) {
       return (val = value);
@@ -45,7 +46,7 @@ export default {
             tagArray: value.tags.split(/[\s| |　]/),
             start: this.formatToMinSec(value.start),
             end: this.formatToMinSec(value.end),
-            preview: value.preview
+            preview: value.preview,
           });
         });
       }
@@ -54,19 +55,21 @@ export default {
     putPlaylistTagIntoMediaItems: function(mediaItems, playlistTag) {
       if (playlistTag) {
         playlistTag.forEach((value, index) => {
-          mediaItems.push({
-            category: "playlist",
-            id: value.id,
-            title: value.playlistName,
-            thumbnail:
-              "https://watanabeseiji.com/wordpress/wp-content/themes/cyber/images/noimage.jpg",
-            created_at: value.created_at,
-            tags: "",
-            tagArray: "",
-            start: "",
-            end: "",
-            preview: value.tags[0].preview
-          });
+          if (value.tags[0]) {
+            mediaItems.push({
+              category: "playlist",
+              id: value.id,
+              title: value.playlistName,
+              thumbnail:
+                "https://watanabeseiji.com/wordpress/wp-content/themes/cyber/images/noimage.jpg",
+              created_at: value.created_at,
+              tags: "",
+              tagArray: "",
+              start: "",
+              end: "",
+              preview: value.tags[0].preview,
+            });
+          }
         });
       }
     },
@@ -109,7 +112,7 @@ export default {
 
       //tagデータとvideoデータを結合
       let playlistTagVideoArray = [];
-      playlistTagArray.forEach(value => {
+      playlistTagArray.forEach((value) => {
         playlistTagVideoArray.push(
           this.$store.getters["tag/getTagVideoContentById"](value.id)
         );
@@ -118,7 +121,7 @@ export default {
       //Watchストアに再生のためのパラメータをセット
       this.$store.commit("watch/setPlaylistParameters", {
         playlistTagVideoArray,
-        index
+        index,
       });
     },
     //YTPlayerのタグの再生に必要なパラメータをセット
@@ -136,7 +139,7 @@ export default {
 
       //tagデータとvideoデータを結合
       let indivisualTagVideoArray = [];
-      tagList.forEach(value => {
+      tagList.forEach((value) => {
         indivisualTagVideoArray.push(
           this.$store.getters["tag/getTagVideoContentById"](value.id)
         );
@@ -147,6 +150,6 @@ export default {
         "watch/setIndivisualParameters",
         indivisualTagVideoArray
       );
-    }
-  }
+    },
+  },
 };

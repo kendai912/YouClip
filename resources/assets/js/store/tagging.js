@@ -1,5 +1,5 @@
 import axios from "axios";
-import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
+import { OK, CREATED, DELETED, INTERNAL_SERVER_ERROR } from "../util";
 import router from "../router";
 import store from "../store";
 
@@ -12,19 +12,19 @@ const state = {
   end: null,
   controlTransitNext: true,
   itemsList: [],
-  isEditting: false,
+  isEditting: false
 };
 
 const getters = {
-  showSceneTagControl: (state) => state.showSceneTagControl,
-  showTaggingControl: (state) => state.showTaggingControl,
-  tagId: (state) => state.tagId,
-  tags: (state) => state.tags,
-  start: (state) => state.start,
-  end: (state) => state.end,
-  controlTransitNext: (state) => state.controlTransitNext,
-  itemsList: (state) => state.itemsList,
-  isEditting: (state) => state.isEditting,
+  showSceneTagControl: state => state.showSceneTagControl,
+  showTaggingControl: state => state.showTaggingControl,
+  tagId: state => state.tagId,
+  tags: state => state.tags,
+  start: state => state.start,
+  end: state => state.end,
+  controlTransitNext: state => state.controlTransitNext,
+  itemsList: state => state.itemsList,
+  isEditting: state => state.isEditting
 };
 
 const mutations = {
@@ -75,7 +75,7 @@ const mutations = {
         i--;
       }
     }
-  },
+  }
 };
 
 const actions = {
@@ -90,7 +90,7 @@ const actions = {
       newVideoData: store.getters["youtube/newVideoData"],
       tags: state.tags,
       start: state.start,
-      end: state.end,
+      end: state.end
     };
 
     const response = await axios.post("/api/tag/store", params);
@@ -123,7 +123,7 @@ const actions = {
       tagId: state.tagId,
       tags: state.tags,
       start: state.start,
-      end: state.end,
+      end: state.end
     };
 
     const response = await axios.post("/api/tag/update", params);
@@ -147,6 +147,22 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+  async deleteTag(context) {
+    let params = {
+      tagId: state.tagId
+    };
+
+    const response = await axios.post("/api/tag/delete", params);
+    if (response.status == DELETED) {
+      // 成功した時
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  }
 };
 
 export default {
@@ -154,5 +170,5 @@ export default {
   state,
   getters,
   mutations,
-  actions,
+  actions
 };
