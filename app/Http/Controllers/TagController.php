@@ -281,9 +281,12 @@ class TagController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function delete(Request $request)
-    {
-        //DBから削除
+    {        
+        //削除するシーンタグを取得
         $tag = Tag::find($request->tagId);
+        //preview用gifを削除
+        unlink(storage_path(). "/app/public/img/" . $tag->preview);
+        //DBから削除
         $tag->delete();
 
         return response(null, 204);
