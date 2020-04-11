@@ -1,5 +1,5 @@
 <template>
-  <div v-on:click="select">
+  <div v-if="myPlaylistTag.tags[0]" v-on:click="select">
     <div class="thumbnail">
       <img
         v-bind:src="'/storage/img/' + myPlaylistTag.tags[0].preview"

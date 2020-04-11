@@ -9,11 +9,12 @@ import playlist from "./playlist";
 import like from "./like";
 import likePlaylist from "./likePlaylist";
 import search from "./search";
+import shareModal from "./shareModal";
+import snackbar from "./snackbar";
 import YTsearch from "./YTsearch";
 import youtube from "./youtube";
 import tagging from "./tagging";
 import noLoginModal from "./noLoginModal";
-import shareModal from "./shareModal";
 import otherActionModal from "./otherActionModal";
 import error from "./error";
 
@@ -29,14 +30,15 @@ const store = new Vuex.Store({
     like,
     likePlaylist,
     search,
+    shareModal,
+    snackbar,
     YTsearch,
     youtube,
     tagging,
     noLoginModal,
-    shareModal,
     otherActionModal,
-    error,
-  },
+    error
+  }
 });
 
 export default store;

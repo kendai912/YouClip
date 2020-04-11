@@ -42,10 +42,10 @@
         v-bind:player="player"
         v-on:updateSucceed="updateSucceed"
       />
-      <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
+      <!-- <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
         {{ text }}
         <v-btn v-bind:color="color" text v-on:click="snackbar = false">Close</v-btn>
-      </v-snackbar>
+      </v-snackbar>-->
     </div>
   </div>
 </template>
@@ -75,11 +75,11 @@ export default {
       isPlaying: true,
       isPlayerReady: false,
       player: null,
-      timer: null,
-      snackbar: false,
-      timeout: 5000,
-      color: "blue",
-      text: ""
+      timer: null
+      // snackbar: false,
+      // timeout: 5000,
+      // color: "blue",
+      // text: ""
     };
   },
   mixins: [myMixin],
@@ -208,22 +208,22 @@ export default {
         this.$store.commit("playlist/openAddPlaylistModal");
       }
     },
-    //シーンタグ更新完了のトーストを表示しリロード
+    //リロードした後にシーンタグ更新完了トーストを表示するためのフラグをセッションに格納
     updateSucceed() {
-      this.color = "blue";
-      this.text = "シーンタグを更新しました";
-      this.snackbar = true;
-      location.reload();
+      //更新完了トーストFlagをセッションストレージに保存
+      window.sessionStorage.setItem("updateSuccess", true);
+      // リロード
+      window.location.reload();
     },
     //シーンタグ削除完了のトーストを表示し戻る＆リロード
     deleteSucceed() {
-      this.color = "grey lighten-1";
-      this.text = "シーンタグを削除しました";
-      this.snackbar = true;
-      this.transitAfterDelete();
+      //削除完了トーストFlagをセッションストレージに保存
+      window.sessionStorage.setItem("deleteSuccess", true);
+      // ページ遷移後リロード
+      this.transitAndReloadAfterDelete();
     },
     //シーンタグ削除後のページ遷移
-    transitAfterDelete() {
+    transitAndReloadAfterDelete() {
       if (this.$route.query.playlist) {
         //プレイリスト再生の場合
         if (

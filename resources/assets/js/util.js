@@ -19,7 +19,7 @@ export function getCookieValue(searchKey) {
 
   let val = "";
 
-  document.cookie.split(";").forEach((cookie) => {
+  document.cookie.split(";").forEach(cookie => {
     const [key, value] = cookie.split("=");
     if (key === searchKey) {
       return (val = value);
@@ -46,7 +46,7 @@ export default {
             tagArray: value.tags.split(/[\s| |　]/),
             start: this.formatToMinSec(value.start),
             end: this.formatToMinSec(value.end),
-            preview: value.preview,
+            preview: value.preview
           });
         });
       }
@@ -67,7 +67,7 @@ export default {
               tagArray: "",
               start: "",
               end: "",
-              preview: value.tags[0].preview,
+              preview: value.tags[0].preview
             });
           }
         });
@@ -112,7 +112,7 @@ export default {
 
       //tagデータとvideoデータを結合
       let playlistTagVideoArray = [];
-      playlistTagArray.forEach((value) => {
+      playlistTagArray.forEach(value => {
         playlistTagVideoArray.push(
           this.$store.getters["tag/getTagVideoContentById"](value.id)
         );
@@ -121,7 +121,7 @@ export default {
       //Watchストアに再生のためのパラメータをセット
       this.$store.commit("watch/setPlaylistParameters", {
         playlistTagVideoArray,
-        index,
+        index
       });
     },
     //YTPlayerのタグの再生に必要なパラメータをセット
@@ -139,7 +139,7 @@ export default {
 
       //tagデータとvideoデータを結合
       let indivisualTagVideoArray = [];
-      tagList.forEach((value) => {
+      tagList.forEach(value => {
         indivisualTagVideoArray.push(
           this.$store.getters["tag/getTagVideoContentById"](value.id)
         );
@@ -151,5 +151,24 @@ export default {
         indivisualTagVideoArray
       );
     },
-  },
+    removeURLParameter(url, parameter) {
+      //prefer to use l.search if you have a location/link object
+      var urlparts = url.split("?");
+      if (urlparts.length >= 2) {
+        var prefix = encodeURIComponent(parameter) + "=";
+        var pars = urlparts[1].split(/[&;]/g);
+
+        //reverse iteration as may be destructive
+        for (var i = pars.length; i-- > 0; ) {
+          //idiom for string.startsWith
+          if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+            pars.splice(i, 1);
+          }
+        }
+
+        return urlparts[0] + (pars.length > 0 ? "?" + pars.join("&") : "");
+      }
+      return url;
+    }
+  }
 };

@@ -1842,9 +1842,11 @@ module.exports = {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Navbar_vue__ = __webpack_require__("./resources/assets/js/components/Navbar.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Navbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Navbar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Footer_vue__ = __webpack_require__("./resources/assets/js/components/Footer.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Footer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_Footer_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Snackbar_vue__ = __webpack_require__("./resources/assets/js/components/Snackbar.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Snackbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_Snackbar_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Footer_vue__ = __webpack_require__("./resources/assets/js/components/Footer.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Footer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Footer_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./resources/assets/js/util.js");
 //
 //
 //
@@ -1861,6 +1863,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+
 
 
 
@@ -1870,9 +1874,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     Navbar: __WEBPACK_IMPORTED_MODULE_0__components_Navbar_vue___default.a,
-    Footer: __WEBPACK_IMPORTED_MODULE_1__components_Footer_vue___default.a
+    Snackbar: __WEBPACK_IMPORTED_MODULE_1__components_Snackbar_vue___default.a,
+    Footer: __WEBPACK_IMPORTED_MODULE_2__components_Footer_vue___default.a
   },
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["f" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["f" /* default */]],
   computed: {
     errorCode: function errorCode() {
       return this.$store.state.error.code;
@@ -1881,7 +1886,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   watch: {
     errorCode: {
       handler: function handler(val) {
-        if (val === __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
+        if (val === __WEBPACK_IMPORTED_MODULE_3__util__["c" /* INTERNAL_SERVER_ERROR */]) {
           this.$router.push("/500");
         }
       },
@@ -1897,6 +1902,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     this.$store.dispatch("playlist/loadPlaylist");
     this.$store.dispatch("like/loadTagLike");
     this.$store.dispatch("likePlaylist/loadPlaylistLike");
+
+    //URLのtoastパラメータを見てトーストを表示
+    if (window.sessionStorage.getItem("updateSuccess")) {
+      this.$store.commit("snackbar/setColor", "blue");
+      this.$store.commit("snackbar/setText", "シーンタグを更新しました");
+      this.$store.commit("snackbar/setSnackbar", true);
+      window.sessionStorage.removeItem("updateSuccess");
+    } else if (window.sessionStorage.getItem("deleteSuccess")) {
+      this.$store.commit("snackbar/setColor", "grey lighten-1");
+      this.$store.commit("snackbar/setText", "シーンタグを削除しました");
+      this.$store.commit("snackbar/setSnackbar", true);
+      window.sessionStorage.removeItem("deleteSuccess");
+    }
   }
 });
 
@@ -2510,7 +2528,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     }
   }), Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     isLogin: "auth/check"
-  }))
+  })),
+  created: function created() {}
 });
 
 /***/ }),
@@ -2732,10 +2751,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -2756,86 +2771,17 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       slider: { val: 0, color: "red" },
       sliderInterval: null,
       startTimeInput: null,
-      endTimeInput: null,
-      snackbar: false,
-      timeout: 5000,
-      text: "シーンタグを登録しました"
+      endTimeInput: null
     };
   },
 
   mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["f" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
-    // currentTime: "youtube/currentTime",
-    // videoData: "youtube/videoData",
-    // newVideoData: "youtube/newVideoData",
-    // isNew: "youtube/isNew",
     isReady: "youtube/isReady",
     showTaggingControl: "tagging/showTaggingControl",
     controlTransitNext: "tagging/controlTransitNext"
   })),
   methods: {
-    // //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
-    // startUpdateSlider() {
-    //   let self = this;
-    //   self.sliderInterval = setInterval(function() {
-    //     let sliderPosition =
-    //       100 *
-    //       (self.convertToSec(self.currentTime) /
-    //         self.convertToSec(self.duration));
-
-    //     self.slider.val = sliderPosition;
-    //   }, 800);
-    // },
-    // stopUpdateSlider() {
-    //   clearInterval(this.sliderInterval);
-    // },
-    // //sliderをクリックした場合、その地点までplayerの再生時間をジャンプ
-    // seekToAndRestartMouseup(end) {
-    //   let self = this;
-    //   setTimeout(function() {
-    //     self.player.seekTo(
-    //       self.convertToSec(self.duration) * (self.slider.val / 100)
-    //     );
-    //     self.startUpdateSlider();
-    //   }, 1000);
-    // },
-    // //sliderをドラッグした場合、その地点までplayerの再生時間をジャンプ
-    // async seekToAndRestartEnd(end) {
-    //   await this.player.seekTo(this.convertToSec(this.duration) * (end / 100));
-    //   this.startUpdateSlider();
-    // },
-    // tapStartBtn() {
-    //   this.startTimeInput = this.currentTime;
-    //   this.player.playVideo();
-    // },
-    // tapStopBtn() {
-    //   this.endTimeInput = this.currentTime;
-    //   this.player.pauseVideo();
-    // },
-    // //再生
-    // playVideo() {
-    //   this.player.playVideo();
-    // },
-    // //一時停止
-    // pauseVideo() {
-    //   this.player.pauseVideo();
-    // },
-    // //30秒戻る
-    // backwardThirtySec() {
-    //   this.player.seekTo(this.convertToSec(this.currentTime) - 30);
-    // },
-    // //5秒戻る
-    // backwardFiveSec() {
-    //   this.player.seekTo(this.convertToSec(this.currentTime) - 5);
-    // },
-    // //30秒進む
-    // forwardThirtySec() {
-    //   this.player.seekTo(this.convertToSec(this.currentTime) + 30);
-    // },
-    // //5秒進む
-    // forwardFiveSec() {
-    //   this.player.seekTo(this.convertToSec(this.currentTime) + 5);
-    // },
     //シーンタグ完了のトーストを表示
     taggingSucceed: function taggingSucceed() {
       // this.snackbar = true;
@@ -2847,9 +2793,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       this.$emit("updateSucceed");
     }
   },
-  created: function created() {
-    // this.startUpdateSlider();
-  }
+  created: function created() {}
 });
 
 /***/ }),
@@ -3075,6 +3019,52 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       this.closeShareModal();
     }
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Snackbar.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./resources/assets/js/util.js");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["f" /* default */]],
+  methods: {},
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    snackbar: "snackbar/snackbar",
+    timeout: "snackbar/timeout",
+    color: "snackbar/color",
+    text: "snackbar/text"
+  }), {
+    snackbar: {
+      get: function get() {
+        return this.$store.getters["snackbar/snackbar"];
+      },
+      set: function set() {
+        return this.$store.commit("snackbar/setSnackbar", true);
+      }
+    }
+  })
 });
 
 /***/ }),
@@ -4417,11 +4407,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       isPlaying: true,
       isPlayerReady: false,
       player: null,
-      timer: null,
-      snackbar: false,
-      timeout: 5000,
-      color: "blue",
-      text: ""
+      timer: null
+      // snackbar: false,
+      // timeout: 5000,
+      // color: "blue",
+      // text: ""
     };
   },
 
@@ -4549,24 +4539,24 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       return addPlaylist;
     }(),
 
-    //シーンタグ更新完了のトーストを表示しリロード
+    //リロードした後にシーンタグ更新完了トーストを表示するためのフラグをセッションに格納
     updateSucceed: function updateSucceed() {
-      this.color = "blue";
-      this.text = "シーンタグを更新しました";
-      this.snackbar = true;
-      location.reload();
+      //更新完了トーストFlagをセッションストレージに保存
+      window.sessionStorage.setItem("updateSuccess", true);
+      // リロード
+      window.location.reload();
     },
 
     //シーンタグ削除完了のトーストを表示し戻る＆リロード
     deleteSucceed: function deleteSucceed() {
-      this.color = "grey lighten-1";
-      this.text = "シーンタグを削除しました";
-      this.snackbar = true;
-      this.transitAfterDelete();
+      //削除完了トーストFlagをセッションストレージに保存
+      window.sessionStorage.setItem("deleteSuccess", true);
+      // ページ遷移後リロード
+      this.transitAndReloadAfterDelete();
     },
 
     //シーンタグ削除後のページ遷移
-    transitAfterDelete: function transitAfterDelete() {
+    transitAndReloadAfterDelete: function transitAndReloadAfterDelete() {
       if (this.$route.query.playlist) {
         //プレイリスト再生の場合
         if (this.watchList.length >= 2 && this.indexUrl == this.watchList.length - 1) {
@@ -37773,45 +37763,49 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { on: { click: _vm.select } },
-    [
-      _c("div", { staticClass: "thumbnail" }, [
-        _c("img", {
-          staticStyle: { width: "300px", height: "auto" },
-          attrs: { src: "/storage/img/" + _vm.myPlaylistTag.tags[0].preview }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", [_vm._v(_vm._s(_vm.myPlaylistTag.playlistName))]),
-      _vm._v(" "),
-      _vm._l(_vm.myPlaylistTag.tags, function(tag) {
-        return _c(
-          "v-chip",
-          { key: tag.id, attrs: { color: "blue" } },
-          [
-            _c("v-icon", { attrs: { left: "" } }, [_vm._v("mdi-label")]),
-            _vm._v(" "),
-            _c(
-              "strong",
-              {
-                on: {
-                  click: function($event) {
-                    $event.stopPropagation()
-                    return _vm.search(tag.tags)
-                  }
-                }
-              },
-              [_vm._v(_vm._s(tag.tags))]
+  return _vm.myPlaylistTag.tags[0]
+    ? _c(
+        "div",
+        { on: { click: _vm.select } },
+        [
+          _c("div", { staticClass: "thumbnail" }, [
+            _c("img", {
+              staticStyle: { width: "300px", height: "auto" },
+              attrs: {
+                src: "/storage/img/" + _vm.myPlaylistTag.tags[0].preview
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", [_vm._v(_vm._s(_vm.myPlaylistTag.playlistName))]),
+          _vm._v(" "),
+          _vm._l(_vm.myPlaylistTag.tags, function(tag) {
+            return _c(
+              "v-chip",
+              { key: tag.id, attrs: { color: "blue" } },
+              [
+                _c("v-icon", { attrs: { left: "" } }, [_vm._v("mdi-label")]),
+                _vm._v(" "),
+                _c(
+                  "strong",
+                  {
+                    on: {
+                      click: function($event) {
+                        $event.stopPropagation()
+                        return _vm.search(tag.tags)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(tag.tags))]
+                )
+              ],
+              1
             )
-          ],
-          1
-        )
-      })
-    ],
-    2
-  )
+          })
+        ],
+        2
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -38923,6 +38917,8 @@ var render = function() {
           _c("div", { staticClass: "container" }, [_c("RouterView")], 1)
         ]),
         _vm._v(" "),
+        _c("Snackbar"),
+        _vm._v(" "),
         _c("Footer")
       ],
       1
@@ -39568,37 +39564,7 @@ var render = function() {
                   attrs: { player: _vm.player },
                   on: { updateSucceed: _vm.updateSucceed }
                 })
-              : _vm._e(),
-            _vm._v(" "),
-            _c(
-              "v-snackbar",
-              {
-                attrs: { timeout: _vm.timeout },
-                model: {
-                  value: _vm.snackbar,
-                  callback: function($$v) {
-                    _vm.snackbar = $$v
-                  },
-                  expression: "snackbar"
-                }
-              },
-              [
-                _vm._v("\n      " + _vm._s(_vm.text) + "\n      "),
-                _c(
-                  "v-btn",
-                  {
-                    attrs: { color: _vm.color, text: "" },
-                    on: {
-                      click: function($event) {
-                        _vm.snackbar = false
-                      }
-                    }
-                  },
-                  [_vm._v("Close")]
-                )
-              ],
-              1
-            )
+              : _vm._e()
           ],
           1
         )
@@ -39877,6 +39843,55 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-cadbadf2", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-d3d35088\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Snackbar.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-snackbar",
+    {
+      attrs: { timeout: _vm.timeout },
+      model: {
+        value: _vm.snackbar,
+        callback: function($$v) {
+          _vm.snackbar = $$v
+        },
+        expression: "snackbar"
+      }
+    },
+    [
+      _vm._v("\n  " + _vm._s(_vm.text) + "\n  "),
+      _c(
+        "v-btn",
+        {
+          attrs: { color: _vm.color, text: "" },
+          on: {
+            click: function($event) {
+              _vm.snackbar = false
+            }
+          }
+        },
+        [_vm._v("Close")]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-d3d35088", module.exports)
   }
 }
 
@@ -98399,6 +98414,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/Snackbar.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/Snackbar.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-d3d35088\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Snackbar.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Snackbar.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d3d35088", Component.options)
+  } else {
+    hotAPI.reload("data-v-d3d35088", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/TagItem.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -99792,13 +99855,15 @@ var mutations = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__like__ = __webpack_require__("./resources/assets/js/store/like.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__likePlaylist__ = __webpack_require__("./resources/assets/js/store/likePlaylist.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__search__ = __webpack_require__("./resources/assets/js/store/search.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__YTsearch__ = __webpack_require__("./resources/assets/js/store/YTsearch.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__youtube__ = __webpack_require__("./resources/assets/js/store/youtube.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__tagging__ = __webpack_require__("./resources/assets/js/store/tagging.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__noLoginModal__ = __webpack_require__("./resources/assets/js/store/noLoginModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__shareModal__ = __webpack_require__("./resources/assets/js/store/shareModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__otherActionModal__ = __webpack_require__("./resources/assets/js/store/otherActionModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__shareModal__ = __webpack_require__("./resources/assets/js/store/shareModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__snackbar__ = __webpack_require__("./resources/assets/js/store/snackbar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__YTsearch__ = __webpack_require__("./resources/assets/js/store/YTsearch.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__youtube__ = __webpack_require__("./resources/assets/js/store/youtube.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__tagging__ = __webpack_require__("./resources/assets/js/store/tagging.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__noLoginModal__ = __webpack_require__("./resources/assets/js/store/noLoginModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__otherActionModal__ = __webpack_require__("./resources/assets/js/store/otherActionModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+
 
 
 
@@ -99830,13 +99895,14 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     like: __WEBPACK_IMPORTED_MODULE_7__like__["a" /* default */],
     likePlaylist: __WEBPACK_IMPORTED_MODULE_8__likePlaylist__["a" /* default */],
     search: __WEBPACK_IMPORTED_MODULE_9__search__["a" /* default */],
-    YTsearch: __WEBPACK_IMPORTED_MODULE_10__YTsearch__["a" /* default */],
-    youtube: __WEBPACK_IMPORTED_MODULE_11__youtube__["a" /* default */],
-    tagging: __WEBPACK_IMPORTED_MODULE_12__tagging__["a" /* default */],
-    noLoginModal: __WEBPACK_IMPORTED_MODULE_13__noLoginModal__["a" /* default */],
-    shareModal: __WEBPACK_IMPORTED_MODULE_14__shareModal__["a" /* default */],
-    otherActionModal: __WEBPACK_IMPORTED_MODULE_15__otherActionModal__["a" /* default */],
-    error: __WEBPACK_IMPORTED_MODULE_16__error__["a" /* default */]
+    shareModal: __WEBPACK_IMPORTED_MODULE_10__shareModal__["a" /* default */],
+    snackbar: __WEBPACK_IMPORTED_MODULE_11__snackbar__["a" /* default */],
+    YTsearch: __WEBPACK_IMPORTED_MODULE_12__YTsearch__["a" /* default */],
+    youtube: __WEBPACK_IMPORTED_MODULE_13__youtube__["a" /* default */],
+    tagging: __WEBPACK_IMPORTED_MODULE_14__tagging__["a" /* default */],
+    noLoginModal: __WEBPACK_IMPORTED_MODULE_15__noLoginModal__["a" /* default */],
+    otherActionModal: __WEBPACK_IMPORTED_MODULE_16__otherActionModal__["a" /* default */],
+    error: __WEBPACK_IMPORTED_MODULE_17__error__["a" /* default */]
   }
 });
 
@@ -101028,6 +101094,59 @@ var actions = {};
 
 /***/ }),
 
+/***/ "./resources/assets/js/store/snackbar.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var state = {
+  snackbar: false,
+  timeout: 5000,
+  color: "blue",
+  text: ""
+};
+
+var getters = {
+  snackbar: function snackbar(state) {
+    return state.snackbar;
+  },
+  timeout: function timeout(state) {
+    return state.timeout;
+  },
+  color: function color(state) {
+    return state.color;
+  },
+  text: function text(state) {
+    return state.text;
+  }
+};
+
+var mutations = {
+  setSnackbar: function setSnackbar(state, data) {
+    state.snackbar = data;
+  },
+  setTimeout: function setTimeout(state, data) {
+    state.timeout = data;
+  },
+  setColor: function setColor(state, data) {
+    state.color = data;
+  },
+  setText: function setText(state, data) {
+    state.text = data;
+  }
+};
+
+var actions = {};
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
+
+/***/ }),
+
 /***/ "./resources/assets/js/store/tag.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -102157,7 +102276,26 @@ function getCookieValue(searchKey) {
       }
 
       return setIndivisualParameters;
-    }()
+    }(),
+    removeURLParameter: function removeURLParameter(url, parameter) {
+      //prefer to use l.search if you have a location/link object
+      var urlparts = url.split("?");
+      if (urlparts.length >= 2) {
+        var prefix = encodeURIComponent(parameter) + "=";
+        var pars = urlparts[1].split(/[&;]/g);
+
+        //reverse iteration as may be destructive
+        for (var i = pars.length; i-- > 0;) {
+          //idiom for string.startsWith
+          if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+            pars.splice(i, 1);
+          }
+        }
+
+        return urlparts[0] + (pars.length > 0 ? "?" + pars.join("&") : "");
+      }
+      return url;
+    }
   }
 });
 

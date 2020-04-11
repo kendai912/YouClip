@@ -34,6 +34,7 @@ export default {
     ...mapGetters({
       isLogin: "auth/check"
     })
-  }
+  },
+  created() {}
 };
 </script>
