@@ -73,6 +73,8 @@ Route::post('/playlist/create', 'PlaylistController@create');
 Route::get('/youtube/getVideo', 'VideoController@getVideoByYoutubeId');
 //シーン登録における動画IDから既存のタグの取得
 Route::get('/youtube/getTag', 'TagController@getTagByVideoId');
+//シーンタグの履歴取得
+Route::get('/tag/histories', 'TagController@getTagHistories');
 //シーン登録における動画・タグの保存
 Route::post('/tag/store', 'TagController@store');
 //シーンタグの編集

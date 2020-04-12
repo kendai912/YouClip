@@ -11,7 +11,7 @@ const state = {
   start: null,
   end: null,
   controlTransitNext: true,
-  itemsList: [],
+  tagHistories: [],
   isEditting: false
 };
 
@@ -23,7 +23,7 @@ const getters = {
   start: state => state.start,
   end: state => state.end,
   controlTransitNext: state => state.controlTransitNext,
-  itemsList: state => state.itemsList,
+  tagHistories: state => state.tagHistories,
   isEditting: state => state.isEditting
 };
 
@@ -49,8 +49,8 @@ const mutations = {
   setControlTransitNext(state, data) {
     state.controlTransitNext = data;
   },
-  setItemsList(state, data) {
-    state.itemsList.push(...data);
+  setTagHistories(state, data) {
+    state.tagHistories = data;
   },
   setIsEditting(state, data) {
     state.isEditting = data;
@@ -155,6 +155,19 @@ const actions = {
     const response = await axios.post("/api/tag/delete", params);
     if (response.status == DELETED) {
       // 成功した時
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  async getTagHistories(context) {
+    const response = await axios.get("/api/tag/histories");
+    if (response.status == OK) {
+      // 成功した時
+      context.commit("setTagHistories", response.data.tagHistories);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });

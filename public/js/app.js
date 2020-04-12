@@ -3156,11 +3156,17 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_NoLoginModal_vue__ = __webpack_require__("./resources/assets/js/components/NoLoginModal.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_NoLoginModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_NoLoginModal_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_NoLoginModal_vue__ = __webpack_require__("./resources/assets/js/components/NoLoginModal.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_NoLoginModal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_NoLoginModal_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./resources/assets/js/util.js");
+
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -3217,7 +3223,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    NoLoginModal: __WEBPACK_IMPORTED_MODULE_1__components_NoLoginModal_vue___default.a
+    NoLoginModal: __WEBPACK_IMPORTED_MODULE_2__components_NoLoginModal_vue___default.a
   },
   props: {
     player: Object
@@ -3226,15 +3232,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     return {
       sheet: true,
       tags: [],
-      items: [],
+      tagItems: [],
       tagsRules: [function (v) {
         return !!v || "シーンタグを入力して下さい";
       }]
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["f" /* default */]],
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+  mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["f" /* default */]],
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     currentTime: "youtube/currentTime",
     videoData: "youtube/videoData",
     newVideoData: "youtube/newVideoData",
@@ -3242,7 +3248,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     isNew: "youtube/isNew",
     isLogin: "auth/check",
     showLoginModal: "noLoginModal/showLoginModal",
-    itemsList: "tagging/itemsList",
+    tagHistories: "tagging/tagHistories",
     isEditting: "tagging/isEditting"
   })),
   methods: {
@@ -3268,7 +3274,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
               self.$emit("taggingSucceed");
             }
             //シーンタグの入力フォームであるcomboboxのリストに入力した値を追加
-            self.$store.commit("tagging/setItemsList", self.tags);
+            // self.$store.commit("tagging/setItemsList", self.tags);
           }
         });
       } else {
@@ -3287,14 +3293,56 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       //TimeControlのシートへ戻る
       this.$store.commit("tagging/setShowTaggingControl", "TimeControl");
     },
-    initialize: function initialize() {
-      //戻るボタンから表示された際の既入力値のセット
-      this.tags = this.$store.getters["tagging/tags"];
-    }
+    setTagItems: function setTagItems() {
+      var _this = this;
+
+      var tagItemsArray = void 0;
+      this.tagHistories.forEach(function (tagHistory) {
+        var _tagItems;
+
+        tagItemsArray = tagHistory.split(/[\s| |　]/);
+        (_tagItems = _this.tagItems).push.apply(_tagItems, _toConsumableArray(tagItemsArray));
+      });
+    },
+    initialize: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                //戻るボタンから表示された際の既入力値のセット
+                this.tags = this.$store.getters["tagging/tags"];
+
+                if (!this.isLogin) {
+                  _context.next = 5;
+                  break;
+                }
+
+                _context.next = 4;
+                return this.$store.dispatch("tagging/getTagHistories");
+
+              case 4:
+                //スペース区切りで配列に変換しシーンタグアイテムにセット
+                this.setTagItems();
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function initialize() {
+        return _ref.apply(this, arguments);
+      }
+
+      return initialize;
+    }()
   },
   created: function created() {
     this.initialize();
-    this.items = this.itemsList;
+    // this.items = this.itemsList;
   }
 });
 
@@ -4378,10 +4426,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -4408,10 +4452,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       isPlayerReady: false,
       player: null,
       timer: null
-      // snackbar: false,
-      // timeout: 5000,
-      // color: "blue",
-      // text: ""
     };
   },
 
@@ -38290,7 +38330,7 @@ var render = function() {
         [
           _c("v-combobox", {
             attrs: {
-              items: _vm.items,
+              items: _vm.tagItems,
               rules: _vm.tagsRules,
               required: "",
               "validate-on-blur": "",
@@ -101300,8 +101340,6 @@ var actions = {
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 
 
 
@@ -101315,7 +101353,7 @@ var state = {
   start: null,
   end: null,
   controlTransitNext: true,
-  itemsList: [],
+  tagHistories: [],
   isEditting: false
 };
 
@@ -101341,8 +101379,8 @@ var getters = {
   controlTransitNext: function controlTransitNext(state) {
     return state.controlTransitNext;
   },
-  itemsList: function itemsList(state) {
-    return state.itemsList;
+  tagHistories: function tagHistories(state) {
+    return state.tagHistories;
   },
   isEditting: function isEditting(state) {
     return state.isEditting;
@@ -101371,10 +101409,8 @@ var mutations = {
   setControlTransitNext: function setControlTransitNext(state, data) {
     state.controlTransitNext = data;
   },
-  setItemsList: function setItemsList(state, data) {
-    var _state$itemsList;
-
-    (_state$itemsList = state.itemsList).push.apply(_state$itemsList, _toConsumableArray(data));
+  setTagHistories: function setTagHistories(state, data) {
+    state.tagHistories = data;
   },
   setIsEditting: function setIsEditting(state, data) {
     state.isEditting = data;
@@ -101557,6 +101593,44 @@ var actions = {
     }
 
     return deleteTag;
+  }(),
+  getTagHistories: function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4(context) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.next = 2;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("/api/tag/histories");
+
+            case 2:
+              response = _context4.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
+                // 成功した時
+                context.commit("setTagHistories", response.data.tagHistories);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 4:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4, this);
+    }));
+
+    function getTagHistories(_x4) {
+      return _ref4.apply(this, arguments);
+    }
+
+    return getTagHistories;
   }()
 };
 

@@ -292,6 +292,27 @@ class TagController extends Controller
         return response(null, 204);
     }
 
+    public function getTagHistories()
+     {
+        //ユーザーが登録した直近10件のシーンタグを取得
+        $tags = Tag::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->take(10)->get();
+
+        $tagHistories = [];
+        foreach ($tags as $tag) {
+            $tagHistories[] = $tag->tags;
+        }
+
+        //取得したタグデータをリターン
+        return response()->json(
+            [
+                'tagHistories' => $tagHistories
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
     public static function convertToSec($time)
     {
         return 3600 * intval(date("H", strtotime($time))) + 60 * intval(date("i", strtotime($time))) + intval(date("s", strtotime($time)));

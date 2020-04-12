@@ -42,10 +42,6 @@
         v-bind:player="player"
         v-on:updateSucceed="updateSucceed"
       />
-      <!-- <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
-        {{ text }}
-        <v-btn v-bind:color="color" text v-on:click="snackbar = false">Close</v-btn>
-      </v-snackbar>-->
     </div>
   </div>
 </template>
@@ -75,11 +71,7 @@ export default {
       isPlaying: true,
       isPlayerReady: false,
       player: null,
-      timer: null
-      // snackbar: false,
-      // timeout: 5000,
-      // color: "blue",
-      // text: ""
+      timer: null 
     };
   },
   mixins: [myMixin],

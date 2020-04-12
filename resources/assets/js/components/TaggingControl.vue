@@ -9,7 +9,7 @@
     <v-form ref="form">
       <v-combobox
         v-model="tags"
-        v-bind:items="items"
+        v-bind:items="tagItems"
         v-bind:rules="tagsRules"
         required
         validate-on-blur
@@ -60,7 +60,7 @@ export default {
     return {
       sheet: true,
       tags: [],
-      items: [],
+      tagItems: [],
       tagsRules: [v => !!v || "シーンタグを入力して下さい"]
     };
   },
@@ -74,7 +74,7 @@ export default {
       isNew: "youtube/isNew",
       isLogin: "auth/check",
       showLoginModal: "noLoginModal/showLoginModal",
-      itemsList: "tagging/itemsList",
+      tagHistories: "tagging/tagHistories",
       isEditting: "tagging/isEditting"
     })
   },
@@ -101,7 +101,7 @@ export default {
               self.$emit("taggingSucceed");
             }
             //シーンタグの入力フォームであるcomboboxのリストに入力した値を追加
-            self.$store.commit("tagging/setItemsList", self.tags);
+            // self.$store.commit("tagging/setItemsList", self.tags);
           }
         });
       } else {
@@ -123,14 +123,28 @@ export default {
       //TimeControlのシートへ戻る
       this.$store.commit("tagging/setShowTaggingControl", "TimeControl");
     },
-    initialize() {
+    setTagItems() {
+      let tagItemsArray;
+      this.tagHistories.forEach(tagHistory => {
+        tagItemsArray = tagHistory.split(/[\s| |　]/);
+        this.tagItems.push(...tagItemsArray);
+      });
+    },
+    async initialize() {
       //戻るボタンから表示された際の既入力値のセット
       this.tags = this.$store.getters["tagging/tags"];
+
+      if (this.isLogin) {
+        //シーンタグアイテムに使うシーンタグ履歴をロード
+        await this.$store.dispatch("tagging/getTagHistories");
+        //スペース区切りで配列に変換しシーンタグアイテムにセット
+        this.setTagItems();
+      }
     }
   },
   created() {
     this.initialize();
-    this.items = this.itemsList;
+    // this.items = this.itemsList;
   }
 };
 </script>
