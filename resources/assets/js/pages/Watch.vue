@@ -71,7 +71,7 @@ export default {
       isPlaying: true,
       isPlayerReady: false,
       player: null,
-      timer: null 
+      timer: null
     };
   },
   mixins: [myMixin],
@@ -93,7 +93,7 @@ export default {
     },
     playPlaylist(playlistId, index) {
       //最後のシーンでない場合は次のシーンのパラメータをセット
-      this.setPlaylistParameters(playlistId, index);
+      this.$store.commit("watch/setPlaylistParameters", index);
 
       //URLを更新
       this.$router
@@ -184,8 +184,8 @@ export default {
         );
       } else {
         //ログイン済の場合
-        //ユーザーのプレイリストをロード
-        this.$store.dispatch("playlist/loadPlaylist");
+        //ユーザーが作成したプレイリスト一覧を取得
+        this.$store.dispatch("playlist/getMyCreatedPlaylist");
 
         //選択されたタグが追加済のユーザーのプレイリストIDを取得
         await this.$store.dispatch(
@@ -249,6 +249,7 @@ export default {
   computed: {
     ...mapGetters({
       isLogin: "auth/check",
+      playlistAndTagData: "watch/playlistAndTagData",
       watchList: "watch/watchList",
       listIndex: "watch/listIndex",
       currentYoutubeId: "watch/currentYoutubeId",
@@ -293,14 +294,14 @@ export default {
   },
   mixins: [myMixin],
   mounted: async function() {
-    //リロードされた場合は必要なデータを再ロード
-    if (
-      !this.$store.getters["tag/tagVideoData"] ||
-      !this.$store.getters["playlist/playlistTagData"]
-    ) {
-      await this.$store.dispatch("tag/loadTagVideo");
-      await this.$store.dispatch("playlist/loadPlaylist");
-    }
+    // //リロードされた場合は必要なデータを再ロード
+    // if (
+    //   !this.$store.getters["tag/tagVideoData"] ||
+    //   !this.$store.getters["playlist/playlistTagData"]
+    // ) {
+    //   await this.$store.dispatch("tag/loadTagVideo");
+    //   await this.$store.dispatch("playlist/loadPlaylist");
+    // }
 
     if (this.$route.query.playlist) {
       //特定シーン再生の場合
@@ -308,8 +309,14 @@ export default {
       this.playlistIdUrl = this.$route.query.playlist;
       this.indexUrl = this.$route.query.index;
 
+      //プレイリストおよび動画・タグデータを取得
+      await this.$store.dispatch(
+        "watch/getPlaylistAndTagVideoDataById",
+        this.playlistIdUrl
+      );
+
       //YTPlayerのプレイリストの再生に必要なパラメータをセット
-      this.setPlaylistParameters(this.playlistIdUrl, this.indexUrl);
+      this.$store.commit("watch/setPlaylistParameters", this.indexUrl);
     } else if (this.$route.query.tag) {
       //プレイリスト再生の場合
       //URLのクエリパラメータからプレイリストIDとインデックスを取得

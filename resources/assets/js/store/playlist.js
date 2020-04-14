@@ -2,40 +2,43 @@ import axios from "axios";
 import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
 
 const state = {
-  playlistTagData: null,
-  myPlaylistTagDataLoaded: null,
+  playlistAndTagPagination: null,
+  myCreatedPlaylist: null,
+  myCreatedAndLikedPlaylist: null,
   showAddPlaylistModal: false,
-  playlistIdsOfTag: null
+  playlistIdsOfTag: null,
+  toLoad: true
 };
 
 const getters = {
-  playlistTagData: state => state.playlistTagData,
-  myPlaylistTagDataLoaded: state => state.myPlaylistTagDataLoaded,
+  playlistAndTagPagination: state => state.playlistAndTagPagination,
+  myCreatedPlaylist: state => state.myCreatedPlaylist,
+  myCreatedAndLikedPlaylist: state => state.myCreatedAndLikedPlaylist,
   showAddPlaylistModal: state => state.showAddPlaylistModal,
   playlistIdsOfTag: state => state.playlistIdsOfTag,
+  toLoad: state => state.toLoad,
   getPlaylistTagContentById: state => playlistId => {
-    return state.playlistTagData.find(
-      playlistTag => playlistTag.id == playlistId
-    );
+    return state.playlistData.find(playlistTag => playlistTag.id == playlistId);
   },
-  myPlaylistTagData: state => user_id => {
-    return state.playlistTagData.filter(
+  myPlaylistAndTagPagination: state => user_id => {
+    return state.playlistAndTagPagination.data.filter(
       playlistTag => playlistTag.user_id == user_id
     );
   },
-  hasMyPlaylists: state => user_id => {
-    return !!state.playlistTagData.filter(
-      playlistTag => playlistTag.user_id == user_id
-    );
+  hasMyPlaylists: state => {
+    return !!state.myCreatedPlaylist;
   }
 };
 
 const mutations = {
-  setPlaylistTagData(state, data) {
-    state.playlistTagData = data;
+  setPlaylistAndTagPagination(state, data) {
+    state.playlistAndTagPagination = data;
   },
-  setMyPlaylistTagDataLoaded(state, data) {
-    state.myPlaylistTagDataLoaded = data;
+  setMyCreatedPlaylist(state, data) {
+    state.myCreatedPlaylist = data;
+  },
+  setMyCreatedAndLikedPlaylist(state, data) {
+    state.myCreatedAndLikedPlaylist = data;
   },
   openAddPlaylistModal(state) {
     state.showAddPlaylistModal = true;
@@ -45,16 +48,40 @@ const mutations = {
   },
   setPlaylistIdsOfTag(state, data) {
     state.playlistIdsOfTag = data;
+  },
+  setToLoad(state, data) {
+    state.toLoad = data;
   }
 };
 
 const actions = {
-  //全プレイリストをロード
-  async loadPlaylist(context) {
-    const response = await axios.get("api/load/playlist");
+  //プレイリスト一覧を取得
+  async indexPlaylistAndTagPagination(context, page) {
+    const response = await axios.get("api/index/playlistAndTag?page=" + page);
     if (response.status == OK) {
       // 成功した時
-      context.commit("setPlaylistTagData", response.data.playlistTagData);
+
+      if (response.data.playlistAndTagPagination.last_page == page)
+        context.commit("setToLoad", false);
+      if (response.data.playlistAndTagPagination.data) {
+        context.commit(
+          "setPlaylistAndTagPagination",
+          response.data.playlistAndTagPagination
+        );
+      }
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  async getMyCreatedPlaylist(context) {
+    const response = await axios.get("api/get/myCreatedPlaylist");
+    if (response.status == OK) {
+      // 成功した時
+      context.commit("setMyCreatedPlaylist", response.data.myCreatedPlaylist);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
@@ -64,11 +91,14 @@ const actions = {
     }
   },
   //Likeまたは作成したプレイリストをロード
-  async loadMyPlaylist(context) {
-    const response = await axios.get("api/load/myPlaylist");
+  async loadMyCreatedAndLikedPlaylist(context) {
+    const response = await axios.get("api/load/myCreatedAndLikedPlaylist");
     if (response.status == OK) {
       // 成功した時
-      context.commit("setMyPlaylistTagDataLoaded", response.data.myPlaylist);
+      context.commit(
+        "setMyCreatedAndLikedPlaylist",
+        response.data.myCreatedAndLikedPlaylist
+      );
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
@@ -139,11 +169,11 @@ const actions = {
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
-      toastr.error("プレイリストへの作成に失敗しました");
+      toastr.error("プレイリストへの追加に失敗しました");
     } else {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
-      toastr.error("プレイリストへの作成に失敗しました");
+      toastr.error("プレイリストへの追加に失敗しました");
     }
   },
   //選択されたタグが追加済のユーザーのプレイリストIDを取得

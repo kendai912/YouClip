@@ -1899,7 +1899,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   created: function created() {
     this.$store.dispatch("tag/loadTagVideo");
-    this.$store.dispatch("playlist/loadPlaylist");
+    // this.$store.dispatch("playlist/loadPlaylist");
     this.$store.dispatch("like/loadTagLike");
     this.$store.dispatch("likePlaylist/loadPlaylistLike");
 
@@ -1988,10 +1988,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     playlistIdsOfTag: "playlist/playlistIdsOfTag"
   }), {
     hasMyPlaylists: function hasMyPlaylists() {
-      return this.$store.getters["playlist/hasMyPlaylists"](this.user_id);
+      return this.$store.getters["playlist/hasMyPlaylists"];
     },
-    myPlaylistTagData: function myPlaylistTagData() {
-      return this.$store.getters["playlist/myPlaylistTagData"](this.user_id);
+    myCreatedPlaylist: function myCreatedPlaylist() {
+      return this.$store.getters["playlist/myCreatedPlaylist"];
     }
   }),
   methods: {
@@ -2302,7 +2302,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
               this.tab = parseInt(window.sessionStorage.getItem("tabIndex"));
               //Likeまたは作成したプレイリストをロード
               _context.next = 3;
-              return this.$store.dispatch("playlist/loadMyPlaylist");
+              return this.$store.dispatch("playlist/loadMyCreatedAndLikedPlaylist");
 
             case 3:
               _context.next = 5;
@@ -3273,8 +3273,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
               self.$store.dispatch("tagging/storeSceneTags");
               self.$emit("taggingSucceed");
             }
-            //シーンタグの入力フォームであるcomboboxのリストに入力した値を追加
-            // self.$store.commit("tagging/setItemsList", self.tags);
           }
         });
       } else {
@@ -3342,7 +3340,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   },
   created: function created() {
     this.initialize();
-    // this.items = this.itemsList;
   }
 });
 
@@ -3809,11 +3806,17 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_IndexItem_vue__ = __webpack_require__("./resources/assets/js/components/IndexItem.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_IndexItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_IndexItem_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue__ = __webpack_require__("./resources/assets/js/components/IndexItem.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./resources/assets/js/util.js");
+
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 //
 //
@@ -3853,43 +3856,67 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    IndexItem: __WEBPACK_IMPORTED_MODULE_1__components_IndexItem_vue___default.a
+    IndexItem: __WEBPACK_IMPORTED_MODULE_2__components_IndexItem_vue___default.a
   },
   data: function data() {
     return {
-      tab: 1
+      tab: 1,
+      page: 1,
+      mediaItems: [] //レコメンド画面に表示するアイテム
     };
   },
 
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["f" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["f" /* default */]],
   methods: {
     //i:s形式に変換
     formatToMinSec: function formatToMinSec(His) {
       var min = parseInt(His.split(":")[0], 10) * 60 + parseInt(His.split(":")[1], 10);
       var sec = parseInt(His.split(":")[2], 10);
       return min + ":" + sec;
-    }
+    },
+
+    //表示するプレイリストの無限スクロール
+    infinateLoadPlaylist: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return this.$store.dispatch("playlist/indexPlaylistAndTagPagination", this.page++);
+
+              case 2:
+                //ページネーションのデータをmediaItemsに格納
+                this.putPlaylistTagIntoMediaItems(this.mediaItems, this.playlistAndTagPagination.data);
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function infinateLoadPlaylist() {
+        return _ref.apply(this, arguments);
+      }
+
+      return infinateLoadPlaylist;
+    }()
   },
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
-    tagVideoData: "tag/tagVideoData",
-    playlistTagData: "playlist/playlistTagData"
-  }), {
-    //レコメンド画面に表示するアイテム
-    mediaItems: function mediaItems() {
-      var mediaItems = [];
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
+    playlistAndTagPagination: "playlist/playlistAndTagPagination"
+  })),
+  mounted: function mounted() {
+    var _this = this;
 
-      //タグデータをレコメンド画面に表示するメディアアイテムに格納
-      this.putTagVideoIntoMediaItems(mediaItems, this.tagVideoData);
-
-      //プレイリストデータをメディアアイテムに追加格納
-      this.putPlaylistTagIntoMediaItems(mediaItems, this.playlistTagData);
-
-      //作成日の降順(新しい日付が上)に並び替え
-      return mediaItems.sort(function (a, b) {
-        return a.created_at < b.created_at ? 1 : a.created_at > b.created_at ? -1 : 0;
-      });
-    }
-  })
+    window.onscroll = function () {
+      //ウィンドウの下から100pxに達したら次のプレイリストアイテムを読み込み
+      var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight - 100;
+      if (bottomOfWindow) _this.infinateLoadPlaylist();
+    };
+    this.infinateLoadPlaylist();
+  }
 });
 
 /***/ }),
@@ -4470,7 +4497,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
     playPlaylist: function playPlaylist(playlistId, index) {
       //最後のシーンでない場合は次のシーンのパラメータをセット
-      this.setPlaylistParameters(playlistId, index);
+      this.$store.commit("watch/setPlaylistParameters", index);
 
       //URLを更新
       this.$router.push({
@@ -4549,8 +4576,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
               case 5:
                 //ログイン済の場合
-                //ユーザーのプレイリストをロード
-                this.$store.dispatch("playlist/loadPlaylist");
+                //ユーザーが作成したプレイリスト一覧を取得
+                this.$store.dispatch("playlist/getMyCreatedPlaylist");
 
                 //選択されたタグが追加済のユーザーのプレイリストIDを取得
                 _context.next = 8;
@@ -4622,6 +4649,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   }),
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     isLogin: "auth/check",
+    playlistAndTagData: "watch/playlistAndTagData",
     watchList: "watch/watchList",
     listIndex: "watch/listIndex",
     currentYoutubeId: "watch/currentYoutubeId",
@@ -4669,21 +4697,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            if (!(!this.$store.getters["tag/tagVideoData"] || !this.$store.getters["playlist/playlistTagData"])) {
-              _context2.next = 5;
-              break;
-            }
-
-            _context2.next = 3;
-            return this.$store.dispatch("tag/loadTagVideo");
-
-          case 3:
-            _context2.next = 5;
-            return this.$store.dispatch("playlist/loadPlaylist");
-
-          case 5:
             if (!this.$route.query.playlist) {
-              _context2.next = 11;
+              _context2.next = 8;
               break;
             }
 
@@ -4692,14 +4707,20 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             this.playlistIdUrl = this.$route.query.playlist;
             this.indexUrl = this.$route.query.index;
 
+            //プレイリストおよび動画・タグデータを取得
+            _context2.next = 5;
+            return this.$store.dispatch("watch/getPlaylistAndTagVideoDataById", this.playlistIdUrl);
+
+          case 5:
+
             //YTPlayerのプレイリストの再生に必要なパラメータをセット
-            this.setPlaylistParameters(this.playlistIdUrl, this.indexUrl);
-            _context2.next = 15;
+            this.$store.commit("watch/setPlaylistParameters", this.indexUrl);
+            _context2.next = 12;
             break;
 
-          case 11:
+          case 8:
             if (!this.$route.query.tag) {
-              _context2.next = 15;
+              _context2.next = 12;
               break;
             }
 
@@ -4708,10 +4729,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             this.tagIdUrl = this.$route.query.tag;
 
             //YTPlayerのタグの再生に必要なパラメータをセット
-            _context2.next = 15;
+            _context2.next = 12;
             return this.setIndivisualParameters(this.tagIdUrl);
 
-          case 15:
+          case 12:
 
             // This code loads the IFrame Player API code asynchronously.
             tag = document.createElement("script");
@@ -4792,7 +4813,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
               }
             });
 
-          case 25:
+          case 22:
           case "end":
             return _context2.stop();
         }
@@ -37403,7 +37424,7 @@ var render = function() {
         return _c(
           "div",
           {
-            key: searchHint,
+            key: searchHint.id,
             on: {
               click: function($event) {
                 return _vm.select(searchHint)
@@ -37890,7 +37911,7 @@ var render = function() {
                     _vm._v("✕")
                   ]),
                   _vm._v(" "),
-                  _vm._l(_vm.myPlaylistTagData, function(myPlaylistTag, index) {
+                  _vm._l(_vm.myCreatedPlaylist, function(myPlaylist, index) {
                     return _c("div", { key: index }, [
                       _c("div", [
                         _c("input", {
@@ -37902,14 +37923,12 @@ var render = function() {
                               expression: "checkedPlaylistIds"
                             }
                           ],
-                          attrs: { type: "checkbox", id: myPlaylistTag.id },
+                          attrs: { type: "checkbox", id: myPlaylist.id },
                           domProps: {
-                            value: myPlaylistTag.id,
+                            value: myPlaylist.id,
                             checked: Array.isArray(_vm.checkedPlaylistIds)
-                              ? _vm._i(
-                                  _vm.checkedPlaylistIds,
-                                  myPlaylistTag.id
-                                ) > -1
+                              ? _vm._i(_vm.checkedPlaylistIds, myPlaylist.id) >
+                                -1
                               : _vm.checkedPlaylistIds
                           },
                           on: {
@@ -37918,7 +37937,7 @@ var render = function() {
                                 $$el = $event.target,
                                 $$c = $$el.checked ? true : false
                               if (Array.isArray($$a)) {
-                                var $$v = myPlaylistTag.id,
+                                var $$v = myPlaylist.id,
                                   $$i = _vm._i($$a, $$v)
                                 if ($$el.checked) {
                                   $$i < 0 &&
@@ -37936,8 +37955,8 @@ var render = function() {
                           }
                         }),
                         _vm._v(" "),
-                        _c("label", { attrs: { for: myPlaylistTag.id } }, [
-                          _vm._v(_vm._s(myPlaylistTag.playlistName))
+                        _c("label", { attrs: { for: myPlaylist.id } }, [
+                          _vm._v(_vm._s(myPlaylist.playlistName))
                         ])
                       ])
                     ])
@@ -39366,11 +39385,11 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    _vm._l(_vm.mediaItems, function(item, index) {
+    _vm._l(_vm.mediaItems, function(item) {
       return _c(
         "div",
         {
-          key: item.category + index,
+          key: item.category + "-" + item.id,
           on: {
             click: function($event) {
               return _vm.select(item)
@@ -39378,17 +39397,14 @@ var render = function() {
           }
         },
         [
-          _c("div", { staticClass: "thumbnail" }, [
+          _c("div", [
             _c("img", {
               staticStyle: { width: "300px", height: "auto" },
-              attrs: {
-                src: "/storage/img/" + item.preview,
-                alt: item.title + "-preview"
-              }
+              attrs: { src: "/storage/img/" + item.preview, alt: item.title }
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "info" }, [
+          _c("div", [
             _c("div", [_vm._v(_vm._s(item.title))]),
             _vm._v(" "),
             item.tagArray
@@ -100404,18 +100420,23 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
 var state = {
-  playlistTagData: null,
-  myPlaylistTagDataLoaded: null,
+  playlistAndTagPagination: null,
+  myCreatedPlaylist: null,
+  myCreatedAndLikedPlaylist: null,
   showAddPlaylistModal: false,
-  playlistIdsOfTag: null
+  playlistIdsOfTag: null,
+  toLoad: true
 };
 
 var getters = {
-  playlistTagData: function playlistTagData(state) {
-    return state.playlistTagData;
+  playlistAndTagPagination: function playlistAndTagPagination(state) {
+    return state.playlistAndTagPagination;
   },
-  myPlaylistTagDataLoaded: function myPlaylistTagDataLoaded(state) {
-    return state.myPlaylistTagDataLoaded;
+  myCreatedPlaylist: function myCreatedPlaylist(state) {
+    return state.myCreatedPlaylist;
+  },
+  myCreatedAndLikedPlaylist: function myCreatedAndLikedPlaylist(state) {
+    return state.myCreatedAndLikedPlaylist;
   },
   showAddPlaylistModal: function showAddPlaylistModal(state) {
     return state.showAddPlaylistModal;
@@ -100423,35 +100444,37 @@ var getters = {
   playlistIdsOfTag: function playlistIdsOfTag(state) {
     return state.playlistIdsOfTag;
   },
+  toLoad: function toLoad(state) {
+    return state.toLoad;
+  },
   getPlaylistTagContentById: function getPlaylistTagContentById(state) {
     return function (playlistId) {
-      return state.playlistTagData.find(function (playlistTag) {
+      return state.playlistData.find(function (playlistTag) {
         return playlistTag.id == playlistId;
       });
     };
   },
-  myPlaylistTagData: function myPlaylistTagData(state) {
+  myPlaylistAndTagPagination: function myPlaylistAndTagPagination(state) {
     return function (user_id) {
-      return state.playlistTagData.filter(function (playlistTag) {
+      return state.playlistAndTagPagination.data.filter(function (playlistTag) {
         return playlistTag.user_id == user_id;
       });
     };
   },
   hasMyPlaylists: function hasMyPlaylists(state) {
-    return function (user_id) {
-      return !!state.playlistTagData.filter(function (playlistTag) {
-        return playlistTag.user_id == user_id;
-      });
-    };
+    return !!state.myCreatedPlaylist;
   }
 };
 
 var mutations = {
-  setPlaylistTagData: function setPlaylistTagData(state, data) {
-    state.playlistTagData = data;
+  setPlaylistAndTagPagination: function setPlaylistAndTagPagination(state, data) {
+    state.playlistAndTagPagination = data;
   },
-  setMyPlaylistTagDataLoaded: function setMyPlaylistTagDataLoaded(state, data) {
-    state.myPlaylistTagDataLoaded = data;
+  setMyCreatedPlaylist: function setMyCreatedPlaylist(state, data) {
+    state.myCreatedPlaylist = data;
+  },
+  setMyCreatedAndLikedPlaylist: function setMyCreatedAndLikedPlaylist(state, data) {
+    state.myCreatedAndLikedPlaylist = data;
   },
   openAddPlaylistModal: function openAddPlaylistModal(state) {
     state.showAddPlaylistModal = true;
@@ -100461,27 +100484,34 @@ var mutations = {
   },
   setPlaylistIdsOfTag: function setPlaylistIdsOfTag(state, data) {
     state.playlistIdsOfTag = data;
+  },
+  setToLoad: function setToLoad(state, data) {
+    state.toLoad = data;
   }
 };
 
 var actions = {
-  //全プレイリストをロード
-  loadPlaylist: function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context) {
+  //プレイリスト一覧を取得
+  indexPlaylistAndTagPagination: function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context, page) {
       var response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/load/playlist");
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/index/playlistAndTag?page=" + page);
 
             case 2:
               response = _context.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
-                context.commit("setPlaylistTagData", response.data.playlistTagData);
+
+                if (response.data.playlistAndTagPagination.last_page == page) context.commit("setToLoad", false);
+                if (response.data.playlistAndTagPagination.data) {
+                  context.commit("setPlaylistAndTagPagination", response.data.playlistAndTagPagination);
+                }
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
@@ -100498,15 +100528,13 @@ var actions = {
       }, _callee, this);
     }));
 
-    function loadPlaylist(_x) {
+    function indexPlaylistAndTagPagination(_x, _x2) {
       return _ref.apply(this, arguments);
     }
 
-    return loadPlaylist;
+    return indexPlaylistAndTagPagination;
   }(),
-
-  //Likeまたは作成したプレイリストをロード
-  loadMyPlaylist: function () {
+  getMyCreatedPlaylist: function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context) {
       var response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
@@ -100514,14 +100542,14 @@ var actions = {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/load/myPlaylist");
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/get/myCreatedPlaylist");
 
             case 2:
               response = _context2.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
-                context.commit("setMyPlaylistTagDataLoaded", response.data.myPlaylist);
+                context.commit("setMyCreatedPlaylist", response.data.myCreatedPlaylist);
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
@@ -100538,20 +100566,60 @@ var actions = {
       }, _callee2, this);
     }));
 
-    function loadMyPlaylist(_x2) {
+    function getMyCreatedPlaylist(_x3) {
       return _ref2.apply(this, arguments);
     }
 
-    return loadMyPlaylist;
+    return getMyCreatedPlaylist;
+  }(),
+
+  //Likeまたは作成したプレイリストをロード
+  loadMyCreatedAndLikedPlaylist: function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(context) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/load/myCreatedAndLikedPlaylist");
+
+            case 2:
+              response = _context3.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
+                // 成功した時
+                context.commit("setMyCreatedAndLikedPlaylist", response.data.myCreatedAndLikedPlaylist);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 4:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3, this);
+    }));
+
+    function loadMyCreatedAndLikedPlaylist(_x4) {
+      return _ref3.apply(this, arguments);
+    }
+
+    return loadMyCreatedAndLikedPlaylist;
   }(),
 
   //完了ボタンを押したらチェックの入ったプレイリストにタグを追加
   addMyPlaylists: function () {
-    var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(context, input) {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4(context, input) {
       var params, response;
-      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
         while (1) {
-          switch (_context3.prev = _context3.next) {
+          switch (_context4.prev = _context4.next) {
             case 0:
               this.errors = {};
 
@@ -100565,11 +100633,11 @@ var actions = {
               params = {
                 checkedPlaylistIds: input.checkedPlaylistIds
               };
-              _context3.next = 5;
+              _context4.next = 5;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/tag/addToPlaylists/" + input.currentTagId, params);
 
             case 5:
-              response = _context3.sent;
+              response = _context4.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
                 // 成功した時
@@ -100589,14 +100657,14 @@ var actions = {
 
             case 7:
             case "end":
-              return _context3.stop();
+              return _context4.stop();
           }
         }
-      }, _callee3, this);
+      }, _callee4, this);
     }));
 
-    function addMyPlaylists(_x3, _x4) {
-      return _ref3.apply(this, arguments);
+    function addMyPlaylists(_x5, _x6) {
+      return _ref4.apply(this, arguments);
     }
 
     return addMyPlaylists;
@@ -100604,11 +100672,11 @@ var actions = {
 
   //プレイリスト新規作成と選択中のタグの保存
   createPlaylist: function () {
-    var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4(context, input) {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5(context, input) {
       var params, response;
-      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
         while (1) {
-          switch (_context4.prev = _context4.next) {
+          switch (_context5.prev = _context5.next) {
             case 0:
               this.errors = {};
 
@@ -100624,11 +100692,11 @@ var actions = {
                 privacySetting: input.privacySetting,
                 currentTagId: input.currentTagId
               };
-              _context4.next = 5;
+              _context5.next = 5;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/playlist/create", params);
 
             case 5:
-              response = _context4.sent;
+              response = _context5.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
                 // 成功した時
@@ -100639,23 +100707,23 @@ var actions = {
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
-                toastr.error("プレイリストへの作成に失敗しました");
+                toastr.error("プレイリストへの追加に失敗しました");
               } else {
                 // 上記以外で失敗した時
                 context.commit("error/setCode", response.status, { root: true });
-                toastr.error("プレイリストへの作成に失敗しました");
+                toastr.error("プレイリストへの追加に失敗しました");
               }
 
             case 7:
             case "end":
-              return _context4.stop();
+              return _context5.stop();
           }
         }
-      }, _callee4, this);
+      }, _callee5, this);
     }));
 
-    function createPlaylist(_x5, _x6) {
-      return _ref4.apply(this, arguments);
+    function createPlaylist(_x7, _x8) {
+      return _ref5.apply(this, arguments);
     }
 
     return createPlaylist;
@@ -100663,19 +100731,19 @@ var actions = {
 
   //選択されたタグが追加済のユーザーのプレイリストIDを取得
   getPlaylistIdsOfTag: function () {
-    var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5(context, tag_id) {
+    var _ref6 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee6(context, tag_id) {
       var response, playlistIdsOfTag;
-      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee6$(_context6) {
         while (1) {
-          switch (_context5.prev = _context5.next) {
+          switch (_context6.prev = _context6.next) {
             case 0:
               this.errors = {};
 
-              _context5.next = 3;
+              _context6.next = 3;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("/api/tag/getPlaylists/" + tag_id);
 
             case 3:
-              response = _context5.sent;
+              response = _context6.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
@@ -100693,14 +100761,14 @@ var actions = {
 
             case 5:
             case "end":
-              return _context5.stop();
+              return _context6.stop();
           }
         }
-      }, _callee5, this);
+      }, _callee6, this);
     }));
 
-    function getPlaylistIdsOfTag(_x7, _x8) {
-      return _ref5.apply(this, arguments);
+    function getPlaylistIdsOfTag(_x9, _x10) {
+      return _ref6.apply(this, arguments);
     }
 
     return getPlaylistIdsOfTag;
@@ -101724,11 +101792,20 @@ var actions = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__("./node_modules/axios/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+
 
 
 var state = {
+  playlistAndTagVideoData: null,
   watchList: null,
   listIndex: 0,
   playlistId: "",
@@ -101740,6 +101817,9 @@ var state = {
 };
 
 var getters = {
+  playlistAndTagVideoData: function playlistAndTagVideoData(state) {
+    return state.playlistAndTagVideoData;
+  },
   watchList: function watchList(state) {
     return state.watchList;
   },
@@ -101779,14 +101859,11 @@ var getters = {
 };
 
 var mutations = {
-  setPlaylistParameters: function setPlaylistParameters(state, _ref) {
-    var playlistTagVideoArray = _ref.playlistTagVideoArray,
-        index = _ref.index;
-
+  setPlaylistParameters: function setPlaylistParameters(state, index) {
     //watchlistにコンテンツをセット
-    state.watchList = playlistTagVideoArray;
+    state.watchList = state.playlistAndTagVideoData.tagVideoData;
 
-    //プレイリストの場合はlistIndexは0からスタート
+    //プレイリストの場合はデフォルトでlistIndexは0からスタート
     state.listIndex = index;
 
     //watchlistのlistIndexのデータを再生関連パラメーターにセット
@@ -101797,8 +101874,8 @@ var mutations = {
     state.watchList = indivisualTagVideoArray;
 
     //watchlistからクリックしたタグIDのインデックスを検索しlistIndexにセット
-    state.listIndex = state.watchList.findIndex(function (_ref2) {
-      var tag_id = _ref2.tag_id;
+    state.listIndex = state.watchList.findIndex(function (_ref) {
+      var tag_id = _ref.tag_id;
       return tag_id == state.currentTagId;
     });
 
@@ -101812,6 +101889,9 @@ var mutations = {
     state.start = state.watchList[state.listIndex].start;
     //YTPlayerに必要なendをセット
     state.end = state.watchList[state.listIndex].end;
+  },
+  setPlaylistAndTagVideoData: function setPlaylistAndTagVideoData(state, data) {
+    state.playlistAndTagVideoData = data;
   },
   setPlaylistId: function setPlaylistId(state, data) {
     state.playlistId = data;
@@ -101827,7 +101907,46 @@ var mutations = {
   }
 };
 
-var actions = {};
+var actions = {
+  getPlaylistAndTagVideoDataById: function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context, playlistId) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/get/playlistAndTagVideoData?id=" + playlistId);
+
+            case 2:
+              response = _context.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
+                // 成功した時
+                context.commit("setPlaylistAndTagVideoData", response.data.playlistAndTagVideoData);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function getPlaylistAndTagVideoDataById(_x, _x2) {
+      return _ref2.apply(this, arguments);
+    }
+
+    return getPlaylistAndTagVideoDataById;
+  }()
+};
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   namespaced: true,
@@ -102244,7 +102363,7 @@ function getCookieValue(searchKey) {
               category: "playlist",
               id: value.id,
               title: value.playlistName,
-              thumbnail: "https://watanabeseiji.com/wordpress/wp-content/themes/cyber/images/noimage.jpg",
+              thumbnail: "",
               created_at: value.created_at,
               tags: "",
               tagArray: "",
@@ -102277,36 +102396,40 @@ function getCookieValue(searchKey) {
 
       return minutes + ":" + seconds;
     },
-    setPlaylistParameters: function setPlaylistParameters(playlistId, index) {
-      var _this2 = this;
 
-      //プレイリストIDからプレイリスト名を取得
-      var playlistName = this.$store.getters["playlist/getPlaylistTagContentById"](playlistId).playlistName;
+    // setPlaylistParameters(playlistId, index) {
+    //   //プレイリストIDからプレイリスト名を取得
+    //   let playlistName = this.$store.getters[
+    //     "playlist/getPlaylistTagContentById"
+    //   ](playlistId).playlistName;
 
-      //プレイリストのIDと名前をwatchストアにセット
-      this.$store.commit("watch/setPlaylistId", playlistId);
-      this.$store.commit("watch/setPlaylistName", playlistName);
+    //   //プレイリストのIDと名前をwatchストアにセット
+    //   this.$store.commit("watch/setPlaylistId", playlistId);
+    //   this.$store.commit("watch/setPlaylistName", playlistName);
 
-      //プレイリストIDからplaylistストアのplaylistTagDataに格納されているtagデータを取得
-      var playlistTagArray = this.$store.getters["playlist/getPlaylistTagContentById"](playlistId).tags;
+    //   //プレイリストIDからplaylistストアのplaylistTagDataに格納されているtagデータを取得
+    //   let playlistTagArray = this.$store.getters[
+    //     "playlist/getPlaylistTagContentById"
+    //   ](playlistId).tags;
 
-      //tagデータとvideoデータを結合
-      var playlistTagVideoArray = [];
-      playlistTagArray.forEach(function (value) {
-        playlistTagVideoArray.push(_this2.$store.getters["tag/getTagVideoContentById"](value.id));
-      });
+    //   //tagデータとvideoデータを結合
+    //   let playlistTagVideoArray = [];
+    //   playlistTagArray.forEach(value => {
+    //     playlistTagVideoArray.push(
+    //       this.$store.getters["tag/getTagVideoContentById"](value.id)
+    //     );
+    //   });
 
-      //Watchストアに再生のためのパラメータをセット
-      this.$store.commit("watch/setPlaylistParameters", {
-        playlistTagVideoArray: playlistTagVideoArray,
-        index: index
-      });
-    },
-
+    //   //Watchストアに再生のためのパラメータをセット
+    //   this.$store.commit("watch/setPlaylistParameters", {
+    //     playlistTagVideoArray,
+    //     index
+    //   });
+    // },
     //YTPlayerのタグの再生に必要なパラメータをセット
     setIndivisualParameters: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(currentTagId) {
-        var _this3 = this;
+        var _this2 = this;
 
         var video_id, tagList, indivisualTagVideoArray;
         return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
@@ -102331,7 +102454,7 @@ function getCookieValue(searchKey) {
                 indivisualTagVideoArray = [];
 
                 tagList.forEach(function (value) {
-                  indivisualTagVideoArray.push(_this3.$store.getters["tag/getTagVideoContentById"](value.id));
+                  indivisualTagVideoArray.push(_this2.$store.getters["tag/getTagVideoContentById"](value.id));
                 });
 
                 //Watchストアに再生のためのパラメータをセット

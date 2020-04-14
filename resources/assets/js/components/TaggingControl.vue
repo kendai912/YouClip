@@ -100,8 +100,6 @@ export default {
               self.$store.dispatch("tagging/storeSceneTags");
               self.$emit("taggingSucceed");
             }
-            //シーンタグの入力フォームであるcomboboxのリストに入力した値を追加
-            // self.$store.commit("tagging/setItemsList", self.tags);
           }
         });
       } else {
@@ -144,7 +142,6 @@ export default {
   },
   created() {
     this.initialize();
-    // this.items = this.itemsList;
   }
 };
 </script>

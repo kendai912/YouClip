@@ -60,8 +60,7 @@ export default {
               category: "playlist",
               id: value.id,
               title: value.playlistName,
-              thumbnail:
-                "https://watanabeseiji.com/wordpress/wp-content/themes/cyber/images/noimage.jpg",
+              thumbnail: "",
               created_at: value.created_at,
               tags: "",
               tagArray: "",
@@ -95,35 +94,35 @@ export default {
 
       return minutes + ":" + seconds;
     },
-    setPlaylistParameters(playlistId, index) {
-      //プレイリストIDからプレイリスト名を取得
-      let playlistName = this.$store.getters[
-        "playlist/getPlaylistTagContentById"
-      ](playlistId).playlistName;
+    // setPlaylistParameters(playlistId, index) {
+    //   //プレイリストIDからプレイリスト名を取得
+    //   let playlistName = this.$store.getters[
+    //     "playlist/getPlaylistTagContentById"
+    //   ](playlistId).playlistName;
 
-      //プレイリストのIDと名前をwatchストアにセット
-      this.$store.commit("watch/setPlaylistId", playlistId);
-      this.$store.commit("watch/setPlaylistName", playlistName);
+    //   //プレイリストのIDと名前をwatchストアにセット
+    //   this.$store.commit("watch/setPlaylistId", playlistId);
+    //   this.$store.commit("watch/setPlaylistName", playlistName);
 
-      //プレイリストIDからplaylistストアのplaylistTagDataに格納されているtagデータを取得
-      let playlistTagArray = this.$store.getters[
-        "playlist/getPlaylistTagContentById"
-      ](playlistId).tags;
+    //   //プレイリストIDからplaylistストアのplaylistTagDataに格納されているtagデータを取得
+    //   let playlistTagArray = this.$store.getters[
+    //     "playlist/getPlaylistTagContentById"
+    //   ](playlistId).tags;
 
-      //tagデータとvideoデータを結合
-      let playlistTagVideoArray = [];
-      playlistTagArray.forEach(value => {
-        playlistTagVideoArray.push(
-          this.$store.getters["tag/getTagVideoContentById"](value.id)
-        );
-      });
+    //   //tagデータとvideoデータを結合
+    //   let playlistTagVideoArray = [];
+    //   playlistTagArray.forEach(value => {
+    //     playlistTagVideoArray.push(
+    //       this.$store.getters["tag/getTagVideoContentById"](value.id)
+    //     );
+    //   });
 
-      //Watchストアに再生のためのパラメータをセット
-      this.$store.commit("watch/setPlaylistParameters", {
-        playlistTagVideoArray,
-        index
-      });
-    },
+    //   //Watchストアに再生のためのパラメータをセット
+    //   this.$store.commit("watch/setPlaylistParameters", {
+    //     playlistTagVideoArray,
+    //     index
+    //   });
+    // },
     //YTPlayerのタグの再生に必要なパラメータをセット
     async setIndivisualParameters(currentTagId) {
       let video_id = this.$store.getters["tag/getTagVideoContentById"](

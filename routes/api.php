@@ -31,10 +31,16 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/load/tagVideo', 'TagController@loadAllTag');
 //Likeまたは作成したタグデータのロード
 Route::get('/load/myTagVideo', 'TagController@loadMyTag');
-//全プレイリストデータのロード
-Route::get('/load/playlist', 'PlaylistController@loadAllPlaylist');
-//Likeまたは作成したプレイリストをロード
-Route::get('/load/myPlaylist', 'PlaylistController@loadMyPlaylist');
+
+//プレイリスト一覧のロード
+Route::get('/index/playlistAndTag', 'PlaylistController@indexPlaylistAndTagPagination');
+// ID指定でのプレイリストおよびタグ・動画データの取得
+Route::get('/get/playlistAndTagVideoData', 'PlaylistController@getPlaylistAndTagVideoDataById');
+//作成したプレイリスト一覧を取得
+Route::get('/get/myCreatedPlaylist', 'PlaylistController@getMyCreatedPlaylist');
+//Likeまたは作成したプレイリスト一覧をロード
+Route::get('/load/myCreatedAndLikedPlaylist', 'PlaylistController@loadMyCreatedAndLikedPlaylist');
+
 //タグへのLikeデータのロード
 Route::get("/load/tagLike", 'LikeController@loadTagLike');
 //プレイリストへのLikeデータのロード

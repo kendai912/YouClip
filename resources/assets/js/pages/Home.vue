@@ -40,7 +40,9 @@ export default {
   },
   data() {
     return {
-      tab: 1
+      tab: 1,
+      page: 1,
+      mediaItems: [] //レコメンド画面に表示するアイテム
     };
   },
   mixins: [myMixin],
@@ -51,32 +53,35 @@ export default {
         parseInt(His.split(":")[0], 10) * 60 + parseInt(His.split(":")[1], 10);
       let sec = parseInt(His.split(":")[2], 10);
       return min + ":" + sec;
+    },
+    //表示するプレイリストの無限スクロール
+    async infinateLoadPlaylist() {
+      //無限スクロールに合わせてプレイリストのページネイションを取得
+      await this.$store.dispatch(
+        "playlist/indexPlaylistAndTagPagination",
+        this.page++
+      );
+      //ページネーションのデータをmediaItemsに格納
+      this.putPlaylistTagIntoMediaItems(
+        this.mediaItems,
+        this.playlistAndTagPagination.data
+      );
     }
   },
   computed: {
     ...mapGetters({
-      tagVideoData: "tag/tagVideoData",
-      playlistTagData: "playlist/playlistTagData"
-    }),
-    //レコメンド画面に表示するアイテム
-    mediaItems() {
-      let mediaItems = [];
-
-      //タグデータをレコメンド画面に表示するメディアアイテムに格納
-      this.putTagVideoIntoMediaItems(mediaItems, this.tagVideoData);
-
-      //プレイリストデータをメディアアイテムに追加格納
-      this.putPlaylistTagIntoMediaItems(mediaItems, this.playlistTagData);
-
-      //作成日の降順(新しい日付が上)に並び替え
-      return mediaItems.sort((a, b) => {
-        return a.created_at < b.created_at
-          ? 1
-          : a.created_at > b.created_at
-          ? -1
-          : 0;
-      });
-    }
+      playlistAndTagPagination: "playlist/playlistAndTagPagination"
+    })
+  },
+  mounted() {
+    window.onscroll = () => {
+      //ウィンドウの下から100pxに達したら次のプレイリストアイテムを読み込み
+      let bottomOfWindow =
+        document.documentElement.scrollTop + window.innerHeight >=
+        document.documentElement.offsetHeight - 100;
+      if (bottomOfWindow) this.infinateLoadPlaylist();
+    };
+    this.infinateLoadPlaylist();
   }
 };
 </script>

@@ -1,18 +1,18 @@
 <template>
   <div>
     <div
-      v-for="(item, index) in mediaItems"
-      v-bind:key="item.category + index"
+      v-for="item in mediaItems"
+      v-bind:key="item.category+'-'+item.id"
       v-on:click="select(item)"
     >
-      <div class="thumbnail">
+      <div>
         <img
           v-bind:src="'/storage/img/' + item.preview"
-          v-bind:alt="item.title + '-preview'"
+          v-bind:alt="item.title"
           style="width: 300px; height:auto"
         />
       </div>
-      <div class="info">
+      <div>
         <div>{{ item.title }}</div>
         <div v-if="item.tagArray">
           {{ item.start }}〜{{ item.end }}

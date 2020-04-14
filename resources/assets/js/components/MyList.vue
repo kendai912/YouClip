@@ -62,7 +62,7 @@ export default {
     //以前に開いていたタブをセッションストレージからセット
     this.tab = parseInt(window.sessionStorage.getItem("tabIndex"));
     //Likeまたは作成したプレイリストをロード
-    await this.$store.dispatch("playlist/loadMyPlaylist");
+    await this.$store.dispatch("playlist/loadMyCreatedAndLikedPlaylist");
     //Likeまたは作成したタグをロード
     await this.$store.dispatch("tag/loadMyTagVideo");
   }

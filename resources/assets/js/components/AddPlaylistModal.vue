@@ -3,15 +3,15 @@
     <div class="text-dark shadow rounded mb-7 modal-in-box" v-on:click.stop>
       <div id="myPlaylists" v-if="hasMyPlaylists">
         <span v-on:click="closeAddPlaylistModal">✕</span>
-        <div v-for="(myPlaylistTag, index) in myPlaylistTagData" v-bind:key="index">
+        <div v-for="(myPlaylist, index) in myCreatedPlaylist" v-bind:key="index">
           <div>
             <input
               type="checkbox"
-              v-bind:id="myPlaylistTag.id"
-              v-bind:value="myPlaylistTag.id"
+              v-bind:id="myPlaylist.id"
+              v-bind:value="myPlaylist.id"
               v-model="checkedPlaylistIds"
             />
-            <label v-bind:for="myPlaylistTag.id">{{ myPlaylistTag.playlistName }}</label>
+            <label v-bind:for="myPlaylist.id">{{ myPlaylist.playlistName }}</label>
           </div>
         </div>
         <div v-on:click.stop="addMyPlaylists">完了</div>
@@ -58,10 +58,10 @@ export default {
       playlistIdsOfTag: "playlist/playlistIdsOfTag"
     }),
     hasMyPlaylists() {
-      return this.$store.getters["playlist/hasMyPlaylists"](this.user_id);
+      return this.$store.getters["playlist/hasMyPlaylists"];
     },
-    myPlaylistTagData() {
-      return this.$store.getters["playlist/myPlaylistTagData"](this.user_id);
+    myCreatedPlaylist() {
+      return this.$store.getters["playlist/myCreatedPlaylist"];
     }
   },
   methods: {

@@ -49,7 +49,7 @@ export default {
   },
   created() {
     this.$store.dispatch("tag/loadTagVideo");
-    this.$store.dispatch("playlist/loadPlaylist");
+    // this.$store.dispatch("playlist/loadPlaylist");
     this.$store.dispatch("like/loadTagLike");
     this.$store.dispatch("likePlaylist/loadPlaylistLike");
 

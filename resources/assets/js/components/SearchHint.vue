@@ -3,7 +3,7 @@
     <p>{{ hintCategory }}</p>
     <div
       v-for="searchHint in searchHints"
-      v-bind:key="searchHint"
+      v-bind:key="searchHint.id"
       v-on:click="select(searchHint)"
     >{{ searchHint }}</div>
   </div>

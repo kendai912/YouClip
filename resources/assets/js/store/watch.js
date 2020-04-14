@@ -1,6 +1,8 @@
 import axios from "axios";
+import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
 
 const state = {
+  playlistAndTagVideoData: null,
   watchList: null,
   listIndex: 0,
   playlistId: "",
@@ -12,6 +14,7 @@ const state = {
 };
 
 const getters = {
+  playlistAndTagVideoData: state => state.playlistAndTagVideoData,
   watchList: state => state.watchList,
   listIndex: state => state.listIndex,
   playlistId: state => state.playlistId,
@@ -30,11 +33,11 @@ const getters = {
 };
 
 const mutations = {
-  setPlaylistParameters(state, { playlistTagVideoArray, index }) {
+  setPlaylistParameters(state, index) {
     //watchlistにコンテンツをセット
-    state.watchList = playlistTagVideoArray;
+    state.watchList = state.playlistAndTagVideoData.tagVideoData;
 
-    //プレイリストの場合はlistIndexは0からスタート
+    //プレイリストの場合はデフォルトでlistIndexは0からスタート
     state.listIndex = index;
 
     //watchlistのlistIndexのデータを再生関連パラメーターにセット
@@ -60,6 +63,9 @@ const mutations = {
     //YTPlayerに必要なendをセット
     state.end = state.watchList[state.listIndex].end;
   },
+  setPlaylistAndTagVideoData(state, data) {
+    state.playlistAndTagVideoData = data;
+  },
   setPlaylistId(state, data) {
     state.playlistId = data;
   },
@@ -74,7 +80,26 @@ const mutations = {
   }
 };
 
-const actions = {};
+const actions = {
+  async getPlaylistAndTagVideoDataById(context, playlistId) {
+    const response = await axios.get(
+      "api/get/playlistAndTagVideoData?id=" + playlistId
+    );
+    if (response.status == OK) {
+      // 成功した時
+      context.commit(
+        "setPlaylistAndTagVideoData",
+        response.data.playlistAndTagVideoData
+      );
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  }
+};
 
 export default {
   namespaced: true,

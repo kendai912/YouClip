@@ -209,6 +209,7 @@ class TagController extends Controller
         $options->setDuration(3);
         $startSec = $this->convertToSec("00:".$request->start);
         $options->setStart($startSec);
+        // $options->setQuality(100);
 
         $previewFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
         $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=" . $request->youtubeId, $options);
