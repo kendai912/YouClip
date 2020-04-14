@@ -1898,7 +1898,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   created: function created() {
-    this.$store.dispatch("tag/loadTagVideo");
+    // this.$store.dispatch("tag/loadTagVideo");
     // this.$store.dispatch("playlist/loadPlaylist");
     this.$store.dispatch("like/loadTagLike");
     this.$store.dispatch("likePlaylist/loadPlaylistLike");
@@ -4497,7 +4497,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
     playPlaylist: function playPlaylist(playlistId, index) {
       //最後のシーンでない場合は次のシーンのパラメータをセット
-      this.$store.commit("watch/setPlaylistParameters", index);
+      this.$store.commit("watch/setYTPlaylistParameters", index);
 
       //URLを更新
       this.$router.push({
@@ -4714,13 +4714,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
           case 5:
 
             //YTPlayerのプレイリストの再生に必要なパラメータをセット
-            this.$store.commit("watch/setPlaylistParameters", this.indexUrl);
-            _context2.next = 12;
+            this.$store.commit("watch/setYTPlaylistParameters", this.indexUrl);
+            _context2.next = 13;
             break;
 
           case 8:
             if (!this.$route.query.tag) {
-              _context2.next = 12;
+              _context2.next = 13;
               break;
             }
 
@@ -4728,11 +4728,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             //URLのクエリパラメータからプレイリストIDとインデックスを取得
             this.tagIdUrl = this.$route.query.tag;
 
-            //YTPlayerのタグの再生に必要なパラメータをセット
+            //動画・タグデータを取得
             _context2.next = 12;
-            return this.setIndivisualParameters(this.tagIdUrl);
+            return this.$store.dispatch("watch/getTagAndVideoDataById", this.tagIdUrl);
 
           case 12:
+
+            //YTPlayerのタグの再生に必要なパラメータをセット
+            this.$store.commit("watch/setYTIndivisualParameters");
+
+          case 13:
 
             // This code loads the IFrame Player API code asynchronously.
             tag = document.createElement("script");
@@ -4813,7 +4818,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
               }
             });
 
-          case 22:
+          case 23:
           case "end":
             return _context2.stop();
         }
@@ -101806,6 +101811,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 var state = {
   playlistAndTagVideoData: null,
+  tagAndVideoData: null,
   watchList: null,
   listIndex: 0,
   playlistId: "",
@@ -101819,6 +101825,9 @@ var state = {
 var getters = {
   playlistAndTagVideoData: function playlistAndTagVideoData(state) {
     return state.playlistAndTagVideoData;
+  },
+  tagAndVideoData: function tagAndVideoData(state) {
+    return state.tagAndVideoData;
   },
   watchList: function watchList(state) {
     return state.watchList;
@@ -101859,25 +101868,25 @@ var getters = {
 };
 
 var mutations = {
-  setPlaylistParameters: function setPlaylistParameters(state, index) {
+  //プレイリストの再生に必要なパラメータをセット
+  setYTPlaylistParameters: function setYTPlaylistParameters(state, index) {
     //watchlistにコンテンツをセット
     state.watchList = state.playlistAndTagVideoData.tagVideoData;
 
-    //プレイリストの場合はデフォルトでlistIndexは0からスタート
+    //watchlistの中のindexをセット
     state.listIndex = index;
 
     //watchlistのlistIndexのデータを再生関連パラメーターにセット
     mutations.setYTPlayerParameters(state);
   },
-  setIndivisualParameters: function setIndivisualParameters(state, indivisualTagVideoArray) {
-    //watchlistにコンテンツをセット
-    state.watchList = indivisualTagVideoArray;
 
-    //watchlistからクリックしたタグIDのインデックスを検索しlistIndexにセット
-    state.listIndex = state.watchList.findIndex(function (_ref) {
-      var tag_id = _ref.tag_id;
-      return tag_id == state.currentTagId;
-    });
+  //シーンタグの再生に必要なパラメータをセット
+  setYTIndivisualParameters: function setYTIndivisualParameters(state) {
+    //watchlistにコンテンツをセット
+    state.watchList = state.tagAndVideoData;
+
+    //シーンタグの場合はindexはデフォルトで0
+    state.listIndex = 0;
 
     //watchlistのlistIndexのデータを再生関連パラメーターにセット
     mutations.setYTPlayerParameters(state);
@@ -101892,6 +101901,9 @@ var mutations = {
   },
   setPlaylistAndTagVideoData: function setPlaylistAndTagVideoData(state, data) {
     state.playlistAndTagVideoData = data;
+  },
+  setTagAndVideoData: function setTagAndVideoData(state, data) {
+    state.tagAndVideoData = data;
   },
   setPlaylistId: function setPlaylistId(state, data) {
     state.playlistId = data;
@@ -101909,7 +101921,7 @@ var mutations = {
 
 var actions = {
   getPlaylistAndTagVideoDataById: function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context, playlistId) {
+    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context, playlistId) {
       var response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
         while (1) {
@@ -101941,10 +101953,48 @@ var actions = {
     }));
 
     function getPlaylistAndTagVideoDataById(_x, _x2) {
-      return _ref2.apply(this, arguments);
+      return _ref.apply(this, arguments);
     }
 
     return getPlaylistAndTagVideoDataById;
+  }(),
+  getTagAndVideoDataById: function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context, tagId) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/get/tagAndVideoData?id=" + tagId);
+
+            case 2:
+              response = _context2.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
+                // 成功した時
+                context.commit("setTagAndVideoData", response.data.tagAndVideoData);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 4:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+
+    function getTagAndVideoDataById(_x3, _x4) {
+      return _ref2.apply(this, arguments);
+    }
+
+    return getTagAndVideoDataById;
   }()
 };
 
@@ -102287,13 +102337,7 @@ var actions = {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return INTERNAL_SERVER_ERROR; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return UNPROCESSABLE_ENTITY; });
 /* harmony export (immutable) */ __webpack_exports__["g"] = getCookieValue;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
-
-
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 //システムエラー定義
 var OK = 200;
@@ -102395,85 +102439,7 @@ function getCookieValue(searchKey) {
       seconds = seconds < 10 ? "0" + seconds : seconds;
 
       return minutes + ":" + seconds;
-    },
-
-    // setPlaylistParameters(playlistId, index) {
-    //   //プレイリストIDからプレイリスト名を取得
-    //   let playlistName = this.$store.getters[
-    //     "playlist/getPlaylistTagContentById"
-    //   ](playlistId).playlistName;
-
-    //   //プレイリストのIDと名前をwatchストアにセット
-    //   this.$store.commit("watch/setPlaylistId", playlistId);
-    //   this.$store.commit("watch/setPlaylistName", playlistName);
-
-    //   //プレイリストIDからplaylistストアのplaylistTagDataに格納されているtagデータを取得
-    //   let playlistTagArray = this.$store.getters[
-    //     "playlist/getPlaylistTagContentById"
-    //   ](playlistId).tags;
-
-    //   //tagデータとvideoデータを結合
-    //   let playlistTagVideoArray = [];
-    //   playlistTagArray.forEach(value => {
-    //     playlistTagVideoArray.push(
-    //       this.$store.getters["tag/getTagVideoContentById"](value.id)
-    //     );
-    //   });
-
-    //   //Watchストアに再生のためのパラメータをセット
-    //   this.$store.commit("watch/setPlaylistParameters", {
-    //     playlistTagVideoArray,
-    //     index
-    //   });
-    // },
-    //YTPlayerのタグの再生に必要なパラメータをセット
-    setIndivisualParameters: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(currentTagId) {
-        var _this2 = this;
-
-        var video_id, tagList, indivisualTagVideoArray;
-        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                video_id = this.$store.getters["tag/getTagVideoContentById"](currentTagId).video_id;
-
-                // //再生するtagIDをwatchストアにセット
-
-                this.$store.commit("watch/setCurrentTagId", currentTagId);
-
-                //VideoIDからtagデータ一覧を取得
-                _context.next = 4;
-                return this.$store.dispatch("video/getTagListByVideoId", video_id);
-
-              case 4:
-                tagList = this.$store.getters["video/tagListOfVideo"];
-
-                //tagデータとvideoデータを結合
-
-                indivisualTagVideoArray = [];
-
-                tagList.forEach(function (value) {
-                  indivisualTagVideoArray.push(_this2.$store.getters["tag/getTagVideoContentById"](value.id));
-                });
-
-                //Watchストアに再生のためのパラメータをセット
-                this.$store.commit("watch/setIndivisualParameters", indivisualTagVideoArray);
-
-              case 8:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function setIndivisualParameters(_x) {
-        return _ref.apply(this, arguments);
-      }
-
-      return setIndivisualParameters;
-    }()
+    }
   }
 });
 

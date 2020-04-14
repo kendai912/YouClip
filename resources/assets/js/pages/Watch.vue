@@ -93,7 +93,7 @@ export default {
     },
     playPlaylist(playlistId, index) {
       //最後のシーンでない場合は次のシーンのパラメータをセット
-      this.$store.commit("watch/setPlaylistParameters", index);
+      this.$store.commit("watch/setYTPlaylistParameters", index);
 
       //URLを更新
       this.$router
@@ -294,15 +294,6 @@ export default {
   },
   mixins: [myMixin],
   mounted: async function() {
-    // //リロードされた場合は必要なデータを再ロード
-    // if (
-    //   !this.$store.getters["tag/tagVideoData"] ||
-    //   !this.$store.getters["playlist/playlistTagData"]
-    // ) {
-    //   await this.$store.dispatch("tag/loadTagVideo");
-    //   await this.$store.dispatch("playlist/loadPlaylist");
-    // }
-
     if (this.$route.query.playlist) {
       //特定シーン再生の場合
       //URLのクエリパラメータからプレイリストIDとインデックスを取得
@@ -316,14 +307,17 @@ export default {
       );
 
       //YTPlayerのプレイリストの再生に必要なパラメータをセット
-      this.$store.commit("watch/setPlaylistParameters", this.indexUrl);
+      this.$store.commit("watch/setYTPlaylistParameters", this.indexUrl);
     } else if (this.$route.query.tag) {
       //プレイリスト再生の場合
       //URLのクエリパラメータからプレイリストIDとインデックスを取得
       this.tagIdUrl = this.$route.query.tag;
 
+      //動画・タグデータを取得
+      await this.$store.dispatch("watch/getTagAndVideoDataById", this.tagIdUrl);
+
       //YTPlayerのタグの再生に必要なパラメータをセット
-      await this.setIndivisualParameters(this.tagIdUrl);
+      this.$store.commit("watch/setYTIndivisualParameters");
     }
 
     // This code loads the IFrame Player API code asynchronously.

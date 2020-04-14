@@ -27,8 +27,8 @@ Route::get('/user', function () {
 // ログアウト
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
-//全タグデータのロード
-Route::get('/load/tagVideo', 'TagController@loadAllTag');
+//ID指定でのタグ・動画データの取得
+Route::get('/get/tagAndVideoData', 'TagController@getTagAndVideoDataById');
 //Likeまたは作成したタグデータのロード
 Route::get('/load/myTagVideo', 'TagController@loadMyTag');
 

@@ -38,14 +38,21 @@ class TagController extends Controller
     {
         //
     }
-    
-    //全ターグデータをロード
-    public function loadAllTag()
-    {
-        //動画・タグの全データを外部結合し抽出
-        $tagVideoData = Tag::leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
 
-        return $tagVideoData;
+    //ID指定でのタグ・動画データの取得
+    public function getTagAndVideoDataById(Request $request)
+    {
+        $tagId = $request->input('id');
+        $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags.id', $tagId)->get();
+
+        return response()->json(
+            [
+            'tagAndVideoData' => $tagAndVideoData
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 
     //Likeまたは作成したタグデータをロード

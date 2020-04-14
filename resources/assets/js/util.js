@@ -93,62 +93,6 @@ export default {
       seconds = seconds < 10 ? "0" + seconds : seconds;
 
       return minutes + ":" + seconds;
-    },
-    // setPlaylistParameters(playlistId, index) {
-    //   //プレイリストIDからプレイリスト名を取得
-    //   let playlistName = this.$store.getters[
-    //     "playlist/getPlaylistTagContentById"
-    //   ](playlistId).playlistName;
-
-    //   //プレイリストのIDと名前をwatchストアにセット
-    //   this.$store.commit("watch/setPlaylistId", playlistId);
-    //   this.$store.commit("watch/setPlaylistName", playlistName);
-
-    //   //プレイリストIDからplaylistストアのplaylistTagDataに格納されているtagデータを取得
-    //   let playlistTagArray = this.$store.getters[
-    //     "playlist/getPlaylistTagContentById"
-    //   ](playlistId).tags;
-
-    //   //tagデータとvideoデータを結合
-    //   let playlistTagVideoArray = [];
-    //   playlistTagArray.forEach(value => {
-    //     playlistTagVideoArray.push(
-    //       this.$store.getters["tag/getTagVideoContentById"](value.id)
-    //     );
-    //   });
-
-    //   //Watchストアに再生のためのパラメータをセット
-    //   this.$store.commit("watch/setPlaylistParameters", {
-    //     playlistTagVideoArray,
-    //     index
-    //   });
-    // },
-    //YTPlayerのタグの再生に必要なパラメータをセット
-    async setIndivisualParameters(currentTagId) {
-      let video_id = this.$store.getters["tag/getTagVideoContentById"](
-        currentTagId
-      ).video_id;
-
-      // //再生するtagIDをwatchストアにセット
-      this.$store.commit("watch/setCurrentTagId", currentTagId);
-
-      //VideoIDからtagデータ一覧を取得
-      await this.$store.dispatch("video/getTagListByVideoId", video_id);
-      let tagList = this.$store.getters["video/tagListOfVideo"];
-
-      //tagデータとvideoデータを結合
-      let indivisualTagVideoArray = [];
-      tagList.forEach(value => {
-        indivisualTagVideoArray.push(
-          this.$store.getters["tag/getTagVideoContentById"](value.id)
-        );
-      });
-
-      //Watchストアに再生のためのパラメータをセット
-      this.$store.commit(
-        "watch/setIndivisualParameters",
-        indivisualTagVideoArray
-      );
     }
   }
 };
