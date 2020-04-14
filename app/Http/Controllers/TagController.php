@@ -29,16 +29,6 @@ class TagController extends Controller
         );
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
     //ID指定でのタグ・動画データの取得
     public function getTagAndVideoDataById(Request $request)
     {
@@ -56,7 +46,7 @@ class TagController extends Controller
     }
 
     //Likeまたは作成したタグデータをロード
-    public function loadMyTag()
+    public function loadMyCreatedAndLikedTagVideo()
     {
         //LikeしたタグIDを取得
         $likes = Like::where('user_id', Auth::user()->id)->get();
@@ -66,11 +56,11 @@ class TagController extends Controller
         }
         
         // Likeしたタグデータと作成したタグデータを取得
-        $myTagVideoData = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
+        $myCreatedAndLikedTagVideo = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
 
         return response()->json(
             [
-            'myTagVideoData' => $myTagVideoData
+            'myCreatedAndLikedTagVideo' => $myCreatedAndLikedTagVideo
             ],
             200,
             [],

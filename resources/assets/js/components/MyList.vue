@@ -8,16 +8,16 @@
       <v-tab-item>
         <v-card flat>
           <MyPlaylist
-            v-for="myPlaylistTag in myPlaylistTagDataLoaded"
-            v-bind:myPlaylistTag="myPlaylistTag"
-            v-bind:key="myPlaylistTag.id"
+            v-for="myPlaylist in myCreatedAndLikedPlaylist"
+            v-bind:myPlaylist="myPlaylist"
+            v-bind:key="myPlaylist.id"
           />
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
           <MyScene
-            v-for="myTagVideo in myTagVideoData"
+            v-for="myTagVideo in myCreatedAndLikedTagVideo"
             v-bind:myTagVideo="myTagVideo"
             v-bind:key="myTagVideo.id"
           />
@@ -48,8 +48,8 @@ export default {
   mixins: [myMixin],
   computed: {
     ...mapGetters({
-      myPlaylistTagDataLoaded: "playlist/myPlaylistTagDataLoaded",
-      myTagVideoData: "tag/myTagVideoData"
+      myCreatedAndLikedPlaylist: "playlist/myCreatedAndLikedPlaylist",
+      myCreatedAndLikedTagVideo: "tag/myCreatedAndLikedTagVideo"
     })
   },
   methods: {
@@ -64,7 +64,7 @@ export default {
     //Likeまたは作成したプレイリストをロード
     await this.$store.dispatch("playlist/loadMyCreatedAndLikedPlaylist");
     //Likeまたは作成したタグをロード
-    await this.$store.dispatch("tag/loadMyTagVideo");
+    await this.$store.dispatch("tag/loadMyCreatedAndLikedTagVideo");
   }
 };
 </script>

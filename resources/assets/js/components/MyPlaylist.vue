@@ -1,13 +1,13 @@
 <template>
-  <div v-if="myPlaylistTag.tags[0]" v-on:click="select">
+  <div v-if="myPlaylist.tags[0]" v-on:click="select">
     <div class="thumbnail">
       <img
-        v-bind:src="'/storage/img/' + myPlaylistTag.tags[0].preview"
+        v-bind:src="'/storage/img/' + myPlaylist.tags[0].preview"
         style="width: 300px; height:auto"
       />
     </div>
-    <div>{{ myPlaylistTag.playlistName }}</div>
-    <v-chip v-for="tag in myPlaylistTag.tags" v-bind:key="tag.id" color="blue">
+    <div>{{ myPlaylist.playlistName }}</div>
+    <v-chip v-for="tag in myPlaylist.tags" v-bind:key="tag.id" color="blue">
       <v-icon left>mdi-label</v-icon>
       <strong v-on:click.stop="search(tag.tags)">{{ tag.tags }}</strong>
     </v-chip>
@@ -20,7 +20,7 @@ import myMixin from "../util";
 
 export default {
   props: {
-    myPlaylistTag: Object
+    myPlaylist: Object
   },
   data() {
     return {};
@@ -38,7 +38,7 @@ export default {
         .push({
           path: "/watch",
           query: {
-            playlist: this.myPlaylistTag.id,
+            playlist: this.myPlaylist.id,
             index: "0"
           }
         })

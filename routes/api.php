@@ -30,7 +30,7 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 //ID指定でのタグ・動画データの取得
 Route::get('/get/tagAndVideoData', 'TagController@getTagAndVideoDataById');
 //Likeまたは作成したタグデータのロード
-Route::get('/load/myTagVideo', 'TagController@loadMyTag');
+Route::get('/load/myCreatedAndLikedTagVideo', 'TagController@loadMyCreatedAndLikedTagVideo');
 
 //プレイリスト一覧のロード
 Route::get('/index/playlistAndTag', 'PlaylistController@indexPlaylistAndTagPagination');

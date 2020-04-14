@@ -113,7 +113,7 @@ class PlaylistController extends Controller
         $createdPlaylist = $this->createdPlaylist();
 
         //Likeしたプレイリストと作成したプレイリストをマージ
-        $myPlaylist = $LikedPlaylist->merge($createdPlaylist);
+        $myCreatedAndLikedPlaylist = $LikedPlaylist->merge($createdPlaylist);
         
         return response()->json(
             [

@@ -1898,8 +1898,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   created: function created() {
-    // this.$store.dispatch("tag/loadTagVideo");
-    // this.$store.dispatch("playlist/loadPlaylist");
     this.$store.dispatch("like/loadTagLike");
     this.$store.dispatch("likePlaylist/loadPlaylistLike");
 
@@ -2283,8 +2281,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
   mixins: [__WEBPACK_IMPORTED_MODULE_4__util__["f" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
-    myPlaylistTagDataLoaded: "playlist/myPlaylistTagDataLoaded",
-    myTagVideoData: "tag/myTagVideoData"
+    myCreatedAndLikedPlaylist: "playlist/myCreatedAndLikedPlaylist",
+    myCreatedAndLikedTagVideo: "tag/myCreatedAndLikedTagVideo"
   })),
   methods: {
     setActiveTab: function setActiveTab(key) {
@@ -2306,7 +2304,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
             case 3:
               _context.next = 5;
-              return this.$store.dispatch("tag/loadMyTagVideo");
+              return this.$store.dispatch("tag/loadMyCreatedAndLikedTagVideo");
 
             case 5:
             case "end":
@@ -2357,7 +2355,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    myPlaylistTag: Object
+    myPlaylist: Object
   },
   data: function data() {
     return {};
@@ -2373,7 +2371,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       this.$router.push({
         path: "/watch",
         query: {
-          playlist: this.myPlaylistTag.id,
+          playlist: this.myPlaylist.id,
           index: "0"
         }
       }).catch(function (err) {});
@@ -37708,10 +37706,10 @@ var render = function() {
               _c(
                 "v-card",
                 { attrs: { flat: "" } },
-                _vm._l(_vm.myPlaylistTagDataLoaded, function(myPlaylistTag) {
+                _vm._l(_vm.myCreatedAndLikedPlaylist, function(myPlaylist) {
                   return _c("MyPlaylist", {
-                    key: myPlaylistTag.id,
-                    attrs: { myPlaylistTag: myPlaylistTag }
+                    key: myPlaylist.id,
+                    attrs: { myPlaylist: myPlaylist }
                   })
                 }),
                 1
@@ -37726,7 +37724,7 @@ var render = function() {
               _c(
                 "v-card",
                 { attrs: { flat: "" } },
-                _vm._l(_vm.myTagVideoData, function(myTagVideo) {
+                _vm._l(_vm.myCreatedAndLikedTagVideo, function(myTagVideo) {
                   return _c("MyScene", {
                     key: myTagVideo.id,
                     attrs: { myTagVideo: myTagVideo }
@@ -37829,7 +37827,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.myPlaylistTag.tags[0]
+  return _vm.myPlaylist.tags[0]
     ? _c(
         "div",
         { on: { click: _vm.select } },
@@ -37837,15 +37835,13 @@ var render = function() {
           _c("div", { staticClass: "thumbnail" }, [
             _c("img", {
               staticStyle: { width: "300px", height: "auto" },
-              attrs: {
-                src: "/storage/img/" + _vm.myPlaylistTag.tags[0].preview
-              }
+              attrs: { src: "/storage/img/" + _vm.myPlaylist.tags[0].preview }
             })
           ]),
           _vm._v(" "),
-          _c("div", [_vm._v(_vm._s(_vm.myPlaylistTag.playlistName))]),
+          _c("div", [_vm._v(_vm._s(_vm.myPlaylist.playlistName))]),
           _vm._v(" "),
-          _vm._l(_vm.myPlaylistTag.tags, function(tag) {
+          _vm._l(_vm.myPlaylist.tags, function(tag) {
             return _c(
               "v-chip",
               { key: tag.id, attrs: { color: "blue" } },
@@ -101278,15 +101274,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 var state = {
   tagVideoData: null,
-  myTagVideoData: null
+  myCreatedAndLikedTagVideo: null
 };
 
 var getters = {
   tagVideoData: function tagVideoData(state) {
     return state.tagVideoData;
   },
-  myTagVideoData: function myTagVideoData(state) {
-    return state.myTagVideoData;
+  myCreatedAndLikedTagVideo: function myCreatedAndLikedTagVideo(state) {
+    return state.myCreatedAndLikedTagVideo;
   },
   getTagVideoContentById: function getTagVideoContentById(state) {
     return function (tagId) {
@@ -101301,14 +101297,14 @@ var mutations = {
   setTagVideoData: function setTagVideoData(state, data) {
     state.tagVideoData = data;
   },
-  setMyTagVideoData: function setMyTagVideoData(state, data) {
-    state.myTagVideoData = data;
+  setMyCreatedAndLikedTagVideo: function setMyCreatedAndLikedTagVideo(state, data) {
+    state.myCreatedAndLikedTagVideo = data;
   }
 };
 
 var actions = {
-  //tagとvideoが紐付いたデータ一覧をロード
-  loadTagVideo: function () {
+  //Likeまたは作成したシーンタグをロード
+  loadMyCreatedAndLikedTagVideo: function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context) {
       var response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
@@ -101316,14 +101312,14 @@ var actions = {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/load/tagVideo");
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/load/myCreatedAndLikedTagVideo");
 
             case 2:
               response = _context.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
-                context.commit("setTagVideoData", response.data);
+                context.commit("setMyCreatedAndLikedTagVideo", response.data.myCreatedAndLikedTagVideo);
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
@@ -101340,51 +101336,11 @@ var actions = {
       }, _callee, this);
     }));
 
-    function loadTagVideo(_x) {
+    function loadMyCreatedAndLikedTagVideo(_x) {
       return _ref.apply(this, arguments);
     }
 
-    return loadTagVideo;
-  }(),
-
-  //Likeまたは作成したシーンタグをロード
-  loadMyTagVideo: function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context) {
-      var response;
-      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.next = 2;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/load/myTagVideo");
-
-            case 2:
-              response = _context2.sent;
-
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
-                // 成功した時
-                context.commit("setMyTagVideoData", response.data.myTagVideoData);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
-                // 失敗した時
-                context.commit("error/setCode", response.status, { root: true });
-              } else {
-                // 上記以外で失敗した時
-                context.commit("error/setCode", response.status, { root: true });
-              }
-
-            case 4:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2, this);
-    }));
-
-    function loadMyTagVideo(_x2) {
-      return _ref2.apply(this, arguments);
-    }
-
-    return loadMyTagVideo;
+    return loadMyCreatedAndLikedTagVideo;
   }()
 };
 
