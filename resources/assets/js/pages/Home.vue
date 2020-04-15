@@ -56,6 +56,11 @@ export default {
     },
     //表示するプレイリストの無限スクロール
     async infinateLoadPlaylist() {
+      if (!this.toLoad) return;
+
+      //ローディングを表示
+      this.$store.commit("loadingItem/setIsLoading", true);
+
       //無限スクロールに合わせてプレイリストのページネイションを取得
       await this.$store.dispatch(
         "playlist/indexPlaylistAndTagPagination",
@@ -66,11 +71,15 @@ export default {
         this.mediaItems,
         this.playlistAndTagPagination.data
       );
+
+      //ローディングを非表示
+      this.$store.commit("loadingItem/setIsLoading", false);
     }
   },
   computed: {
     ...mapGetters({
-      playlistAndTagPagination: "playlist/playlistAndTagPagination"
+      playlistAndTagPagination: "playlist/playlistAndTagPagination",
+      toLoad: "playlist/toLoad"
     })
   },
   mounted() {
@@ -79,7 +88,9 @@ export default {
       let bottomOfWindow =
         document.documentElement.scrollTop + window.innerHeight >=
         document.documentElement.offsetHeight - 100;
-      if (bottomOfWindow) this.infinateLoadPlaylist();
+      if (bottomOfWindow) {
+        this.infinateLoadPlaylist();
+      }
     };
     this.infinateLoadPlaylist();
   }

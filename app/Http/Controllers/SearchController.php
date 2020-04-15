@@ -40,8 +40,11 @@ class SearchController extends Controller
         //検索ワード
         $searchQuery = $request->searchQuery;
 
+        //ページネーション設定
+        $contentsPerPage = 2;
+
         //検索ワードに一致する動画・タグの全データを外部結合し取得
-        $tagVideoResult = Tag::leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags', 'LIKE', "%$searchQuery%")->orWhere('title', 'LIKE', "%$searchQuery%")->orderBy('tag_created_at', 'desc')->get();
+        $tagVideoResult = Tag::leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags', 'LIKE', "%$searchQuery%")->orWhere('title', 'LIKE', "%$searchQuery%")->orderBy('tag_created_at', 'desc')->paginate($contentsPerPage);
         
         return response()->json(
             [
@@ -58,8 +61,11 @@ class SearchController extends Controller
         //検索ワード
         $searchQuery = $request->searchQuery;
 
+        //ページネーション設定
+        $contentsPerPage = 2;
+
         //検索ワードにプレイリスト・タグのデータを取得
-        $playlistTagResult = Playlist::with('tags')->where('playlistName', 'LIKE', "%$searchQuery%")->get();
+        $playlistTagResult = Playlist::with('tags')->where('playlistName', 'LIKE', "%$searchQuery%")->paginate($contentsPerPage);
 
         return response()->json(
             [

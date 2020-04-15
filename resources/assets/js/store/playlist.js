@@ -60,7 +60,6 @@ const actions = {
     const response = await axios.get("api/index/playlistAndTag?page=" + page);
     if (response.status == OK) {
       // 成功した時
-
       if (response.data.playlistAndTagPagination.last_page == page)
         context.commit("setToLoad", false);
       if (response.data.playlistAndTagPagination.data) {

@@ -2117,8 +2117,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_LoadingItem_vue__ = __webpack_require__("./resources/assets/js/components/LoadingItem.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_LoadingItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_LoadingItem_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./resources/assets/js/util.js");
 
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
@@ -2151,15 +2155,24 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    LoadingItem: __WEBPACK_IMPORTED_MODULE_2__components_LoadingItem_vue___default.a
+  },
   props: {
     mediaItems: Array
   },
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["f" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["f" /* default */]],
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
+    isLoading: "loadingItem/isLoading",
+    numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination"
+  })),
   methods: {
     select: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(mediaItem) {
@@ -2207,7 +2220,43 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
       return select;
     }()
-  }
+  },
+  mounted: function mounted() {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/LoadingItem.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./resources/assets/js/util.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    numberOfItemsPerPagination: Number
+  },
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["f" /* default */]],
+  methods: {},
+  created: function created() {}
 });
 
 /***/ }),
@@ -2858,7 +2907,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     search: function search() {
       if (this.searchWord == "") return;
       this.$store.commit("search/setSearchQuery", this.searchWord);
-      this.$store.dispatch("search/search");
       this.$store.commit("search/searchResultPageTransit");
     },
 
@@ -2872,7 +2920,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     select: function select(candidateName) {
       this.searchWord = candidateName;
       this.$store.commit("search/setSearchQuery", candidateName);
-      this.$store.dispatch("search/search");
       this.$store.commit("search/searchResultPageTransit");
     }
   },
@@ -3880,14 +3927,30 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return this.$store.dispatch("playlist/indexPlaylistAndTagPagination", this.page++);
+                if (this.toLoad) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return");
 
               case 2:
+
+                //ローディングを表示
+                this.$store.commit("loadingItem/setIsLoading", true);
+
+                //無限スクロールに合わせてプレイリストのページネイションを取得
+                _context.next = 5;
+                return this.$store.dispatch("playlist/indexPlaylistAndTagPagination", this.page++);
+
+              case 5:
                 //ページネーションのデータをmediaItemsに格納
                 this.putPlaylistTagIntoMediaItems(this.mediaItems, this.playlistAndTagPagination.data);
 
-              case 3:
+                //ローディングを非表示
+                this.$store.commit("loadingItem/setIsLoading", false);
+
+              case 7:
               case "end":
                 return _context.stop();
             }
@@ -3903,7 +3966,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     }()
   },
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
-    playlistAndTagPagination: "playlist/playlistAndTagPagination"
+    playlistAndTagPagination: "playlist/playlistAndTagPagination",
+    toLoad: "playlist/toLoad"
   })),
   mounted: function mounted() {
     var _this = this;
@@ -3911,7 +3975,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     window.onscroll = function () {
       //ウィンドウの下から100pxに達したら次のプレイリストアイテムを読み込み
       var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight - 100;
-      if (bottomOfWindow) _this.infinateLoadPlaylist();
+      if (bottomOfWindow) {
+        _this.infinateLoadPlaylist();
+      }
     };
     this.infinateLoadPlaylist();
   }
@@ -4190,6 +4256,23 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4202,7 +4285,13 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     IndexItem: __WEBPACK_IMPORTED_MODULE_3__components_IndexItem_vue___default.a
   },
   data: function data() {
-    return {};
+    return {
+      tab: 1,
+      pageOfPlaylist: 1,
+      pageOfTagVideo: 1,
+      playlistMediaItems: [],
+      tagVideoMediaItems: []
+    };
   },
 
   mixins: [__WEBPACK_IMPORTED_MODULE_4__util__["f" /* default */]],
@@ -4212,68 +4301,176 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       var min = parseInt(His.split(":")[0], 10) * 60 + parseInt(His.split(":")[1], 10);
       var sec = parseInt(His.split(":")[2], 10);
       return min + ":" + sec;
-    }
+    },
+    initializeSearchResult: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                //ローディングを表示
+                this.$store.commit("loadingItem/setIsLoading", true);
+
+                //URLのsearch_queryを元に検索ページネーションを実行
+                this.$store.commit("search/setSearchQuery", this.$route.query.search_query);
+                _context.next = 4;
+                return this.$store.dispatch("search/search", this.pageOfPlaylist++);
+
+              case 4:
+                this.pageOfTagVideo++;
+
+                //プレイリストデータをメディアアイテムに追加格納
+                this.putPlaylistTagIntoMediaItems(this.playlistMediaItems, this.playlistTagResult);
+                //タグデータをメディアアイテムに格納
+                this.putTagVideoIntoMediaItems(this.tagVideoMediaItems, this.tagVideoResult);
+
+                //ローディングを非表示
+                this.$store.commit("loadingItem/setIsLoading", false);
+
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function initializeSearchResult() {
+        return _ref.apply(this, arguments);
+      }
+
+      return initializeSearchResult;
+    }(),
+
+    //プレイリストの検索結果の無限スクロール
+    infinateLoadPlaylistSearchResult: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (this.playlistResultToLoad) {
+                  _context2.next = 2;
+                  break;
+                }
+
+                return _context2.abrupt("return");
+
+              case 2:
+
+                //ローディングを表示
+                this.$store.commit("loadingItem/setIsLoading", true);
+
+                //プレイリストの検索ページネーションを実行
+                _context2.next = 5;
+                return this.$store.dispatch("search/searchPlaylistTagResult", this.pageOfPlaylist++);
+
+              case 5:
+
+                //プレイリストデータをメディアアイテムに追加格納
+                this.putPlaylistTagIntoMediaItems(this.playlistMediaItems, this.playlistTagResult);
+
+                //ローディングを非表示
+                this.$store.commit("loadingItem/setIsLoading", false);
+
+              case 7:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function infinateLoadPlaylistSearchResult() {
+        return _ref2.apply(this, arguments);
+      }
+
+      return infinateLoadPlaylistSearchResult;
+    }(),
+
+    //シーンの検索結果の無限スクロール
+    infinateLoadTagVideSearchResult: function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (this.tagVideoResultToLoad) {
+                  _context3.next = 2;
+                  break;
+                }
+
+                return _context3.abrupt("return");
+
+              case 2:
+
+                //ローディングを表示
+                this.$store.commit("loadingItem/setIsLoading", true);
+
+                //シーンの検索ページネーションを実行
+                console.log(this.pageOfTagVideo);
+                _context3.next = 6;
+                return this.$store.dispatch("search/searchTagVideoResult", this.pageOfTagVideo++);
+
+              case 6:
+
+                //タグデータをレコメンド画面に表示するメディアアイテムに格納
+                this.putTagVideoIntoMediaItems(this.tagVideoMediaItems, this.tagVideoResult);
+
+                //ローディングを非表示
+                this.$store.commit("loadingItem/setIsLoading", false);
+
+              case 8:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function infinateLoadTagVideSearchResult() {
+        return _ref3.apply(this, arguments);
+      }
+
+      return infinateLoadTagVideSearchResult;
+    }()
   },
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     searchQuery: "search/searchQuery",
     tagVideoResult: "search/tagVideoResult",
-    playlistTagResult: "search/playlistTagResult"
-  }), {
-    //レコメンド画面に表示するアイテム
-    mediaItems: function mediaItems() {
-      var mediaItems = [];
+    playlistTagResult: "search/playlistTagResult",
+    tagVideoResultToLoad: "search/tagVideoResultToLoad",
+    playlistResultToLoad: "search/playlistResultToLoad"
+  })),
+  created: function created() {
+    var _this = this;
 
-      //タグデータをレコメンド画面に表示するメディアアイテムに格納
-      this.putTagVideoIntoMediaItems(mediaItems, this.tagVideoResult);
+    //ローディング表示用の変数をセット
+    this.$store.commit("loadingItem/setNumberOfItemsPerPagination", 5);
 
-      //プレイリストデータをメディアアイテムに追加格納
-      this.putPlaylistTagIntoMediaItems(mediaItems, this.playlistTagResult);
-
-      //作成日の降順(新しい日付が上)に並び替え
-      return mediaItems.sort(function (a, b) {
-        return a.created_at < b.created_at ? 1 : a.created_at > b.created_at ? -1 : 0;
-      });
-    }
-  }),
-  created: function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-      var self, from;
-      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              //リロードされた場合はURLのsearch_queryを元に再度検索を実行
-              this.$store.commit("search/setSearchQuery", this.$route.query.search_query);
-              _context.next = 3;
-              return this.$store.dispatch("search/search");
-
-            case 3:
-
-              //戻るor進むが押された場合は画面を再ロード
-              self = this;
-              from = this.$route.path;
-
-              window.addEventListener("popstate", function (e) {
-                var to = self.$route.path;
-                if (from == "/result" && to == "/result") {
-                  location.reload();
-                }
-              });
-
-            case 6:
-            case "end":
-              return _context.stop();
-          }
+    window.onscroll = function () {
+      //ウィンドウの下から100pxに達したら次の検索結果を読み込み
+      var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight - 100;
+      if (bottomOfWindow) {
+        if (_this.tab == 1) {
+          _this.infinateLoadPlaylistSearchResult();
+        } else if (_this.tab == 2) {
+          _this.infinateLoadTagVideSearchResult();
         }
-      }, _callee, this);
-    }));
+      }
+    };
+    this.initializeSearchResult();
 
-    function created() {
-      return _ref.apply(this, arguments);
-    }
-
-    return created;
-  }()
+    //戻るor進むが押された場合は画面を再ロード
+    var self = this;
+    var from = this.$route.path;
+    window.addEventListener("popstate", function (e) {
+      var to = self.$route.path;
+      if (from == "/result" && to == "/result") {
+        location.reload();
+      }
+    });
+  }
 });
 
 /***/ }),
@@ -4655,6 +4852,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     currentTagId: "watch/currentTagId",
     startHis: "watch/start",
     endHis: "watch/end",
+    playlistAndTagVideoData: "watch/playlistAndTagVideoData",
     isPlaylist: "watch/isPlaylist",
     playlistName: "watch/playlistName",
     currentTagName: "watch/currentTagName",
@@ -4696,7 +4894,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         switch (_context2.prev = _context2.next) {
           case 0:
             if (!this.$route.query.playlist) {
-              _context2.next = 8;
+              _context2.next = 10;
               break;
             }
 
@@ -4711,14 +4909,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
           case 5:
 
+            //プレイリストIDとプレイリスト名をwatchストアに格納
+            this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
+            this.$store.commit("watch/setPlaylistName", this.playlistAndTagVideoData.playlistName);
+
             //YTPlayerのプレイリストの再生に必要なパラメータをセット
             this.$store.commit("watch/setYTPlaylistParameters", this.indexUrl);
-            _context2.next = 13;
+            _context2.next = 15;
             break;
 
-          case 8:
+          case 10:
             if (!this.$route.query.tag) {
-              _context2.next = 13;
+              _context2.next = 15;
               break;
             }
 
@@ -4727,15 +4929,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             this.tagIdUrl = this.$route.query.tag;
 
             //動画・タグデータを取得
-            _context2.next = 12;
+            _context2.next = 14;
             return this.$store.dispatch("watch/getTagAndVideoDataById", this.tagIdUrl);
 
-          case 12:
+          case 14:
 
             //YTPlayerのタグの再生に必要なパラメータをセット
             this.$store.commit("watch/setYTIndivisualParameters");
 
-          case 13:
+          case 15:
 
             // This code loads the IFrame Player API code asynchronously.
             tag = document.createElement("script");
@@ -4816,7 +5018,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
               }
             });
 
-          case 23:
+          case 25:
           case "end":
             return _context2.stop();
         }
@@ -38900,7 +39102,71 @@ var render = function() {
     _vm._v(" "),
     _c("div", [_c("SearchBox")], 1),
     _vm._v(" "),
-    _c("div", [_c("IndexItem", { attrs: { mediaItems: _vm.mediaItems } })], 1)
+    _c("div", [
+      _c("ul", { staticClass: "tab" }, [
+        _c(
+          "li",
+          {
+            staticClass: "tab__item",
+            class: { "tab__item--active": _vm.tab == 1 },
+            on: {
+              click: function($event) {
+                _vm.tab = 1
+              }
+            }
+          },
+          [_vm._v("プレイリスト")]
+        ),
+        _vm._v(" "),
+        _c(
+          "li",
+          {
+            staticClass: "tab__item",
+            class: { "tab__item--active": _vm.tab == 2 },
+            on: {
+              click: function($event) {
+                _vm.tab = 2
+              }
+            }
+          },
+          [_vm._v("シーン")]
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.tab === 1,
+              expression: "tab === 1"
+            }
+          ],
+          staticClass: "panel"
+        },
+        [_c("IndexItem", { attrs: { mediaItems: _vm.playlistMediaItems } })],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.tab === 2,
+              expression: "tab === 2"
+            }
+          ],
+          staticClass: "panel"
+        },
+        [_c("IndexItem", { attrs: { mediaItems: _vm.tagVideoMediaItems } })],
+        1
+      )
+    ])
   ])
 }
 var staticRenderFns = []
@@ -39377,6 +39643,47 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7f9112f0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/LoadingItem.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    _vm._l(_vm.numberOfItemsPerPagination, function(item, index) {
+      return _c(
+        "v-sheet",
+        {
+          key: index,
+          staticClass: "px-3 pt-3 pb-3",
+          attrs: { color: "grey lighten-4" }
+        },
+        [
+          _c("v-skeleton-loader", {
+            staticClass: "mx-auto",
+            attrs: { "max-width": "300", type: "card" }
+          })
+        ],
+        1
+      )
+    }),
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7f9112f0", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-80dbd744\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/IndexItem.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -39386,57 +39693,67 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    _vm._l(_vm.mediaItems, function(item) {
-      return _c(
-        "div",
-        {
-          key: item.category + "-" + item.id,
-          on: {
-            click: function($event) {
-              return _vm.select(item)
+    [
+      _vm._l(_vm.mediaItems, function(item) {
+        return _c(
+          "div",
+          {
+            key: item.category + "-" + item.id,
+            on: {
+              click: function($event) {
+                return _vm.select(item)
+              }
             }
-          }
-        },
-        [
-          _c("div", [
-            _c("img", {
-              staticStyle: { width: "300px", height: "auto" },
-              attrs: { src: "/storage/img/" + item.preview, alt: item.title }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", [
-            _c("div", [_vm._v(_vm._s(item.title))]),
+          },
+          [
+            _c("div", [
+              _c("img", {
+                staticStyle: { width: "300px", height: "auto" },
+                attrs: { src: "/storage/img/" + item.preview, alt: item.title }
+              })
+            ]),
             _vm._v(" "),
-            item.tagArray
-              ? _c(
-                  "div",
-                  [
-                    _vm._v(
-                      "\n        " +
-                        _vm._s(item.start) +
-                        "〜" +
-                        _vm._s(item.end) +
-                        "\n        "
-                    ),
-                    _vm._l(item.tagArray, function(tag, index) {
-                      return _c(
-                        "span",
-                        { key: index + "." + tag, staticClass: "tag" },
-                        [_vm._v(_vm._s(tag))]
-                      )
-                    })
-                  ],
-                  2
-                )
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c("br")
-        ]
-      )
-    }),
-    0
+            _c("div", [
+              _c("div", [_vm._v(_vm._s(item.title))]),
+              _vm._v(" "),
+              item.tagArray
+                ? _c(
+                    "div",
+                    [
+                      _vm._v(
+                        "\n        " +
+                          _vm._s(item.start) +
+                          "〜" +
+                          _vm._s(item.end) +
+                          "\n        "
+                      ),
+                      _vm._l(item.tagArray, function(tag, index) {
+                        return _c(
+                          "span",
+                          { key: index + "." + tag, staticClass: "tag" },
+                          [_vm._v(_vm._s(tag))]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("br")
+          ]
+        )
+      }),
+      _vm._v(" "),
+      _vm.isLoading
+        ? _c("LoadingItem", {
+            attrs: {
+              numberOfItemsPerPagination: _vm.numberOfItemsPerPagination
+            }
+          })
+        : _vm._e()
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -97991,6 +98308,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/LoadingItem.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/LoadingItem.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7f9112f0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/LoadingItem.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/LoadingItem.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7f9112f0", Component.options)
+  } else {
+    hotAPI.reload("data-v-7f9112f0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/MyList.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -99911,15 +100276,17 @@ var mutations = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__playlist__ = __webpack_require__("./resources/assets/js/store/playlist.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__like__ = __webpack_require__("./resources/assets/js/store/like.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__likePlaylist__ = __webpack_require__("./resources/assets/js/store/likePlaylist.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__search__ = __webpack_require__("./resources/assets/js/store/search.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__shareModal__ = __webpack_require__("./resources/assets/js/store/shareModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__snackbar__ = __webpack_require__("./resources/assets/js/store/snackbar.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__YTsearch__ = __webpack_require__("./resources/assets/js/store/YTsearch.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__youtube__ = __webpack_require__("./resources/assets/js/store/youtube.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__tagging__ = __webpack_require__("./resources/assets/js/store/tagging.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__noLoginModal__ = __webpack_require__("./resources/assets/js/store/noLoginModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__otherActionModal__ = __webpack_require__("./resources/assets/js/store/otherActionModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__loadingItem__ = __webpack_require__("./resources/assets/js/store/loadingItem.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__search__ = __webpack_require__("./resources/assets/js/store/search.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shareModal__ = __webpack_require__("./resources/assets/js/store/shareModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__snackbar__ = __webpack_require__("./resources/assets/js/store/snackbar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__YTsearch__ = __webpack_require__("./resources/assets/js/store/YTsearch.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__youtube__ = __webpack_require__("./resources/assets/js/store/youtube.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__tagging__ = __webpack_require__("./resources/assets/js/store/tagging.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__noLoginModal__ = __webpack_require__("./resources/assets/js/store/noLoginModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__otherActionModal__ = __webpack_require__("./resources/assets/js/store/otherActionModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+
 
 
 
@@ -99951,15 +100318,16 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     playlist: __WEBPACK_IMPORTED_MODULE_6__playlist__["a" /* default */],
     like: __WEBPACK_IMPORTED_MODULE_7__like__["a" /* default */],
     likePlaylist: __WEBPACK_IMPORTED_MODULE_8__likePlaylist__["a" /* default */],
-    search: __WEBPACK_IMPORTED_MODULE_9__search__["a" /* default */],
-    shareModal: __WEBPACK_IMPORTED_MODULE_10__shareModal__["a" /* default */],
-    snackbar: __WEBPACK_IMPORTED_MODULE_11__snackbar__["a" /* default */],
-    YTsearch: __WEBPACK_IMPORTED_MODULE_12__YTsearch__["a" /* default */],
-    youtube: __WEBPACK_IMPORTED_MODULE_13__youtube__["a" /* default */],
-    tagging: __WEBPACK_IMPORTED_MODULE_14__tagging__["a" /* default */],
-    noLoginModal: __WEBPACK_IMPORTED_MODULE_15__noLoginModal__["a" /* default */],
-    otherActionModal: __WEBPACK_IMPORTED_MODULE_16__otherActionModal__["a" /* default */],
-    error: __WEBPACK_IMPORTED_MODULE_17__error__["a" /* default */]
+    loadingItem: __WEBPACK_IMPORTED_MODULE_9__loadingItem__["a" /* default */],
+    search: __WEBPACK_IMPORTED_MODULE_10__search__["a" /* default */],
+    shareModal: __WEBPACK_IMPORTED_MODULE_11__shareModal__["a" /* default */],
+    snackbar: __WEBPACK_IMPORTED_MODULE_12__snackbar__["a" /* default */],
+    YTsearch: __WEBPACK_IMPORTED_MODULE_13__YTsearch__["a" /* default */],
+    youtube: __WEBPACK_IMPORTED_MODULE_14__youtube__["a" /* default */],
+    tagging: __WEBPACK_IMPORTED_MODULE_15__tagging__["a" /* default */],
+    noLoginModal: __WEBPACK_IMPORTED_MODULE_16__noLoginModal__["a" /* default */],
+    otherActionModal: __WEBPACK_IMPORTED_MODULE_17__otherActionModal__["a" /* default */],
+    error: __WEBPACK_IMPORTED_MODULE_18__error__["a" /* default */]
   }
 });
 
@@ -100327,6 +100695,45 @@ var actions = {
 
 /***/ }),
 
+/***/ "./resources/assets/js/store/loadingItem.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var state = {
+  isLoading: false,
+  NumberOfItemsPerPagination: 5
+};
+
+var getters = {
+  isLoading: function isLoading(state) {
+    return state.isLoading;
+  },
+  numberOfItemsPerPagination: function numberOfItemsPerPagination(state) {
+    return state.NumberOfItemsPerPagination;
+  }
+};
+
+var mutations = {
+  setIsLoading: function setIsLoading(state, data) {
+    state.isLoading = data;
+  },
+  setNumberOfItemsPerPagination: function setNumberOfItemsPerPagination(state, data) {
+    state.numberOfItemsPerPagination = data;
+  }
+};
+
+var actions = {};
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
+
+/***/ }),
+
 /***/ "./resources/assets/js/store/noLoginModal.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -100508,7 +100915,6 @@ var actions = {
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
-
                 if (response.data.playlistAndTagPagination.last_page == page) context.commit("setToLoad", false);
                 if (response.data.playlistAndTagPagination.data) {
                   context.commit("setPlaylistAndTagPagination", response.data.playlistAndTagPagination);
@@ -100810,7 +101216,9 @@ var state = {
   tagVideoResult: [],
   playlistTagResult: [],
   topSearchqueries: [],
-  searchHistories: []
+  searchHistories: [],
+  tagVideoResultToLoad: true,
+  playlistResultToLoad: true
 };
 
 var getters = {
@@ -100831,6 +101239,12 @@ var getters = {
   },
   searchHistories: function searchHistories(state) {
     return state.searchHistories;
+  },
+  tagVideoResultToLoad: function tagVideoResultToLoad(state) {
+    return state.tagVideoResultToLoad;
+  },
+  playlistResultToLoad: function playlistResultToLoad(state) {
+    return state.playlistResultToLoad;
   }
 };
 
@@ -100853,58 +101267,41 @@ var mutations = {
   setSearchHistories: function setSearchHistories(state, data) {
     state.searchHistories = data;
   },
+  setTagVideoResultToLoad: function setTagVideoResultToLoad(state, data) {
+    state.tagVideoResultToLoad = data;
+  },
+  setPlaylistResultToLoad: function setPlaylistResultToLoad(state, data) {
+    state.playlistResultToLoad = data;
+  },
 
   //検索結果表示ページに遷移
   searchResultPageTransit: function searchResultPageTransit() {
-    var path = "/result";
-    if (location.pathname != path) {
-      __WEBPACK_IMPORTED_MODULE_3__router__["a" /* default */].push({
-        path: "result",
-        query: { search_query: state.searchQuery }
-      }).catch(function (err) {});
-    } else {
-      __WEBPACK_IMPORTED_MODULE_3__router__["a" /* default */].push({
-        query: { search_query: state.searchQuery }
-      }).catch(function (err) {});
-    }
+    __WEBPACK_IMPORTED_MODULE_3__router__["a" /* default */].push({
+      path: "result",
+      query: { search_query: state.searchQuery }
+    }).catch(function (err) {});
+
+    location.reload();
   }
 };
 
 var actions = {
   //検索結果データを取得
-  search: function search(context) {
-    actions.searchTagVideoResult(context);
-    actions.searchPlaylistTagResult(context);
-    actions.storeSearchRecord(context);
-  },
-
-  //検索ワード候補を取得(インクリメンタルサーチ)
-  searchCandidates: function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context, input) {
-      var params, response;
+  search: function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context, page) {
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              params = {
-                input: input
-              };
-              _context.next = 3;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/candidates", params);
+              _context.next = 2;
+              return actions.searchPlaylistTagResult(context, page);
 
-            case 3:
-              response = _context.sent;
+            case 2:
+              _context.next = 4;
+              return actions.searchTagVideoResult(context, page);
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
-                // 成功した時
-                context.commit("setCandidates", response.data.candidates);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
-                // 失敗した時
-                context.commit("error/setCode", response.status, { root: true });
-              } else {
-                // 上記以外で失敗した時
-                context.commit("error/setCode", response.status, { root: true });
-              }
+            case 4:
+              actions.storeSearchRecord(context);
 
             case 5:
             case "end":
@@ -100914,33 +101311,33 @@ var actions = {
       }, _callee, this);
     }));
 
-    function searchCandidates(_x, _x2) {
+    function search(_x, _x2) {
       return _ref.apply(this, arguments);
     }
 
-    return searchCandidates;
+    return search;
   }(),
 
-  //検索ワードを含むタグ単体を検索
-  searchTagVideoResult: function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context) {
+  //検索ワード候補を取得(インクリメンタルサーチ)
+  searchCandidates: function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context, input) {
       var params, response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
               params = {
-                searchQuery: state.searchQuery
+                input: input
               };
               _context2.next = 3;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/tag", params);
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/candidates", params);
 
             case 3:
               response = _context2.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
-                context.commit("setTagVideoResult", response.data.tagVideoResult);
+                context.commit("setCandidates", response.data.candidates);
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
@@ -100957,33 +101354,36 @@ var actions = {
       }, _callee2, this);
     }));
 
-    function searchTagVideoResult(_x3) {
+    function searchCandidates(_x3, _x4) {
       return _ref2.apply(this, arguments);
     }
 
-    return searchTagVideoResult;
+    return searchCandidates;
   }(),
 
-  //検索ワードを含むプレイリストを検索
-  searchPlaylistTagResult: function () {
-    var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(context) {
+  //検索ワードを含むタグ単体を検索
+  searchTagVideoResult: function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(context, page) {
       var params, response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
               params = {
-                searchQuery: state.searchQuery
+                searchQuery: state.searchQuery,
+                page: page
               };
               _context3.next = 3;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/playlist", params);
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/tag", params);
 
             case 3:
               response = _context3.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
-                context.commit("setPlaylistTagResult", response.data.playlistTagResult);
+                if (response.data.tagVideoResult.last_page == page) context.commit("setTagVideoResultToLoad", false);
+
+                context.commit("setTagVideoResult", response.data.tagVideoResult.data);
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
@@ -101000,32 +101400,36 @@ var actions = {
       }, _callee3, this);
     }));
 
-    function searchPlaylistTagResult(_x4) {
+    function searchTagVideoResult(_x5, _x6) {
       return _ref3.apply(this, arguments);
     }
 
-    return searchPlaylistTagResult;
+    return searchTagVideoResult;
   }(),
 
-  //検索キーワードおよび検索履歴をテーブルに保存
-  storeSearchRecord: function () {
-    var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4(context) {
+  //検索ワードを含むプレイリストを検索
+  searchPlaylistTagResult: function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4(context, page) {
       var params, response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
               params = {
-                searchQuery: state.searchQuery
+                searchQuery: state.searchQuery,
+                page: page
               };
               _context4.next = 3;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/store/searchrecord", params);
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/playlist", params);
 
             case 3:
               response = _context4.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
+                if (response.data.playlistTagResult.last_page == page) context.commit("setPlaylistResultToLoad", false);
+
+                context.commit("setPlaylistTagResult", response.data.playlistTagResult.data);
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
@@ -101042,30 +101446,32 @@ var actions = {
       }, _callee4, this);
     }));
 
-    function storeSearchRecord(_x5) {
+    function searchPlaylistTagResult(_x7, _x8) {
       return _ref4.apply(this, arguments);
     }
 
-    return storeSearchRecord;
+    return searchPlaylistTagResult;
   }(),
 
-  //人気の検索ワードを取得
-  getTopSearchqueries: function () {
+  //検索キーワードおよび検索履歴をテーブルに保存
+  storeSearchRecord: function () {
     var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5(context) {
-      var response;
+      var params, response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
         while (1) {
           switch (_context5.prev = _context5.next) {
             case 0:
-              _context5.next = 2;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/topSearchqueries");
+              params = {
+                searchQuery: state.searchQuery
+              };
+              _context5.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/store/searchrecord", params);
 
-            case 2:
+            case 3:
               response = _context5.sent;
 
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
                 // 成功した時
-                context.commit("setTopSearchqueries", response.data.topSearchqueries);
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
@@ -101074,7 +101480,7 @@ var actions = {
                 context.commit("error/setCode", response.status, { root: true });
               }
 
-            case 4:
+            case 5:
             case "end":
               return _context5.stop();
           }
@@ -101082,15 +101488,15 @@ var actions = {
       }, _callee5, this);
     }));
 
-    function getTopSearchqueries(_x6) {
+    function storeSearchRecord(_x9) {
       return _ref5.apply(this, arguments);
     }
 
-    return getTopSearchqueries;
+    return storeSearchRecord;
   }(),
 
-  //検索履歴を取得
-  getSearchHistories: function () {
+  //人気の検索ワードを取得
+  getTopSearchqueries: function () {
     var _ref6 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee6(context) {
       var response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee6$(_context6) {
@@ -101098,14 +101504,14 @@ var actions = {
           switch (_context6.prev = _context6.next) {
             case 0:
               _context6.next = 2;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/searchHistories");
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/topSearchqueries");
 
             case 2:
               response = _context6.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
-                context.commit("setSearchHistories", response.data.searchHistories);
+                context.commit("setTopSearchqueries", response.data.topSearchqueries);
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
@@ -101122,8 +101528,48 @@ var actions = {
       }, _callee6, this);
     }));
 
-    function getSearchHistories(_x7) {
+    function getTopSearchqueries(_x10) {
       return _ref6.apply(this, arguments);
+    }
+
+    return getTopSearchqueries;
+  }(),
+
+  //検索履歴を取得
+  getSearchHistories: function () {
+    var _ref7 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee7(context) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee7$(_context7) {
+        while (1) {
+          switch (_context7.prev = _context7.next) {
+            case 0:
+              _context7.next = 2;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/searchHistories");
+
+            case 2:
+              response = _context7.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
+                // 成功した時
+                context.commit("setSearchHistories", response.data.searchHistories);
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 4:
+            case "end":
+              return _context7.stop();
+          }
+        }
+      }, _callee7, this);
+    }));
+
+    function getSearchHistories(_x11) {
+      return _ref7.apply(this, arguments);
     }
 
     return getSearchHistories;
@@ -101798,7 +102244,7 @@ var getters = {
     return state.playlistName;
   },
   currentYoutubeId: function currentYoutubeId(state) {
-    return state.currentYoutubeId;
+    return state.watchList[state.listIndex].youtubeId;
   },
   currentTagId: function currentTagId(state) {
     return state.watchList[state.listIndex].tag_id;

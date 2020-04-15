@@ -8,7 +8,9 @@ const state = {
   tagVideoResult: [],
   playlistTagResult: [],
   topSearchqueries: [],
-  searchHistories: []
+  searchHistories: [],
+  tagVideoResultToLoad: true,
+  playlistResultToLoad: true
 };
 
 const getters = {
@@ -17,7 +19,9 @@ const getters = {
   tagVideoResult: state => state.tagVideoResult,
   playlistTagResult: state => state.playlistTagResult,
   topSearchqueries: state => state.topSearchqueries,
-  searchHistories: state => state.searchHistories
+  searchHistories: state => state.searchHistories,
+  tagVideoResultToLoad: state => state.tagVideoResultToLoad,
+  playlistResultToLoad: state => state.playlistResultToLoad
 };
 
 const mutations = {
@@ -39,31 +43,30 @@ const mutations = {
   setSearchHistories(state, data) {
     state.searchHistories = data;
   },
+  setTagVideoResultToLoad(state, data) {
+    state.tagVideoResultToLoad = data;
+  },
+  setPlaylistResultToLoad(state, data) {
+    state.playlistResultToLoad = data;
+  },
   //検索結果表示ページに遷移
   searchResultPageTransit() {
-    const path = "/result";
-    if (location.pathname != path) {
-      router
-        .push({
-          path: "result",
-          query: { search_query: state.searchQuery }
-        })
-        .catch(err => {});
-    } else {
-      router
-        .push({
-          query: { search_query: state.searchQuery }
-        })
-        .catch(err => {});
-    }
+    router
+      .push({
+        path: "result",
+        query: { search_query: state.searchQuery }
+      })
+      .catch(err => {});
+
+    location.reload();
   }
 };
 
 const actions = {
   //検索結果データを取得
-  search(context) {
-    actions.searchTagVideoResult(context);
-    actions.searchPlaylistTagResult(context);
+  async search(context, page) {
+    await actions.searchPlaylistTagResult(context, page);
+    await actions.searchTagVideoResult(context, page);
     actions.storeSearchRecord(context);
   },
   //検索ワード候補を取得(インクリメンタルサーチ)
@@ -85,15 +88,19 @@ const actions = {
     }
   },
   //検索ワードを含むタグ単体を検索
-  async searchTagVideoResult(context) {
+  async searchTagVideoResult(context, page) {
     let params = {
-      searchQuery: state.searchQuery
+      searchQuery: state.searchQuery,
+      page: page
     };
 
     const response = await axios.post("api/search/tag", params);
     if (response.status == OK) {
       // 成功した時
-      context.commit("setTagVideoResult", response.data.tagVideoResult);
+      if (response.data.tagVideoResult.last_page == page)
+        context.commit("setTagVideoResultToLoad", false);
+
+      context.commit("setTagVideoResult", response.data.tagVideoResult.data);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
@@ -103,15 +110,22 @@ const actions = {
     }
   },
   //検索ワードを含むプレイリストを検索
-  async searchPlaylistTagResult(context) {
+  async searchPlaylistTagResult(context, page) {
     let params = {
-      searchQuery: state.searchQuery
+      searchQuery: state.searchQuery,
+      page: page
     };
 
     const response = await axios.post("api/search/playlist", params);
     if (response.status == OK) {
       // 成功した時
-      context.commit("setPlaylistTagResult", response.data.playlistTagResult);
+      if (response.data.playlistTagResult.last_page == page)
+        context.commit("setPlaylistResultToLoad", false);
+
+      context.commit(
+        "setPlaylistTagResult",
+        response.data.playlistTagResult.data
+      );
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });

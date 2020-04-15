@@ -8,6 +8,7 @@ import tag from "./tag";
 import playlist from "./playlist";
 import like from "./like";
 import likePlaylist from "./likePlaylist";
+import loadingItem from "./loadingItem";
 import search from "./search";
 import shareModal from "./shareModal";
 import snackbar from "./snackbar";
@@ -29,6 +30,7 @@ const store = new Vuex.Store({
     playlist,
     like,
     likePlaylist,
+    loadingItem,
     search,
     shareModal,
     snackbar,

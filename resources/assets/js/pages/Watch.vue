@@ -257,6 +257,7 @@ export default {
       currentTagId: "watch/currentTagId",
       startHis: "watch/start",
       endHis: "watch/end",
+      playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       isPlaylist: "watch/isPlaylist",
       playlistName: "watch/playlistName",
       currentTagName: "watch/currentTagName",
@@ -304,6 +305,13 @@ export default {
       await this.$store.dispatch(
         "watch/getPlaylistAndTagVideoDataById",
         this.playlistIdUrl
+      );
+
+      //プレイリストIDとプレイリスト名をwatchストアに格納
+      this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
+      this.$store.commit(
+        "watch/setPlaylistName",
+        this.playlistAndTagVideoData.playlistName
       );
 
       //YTPlayerのプレイリストの再生に必要なパラメータをセット

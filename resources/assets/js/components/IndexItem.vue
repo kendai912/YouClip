@@ -25,17 +25,28 @@
       </div>
       <br />
     </div>
+    <LoadingItem v-if="isLoading" v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination" />
   </div>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
+import LoadingItem from "../components/LoadingItem.vue";
 import myMixin from "../util";
 
 export default {
+  components: {
+    LoadingItem
+  },
   props: {
     mediaItems: Array
   },
   mixins: [myMixin],
+  computed: {
+    ...mapGetters({
+      isLoading: "loadingItem/isLoading",
+      numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination"
+    })
+  },
   methods: {
     async select(mediaItem) {
       //プレイリストの場合
@@ -68,6 +79,8 @@ export default {
       // IFrame Player APIを呼び出すためにページをリロード
       window.location.reload();
     }
+  },
+  mounted() {
   }
 };
 </script>

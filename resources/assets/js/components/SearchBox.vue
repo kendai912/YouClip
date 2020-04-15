@@ -54,7 +54,6 @@ export default {
     search() {
       if (this.searchWord == "") return;
       this.$store.commit("search/setSearchQuery", this.searchWord);
-      this.$store.dispatch("search/search");
       this.$store.commit("search/searchResultPageTransit");
     },
     //入力を元に検索候補を取得
@@ -66,7 +65,6 @@ export default {
     select(candidateName) {
       this.searchWord = candidateName;
       this.$store.commit("search/setSearchQuery", candidateName);
-      this.$store.dispatch("search/search");
       this.$store.commit("search/searchResultPageTransit");
     }
   },
