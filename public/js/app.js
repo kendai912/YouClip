@@ -3693,6 +3693,41 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/YTLoadingItem.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./resources/assets/js/util.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    numberOfYTItemsPerPagination: Number
+  },
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["f" /* default */]],
+  methods: {},
+  created: function created() {}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/YTSearchBox.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3700,19 +3735,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__router__ = __webpack_require__("./resources/assets/js/router.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 //
 //
 //
@@ -3740,12 +3764,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     };
   },
 
-  computed: {
-    // //検索候補
-    // ...mapGetters({
-    //   candidates: "search/candidates"
-    // })
-  },
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({})),
   methods: {
     YTsearch: function YTsearch() {
       if (this.YTsearchWord == "") return;
@@ -3753,33 +3772,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       //入力内容がYoutubeのURLかキーワードか判定
       var youtubeId = this.YTsearchWord.match(/(\?v=|youtu.be\/)([^&]+)/);
       if (youtubeId) {
+        //YoutubeのURLの場合、直接再生ページへ
         __WEBPACK_IMPORTED_MODULE_1__router__["a" /* default */].push({
           path: "/youtube",
           query: { v: youtubeId[2] }
         }).catch(function (err) {});
       } else {
+        //キーワードの場合、検索結果表示へ
         this.$store.commit("YTsearch/setYTsearchQuery", this.YTsearchWord);
-        this.$store.dispatch("YTsearch/YTsearch");
         this.$store.commit("YTsearch/YTsearchResultPageTransit");
       }
 
-      // IFrame Player APIを呼び出すためにページをリロード
       window.location.reload();
-    },
-
-    //入力を元に検索候補を取得
-    YTsearchCandidates: function YTsearchCandidates() {
-      var input = $("#YTsearchBox").val();
-      // this.$store.dispatch("search/searchCandidates", input);
     }
-    //検索候補をクリックするとそのまま検索
-    // select(candidateName) {
-    //   this.YTsearchWord = candidateName;
-    //   this.$store.commit("search/setSearchQuery", candidateName);
-    //   this.$store.dispatch("search/search");
-    //   this.$store.commit("search/searchResultPageTransit");
-    // }
-
   },
   created: function created() {}
 });
@@ -3792,7 +3797,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_YTLoadingItem_vue__ = __webpack_require__("./resources/assets/js/components/YTLoadingItem.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_YTLoadingItem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_YTLoadingItem_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
@@ -3816,19 +3823,22 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    YTLoadingItem: __WEBPACK_IMPORTED_MODULE_1__components_YTLoadingItem_vue___default.a
+  },
   props: {
     YTitems: Array
   },
-  mixins: [__WEBPACK_IMPORTED_MODULE_1__util__["f" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__util__["f" /* default */]],
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
-    YTloading: "YTsearch/YTloading"
+    isYTLoading: "YTsearch/isYTLoading",
+    numberOfYTItemsPerPagination: "YTsearch/numberOfYTItemsPerPagination"
   })),
   methods: {
     select: function select(item) {
@@ -3974,7 +3984,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
     window.onscroll = function () {
       //ウィンドウの下から100pxに達したら次のプレイリストアイテムを読み込み
-      var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight - 100;
+      var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
       if (bottomOfWindow) {
         _this.infinateLoadPlaylist();
       }
@@ -4408,11 +4418,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 this.$store.commit("loadingItem/setIsLoading", true);
 
                 //シーンの検索ページネーションを実行
-                console.log(this.pageOfTagVideo);
-                _context3.next = 6;
+                _context3.next = 5;
                 return this.$store.dispatch("search/searchTagVideoResult", this.pageOfTagVideo++);
 
-              case 6:
+              case 5:
 
                 //タグデータをレコメンド画面に表示するメディアアイテムに格納
                 this.putTagVideoIntoMediaItems(this.tagVideoMediaItems, this.tagVideoResult);
@@ -4420,7 +4429,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 //ローディングを非表示
                 this.$store.commit("loadingItem/setIsLoading", false);
 
-              case 8:
+              case 7:
               case "end":
                 return _context3.stop();
             }
@@ -4450,7 +4459,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
     window.onscroll = function () {
       //ウィンドウの下から100pxに達したら次の検索結果を読み込み
-      var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight - 100;
+      console.log("scrolltop: " + document.documentElement.scrollTop);
+      console.log("innerHeight: " + window.innerHeight);
+      console.log("offsetHeight: " + document.documentElement.offsetHeight);
+      var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
       if (bottomOfWindow) {
         if (_this.tab == 1) {
           _this.infinateLoadPlaylistSearchResult();
@@ -5040,13 +5052,19 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_YTSearchBox_vue__ = __webpack_require__("./resources/assets/js/components/YTSearchBox.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_YTSearchBox_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_YTSearchBox_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_YTitem_vue__ = __webpack_require__("./resources/assets/js/components/YTitem.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_YTitem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_YTitem_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__("./node_modules/babel-runtime/regenerator/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_YTSearchBox_vue__ = __webpack_require__("./resources/assets/js/components/YTSearchBox.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_YTSearchBox_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_YTSearchBox_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_YTitem_vue__ = __webpack_require__("./resources/assets/js/components/YTitem.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_YTitem_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_YTitem_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__util__ = __webpack_require__("./resources/assets/js/util.js");
+
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 //
 //
@@ -5068,21 +5086,67 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    YTSearchBox: __WEBPACK_IMPORTED_MODULE_1__components_YTSearchBox_vue___default.a,
-    YTitem: __WEBPACK_IMPORTED_MODULE_2__components_YTitem_vue___default.a
+    YTSearchBox: __WEBPACK_IMPORTED_MODULE_2__components_YTSearchBox_vue___default.a,
+    YTitem: __WEBPACK_IMPORTED_MODULE_3__components_YTitem_vue___default.a
   },
-  mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["f" /* default */]],
-  methods: {},
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+  mixins: [__WEBPACK_IMPORTED_MODULE_4__util__["f" /* default */]],
+  methods: {
+    //表示するYoutube検索結果の無限スクロール
+    infinateScrollYTresults: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                //ローディングを表示
+                this.$store.commit("YTsearch/setIsYTLoading", true);
+
+                //無限スクロールに合わせてYoutubeの検索結果を取得
+                _context.next = 3;
+                return this.$store.dispatch("YTsearch/YTsearch");
+
+              case 3:
+
+                //ローディングを非表示
+                this.$store.commit("YTsearch/setIsYTLoading", false);
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function infinateScrollYTresults() {
+        return _ref.apply(this, arguments);
+      }
+
+      return infinateScrollYTresults;
+    }()
+  },
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     YTsearchQuery: "YTsearch/YTsearchQuery",
-    YTresult: "YTsearch/YTresult"
+    YTresult: "YTsearch/YTresult",
+    isYTSearching: "YTsearch/isYTSearching"
   })),
-  created: function created() {
-    //リロードされた場合はURLのsearch_queryを元に再度検索を実行
-    if (!this.YTsearchQuery) {
-      this.$store.commit("YTsearch/setYTsearchQuery", this.$route.query.search_query);
-      this.$store.dispatch("YTsearch/YTsearch");
-    }
+  mounted: function mounted() {
+    var _this = this;
+
+    //ローディング表示用の変数をセット
+    this.$store.commit("YTsearch/setNumberOfYTItemsPerPagination", 5);
+
+    //URLのsearch_queryを検索ワードにセット
+    this.$store.commit("YTsearch/setYTsearchQuery", this.$route.query.search_query);
+
+    window.onscroll = function () {
+      //ウィンドウの下から100pxに達したら次のプレイリストアイテムを読み込み
+      var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
+      if (bottomOfWindow && !isYTSearching) {
+        _this.infinateScrollYTresults();
+      }
+    };
+    this.infinateScrollYTresults();
   }
 });
 
@@ -37795,46 +37859,42 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm.YTloading
-        ? _c("div", { staticClass: "loader" }, [
-            _c("img", {
-              attrs: {
-                src:
-                  "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif",
-                alt: "loader"
+      _vm._l(_vm.YTitems, function(item) {
+        return _c(
+          "div",
+          {
+            key: item.etag,
+            on: {
+              click: function($event) {
+                return _vm.select(item)
               }
-            })
-          ])
-        : _vm._l(_vm.YTitems, function(item) {
-            return _c(
-              "div",
-              {
-                key: item.etag,
-                on: {
-                  click: function($event) {
-                    return _vm.select(item)
-                  }
+            }
+          },
+          [
+            _c("div", [
+              _c("img", {
+                staticStyle: { width: "480px", height: "360px" },
+                attrs: {
+                  src: item.snippet.thumbnails.high.url,
+                  alt: item.snippet.title + "-thumbnail"
                 }
-              },
-              [
-                _c("div", { staticClass: "thumbnail" }, [
-                  _c("img", {
-                    staticStyle: { width: "480px", height: "360px" },
-                    attrs: {
-                      src: item.snippet.thumbnails.high.url,
-                      alt: item.snippet.title + "-thumbnail"
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "info" }, [
-                  _c("div", [_vm._v(_vm._s(item.snippet.title))])
-                ]),
-                _vm._v(" "),
-                _c("br")
-              ]
-            )
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", [_c("div", [_vm._v(_vm._s(item.snippet.title))])]),
+            _vm._v(" "),
+            _c("br")
+          ]
+        )
+      }),
+      _vm._v(" "),
+      _vm.isYTLoading
+        ? _c("YTLoadingItem", {
+            attrs: {
+              numberOfYTItemsPerPagination: _vm.numberOfYTItemsPerPagination
+            }
           })
+        : _vm._e()
     ],
     2
   )
@@ -38522,6 +38582,47 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-440dff1c", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5276a466\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/YTLoadingItem.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    _vm._l(_vm.numberOfYTItemsPerPagination, function(item, index) {
+      return _c(
+        "v-sheet",
+        {
+          key: index,
+          staticClass: "px-3 pt-3 pb-3",
+          attrs: { color: "grey lighten-4" }
+        },
+        [
+          _c("v-skeleton-loader", {
+            staticClass: "mx-auto",
+            attrs: { "max-width": "300", type: "card" }
+          })
+        ],
+        1
+      )
+    }),
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5276a466", module.exports)
   }
 }
 
@@ -40007,15 +40108,12 @@ var render = function() {
         },
         domProps: { value: _vm.YTsearchWord },
         on: {
-          input: [
-            function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.YTsearchWord = $event.target.value
-            },
-            _vm.YTsearchCandidates
-          ]
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.YTsearchWord = $event.target.value
+          }
         }
       }),
       _vm._v(" "),
@@ -99028,6 +99126,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/YTLoadingItem.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/YTLoadingItem.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5276a466\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/YTLoadingItem.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/YTLoadingItem.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5276a466", Component.options)
+  } else {
+    hotAPI.reload("data-v-5276a466", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/YTSearchBox.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -99722,6 +99868,8 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 
 
 
@@ -99738,11 +99886,14 @@ var state = {
     q: "",
     type: "video",
     order: "viewCount", // 再生回数の多い順
-    maxResults: "20", // 最大検索数
+    maxResults: "5", // 最大検索数
+    pageToken: "",
     videoEmbeddable: true,
     key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk"
   },
-  YTloading: true
+  isYTLoading: false,
+  numberOfYTItemsPerPagination: 5,
+  isYTSearching: false
 };
 
 var getters = {
@@ -99761,8 +99912,14 @@ var getters = {
   YTsearchHistories: function YTsearchHistories(state) {
     return state.YTsearchHistories;
   },
-  YTloading: function YTloading(state) {
-    return state.YTloading;
+  isYTLoading: function isYTLoading(state) {
+    return state.isYTLoading;
+  },
+  numberOfYTItemsPerPagination: function numberOfYTItemsPerPagination(state) {
+    return state.numberOfYTItemsPerPagination;
+  },
+  isYTSearching: function isYTSearching(state) {
+    return state.isYTSearching;
   }
 };
 
@@ -99775,7 +99932,9 @@ var mutations = {
     state.candidates = data;
   },
   setYTResult: function setYTResult(state, data) {
-    state.YTresult = data;
+    var _state$YTresult;
+
+    (_state$YTresult = state.YTresult).push.apply(_state$YTresult, _toConsumableArray(data));
   },
   setTopYTSearchqueries: function setTopYTSearchqueries(state, data) {
     state.topYTSearchqueries = data;
@@ -99783,63 +99942,40 @@ var mutations = {
   setYTsearchHistories: function setYTsearchHistories(state, data) {
     state.YTsearchHistories = data;
   },
-  setYTloading: function setYTloading(state, data) {
+  setIsYTLoading: function setIsYTLoading(state, data) {
     state.YTloading = data;
+  },
+  setNumberOfYTItemsPerPagination: function setNumberOfYTItemsPerPagination(state, data) {
+    state.numberOfYTItemsPerPagination = data;
+  },
+  setPageToken: function setPageToken(state, data) {
+    state.params.pageToken = data;
+  },
+  setIsYTSearching: function setIsYTSearching(state, data) {
+    state.isYTSearching = data;
   },
 
   //検索結果表示ページに遷移
   YTsearchResultPageTransit: function YTsearchResultPageTransit() {
-    var path = "/YTresult";
-    if (location.pathname != path) {
-      __WEBPACK_IMPORTED_MODULE_3__router__["a" /* default */].push({
-        path: "/YTresult",
-        query: { search_query: state.YTsearchQuery }
-      }).catch(function (err) {});
-    } else {
-      __WEBPACK_IMPORTED_MODULE_3__router__["a" /* default */].push({
-        query: { search_query: state.YTsearchQuery }
-      }).catch(function (err) {});
-    }
+    __WEBPACK_IMPORTED_MODULE_3__router__["a" /* default */].push({
+      path: "/YTresult",
+      query: { search_query: state.YTsearchQuery }
+    }).catch(function (err) {});
   }
 };
 
 var actions = {
   //検索結果データを取得
-  YTsearch: function YTsearch(context) {
-    context.commit("setYTloading", true);
-    actions.searchYTResult(context);
-    // actions.storeYTSearchRecord(context);
-  },
-
-  //検索ワード候補を取得(インクリメンタルサーチ)
-  searchCandidates: function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context, input) {
-      var params, response;
+  YTsearch: function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context) {
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              params = {
-                input: input
-              };
-              _context.next = 3;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/candidates", params);
+              _context.next = 2;
+              return actions.searchYTResult(context);
 
-            case 3:
-              response = _context.sent;
-
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
-                // 成功した時
-                context.commit("setCandidates", response.data.candidates);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
-                // 失敗した時
-                context.commit("error/setCode", response.status, { root: true });
-              } else {
-                // 上記以外で失敗した時
-                context.commit("error/setCode", response.status, { root: true });
-              }
-
-            case 5:
+            case 2:
             case "end":
               return _context.stop();
           }
@@ -99847,13 +99983,31 @@ var actions = {
       }, _callee, this);
     }));
 
-    function searchCandidates(_x, _x2) {
+    function YTsearch(_x) {
       return _ref.apply(this, arguments);
     }
 
-    return searchCandidates;
+    return YTsearch;
   }(),
 
+  //検索ワード候補を取得(インクリメンタルサーチ)
+  // async searchCandidates(context, input) {
+  //   let params = {
+  //     input: input
+  //   };
+
+  //   const response = await axios.post("api/search/candidates", params);
+  //   if (response.status == OK) {
+  //     // 成功した時
+  //     context.commit("setCandidates", response.data.candidates);
+  //   } else if (response.status == INTERNAL_SERVER_ERROR) {
+  //     // 失敗した時
+  //     context.commit("error/setCode", response.status, { root: true });
+  //   } else {
+  //     // 上記以外で失敗した時
+  //     context.commit("error/setCode", response.status, { root: true });
+  //   }
+  // },
   //検索ワードをYoutube動画を検索
   searchYTResult: function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context) {
@@ -99862,16 +100016,24 @@ var actions = {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              _context2.next = 2;
+              //検索結果が帰ってくる前に連続でリクエストをかけないようにフラグをセット
+              context.commit("setIsYTSearching", true);
+              console.log("YTsearch");
+
+              _context2.next = 4;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(state.api, { params: state.params });
 
-            case 2:
+            case 4:
               response = _context2.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
-                context.commit("setYTloading", false);
+                //次の検索結果ページトークンをセット
+                context.commit("setPageToken", response.data.nextPageToken);
+                //検索結果を格納
                 context.commit("setYTResult", response.data.items);
+                //連続リクエストを制御するフラグを解除
+                context.commit("setIsYTSearching", false);
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
@@ -99880,7 +100042,7 @@ var actions = {
                 context.commit("error/setCode", response.status, { root: true });
               }
 
-            case 4:
+            case 6:
             case "end":
               return _context2.stop();
           }
@@ -99888,134 +100050,58 @@ var actions = {
       }, _callee2, this);
     }));
 
-    function searchYTResult(_x3) {
+    function searchYTResult(_x2) {
       return _ref2.apply(this, arguments);
     }
 
     return searchYTResult;
-  }(),
-
-  //検索キーワードおよび検索履歴をテーブルに保存
-  storeYTSearchRecord: function () {
-    var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(context) {
-      var params, response;
-      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              params = {
-                YTsearchQuery: state.YTsearchQuery
-              };
-              _context3.next = 3;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/store/YTsearchrecord", params);
-
-            case 3:
-              response = _context3.sent;
-
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
-                // 成功した時
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
-                // 失敗した時
-                context.commit("error/setCode", response.status, { root: true });
-              } else {
-                // 上記以外で失敗した時
-                context.commit("error/setCode", response.status, { root: true });
-              }
-
-            case 5:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3, this);
-    }));
-
-    function storeYTSearchRecord(_x4) {
-      return _ref3.apply(this, arguments);
-    }
-
-    return storeYTSearchRecord;
-  }(),
-
-  //人気の検索ワードを取得
-  getTopYTSearchqueries: function () {
-    var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4(context) {
-      var response;
-      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
-        while (1) {
-          switch (_context4.prev = _context4.next) {
-            case 0:
-              _context4.next = 2;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/topYTSearchqueries");
-
-            case 2:
-              response = _context4.sent;
-
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
-                // 成功した時
-                context.commit("setTopYTSearchqueries", response.data.topYTSearchqueries);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
-                // 失敗した時
-                context.commit("error/setCode", response.status, { root: true });
-              } else {
-                // 上記以外で失敗した時
-                context.commit("error/setCode", response.status, { root: true });
-              }
-
-            case 4:
-            case "end":
-              return _context4.stop();
-          }
-        }
-      }, _callee4, this);
-    }));
-
-    function getTopYTSearchqueries(_x5) {
-      return _ref4.apply(this, arguments);
-    }
-
-    return getTopYTSearchqueries;
-  }(),
-
-  //検索履歴を取得
-  getYTsearchHistories: function () {
-    var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5(context) {
-      var response;
-      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
-        while (1) {
-          switch (_context5.prev = _context5.next) {
-            case 0:
-              _context5.next = 2;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/YTsearchHistories");
-
-            case 2:
-              response = _context5.sent;
-
-              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
-                // 成功した時
-                context.commit("setYTsearchHistories", response.data.YTsearchHistories);
-              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
-                // 失敗した時
-                context.commit("error/setCode", response.status, { root: true });
-              } else {
-                // 上記以外で失敗した時
-                context.commit("error/setCode", response.status, { root: true });
-              }
-
-            case 4:
-            case "end":
-              return _context5.stop();
-          }
-        }
-      }, _callee5, this);
-    }));
-
-    function getYTsearchHistories(_x6) {
-      return _ref5.apply(this, arguments);
-    }
-
-    return getYTsearchHistories;
   }()
+  //検索キーワードおよび検索履歴をテーブルに保存
+  // async storeYTSearchRecord(context) {
+  //   let params = {
+  //     YTsearchQuery: state.YTsearchQuery
+  //   };
+
+  //   const response = await axios.post("api/store/YTsearchrecord", params);
+  //   if (response.status == CREATED) {
+  //     // 成功した時
+  //   } else if (response.status == INTERNAL_SERVER_ERROR) {
+  //     // 失敗した時
+  //     context.commit("error/setCode", response.status, { root: true });
+  //   } else {
+  //     // 上記以外で失敗した時
+  //     context.commit("error/setCode", response.status, { root: true });
+  //   }
+  // },
+  //人気の検索ワードを取得
+  // async getTopYTSearchqueries(context) {
+  //   const response = await axios.get("api/topYTSearchqueries");
+  //   if (response.status == OK) {
+  //     // 成功した時
+  //     context.commit("setTopYTSearchqueries", response.data.topYTSearchqueries);
+  //   } else if (response.status == INTERNAL_SERVER_ERROR) {
+  //     // 失敗した時
+  //     context.commit("error/setCode", response.status, { root: true });
+  //   } else {
+  //     // 上記以外で失敗した時
+  //     context.commit("error/setCode", response.status, { root: true });
+  //   }
+  // },
+  // //検索履歴を取得
+  // async getYTsearchHistories(context) {
+  //   const response = await axios.get("api/YTsearchHistories");
+  //   if (response.status == OK) {
+  //     // 成功した時
+  //     context.commit("setYTsearchHistories", response.data.YTsearchHistories);
+  //   } else if (response.status == INTERNAL_SERVER_ERROR) {
+  //     // 失敗した時
+  //     context.commit("error/setCode", response.status, { root: true });
+  //   } else {
+  //     // 上記以外で失敗した時
+  //     context.commit("error/setCode", response.status, { root: true });
+  //   }
+  // }
+
 };
 
 /* harmony default export */ __webpack_exports__["a"] = ({

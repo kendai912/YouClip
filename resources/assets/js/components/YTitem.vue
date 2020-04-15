@@ -1,38 +1,41 @@
 <template>
   <div>
-    <div v-if="YTloading" class="loader">
-      <img
-        src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif"
-        alt="loader"
-      />
-    </div>
-    <div v-else v-for="item in YTitems" v-bind:key="item.etag" v-on:click="select(item)">
-      <div class="thumbnail">
+    <div v-for="item in YTitems" v-bind:key="item.etag" v-on:click="select(item)">
+      <div>
         <img
           v-bind:src="item.snippet.thumbnails.high.url"
           v-bind:alt="item.snippet.title + '-thumbnail'"
           style="width: 480px; height:360px"
         />
       </div>
-      <div class="info">
+      <div>
         <div>{{ item.snippet.title }}</div>
       </div>
       <br />
     </div>
+    <YTLoadingItem
+      v-if="isYTLoading"
+      v-bind:numberOfYTItemsPerPagination="numberOfYTItemsPerPagination"
+    />
   </div>
 </template>
 <script>
 import { mapState, mapGetters } from "vuex";
+import YTLoadingItem from "../components/YTLoadingItem.vue";
 import myMixin from "../util";
 
 export default {
+  components: {
+    YTLoadingItem
+  },
   props: {
     YTitems: Array
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
-      YTloading: "YTsearch/YTloading"
+      isYTLoading: "YTsearch/isYTLoading",
+      numberOfYTItemsPerPagination: "YTsearch/numberOfYTItemsPerPagination"
     })
   },
   methods: {

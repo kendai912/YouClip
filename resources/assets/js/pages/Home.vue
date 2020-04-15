@@ -87,7 +87,7 @@ export default {
       //ウィンドウの下から100pxに達したら次のプレイリストアイテムを読み込み
       let bottomOfWindow =
         document.documentElement.scrollTop + window.innerHeight >=
-        document.documentElement.offsetHeight - 100;
+        document.documentElement.offsetHeight;
       if (bottomOfWindow) {
         this.infinateLoadPlaylist();
       }

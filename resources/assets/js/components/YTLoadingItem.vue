@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-sheet
-      v-for="(item, index) in numberOfItemsPerPagination"
+      v-for="(item, index) in numberOfYTItemsPerPagination"
       v-bind:key="index"
       color="grey lighten-4"
       class="px-3 pt-3 pb-3"
@@ -17,7 +17,7 @@ import myMixin from "../util";
 
 export default {
   props: {
-    numberOfItemsPerPagination: Number
+    numberOfYTItemsPerPagination: Number
   },
   mixins: [myMixin],
   methods: {},

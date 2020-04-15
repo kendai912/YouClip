@@ -112,7 +112,6 @@ export default {
       this.$store.commit("loadingItem/setIsLoading", true);
 
       //シーンの検索ページネーションを実行
-      console.log(this.pageOfTagVideo);
       await this.$store.dispatch(
         "search/searchTagVideoResult",
         this.pageOfTagVideo++
@@ -143,9 +142,12 @@ export default {
 
     window.onscroll = () => {
       //ウィンドウの下から100pxに達したら次の検索結果を読み込み
+      console.log("scrolltop: " + document.documentElement.scrollTop);
+      console.log("innerHeight: " + window.innerHeight);
+      console.log("offsetHeight: " + document.documentElement.offsetHeight);
       let bottomOfWindow =
         document.documentElement.scrollTop + window.innerHeight >=
-        document.documentElement.offsetHeight - 100;
+        document.documentElement.offsetHeight;
       if (bottomOfWindow) {
         if (this.tab == 1) {
           this.infinateLoadPlaylistSearchResult();
