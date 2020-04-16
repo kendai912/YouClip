@@ -37,19 +37,76 @@ class PlaylistController extends Controller
     //     );
     // }
 
-    //プレイリスト一覧の取得
-    public function indexPlaylistAndTagPagination()
+    //【レコメンド】プレイリスト一覧の取得
+    public function indexPlaylistAndTagPaginationOfRecommend()
     {
-        //プレイリストにタグのデータを結合しLike数が多い順・新しい順に並び替え
+        //プレイリストにタグのデータを結合し、直近30日のLike数が多い順・新しい順に並び替え
         $contentsPerPage = 5;
-        $playlistAndTagPagination = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function($query) {
-            $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(1));
+        $playlistAndTagPaginationOfRecommend = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function($query) {
+            $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }
         ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
         return response()->json(
             [
-            'playlistAndTagPagination' => $playlistAndTagPagination
+            'playlistAndTagPaginationOfRecommend' => $playlistAndTagPaginationOfRecommend
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    //【新着】プレイリスト一覧の取得
+    public function indexPlaylistAndTagPaginationOfNew()
+    {
+        //プレイリストにタグのデータを結合し、新しい順に並び替え
+        $contentsPerPage = 5;
+        $playlistAndTagPaginationOfNew = Playlist::with('tags')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+
+        return response()->json(
+            [
+            'playlistAndTagPaginationOfNew' => $playlistAndTagPaginationOfNew
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    //【スポーツ】プレイリスト一覧の取得
+    public function indexPlaylistAndTagPaginationOfSports()
+    {
+         //スポーツカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
+        $contentsPerPage = 5;
+        $playlistAndTagPaginationOfSports = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function($query) {
+            $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
+        }
+        ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+
+        return response()->json(
+            [
+            'playlistAndTagPaginationOfSports' => $playlistAndTagPaginationOfSports
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    //【エンターテイメント】プレイリスト一覧の取得
+    public function indexPlaylistAndTagPaginationOfEntertainment()
+    {
+         //エンターテイメントカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
+        $contentsPerPage = 5;
+        $playlistAndTagPaginationOfEntertainment = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function($query) {
+            $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
+        }
+        ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+
+        return response()->json(
+            [
+            'playlistAndTagPaginationOfEntertainment' => $playlistAndTagPaginationOfEntertainment
             ],
             200,
             [],

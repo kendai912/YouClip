@@ -2,24 +2,48 @@ import axios from "axios";
 import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
 
 const state = {
-  playlistAndTagPagination: null,
+  playlistAndTagPaginationOfRecommend: null,
+  playlistAndTagPaginationOfNew: null,
+  playlistAndTagPaginationOfSports: null,
+  playlistAndTagPaginationOfEntertainment: null,
   myCreatedPlaylist: null,
   myCreatedAndLikedPlaylist: null,
   showAddPlaylistModal: false,
   playlistIdsOfTag: null,
-  toLoad: true,
-  isIndexPlaylistAndTagPaginating: false
+  toLoadRecommend: true,
+  toLoadNew: true,
+  toLoadSports: true,
+  toLoadEntertainment: true,
+  isIndexRecommendPlaylistAndTagPaginating: false,
+  isIndexNewPlaylistAndTagPaginating: false,
+  isIndexSportsPlaylistAndTagPaginating: false,
+  isIndexEntertainmentPlaylistAndTagPaginating: false
 };
 
 const getters = {
-  playlistAndTagPagination: state => state.playlistAndTagPagination,
+  playlistAndTagPaginationOfRecommend: state =>
+    state.playlistAndTagPaginationOfRecommend,
+  playlistAndTagPaginationOfNew: state => state.playlistAndTagPaginationOfNew,
+  playlistAndTagPaginationOfSports: state =>
+    state.playlistAndTagPaginationOfSports,
+  playlistAndTagPaginationOfEntertainment: state =>
+    state.playlistAndTagPaginationOfEntertainment,
   myCreatedPlaylist: state => state.myCreatedPlaylist,
   myCreatedAndLikedPlaylist: state => state.myCreatedAndLikedPlaylist,
   showAddPlaylistModal: state => state.showAddPlaylistModal,
   playlistIdsOfTag: state => state.playlistIdsOfTag,
-  toLoad: state => state.toLoad,
-  isIndexPlaylistAndTagPaginating: state =>
-    state.isIndexPlaylistAndTagPaginating,
+  toLoadRecommend: state => state.toLoadRecommend,
+  toLoadNew: state => state.toLoadNew,
+  toLoadSports: state => state.toLoadSports,
+  toLoadEntertainment: state => state.toLoadEntertainment,
+  isIndexRecommendPlaylistAndTagPaginating: state =>
+    state.isIndexRecommendPlaylistAndTagPaginating,
+  isIndexNewPlaylistAndTagPaginating: state =>
+    state.isIndexNewPlaylistAndTagPaginating,
+  isIndexSportsPlaylistAndTagPaginating: state =>
+    state.isIndexSportsPlaylistAndTagPaginating,
+  isIndexEntertainmentPlaylistAndTagPaginating: state =>
+    state.isIndexEntertainmentPlaylistAndTagPaginating,
   getPlaylistTagContentById: state => playlistId => {
     return state.playlistData.find(playlistTag => playlistTag.id == playlistId);
   },
@@ -34,8 +58,17 @@ const getters = {
 };
 
 const mutations = {
-  setPlaylistAndTagPagination(state, data) {
-    state.playlistAndTagPagination = data;
+  setPlaylistAndTagPaginationOfRecommend(state, data) {
+    state.playlistAndTagPaginationOfRecommend = data;
+  },
+  setPlaylistAndTagPaginationOfNew(state, data) {
+    state.playlistAndTagPaginationOfNew = data;
+  },
+  setPlaylistAndTagPaginationOfSports(state, data) {
+    state.playlistAndTagPaginationOfSports = data;
+  },
+  setPlaylistAndTagPaginationOfEntertainment(state, data) {
+    state.playlistAndTagPaginationOfEntertainment = data;
   },
   setMyCreatedPlaylist(state, data) {
     state.myCreatedPlaylist = data;
@@ -52,33 +85,142 @@ const mutations = {
   setPlaylistIdsOfTag(state, data) {
     state.playlistIdsOfTag = data;
   },
-  setToLoad(state, data) {
-    state.toLoad = data;
+  setToLoadRecommend(state, data) {
+    state.toLoadRecommend = data;
   },
-  setIsIndexPlaylistAndTagPaginating(state, data) {
-    state.isIndexPlaylistAndTagPaginating = data;
+  setToLoadNew(state, data) {
+    state.toLoadNew = data;
+  },
+  setToLoadSports(state, data) {
+    state.toLoadSports = data;
+  },
+  setToLoadEntertainment(state, data) {
+    state.toLoadEntertainment = data;
+  },
+  setIsIndexRecommendPlaylistAndTagPaginating(state, data) {
+    state.isIndexRecommendPlaylistAndTagPaginating = data;
+  },
+  setIsIndexNewPlaylistAndTagPaginating(state, data) {
+    state.isIndexNewPlaylistAndTagPaginating = data;
+  },
+  setIsIndexSportsPlaylistAndTagPaginating(state, data) {
+    state.isIndexSportsPlaylistAndTagPaginating = data;
+  },
+  setIsIndexEntertainmentPlaylistAndTagPaginating(state, data) {
+    state.isIndexEntertainmentPlaylistAndTagPaginating = data;
   }
 };
 
 const actions = {
-  //プレイリスト一覧を取得
-  async indexPlaylistAndTagPagination(context, page) {
+  // 【レコメンド】プレイリスト一覧を取得
+  async indexPlaylistAndTagPaginationOfRecommend(context, page) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
-    context.commit("setIsIndexPlaylistAndTagPaginating", true);
+    context.commit("setIsIndexRecommendPlaylistAndTagPaginating", true);
 
-    const response = await axios.get("api/index/playlistAndTag?page=" + page);
+    const response = await axios.get(
+      "api/index/playlistAndTagOfRecommend?page=" + page
+    );
     if (response.status == OK) {
       // 成功した時
-      if (response.data.playlistAndTagPagination.last_page == page)
-        context.commit("setToLoad", false);
-      console.log(response.data.playlistAndTagPagination);
-      if (response.data.playlistAndTagPagination.data) {
+      if (response.data.playlistAndTagPaginationOfRecommend.last_page == page)
+        context.commit("setToLoadRecommend", false);
+      if (response.data.playlistAndTagPaginationOfRecommend.data) {
         context.commit(
-          "setPlaylistAndTagPagination",
-          response.data.playlistAndTagPagination
+          "setPlaylistAndTagPaginationOfRecommend",
+          response.data.playlistAndTagPaginationOfRecommend
         );
         //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
-        context.commit("setIsIndexPlaylistAndTagPaginating", false);
+        context.commit("setIsIndexRecommendPlaylistAndTagPaginating", false);
+      }
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  // 【新着】プレイリスト一覧を取得
+  async indexPlaylistAndTagPaginationOfNew(context, page) {
+    //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
+    context.commit("setIsIndexNewPlaylistAndTagPaginating", true);
+
+    const response = await axios.get(
+      "api/index/playlistAndTagOfNew?page=" + page
+    );
+    if (response.status == OK) {
+      // 成功した時
+      if (response.data.playlistAndTagPaginationOfNew.last_page == page)
+        context.commit("setToLoadNew", false);
+      if (response.data.playlistAndTagPaginationOfNew.data) {
+        context.commit(
+          "setPlaylistAndTagPaginationOfNew",
+          response.data.playlistAndTagPaginationOfNew
+        );
+        //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
+        context.commit("setIsIndexNewPlaylistAndTagPaginating", false);
+      }
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  // 【スポーツ】プレイリスト一覧を取得
+  async indexPlaylistAndTagPaginationOfSports(context, page) {
+    //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
+    context.commit("setIsIndexSportsPlaylistAndTagPaginating", true);
+
+    const response = await axios.get(
+      "api/index/playlistAndTagOfSports?page=" + page
+    );
+    if (response.status == OK) {
+      // 成功した時
+      if (response.data.playlistAndTagPaginationOfSports.last_page == page)
+        context.commit("setToLoadSports", false);
+      if (response.data.playlistAndTagPaginationOfSports.data) {
+        context.commit(
+          "setPlaylistAndTagPaginationOfSports",
+          response.data.playlistAndTagPaginationOfSports
+        );
+        //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
+        context.commit("setIsIndexSportsPlaylistAndTagPaginating", false);
+      }
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  // 【エンターテイメント】プレイリスト一覧を取得
+  async indexPlaylistAndTagPaginationOfEntertainment(context, page) {
+    //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
+    context.commit("setIsIndexEntertainmentPlaylistAndTagPaginating", true);
+
+    const response = await axios.get(
+      "api/index/playlistAndTagOfEntertainment?page=" + page
+    );
+    if (response.status == OK) {
+      // 成功した時
+      if (
+        response.data.playlistAndTagPaginationOfEntertainment.last_page == page
+      )
+        context.commit("setToLoadEntertainment", false);
+
+      if (response.data.playlistAndTagPaginationOfEntertainment.data) {
+        context.commit(
+          "setPlaylistAndTagPaginationOfEntertainment",
+          response.data.playlistAndTagPaginationOfEntertainment
+        );
+        //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
+        context.commit(
+          "setIsIndexEntertainmentPlaylistAndTagPaginating",
+          false
+        );
       }
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時

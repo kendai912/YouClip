@@ -2336,7 +2336,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   methods: {
     setActiveTab: function setActiveTab(key) {
       //開いたタブをセッションストレージに保存
-      window.sessionStorage.setItem("tabIndex", JSON.stringify(key));
+      window.sessionStorage.setItem("myPageTabIndex", JSON.stringify(key));
     }
   },
   created: function () {
@@ -2346,7 +2346,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
           switch (_context.prev = _context.next) {
             case 0:
               //以前に開いていたタブをセッションストレージからセット
-              this.tab = parseInt(window.sessionStorage.getItem("tabIndex"));
+              this.tab = parseInt(window.sessionStorage.getItem("myPageTabIndex"));
               //Likeまたは作成したプレイリストをロード
               _context.next = 3;
               return this.$store.dispatch("playlist/loadMyCreatedAndLikedPlaylist");
@@ -3904,6 +3904,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -3915,14 +3919,36 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   },
   data: function data() {
     return {
-      tab: 1,
-      page: 1,
-      mediaItems: [] //レコメンド画面に表示するアイテム
+      tab: 0,
+      items: ["レコメンド", "新着", "スポーツ", "エンターテイメント"],
+      recommendPage: 1,
+      newPage: 1,
+      sportsPage: 1,
+      entertainmentPage: 1,
+      recommendMediaItems: [],
+      newMediaItems: [],
+      sportsMediaItems: [],
+      entertainmentMediaItems: []
     };
   },
 
   mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["f" /* default */]],
   methods: {
+    setActiveTab: function setActiveTab(key) {
+      //開いたタブをセッションストレージに保存
+      window.sessionStorage.setItem("topTabIndex", JSON.stringify(key));
+    },
+
+    //初回読み込み処理
+    initialPaginate: function initialPaginate(key) {
+      if (key == 0 && this.recommendPage == 1) this.infinateLoadPlaylistOfRecommend();
+      if (key == 1 && this.newPage == 1) this.infinateLoadPlaylistOfNew();
+      if (key == 2 && this.sportsPage == 1) this.infinateLoadPlaylistOfSports();
+      if (key == 3 && this.entertainmentPage == 1) {
+        this.infinateLoadPlaylistOfEntertainment();
+      }
+    },
+
     //i:s形式に変換
     formatToMinSec: function formatToMinSec(His) {
       var min = parseInt(His.split(":")[0], 10) * 60 + parseInt(His.split(":")[1], 10);
@@ -3930,14 +3956,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       return min + ":" + sec;
     },
 
-    //表示するプレイリストの無限スクロール
-    infinateLoadPlaylist: function () {
+    //【レコメンド】表示するプレイリストの無限スクロール
+    infinateLoadPlaylistOfRecommend: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
         return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (this.toLoad) {
+                if (this.toLoadRecommend) {
                   _context.next = 2;
                   break;
                 }
@@ -3951,11 +3977,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
                 //無限スクロールに合わせてプレイリストのページネイションを取得
                 _context.next = 5;
-                return this.$store.dispatch("playlist/indexPlaylistAndTagPagination", this.page++);
+                return this.$store.dispatch("playlist/indexPlaylistAndTagPaginationOfRecommend", this.recommendPage++);
 
               case 5:
-                //ページネーションのデータをmediaItemsに格納
-                this.putPlaylistTagIntoMediaItems(this.mediaItems, this.playlistAndTagPagination.data);
+                //ページネーションのデータをrecommendMediaItemsに格納
+                this.putPlaylistTagIntoMediaItems(this.recommendMediaItems, this.playlistAndTagPaginationOfRecommend.data);
 
                 //ローディングを非表示
                 this.$store.commit("loadingItem/setIsLoading", false);
@@ -3968,30 +3994,187 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         }, _callee, this);
       }));
 
-      function infinateLoadPlaylist() {
+      function infinateLoadPlaylistOfRecommend() {
         return _ref.apply(this, arguments);
       }
 
-      return infinateLoadPlaylist;
+      return infinateLoadPlaylistOfRecommend;
+    }(),
+
+    //【新着】表示するプレイリストの無限スクロール
+    infinateLoadPlaylistOfNew: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (this.toLoadNew) {
+                  _context2.next = 2;
+                  break;
+                }
+
+                return _context2.abrupt("return");
+
+              case 2:
+
+                //ローディングを表示
+                this.$store.commit("loadingItem/setIsLoading", true);
+
+                //無限スクロールに合わせてプレイリストのページネイションを取得
+                _context2.next = 5;
+                return this.$store.dispatch("playlist/indexPlaylistAndTagPaginationOfNew", this.newPage++);
+
+              case 5:
+                //ページネーションのデータをNewMediaItemsに格納
+                this.putPlaylistTagIntoMediaItems(this.newMediaItems, this.playlistAndTagPaginationOfNew.data);
+
+                //ローディングを非表示
+                this.$store.commit("loadingItem/setIsLoading", false);
+
+              case 7:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function infinateLoadPlaylistOfNew() {
+        return _ref2.apply(this, arguments);
+      }
+
+      return infinateLoadPlaylistOfNew;
+    }(),
+
+    //【スポーツ】表示するプレイリストの無限スクロール
+    infinateLoadPlaylistOfSports: function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (this.toLoadSports) {
+                  _context3.next = 2;
+                  break;
+                }
+
+                return _context3.abrupt("return");
+
+              case 2:
+
+                //ローディングを表示
+                this.$store.commit("loadingItem/setIsLoading", true);
+
+                //無限スクロールに合わせてプレイリストのページネイションを取得
+                _context3.next = 5;
+                return this.$store.dispatch("playlist/indexPlaylistAndTagPaginationOfSports", this.sportsPage++);
+
+              case 5:
+                //ページネーションのデータをSportsMediaItemsに格納
+                this.putPlaylistTagIntoMediaItems(this.sportsMediaItems, this.playlistAndTagPaginationOfSports.data);
+
+                //ローディングを非表示
+                this.$store.commit("loadingItem/setIsLoading", false);
+
+              case 7:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function infinateLoadPlaylistOfSports() {
+        return _ref3.apply(this, arguments);
+      }
+
+      return infinateLoadPlaylistOfSports;
+    }(),
+
+    //【エンターテイメント】表示するプレイリストの無限スクロール
+    infinateLoadPlaylistOfEntertainment: function () {
+      var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                if (this.toLoadEntertainment) {
+                  _context4.next = 2;
+                  break;
+                }
+
+                return _context4.abrupt("return");
+
+              case 2:
+
+                //ローディングを表示
+                this.$store.commit("loadingItem/setIsLoading", true);
+
+                //無限スクロールに合わせてプレイリストのページネイションを取得
+                _context4.next = 5;
+                return this.$store.dispatch("playlist/indexPlaylistAndTagPaginationOfEntertainment", this.entertainmentPage++);
+
+              case 5:
+                //ページネーションのデータをEntertainmentMediaItemsに格納
+                this.putPlaylistTagIntoMediaItems(this.entertainmentMediaItems, this.playlistAndTagPaginationOfEntertainment.data);
+
+                //ローディングを非表示
+                this.$store.commit("loadingItem/setIsLoading", false);
+
+              case 7:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function infinateLoadPlaylistOfEntertainment() {
+        return _ref4.apply(this, arguments);
+      }
+
+      return infinateLoadPlaylistOfEntertainment;
     }()
   },
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
-    playlistAndTagPagination: "playlist/playlistAndTagPagination",
-    toLoad: "playlist/toLoad",
-    isIndexPlaylistAndTagPaginating: "playlist/isIndexPlaylistAndTagPaginating"
+    playlistAndTagPaginationOfRecommend: "playlist/playlistAndTagPaginationOfRecommend",
+    playlistAndTagPaginationOfNew: "playlist/playlistAndTagPaginationOfNew",
+    playlistAndTagPaginationOfSports: "playlist/playlistAndTagPaginationOfSports",
+    playlistAndTagPaginationOfEntertainment: "playlist/playlistAndTagPaginationOfEntertainment",
+    toLoadRecommend: "playlist/toLoadRecommend",
+    toLoadNew: "playlist/toLoadNew",
+    toLoadSports: "playlist/toLoadSports",
+    toLoadEntertainment: "playlist/toLoadEntertainment",
+    isIndexRecommendPlaylistAndTagPaginating: "playlist/isIndexRecommendPlaylistAndTagPaginating",
+    isIndexNewPlaylistAndTagPaginating: "playlist/isIndexNewPlaylistAndTagPaginating",
+    isIndexSportsPlaylistAndTagPaginating: "playlist/isIndexSportsPlaylistAndTagPaginating",
+    isIndexEntertainmentPlaylistAndTagPaginating: "playlist/isIndexEntertainmentPlaylistAndTagPaginating"
   })),
   mounted: function mounted() {
     var _this = this;
 
-    this.$store.commit("playlist/setToLoad", true);
+    //以前に開いていたタブをセッションストレージからセット
+    this.tab = parseInt(window.sessionStorage.getItem("topTabIndex"));
+
+    this.$store.commit("playlist/setToLoadRecommend", true);
+    this.$store.commit("playlist/setToLoadNew", true);
+    this.$store.commit("playlist/setToLoadSports", true);
+    this.$store.commit("playlist/setToLoadEntertainment", true);
+
     window.onscroll = function () {
       //ウィンドウの下から100pxに達したら次のプレイリストアイテムを読み込み
       var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
-      if (bottomOfWindow && !_this.isIndexPlaylistAndTagPaginating) {
-        _this.infinateLoadPlaylist();
+      if (bottomOfWindow) {
+        if (_this.tab == 0 && !_this.isIndexRecommendPlaylistAndTagPaginating) _this.infinateLoadPlaylistOfRecommend();
+        if (_this.tab == 1 && !_this.isIndexNewPlaylistAndTagPaginating) _this.infinateLoadPlaylistOfNew();
+        if (_this.tab == 2 && !_this.isIndexSportsPlaylistAndTagPaginating) _this.infinateLoadPlaylistOfSports();
+        if (_this.tab == 3 && !_this.isIndexEntertainmentPlaylistAndTagPaginating) _this.infinateLoadPlaylistOfEntertainment();
       }
     };
-    this.infinateLoadPlaylist();
+    if (this.tab == 0) this.infinateLoadPlaylistOfRecommend();
+    if (this.tab == 1) this.infinateLoadPlaylistOfNew();
+    if (this.tab == 2) this.infinateLoadPlaylistOfSports();
+    if (this.tab == 3) this.infinateLoadPlaylistOfEntertainment();
   }
 });
 
@@ -38469,100 +38652,121 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container--small" }, [
-    _c("ul", { staticClass: "tab" }, [
+  return _c(
+    "div",
+    { staticClass: "container--small" },
+    [
       _c(
-        "li",
+        "v-tabs",
         {
-          staticClass: "tab__item",
-          class: { "tab__item--active": _vm.tab == 1 },
-          on: {
-            click: function($event) {
-              _vm.tab = 1
-            }
+          attrs: { "background-color": "transparent", grow: "" },
+          model: {
+            value: _vm.tab,
+            callback: function($$v) {
+              _vm.tab = $$v
+            },
+            expression: "tab"
           }
         },
-        [_vm._v("カテゴリ1")]
+        _vm._l(_vm.items, function(item, key) {
+          return _c(
+            "v-tab",
+            {
+              key: item,
+              on: {
+                click: function($event) {
+                  _vm.setActiveTab(key)
+                  _vm.initialPaginate(key)
+                }
+              }
+            },
+            [_vm._v(_vm._s(item))]
+          )
+        }),
+        1
       ),
       _vm._v(" "),
       _c(
-        "li",
+        "v-tabs-items",
         {
-          staticClass: "tab__item",
-          class: { "tab__item--active": _vm.tab == 2 },
-          on: {
-            click: function($event) {
-              _vm.tab = 2
-            }
+          model: {
+            value: _vm.tab,
+            callback: function($$v) {
+              _vm.tab = $$v
+            },
+            expression: "tab"
           }
         },
-        [_vm._v("カテゴリ2")]
-      ),
-      _vm._v(" "),
-      _c(
-        "li",
-        {
-          staticClass: "tab__item",
-          class: { "tab__item--active": _vm.tab == 3 },
-          on: {
-            click: function($event) {
-              _vm.tab = 3
-            }
-          }
-        },
-        [_vm._v("カテゴリ3")]
+        [
+          _c(
+            "v-tab-item",
+            [
+              _c(
+                "v-card",
+                { attrs: { flat: "" } },
+                [
+                  _c("IndexItem", {
+                    attrs: { mediaItems: _vm.recommendMediaItems }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-tab-item",
+            [
+              _c(
+                "v-card",
+                { attrs: { flat: "" } },
+                [_c("IndexItem", { attrs: { mediaItems: _vm.newMediaItems } })],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-tab-item",
+            [
+              _c(
+                "v-card",
+                { attrs: { flat: "" } },
+                [
+                  _c("IndexItem", {
+                    attrs: { mediaItems: _vm.sportsMediaItems }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-tab-item",
+            [
+              _c(
+                "v-card",
+                { attrs: { flat: "" } },
+                [
+                  _c("IndexItem", {
+                    attrs: { mediaItems: _vm.entertainmentMediaItems }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
       )
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.tab === 1,
-            expression: "tab === 1"
-          }
-        ],
-        staticClass: "panel"
-      },
-      [_c("IndexItem", { attrs: { mediaItems: _vm.mediaItems } })],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.tab === 2,
-            expression: "tab === 2"
-          }
-        ],
-        staticClass: "panel"
-      },
-      [_c("h1", [_vm._v("カテゴリ2の中身")])]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.tab === 3,
-            expression: "tab === 3"
-          }
-        ],
-        staticClass: "panel"
-      },
-      [_c("h1", [_vm._v("カテゴリ3の中身")])]
-    )
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -100903,18 +101107,36 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
 var state = {
-  playlistAndTagPagination: null,
+  playlistAndTagPaginationOfRecommend: null,
+  playlistAndTagPaginationOfNew: null,
+  playlistAndTagPaginationOfSports: null,
+  playlistAndTagPaginationOfEntertainment: null,
   myCreatedPlaylist: null,
   myCreatedAndLikedPlaylist: null,
   showAddPlaylistModal: false,
   playlistIdsOfTag: null,
-  toLoad: true,
-  isIndexPlaylistAndTagPaginating: false
+  toLoadRecommend: true,
+  toLoadNew: true,
+  toLoadSports: true,
+  toLoadEntertainment: true,
+  isIndexRecommendPlaylistAndTagPaginating: false,
+  isIndexNewPlaylistAndTagPaginating: false,
+  isIndexSportsPlaylistAndTagPaginating: false,
+  isIndexEntertainmentPlaylistAndTagPaginating: false
 };
 
 var getters = {
-  playlistAndTagPagination: function playlistAndTagPagination(state) {
-    return state.playlistAndTagPagination;
+  playlistAndTagPaginationOfRecommend: function playlistAndTagPaginationOfRecommend(state) {
+    return state.playlistAndTagPaginationOfRecommend;
+  },
+  playlistAndTagPaginationOfNew: function playlistAndTagPaginationOfNew(state) {
+    return state.playlistAndTagPaginationOfNew;
+  },
+  playlistAndTagPaginationOfSports: function playlistAndTagPaginationOfSports(state) {
+    return state.playlistAndTagPaginationOfSports;
+  },
+  playlistAndTagPaginationOfEntertainment: function playlistAndTagPaginationOfEntertainment(state) {
+    return state.playlistAndTagPaginationOfEntertainment;
   },
   myCreatedPlaylist: function myCreatedPlaylist(state) {
     return state.myCreatedPlaylist;
@@ -100928,11 +101150,29 @@ var getters = {
   playlistIdsOfTag: function playlistIdsOfTag(state) {
     return state.playlistIdsOfTag;
   },
-  toLoad: function toLoad(state) {
-    return state.toLoad;
+  toLoadRecommend: function toLoadRecommend(state) {
+    return state.toLoadRecommend;
   },
-  isIndexPlaylistAndTagPaginating: function isIndexPlaylistAndTagPaginating(state) {
-    return state.isIndexPlaylistAndTagPaginating;
+  toLoadNew: function toLoadNew(state) {
+    return state.toLoadNew;
+  },
+  toLoadSports: function toLoadSports(state) {
+    return state.toLoadSports;
+  },
+  toLoadEntertainment: function toLoadEntertainment(state) {
+    return state.toLoadEntertainment;
+  },
+  isIndexRecommendPlaylistAndTagPaginating: function isIndexRecommendPlaylistAndTagPaginating(state) {
+    return state.isIndexRecommendPlaylistAndTagPaginating;
+  },
+  isIndexNewPlaylistAndTagPaginating: function isIndexNewPlaylistAndTagPaginating(state) {
+    return state.isIndexNewPlaylistAndTagPaginating;
+  },
+  isIndexSportsPlaylistAndTagPaginating: function isIndexSportsPlaylistAndTagPaginating(state) {
+    return state.isIndexSportsPlaylistAndTagPaginating;
+  },
+  isIndexEntertainmentPlaylistAndTagPaginating: function isIndexEntertainmentPlaylistAndTagPaginating(state) {
+    return state.isIndexEntertainmentPlaylistAndTagPaginating;
   },
   getPlaylistTagContentById: function getPlaylistTagContentById(state) {
     return function (playlistId) {
@@ -100954,8 +101194,17 @@ var getters = {
 };
 
 var mutations = {
-  setPlaylistAndTagPagination: function setPlaylistAndTagPagination(state, data) {
-    state.playlistAndTagPagination = data;
+  setPlaylistAndTagPaginationOfRecommend: function setPlaylistAndTagPaginationOfRecommend(state, data) {
+    state.playlistAndTagPaginationOfRecommend = data;
+  },
+  setPlaylistAndTagPaginationOfNew: function setPlaylistAndTagPaginationOfNew(state, data) {
+    state.playlistAndTagPaginationOfNew = data;
+  },
+  setPlaylistAndTagPaginationOfSports: function setPlaylistAndTagPaginationOfSports(state, data) {
+    state.playlistAndTagPaginationOfSports = data;
+  },
+  setPlaylistAndTagPaginationOfEntertainment: function setPlaylistAndTagPaginationOfEntertainment(state, data) {
+    state.playlistAndTagPaginationOfEntertainment = data;
   },
   setMyCreatedPlaylist: function setMyCreatedPlaylist(state, data) {
     state.myCreatedPlaylist = data;
@@ -100972,17 +101221,35 @@ var mutations = {
   setPlaylistIdsOfTag: function setPlaylistIdsOfTag(state, data) {
     state.playlistIdsOfTag = data;
   },
-  setToLoad: function setToLoad(state, data) {
-    state.toLoad = data;
+  setToLoadRecommend: function setToLoadRecommend(state, data) {
+    state.toLoadRecommend = data;
   },
-  setIsIndexPlaylistAndTagPaginating: function setIsIndexPlaylistAndTagPaginating(state, data) {
-    state.isIndexPlaylistAndTagPaginating = data;
+  setToLoadNew: function setToLoadNew(state, data) {
+    state.toLoadNew = data;
+  },
+  setToLoadSports: function setToLoadSports(state, data) {
+    state.toLoadSports = data;
+  },
+  setToLoadEntertainment: function setToLoadEntertainment(state, data) {
+    state.toLoadEntertainment = data;
+  },
+  setIsIndexRecommendPlaylistAndTagPaginating: function setIsIndexRecommendPlaylistAndTagPaginating(state, data) {
+    state.isIndexRecommendPlaylistAndTagPaginating = data;
+  },
+  setIsIndexNewPlaylistAndTagPaginating: function setIsIndexNewPlaylistAndTagPaginating(state, data) {
+    state.isIndexNewPlaylistAndTagPaginating = data;
+  },
+  setIsIndexSportsPlaylistAndTagPaginating: function setIsIndexSportsPlaylistAndTagPaginating(state, data) {
+    state.isIndexSportsPlaylistAndTagPaginating = data;
+  },
+  setIsIndexEntertainmentPlaylistAndTagPaginating: function setIsIndexEntertainmentPlaylistAndTagPaginating(state, data) {
+    state.isIndexEntertainmentPlaylistAndTagPaginating = data;
   }
 };
 
 var actions = {
-  //プレイリスト一覧を取得
-  indexPlaylistAndTagPagination: function () {
+  // 【レコメンド】プレイリスト一覧を取得
+  indexPlaylistAndTagPaginationOfRecommend: function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(context, page) {
       var response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
@@ -100990,22 +101257,21 @@ var actions = {
           switch (_context.prev = _context.next) {
             case 0:
               //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
-              context.commit("setIsIndexPlaylistAndTagPaginating", true);
+              context.commit("setIsIndexRecommendPlaylistAndTagPaginating", true);
 
               _context.next = 3;
-              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/index/playlistAndTag?page=" + page);
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/index/playlistAndTagOfRecommend?page=" + page);
 
             case 3:
               response = _context.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
-                if (response.data.playlistAndTagPagination.last_page == page) context.commit("setToLoad", false);
-                console.log(response.data.playlistAndTagPagination);
-                if (response.data.playlistAndTagPagination.data) {
-                  context.commit("setPlaylistAndTagPagination", response.data.playlistAndTagPagination);
+                if (response.data.playlistAndTagPaginationOfRecommend.last_page == page) context.commit("setToLoadRecommend", false);
+                if (response.data.playlistAndTagPaginationOfRecommend.data) {
+                  context.commit("setPlaylistAndTagPaginationOfRecommend", response.data.playlistAndTagPaginationOfRecommend);
                   //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
-                  context.commit("setIsIndexPlaylistAndTagPaginating", false);
+                  context.commit("setIsIndexRecommendPlaylistAndTagPaginating", false);
                 }
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
@@ -101023,24 +101289,169 @@ var actions = {
       }, _callee, this);
     }));
 
-    function indexPlaylistAndTagPagination(_x, _x2) {
+    function indexPlaylistAndTagPaginationOfRecommend(_x, _x2) {
       return _ref.apply(this, arguments);
     }
 
-    return indexPlaylistAndTagPagination;
+    return indexPlaylistAndTagPaginationOfRecommend;
   }(),
-  getMyCreatedPlaylist: function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context) {
+
+  // 【新着】プレイリスト一覧を取得
+  indexPlaylistAndTagPaginationOfNew: function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(context, page) {
       var response;
       return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              _context2.next = 2;
+              //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
+              context.commit("setIsIndexNewPlaylistAndTagPaginating", true);
+
+              _context2.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/index/playlistAndTagOfNew?page=" + page);
+
+            case 3:
+              response = _context2.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
+                // 成功した時
+                if (response.data.playlistAndTagPaginationOfNew.last_page == page) context.commit("setToLoadNew", false);
+                if (response.data.playlistAndTagPaginationOfNew.data) {
+                  context.commit("setPlaylistAndTagPaginationOfNew", response.data.playlistAndTagPaginationOfNew);
+                  //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
+                  context.commit("setIsIndexNewPlaylistAndTagPaginating", false);
+                }
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 5:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+
+    function indexPlaylistAndTagPaginationOfNew(_x3, _x4) {
+      return _ref2.apply(this, arguments);
+    }
+
+    return indexPlaylistAndTagPaginationOfNew;
+  }(),
+
+  // 【スポーツ】プレイリスト一覧を取得
+  indexPlaylistAndTagPaginationOfSports: function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(context, page) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
+              context.commit("setIsIndexSportsPlaylistAndTagPaginating", true);
+
+              _context3.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/index/playlistAndTagOfSports?page=" + page);
+
+            case 3:
+              response = _context3.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
+                // 成功した時
+                if (response.data.playlistAndTagPaginationOfSports.last_page == page) context.commit("setToLoadSports", false);
+                if (response.data.playlistAndTagPaginationOfSports.data) {
+                  context.commit("setPlaylistAndTagPaginationOfSports", response.data.playlistAndTagPaginationOfSports);
+                  //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
+                  context.commit("setIsIndexSportsPlaylistAndTagPaginating", false);
+                }
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 5:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3, this);
+    }));
+
+    function indexPlaylistAndTagPaginationOfSports(_x5, _x6) {
+      return _ref3.apply(this, arguments);
+    }
+
+    return indexPlaylistAndTagPaginationOfSports;
+  }(),
+
+  // 【エンターテイメント】プレイリスト一覧を取得
+  indexPlaylistAndTagPaginationOfEntertainment: function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4(context, page) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
+              context.commit("setIsIndexEntertainmentPlaylistAndTagPaginating", true);
+
+              _context4.next = 3;
+              return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/index/playlistAndTagOfEntertainment?page=" + page);
+
+            case 3:
+              response = _context4.sent;
+
+              if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
+                // 成功した時
+                if (response.data.playlistAndTagPaginationOfEntertainment.last_page == page) context.commit("setToLoadEntertainment", false);
+
+                if (response.data.playlistAndTagPaginationOfEntertainment.data) {
+                  context.commit("setPlaylistAndTagPaginationOfEntertainment", response.data.playlistAndTagPaginationOfEntertainment);
+                  //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
+                  context.commit("setIsIndexEntertainmentPlaylistAndTagPaginating", false);
+                }
+              } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
+                // 失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              } else {
+                // 上記以外で失敗した時
+                context.commit("error/setCode", response.status, { root: true });
+              }
+
+            case 5:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4, this);
+    }));
+
+    function indexPlaylistAndTagPaginationOfEntertainment(_x7, _x8) {
+      return _ref4.apply(this, arguments);
+    }
+
+    return indexPlaylistAndTagPaginationOfEntertainment;
+  }(),
+  getMyCreatedPlaylist: function () {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5(context) {
+      var response;
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.next = 2;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/get/myCreatedPlaylist");
 
             case 2:
-              response = _context2.sent;
+              response = _context5.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
@@ -101055,14 +101466,14 @@ var actions = {
 
             case 4:
             case "end":
-              return _context2.stop();
+              return _context5.stop();
           }
         }
-      }, _callee2, this);
+      }, _callee5, this);
     }));
 
-    function getMyCreatedPlaylist(_x3) {
-      return _ref2.apply(this, arguments);
+    function getMyCreatedPlaylist(_x9) {
+      return _ref5.apply(this, arguments);
     }
 
     return getMyCreatedPlaylist;
@@ -101070,17 +101481,17 @@ var actions = {
 
   //Likeまたは作成したプレイリストをロード
   loadMyCreatedAndLikedPlaylist: function () {
-    var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(context) {
+    var _ref6 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee6(context) {
       var response;
-      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee6$(_context6) {
         while (1) {
-          switch (_context3.prev = _context3.next) {
+          switch (_context6.prev = _context6.next) {
             case 0:
-              _context3.next = 2;
+              _context6.next = 2;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/load/myCreatedAndLikedPlaylist");
 
             case 2:
-              response = _context3.sent;
+              response = _context6.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
@@ -101095,14 +101506,14 @@ var actions = {
 
             case 4:
             case "end":
-              return _context3.stop();
+              return _context6.stop();
           }
         }
-      }, _callee3, this);
+      }, _callee6, this);
     }));
 
-    function loadMyCreatedAndLikedPlaylist(_x4) {
-      return _ref3.apply(this, arguments);
+    function loadMyCreatedAndLikedPlaylist(_x10) {
+      return _ref6.apply(this, arguments);
     }
 
     return loadMyCreatedAndLikedPlaylist;
@@ -101110,11 +101521,11 @@ var actions = {
 
   //完了ボタンを押したらチェックの入ったプレイリストにタグを追加
   addMyPlaylists: function () {
-    var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4(context, input) {
+    var _ref7 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee7(context, input) {
       var params, response;
-      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee7$(_context7) {
         while (1) {
-          switch (_context4.prev = _context4.next) {
+          switch (_context7.prev = _context7.next) {
             case 0:
               this.errors = {};
 
@@ -101128,11 +101539,11 @@ var actions = {
               params = {
                 checkedPlaylistIds: input.checkedPlaylistIds
               };
-              _context4.next = 5;
+              _context7.next = 5;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/tag/addToPlaylists/" + input.currentTagId, params);
 
             case 5:
-              response = _context4.sent;
+              response = _context7.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
                 // 成功した時
@@ -101152,14 +101563,14 @@ var actions = {
 
             case 7:
             case "end":
-              return _context4.stop();
+              return _context7.stop();
           }
         }
-      }, _callee4, this);
+      }, _callee7, this);
     }));
 
-    function addMyPlaylists(_x5, _x6) {
-      return _ref4.apply(this, arguments);
+    function addMyPlaylists(_x11, _x12) {
+      return _ref7.apply(this, arguments);
     }
 
     return addMyPlaylists;
@@ -101167,11 +101578,11 @@ var actions = {
 
   //プレイリスト新規作成と選択中のタグの保存
   createPlaylist: function () {
-    var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5(context, input) {
+    var _ref8 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee8(context, input) {
       var params, response;
-      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee8$(_context8) {
         while (1) {
-          switch (_context5.prev = _context5.next) {
+          switch (_context8.prev = _context8.next) {
             case 0:
               this.errors = {};
 
@@ -101187,11 +101598,11 @@ var actions = {
                 privacySetting: input.privacySetting,
                 currentTagId: input.currentTagId
               };
-              _context5.next = 5;
+              _context8.next = 5;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/api/playlist/create", params);
 
             case 5:
-              response = _context5.sent;
+              response = _context8.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["a" /* CREATED */]) {
                 // 成功した時
@@ -101211,14 +101622,14 @@ var actions = {
 
             case 7:
             case "end":
-              return _context5.stop();
+              return _context8.stop();
           }
         }
-      }, _callee5, this);
+      }, _callee8, this);
     }));
 
-    function createPlaylist(_x7, _x8) {
-      return _ref5.apply(this, arguments);
+    function createPlaylist(_x13, _x14) {
+      return _ref8.apply(this, arguments);
     }
 
     return createPlaylist;
@@ -101226,19 +101637,19 @@ var actions = {
 
   //選択されたタグが追加済のユーザーのプレイリストIDを取得
   getPlaylistIdsOfTag: function () {
-    var _ref6 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee6(context, tag_id) {
+    var _ref9 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee9(context, tag_id) {
       var response, playlistIdsOfTag;
-      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee6$(_context6) {
+      return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee9$(_context9) {
         while (1) {
-          switch (_context6.prev = _context6.next) {
+          switch (_context9.prev = _context9.next) {
             case 0:
               this.errors = {};
 
-              _context6.next = 3;
+              _context9.next = 3;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("/api/tag/getPlaylists/" + tag_id);
 
             case 3:
-              response = _context6.sent;
+              response = _context9.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
@@ -101256,14 +101667,14 @@ var actions = {
 
             case 5:
             case "end":
-              return _context6.stop();
+              return _context9.stop();
           }
         }
-      }, _callee6, this);
+      }, _callee9, this);
     }));
 
-    function getPlaylistIdsOfTag(_x9, _x10) {
-      return _ref6.apply(this, arguments);
+    function getPlaylistIdsOfTag(_x15, _x16) {
+      return _ref9.apply(this, arguments);
     }
 
     return getPlaylistIdsOfTag;

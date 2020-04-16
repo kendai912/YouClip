@@ -32,8 +32,14 @@ Route::get('/get/tagAndVideoData', 'TagController@getTagAndVideoDataById');
 //Likeまたは作成したタグデータのロード
 Route::get('/load/myCreatedAndLikedTagVideo', 'TagController@loadMyCreatedAndLikedTagVideo');
 
-//プレイリスト一覧のロード
-Route::get('/index/playlistAndTag', 'PlaylistController@indexPlaylistAndTagPagination');
+//【レコメンド】プレイリスト一覧のロード
+Route::get('/index/playlistAndTagOfRecommend', 'PlaylistController@indexPlaylistAndTagPaginationOfRecommend');
+//【新着】プレイリスト一覧のロード
+Route::get('/index/playlistAndTagOfNew', 'PlaylistController@indexPlaylistAndTagPaginationOfNew');
+//【スポーツ】プレイリスト一覧のロード
+Route::get('/index/playlistAndTagOfSports', 'PlaylistController@indexPlaylistAndTagPaginationOfSports');
+//【エンターテイメント】プレイリスト一覧のロード
+Route::get('/index/playlistAndTagOfEntertainment', 'PlaylistController@indexPlaylistAndTagPaginationOfEntertainment');
 // ID指定でのプレイリストおよびタグ・動画データの取得
 Route::get('/get/playlistAndTagVideoData', 'PlaylistController@getPlaylistAndTagVideoDataById');
 //作成したプレイリスト一覧を取得

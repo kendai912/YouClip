@@ -55,12 +55,12 @@ export default {
   methods: {
     setActiveTab(key) {
       //開いたタブをセッションストレージに保存
-      window.sessionStorage.setItem("tabIndex", JSON.stringify(key));
+      window.sessionStorage.setItem("myPageTabIndex", JSON.stringify(key));
     }
   },
   async created() {
     //以前に開いていたタブをセッションストレージからセット
-    this.tab = parseInt(window.sessionStorage.getItem("tabIndex"));
+    this.tab = parseInt(window.sessionStorage.getItem("myPageTabIndex"));
     //Likeまたは作成したプレイリストをロード
     await this.$store.dispatch("playlist/loadMyCreatedAndLikedPlaylist");
     //Likeまたは作成したタグをロード
