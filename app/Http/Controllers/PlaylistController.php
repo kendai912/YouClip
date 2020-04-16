@@ -40,9 +40,12 @@ class PlaylistController extends Controller
     //プレイリスト一覧の取得
     public function indexPlaylistAndTagPagination()
     {
-        //プレイリストにタグのデータを結合
+        //プレイリストにタグのデータを結合しLike数が多い順・新しい順に並び替え
         $contentsPerPage = 5;
-        $playlistAndTagPagination = Playlist::with('tags')->latest()->paginate($contentsPerPage);
+        $playlistAndTagPagination = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function($query) {
+            $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(1));
+        }
+        ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
         return response()->json(
             [

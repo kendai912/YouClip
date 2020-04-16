@@ -71,6 +71,7 @@ const actions = {
       // 成功した時
       if (response.data.playlistAndTagPagination.last_page == page)
         context.commit("setToLoad", false);
+      console.log(response.data.playlistAndTagPagination);
       if (response.data.playlistAndTagPagination.data) {
         context.commit(
           "setPlaylistAndTagPagination",

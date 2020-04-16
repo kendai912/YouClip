@@ -101001,6 +101001,7 @@ var actions = {
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 if (response.data.playlistAndTagPagination.last_page == page) context.commit("setToLoad", false);
+                console.log(response.data.playlistAndTagPagination);
                 if (response.data.playlistAndTagPagination.data) {
                   context.commit("setPlaylistAndTagPagination", response.data.playlistAndTagPagination);
                   //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
