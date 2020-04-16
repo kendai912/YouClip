@@ -133,7 +133,9 @@ export default {
       tagVideoResult: "search/tagVideoResult",
       playlistTagResult: "search/playlistTagResult",
       tagVideoResultToLoad: "search/tagVideoResultToLoad",
-      playlistResultToLoad: "search/playlistResultToLoad"
+      playlistResultToLoad: "search/playlistResultToLoad",
+      isSearchingPlaylistTagResult: "search/isSearchingPlaylistTagResult",
+      isSearchingTagVideoResult: "search/isSearchingTagVideoResult"
     })
   },
   created() {
@@ -142,16 +144,13 @@ export default {
 
     window.onscroll = () => {
       //ウィンドウの下から100pxに達したら次の検索結果を読み込み
-      console.log("scrolltop: " + document.documentElement.scrollTop);
-      console.log("innerHeight: " + window.innerHeight);
-      console.log("offsetHeight: " + document.documentElement.offsetHeight);
       let bottomOfWindow =
         document.documentElement.scrollTop + window.innerHeight >=
         document.documentElement.offsetHeight;
       if (bottomOfWindow) {
-        if (this.tab == 1) {
+        if (this.tab == 1 && !this.isSearchingPlaylistTagResult) {
           this.infinateLoadPlaylistSearchResult();
-        } else if (this.tab == 2) {
+        } else if (this.tab == 2 && !this.isSearchingTagVideoResult) {
           this.infinateLoadTagVideSearchResult();
         }
       }

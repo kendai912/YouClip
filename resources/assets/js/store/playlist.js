@@ -7,7 +7,8 @@ const state = {
   myCreatedAndLikedPlaylist: null,
   showAddPlaylistModal: false,
   playlistIdsOfTag: null,
-  toLoad: true
+  toLoad: true,
+  isIndexPlaylistAndTagPaginating: false
 };
 
 const getters = {
@@ -17,6 +18,8 @@ const getters = {
   showAddPlaylistModal: state => state.showAddPlaylistModal,
   playlistIdsOfTag: state => state.playlistIdsOfTag,
   toLoad: state => state.toLoad,
+  isIndexPlaylistAndTagPaginating: state =>
+    state.isIndexPlaylistAndTagPaginating,
   getPlaylistTagContentById: state => playlistId => {
     return state.playlistData.find(playlistTag => playlistTag.id == playlistId);
   },
@@ -51,12 +54,18 @@ const mutations = {
   },
   setToLoad(state, data) {
     state.toLoad = data;
+  },
+  setIsIndexPlaylistAndTagPaginating(state, data) {
+    state.isIndexPlaylistAndTagPaginating = data;
   }
 };
 
 const actions = {
   //プレイリスト一覧を取得
   async indexPlaylistAndTagPagination(context, page) {
+    //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
+    context.commit("setIsIndexPlaylistAndTagPaginating", true);
+
     const response = await axios.get("api/index/playlistAndTag?page=" + page);
     if (response.status == OK) {
       // 成功した時
@@ -67,6 +76,8 @@ const actions = {
           "setPlaylistAndTagPagination",
           response.data.playlistAndTagPagination
         );
+        //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
+        context.commit("setIsIndexPlaylistAndTagPaginating", false);
       }
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時

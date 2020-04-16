@@ -249,7 +249,7 @@ export default {
   computed: {
     ...mapGetters({
       isLogin: "auth/check",
-      playlistAndTagData: "watch/playlistAndTagData",
+      playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       watchList: "watch/watchList",
       listIndex: "watch/listIndex",
       currentYoutubeId: "watch/currentYoutubeId",

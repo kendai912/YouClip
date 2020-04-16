@@ -10,7 +10,9 @@ const state = {
   topSearchqueries: [],
   searchHistories: [],
   tagVideoResultToLoad: true,
-  playlistResultToLoad: true
+  playlistResultToLoad: true,
+  isSearchingPlaylistTagResult: false,
+  isSearchingTagVideoResult: false
 };
 
 const getters = {
@@ -21,7 +23,9 @@ const getters = {
   topSearchqueries: state => state.topSearchqueries,
   searchHistories: state => state.searchHistories,
   tagVideoResultToLoad: state => state.tagVideoResultToLoad,
-  playlistResultToLoad: state => state.playlistResultToLoad
+  playlistResultToLoad: state => state.playlistResultToLoad,
+  isSearchingPlaylistTagResult: state => state.isSearchingPlaylistTagResult,
+  isSearchingTagVideoResult: state => state.isSearchingTagVideoResult
 };
 
 const mutations = {
@@ -48,6 +52,12 @@ const mutations = {
   },
   setPlaylistResultToLoad(state, data) {
     state.playlistResultToLoad = data;
+  },
+  setIsSearchingPlaylistTagResult(state, data) {
+    state.isSearchingPlaylistTagResult = data;
+  },
+  setIsSearchingTagVideoResult(state, data) {
+    state.isSearchingTagVideoResult = data;
   },
   //検索結果表示ページに遷移
   searchResultPageTransit() {
@@ -89,6 +99,9 @@ const actions = {
   },
   //検索ワードを含むタグ単体を検索
   async searchTagVideoResult(context, page) {
+    //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
+    context.commit("setIsSearchingTagVideoResult", true);
+
     let params = {
       searchQuery: state.searchQuery,
       page: page
@@ -100,7 +113,11 @@ const actions = {
       if (response.data.tagVideoResult.last_page == page)
         context.commit("setTagVideoResultToLoad", false);
 
+      //シーンタグの検索結果を格納
       context.commit("setTagVideoResult", response.data.tagVideoResult.data);
+
+      //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
+      context.commit("setIsSearchingTagVideoResult", false);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
@@ -111,6 +128,9 @@ const actions = {
   },
   //検索ワードを含むプレイリストを検索
   async searchPlaylistTagResult(context, page) {
+    //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
+    context.commit("setIsSearchingPlaylistTagResult", true);
+
     let params = {
       searchQuery: state.searchQuery,
       page: page
@@ -122,10 +142,14 @@ const actions = {
       if (response.data.playlistTagResult.last_page == page)
         context.commit("setPlaylistResultToLoad", false);
 
+      //プレイリストの検索結果を格納
       context.commit(
         "setPlaylistTagResult",
         response.data.playlistTagResult.data
       );
+
+      //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
+      context.commit("setIsSearchingPlaylistTagResult", false);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });

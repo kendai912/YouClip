@@ -79,16 +79,19 @@ export default {
   computed: {
     ...mapGetters({
       playlistAndTagPagination: "playlist/playlistAndTagPagination",
-      toLoad: "playlist/toLoad"
+      toLoad: "playlist/toLoad",
+      isIndexPlaylistAndTagPaginating:
+        "playlist/isIndexPlaylistAndTagPaginating"
     })
   },
   mounted() {
+    this.$store.commit("playlist/setToLoad", true);
     window.onscroll = () => {
       //ウィンドウの下から100pxに達したら次のプレイリストアイテムを読み込み
       let bottomOfWindow =
         document.documentElement.scrollTop + window.innerHeight >=
         document.documentElement.offsetHeight;
-      if (bottomOfWindow) {
+      if (bottomOfWindow && !this.isIndexPlaylistAndTagPaginating) {
         this.infinateLoadPlaylist();
       }
     };

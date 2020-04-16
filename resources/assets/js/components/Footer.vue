@@ -2,7 +2,7 @@
   <footer class="footer">
     <div>
       <div>
-        <RouterLink class="button button--link" to="/home">レコメンド</RouterLink>
+        <RouterLink class="button button--link" to="/home">Top</RouterLink>
       </div>
       <div>
         <RouterLink class="button button--link" to="/search">検索</RouterLink>

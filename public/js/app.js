@@ -3977,15 +3977,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   },
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     playlistAndTagPagination: "playlist/playlistAndTagPagination",
-    toLoad: "playlist/toLoad"
+    toLoad: "playlist/toLoad",
+    isIndexPlaylistAndTagPaginating: "playlist/isIndexPlaylistAndTagPaginating"
   })),
   mounted: function mounted() {
     var _this = this;
 
+    this.$store.commit("playlist/setToLoad", true);
     window.onscroll = function () {
       //ウィンドウの下から100pxに達したら次のプレイリストアイテムを読み込み
       var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
-      if (bottomOfWindow) {
+      if (bottomOfWindow && !_this.isIndexPlaylistAndTagPaginating) {
         _this.infinateLoadPlaylist();
       }
     };
@@ -4449,7 +4451,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     tagVideoResult: "search/tagVideoResult",
     playlistTagResult: "search/playlistTagResult",
     tagVideoResultToLoad: "search/tagVideoResultToLoad",
-    playlistResultToLoad: "search/playlistResultToLoad"
+    playlistResultToLoad: "search/playlistResultToLoad",
+    isSearchingPlaylistTagResult: "search/isSearchingPlaylistTagResult",
+    isSearchingTagVideoResult: "search/isSearchingTagVideoResult"
   })),
   created: function created() {
     var _this = this;
@@ -4459,14 +4463,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
     window.onscroll = function () {
       //ウィンドウの下から100pxに達したら次の検索結果を読み込み
-      console.log("scrolltop: " + document.documentElement.scrollTop);
-      console.log("innerHeight: " + window.innerHeight);
-      console.log("offsetHeight: " + document.documentElement.offsetHeight);
       var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
       if (bottomOfWindow) {
-        if (_this.tab == 1) {
+        if (_this.tab == 1 && !_this.isSearchingPlaylistTagResult) {
           _this.infinateLoadPlaylistSearchResult();
-        } else if (_this.tab == 2) {
+        } else if (_this.tab == 2 && !_this.isSearchingTagVideoResult) {
           _this.infinateLoadTagVideSearchResult();
         }
       }
@@ -4604,7 +4605,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__util__ = __webpack_require__("./resources/assets/js/util.js");
 
 
-var _components$data$mixi;
+var _mapGetters, _components$data$mixi;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -4854,29 +4855,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       location.reload();
     }
   }),
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])((_mapGetters = {
     isLogin: "auth/check",
-    playlistAndTagData: "watch/playlistAndTagData",
+    playlistAndTagVideoData: "watch/playlistAndTagVideoData",
     watchList: "watch/watchList",
     listIndex: "watch/listIndex",
     currentYoutubeId: "watch/currentYoutubeId",
     currentTitle: "watch/currentTitle",
     currentTagId: "watch/currentTagId",
     startHis: "watch/start",
-    endHis: "watch/end",
-    playlistAndTagVideoData: "watch/playlistAndTagVideoData",
-    isPlaylist: "watch/isPlaylist",
-    playlistName: "watch/playlistName",
-    currentTagName: "watch/currentTagName",
-    currentTagNameArray: "watch/currentTagNameArray",
-    showLoginModal: "noLoginModal/showLoginModal",
-    messageWhenNotLogined: "noLoginModal/messageWhenNotLogined",
-    showShareModal: "shareModal/showShareModal",
-    showAddPlaylistModal: "playlist/showAddPlaylistModal",
-    showOtherActionModal: "otherActionModal/showOtherActionModal",
-    showSceneTagControl: "tagging/showSceneTagControl",
-    isEditting: "tagging/isEditting"
-  }), {
+    endHis: "watch/end"
+  }, _defineProperty(_mapGetters, "playlistAndTagVideoData", "watch/playlistAndTagVideoData"), _defineProperty(_mapGetters, "isPlaylist", "watch/isPlaylist"), _defineProperty(_mapGetters, "playlistName", "watch/playlistName"), _defineProperty(_mapGetters, "currentTagName", "watch/currentTagName"), _defineProperty(_mapGetters, "currentTagNameArray", "watch/currentTagNameArray"), _defineProperty(_mapGetters, "showLoginModal", "noLoginModal/showLoginModal"), _defineProperty(_mapGetters, "messageWhenNotLogined", "noLoginModal/messageWhenNotLogined"), _defineProperty(_mapGetters, "showShareModal", "shareModal/showShareModal"), _defineProperty(_mapGetters, "showAddPlaylistModal", "playlist/showAddPlaylistModal"), _defineProperty(_mapGetters, "showOtherActionModal", "otherActionModal/showOtherActionModal"), _defineProperty(_mapGetters, "showSceneTagControl", "tagging/showSceneTagControl"), _defineProperty(_mapGetters, "isEditting", "tagging/isEditting"), _mapGetters)), {
     isLiked: function isLiked() {
       return this.$store.getters["like/isLiked"](this.currentTagId);
     },
@@ -37793,7 +37782,7 @@ var render = function() {
           _c(
             "RouterLink",
             { staticClass: "button button--link", attrs: { to: "/home" } },
-            [_vm._v("レコメンド")]
+            [_vm._v("Top")]
           )
         ],
         1
@@ -100919,7 +100908,8 @@ var state = {
   myCreatedAndLikedPlaylist: null,
   showAddPlaylistModal: false,
   playlistIdsOfTag: null,
-  toLoad: true
+  toLoad: true,
+  isIndexPlaylistAndTagPaginating: false
 };
 
 var getters = {
@@ -100940,6 +100930,9 @@ var getters = {
   },
   toLoad: function toLoad(state) {
     return state.toLoad;
+  },
+  isIndexPlaylistAndTagPaginating: function isIndexPlaylistAndTagPaginating(state) {
+    return state.isIndexPlaylistAndTagPaginating;
   },
   getPlaylistTagContentById: function getPlaylistTagContentById(state) {
     return function (playlistId) {
@@ -100981,6 +100974,9 @@ var mutations = {
   },
   setToLoad: function setToLoad(state, data) {
     state.toLoad = data;
+  },
+  setIsIndexPlaylistAndTagPaginating: function setIsIndexPlaylistAndTagPaginating(state, data) {
+    state.isIndexPlaylistAndTagPaginating = data;
   }
 };
 
@@ -100993,10 +100989,13 @@ var actions = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
+              context.commit("setIsIndexPlaylistAndTagPaginating", true);
+
+              _context.next = 3;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("api/index/playlistAndTag?page=" + page);
 
-            case 2:
+            case 3:
               response = _context.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
@@ -101004,6 +101003,8 @@ var actions = {
                 if (response.data.playlistAndTagPagination.last_page == page) context.commit("setToLoad", false);
                 if (response.data.playlistAndTagPagination.data) {
                   context.commit("setPlaylistAndTagPagination", response.data.playlistAndTagPagination);
+                  //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
+                  context.commit("setIsIndexPlaylistAndTagPaginating", false);
                 }
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
@@ -101013,7 +101014,7 @@ var actions = {
                 context.commit("error/setCode", response.status, { root: true });
               }
 
-            case 4:
+            case 5:
             case "end":
               return _context.stop();
           }
@@ -101304,7 +101305,9 @@ var state = {
   topSearchqueries: [],
   searchHistories: [],
   tagVideoResultToLoad: true,
-  playlistResultToLoad: true
+  playlistResultToLoad: true,
+  isSearchingPlaylistTagResult: false,
+  isSearchingTagVideoResult: false
 };
 
 var getters = {
@@ -101331,6 +101334,12 @@ var getters = {
   },
   playlistResultToLoad: function playlistResultToLoad(state) {
     return state.playlistResultToLoad;
+  },
+  isSearchingPlaylistTagResult: function isSearchingPlaylistTagResult(state) {
+    return state.isSearchingPlaylistTagResult;
+  },
+  isSearchingTagVideoResult: function isSearchingTagVideoResult(state) {
+    return state.isSearchingTagVideoResult;
   }
 };
 
@@ -101358,6 +101367,12 @@ var mutations = {
   },
   setPlaylistResultToLoad: function setPlaylistResultToLoad(state, data) {
     state.playlistResultToLoad = data;
+  },
+  setIsSearchingPlaylistTagResult: function setIsSearchingPlaylistTagResult(state, data) {
+    state.isSearchingPlaylistTagResult = data;
+  },
+  setIsSearchingTagVideoResult: function setIsSearchingTagVideoResult(state, data) {
+    state.isSearchingTagVideoResult = data;
   },
 
   //検索結果表示ページに遷移
@@ -101455,21 +101470,28 @@ var actions = {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
+              //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
+              context.commit("setIsSearchingTagVideoResult", true);
+
               params = {
                 searchQuery: state.searchQuery,
                 page: page
               };
-              _context3.next = 3;
+              _context3.next = 4;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/tag", params);
 
-            case 3:
+            case 4:
               response = _context3.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 if (response.data.tagVideoResult.last_page == page) context.commit("setTagVideoResultToLoad", false);
 
+                //シーンタグの検索結果を格納
                 context.commit("setTagVideoResult", response.data.tagVideoResult.data);
+
+                //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
+                context.commit("setIsSearchingTagVideoResult", false);
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
@@ -101478,7 +101500,7 @@ var actions = {
                 context.commit("error/setCode", response.status, { root: true });
               }
 
-            case 5:
+            case 6:
             case "end":
               return _context3.stop();
           }
@@ -101501,21 +101523,28 @@ var actions = {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
+              //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
+              context.commit("setIsSearchingPlaylistTagResult", true);
+
               params = {
                 searchQuery: state.searchQuery,
                 page: page
               };
-              _context4.next = 3;
+              _context4.next = 4;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("api/search/playlist", params);
 
-            case 3:
+            case 4:
               response = _context4.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
                 // 成功した時
                 if (response.data.playlistTagResult.last_page == page) context.commit("setPlaylistResultToLoad", false);
 
+                //プレイリストの検索結果を格納
                 context.commit("setPlaylistTagResult", response.data.playlistTagResult.data);
+
+                //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
+                context.commit("setIsSearchingPlaylistTagResult", false);
               } else if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["c" /* INTERNAL_SERVER_ERROR */]) {
                 // 失敗した時
                 context.commit("error/setCode", response.status, { root: true });
@@ -101524,7 +101553,7 @@ var actions = {
                 context.commit("error/setCode", response.status, { root: true });
               }
 
-            case 5:
+            case 6:
             case "end":
               return _context4.stop();
           }
