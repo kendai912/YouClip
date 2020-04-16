@@ -79,7 +79,7 @@ class PlaylistController extends Controller
     {
          //スポーツカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
         $contentsPerPage = 5;
-        $playlistAndTagPaginationOfSports = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function($query) {
+        $playlistAndTagPaginationOfSports = Playlist::with('tags')->where('playlistCategory', 'Sports')->withCount(['likesPlaylist as likesPlaylist_count' => function($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }
         ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
@@ -99,7 +99,7 @@ class PlaylistController extends Controller
     {
          //エンターテイメントカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
         $contentsPerPage = 5;
-        $playlistAndTagPaginationOfEntertainment = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function($query) {
+        $playlistAndTagPaginationOfEntertainment = Playlist::with('tags')->where('playlistCategory', 'Entertainment')->withCount(['likesPlaylist as likesPlaylist_count' => function($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }
         ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);

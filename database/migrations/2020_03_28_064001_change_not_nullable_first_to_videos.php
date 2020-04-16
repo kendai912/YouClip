@@ -17,7 +17,7 @@ class ChangeNotNullableFirstToVideos extends Migration
             $table->string('title')->change();
             $table->string('thumbnail')->change();
             $table->time('duration')->change();
-            $table->string('category');
+            // $table->string('category');
         });
     }
 
