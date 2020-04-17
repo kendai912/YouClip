@@ -46,6 +46,9 @@ const mutations = {
   setYTResult(state, data) {
     state.YTresult.push(...data);
   },
+  clearYTResult(state) {
+    state.YTresult = [];
+  },
   setTopYTSearchqueries(state, data) {
     state.topYTSearchqueries = data;
   },

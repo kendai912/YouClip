@@ -3769,6 +3769,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     YTsearch: function YTsearch() {
       if (this.YTsearchWord == "") return;
 
+      //前回の検索結果を空にする
+      this.$store.commit("YTsearch/clearYTResult");
+
       //入力内容がYoutubeのURLかキーワードか判定
       var youtubeId = this.YTsearchWord.match(/(\?v=|youtu.be\/)([^&]+)/);
       if (youtubeId) {
@@ -3802,8 +3805,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__("./resources/assets/js/util.js");
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-//
-//
 //
 //
 //
@@ -38058,8 +38059,7 @@ var render = function() {
             _vm._v(" "),
             _c("div", [_c("div", [_vm._v(_vm._s(item.snippet.title))])]),
             _vm._v(" "),
-            _c("br"),
-            _vm._v("\n    " + _vm._s(_vm.isYTLoading) + "\n  ")
+            _c("br")
           ]
         )
       }),
@@ -38070,10 +38070,6 @@ var render = function() {
               numberOfYTItemsPerPagination: _vm.numberOfYTItemsPerPagination
             }
           })
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.isYTLoading
-        ? _c("div", [_vm._v("---------------------------")])
         : _vm._e()
     ],
     2
@@ -100136,6 +100132,9 @@ var mutations = {
     var _state$YTresult;
 
     (_state$YTresult = state.YTresult).push.apply(_state$YTresult, _toConsumableArray(data));
+  },
+  clearYTResult: function clearYTResult(state) {
+    state.YTresult = [];
   },
   setTopYTSearchqueries: function setTopYTSearchqueries(state, data) {
     state.topYTSearchqueries = data;

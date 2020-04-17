@@ -31,6 +31,9 @@ export default {
     YTsearch() {
       if (this.YTsearchWord == "") return;
 
+      //前回の検索結果を空にする
+      this.$store.commit("YTsearch/clearYTResult");
+
       //入力内容がYoutubeのURLかキーワードか判定
       let youtubeId = this.YTsearchWord.match(/(\?v=|youtu.be\/)([^&]+)/);
       if (youtubeId) {
