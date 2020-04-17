@@ -2064,10 +2064,21 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      activeBtn: 1
+    };
+  },
+
   methods: {
     logout: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
@@ -37961,57 +37972,51 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("footer", { staticClass: "footer" }, [
-    _c("div", [
+  return _c(
+    "v-bottom-navigation",
+    { attrs: { fixed: "", value: _vm.activeBtn, grow: "", color: "primary" } },
+    [
       _c(
-        "div",
+        "v-btn",
+        { attrs: { to: "/home" } },
         [
-          _c(
-            "RouterLink",
-            { staticClass: "button button--link", attrs: { to: "/home" } },
-            [_vm._v("Top")]
-          )
+          _c("span", [_vm._v("ホーム")]),
+          _vm._v(" "),
+          _c("v-icon", [_vm._v("mdi-home")])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("v-btn", { attrs: { to: "/search" } }, [
+        _c("span", [_vm._v("検索")]),
+        _vm._v(" "),
+        _c("i", { staticClass: "fas fa-search fa-2x" })
+      ]),
+      _vm._v(" "),
+      _c(
+        "v-btn",
+        { attrs: { to: "/tagging" } },
+        [
+          _c("span", [_vm._v("シーン登録")]),
+          _vm._v(" "),
+          _c("v-icon", [_vm._v("mdi-plus-circle")])
         ],
         1
       ),
       _vm._v(" "),
       _c(
-        "div",
+        "v-btn",
+        { attrs: { to: "/mypage" } },
         [
-          _c(
-            "RouterLink",
-            { staticClass: "button button--link", attrs: { to: "/search" } },
-            [_vm._v("検索")]
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        [
-          _c(
-            "RouterLink",
-            { staticClass: "button button--link", attrs: { to: "/tagging" } },
-            [_vm._v("シーン登録")]
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        [
-          _c(
-            "RouterLink",
-            { staticClass: "button button--link", attrs: { to: "/mypage" } },
-            [_vm._v("マイページ")]
-          )
+          _c("span", [_vm._v("マイページ")]),
+          _vm._v(" "),
+          _c("v-icon", [_vm._v("mdi-account")])
         ],
         1
       )
-    ])
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

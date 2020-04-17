@@ -1,26 +1,36 @@
 <template>
-  <footer class="footer">
-    <div>
-      <div>
-        <RouterLink class="button button--link" to="/home">Top</RouterLink>
-      </div>
-      <div>
-        <RouterLink class="button button--link" to="/search">検索</RouterLink>
-      </div>
-      <div>
-        <RouterLink class="button button--link" to="/tagging">シーン登録</RouterLink>
-      </div>
-      <div>
-        <RouterLink class="button button--link" to="/mypage">マイページ</RouterLink>
-      </div>
-    </div>
-  </footer>
+  <v-bottom-navigation fixed v-bind:value="activeBtn" grow color="primary">
+    <v-btn to="/home">
+      <span>ホーム</span>
+      <v-icon>mdi-home</v-icon>
+    </v-btn>
+
+    <v-btn to="/search">
+      <span>検索</span>
+      <i class="fas fa-search fa-2x"></i>
+    </v-btn>
+
+    <v-btn to="/tagging">
+      <span>シーン登録</span>
+      <v-icon>mdi-plus-circle</v-icon>
+    </v-btn>
+
+    <v-btn to="/mypage">
+      <span>マイページ</span>
+      <v-icon>mdi-account</v-icon>
+    </v-btn>
+  </v-bottom-navigation>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
 
 export default {
+  data() {
+    return {
+      activeBtn: 1
+    };
+  },
   methods: {
     async logout() {
       await this.$store.dispatch("auth/logout");
