@@ -39,7 +39,8 @@ export default {
     ...mapGetters({
       YTsearchQuery: "YTsearch/YTsearchQuery",
       YTresult: "YTsearch/YTresult",
-      isYTSearching: "YTsearch/isYTSearching"
+      isYTSearching: "YTsearch/isYTSearching",
+      isYTLoading: "YTsearch/isYTLoading"
     })
   },
   mounted() {
@@ -57,7 +58,7 @@ export default {
       let bottomOfWindow =
         document.documentElement.scrollTop + window.innerHeight >=
         document.documentElement.offsetHeight;
-      if (bottomOfWindow && !isYTSearching) {
+      if (bottomOfWindow && !this.isYTSearching) {
         this.infinateScrollYTresults();
       }
     };

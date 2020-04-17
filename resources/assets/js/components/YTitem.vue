@@ -12,11 +12,13 @@
         <div>{{ item.snippet.title }}</div>
       </div>
       <br />
+      {{ isYTLoading }}
     </div>
     <YTLoadingItem
       v-if="isYTLoading"
       v-bind:numberOfYTItemsPerPagination="numberOfYTItemsPerPagination"
     />
+    <div v-if="isYTLoading">---------------------------</div>
   </div>
 </template>
 <script>

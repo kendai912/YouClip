@@ -17,22 +17,22 @@ const state = {
     maxResults: "5", // 最大検索数
     pageToken: "",
     videoEmbeddable: true,
-    key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk"
+    key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk",
   },
   isYTLoading: false,
   numberOfYTItemsPerPagination: 5,
-  isYTSearching: false
+  isYTSearching: false,
 };
 
 const getters = {
-  YTsearchQuery: state => state.YTsearchQuery,
-  candidates: state => state.candidates,
-  YTresult: state => state.YTresult,
-  topYTSearchqueries: state => state.topYTSearchqueries,
-  YTsearchHistories: state => state.YTsearchHistories,
-  isYTLoading: state => state.isYTLoading,
-  numberOfYTItemsPerPagination: state => state.numberOfYTItemsPerPagination,
-  isYTSearching: state => state.isYTSearching
+  YTsearchQuery: (state) => state.YTsearchQuery,
+  candidates: (state) => state.candidates,
+  YTresult: (state) => state.YTresult,
+  topYTSearchqueries: (state) => state.topYTSearchqueries,
+  YTsearchHistories: (state) => state.YTsearchHistories,
+  isYTLoading: (state) => state.isYTLoading,
+  numberOfYTItemsPerPagination: (state) => state.numberOfYTItemsPerPagination,
+  isYTSearching: (state) => state.isYTSearching,
 };
 
 const mutations = {
@@ -53,7 +53,8 @@ const mutations = {
     state.YTsearchHistories = data;
   },
   setIsYTLoading(state, data) {
-    state.YTloading = data;
+    console.log();
+    state.isYTLoading = data;
   },
   setNumberOfYTItemsPerPagination(state, data) {
     state.numberOfYTItemsPerPagination = data;
@@ -69,10 +70,10 @@ const mutations = {
     router
       .push({
         path: "/YTresult",
-        query: { search_query: state.YTsearchQuery }
+        query: { search_query: state.YTsearchQuery },
       })
-      .catch(err => {});
-  }
+      .catch((err) => {});
+  },
 };
 
 const actions = {
@@ -103,7 +104,6 @@ const actions = {
   async searchYTResult(context) {
     //検索結果が帰ってくる前に連続でリクエストをかけないようにフラグをセット
     context.commit("setIsYTSearching", true);
-    console.log("YTsearch");
 
     const response = await axios.get(state.api, { params: state.params });
     if (response.status == OK) {
@@ -121,7 +121,7 @@ const actions = {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
     }
-  }
+  },
   //検索キーワードおよび検索履歴をテーブルに保存
   // async storeYTSearchRecord(context) {
   //   let params = {
@@ -174,5 +174,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

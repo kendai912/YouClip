@@ -3823,6 +3823,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
 
 
 
@@ -5300,7 +5302,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapGetters */])({
     YTsearchQuery: "YTsearch/YTsearchQuery",
     YTresult: "YTsearch/YTresult",
-    isYTSearching: "YTsearch/isYTSearching"
+    isYTSearching: "YTsearch/isYTSearching",
+    isYTLoading: "YTsearch/isYTLoading"
   })),
   mounted: function mounted() {
     var _this = this;
@@ -5314,7 +5317,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     window.onscroll = function () {
       //ウィンドウの下から100pxに達したら次のプレイリストアイテムを読み込み
       var bottomOfWindow = document.documentElement.scrollTop + window.innerHeight >= document.documentElement.offsetHeight;
-      if (bottomOfWindow && !isYTSearching) {
+      if (bottomOfWindow && !_this.isYTSearching) {
         _this.infinateScrollYTresults();
       }
     };
@@ -38055,7 +38058,8 @@ var render = function() {
             _vm._v(" "),
             _c("div", [_c("div", [_vm._v(_vm._s(item.snippet.title))])]),
             _vm._v(" "),
-            _c("br")
+            _c("br"),
+            _vm._v("\n    " + _vm._s(_vm.isYTLoading) + "\n  ")
           ]
         )
       }),
@@ -38066,6 +38070,10 @@ var render = function() {
               numberOfYTItemsPerPagination: _vm.numberOfYTItemsPerPagination
             }
           })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.isYTLoading
+        ? _c("div", [_vm._v("---------------------------")])
         : _vm._e()
     ],
     2
@@ -100136,7 +100144,8 @@ var mutations = {
     state.YTsearchHistories = data;
   },
   setIsYTLoading: function setIsYTLoading(state, data) {
-    state.YTloading = data;
+    console.log();
+    state.isYTLoading = data;
   },
   setNumberOfYTItemsPerPagination: function setNumberOfYTItemsPerPagination(state, data) {
     state.numberOfYTItemsPerPagination = data;
@@ -100211,12 +100220,11 @@ var actions = {
             case 0:
               //検索結果が帰ってくる前に連続でリクエストをかけないようにフラグをセット
               context.commit("setIsYTSearching", true);
-              console.log("YTsearch");
 
-              _context2.next = 4;
+              _context2.next = 3;
               return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(state.api, { params: state.params });
 
-            case 4:
+            case 3:
               response = _context2.sent;
 
               if (response.status == __WEBPACK_IMPORTED_MODULE_2__util__["d" /* OK */]) {
@@ -100235,7 +100243,7 @@ var actions = {
                 context.commit("error/setCode", response.status, { root: true });
               }
 
-            case 6:
+            case 5:
             case "end":
               return _context2.stop();
           }
@@ -100249,52 +100257,6 @@ var actions = {
 
     return searchYTResult;
   }()
-  //検索キーワードおよび検索履歴をテーブルに保存
-  // async storeYTSearchRecord(context) {
-  //   let params = {
-  //     YTsearchQuery: state.YTsearchQuery
-  //   };
-
-  //   const response = await axios.post("api/store/YTsearchrecord", params);
-  //   if (response.status == CREATED) {
-  //     // 成功した時
-  //   } else if (response.status == INTERNAL_SERVER_ERROR) {
-  //     // 失敗した時
-  //     context.commit("error/setCode", response.status, { root: true });
-  //   } else {
-  //     // 上記以外で失敗した時
-  //     context.commit("error/setCode", response.status, { root: true });
-  //   }
-  // },
-  //人気の検索ワードを取得
-  // async getTopYTSearchqueries(context) {
-  //   const response = await axios.get("api/topYTSearchqueries");
-  //   if (response.status == OK) {
-  //     // 成功した時
-  //     context.commit("setTopYTSearchqueries", response.data.topYTSearchqueries);
-  //   } else if (response.status == INTERNAL_SERVER_ERROR) {
-  //     // 失敗した時
-  //     context.commit("error/setCode", response.status, { root: true });
-  //   } else {
-  //     // 上記以外で失敗した時
-  //     context.commit("error/setCode", response.status, { root: true });
-  //   }
-  // },
-  // //検索履歴を取得
-  // async getYTsearchHistories(context) {
-  //   const response = await axios.get("api/YTsearchHistories");
-  //   if (response.status == OK) {
-  //     // 成功した時
-  //     context.commit("setYTsearchHistories", response.data.YTsearchHistories);
-  //   } else if (response.status == INTERNAL_SERVER_ERROR) {
-  //     // 失敗した時
-  //     context.commit("error/setCode", response.status, { root: true });
-  //   } else {
-  //     // 上記以外で失敗した時
-  //     context.commit("error/setCode", response.status, { root: true });
-  //   }
-  // }
-
 };
 
 /* harmony default export */ __webpack_exports__["a"] = ({
