@@ -1,12 +1,6 @@
 .container {
-  padding: 0px 0px 35px;
+  padding: 0px 0px 80px;
   margin: 0;
-}
-
-.yt-container-wrap {
-  width: 100%;
-  margin: 0;
-  padding: 0;
 }
 
 .yt-container {
@@ -129,7 +123,7 @@
   transform: translateX(100vw);
 }
 
-.my-gray {
+.my-grey {
   color: gray;
 }
 
@@ -177,4 +171,7 @@
 
 .v-card__text {
   padding: 0px 0px 4px;
+}
+.fas {
+  vertical-align: middle;
 }

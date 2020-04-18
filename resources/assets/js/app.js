@@ -12,6 +12,7 @@ import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@mdi/font/css/materialdesignicons.css";
+import "material-design-icons-iconfont/dist/material-design-icons.css";
 
 Vue.use(Vuetify);
 
@@ -24,29 +25,10 @@ const createApp = async () => {
     vuetify: new Vuetify(),
     store,
     icons: {
-      iconfont: "fa mdi"
+      iconfont: "fa mdi md",
     },
     components: { App }, // ルートコンポーネントの使用を宣言する
-    template: "<App />" // ルートコンポーネントを描画する
+    template: "<App />", // ルートコンポーネントを描画する
   });
 };
 createApp();
-
-// require("./bootstrap");
-
-// window.Vue = require("vue");
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-// Vue.component(
-//   "example-component",
-//   require("./components/ExampleComponent.vue")
-// );
-
-// const app = new Vue({
-//   el: "#app"
-// });

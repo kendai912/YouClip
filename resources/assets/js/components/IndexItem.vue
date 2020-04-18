@@ -46,7 +46,7 @@
                     text-color="white"
                   >
                     <v-avatar left>
-                      <i class="fas fa-tag my-gray"></i>
+                      <i class="fas fa-tag my-grey"></i>
                     </v-avatar>
                     {{ tag }}
                   </v-chip>
