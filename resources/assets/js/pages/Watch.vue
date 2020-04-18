@@ -41,23 +41,31 @@
         <v-row class="ma-0 pa-0" align="center">
           <v-col class="ma-0 pa-0">
             <span>{{ startIs }}〜{{ endIs }}</span>
-            <v-chip
-              v-for="(currentTagName, index) in currentTagNameArray"
-              v-bind:key="index + '.' + currentTagName"
-              class="ma-2"
-              small
-              color="blue lighten-2"
-              text-color="white"
-            >
-              <v-avatar left>
-                <i class="fas fa-tag my-grey"></i>
-              </v-avatar>
-              {{ currentTagName }}
-            </v-chip>
           </v-col>
-          <v-col class="ma-0 pa-0 text-right">
+          <v-col cols="8" class="ma-0 pa-0">
+            <div class="horizontal-list-wrap">
+              <ul class="horizontal-list">
+                <li class="item">
+                  <v-chip
+                    v-for="(currentTagName, index) in currentTagNameArray"
+                    v-bind:key="index + '.' + currentTagName"
+                    class="ma-2"
+                    small
+                    color="blue lighten-2"
+                    text-color="white"
+                  >
+                    <v-avatar left>
+                      <i class="fas fa-tag my-grey"></i>
+                    </v-avatar>
+                    {{ currentTagName }}
+                  </v-chip>
+                </li>
+              </ul>
+            </div>
+          </v-col>
+          <v-col cols="1" class="ma-0 pa-0 text-right">
             <span v-on:click="openOtherActionModal">
-              <i class="fas fa-ellipsis-v"></i>
+              <i class="fas fa-ellipsis-v my-grey"></i>
             </span>
           </v-col>
         </v-row>
