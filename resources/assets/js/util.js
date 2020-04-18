@@ -19,7 +19,7 @@ export function getCookieValue(searchKey) {
 
   let val = "";
 
-  document.cookie.split(";").forEach(cookie => {
+  document.cookie.split(";").forEach((cookie) => {
     const [key, value] = cookie.split("=");
     if (key === searchKey) {
       return (val = value);
@@ -42,11 +42,12 @@ export default {
             title: value.title,
             thumbnail: value.thumbnail,
             created_at: value.tag_created_at,
+            tagsList: "",
             tags: value.tags,
             tagArray: value.tags.split(/[\s| |　]/),
             start: this.formatToMinSec(value.start),
             end: this.formatToMinSec(value.end),
-            preview: value.preview
+            preview: value.preview,
           });
         });
       }
@@ -62,11 +63,12 @@ export default {
               title: value.playlistName,
               thumbnail: "",
               created_at: value.created_at,
+              tagsList: value.tags,
               tags: "",
               tagArray: "",
               start: "",
               end: "",
-              preview: value.tags[0].preview
+              preview: value.tags[0].preview,
             });
           }
         });
@@ -93,6 +95,6 @@ export default {
       seconds = seconds < 10 ? "0" + seconds : seconds;
 
       return minutes + ":" + seconds;
-    }
-  }
+    },
+  },
 };

@@ -2167,12 +2167,36 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
   components: {
     LoadingItem: __WEBPACK_IMPORTED_MODULE_2__components_LoadingItem_vue___default.a
   },
@@ -8177,7 +8201,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, ".candidatesWrap {\n  /* width: 300px; */\n  border: solid 1px #000000;\n}\n\n.item p {\n  margin: 0px;\n}\n\n.isEven {\n  background-color: #dddddd;\n}\n\n.v-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: 1000;\n  transition: 0.3s;\n}\n\n.v-modal .modal-in-box {\n  width: 50%;\n  padding: 1.2rem;\n  background-color: #ffffff;\n}\n\n.info-area {\n  align-items: center;\n}\n\n.isLiked {\n  color: red;\n}\n\n.tag {\n  display: inline-block;\n  margin: 0 0.1em 0.6em 0;\n  padding: 0.6em;\n  line-height: 1;\n  text-decoration: none;\n  color: #0000ee;\n  background-color: #fff;\n  border: 1px solid #0000ee;\n  border-radius: 2em;\n}\n\n.tag-list-move {\n  transition: all 1s;\n}\n\n.tag-list-enter-to {\n  transition: all 1s;\n}\n\n.tag-list-enter {\n  opacity: 0;\n  transform: translateY(35px);\n}\n\n.tag-list-leave-to {\n  opacity: 0;\n  transform: translateY(-35px);\n}\n\n.tag-list-leave-active {\n  position: absolute;\n  transition: all 1s;\n}\n\n.controle-next-enter-active,\n.controle-next-leave-active {\n  transition: all 1s;\n}\n\n.controle-next-enter {\n  transform: translateX(100vw);\n}\n\n.controle-next-leave-active {\n  position: absolute;\n  transform: translateX(-100vw);\n}\n\n.controle-previous-enter-active,\n.controle-previous-leave-active {\n  transition: all 1s;\n}\n\n.controle-previous-enter {\n  transform: translateX(-100vw);\n}\n\n.controle-previous-leave-active {\n  position: absolute;\n  transform: translateX(100vw);\n}\n\n", ""]);
+exports.push([module.i, ".main {\n  margin-top: 0px;\n}\n\n.candidatesWrap {\n  /* width: 300px; */\n  border: solid 1px #000000;\n}\n\n.item p {\n  margin: 0px;\n}\n\n.isEven {\n  background-color: #dddddd;\n}\n\n.v-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: 1000;\n  transition: 0.3s;\n}\n\n.v-modal .modal-in-box {\n  width: 50%;\n  padding: 1.2rem;\n  background-color: #ffffff;\n}\n\n.info-area {\n  align-items: center;\n}\n\n.isLiked {\n  color: red;\n}\n\n.tag {\n  display: inline-block;\n  margin: 0 0.1em 0.6em 0;\n  padding: 0.6em;\n  line-height: 1;\n  text-decoration: none;\n  color: #0000ee;\n  background-color: #fff;\n  border: 1px solid #0000ee;\n  border-radius: 2em;\n}\n\n.tag-list-move {\n  transition: all 1s;\n}\n\n.tag-list-enter-to {\n  transition: all 1s;\n}\n\n.tag-list-enter {\n  opacity: 0;\n  transform: translateY(35px);\n}\n\n.tag-list-leave-to {\n  opacity: 0;\n  transform: translateY(-35px);\n}\n\n.tag-list-leave-active {\n  position: absolute;\n  transition: all 1s;\n}\n\n.controle-next-enter-active,\n.controle-next-leave-active {\n  transition: all 1s;\n}\n\n.controle-next-enter {\n  transform: translateX(100vw);\n}\n\n.controle-next-leave-active {\n  position: absolute;\n  transform: translateX(-100vw);\n}\n\n.controle-previous-enter-active,\n.controle-previous-leave-active {\n  transition: all 1s;\n}\n\n.controle-previous-enter {\n  transform: translateX(-100vw);\n}\n\n.controle-previous-leave-active {\n  position: absolute;\n  transform: translateX(100vw);\n}\n\n.my-gray {\n  color: gray;\n}\n\n/* 横スクロール用 */\n.horizontal-list {\n  overflow-x: auto;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n\n.v-application ul {\n  padding: 0px;\n}\n\n.item {\n  display: inline-block;\n  text-align: left;\n}\n", ""]);
 
 // exports
 
@@ -37974,7 +37998,15 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-bottom-navigation",
-    { attrs: { fixed: "", value: _vm.activeBtn, grow: "", color: "primary" } },
+    {
+      attrs: {
+        fixed: "",
+        value: _vm.activeBtn,
+        grow: "",
+        color: "primary",
+        "hide-on-scroll": ""
+      }
+    },
     [
       _c(
         "v-btn",
@@ -39995,56 +40027,138 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "v-container",
     [
       _vm._l(_vm.mediaItems, function(item) {
         return _c(
-          "div",
-          {
-            key: item.category + "-" + item.id,
-            on: {
-              click: function($event) {
-                return _vm.select(item)
-              }
-            }
-          },
+          "v-row",
+          { key: item.category + "-" + item.id, attrs: { dense: "" } },
           [
-            _c("div", [
-              _c("img", {
-                staticStyle: { width: "300px", height: "auto" },
-                attrs: { src: "/storage/img/" + item.preview, alt: item.title }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", [
-              _c("div", [_vm._v(_vm._s(item.title))]),
-              _vm._v(" "),
-              item.tagArray
-                ? _c(
-                    "div",
-                    [
-                      _vm._v(
-                        "\n        " +
-                          _vm._s(item.start) +
-                          "〜" +
-                          _vm._s(item.end) +
-                          "\n        "
+            _c(
+              "v-col",
+              [
+                _c(
+                  "v-card",
+                  {
+                    staticClass: "mx-auto",
+                    attrs: { tile: "", "max-width": "400", elevation: "1" }
+                  },
+                  [
+                    _c("v-img", {
+                      staticClass: "white--text align-end",
+                      attrs: {
+                        "max-height": "266.66px",
+                        src: "/storage/img/" + item.preview,
+                        alt: item.title,
+                        "aspect-ratio": "1.5"
+                      },
+                      on: {
+                        click: function($event) {
+                          $event.stopPropagation()
+                          return _vm.select(item)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "v-card-title",
+                      {
+                        staticClass: "pb-0",
+                        on: {
+                          click: function($event) {
+                            $event.stopPropagation()
+                            return _vm.select(item)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(item.title))]
+                    ),
+                    _vm._v(" "),
+                    _c("v-card-text", { staticClass: "text--primary" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "grey--text text--darken-3",
+                          on: {
+                            click: function($event) {
+                              $event.stopPropagation()
+                              return _vm.select(item)
+                            }
+                          }
+                        },
+                        [
+                          _c("span", [_vm._v("合計◯分")]),
+                          _vm._v(" "),
+                          _c("span", [_vm._v("◯シーン")]),
+                          _vm._v(" "),
+                          _c("span", [_vm._v("◯回視聴")]),
+                          _vm._v(" "),
+                          _c("span", [_vm._v("◯週間前")])
+                        ]
                       ),
-                      _vm._l(item.tagArray, function(tag, index) {
-                        return _c(
-                          "span",
-                          { key: index + "." + tag, staticClass: "tag" },
-                          [_vm._v(_vm._s(tag))]
-                        )
-                      })
-                    ],
-                    2
-                  )
-                : _vm._e()
-            ]),
-            _vm._v(" "),
-            _c("br")
-          ]
+                      _vm._v(" "),
+                      _c(
+                        "ul",
+                        { staticClass: "horizontal-list" },
+                        _vm._l(item.tagsList, function(
+                          tagsList,
+                          tagsListIndex
+                        ) {
+                          return _c(
+                            "li",
+                            {
+                              key: item.id + "-" + tagsListIndex,
+                              staticClass: "item"
+                            },
+                            _vm._l(tagsList.tags.split(/[\s| |　]/), function(
+                              tag,
+                              tagIndex
+                            ) {
+                              return _c(
+                                "v-chip",
+                                {
+                                  key:
+                                    item.id +
+                                    "-" +
+                                    tagsListIndex +
+                                    "-" +
+                                    tagIndex,
+                                  staticClass: "ma-2",
+                                  attrs: {
+                                    small: "",
+                                    color: "blue lighten-2",
+                                    "text-color": "white"
+                                  }
+                                },
+                                [
+                                  _c("v-avatar", { attrs: { left: "" } }, [
+                                    _c("i", {
+                                      staticClass: "fas fa-tag my-gray"
+                                    })
+                                  ]),
+                                  _vm._v(
+                                    "\n                " +
+                                      _vm._s(tag) +
+                                      "\n              "
+                                  )
+                                ],
+                                1
+                              )
+                            }),
+                            1
+                          )
+                        }),
+                        0
+                      )
+                    ])
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
         )
       }),
       _vm._v(" "),
@@ -103284,6 +103398,7 @@ function getCookieValue(searchKey) {
             title: value.title,
             thumbnail: value.thumbnail,
             created_at: value.tag_created_at,
+            tagsList: "",
             tags: value.tags,
             tagArray: value.tags.split(/[\s| |　]/),
             start: _this.formatToMinSec(value.start),
@@ -103304,6 +103419,7 @@ function getCookieValue(searchKey) {
               title: value.playlistName,
               thumbnail: "",
               created_at: value.created_at,
+              tagsList: value.tags,
               tags: "",
               tagArray: "",
               start: "",

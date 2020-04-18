@@ -1,3 +1,7 @@
+.main {
+  margin-top: 0px;
+}
+
 .candidatesWrap {
   /* width: 300px; */
   border: solid 1px #000000;
@@ -102,3 +106,22 @@
   transform: translateX(100vw);
 }
 
+.my-gray {
+  color: gray;
+}
+
+/* 横スクロール用 */
+.horizontal-list {
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.v-application ul {
+  padding: 0px;
+}
+
+.item {
+  display: inline-block;
+  text-align: left;
+}

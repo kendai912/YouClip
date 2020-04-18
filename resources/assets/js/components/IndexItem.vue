@@ -1,39 +1,61 @@
 <template>
-  <div>
-    <div
-      v-for="item in mediaItems"
-      v-bind:key="item.category+'-'+item.id"
-      v-on:click="select(item)"
-    >
-      <div>
-        <img
-          v-bind:src="'/storage/img/' + item.preview"
-          v-bind:alt="item.title"
-          style="width: 300px; height:auto"
-        />
-      </div>
-      <div>
-        <div>{{ item.title }}</div>
-        <div v-if="item.tagArray">
-          {{ item.start }}〜{{ item.end }}
-          <span
-            v-for="(tag,index) in item.tagArray"
-            v-bind:key="index + '.' + tag"
-            class="tag"
-          >{{ tag }}</span>
-        </div>
-      </div>
-      <br />
-    </div>
+  <v-container>
+    <v-row v-for="item in mediaItems" v-bind:key="item.category+'-'+item.id" dense>
+      <v-col>
+        <v-card class="mx-auto" tile max-width="400" elevation="1">
+          <v-img
+            v-on:click.stop="select(item)"
+            class="white--text align-end"
+            max-height="266.66px"
+            v-bind:src="'/storage/img/' + item.preview"
+            v-bind:alt="item.title"
+            aspect-ratio="1.5"
+          ></v-img>
+
+          <v-card-title v-on:click.stop="select(item)" class="pb-0">{{ item.title }}</v-card-title>
+          <v-card-text class="text--primary">
+            <div v-on:click.stop="select(item)" class="grey--text text--darken-3">
+              <span>合計◯分</span>
+              <span>◯シーン</span>
+              <span>◯回視聴</span>
+              <span>◯週間前</span>
+            </div>
+            <ul class="horizontal-list">
+              <li
+                class="item"
+                v-for="(tagsList, tagsListIndex) in item.tagsList"
+                v-bind:key="item.id + '-' + tagsListIndex"
+              >
+                <v-chip
+                  v-for="(tag, tagIndex) in tagsList.tags.split(/[\s| |　]/)"
+                  v-bind:key="item.id + '-' + tagsListIndex + '-' + tagIndex"
+                  class="ma-2"
+                  small
+                  color="blue lighten-2"
+                  text-color="white"
+                >
+                  <v-avatar left>
+                    <i class="fas fa-tag my-gray"></i>
+                  </v-avatar>
+                  {{ tag }}
+                </v-chip>
+              </li>
+            </ul>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
     <LoadingItem v-if="isLoading" v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination" />
-  </div>
+  </v-container>
 </template>
+
 <script>
 import { mapState, mapGetters } from "vuex";
 import LoadingItem from "../components/LoadingItem.vue";
 import myMixin from "../util";
 
 export default {
+  data: () => ({}),
   components: {
     LoadingItem
   },
@@ -80,7 +102,6 @@ export default {
       window.location.reload();
     }
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
