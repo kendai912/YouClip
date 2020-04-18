@@ -1,15 +1,18 @@
 <template>
-  <nav class="navbar">
-    <RouterLink class="navbar__brand" to="/">ScenePicks</RouterLink>
+  <v-app-bar color="white" dense>
+    <v-toolbar-title>
+      <router-link class="navbar__brand" to="/">ScenePicks</router-link>
+    </v-toolbar-title>
+    <v-spacer></v-spacer>
     <div class="navbar__menu">
       <div v-if="isLogin" class="navbar__item">
         <button v-if="isLogin" class="button button--link" v-on:click="logout">Logout</button>
       </div>
       <div v-else class="navbar__item">
-        <RouterLink class="button button--link" to="/login">Login / Register</RouterLink>
+        <RouterLink class="button button--link" to="/login">Login</RouterLink>
       </div>
     </div>
-  </nav>
+  </v-app-bar>
 </template>
 
 <script>

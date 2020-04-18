@@ -12,35 +12,47 @@
             aspect-ratio="1.5"
           ></v-img>
 
-          <v-card-title v-on:click.stop="select(item)" class="pb-0">{{ item.title }}</v-card-title>
-          <v-card-text class="text--primary">
-            <div v-on:click.stop="select(item)" class="grey--text text--darken-3">
-              <span>合計◯分</span>
-              <span>◯シーン</span>
-              <span>◯回視聴</span>
-              <span>◯週間前</span>
-            </div>
-            <ul class="horizontal-list">
-              <li
-                class="item"
-                v-for="(tagsList, tagsListIndex) in item.tagsList"
-                v-bind:key="item.id + '-' + tagsListIndex"
-              >
-                <v-chip
-                  v-for="(tag, tagIndex) in tagsList.tags.split(/[\s| |　]/)"
-                  v-bind:key="item.id + '-' + tagsListIndex + '-' + tagIndex"
-                  class="ma-2"
-                  small
-                  color="blue lighten-2"
-                  text-color="white"
+          <v-list-item>
+            <v-list-item-avatar color="grey">
+              <v-icon dark>mdi-account-circle</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-card-title v-on:click.stop="select(item)" class="pb-0">{{ item.title }}</v-card-title>
+              <v-card-text class="text--primary">
+                <div v-on:click.stop="select(item)" class="grey--text text--darken-3">
+                  <span>合計◯分</span>
+                  <span>◯シーン</span>
+                  <span>◯回視聴</span>
+                  <span>◯週間前</span>
+                </div>
+              </v-card-text>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-card-text>
+            <div class="horizontal-list-wrap">
+              <ul class="horizontal-list">
+                <li
+                  class="item"
+                  v-for="(tagsList, tagsListIndex) in item.tagsList"
+                  v-bind:key="item.id + '-' + tagsListIndex"
                 >
-                  <v-avatar left>
-                    <i class="fas fa-tag my-gray"></i>
-                  </v-avatar>
-                  {{ tag }}
-                </v-chip>
-              </li>
-            </ul>
+                  <v-chip
+                    v-for="(tag, tagIndex) in tagsList.tags.split(/[\s| |　]/)"
+                    v-bind:key="item.id + '-' + tagsListIndex + '-' + tagIndex"
+                    class="ma-2"
+                    small
+                    color="blue lighten-2"
+                    text-color="white"
+                  >
+                    <v-avatar left>
+                      <i class="fas fa-tag my-gray"></i>
+                    </v-avatar>
+                    {{ tag }}
+                  </v-chip>
+                </li>
+              </ul>
+            </div>
           </v-card-text>
         </v-card>
       </v-col>

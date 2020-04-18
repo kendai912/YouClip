@@ -1,6 +1,6 @@
 <template>
   <div class="container--small">
-    <v-tabs v-model="tab" background-color="transparent" grow>
+    <v-tabs v-model="tab" background-color="transparent" grow hide-slider>
       <v-tab
         v-for="(item, key) in items"
         :key="item"
@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       tab: 0,
-      items: ["レコメンド", "新着", "スポーツ", "エンターテイメント"],
+      items: ["おすすめ", "新着", "スポーツ", "エンターテイメント"],
       recommendPage: 1,
       newPage: 1,
       sportsPage: 1,
@@ -91,7 +91,7 @@ export default {
         "playlist/indexPlaylistAndTagPaginationOfRecommend",
         this.recommendPage++
       );
-      //ページネーションのデータをrecommendMediaItemsに格納
+      // ページネーションのデータをrecommendMediaItemsに格納
       this.putPlaylistTagIntoMediaItems(
         this.recommendMediaItems,
         this.playlistAndTagPaginationOfRecommend.data

@@ -1,5 +1,5 @@
-.main {
-  margin-top: 0px;
+.container {
+  padding-bottom: 35px;
 }
 
 .candidatesWrap {
@@ -111,17 +111,47 @@
 }
 
 /* 横スクロール用 */
-.horizontal-list {
+/* .horizontal-list {
   overflow-x: auto;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
+} */
+
+.horizontal-list-wrap {
+  padding: 0;
+  height: 40px;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
+.horizontal-list {
+  margin: 0;
+  padding: 0;
+  /* height: calc(100% + 17px); */
+  /* width: 350px; */
+  /* padding-bottom: 17px; */
+  overflow-x: scroll;
+  white-space: nowrap;
+}
+/* https://qiita.com/naru0504/items/ff0c77775223dc5a9148 */
+
 .v-application ul {
-  padding: 0px;
+  padding: 0px 8px 4px;
 }
 
 .item {
   display: inline-block;
   text-align: left;
+}
+
+.v-list-item__content {
+  padding: 0px;
+}
+
+.v-card__title {
+  padding: 8px 0px 0px;
+}
+
+.v-card__text {
+  padding: 0px 0px 4px;
 }

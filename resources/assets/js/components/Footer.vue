@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation fixed v-bind:value="activeBtn" grow color="primary" hide-on-scroll>
+  <v-bottom-navigation fixed v-bind:value="activeBtn" grow color="primary">
     <v-btn to="/home">
       <span>ホーム</span>
       <v-icon>mdi-home</v-icon>

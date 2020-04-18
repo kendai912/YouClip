@@ -4,11 +4,9 @@
       <header>
         <Navbar />
       </header>
-      <main>
-        <div class="container">
-          <RouterView />
-        </div>
-      </main>
+      <div class="container">
+        <RouterView />
+      </div>
       <Snackbar />
       <Footer />
     </div>

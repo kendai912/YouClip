@@ -1862,8 +1862,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 
@@ -2188,6 +2186,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2268,6 +2278,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__("./resources/assets/js/util.js");
+//
 //
 //
 //
@@ -2554,6 +2565,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+//
+//
+//
 //
 //
 //
@@ -3958,7 +3972,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   data: function data() {
     return {
       tab: 0,
-      items: ["レコメンド", "新着", "スポーツ", "エンターテイメント"],
+      items: ["おすすめ", "新着", "スポーツ", "エンターテイメント"],
       recommendPage: 1,
       newPage: 1,
       sportsPage: 1,
@@ -4018,7 +4032,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 return this.$store.dispatch("playlist/indexPlaylistAndTagPaginationOfRecommend", this.recommendPage++);
 
               case 5:
-                //ページネーションのデータをrecommendMediaItemsに格納
+                // ページネーションのデータをrecommendMediaItemsに格納
                 this.putPlaylistTagIntoMediaItems(this.recommendMediaItems, this.playlistAndTagPaginationOfRecommend.data);
 
                 //ローディングを非表示
@@ -8201,7 +8215,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, ".main {\n  margin-top: 0px;\n}\n\n.candidatesWrap {\n  /* width: 300px; */\n  border: solid 1px #000000;\n}\n\n.item p {\n  margin: 0px;\n}\n\n.isEven {\n  background-color: #dddddd;\n}\n\n.v-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: 1000;\n  transition: 0.3s;\n}\n\n.v-modal .modal-in-box {\n  width: 50%;\n  padding: 1.2rem;\n  background-color: #ffffff;\n}\n\n.info-area {\n  align-items: center;\n}\n\n.isLiked {\n  color: red;\n}\n\n.tag {\n  display: inline-block;\n  margin: 0 0.1em 0.6em 0;\n  padding: 0.6em;\n  line-height: 1;\n  text-decoration: none;\n  color: #0000ee;\n  background-color: #fff;\n  border: 1px solid #0000ee;\n  border-radius: 2em;\n}\n\n.tag-list-move {\n  transition: all 1s;\n}\n\n.tag-list-enter-to {\n  transition: all 1s;\n}\n\n.tag-list-enter {\n  opacity: 0;\n  transform: translateY(35px);\n}\n\n.tag-list-leave-to {\n  opacity: 0;\n  transform: translateY(-35px);\n}\n\n.tag-list-leave-active {\n  position: absolute;\n  transition: all 1s;\n}\n\n.controle-next-enter-active,\n.controle-next-leave-active {\n  transition: all 1s;\n}\n\n.controle-next-enter {\n  transform: translateX(100vw);\n}\n\n.controle-next-leave-active {\n  position: absolute;\n  transform: translateX(-100vw);\n}\n\n.controle-previous-enter-active,\n.controle-previous-leave-active {\n  transition: all 1s;\n}\n\n.controle-previous-enter {\n  transform: translateX(-100vw);\n}\n\n.controle-previous-leave-active {\n  position: absolute;\n  transform: translateX(100vw);\n}\n\n.my-gray {\n  color: gray;\n}\n\n/* 横スクロール用 */\n.horizontal-list {\n  overflow-x: auto;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n\n.v-application ul {\n  padding: 0px;\n}\n\n.item {\n  display: inline-block;\n  text-align: left;\n}\n", ""]);
+exports.push([module.i, ".container {\n  padding-bottom: 35px;\n}\n\n.candidatesWrap {\n  /* width: 300px; */\n  border: solid 1px #000000;\n}\n\n.item p {\n  margin: 0px;\n}\n\n.isEven {\n  background-color: #dddddd;\n}\n\n.v-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: 1000;\n  transition: 0.3s;\n}\n\n.v-modal .modal-in-box {\n  width: 50%;\n  padding: 1.2rem;\n  background-color: #ffffff;\n}\n\n.info-area {\n  align-items: center;\n}\n\n.isLiked {\n  color: red;\n}\n\n.tag {\n  display: inline-block;\n  margin: 0 0.1em 0.6em 0;\n  padding: 0.6em;\n  line-height: 1;\n  text-decoration: none;\n  color: #0000ee;\n  background-color: #fff;\n  border: 1px solid #0000ee;\n  border-radius: 2em;\n}\n\n.tag-list-move {\n  transition: all 1s;\n}\n\n.tag-list-enter-to {\n  transition: all 1s;\n}\n\n.tag-list-enter {\n  opacity: 0;\n  transform: translateY(35px);\n}\n\n.tag-list-leave-to {\n  opacity: 0;\n  transform: translateY(-35px);\n}\n\n.tag-list-leave-active {\n  position: absolute;\n  transition: all 1s;\n}\n\n.controle-next-enter-active,\n.controle-next-leave-active {\n  transition: all 1s;\n}\n\n.controle-next-enter {\n  transform: translateX(100vw);\n}\n\n.controle-next-leave-active {\n  position: absolute;\n  transform: translateX(-100vw);\n}\n\n.controle-previous-enter-active,\n.controle-previous-leave-active {\n  transition: all 1s;\n}\n\n.controle-previous-enter {\n  transform: translateX(-100vw);\n}\n\n.controle-previous-leave-active {\n  position: absolute;\n  transform: translateX(100vw);\n}\n\n.my-gray {\n  color: gray;\n}\n\n/* 横スクロール用 */\n/* .horizontal-list {\n  overflow-x: auto;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n} */\n\n.horizontal-list-wrap {\n  padding: 0;\n  height: 40px;\n  overflow-x: hidden;\n  overflow-y: hidden;\n}\n\n.horizontal-list {\n  margin: 0;\n  padding: 0;\n  /* height: calc(100% + 17px); */\n  /* width: 350px; */\n  /* padding-bottom: 17px; */\n  overflow-x: scroll;\n  white-space: nowrap;\n}\n/* https://qiita.com/naru0504/items/ff0c77775223dc5a9148 */\n\n.v-application ul {\n  padding: 0px 8px 4px;\n}\n\n.item {\n  display: inline-block;\n  text-align: left;\n}\n\n.v-list-item__content {\n  padding: 0px;\n}\n\n.v-card__title {\n  padding: 8px 0px 0px;\n}\n\n.v-card__text {\n  padding: 0px 0px 4px;\n}\n", ""]);
 
 // exports
 
@@ -37998,15 +38012,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-bottom-navigation",
-    {
-      attrs: {
-        fixed: "",
-        value: _vm.activeBtn,
-        grow: "",
-        color: "primary",
-        "hide-on-scroll": ""
-      }
-    },
+    { attrs: { fixed: "", value: _vm.activeBtn, grow: "", color: "primary" } },
     [
       _c(
         "v-btn",
@@ -38700,7 +38706,11 @@ var render = function() {
       _c(
         "v-tabs",
         {
-          attrs: { "background-color": "transparent", grow: "" },
+          attrs: {
+            "background-color": "transparent",
+            grow: "",
+            "hide-slider": ""
+          },
           model: {
             value: _vm.tab,
             callback: function($$v) {
@@ -39574,9 +39584,7 @@ var render = function() {
       [
         _c("header", [_c("Navbar")], 1),
         _vm._v(" "),
-        _c("main", [
-          _c("div", { staticClass: "container" }, [_c("RouterView")], 1)
-        ]),
+        _c("div", { staticClass: "container" }, [_c("RouterView")], 1),
         _vm._v(" "),
         _c("Snackbar"),
         _vm._v(" "),
@@ -39990,16 +39998,22 @@ var render = function() {
     _vm._l(_vm.numberOfItemsPerPagination, function(item, index) {
       return _c(
         "v-sheet",
-        {
-          key: index,
-          staticClass: "px-3 pt-3 pb-3",
-          attrs: { color: "grey lighten-4" }
-        },
+        { key: index, staticClass: "px-3 pt-3 pb-3" },
         [
-          _c("v-skeleton-loader", {
-            staticClass: "mx-auto",
-            attrs: { "max-width": "300", type: "card" }
-          })
+          _c(
+            "v-card",
+            {
+              staticClass: "mx-auto",
+              attrs: { tile: "", "max-width": "400", elevation: "1" }
+            },
+            [
+              _c("v-skeleton-loader", {
+                staticClass: "mx-auto",
+                attrs: { width: "auto", type: "card-avatar" }
+              })
+            ],
+            1
+          )
         ],
         1
       )
@@ -40061,95 +40075,126 @@ var render = function() {
                     }),
                     _vm._v(" "),
                     _c(
-                      "v-card-title",
-                      {
-                        staticClass: "pb-0",
-                        on: {
-                          click: function($event) {
-                            $event.stopPropagation()
-                            return _vm.select(item)
-                          }
-                        }
-                      },
-                      [_vm._v(_vm._s(item.title))]
+                      "v-list-item",
+                      [
+                        _c(
+                          "v-list-item-avatar",
+                          { attrs: { color: "grey" } },
+                          [
+                            _c("v-icon", { attrs: { dark: "" } }, [
+                              _vm._v("mdi-account-circle")
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-list-item-content",
+                          [
+                            _c(
+                              "v-card-title",
+                              {
+                                staticClass: "pb-0",
+                                on: {
+                                  click: function($event) {
+                                    $event.stopPropagation()
+                                    return _vm.select(item)
+                                  }
+                                }
+                              },
+                              [_vm._v(_vm._s(item.title))]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-card-text",
+                              { staticClass: "text--primary" },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "grey--text text--darken-3",
+                                    on: {
+                                      click: function($event) {
+                                        $event.stopPropagation()
+                                        return _vm.select(item)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("span", [_vm._v("合計◯分")]),
+                                    _vm._v(" "),
+                                    _c("span", [_vm._v("◯シーン")]),
+                                    _vm._v(" "),
+                                    _c("span", [_vm._v("◯回視聴")]),
+                                    _vm._v(" "),
+                                    _c("span", [_vm._v("◯週間前")])
+                                  ]
+                                )
+                              ]
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
                     ),
                     _vm._v(" "),
-                    _c("v-card-text", { staticClass: "text--primary" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "grey--text text--darken-3",
-                          on: {
-                            click: function($event) {
-                              $event.stopPropagation()
-                              return _vm.select(item)
-                            }
-                          }
-                        },
-                        [
-                          _c("span", [_vm._v("合計◯分")]),
-                          _vm._v(" "),
-                          _c("span", [_vm._v("◯シーン")]),
-                          _vm._v(" "),
-                          _c("span", [_vm._v("◯回視聴")]),
-                          _vm._v(" "),
-                          _c("span", [_vm._v("◯週間前")])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "ul",
-                        { staticClass: "horizontal-list" },
-                        _vm._l(item.tagsList, function(
-                          tagsList,
-                          tagsListIndex
-                        ) {
-                          return _c(
-                            "li",
-                            {
-                              key: item.id + "-" + tagsListIndex,
-                              staticClass: "item"
-                            },
-                            _vm._l(tagsList.tags.split(/[\s| |　]/), function(
-                              tag,
-                              tagIndex
-                            ) {
-                              return _c(
-                                "v-chip",
-                                {
-                                  key:
-                                    item.id +
-                                    "-" +
-                                    tagsListIndex +
-                                    "-" +
-                                    tagIndex,
-                                  staticClass: "ma-2",
-                                  attrs: {
-                                    small: "",
-                                    color: "blue lighten-2",
-                                    "text-color": "white"
-                                  }
-                                },
-                                [
-                                  _c("v-avatar", { attrs: { left: "" } }, [
-                                    _c("i", {
-                                      staticClass: "fas fa-tag my-gray"
-                                    })
-                                  ]),
-                                  _vm._v(
-                                    "\n                " +
-                                      _vm._s(tag) +
-                                      "\n              "
-                                  )
-                                ],
-                                1
-                              )
-                            }),
-                            1
-                          )
-                        }),
-                        0
-                      )
+                    _c("v-card-text", [
+                      _c("div", { staticClass: "horizontal-list-wrap" }, [
+                        _c(
+                          "ul",
+                          { staticClass: "horizontal-list" },
+                          _vm._l(item.tagsList, function(
+                            tagsList,
+                            tagsListIndex
+                          ) {
+                            return _c(
+                              "li",
+                              {
+                                key: item.id + "-" + tagsListIndex,
+                                staticClass: "item"
+                              },
+                              _vm._l(tagsList.tags.split(/[\s| |　]/), function(
+                                tag,
+                                tagIndex
+                              ) {
+                                return _c(
+                                  "v-chip",
+                                  {
+                                    key:
+                                      item.id +
+                                      "-" +
+                                      tagsListIndex +
+                                      "-" +
+                                      tagIndex,
+                                    staticClass: "ma-2",
+                                    attrs: {
+                                      small: "",
+                                      color: "blue lighten-2",
+                                      "text-color": "white"
+                                    }
+                                  },
+                                  [
+                                    _c("v-avatar", { attrs: { left: "" } }, [
+                                      _c("i", {
+                                        staticClass: "fas fa-tag my-gray"
+                                      })
+                                    ]),
+                                    _vm._v(
+                                      "\n                  " +
+                                        _vm._s(tag) +
+                                        "\n                "
+                                    )
+                                  ],
+                                  1
+                                )
+                              }),
+                              1
+                            )
+                          }),
+                          0
+                        )
+                      ])
                     ])
                   ],
                   1
@@ -40583,12 +40628,22 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "nav",
-    { staticClass: "navbar" },
+    "v-app-bar",
+    { attrs: { color: "white", dense: "" } },
     [
-      _c("RouterLink", { staticClass: "navbar__brand", attrs: { to: "/" } }, [
-        _vm._v("ScenePicks")
-      ]),
+      _c(
+        "v-toolbar-title",
+        [
+          _c(
+            "router-link",
+            { staticClass: "navbar__brand", attrs: { to: "/" } },
+            [_vm._v("ScenePicks")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("v-spacer"),
       _vm._v(" "),
       _c("div", { staticClass: "navbar__menu" }, [
         _vm.isLogin
@@ -40614,7 +40669,7 @@ var render = function() {
                     staticClass: "button button--link",
                     attrs: { to: "/login" }
                   },
-                  [_vm._v("Login / Register")]
+                  [_vm._v("Login")]
                 )
               ],
               1
