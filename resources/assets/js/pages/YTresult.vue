@@ -1,12 +1,7 @@
 <template>
   <div class="container--small">
-    <h1>YTResult</h1>
-    <div>
       <YTSearchBox />
-    </div>
-    <div>
       <YTitem v-bind:YTitems="YTresult" />
-    </div>
   </div>
 </template>
 

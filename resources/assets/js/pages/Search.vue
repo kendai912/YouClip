@@ -1,15 +1,15 @@
 <template>
   <div class="container--small">
-    <h1>Search</h1>
-    <div>
-      <SearchBox />
-      <SearchHint v-bind:searchHints="topSearchqueries" v-bind:hintCategory="topSearchquery" />
-      <SearchHint
-        v-if="isLogin"
-        v-bind:searchHints="searchHistories"
-        v-bind:hintCategory="searchHistory"
-      />
-    </div>
+    <SearchBox />
+    <SearchHint
+      v-bind:searchHints="topSearchqueries"
+      v-bind:hintCategory="topSearchquery"
+    />
+    <SearchHint
+      v-if="isLogin"
+      v-bind:searchHints="searchHistories"
+      v-bind:hintCategory="searchHistory"
+    />
   </div>
 </template>
 
@@ -21,27 +21,27 @@ import SearchHint from "../components/SearchHint.vue";
 export default {
   components: {
     SearchBox,
-    SearchHint
+    SearchHint,
   },
   data() {
     return {
       topSearchquery: "人気の検索",
-      searchHistory: "検索履歴"
+      searchHistory: "検索履歴",
     };
   },
   computed: {
     //ログインチェック
     ...mapGetters({
-      isLogin: "auth/check"
+      isLogin: "auth/check",
     }),
     //人気の検索ワード
     ...mapGetters({
-      topSearchqueries: "search/topSearchqueries"
+      topSearchqueries: "search/topSearchqueries",
     }),
     //検索履歴
     ...mapGetters({
-      searchHistories: "search/searchHistories"
-    })
+      searchHistories: "search/searchHistories",
+    }),
   },
   created() {
     //ナビバーを非表示
@@ -51,6 +51,6 @@ export default {
     this.$store.dispatch("search/getTopSearchqueries");
     //検索履歴を取得
     this.$store.dispatch("search/getSearchHistories");
-  }
+  },
 };
 </script>

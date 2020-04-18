@@ -1,6 +1,5 @@
 <template>
   <div class="container--small">
-    <h1>Result</h1>
     <div>
       <SearchBox />
     </div>
@@ -10,12 +9,16 @@
           class="tab__item"
           v-bind:class="{ 'tab__item--active': tab == 1 }"
           v-on:click="tab = 1"
-        >プレイリスト</li>
+        >
+          プレイリスト
+        </li>
         <li
           class="tab__item"
           v-bind:class="{ 'tab__item--active': tab == 2 }"
           v-on:click="tab = 2"
-        >シーン</li>
+        >
+          シーン
+        </li>
       </ul>
       <div class="panel" v-show="tab === 1">
         <IndexItem v-bind:mediaItems="playlistMediaItems" />
@@ -36,7 +39,7 @@ import myMixin from "../util";
 export default {
   components: {
     SearchBox,
-    IndexItem
+    IndexItem,
   },
   data() {
     return {
@@ -44,7 +47,7 @@ export default {
       pageOfPlaylist: 1,
       pageOfTagVideo: 1,
       playlistMediaItems: [],
-      tagVideoMediaItems: []
+      tagVideoMediaItems: [],
     };
   },
   mixins: [myMixin],
@@ -125,7 +128,7 @@ export default {
 
       //ローディングを非表示
       this.$store.commit("loadingItem/setIsLoading", false);
-    }
+    },
   },
   computed: {
     ...mapGetters({
@@ -135,8 +138,8 @@ export default {
       tagVideoResultToLoad: "search/tagVideoResultToLoad",
       playlistResultToLoad: "search/playlistResultToLoad",
       isSearchingPlaylistTagResult: "search/isSearchingPlaylistTagResult",
-      isSearchingTagVideoResult: "search/isSearchingTagVideoResult"
-    })
+      isSearchingTagVideoResult: "search/isSearchingTagVideoResult",
+    }),
   },
   created() {
     //ナビバーを非表示
@@ -169,6 +172,6 @@ export default {
         location.reload();
       }
     });
-  }
+  },
 };
 </script>
