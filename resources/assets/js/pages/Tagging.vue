@@ -19,6 +19,9 @@ export default {
     return {};
   },
   computed: {},
-  created() {}
+  created() {
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+  }
 };
 </script>

@@ -1840,13 +1840,16 @@ module.exports = {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Navbar_vue__ = __webpack_require__("./resources/assets/js/components/Navbar.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Navbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Navbar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Snackbar_vue__ = __webpack_require__("./resources/assets/js/components/Snackbar.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Snackbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_Snackbar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Footer_vue__ = __webpack_require__("./resources/assets/js/components/Footer.vue");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Footer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Footer_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__("./resources/assets/js/util.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Navbar_vue__ = __webpack_require__("./resources/assets/js/components/Navbar.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Navbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_Navbar_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Snackbar_vue__ = __webpack_require__("./resources/assets/js/components/Snackbar.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Snackbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Snackbar_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Footer_vue__ = __webpack_require__("./resources/assets/js/components/Footer.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Footer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_Footer_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__util__ = __webpack_require__("./resources/assets/js/util.js");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 //
 //
 //
@@ -1858,10 +1861,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
+
 
 
 
@@ -1871,20 +1871,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Navbar: __WEBPACK_IMPORTED_MODULE_0__components_Navbar_vue___default.a,
-    Snackbar: __WEBPACK_IMPORTED_MODULE_1__components_Snackbar_vue___default.a,
-    Footer: __WEBPACK_IMPORTED_MODULE_2__components_Footer_vue___default.a
+    Navbar: __WEBPACK_IMPORTED_MODULE_1__components_Navbar_vue___default.a,
+    Snackbar: __WEBPACK_IMPORTED_MODULE_2__components_Snackbar_vue___default.a,
+    Footer: __WEBPACK_IMPORTED_MODULE_3__components_Footer_vue___default.a
   },
-  mixins: [__WEBPACK_IMPORTED_MODULE_3__util__["f" /* default */]],
-  computed: {
+  mixins: [__WEBPACK_IMPORTED_MODULE_4__util__["f" /* default */]],
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+    showNavbar: "navbar/showNavbar"
+  }), {
     errorCode: function errorCode() {
       return this.$store.state.error.code;
     }
-  },
+  }),
   watch: {
     errorCode: {
       handler: function handler(val) {
-        if (val === __WEBPACK_IMPORTED_MODULE_3__util__["c" /* INTERNAL_SERVER_ERROR */]) {
+        if (val === __WEBPACK_IMPORTED_MODULE_4__util__["c" /* INTERNAL_SERVER_ERROR */]) {
           this.$router.push("/500");
         }
       },
@@ -4205,6 +4207,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   mounted: function mounted() {
     var _this = this;
 
+    //ナビバーを表示
+    this.$store.commit("navbar/setShowNavbar", true);
+
     //以前に開いていたタブをセッションストレージからセット
     this.tab = parseInt(window.sessionStorage.getItem("topTabIndex"));
 
@@ -4464,6 +4469,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     isLogin: "auth/check"
   })),
   created: function created() {
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+
     //リンク先の検索結果ページを初期化
     this.$store.commit("search/setTagVideoResult", null);
     this.$store.commit("search/setPlaylistTagResult", null);
@@ -4693,6 +4701,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   created: function created() {
     var _this = this;
 
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+
     //ローディング表示用の変数をセット
     this.$store.commit("loadingItem/setNumberOfItemsPerPagination", 5);
 
@@ -4775,6 +4786,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     searchHistories: "search/searchHistories"
   })),
   created: function created() {
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+
     //人気の検索ワードを取得
     this.$store.dispatch("search/getTopSearchqueries");
     //検索履歴を取得
@@ -4814,7 +4828,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   computed: {},
-  created: function created() {}
+  created: function created() {
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+  }
 });
 
 /***/ }),
@@ -4848,6 +4865,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5129,8 +5162,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
+            //ナビバーを非表示
+            this.$store.commit("navbar/setShowNavbar", false);
+
             if (!this.$route.query.playlist) {
-              _context2.next = 10;
+              _context2.next = 11;
               break;
             }
 
@@ -5140,10 +5176,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             this.indexUrl = this.$route.query.index;
 
             //プレイリストおよび動画・タグデータを取得
-            _context2.next = 5;
+            _context2.next = 6;
             return this.$store.dispatch("watch/getPlaylistAndTagVideoDataById", this.playlistIdUrl);
 
-          case 5:
+          case 6:
 
             //プレイリストIDとプレイリスト名をwatchストアに格納
             this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
@@ -5151,12 +5187,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
             //YTPlayerのプレイリストの再生に必要なパラメータをセット
             this.$store.commit("watch/setYTPlaylistParameters", this.indexUrl);
-            _context2.next = 15;
+            _context2.next = 16;
             break;
 
-          case 10:
+          case 11:
             if (!this.$route.query.tag) {
-              _context2.next = 15;
+              _context2.next = 16;
               break;
             }
 
@@ -5165,15 +5201,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             this.tagIdUrl = this.$route.query.tag;
 
             //動画・タグデータを取得
-            _context2.next = 14;
+            _context2.next = 15;
             return this.$store.dispatch("watch/getTagAndVideoDataById", this.tagIdUrl);
 
-          case 14:
+          case 15:
 
             //YTPlayerのタグの再生に必要なパラメータをセット
             this.$store.commit("watch/setYTIndivisualParameters");
 
-          case 15:
+          case 16:
 
             // This code loads the IFrame Player API code asynchronously.
             tag = document.createElement("script");
@@ -5254,7 +5290,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
               }
             });
 
-          case 25:
+          case 26:
           case "end":
             return _context2.stop();
         }
@@ -5358,6 +5394,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   mounted: function mounted() {
     var _this = this;
 
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+
     //ローディング表示用の変数をセット
     this.$store.commit("YTsearch/setNumberOfYTItemsPerPagination", 5);
 
@@ -5453,6 +5492,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              //ナビバーを非表示
+              this.$store.commit("navbar/setShowNavbar", false);
+
               //必要データを取得するまでTagItemは非表示
               this.$store.commit("youtube/setIsReady", false);
 
@@ -5462,23 +5504,23 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
               //必要データを取得
 
               this.$store.commit("youtube/setYoutubeId", youtubeId);
-              _context.next = 5;
+              _context.next = 6;
               return this.$store.dispatch("youtube/getVideo");
 
-            case 5:
-              _context.next = 7;
+            case 6:
+              _context.next = 8;
               return this.$store.dispatch("youtube/getTag");
 
-            case 7:
+            case 8:
               if (!this.isNew) {
-                _context.next = 10;
+                _context.next = 11;
                 break;
               }
 
-              _context.next = 10;
+              _context.next = 11;
               return this.$store.dispatch("youtube/getNewVideoData");
 
-            case 10:
+            case 11:
 
               // This code loads the IFrame Player API code asynchronously.
               tag = document.createElement("script");
@@ -5532,7 +5574,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 }
               });
 
-            case 20:
+            case 21:
             case "end":
               return _context.stop();
           }
@@ -8215,7 +8257,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, ".container {\n  padding-bottom: 35px;\n}\n\n.candidatesWrap {\n  /* width: 300px; */\n  border: solid 1px #000000;\n}\n\n.item p {\n  margin: 0px;\n}\n\n.isEven {\n  background-color: #dddddd;\n}\n\n.v-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: 1000;\n  transition: 0.3s;\n}\n\n.v-modal .modal-in-box {\n  width: 50%;\n  padding: 1.2rem;\n  background-color: #ffffff;\n}\n\n.info-area {\n  align-items: center;\n}\n\n.isLiked {\n  color: red;\n}\n\n.tag {\n  display: inline-block;\n  margin: 0 0.1em 0.6em 0;\n  padding: 0.6em;\n  line-height: 1;\n  text-decoration: none;\n  color: #0000ee;\n  background-color: #fff;\n  border: 1px solid #0000ee;\n  border-radius: 2em;\n}\n\n.tag-list-move {\n  transition: all 1s;\n}\n\n.tag-list-enter-to {\n  transition: all 1s;\n}\n\n.tag-list-enter {\n  opacity: 0;\n  transform: translateY(35px);\n}\n\n.tag-list-leave-to {\n  opacity: 0;\n  transform: translateY(-35px);\n}\n\n.tag-list-leave-active {\n  position: absolute;\n  transition: all 1s;\n}\n\n.controle-next-enter-active,\n.controle-next-leave-active {\n  transition: all 1s;\n}\n\n.controle-next-enter {\n  transform: translateX(100vw);\n}\n\n.controle-next-leave-active {\n  position: absolute;\n  transform: translateX(-100vw);\n}\n\n.controle-previous-enter-active,\n.controle-previous-leave-active {\n  transition: all 1s;\n}\n\n.controle-previous-enter {\n  transform: translateX(-100vw);\n}\n\n.controle-previous-leave-active {\n  position: absolute;\n  transform: translateX(100vw);\n}\n\n.my-gray {\n  color: gray;\n}\n\n/* 横スクロール用 */\n/* .horizontal-list {\n  overflow-x: auto;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n} */\n\n.horizontal-list-wrap {\n  padding: 0;\n  height: 40px;\n  overflow-x: hidden;\n  overflow-y: hidden;\n}\n\n.horizontal-list {\n  margin: 0;\n  padding: 0;\n  /* height: calc(100% + 17px); */\n  /* width: 350px; */\n  /* padding-bottom: 17px; */\n  overflow-x: scroll;\n  white-space: nowrap;\n}\n/* https://qiita.com/naru0504/items/ff0c77775223dc5a9148 */\n\n.v-application ul {\n  padding: 0px 8px 4px;\n}\n\n.item {\n  display: inline-block;\n  text-align: left;\n}\n\n.v-list-item__content {\n  padding: 0px;\n}\n\n.v-card__title {\n  padding: 8px 0px 0px;\n}\n\n.v-card__text {\n  padding: 0px 0px 4px;\n}\n", ""]);
+exports.push([module.i, ".container {\n  padding: 0px 0px 35px;\n  margin: 0;\n}\n\n.yt-container-wrap {\n  width: 100%;\n  margin: 0;\n  padding: 0;\n}\n\n.yt-container {\n  width: 100%;\n  position: relative;\n  padding-bottom: 56.25%;\n  height: 0;\n  overflow: hidden;\n}\n\n.yt-container iframe {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}\n\n.candidatesWrap {\n  /* width: 300px; */\n  border: solid 1px #000000;\n}\n\n.item p {\n  margin: 0px;\n}\n\n.isEven {\n  background-color: #dddddd;\n}\n\n.v-modal {\n  position: fixed;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: 1000;\n  transition: 0.3s;\n}\n\n.v-modal .modal-in-box {\n  width: 50%;\n  padding: 1.2rem;\n  background-color: #ffffff;\n}\n\n.info-area {\n  align-items: center;\n}\n\n.isLiked {\n  color: red;\n}\n\n.tag {\n  display: inline-block;\n  margin: 0 0.1em 0.6em 0;\n  padding: 0.6em;\n  line-height: 1;\n  text-decoration: none;\n  color: #0000ee;\n  background-color: #fff;\n  border: 1px solid #0000ee;\n  border-radius: 2em;\n}\n\n.tag-list-move {\n  transition: all 1s;\n}\n\n.tag-list-enter-to {\n  transition: all 1s;\n}\n\n.tag-list-enter {\n  opacity: 0;\n  transform: translateY(35px);\n}\n\n.tag-list-leave-to {\n  opacity: 0;\n  transform: translateY(-35px);\n}\n\n.tag-list-leave-active {\n  position: absolute;\n  transition: all 1s;\n}\n\n.controle-next-enter-active,\n.controle-next-leave-active {\n  transition: all 1s;\n}\n\n.controle-next-enter {\n  transform: translateX(100vw);\n}\n\n.controle-next-leave-active {\n  position: absolute;\n  transform: translateX(-100vw);\n}\n\n.controle-previous-enter-active,\n.controle-previous-leave-active {\n  transition: all 1s;\n}\n\n.controle-previous-enter {\n  transform: translateX(-100vw);\n}\n\n.controle-previous-leave-active {\n  position: absolute;\n  transform: translateX(100vw);\n}\n\n.my-gray {\n  color: gray;\n}\n\n/* 横スクロール用 */\n/* .horizontal-list {\n  overflow-x: auto;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n} */\n\n.horizontal-list-wrap {\n  padding: 0;\n  height: 40px;\n  overflow-x: hidden;\n  overflow-y: hidden;\n}\n\n.horizontal-list {\n  margin: 0;\n  padding: 0;\n  /* height: calc(100% + 17px); */\n  /* width: 350px; */\n  /* padding-bottom: 17px; */\n  overflow-x: scroll;\n  white-space: nowrap;\n}\n/* https://qiita.com/naru0504/items/ff0c77775223dc5a9148 */\n\n.v-application ul {\n  padding: 0px 8px 4px;\n}\n\n.item {\n  display: inline-block;\n  text-align: left;\n}\n\n.v-list-item__content {\n  padding: 0px;\n}\n\n.v-card__title {\n  padding: 8px 0px 0px;\n}\n\n.v-card__text {\n  padding: 0px 0px 4px;\n}\n", ""]);
 
 // exports
 
@@ -39582,9 +39624,9 @@ var render = function() {
     _c(
       "div",
       [
-        _c("header", [_c("Navbar")], 1),
+        _vm.showNavbar ? _c("Navbar") : _vm._e(),
         _vm._v(" "),
-        _c("div", { staticClass: "container" }, [_c("RouterView")], 1),
+        _c("RouterView"),
         _vm._v(" "),
         _c("Snackbar"),
         _vm._v(" "),
@@ -40302,8 +40344,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container--small" }, [
-    _c("div", { attrs: { id: "player" } }),
+  return _c("div", [
+    _vm._m(0),
     _vm._v(" "),
     _vm.isPlayerReady
       ? _c(
@@ -40313,9 +40355,12 @@ var render = function() {
               ? _c("div", [
                   _c("span", [_vm._v(_vm._s(_vm.playlistName))]),
                   _vm._v(" "),
-                  _c("span", { on: { click: _vm.sharePlaylist } }, [
-                    _vm._v("[Share]")
-                  ]),
+                  _c(
+                    "span",
+                    { on: { click: _vm.sharePlaylist } },
+                    [_c("v-icon", [_vm._v("mdi-share")])],
+                    1
+                  ),
                   _vm._v(" "),
                   _c(
                     "span",
@@ -40323,7 +40368,7 @@ var render = function() {
                       class: { isLiked: _vm.isLikedPlaylist },
                       on: { click: _vm.toggleLikePlaylist }
                     },
-                    [_vm._v("[Like]")]
+                    [_c("i", { staticClass: "fas fa-heart my-gray" })]
                   ),
                   _vm._v(" "),
                   _c("span", [_vm._v(_vm._s(_vm.likePlaylistCount))])
@@ -40348,9 +40393,23 @@ var render = function() {
                   index
                 ) {
                   return _c(
-                    "span",
-                    { key: index + "." + currentTagName, staticClass: "tag" },
-                    [_vm._v(_vm._s(currentTagName))]
+                    "v-chip",
+                    {
+                      key: index + "." + currentTagName,
+                      staticClass: "ma-2",
+                      attrs: {
+                        small: "",
+                        color: "blue lighten-2",
+                        "text-color": "white"
+                      }
+                    },
+                    [
+                      _c("v-avatar", { attrs: { left: "" } }, [
+                        _c("i", { staticClass: "fas fa-tag my-gray" })
+                      ]),
+                      _vm._v("\n        " + _vm._s(currentTagName) + "\n      ")
+                    ],
+                    1
                   )
                 }),
                 _vm._v(" "),
@@ -40362,7 +40421,9 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", [
-              _c("span", { on: { click: _vm.addPlaylist } }, [_vm._v("[＋]")]),
+              _c("span", { on: { click: _vm.addPlaylist } }, [
+                _c("i", { staticClass: "mdi mdi-select" })
+              ]),
               _vm._v(" "),
               _c("span", { on: { click: _vm.shareTag } }, [_vm._v("[Share]")]),
               _vm._v(" "),
@@ -40407,7 +40468,16 @@ var render = function() {
       : _vm._e()
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "yt-container" }, [
+      _c("div", { attrs: { id: "player" } })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -100691,15 +100761,17 @@ var mutations = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__like__ = __webpack_require__("./resources/assets/js/store/like.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__likePlaylist__ = __webpack_require__("./resources/assets/js/store/likePlaylist.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__loadingItem__ = __webpack_require__("./resources/assets/js/store/loadingItem.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__search__ = __webpack_require__("./resources/assets/js/store/search.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shareModal__ = __webpack_require__("./resources/assets/js/store/shareModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__snackbar__ = __webpack_require__("./resources/assets/js/store/snackbar.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__YTsearch__ = __webpack_require__("./resources/assets/js/store/YTsearch.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__youtube__ = __webpack_require__("./resources/assets/js/store/youtube.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__tagging__ = __webpack_require__("./resources/assets/js/store/tagging.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__noLoginModal__ = __webpack_require__("./resources/assets/js/store/noLoginModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__otherActionModal__ = __webpack_require__("./resources/assets/js/store/otherActionModal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__navbar__ = __webpack_require__("./resources/assets/js/store/navbar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__search__ = __webpack_require__("./resources/assets/js/store/search.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__shareModal__ = __webpack_require__("./resources/assets/js/store/shareModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__snackbar__ = __webpack_require__("./resources/assets/js/store/snackbar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__YTsearch__ = __webpack_require__("./resources/assets/js/store/YTsearch.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__youtube__ = __webpack_require__("./resources/assets/js/store/youtube.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__tagging__ = __webpack_require__("./resources/assets/js/store/tagging.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__noLoginModal__ = __webpack_require__("./resources/assets/js/store/noLoginModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__otherActionModal__ = __webpack_require__("./resources/assets/js/store/otherActionModal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__error__ = __webpack_require__("./resources/assets/js/store/error.js");
+
 
 
 
@@ -100733,15 +100805,16 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     like: __WEBPACK_IMPORTED_MODULE_7__like__["a" /* default */],
     likePlaylist: __WEBPACK_IMPORTED_MODULE_8__likePlaylist__["a" /* default */],
     loadingItem: __WEBPACK_IMPORTED_MODULE_9__loadingItem__["a" /* default */],
-    search: __WEBPACK_IMPORTED_MODULE_10__search__["a" /* default */],
-    shareModal: __WEBPACK_IMPORTED_MODULE_11__shareModal__["a" /* default */],
-    snackbar: __WEBPACK_IMPORTED_MODULE_12__snackbar__["a" /* default */],
-    YTsearch: __WEBPACK_IMPORTED_MODULE_13__YTsearch__["a" /* default */],
-    youtube: __WEBPACK_IMPORTED_MODULE_14__youtube__["a" /* default */],
-    tagging: __WEBPACK_IMPORTED_MODULE_15__tagging__["a" /* default */],
-    noLoginModal: __WEBPACK_IMPORTED_MODULE_16__noLoginModal__["a" /* default */],
-    otherActionModal: __WEBPACK_IMPORTED_MODULE_17__otherActionModal__["a" /* default */],
-    error: __WEBPACK_IMPORTED_MODULE_18__error__["a" /* default */]
+    navbar: __WEBPACK_IMPORTED_MODULE_10__navbar__["a" /* default */],
+    search: __WEBPACK_IMPORTED_MODULE_11__search__["a" /* default */],
+    shareModal: __WEBPACK_IMPORTED_MODULE_12__shareModal__["a" /* default */],
+    snackbar: __WEBPACK_IMPORTED_MODULE_13__snackbar__["a" /* default */],
+    YTsearch: __WEBPACK_IMPORTED_MODULE_14__YTsearch__["a" /* default */],
+    youtube: __WEBPACK_IMPORTED_MODULE_15__youtube__["a" /* default */],
+    tagging: __WEBPACK_IMPORTED_MODULE_16__tagging__["a" /* default */],
+    noLoginModal: __WEBPACK_IMPORTED_MODULE_17__noLoginModal__["a" /* default */],
+    otherActionModal: __WEBPACK_IMPORTED_MODULE_18__otherActionModal__["a" /* default */],
+    error: __WEBPACK_IMPORTED_MODULE_19__error__["a" /* default */]
   }
 });
 
@@ -101133,6 +101206,38 @@ var mutations = {
   },
   setNumberOfItemsPerPagination: function setNumberOfItemsPerPagination(state, data) {
     state.numberOfItemsPerPagination = data;
+  }
+};
+
+var actions = {};
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  namespaced: true,
+  state: state,
+  getters: getters,
+  mutations: mutations,
+  actions: actions
+});
+
+/***/ }),
+
+/***/ "./resources/assets/js/store/navbar.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var state = {
+  showNavbar: false
+};
+
+var getters = {
+  showNavbar: function showNavbar(state) {
+    return state.showNavbar;
+  }
+};
+
+var mutations = {
+  setShowNavbar: function setShowNavbar(state, data) {
+    state.showNavbar = data;
   }
 };
 

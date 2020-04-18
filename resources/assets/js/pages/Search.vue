@@ -44,6 +44,9 @@ export default {
     })
   },
   created() {
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+
     //人気の検索ワードを取得
     this.$store.dispatch("search/getTopSearchqueries");
     //検索履歴を取得

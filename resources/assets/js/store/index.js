@@ -9,6 +9,7 @@ import playlist from "./playlist";
 import like from "./like";
 import likePlaylist from "./likePlaylist";
 import loadingItem from "./loadingItem";
+import navbar from "./navbar";
 import search from "./search";
 import shareModal from "./shareModal";
 import snackbar from "./snackbar";
@@ -31,6 +32,7 @@ const store = new Vuex.Store({
     like,
     likePlaylist,
     loadingItem,
+    navbar,
     search,
     shareModal,
     snackbar,
@@ -39,8 +41,8 @@ const store = new Vuex.Store({
     tagging,
     noLoginModal,
     otherActionModal,
-    error
-  }
+    error,
+  },
 });
 
 export default store;

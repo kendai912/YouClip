@@ -1,11 +1,17 @@
 <template>
-  <div class="container--small">
-    <div id="player"></div>
+  <div>
+    <div class="yt-container">
+      <div id="player"></div>
+    </div>
     <div v-if="isPlayerReady">
       <div v-if="isPlaylist">
         <span>{{ playlistName }}</span>
-        <span v-on:click="sharePlaylist">[Share]</span>
-        <span v-on:click="toggleLikePlaylist" v-bind:class="{ isLiked: isLikedPlaylist }">[Like]</span>
+        <span v-on:click="sharePlaylist">
+          <v-icon>mdi-share</v-icon>
+        </span>
+        <span v-on:click="toggleLikePlaylist" v-bind:class="{ isLiked: isLikedPlaylist }">
+          <i class="fas fa-heart my-gray"></i>
+        </span>
         <span>{{ likePlaylistCount }}</span>
       </div>
       <div>
@@ -14,17 +20,27 @@
       </div>
       <div>
         <span>{{ startIs }}〜{{ endIs }}</span>
-        <span
+        <v-chip
           v-for="(currentTagName, index) in currentTagNameArray"
-          class="tag"
           v-bind:key="index + '.' +currentTagName"
-        >{{ currentTagName }}</span>
+          class="ma-2"
+          small
+          color="blue lighten-2"
+          text-color="white"
+        >
+          <v-avatar left>
+            <i class="fas fa-tag my-gray"></i>
+          </v-avatar>
+          {{ currentTagName }}
+        </v-chip>
         <span v-on:click="openOtherActionModal">
           <i class="fas fa-ellipsis-v"></i>
         </span>
       </div>
       <div>
-        <span v-on:click="addPlaylist">[＋]</span>
+        <span v-on:click="addPlaylist">
+          <i class="mdi mdi-select"></i>
+        </span>
         <span v-on:click="shareTag">[Share]</span>
         <span v-on:click="toggleLike" v-bind:class="{ isLiked: isLiked }">[Like]</span>
         <span>{{ likeCount }}</span>
@@ -295,6 +311,9 @@ export default {
   },
   mixins: [myMixin],
   mounted: async function() {
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+
     if (this.$route.query.playlist) {
       //特定シーン再生の場合
       //URLのクエリパラメータからプレイリストIDとインデックスを取得

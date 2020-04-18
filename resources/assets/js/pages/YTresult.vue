@@ -44,6 +44,9 @@ export default {
     })
   },
   mounted() {
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+
     //ローディング表示用の変数をセット
     this.$store.commit("YTsearch/setNumberOfYTItemsPerPagination", 5);
 

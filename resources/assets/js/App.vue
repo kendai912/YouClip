@@ -1,12 +1,8 @@
 <template>
   <v-app>
     <div>
-      <header>
-        <Navbar />
-      </header>
-      <div class="container">
-        <RouterView />
-      </div>
+      <Navbar v-if="showNavbar" />
+      <RouterView />
       <Snackbar />
       <Footer />
     </div>
@@ -14,6 +10,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapMutations } from "vuex";
 import Navbar from "./components/Navbar.vue";
 import Snackbar from "./components/Snackbar.vue";
 import Footer from "./components/Footer.vue";
@@ -28,6 +25,9 @@ export default {
   },
   mixins: [myMixin],
   computed: {
+    ...mapGetters({
+      showNavbar: "navbar/showNavbar"
+    }),
     errorCode() {
       return this.$store.state.error.code;
     }

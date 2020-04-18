@@ -139,6 +139,9 @@ export default {
     })
   },
   created() {
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+
     //ローディング表示用の変数をセット
     this.$store.commit("loadingItem/setNumberOfItemsPerPagination", 5);
 

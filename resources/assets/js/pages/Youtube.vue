@@ -48,6 +48,9 @@ export default {
     }
   },
   async created() {
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+
     //必要データを取得するまでTagItemは非表示
     this.$store.commit("youtube/setIsReady", false);
 

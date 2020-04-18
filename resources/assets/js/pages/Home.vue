@@ -188,6 +188,9 @@ export default {
     })
   },
   mounted() {
+    //ナビバーを表示
+    this.$store.commit("navbar/setShowNavbar", true);
+
     //以前に開いていたタブをセッションストレージからセット
     this.tab = parseInt(window.sessionStorage.getItem("topTabIndex"));
 
