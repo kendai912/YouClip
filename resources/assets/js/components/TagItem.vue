@@ -44,33 +44,6 @@
             </div>
           </v-col>
         </v-row>
-
-        <!-- <ul
-          id="tag_ul"
-          v-for="tagData in showTagDataArray"
-          v-bind:key="tagData.id"
-        >
-          <li class="tag__list__item">
-            <span>
-              {{ formatToMinSec(tagData.start) }}〜{{
-                formatToMinSec(tagData.end)
-              }}
-            </span>
-            <v-chip
-              v-for="tag in tagData.tags.split(/[\s| |　]/)"
-              v-bind:key="tagData + '.' + tag"
-              class="ma-2"
-              small
-              color="blue lighten-2"
-              text-color="white"
-            >
-              <v-avatar left>
-                <i class="fas fa-tag my-grey"></i>
-              </v-avatar>
-              {{ tag }}
-            </v-chip>
-          </li>
-        </ul> -->
       </transition-group>
     </v-sheet>
   </div>

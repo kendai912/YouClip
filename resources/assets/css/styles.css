@@ -181,3 +181,7 @@
 .fas {
   vertical-align: middle;
 }
+
+.bottom_navigation_no_shadow {
+  box-shadow: none !important;
+}

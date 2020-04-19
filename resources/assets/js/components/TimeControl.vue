@@ -1,92 +1,137 @@
 <template>
-  <v-sheet class="text-center" height="450px">
-    <div>
-      <a v-on:click="back">
-        <i class="fas fa-chevron-left"></i>
-      </a>
-      <span>開始・終了時間を指定</span>
-    </div>
-    <v-slider
-      v-model="slider.val"
-      v-on:mousedown="stopUpdateSlider"
-      v-on:mouseup="seekToAndRestartMouseup"
-      v-on:end="seekToAndRestartEnd"
-      ticks="always"
-      tick-size="0.01"
-      :thumb-color="slider.color"
-      thumb-label="always"
-      step="0.01"
-    >
-      <template v-slot:thumb-label="{ value }">
-        {{
-        currentPositionTime
-        }}
-      </template>
-    </v-slider>
-    <div>
-      <span v-on:click="backwardThirtySec">
-        30
-        <i class="fas fa-fast-backward"></i>
-      </span>
-      <span v-on:click="backwardFiveSec">
-        5
-        <i class="fas fa-step-backward"></i>
-      </span>
-      <span v-on:click="playVideo">
-        <i class="fas fa-play"></i>
-      </span>
-      <span v-on:click="pauseVideo">
-        <i class="fas fa-pause"></i>
-      </span>
-      <span v-on:click="forwardFiveSec">
-        <i class="fas fa-step-forward"></i>5
-      </span>
-      <span v-on:click="forwardThirtySec">
-        <i class="fas fa-fast-forward"></i>30
-      </span>
-    </div>
-    <div>
-      <span>{{ currentTime }} / {{ duration }}</span>
-    </div>
+  <v-sheet height="360" tile class="text-center">
+    <v-sheet tile class="ma-0 pa-1">
+      <v-container class="ma-0 pa-0" fluid>
+        <v-row class="ma-0 pa-0" align="center">
+          <v-col cols="2" class="ma-0 pa-0  text-left">
+            <i v-on:click="back" class="fas fa-chevron-left"></i>
+          </v-col>
+          <v-col cols="8" class="ma-0 pa-0">
+            <span>開始・終了時間を指定</span>
+          </v-col>
+          <v-col cols="2" class="ma-0 pa-0"> </v-col>
+        </v-row>
+      </v-container>
+    </v-sheet>
+
+    <v-divider></v-divider>
+
+    <v-sheet tile class="ma-0 pa-1">
+      <v-slider
+        v-model="slider.val"
+        v-on:mousedown="stopUpdateSlider"
+        v-on:mouseup="seekToAndRestartMouseup"
+        v-on:end="seekToAndRestartEnd"
+        ticks="always"
+        tick-size="0.01"
+        :thumb-color="slider.color"
+        thumb-label="always"
+        step="0.01"
+      >
+        <template v-slot:thumb-label="{ value }">
+          {{ currentPositionTime }}
+        </template>
+      </v-slider>
+    </v-sheet>
+
+    <v-container class="ma-0 pa-0" fluid>
+      <v-row class="ma-0 pa-0" align="center" justify="space-around">
+        <v-col v-on:click="backwardThirtySec" class="ma-0 pa-0">
+          <span>30 <i class="fas fa-fast-backward fa-2x"></i></span>
+        </v-col>
+        <v-col v-on:click="backwardFiveSec">
+          <span>5 <i class="fas fa-step-backward fa-2x"></i></span>
+        </v-col>
+        <v-col>
+          <i v-on:click="playVideo" class="fas fa-play fa-2x"></i>
+          <i v-on:click="pauseVideo" class="fas fa-pause fa-2x"></i>
+        </v-col>
+        <v-col v-on:click="forwardFiveSec">
+          <span><i class="fas fa-step-forward fa-2x"></i>5</span>
+        </v-col>
+        <v-col v-on:click="forwardThirtySec">
+          <span><i class="fas fa-fast-forward fa-2x"></i>30</span>
+        </v-col>
+      </v-row>
+      <v-row class="ma-0 pa-0">
+        <v-col class="ma-0 pa-0">
+          <span>{{ currentTime }} / {{ duration }}</span>
+        </v-col>
+      </v-row>
+    </v-container>
+
     <v-form ref="form">
-      <div>
-        <div>
-          <v-btn v-on:click="tapStartBtn" class="mx-2" dark fab elevation="0" small color="primary">
-            <v-icon dark>START</v-icon>
-          </v-btn>
-        </div>
-        <div>
-          <v-text-field
-            v-model="startTimeInput"
-            v-bind:rules="startRules"
-            ref="startBtn"
-            required
-            placeholder="0:00"
-            solo
-            validate-on-blur
-          ></v-text-field>
-        </div>
-      </div>
-      <div>
-        <div>
-          <v-btn v-on:click="tapStopBtn" class="mx-2" dark fab elevation="0" small color="primary">
-            <v-icon dark>STOP</v-icon>
-          </v-btn>
-        </div>
-        <div>
-          <v-text-field
-            v-model="endTimeInput"
-            v-bind:rules="endRules"
-            ref="stopBtn"
-            required
-            placeholder="0:00"
-            solo
-            validate-on-blur
-          ></v-text-field>
-        </div>
-      </div>
+      <v-container class="ma-0 pa-0" fluid>
+        <v-row class="ma-0 pa-0" align="center">
+          <v-col> </v-col>
+          <v-col class="ma-0 pa-0">
+            <v-card class="ma-0" tile elevation="0">
+              <div>
+                <v-bottom-navigation
+                  class="bottom_navigation_no_shadow"
+                  elevation="0"
+                >
+                  <v-btn v-on:click="tapStartBtn">
+                    <span>START</span>
+                    <v-icon x-large>alarm_on</v-icon>
+                  </v-btn>
+                </v-bottom-navigation>
+              </div>
+              <div>
+                <v-text-field
+                  v-model="startTimeInput"
+                  v-bind:rules="startRules"
+                  ref="startBtn"
+                  required
+                  placeholder="0:00"
+                  validate-on-blur
+                  flat
+                ></v-text-field>
+              </div>
+            </v-card>
+          </v-col>
+
+          <v-col> </v-col>
+          <v-col class="ma-0 pa-0">
+            <v-card class="ma-0" tile elevation="0">
+              <div>
+                <v-bottom-navigation
+                  class="bottom_navigation_no_shadow"
+                  elevation="0"
+                >
+                  <v-btn v-on:click="tapStopBtn">
+                    <span>STOP</span>
+                    <v-icon x-large>alarm_off</v-icon>
+                  </v-btn>
+                </v-bottom-navigation>
+              </div>
+              <div>
+                <v-text-field
+                  v-model="endTimeInput"
+                  v-bind:rules="endRules"
+                  ref="stopBtn"
+                  required
+                  placeholder="0:00"
+                  validate-on-blur
+                  flat
+                ></v-text-field>
+              </div>
+            </v-card>
+          </v-col>
+          <v-col> </v-col>
+        </v-row>
+      </v-container>
     </v-form>
-    <v-btn class="mt-6" text color="error" v-on:click="next">次へ</v-btn>
+
+    <v-sheet tile class="ma-0 pa-1 text-right">
+      <v-row align="center" fluid>
+        <v-col class="text-right">
+          <div class="my-2">
+            <v-btn color="error" v-on:click="next">次へ</v-btn>
+          </div>
+        </v-col>
+      </v-row>
+    </v-sheet>
   </v-sheet>
 </template>
 
@@ -96,7 +141,7 @@ import myMixin from "../util";
 
 export default {
   props: {
-    player: Object
+    player: Object,
   },
   data() {
     return {
@@ -106,21 +151,8 @@ export default {
       startTimeInput: null,
       endTimeInput: null,
       startRules: [
-        v => !!v || "開始時間を入力して下さい",
-        v => {
-          let regex = /^\d+:\d{1,2}$/;
-          if (!v || regex.test(v)) {
-            return true;
-          }
-
-          if (!regex.test(v)) {
-            return "分:秒の形式で入力して下さい";
-          }
-        }
-      ],
-      endRules: [
-        v => !!v || "終了時間を入力して下さい",
-        v => {
+        (v) => !!v || "開始時間を入力して下さい",
+        (v) => {
           let regex = /^\d+:\d{1,2}$/;
           if (!v || regex.test(v)) {
             return true;
@@ -130,7 +162,20 @@ export default {
             return "分:秒の形式で入力して下さい";
           }
         },
-        v => {
+      ],
+      endRules: [
+        (v) => !!v || "終了時間を入力して下さい",
+        (v) => {
+          let regex = /^\d+:\d{1,2}$/;
+          if (!v || regex.test(v)) {
+            return true;
+          }
+
+          if (!regex.test(v)) {
+            return "分:秒の形式で入力して下さい";
+          }
+        },
+        (v) => {
           if (this.startTimeInput) {
             if (
               parseInt(this.convertToSec(v)) <=
@@ -140,8 +185,8 @@ export default {
             }
           }
           return true;
-        }
-      ]
+        },
+      ],
     };
   },
   mixins: [myMixin],
@@ -152,7 +197,7 @@ export default {
       newVideoData: "youtube/newVideoData",
       isReady: "youtube/isReady",
       isNew: "youtube/isNew",
-      isEditting: "tagging/isEditting"
+      isEditting: "tagging/isEditting",
     }),
     currentPositionTime() {
       //sliderをドラッグした位置の秒数を取得
@@ -166,7 +211,7 @@ export default {
       return this.isNew
         ? this.newVideoData.duration
         : this.formatToMinSec(this.videoData.duration);
-    }
+    },
   },
   methods: {
     //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
@@ -259,10 +304,10 @@ export default {
 
       //シーンタグの遷移モードを変更(true:右スライド, false:左スライド)
       this.$store.commit("tagging/setControlTransitNext", true);
-    }
+    },
   },
   created() {
     this.initialize();
-  }
+  },
 };
 </script>
