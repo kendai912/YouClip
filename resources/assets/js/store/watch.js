@@ -11,27 +11,29 @@ const state = {
   currentYoutubeId: "",
   currentTagId: "",
   start: "",
-  end: ""
+  end: "",
 };
 
 const getters = {
-  playlistAndTagVideoData: state => state.playlistAndTagVideoData,
-  tagAndVideoData: state => state.tagAndVideoData,
-  watchList: state => state.watchList,
-  listIndex: state => state.listIndex,
-  playlistId: state => state.playlistId,
-  playlistName: state => state.playlistName,
-  currentYoutubeId: state => state.watchList[state.listIndex].youtubeId,
-  currentTagId: state => state.watchList[state.listIndex].tag_id,
-  currentTagName: state =>
+  playlistAndTagVideoData: (state) => state.playlistAndTagVideoData,
+  tagAndVideoData: (state) => state.tagAndVideoData,
+  watchList: (state) => state.watchList,
+  listIndex: (state) => state.listIndex,
+  playlistId: (state) => state.playlistId,
+  playlistName: (state) => state.playlistName,
+  currentYoutubeId: (state) => state.watchList[state.listIndex].youtubeId,
+  currentTagId: (state) => state.watchList[state.listIndex].tag_id,
+  currentTagName: (state) =>
     state.watchList ? state.watchList[state.listIndex].tags : "",
   currentTagNameArray: (state, getters) =>
     state.watchList ? getters.currentTagName.split(/[\s| |　]/) : "",
-  currentTitle: state =>
+  currentTitle: (state) =>
     state.watchList ? state.watchList[state.listIndex].title : "",
-  start: state => state.start,
-  end: state => state.end,
-  isPlaylist: state => (state.playlistId ? true : false)
+  currentCategory: (state) =>
+    state.watchList ? state.watchList[state.listIndex].category : "",
+  start: (state) => state.start,
+  end: (state) => state.end,
+  isPlaylist: (state) => (state.playlistId ? true : false),
 };
 
 const mutations = {
@@ -82,7 +84,7 @@ const mutations = {
   },
   setCurrentTagId(state, data) {
     state.currentTagId = data;
-  }
+  },
 };
 
 const actions = {
@@ -116,7 +118,7 @@ const actions = {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
     }
-  }
+  },
 };
 
 export default {
@@ -124,5 +126,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

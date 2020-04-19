@@ -55,6 +55,7 @@ export default {
     ...mapGetters({
       user_id: "auth/user_id",
       currentTagId: "watch/currentTagId",
+      currentCategory: "watch/currentCategory",
       playlistIdsOfTag: "playlist/playlistIdsOfTag"
     }),
     hasMyPlaylists() {
@@ -87,7 +88,8 @@ export default {
       this.$store.dispatch("playlist/createPlaylist", {
         newPlaylistName: this.newPlaylistName,
         privacySetting: this.privacySetting,
-        currentTagId: this.currentTagId
+        currentTagId: this.currentTagId,
+        currentCategory: this.currentCategory
       });
 
       //プレイヤーを再開

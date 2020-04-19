@@ -17,44 +17,46 @@ const state = {
   isIndexRecommendPlaylistAndTagPaginating: false,
   isIndexNewPlaylistAndTagPaginating: false,
   isIndexSportsPlaylistAndTagPaginating: false,
-  isIndexEntertainmentPlaylistAndTagPaginating: false
+  isIndexEntertainmentPlaylistAndTagPaginating: false,
 };
 
 const getters = {
-  playlistAndTagPaginationOfRecommend: state =>
+  playlistAndTagPaginationOfRecommend: (state) =>
     state.playlistAndTagPaginationOfRecommend,
-  playlistAndTagPaginationOfNew: state => state.playlistAndTagPaginationOfNew,
-  playlistAndTagPaginationOfSports: state =>
+  playlistAndTagPaginationOfNew: (state) => state.playlistAndTagPaginationOfNew,
+  playlistAndTagPaginationOfSports: (state) =>
     state.playlistAndTagPaginationOfSports,
-  playlistAndTagPaginationOfEntertainment: state =>
+  playlistAndTagPaginationOfEntertainment: (state) =>
     state.playlistAndTagPaginationOfEntertainment,
-  myCreatedPlaylist: state => state.myCreatedPlaylist,
-  myCreatedAndLikedPlaylist: state => state.myCreatedAndLikedPlaylist,
-  showAddPlaylistModal: state => state.showAddPlaylistModal,
-  playlistIdsOfTag: state => state.playlistIdsOfTag,
-  toLoadRecommend: state => state.toLoadRecommend,
-  toLoadNew: state => state.toLoadNew,
-  toLoadSports: state => state.toLoadSports,
-  toLoadEntertainment: state => state.toLoadEntertainment,
-  isIndexRecommendPlaylistAndTagPaginating: state =>
+  myCreatedPlaylist: (state) => state.myCreatedPlaylist,
+  myCreatedAndLikedPlaylist: (state) => state.myCreatedAndLikedPlaylist,
+  showAddPlaylistModal: (state) => state.showAddPlaylistModal,
+  playlistIdsOfTag: (state) => state.playlistIdsOfTag,
+  toLoadRecommend: (state) => state.toLoadRecommend,
+  toLoadNew: (state) => state.toLoadNew,
+  toLoadSports: (state) => state.toLoadSports,
+  toLoadEntertainment: (state) => state.toLoadEntertainment,
+  isIndexRecommendPlaylistAndTagPaginating: (state) =>
     state.isIndexRecommendPlaylistAndTagPaginating,
-  isIndexNewPlaylistAndTagPaginating: state =>
+  isIndexNewPlaylistAndTagPaginating: (state) =>
     state.isIndexNewPlaylistAndTagPaginating,
-  isIndexSportsPlaylistAndTagPaginating: state =>
+  isIndexSportsPlaylistAndTagPaginating: (state) =>
     state.isIndexSportsPlaylistAndTagPaginating,
-  isIndexEntertainmentPlaylistAndTagPaginating: state =>
+  isIndexEntertainmentPlaylistAndTagPaginating: (state) =>
     state.isIndexEntertainmentPlaylistAndTagPaginating,
-  getPlaylistTagContentById: state => playlistId => {
-    return state.playlistData.find(playlistTag => playlistTag.id == playlistId);
-  },
-  myPlaylistAndTagPagination: state => user_id => {
-    return state.playlistAndTagPagination.data.filter(
-      playlistTag => playlistTag.user_id == user_id
+  getPlaylistTagContentById: (state) => (playlistId) => {
+    return state.playlistData.find(
+      (playlistTag) => playlistTag.id == playlistId
     );
   },
-  hasMyPlaylists: state => {
+  myPlaylistAndTagPagination: (state) => (user_id) => {
+    return state.playlistAndTagPagination.data.filter(
+      (playlistTag) => playlistTag.user_id == user_id
+    );
+  },
+  hasMyPlaylists: (state) => {
     return !!state.myCreatedPlaylist;
-  }
+  },
 };
 
 const mutations = {
@@ -108,7 +110,7 @@ const mutations = {
   },
   setIsIndexEntertainmentPlaylistAndTagPaginating(state, data) {
     state.isIndexEntertainmentPlaylistAndTagPaginating = data;
-  }
+  },
 };
 
 const actions = {
@@ -267,12 +269,12 @@ const actions = {
     // Toastrオプション変更
     toastr.options = {
       positionClass: "toast-bottom-left",
-      timeOut: "5000"
+      timeOut: "5000",
     };
 
     //チェックの入ったプレイリストをパラメータとして格納
     var params = {
-      checkedPlaylistIds: input.checkedPlaylistIds
+      checkedPlaylistIds: input.checkedPlaylistIds,
     };
 
     const response = await axios.post(
@@ -302,14 +304,15 @@ const actions = {
     // Toastrオプション変更
     toastr.options = {
       positionClass: "toast-bottom-left",
-      timeOut: "5000"
+      timeOut: "5000",
     };
 
     //チェックの入ったプレイリストをパラメータとして格納
     var params = {
       newPlaylistName: input.newPlaylistName,
       privacySetting: input.privacySetting,
-      currentTagId: input.currentTagId
+      currentTagId: input.currentTagId,
+      currentCategory: input.currentCategory,
     };
 
     const response = await axios.post("/api/playlist/create", params);
@@ -346,7 +349,7 @@ const actions = {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
     }
-  }
+  },
 };
 
 export default {
@@ -354,5 +357,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

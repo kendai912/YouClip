@@ -42,7 +42,7 @@ class PlaylistController extends Controller
     {
         //プレイリストにタグのデータを結合し、直近30日のLike数が多い順・新しい順に並び替え
         $contentsPerPage = 5;
-        $playlistAndTagPaginationOfRecommend = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function($query) {
+        $playlistAndTagPaginationOfRecommend = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }
         ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
@@ -77,9 +77,9 @@ class PlaylistController extends Controller
     //【スポーツ】プレイリスト一覧の取得
     public function indexPlaylistAndTagPaginationOfSports()
     {
-         //スポーツカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
+        //スポーツカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
         $contentsPerPage = 5;
-        $playlistAndTagPaginationOfSports = Playlist::with('tags')->where('playlistCategory', 'Sports')->withCount(['likesPlaylist as likesPlaylist_count' => function($query) {
+        $playlistAndTagPaginationOfSports = Playlist::with('tags')->where('playlistCategory', 'Sports')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }
         ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
@@ -97,9 +97,9 @@ class PlaylistController extends Controller
     //【エンターテイメント】プレイリスト一覧の取得
     public function indexPlaylistAndTagPaginationOfEntertainment()
     {
-         //エンターテイメントカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
+        //エンターテイメントカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
         $contentsPerPage = 5;
-        $playlistAndTagPaginationOfEntertainment = Playlist::with('tags')->where('playlistCategory', 'Entertainment')->withCount(['likesPlaylist as likesPlaylist_count' => function($query) {
+        $playlistAndTagPaginationOfEntertainment = Playlist::with('tags')->where('playlistCategory', 'Entertainment')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }
         ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
@@ -115,15 +115,16 @@ class PlaylistController extends Controller
     }
 
     // ID指定でのプレイリストおよびタグ・動画データの取得
-    public function getPlaylistAndTagVideoDataById(Request $request) {
+    public function getPlaylistAndTagVideoDataById(Request $request)
+    {
         //プレイリストとタグのデータを取得
         $playlistId = $request->input('id');
         $playlistAndTagData = Playlist::with('tags')->where('id', $playlistId)->first();
 
         //タグから動画データを取得
         $tagVideoData = [];
-        foreach($playlistAndTagData->tags as $tag) {
-            $tagVideoData[] = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags.id', $tag->id)->first();
+        foreach ($playlistAndTagData->tags as $tag) {
+            $tagVideoData[] = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'category', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags.id', $tag->id)->first();
         }
 
         //プレイリスト・タグ・動画のデータを連結
@@ -220,6 +221,7 @@ class PlaylistController extends Controller
         $playlist->playlistName = $request->newPlaylistName;
         $playlist->privacySetting = $request->privacySetting;
         $playlist->user_id = Auth::user()->id;
+        $playlist->playlistCategory = $request->currentCategory;
         $playlist->save();
 
         //playlist_tagテーブルに保存

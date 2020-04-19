@@ -56,7 +56,6 @@ const mutations = {
     state.YTsearchHistories = data;
   },
   setIsYTLoading(state, data) {
-    console.log();
     state.isYTLoading = data;
   },
   setNumberOfYTItemsPerPagination(state, data) {

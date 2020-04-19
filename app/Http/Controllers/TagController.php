@@ -33,7 +33,7 @@ class TagController extends Controller
     public function getTagAndVideoDataById(Request $request)
     {
         $tagId = $request->input('id');
-        $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags.id', $tagId)->get();
+        $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'category', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags.id', $tagId)->get();
 
         return response()->json(
             [
@@ -279,7 +279,7 @@ class TagController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function delete(Request $request)
-    {        
+    {
         //削除するシーンタグを取得
         $tag = Tag::find($request->tagId);
         //preview用gifを削除
@@ -291,7 +291,7 @@ class TagController extends Controller
     }
 
     public function getTagHistories()
-     {
+    {
         //ユーザーが登録した直近10件のシーンタグを取得
         $tags = Tag::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->take(10)->get();
 
