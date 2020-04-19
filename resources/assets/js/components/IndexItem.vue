@@ -31,7 +31,7 @@
 
           <v-card-text>
             <div class="horizontal-list-wrap">
-              <ul class="horizontal-list">
+              <ul v-if="item.tagsList" class="horizontal-list">
                 <li
                   class="item"
                   v-for="(tagsList, tagsListIndex) in item.tagsList"
@@ -40,6 +40,23 @@
                   <v-chip
                     v-for="(tag, tagIndex) in tagsList.tags.split(/[\s| |　]/)"
                     v-bind:key="item.id + '-' + tagsListIndex + '-' + tagIndex"
+                    class="ma-2"
+                    small
+                    color="blue lighten-2"
+                    text-color="white"
+                  >
+                    <v-avatar left>
+                      <i class="fas fa-tag my-grey"></i>
+                    </v-avatar>
+                    {{ tag }}
+                  </v-chip>
+                </li>
+              </ul>
+              <ul v-else class="horizontal-list">
+                <li class="item">
+                  <v-chip
+                    v-for="(tag, tagIndex) in item.tags.split(/[\s| |　]/)"
+                    v-bind:key="item.id + '-' + tagIndex"
                     class="ma-2"
                     small
                     color="blue lighten-2"
