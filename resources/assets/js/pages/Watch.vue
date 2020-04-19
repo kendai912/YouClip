@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container--small">
     <div class="yt-container">
       <div id="player"></div>
     </div>

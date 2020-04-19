@@ -1,7 +1,12 @@
 <template>
   <div>
-    <v-tabs v-model="tab" background-color="transparent" grow>
-      <v-tab v-for="(item, key) in items" :key="item" v-on:click="setActiveTab(key)">{{ item }}</v-tab>
+    <v-tabs v-model="tab" background-color="transparent" grow hide-slider>
+      <v-tab
+        v-for="(item, key) in items"
+        :key="item"
+        v-on:click="setActiveTab(key)"
+        >{{ item }}</v-tab
+      >
     </v-tabs>
 
     <v-tabs-items v-model="tab">
@@ -26,7 +31,7 @@
     </v-tabs-items>
   </div>
 </template>
-  
+
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
 import MyPlaylist from "../components/MyPlaylist.vue";
@@ -36,27 +41,27 @@ import myMixin from "../util";
 export default {
   components: {
     MyPlaylist,
-    MyScene
+    MyScene,
   },
   props: {},
   data() {
     return {
       tab: null,
-      items: ["プレイリスト", "シーン"]
+      items: ["プレイリスト", "シーン"],
     };
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
       myCreatedAndLikedPlaylist: "playlist/myCreatedAndLikedPlaylist",
-      myCreatedAndLikedTagVideo: "tag/myCreatedAndLikedTagVideo"
-    })
+      myCreatedAndLikedTagVideo: "tag/myCreatedAndLikedTagVideo",
+    }),
   },
   methods: {
     setActiveTab(key) {
       //開いたタブをセッションストレージに保存
       window.sessionStorage.setItem("myPageTabIndex", JSON.stringify(key));
-    }
+    },
   },
   async created() {
     //以前に開いていたタブをセッションストレージからセット
@@ -65,6 +70,6 @@ export default {
     await this.$store.dispatch("playlist/loadMyCreatedAndLikedPlaylist");
     //Likeまたは作成したタグをロード
     await this.$store.dispatch("tag/loadMyCreatedAndLikedTagVideo");
-  }
+  },
 };
 </script>
