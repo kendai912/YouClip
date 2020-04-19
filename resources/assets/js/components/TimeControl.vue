@@ -123,10 +123,10 @@
       </v-container>
     </v-form>
 
-    <v-sheet tile class="ma-0 pa-1 text-right">
+    <v-sheet tile class="ma-0 pa-1 text-right bottom-position">
       <v-row align="center" fluid>
         <v-col class="text-right">
-          <div class="my-2">
+          <div>
             <v-btn color="error" v-on:click="next">次へ</v-btn>
           </div>
         </v-col>

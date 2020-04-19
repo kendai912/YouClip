@@ -185,3 +185,9 @@
 .bottom_navigation_no_shadow {
   box-shadow: none !important;
 }
+
+.bottom-position {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
