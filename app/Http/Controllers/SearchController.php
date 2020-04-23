@@ -182,7 +182,7 @@ class SearchController extends Controller
         }
     }
 
-    //人気の検索ワードを取得
+    //(直近1ヶ月の)人気の検索ワードを取得
     public function getTopSearchqueries()
     {
         //user_id_countが上位10件を取得
