@@ -5,12 +5,13 @@ import router from "../router";
 const state = {
   searchQuery: null,
   searchCandidates: [],
-  // searchHistoryCandidates: [],
-  // topSearchqueriesCandidates: [],
   tagVideoResult: [],
   playlistTagResult: [],
   topSearchqueries: [],
   searchHistories: [],
+  isLoadingSearchHint: true,
+  // isLoadingTopSearchqueries: true,
+  // isLoadingSearchHistories: true,
   tagVideoResultToLoad: true,
   playlistResultToLoad: true,
   isSearchingPlaylistTagResult: false,
@@ -20,12 +21,13 @@ const state = {
 const getters = {
   searchQuery: (state) => state.searchQuery,
   searchCandidates: (state) => state.searchCandidates,
-  // searchHistoryCandidates: (state) => state.searchHistoryCandidates,
-  // topSearchqueriesCandidates: (state) => state.topSearchqueriesCandidates,
   tagVideoResult: (state) => state.tagVideoResult,
   playlistTagResult: (state) => state.playlistTagResult,
   topSearchqueries: (state) => state.topSearchqueries,
   searchHistories: (state) => state.searchHistories,
+  isLoadingSearchHint: (state) => state.isLoadingSearchHint,
+  // isLoadingTopSearchqueries: (state) => state.isLoadingTopSearchqueries,
+  // isLoadingSearchHistories: (state) => state.isLoadingSearchHistories,
   tagVideoResultToLoad: (state) => state.tagVideoResultToLoad,
   playlistResultToLoad: (state) => state.playlistResultToLoad,
   isSearchingPlaylistTagResult: (state) => state.isSearchingPlaylistTagResult,
@@ -39,12 +41,6 @@ const mutations = {
   setSearchCandidates(state, data) {
     state.searchCandidates = data;
   },
-  // setSearchHistoryCandidates(state, data) {
-  //   state.searchHistoryCandidates = data;
-  // },
-  // setTopSearchqueriesCandidates(state, data) {
-  //   state.topSearchqueriesCandidates = data;
-  // },
   setTagVideoResult(state, data) {
     state.tagVideoResult = data;
   },
@@ -57,6 +53,15 @@ const mutations = {
   setSearchHistories(state, data) {
     state.searchHistories = data;
   },
+  setIsLoadingSearchHint(state, data) {
+    state.isLoadingSearchHint = data;
+  },
+  // setIsLoadingTopSearchqueries(state, data) {
+  //   state.isLoadingTopSearchqueries = data;
+  // },
+  // setIsLoadingSearchHistories(state, data) {
+  //   state.isLoadingSearchHistories = data;
+  // },
   setTagVideoResultToLoad(state, data) {
     state.tagVideoResultToLoad = data;
   },
@@ -192,6 +197,7 @@ const actions = {
     const response = await axios.get("api/topSearchqueries");
     if (response.status == OK) {
       // 成功した時
+      // context.commit("setIsLoadingTopSearchqueries", false);
       context.commit("setTopSearchqueries", response.data.topSearchqueries);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
@@ -206,6 +212,7 @@ const actions = {
     const response = await axios.get("api/searchHistories");
     if (response.status == OK) {
       // 成功した時
+      // context.commit("setIsLoadingSearchHistories", false);
       context.commit("setSearchHistories", response.data.searchHistories);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時

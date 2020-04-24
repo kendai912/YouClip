@@ -3,13 +3,13 @@
     <v-sheet tile class="ma-0 pa-1">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0" align="center">
-          <v-col cols="2" class="ma-0 pa-0  text-left">
+          <v-col cols="2" class="ma-0 pa-0 text-left">
             <i v-on:click="back" class="fas fa-chevron-left"></i>
           </v-col>
           <v-col cols="8" class="ma-0 pa-0">
             <span>開始・終了時間を指定</span>
           </v-col>
-          <v-col cols="2" class="ma-0 pa-0"> </v-col>
+          <v-col cols="2" class="ma-0 pa-0"></v-col>
         </v-row>
       </v-container>
     </v-sheet>
@@ -28,29 +28,37 @@
         thumb-label="always"
         step="0.01"
       >
-        <template v-slot:thumb-label="{ value }">
-          {{ currentPositionTime }}
-        </template>
+        <template v-slot:thumb-label="{ value }">{{ currentPositionTime }}</template>
       </v-slider>
     </v-sheet>
 
     <v-container class="ma-0 pa-0" fluid>
       <v-row class="ma-0 pa-0" align="center" justify="space-around">
         <v-col v-on:click="backwardThirtySec" class="ma-0 pa-0">
-          <span>30 <i class="fas fa-fast-backward fa-2x"></i></span>
+          <span>
+            30
+            <i class="fas fa-fast-backward fa-2x"></i>
+          </span>
         </v-col>
         <v-col v-on:click="backwardFiveSec">
-          <span>5 <i class="fas fa-step-backward fa-2x"></i></span>
+          <span>
+            5
+            <i class="fas fa-step-backward fa-2x"></i>
+          </span>
         </v-col>
         <v-col>
           <i v-on:click="playVideo" class="fas fa-play fa-2x"></i>
           <i v-on:click="pauseVideo" class="fas fa-pause fa-2x"></i>
         </v-col>
         <v-col v-on:click="forwardFiveSec">
-          <span><i class="fas fa-step-forward fa-2x"></i>5</span>
+          <span>
+            <i class="fas fa-step-forward fa-2x"></i>5
+          </span>
         </v-col>
         <v-col v-on:click="forwardThirtySec">
-          <span><i class="fas fa-fast-forward fa-2x"></i>30</span>
+          <span>
+            <i class="fas fa-fast-forward fa-2x"></i>30
+          </span>
         </v-col>
       </v-row>
       <v-row class="ma-0 pa-0">
@@ -63,14 +71,11 @@
     <v-form ref="form">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0" align="center">
-          <v-col> </v-col>
+          <v-col></v-col>
           <v-col class="ma-0 pa-0">
             <v-card class="ma-0" tile elevation="0">
               <div>
-                <v-bottom-navigation
-                  class="bottom_navigation_no_shadow"
-                  elevation="0"
-                >
+                <v-bottom-navigation class="bottom_navigation_no_shadow" elevation="0">
                   <v-btn v-on:click="tapStartBtn">
                     <span>START</span>
                     <v-icon x-large>alarm_on</v-icon>
@@ -91,14 +96,11 @@
             </v-card>
           </v-col>
 
-          <v-col> </v-col>
+          <v-col></v-col>
           <v-col class="ma-0 pa-0">
             <v-card class="ma-0" tile elevation="0">
               <div>
-                <v-bottom-navigation
-                  class="bottom_navigation_no_shadow"
-                  elevation="0"
-                >
+                <v-bottom-navigation class="bottom_navigation_no_shadow" elevation="0">
                   <v-btn v-on:click="tapStopBtn">
                     <span>STOP</span>
                     <v-icon x-large>alarm_off</v-icon>
@@ -118,7 +120,7 @@
               </div>
             </v-card>
           </v-col>
-          <v-col> </v-col>
+          <v-col></v-col>
         </v-row>
       </v-container>
     </v-form>
@@ -141,7 +143,7 @@ import myMixin from "../util";
 
 export default {
   props: {
-    player: Object,
+    player: Object
   },
   data() {
     return {
@@ -151,8 +153,8 @@ export default {
       startTimeInput: null,
       endTimeInput: null,
       startRules: [
-        (v) => !!v || "開始時間を入力して下さい",
-        (v) => {
+        v => !!v || "開始時間を入力して下さい",
+        v => {
           let regex = /^\d+:\d{1,2}$/;
           if (!v || regex.test(v)) {
             return true;
@@ -161,11 +163,11 @@ export default {
           if (!regex.test(v)) {
             return "分:秒の形式で入力して下さい";
           }
-        },
+        }
       ],
       endRules: [
-        (v) => !!v || "終了時間を入力して下さい",
-        (v) => {
+        v => !!v || "終了時間を入力して下さい",
+        v => {
           let regex = /^\d+:\d{1,2}$/;
           if (!v || regex.test(v)) {
             return true;
@@ -175,7 +177,7 @@ export default {
             return "分:秒の形式で入力して下さい";
           }
         },
-        (v) => {
+        v => {
           if (this.startTimeInput) {
             if (
               parseInt(this.convertToSec(v)) <=
@@ -185,8 +187,8 @@ export default {
             }
           }
           return true;
-        },
-      ],
+        }
+      ]
     };
   },
   mixins: [myMixin],
@@ -197,7 +199,7 @@ export default {
       newVideoData: "youtube/newVideoData",
       isReady: "youtube/isReady",
       isNew: "youtube/isNew",
-      isEditting: "tagging/isEditting",
+      isEditting: "tagging/isEditting"
     }),
     currentPositionTime() {
       //sliderをドラッグした位置の秒数を取得
@@ -211,7 +213,7 @@ export default {
       return this.isNew
         ? this.newVideoData.duration
         : this.formatToMinSec(this.videoData.duration);
-    },
+    }
   },
   methods: {
     //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
@@ -304,10 +306,10 @@ export default {
 
       //シーンタグの遷移モードを変更(true:右スライド, false:左スライド)
       this.$store.commit("tagging/setControlTransitNext", true);
-    },
+    }
   },
   created() {
     this.initialize();
-  },
+  }
 };
 </script>

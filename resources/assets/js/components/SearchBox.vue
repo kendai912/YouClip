@@ -4,7 +4,7 @@
     <v-container class="ma-0 pa-0">
       <v-row class="ma-0 pa-0" align="center">
         <v-col cols="1" class="ma-0 pa-0 text-center">
-          <v-icon>mdi-arrow-left</v-icon>
+          <v-icon v-on:click="back">mdi-arrow-left</v-icon>
         </v-col>
         <v-col class="ma-0 pa-0">
           <v-autocomplete
@@ -131,6 +131,9 @@ export default {
       this.searchWord = candidateName;
       this.$store.commit("search/setSearchQuery", candidateName);
       this.$store.commit("search/searchResultPageTransit");
+    },
+    back() {
+      this.$router.go(-1);
     }
   },
   created() {}

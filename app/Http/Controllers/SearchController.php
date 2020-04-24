@@ -194,8 +194,8 @@ class SearchController extends Controller
     //(直近1ヶ月の)人気の検索ワードを取得
     public function getTopSearchqueries()
     {
-        //user_id_countが上位10件を取得
-        $topSearchqueryDataArray = Topsearchquery::leftJoin('searchqueries', 'searchqueries.id', '=', 'topsearchqueries.searchquery_id')->select('topsearchqueries.id as topsearchqueries_id', 'topsearchqueries.searchquery_id', 'topsearchqueries.user_id_count', 'searchqueries.created_at')->orderBy('user_id_count', 'DESC')->orderBy('created_at', 'DESC')->take(10)->get();
+        //user_id_countが上位5件を取得
+        $topSearchqueryDataArray = Topsearchquery::leftJoin('searchqueries', 'searchqueries.id', '=', 'topsearchqueries.searchquery_id')->select('topsearchqueries.id as topsearchqueries_id', 'topsearchqueries.searchquery_id', 'topsearchqueries.user_id_count', 'searchqueries.created_at')->orderBy('user_id_count', 'DESC')->orderBy('created_at', 'DESC')->take(5)->get();
 
         //上位10件の検索ワードを取得
         $topSearchqueries = [];
@@ -224,7 +224,7 @@ class SearchController extends Controller
         //検索履歴を取得
         $searchHistoryArray = SearchqueryUser::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->distinct()->get();
 
-        //直近10件の検索履歴を取得
+        //直近5件の検索履歴を取得
         $searchHistories = [];
         $count = 0;
         foreach ($searchHistoryArray as $searchHistoryData) {
@@ -238,7 +238,7 @@ class SearchController extends Controller
             }
 
             //重複がなければ10件まで追加
-            if (!$duplicate_flag && $count < 10) {
+            if (!$duplicate_flag && $count < 5) {
                 $searchHistories[] = $addingSearchQuery;
                 $count++;
             }
