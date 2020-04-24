@@ -109,50 +109,6 @@ class SearchController extends Controller
             );
         }
     }
-    // //inputを元に検索履歴から検索キーワード候補を抽出
-    // public function getSearchHistoryCandidates(Request $request)
-    // {
-    //     //ログインしていない場合は空欄を返す
-    //     if (!Auth::check()) {
-    //         return response()->json(
-    //             [
-    //             'searchHistoryCandidates' => ""
-    //         ],
-    //             200,
-    //             [],
-    //             JSON_UNESCAPED_UNICODE
-    //         );
-    //     }
-
-    //     $input = $request->input('input');
-    //     $searchHistoryCandidates = Auth::user()->searchqueries()->where('searchQuery', 'LIKE', "%$input%")->select('searchQuery')->get();
-
-    //     return response()->json(
-    //         [
-    //             'searchHistoryCandidates' => $searchHistoryCandidates
-    //         ],
-    //         200,
-    //         [],
-    //         JSON_UNESCAPED_UNICODE
-    //     );
-    // }
-    // //inputを元に人気の検索から検索キーワード候補を抽出
-    // public function getTopSearchqueriesCandidates(Request $request)
-    // {
-    //     $input = $request->input('input');
-    //     $topSearchqueriesCandidates = Topsearchquery::whereIn('searchquery_id', function ($query) use ($input) {
-    //         $query->from('searchqueries')->where('searchQuery', 'LIKE', "%$input%")->select('id')->get();
-    //     })->with('searchquery')->orderBy('user_id_count', 'desc')->get();
-
-    //     return response()->json(
-    //         [
-    //             'topSearchqueriesCandidates' => $topSearchqueriesCandidates
-    //         ],
-    //         200,
-    //         [],
-    //         JSON_UNESCAPED_UNICODE
-    //     );
-    // }
 
     //検索ワードの履歴データを各テーブルに保存
     public function storeSearchRecord(Request $request)

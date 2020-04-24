@@ -98,7 +98,6 @@ const actions = {
     const response = await axios.get("api/search/getSearchCandidates", {
       params: queries,
     });
-    console.log(response.data);
     if (response.status == OK) {
       // 成功した時
       context.commit("setSearchCandidates", response.data.searchCandidates);
@@ -109,65 +108,7 @@ const actions = {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
     }
-
-    // //過去の検索履歴から候補を取得
-    // await context.dispatch("getSearchHistoryCandidates", input);
-
-    // //人気の検索履歴から候補を取得
-    // await context.dispatch("getTopSearchqueriesCandidates", input);
   },
-  // //過去の検索履歴から候補を取得
-  // async getSearchHistoryCandidates(context, input) {
-  //   let queries = {
-  //     input: input,
-  //   };
-
-  //   const response = await axios.get("api/search/getSearchHistoryCandidates", {
-  //     params: queries,
-  //   });
-  //   console.log(response.data);
-  //   if (response.status == OK) {
-  //     // 成功した時
-  //     context.commit(
-  //       "setSearchHistoryCandidates",
-  //       response.data.searchHistoryCandidates
-  //     );
-  //   } else if (response.status == INTERNAL_SERVER_ERROR) {
-  //     // 失敗した時
-  //     context.commit("error/setCode", response.status, { root: true });
-  //   } else {
-  //     // 上記以外で失敗した時
-  //     context.commit("error/setCode", response.status, { root: true });
-  //   }
-  // },
-  // //人気の検索履歴から候補を取得
-  // async getTopSearchqueriesCandidates(context, input) {
-  //   let queries = {
-  //     input: input,
-  //   };
-
-  //   const response = await axios.get(
-  //     "api/search/getTopSearchqueriesCandidates",
-  //     {
-  //       params: queries,
-  //     }
-  //   );
-  //   console.log(response.data);
-  //   if (response.status == OK) {
-  //     // 成功した時
-  //     context.commit(
-  //       "setTopSearchqueriesCandidates",
-  //       response.data.topSearchqueriesCandidates
-  //     );
-  //   } else if (response.status == INTERNAL_SERVER_ERROR) {
-  //     // 失敗した時
-  //     context.commit("error/setCode", response.status, { root: true });
-  //   } else {
-  //     // 上記以外で失敗した時
-  //     context.commit("error/setCode", response.status, { root: true });
-  //   }
-  // },
-
   //検索ワードを含むタグ単体を検索
   async searchTagVideoResult(context, page) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
