@@ -3,13 +3,13 @@
     <v-sheet tile class="ma-0 pa-1">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0" align="center">
-          <v-col cols="2" class="ma-0 pa-0  text-left">
+          <v-col cols="2" class="ma-0 pa-0 text-left">
             <i v-on:click="returnToTimeControl" class="fas fa-chevron-left"></i>
           </v-col>
           <v-col cols="8" class="ma-0 pa-0">
             <span>シーンにタグ付け</span>
           </v-col>
-          <v-col cols="2" class="ma-0 pa-0"> </v-col>
+          <v-col cols="2" class="ma-0 pa-0"></v-col>
         </v-row>
       </v-container>
     </v-sheet>
@@ -56,9 +56,7 @@
       <v-row align="center" fluid>
         <v-col class="text-right">
           <div>
-            <v-icon x-large v-on:click="submit" color="error"
-              >check_circle</v-icon
-            >
+            <v-icon x-large v-on:click="submit" color="error">check_circle</v-icon>
           </div>
         </v-col>
       </v-row>
@@ -75,17 +73,17 @@ import myMixin from "../util";
 
 export default {
   components: {
-    NoLoginModal,
+    NoLoginModal
   },
   props: {
-    player: Object,
+    player: Object
   },
   data() {
     return {
       sheet: true,
       tags: [],
       tagItems: [],
-      tagsRules: [(v) => !!v || "シーンタグを入力して下さい"],
+      tagsRules: [v => !!v || "シーンタグを入力して下さい"]
     };
   },
   mixins: [myMixin],
@@ -99,8 +97,8 @@ export default {
       isLogin: "auth/check",
       showLoginModal: "noLoginModal/showLoginModal",
       tagHistories: "tagging/tagHistories",
-      isEditting: "tagging/isEditting",
-    }),
+      isEditting: "tagging/isEditting"
+    })
   },
   methods: {
     remove(item) {
@@ -147,7 +145,7 @@ export default {
     },
     setTagItems() {
       let tagItemsArray;
-      this.tagHistories.forEach((tagHistory) => {
+      this.tagHistories.forEach(tagHistory => {
         tagItemsArray = tagHistory.split(/[\s| |　]/);
         this.tagItems.push(...tagItemsArray);
       });
@@ -162,10 +160,10 @@ export default {
         //スペース区切りで配列に変換しシーンタグアイテムにセット
         this.setTagItems();
       }
-    },
+    }
   },
   created() {
     this.initialize();
-  },
+  }
 };
 </script>

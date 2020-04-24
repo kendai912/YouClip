@@ -52,8 +52,12 @@ Route::get("/load/tagLike", 'LikeController@loadTagLike');
 //プレイリストへのLikeデータのロード
 Route::get("/load/playlistLike", 'LikesPlaylistController@loadPlaylistLike');
 
-//検索ワード候補取得
-Route::post('/search/candidates', 'SearchController@searchCandidates');
+//検索キーワード候補を取得
+Route::get('/search/getSearchCandidates', 'SearchController@getSearchCandidates');
+// //過去の検索履歴から検索ワード候補を取得
+// Route::get('/search/getSearchHistoryCandidates', 'SearchController@getSearchHistoryCandidates');
+// //人気の検索履歴から検索ワード候補を取得
+// Route::get('/search/getTopSearchqueriesCandidates', 'SearchController@getTopSearchqueriesCandidates');
 //タグの検索結果取得
 Route::post('/search/tag', 'SearchController@searchTag');
 //プレイリストの検索結果取得

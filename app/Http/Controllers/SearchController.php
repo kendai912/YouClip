@@ -26,15 +26,6 @@ class SearchController extends Controller
         // $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-    }
-
     public function searchTag(Request $request)
     {
         //検索ワード
@@ -77,29 +68,91 @@ class SearchController extends Controller
         );
     }
 
-    public function searchCandidates(Request $request)
+    //inputを元に検索キーワード候補を抽出
+    public function getSearchCandidates(Request $request)
     {
-        //inputを含むタグ名一覧を抽出
-        $tagCandidates = Tag::where('tags', 'LIKE', "%$request->input%")->select('tags')->get();
-        
-        //inputを含むタイトル一覧を抽出
-        $titleCandidates = Video::where('title', 'LIKE', "%$request->input%")->select('title')->get();
+        $input = $request->input('input');
+      
+        //人気の検索キーワードからサジェストを取得
+        $topSearchqueriesCandidates = Topsearchquery::whereIn('searchquery_id', function ($query) use ($input) {
+            $query->from('searchqueries')->where('searchQuery', 'LIKE', "%$input%")->select('id')->get();
+        })->with('searchquery')->orderBy('user_id_count', 'desc')->get();
 
-        //inputをプレイリスト名に含むプレイリスト一覧を抽出
-        $playlistCandidates = Playlist::where('playlistName', 'LIKE', "%$request->input%")->select('playlistName')->get();
+        if (!Auth::check()) {
+            //ログインしていない場合は、人気の検索キーワードのサジェストのみ返却
+            $searchCandidates["searchHistoryCandidates"] = "";
+            $searchCandidates["topSearchqueriesCandidates"] = $topSearchqueriesCandidates;
 
-        //タグ名一覧とタイトル一覧とプレイリスト名をマージ
-        $candidates = collect($tagCandidates)->merge($titleCandidates)->merge($playlistCandidates);
-        
-        return response()->json(
-            [
-                'candidates' => $candidates
-            ],
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+            return response()->json(
+                [
+                    'searchCandidates' => $searchCandidates,
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            //ログインしている場合は、過去の検索履歴からもサジェストを取得
+            $searchHistoryCandidates = Auth::user()->searchqueries()->where('searchQuery', 'LIKE', "%$input%")->select('searchQuery')->distinct()->get();
+            
+            $searchCandidates["searchHistoryCandidates"] = $searchHistoryCandidates;
+            $searchCandidates["topSearchqueriesCandidates"] = $topSearchqueriesCandidates;
+
+            //ログインしている場合は、人気の検索キーワード＋過去の検索履歴のサジェストを返却
+            return response()->json(
+                [
+                    'searchCandidates' => $searchCandidates,
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
+    // //inputを元に検索履歴から検索キーワード候補を抽出
+    // public function getSearchHistoryCandidates(Request $request)
+    // {
+    //     //ログインしていない場合は空欄を返す
+    //     if (!Auth::check()) {
+    //         return response()->json(
+    //             [
+    //             'searchHistoryCandidates' => ""
+    //         ],
+    //             200,
+    //             [],
+    //             JSON_UNESCAPED_UNICODE
+    //         );
+    //     }
+
+    //     $input = $request->input('input');
+    //     $searchHistoryCandidates = Auth::user()->searchqueries()->where('searchQuery', 'LIKE', "%$input%")->select('searchQuery')->get();
+
+    //     return response()->json(
+    //         [
+    //             'searchHistoryCandidates' => $searchHistoryCandidates
+    //         ],
+    //         200,
+    //         [],
+    //         JSON_UNESCAPED_UNICODE
+    //     );
+    // }
+    // //inputを元に人気の検索から検索キーワード候補を抽出
+    // public function getTopSearchqueriesCandidates(Request $request)
+    // {
+    //     $input = $request->input('input');
+    //     $topSearchqueriesCandidates = Topsearchquery::whereIn('searchquery_id', function ($query) use ($input) {
+    //         $query->from('searchqueries')->where('searchQuery', 'LIKE', "%$input%")->select('id')->get();
+    //     })->with('searchquery')->orderBy('user_id_count', 'desc')->get();
+
+    //     return response()->json(
+    //         [
+    //             'topSearchqueriesCandidates' => $topSearchqueriesCandidates
+    //         ],
+    //         200,
+    //         [],
+    //         JSON_UNESCAPED_UNICODE
+    //     );
+    // }
 
     //検索ワードの履歴データを各テーブルに保存
     public function storeSearchRecord(Request $request)

@@ -4,7 +4,9 @@ import router from "../router";
 
 const state = {
   searchQuery: null,
-  candidates: [],
+  searchCandidates: [],
+  // searchHistoryCandidates: [],
+  // topSearchqueriesCandidates: [],
   tagVideoResult: [],
   playlistTagResult: [],
   topSearchqueries: [],
@@ -12,29 +14,37 @@ const state = {
   tagVideoResultToLoad: true,
   playlistResultToLoad: true,
   isSearchingPlaylistTagResult: false,
-  isSearchingTagVideoResult: false
+  isSearchingTagVideoResult: false,
 };
 
 const getters = {
-  searchQuery: state => state.searchQuery,
-  candidates: state => state.candidates,
-  tagVideoResult: state => state.tagVideoResult,
-  playlistTagResult: state => state.playlistTagResult,
-  topSearchqueries: state => state.topSearchqueries,
-  searchHistories: state => state.searchHistories,
-  tagVideoResultToLoad: state => state.tagVideoResultToLoad,
-  playlistResultToLoad: state => state.playlistResultToLoad,
-  isSearchingPlaylistTagResult: state => state.isSearchingPlaylistTagResult,
-  isSearchingTagVideoResult: state => state.isSearchingTagVideoResult
+  searchQuery: (state) => state.searchQuery,
+  searchCandidates: (state) => state.searchCandidates,
+  // searchHistoryCandidates: (state) => state.searchHistoryCandidates,
+  // topSearchqueriesCandidates: (state) => state.topSearchqueriesCandidates,
+  tagVideoResult: (state) => state.tagVideoResult,
+  playlistTagResult: (state) => state.playlistTagResult,
+  topSearchqueries: (state) => state.topSearchqueries,
+  searchHistories: (state) => state.searchHistories,
+  tagVideoResultToLoad: (state) => state.tagVideoResultToLoad,
+  playlistResultToLoad: (state) => state.playlistResultToLoad,
+  isSearchingPlaylistTagResult: (state) => state.isSearchingPlaylistTagResult,
+  isSearchingTagVideoResult: (state) => state.isSearchingTagVideoResult,
 };
 
 const mutations = {
   setSearchQuery(state, data) {
     state.searchQuery = data;
   },
-  setCandidates(state, data) {
-    state.candidates = data;
+  setSearchCandidates(state, data) {
+    state.searchCandidates = data;
   },
+  // setSearchHistoryCandidates(state, data) {
+  //   state.searchHistoryCandidates = data;
+  // },
+  // setTopSearchqueriesCandidates(state, data) {
+  //   state.topSearchqueriesCandidates = data;
+  // },
   setTagVideoResult(state, data) {
     state.tagVideoResult = data;
   },
@@ -64,12 +74,12 @@ const mutations = {
     router
       .push({
         path: "result",
-        query: { search_query: state.searchQuery }
+        query: { search_query: state.searchQuery },
       })
-      .catch(err => {});
+      .catch((err) => {});
 
     location.reload();
-  }
+  },
 };
 
 const actions = {
@@ -80,15 +90,18 @@ const actions = {
     actions.storeSearchRecord(context);
   },
   //検索ワード候補を取得(インクリメンタルサーチ)
-  async searchCandidates(context, input) {
-    let params = {
-      input: input
+  async getSearchCandidates(context, input) {
+    let queries = {
+      input: input,
     };
 
-    const response = await axios.post("api/search/candidates", params);
+    const response = await axios.get("api/search/getSearchCandidates", {
+      params: queries,
+    });
+    console.log(response.data);
     if (response.status == OK) {
       // 成功した時
-      context.commit("setCandidates", response.data.candidates);
+      context.commit("setSearchCandidates", response.data.searchCandidates);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
@@ -96,7 +109,65 @@ const actions = {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
     }
+
+    // //過去の検索履歴から候補を取得
+    // await context.dispatch("getSearchHistoryCandidates", input);
+
+    // //人気の検索履歴から候補を取得
+    // await context.dispatch("getTopSearchqueriesCandidates", input);
   },
+  // //過去の検索履歴から候補を取得
+  // async getSearchHistoryCandidates(context, input) {
+  //   let queries = {
+  //     input: input,
+  //   };
+
+  //   const response = await axios.get("api/search/getSearchHistoryCandidates", {
+  //     params: queries,
+  //   });
+  //   console.log(response.data);
+  //   if (response.status == OK) {
+  //     // 成功した時
+  //     context.commit(
+  //       "setSearchHistoryCandidates",
+  //       response.data.searchHistoryCandidates
+  //     );
+  //   } else if (response.status == INTERNAL_SERVER_ERROR) {
+  //     // 失敗した時
+  //     context.commit("error/setCode", response.status, { root: true });
+  //   } else {
+  //     // 上記以外で失敗した時
+  //     context.commit("error/setCode", response.status, { root: true });
+  //   }
+  // },
+  // //人気の検索履歴から候補を取得
+  // async getTopSearchqueriesCandidates(context, input) {
+  //   let queries = {
+  //     input: input,
+  //   };
+
+  //   const response = await axios.get(
+  //     "api/search/getTopSearchqueriesCandidates",
+  //     {
+  //       params: queries,
+  //     }
+  //   );
+  //   console.log(response.data);
+  //   if (response.status == OK) {
+  //     // 成功した時
+  //     context.commit(
+  //       "setTopSearchqueriesCandidates",
+  //       response.data.topSearchqueriesCandidates
+  //     );
+  //   } else if (response.status == INTERNAL_SERVER_ERROR) {
+  //     // 失敗した時
+  //     context.commit("error/setCode", response.status, { root: true });
+  //   } else {
+  //     // 上記以外で失敗した時
+  //     context.commit("error/setCode", response.status, { root: true });
+  //   }
+  // },
+
   //検索ワードを含むタグ単体を検索
   async searchTagVideoResult(context, page) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
@@ -104,7 +175,7 @@ const actions = {
 
     let params = {
       searchQuery: state.searchQuery,
-      page: page
+      page: page,
     };
 
     const response = await axios.post("api/search/tag", params);
@@ -133,7 +204,7 @@ const actions = {
 
     let params = {
       searchQuery: state.searchQuery,
-      page: page
+      page: page,
     };
 
     const response = await axios.post("api/search/playlist", params);
@@ -161,7 +232,7 @@ const actions = {
   //検索キーワードおよび検索履歴をテーブルに保存
   async storeSearchRecord(context) {
     let params = {
-      searchQuery: state.searchQuery
+      searchQuery: state.searchQuery,
     };
 
     const response = await axios.post("api/store/searchrecord", params);
@@ -202,7 +273,7 @@ const actions = {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
     }
-  }
+  },
 };
 
 export default {
@@ -210,5 +281,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };
