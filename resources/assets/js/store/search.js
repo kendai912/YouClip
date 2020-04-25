@@ -10,8 +10,6 @@ const state = {
   topSearchqueries: [],
   searchHistories: [],
   isLoadingSearchHint: true,
-  // isLoadingTopSearchqueries: true,
-  // isLoadingSearchHistories: true,
   tagVideoResultToLoad: true,
   playlistResultToLoad: true,
   isSearchingPlaylistTagResult: false,
@@ -26,8 +24,6 @@ const getters = {
   topSearchqueries: (state) => state.topSearchqueries,
   searchHistories: (state) => state.searchHistories,
   isLoadingSearchHint: (state) => state.isLoadingSearchHint,
-  // isLoadingTopSearchqueries: (state) => state.isLoadingTopSearchqueries,
-  // isLoadingSearchHistories: (state) => state.isLoadingSearchHistories,
   tagVideoResultToLoad: (state) => state.tagVideoResultToLoad,
   playlistResultToLoad: (state) => state.playlistResultToLoad,
   isSearchingPlaylistTagResult: (state) => state.isSearchingPlaylistTagResult,
@@ -56,12 +52,6 @@ const mutations = {
   setIsLoadingSearchHint(state, data) {
     state.isLoadingSearchHint = data;
   },
-  // setIsLoadingTopSearchqueries(state, data) {
-  //   state.isLoadingTopSearchqueries = data;
-  // },
-  // setIsLoadingSearchHistories(state, data) {
-  //   state.isLoadingSearchHistories = data;
-  // },
   setTagVideoResultToLoad(state, data) {
     state.tagVideoResultToLoad = data;
   },

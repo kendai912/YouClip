@@ -1,32 +1,42 @@
 <template>
   <div class="container--small">
-    <div>
-      <SearchBox />
+    <SearchBox />
+
+    <v-tabs v-model="tab" background-color="transparent" grow hide-slider>
+      <v-tab v-for="(item, key) in items" :key="item" v-on:click="setActiveTab(key)">{{ item }}</v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="tab">
+      <v-tab-item>
+        <v-card flat>
+          <IndexItem v-bind:mediaItems="playlistMediaItems" />
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <IndexItem v-bind:mediaItems="tagVideoMediaItems" />
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
+
+    <!-- <ul class="tab">
+      <li
+        class="tab__item"
+        v-bind:class="{ 'tab__item--active': tab == 1 }"
+        v-on:click="tab = 1"
+      >プレイリスト</li>
+      <li
+        class="tab__item"
+        v-bind:class="{ 'tab__item--active': tab == 2 }"
+        v-on:click="tab = 2"
+      >シーン</li>
+    </ul>
+    <div class="panel" v-show="tab === 1">
+      <IndexItem v-bind:mediaItems="playlistMediaItems" />
     </div>
-    <div>
-      <ul class="tab">
-        <li
-          class="tab__item"
-          v-bind:class="{ 'tab__item--active': tab == 1 }"
-          v-on:click="tab = 1"
-        >
-          プレイリスト
-        </li>
-        <li
-          class="tab__item"
-          v-bind:class="{ 'tab__item--active': tab == 2 }"
-          v-on:click="tab = 2"
-        >
-          シーン
-        </li>
-      </ul>
-      <div class="panel" v-show="tab === 1">
-        <IndexItem v-bind:mediaItems="playlistMediaItems" />
-      </div>
-      <div class="panel" v-show="tab === 2">
-        <IndexItem v-bind:mediaItems="tagVideoMediaItems" />
-      </div>
-    </div>
+    <div class="panel" v-show="tab === 2">
+      <IndexItem v-bind:mediaItems="tagVideoMediaItems" />
+    </div>-->
   </div>
 </template>
 
@@ -39,15 +49,17 @@ import myMixin from "../util";
 export default {
   components: {
     SearchBox,
-    IndexItem,
+    IndexItem
   },
   data() {
     return {
-      tab: 1,
+      tab: null,
+      items: ["プレイリスト", "シーン"],
+      // tab: 1,
       pageOfPlaylist: 1,
       pageOfTagVideo: 1,
       playlistMediaItems: [],
-      tagVideoMediaItems: [],
+      tagVideoMediaItems: []
     };
   },
   mixins: [myMixin],
@@ -59,6 +71,7 @@ export default {
       let sec = parseInt(His.split(":")[2], 10);
       return min + ":" + sec;
     },
+    //初回ロード
     async initializeSearchResult() {
       //ローディングを表示
       this.$store.commit("loadingItem/setIsLoading", true);
@@ -76,11 +89,18 @@ export default {
         this.playlistMediaItems,
         this.playlistTagResult
       );
+      //有効アイテム数が5未満の場合、スクロールイベントが発生しないのでマニュアルで次ページを読み込み
+      if (this.playlistMediaItems.length < 5 && this.playlistResultToLoad)
+        this.infinateLoadPlaylistSearchResult();
+
       //タグデータをメディアアイテムに格納
       this.putTagVideoIntoMediaItems(
         this.tagVideoMediaItems,
         this.tagVideoResult
       );
+      //有効アイテム数が5未満の場合、スクロールイベントが発生しないのでマニュアルで次ページを読み込み
+      if (this.tagVideoMediaItems.length < 5 && this.tagVideoResultToLoad)
+        this.infinateLoadTagVideSearchResult();
 
       //ローディングを非表示
       this.$store.commit("loadingItem/setIsLoading", false);
@@ -129,6 +149,10 @@ export default {
       //ローディングを非表示
       this.$store.commit("loadingItem/setIsLoading", false);
     },
+    setActiveTab(key) {
+      //開いたタブをセッションストレージに保存
+      window.sessionStorage.setItem("searchTabIndex", JSON.stringify(key));
+    }
   },
   computed: {
     ...mapGetters({
@@ -138,10 +162,13 @@ export default {
       tagVideoResultToLoad: "search/tagVideoResultToLoad",
       playlistResultToLoad: "search/playlistResultToLoad",
       isSearchingPlaylistTagResult: "search/isSearchingPlaylistTagResult",
-      isSearchingTagVideoResult: "search/isSearchingTagVideoResult",
-    }),
+      isSearchingTagVideoResult: "search/isSearchingTagVideoResult"
+    })
   },
   created() {
+    //以前に開いていたタブをセッションストレージからセット
+    this.tab = parseInt(window.sessionStorage.getItem("searchTabIndex"));
+
     //ナビバーを非表示
     this.$store.commit("navbar/setShowNavbar", false);
 
@@ -154,9 +181,9 @@ export default {
         document.documentElement.scrollTop + window.innerHeight >=
         document.documentElement.offsetHeight;
       if (bottomOfWindow) {
-        if (this.tab == 1 && !this.isSearchingPlaylistTagResult) {
+        if (this.tab == 0 && !this.isSearchingPlaylistTagResult) {
           this.infinateLoadPlaylistSearchResult();
-        } else if (this.tab == 2 && !this.isSearchingTagVideoResult) {
+        } else if (this.tab == 1 && !this.isSearchingTagVideoResult) {
           this.infinateLoadTagVideSearchResult();
         }
       }
@@ -172,6 +199,6 @@ export default {
         location.reload();
       }
     });
-  },
+  }
 };
 </script>

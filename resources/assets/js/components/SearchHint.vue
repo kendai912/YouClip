@@ -29,8 +29,6 @@ export default {
   computed: {
     ...mapGetters({
       isLoadingSearchHint: "search/isLoadingSearchHint"
-      // isLoadingTopSearchqueries: "search/isLoadingTopSearchqueries",
-      // isLoadingSearchHistories: "search/isLoadingSearchHistories"
     })
   },
   methods: {

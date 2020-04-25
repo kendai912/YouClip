@@ -7,21 +7,11 @@
     <v-tabs-items v-model="tab">
       <v-tab-item>
         <v-card flat>
-          <!-- <MyPlaylist
-            v-for="myPlaylist in myCreatedAndLikedPlaylist"
-            v-bind:myPlaylist="myPlaylist"
-            v-bind:key="myPlaylist.id"
-          />-->
           <IndexItem v-bind:mediaItems="myCreatedAndLikedPlaylistMediaItems" />
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <!-- <MyScene
-            v-for="myTagVideo in myCreatedAndLikedTagVideo"
-            v-bind:myTagVideo="myTagVideo"
-            v-bind:key="myTagVideo.id"
-          />-->
           <IndexItem v-bind:mediaItems="myCreatedAndLikedTagVideoMediaItems" />
         </v-card>
       </v-tab-item>
