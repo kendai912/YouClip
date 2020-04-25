@@ -1,7 +1,6 @@
 <template>
-  <!-- <div> -->
   <v-sheet color="grey lighten-3" class="search-box" fluid>
-    <v-container class="ma-0 pa-0">
+    <v-container class="ma-0 pa-0 text-center">
       <v-row class="ma-0 pa-0" align="center">
         <v-col cols="1" class="ma-0 pa-0 text-center">
           <v-icon v-on:click="back">mdi-arrow-left</v-icon>
@@ -9,7 +8,6 @@
         <v-col class="ma-0 pa-0">
           <v-autocomplete
             v-model="model"
-            v-bind:value="value"
             v-bind:items="items"
             v-bind:search-input.sync="searchquery"
             v-on:keydown.enter="search"
@@ -27,40 +25,6 @@
       </v-row>
     </v-container>
   </v-sheet>
-
-  <!-- <div>
-      <input id="searchBox" type="text" v-model="searchWord" v-on:input="searchCandidates" />
-      <span id="searchBtn" v-on:click="search">
-        <img alt="検索" src="/img/search.svg" />
-      </span>
-  </div>-->
-
-  <!-- <div v-bind:class="{ candidatesWrap: candidates.length != 0 }" v-if="searchWord != ''">
-      <div v-for="(candidate, index) in candidates" v-bind:key="index">
-        <div
-          v-if="index < 10 && candidate.playlistName"
-          class="item"
-          v-bind:class="{ isEven: index % 2 == 1 }"
-        >
-          <p v-on:click="select(candidate.playlistName)">{{ candidate.playlistName }}</p>
-        </div>
-        <div
-          v-if="index < 10 && candidate.tags"
-          class="item"
-          v-bind:class="{ isEven: index % 2 == 1 }"
-        >
-          <p v-on:click="select(candidate.tags)">{{ candidate.tags }}</p>
-        </div>
-        <div
-          v-if="index < 10 && candidate.title"
-          class="item"
-          v-bind:class="{ isEven: index % 2 == 1 }"
-        >
-          <p v-on:click="select(candidate.title)">{{ candidate.title }}</p>
-        </div>
-      </div>
-  </div>-->
-  <!-- </div> -->
 </template>
 
 <script>
@@ -69,10 +33,7 @@ import { mapState, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      descriptionLimit: 60,
-      entries: [],
       model: null,
-      value: null,
       searchquery: null
     };
   },
@@ -118,18 +79,12 @@ export default {
   methods: {
     search(event) {
       // 日本語入力中のEnterキー操作は無効にする
-      if (event.keyCode !== 13) return;
+      if (event.keyCode != undefined && event.keyCode !== 13) return;
 
       //空欄だった場合は検索実行せずリターン
       if (this.searchquery == "") return;
 
       this.$store.commit("search/setSearchQuery", this.searchquery);
-      this.$store.commit("search/searchResultPageTransit");
-    },
-    //検索候補をクリックするとそのまま検索
-    select(candidateName) {
-      this.searchWord = candidateName;
-      this.$store.commit("search/setSearchQuery", candidateName);
       this.$store.commit("search/searchResultPageTransit");
     },
     back() {

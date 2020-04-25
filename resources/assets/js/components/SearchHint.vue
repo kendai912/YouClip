@@ -2,7 +2,7 @@
   <transition name="fade-transition" mode="out-in">
     <SearchLoadingItem v-if="isLoadingSearchHint" />
     <v-card v-else class="text-center pa-3 ma-3" title elevation="0">
-      <v-card-title class="justify-center">{{ hintCategory }}</v-card-title>
+      <v-card-title v-if="searchHints" class="justify-center">{{ hintCategory }}</v-card-title>
       <v-card-text
         v-for="searchHint in searchHints"
         v-bind:key="searchHint.id"
