@@ -14,13 +14,13 @@ const state = {
     q: "",
     type: "video",
     order: "viewCount", // 再生回数の多い順
-    maxResults: "5", // 最大検索数
+    maxResults: "10", // 最大検索数
     pageToken: "",
     videoEmbeddable: true,
     key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk",
   },
   isYTLoading: false,
-  numberOfYTItemsPerPagination: 5,
+  numberOfYTItemsPerPagination: 10,
   isYTSearching: false,
 };
 
