@@ -6,11 +6,11 @@
       class="mx-auto"
       tile
       max-width="400"
-      elevation="1"
+      elevation="0"
     >
-      <v-container class="pa-0 my-2">
-        <v-row v-on:click="select(item)" justify="center" align-content="center">
-          <v-col cols="6">
+      <v-container class="px-3 pb-0 my-3">
+        <v-row v-on:click="select(item)" justify="center" align-content="center" class="pa-0 ma-0">
+          <v-col cols="6" class="pa-0 ma-0">
             <v-img
               v-bind:src="item.snippet.thumbnails.high.url"
               v-bind:alt="item.snippet.title + '-thumbnail'"
@@ -22,10 +22,10 @@
             </v-img>
           </v-col>
 
-          <v-col cols="6">
-            <v-list-item>
+          <v-col cols="6" class="pa-0 ma-0">
+            <v-list-item class="px-2 ma-0">
               <v-list-item-content>
-                <v-list-item-title>{{ item.snippet.title }}</v-list-item-title>
+                <v-list-item-title class="wrap-text">{{ item.snippet.title }}</v-list-item-title>
                 <v-list-item-subtitle>投稿者</v-list-item-subtitle>
                 <v-list-item-subtitle>
                   <span>◯回視聴</span>

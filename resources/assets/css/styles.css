@@ -165,8 +165,18 @@
   text-align: left;
 }
 
+.v-list-item__title {
+  height: auto;
+  max-height: 3.75em;
+}
+
 .v-list-item__content {
   padding: 0px;
+}
+
+.wrap-text {
+  -webkit-line-clamp: unset !important;
+  white-space: normal;
 }
 
 .v-card__title {
@@ -193,7 +203,7 @@
 
 .search-box {
   position: fixed;
-  width: 100%;
+  width: 100vw;
   height: 56px;
   bottom: 56px;
   left: 0;

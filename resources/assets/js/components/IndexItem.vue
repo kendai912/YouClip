@@ -1,6 +1,11 @@
 <template>
   <v-container>
-    <v-row v-for="item in mediaItems" v-bind:key="item.category+'-'+item.id" dense>
+    <v-row
+      v-for="item in mediaItems"
+      v-bind:key="item.category+'-'+item.id"
+      dense
+      class="pa-0 ma-0"
+    >
       <v-col>
         <v-card class="mx-auto" tile max-width="400" elevation="1">
           <v-img
