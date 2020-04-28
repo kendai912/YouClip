@@ -163,3 +163,9 @@
   align-items: center;
   justify-content: center;
 }
+
+.v-skeleton-loader__list-item-three-line {
+  display: flex;
+  align-content: flex-start;
+  align-items: flex-start;
+}

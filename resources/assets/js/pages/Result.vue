@@ -18,25 +18,6 @@
         </v-card>
       </v-tab-item>
     </v-tabs-items>
-
-    <!-- <ul class="tab">
-      <li
-        class="tab__item"
-        v-bind:class="{ 'tab__item--active': tab == 1 }"
-        v-on:click="tab = 1"
-      >プレイリスト</li>
-      <li
-        class="tab__item"
-        v-bind:class="{ 'tab__item--active': tab == 2 }"
-        v-on:click="tab = 2"
-      >シーン</li>
-    </ul>
-    <div class="panel" v-show="tab === 1">
-      <IndexItem v-bind:mediaItems="playlistMediaItems" />
-    </div>
-    <div class="panel" v-show="tab === 2">
-      <IndexItem v-bind:mediaItems="tagVideoMediaItems" />
-    </div>-->
   </div>
 </template>
 
