@@ -12,24 +12,31 @@
         <v-row v-on:click="select(item)" justify="center" align-content="center" class="pa-0 ma-0">
           <v-col cols="6" class="pa-0 ma-0">
             <v-img
-              v-bind:src="item.snippet.thumbnails.high.url"
-              v-bind:alt="item.snippet.title + '-thumbnail'"
-              class="white--text align-end"
+              v-bind:src="item.thumbnails.high.url"
+              v-bind:alt="item.title + '-thumbnail'"
+              class="white--text align-end right"
               max-height="133.33px"
               aspect-ratio="1.5"
             >
-              <v-card-subtitle>◯:◯◯</v-card-subtitle>
+              <v-container class="pa-0 ma-0">
+                <v-row class="pa-0 ma-0 d-flex justify-end">
+                  <v-col
+                    cols="auto"
+                    class="pa-1 ma-0 text-center black lighten-2 font-weight-bold opacity-background corner-radius"
+                  >{{ item.duration }}</v-col>
+                </v-row>
+              </v-container>
             </v-img>
           </v-col>
 
           <v-col cols="6" class="pa-0 ma-0">
             <v-list-item class="px-2 ma-0">
               <v-list-item-content>
-                <v-list-item-title class="wrap-text">{{ item.snippet.title }}</v-list-item-title>
-                <v-list-item-subtitle>投稿者</v-list-item-subtitle>
+                <v-list-item-title class="wrap-text">{{ item.title }}</v-list-item-title>
+                <v-list-item-subtitle>{{ item.channelTitle }}</v-list-item-subtitle>
                 <v-list-item-subtitle>
-                  <span>◯回視聴</span>
-                  <span>◯週間前</span>
+                  <span>{{ item.viewCount}}回視聴</span>
+                  <span>{{ item.publishedAt }}週間前</span>
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
@@ -69,7 +76,7 @@ export default {
         .push({
           path: "/youtube",
           query: {
-            v: item.id.videoId
+            v: item.youtubeId
           }
         })
         .catch(err => {});

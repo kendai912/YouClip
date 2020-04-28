@@ -43,7 +43,7 @@ export default {
     this.$store.commit("navbar/setShowNavbar", false);
 
     //ローディング表示用の変数をセット
-    this.$store.commit("YTsearch/setNumberOfYTItemsPerPagination", 5);
+    this.$store.commit("YTsearch/setNumberOfYTItemsPerPagination", 7);
 
     //URLのsearch_queryを検索ワードにセット
     this.$store.commit(
