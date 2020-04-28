@@ -15,15 +15,15 @@
               v-bind:src="item.thumbnails.high.url"
               v-bind:alt="item.title + '-thumbnail'"
               class="white--text align-end right"
-              max-height="133.33px"
-              aspect-ratio="1.5"
+              width="100%"
+              aspect-ratio="1.775"
             >
               <v-container class="pa-0 ma-0">
                 <v-row class="pa-0 ma-0 d-flex justify-end">
                   <v-col
                     cols="auto"
                     class="pa-1 ma-0 text-center black lighten-2 font-weight-bold opacity-background corner-radius"
-                  >{{ item.duration }}</v-col>
+                  >{{ convertTYdurationToMinSec(item.duration) }}</v-col>
                 </v-row>
               </v-container>
             </v-img>
@@ -35,8 +35,8 @@
                 <v-list-item-title class="wrap-text">{{ item.title }}</v-list-item-title>
                 <v-list-item-subtitle>{{ item.channelTitle }}</v-list-item-subtitle>
                 <v-list-item-subtitle>
-                  <span>{{ item.viewCount}}回視聴</span>
-                  <span>{{ item.publishedAt }}週間前</span>
+                  <span>{{ convertNumDigit(item.viewCount) }}回視聴</span>
+                  <span>{{ timeSince(item.publishedAt) }}前</span>
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>

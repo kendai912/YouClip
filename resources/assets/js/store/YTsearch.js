@@ -22,14 +22,16 @@ const state = {
     videoEmbeddable: true,
     // key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk", //ScenePicks
     // key: "AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU", //Futsal Movie Stock
-    key: "AIzaSyCUyFedDYTd9DZEOMVlSGofCJrV35EjQbc", //MangaVoice Translation
+    // key: "AIzaSyCUyFedDYTd9DZEOMVlSGofCJrV35EjQbc", //MangaVoice Translation
+    key: "AIzaSyCCX46YN-2sFhTBLEv3kVPgDjz7L1EOBUs", //IkinariDateCourse
   },
   paramsOfVideos: {
     part: "contentDetails,statistics",
     id: "",
     // key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk", //ScenePicks
     // key: "AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU", //Futsal Movie Stock
-    key: "AIzaSyCUyFedDYTd9DZEOMVlSGofCJrV35EjQbc", //MangaVoice Translation
+    // key: "AIzaSyCUyFedDYTd9DZEOMVlSGofCJrV35EjQbc", //MangaVoice Translation
+    key: "AIzaSyCCX46YN-2sFhTBLEv3kVPgDjz7L1EOBUs", //IkinariDateCourse
   },
   isYTLoading: false,
   numberOfYTItemsPerPagination: 10,
@@ -135,6 +137,7 @@ const actions = {
 
       //searchのAPI検索結果を格納
       context.commit("setYTsearchResponse", response.data.items);
+
       //searchとvideosのAPI検索結果をまとめてYTresultに格納
       let YTresult = [];
       for (let i = 0; i < youtubeIds.length; i++) {
@@ -149,8 +152,8 @@ const actions = {
           viewCount: state.YTvideosResponse[i].statistics.viewCount,
         };
       }
-
       context.commit("setYTResult", YTresult);
+
       //連続リクエストを制御するフラグを解除
       context.commit("setIsYTSearching", false);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
@@ -161,6 +164,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+  //視聴回数と再生時間を取得するためのAPIリクエスト
   async getYTstatisticsAndcontentDetails(context, youtubeIds) {
     //paramsのidにリクエストするyoutubeIdをセット
     context.commit("setYoutubeIdsOfParamsOfVideos", youtubeIds);

@@ -96,5 +96,65 @@ export default {
 
       return minutes + ":" + seconds;
     },
+    //APIで返ってきたdurationを分:秒に整形
+    convertTYdurationToMinSec(YTduration) {
+      if (YTduration.match(/PT(\d*)M(\d*)S/)) {
+        let result = YTduration.match(/PT(\d*)M(\d*)S/);
+        let min = result[1];
+        let sec = result[2];
+        return min + ":" + sec;
+      } else if (YTduration.match(/PT(\d*)S/)) {
+        let result = YTduration.match(/PT(\d*)S/);
+        let sec = result[1];
+        return "0:" + sec;
+      }
+    },
+    //数値の桁変換を行う関数
+    convertNumDigit(num) {
+      let units = ["", "万", "億"];
+      var ext = units[0];
+      for (var i = 1; i < units.length; i += 1) {
+        if (parseInt(num) >= 10000) {
+          num = parseInt(num) / 10000;
+          ext = units[i];
+        }
+      }
+      return Math.round(num) + ext;
+    },
+    //日付が現時点からどのくらい前か表示変換を行う関数
+    timeSince(publishedAt) {
+      let date = new Date(
+        publishedAt.substring(0, 4),
+        publishedAt.substring(5, 7) - 1,
+        publishedAt.substring(8, 10)
+      );
+      let seconds = Math.floor((new Date() - date) / 1000);
+
+      let interval = Math.floor(seconds / 31536000);
+      if (interval > 1) {
+        return Math.floor(interval) + "年";
+      }
+      interval = Math.floor(seconds / 2592000);
+      if (interval > 1) {
+        return interval + "ヶ月";
+      }
+      interval = Math.floor((seconds / 86400) * 7);
+      if (interval > 1) {
+        return interval + "週間";
+      }
+      interval = Math.floor(seconds / 86400);
+      if (interval > 1) {
+        return interval + "日";
+      }
+      interval = Math.floor(seconds / 3600);
+      if (interval > 1) {
+        return interval + "時間";
+      }
+      interval = Math.floor(seconds / 60);
+      if (interval > 1) {
+        return interval + "分";
+      }
+      return Math.floor(seconds) + "秒";
+    },
   },
 };
