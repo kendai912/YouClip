@@ -102,10 +102,14 @@ export default {
         let result = YTduration.match(/PT(\d*)M(\d*)S/);
         let min = result[1];
         let sec = result[2];
+        if (sec < 10) sec = "0" + sec;
+
         return min + ":" + sec;
       } else if (YTduration.match(/PT(\d*)S/)) {
         let result = YTduration.match(/PT(\d*)S/);
         let sec = result[1];
+        if (sec < 10) sec = "0" + sec;
+
         return "0:" + sec;
       }
     },

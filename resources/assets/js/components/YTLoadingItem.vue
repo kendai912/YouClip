@@ -20,11 +20,7 @@
             ></v-skeleton-loader>
           </v-col>
           <v-col cols="6" class="pa-0 ma-0">
-            <v-skeleton-loader
-              width="auto"
-              class="pa-0 ma-0"
-              type="list-item-three-line"
-            ></v-skeleton-loader>
+            <v-skeleton-loader width="auto" class="pa-0 ma-0" type="list-item-three-line"></v-skeleton-loader>
           </v-col>
         </v-row>
       </v-container>

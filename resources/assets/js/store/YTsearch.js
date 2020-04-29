@@ -17,24 +17,24 @@ const state = {
     q: "",
     type: "video",
     order: "viewCount", // 再生回数の多い順
-    maxResults: "2", // 最大検索数
+    maxResults: "8", // 最大検索数
     pageToken: "",
     videoEmbeddable: true,
-    // key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk", //ScenePicks
+    key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk", //ScenePicks
     // key: "AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU", //Futsal Movie Stock
     // key: "AIzaSyCUyFedDYTd9DZEOMVlSGofCJrV35EjQbc", //MangaVoice Translation
-    key: "AIzaSyCCX46YN-2sFhTBLEv3kVPgDjz7L1EOBUs", //IkinariDateCourse
+    // key: "AIzaSyCCX46YN-2sFhTBLEv3kVPgDjz7L1EOBUs", //IkinariDateCourse
   },
   paramsOfVideos: {
     part: "contentDetails,statistics",
     id: "",
-    // key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk", //ScenePicks
+    key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk", //ScenePicks
     // key: "AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU", //Futsal Movie Stock
     // key: "AIzaSyCUyFedDYTd9DZEOMVlSGofCJrV35EjQbc", //MangaVoice Translation
-    key: "AIzaSyCCX46YN-2sFhTBLEv3kVPgDjz7L1EOBUs", //IkinariDateCourse
+    // key: "AIzaSyCCX46YN-2sFhTBLEv3kVPgDjz7L1EOBUs", //IkinariDateCourse
   },
   isYTLoading: false,
-  numberOfYTItemsPerPagination: 10,
+  numberOfYTItemsPerPagination: 8,
   isYTSearching: false,
 };
 
