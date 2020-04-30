@@ -1,43 +1,67 @@
 <template>
-  <v-sheet class="text-center" height="450px">
-    <div>
-      <span v-on:click="returnToTimeControl">
-        <i class="fas fa-chevron-left"></i>
-      </span>
-      <span>シーンにタグ付け</span>
-    </div>
-    <v-form ref="form">
-      <v-combobox
-        v-model="tags"
-        v-bind:items="items"
-        v-bind:rules="tagsRules"
-        required
-        validate-on-blur
-        chips
-        clearable
-        label="シーンタグを入力"
-        multiple
-        solo
-      >
-        <template v-slot:selection="{ attrs, item, select, selected }">
-          <v-chip
-            v-bind="attrs"
-            :input-value="selected"
-            color="blue"
-            close
-            @click="select"
-            @click:close="remove(item)"
-          >
-            <v-icon left>mdi-label</v-icon>
-            <strong>{{ item }}</strong>&nbsp;
-            <span>(interest)</span>
-          </v-chip>
-        </template>
-      </v-combobox>
-    </v-form>
-    <div>
-      <v-btn class="mt-6" text color="error" v-on:click="submit">完了</v-btn>
-    </div>
+  <v-sheet height="360" tile class="text-center">
+    <v-sheet tile class="ma-0 pa-1">
+      <v-container class="ma-0 pa-0" fluid>
+        <v-row class="ma-0 pa-0" align="center">
+          <v-col cols="2" class="ma-0 pa-0 text-left">
+            <i v-on:click="returnToTimeControl" class="fas fa-chevron-left"></i>
+          </v-col>
+          <v-col cols="8" class="ma-0 pa-0">
+            <span>シーンにタグ付け</span>
+          </v-col>
+          <v-col cols="2" class="ma-0 pa-0"></v-col>
+        </v-row>
+      </v-container>
+    </v-sheet>
+
+    <v-divider></v-divider>
+
+    <v-sheet tile class="ma-0 pa-1">
+      <v-form ref="form">
+        <v-combobox
+          v-model="tags"
+          v-bind:items="tagItems"
+          v-bind:rules="tagsRules"
+          required
+          validate-on-blur
+          chips
+          clearable
+          label="シーンタグを入力"
+          multiple
+          flat
+        >
+          <template v-slot:selection="{ attrs, item, select, selected }">
+            <v-chip
+              v-bind="attrs"
+              :input-value="selected"
+              v-on:click="select"
+              v-on:click:close="remove(item)"
+              close
+              class="ma-2"
+              small
+              color="blue lighten-2"
+              text-color="white"
+            >
+              <v-avatar left>
+                <i class="fas fa-tag my-grey"></i>
+              </v-avatar>
+              {{ item }}
+            </v-chip>
+          </template>
+        </v-combobox>
+      </v-form>
+    </v-sheet>
+
+    <v-sheet tile class="ma-0 pa-1 text-right bottom-position">
+      <v-row align="center" fluid>
+        <v-col class="text-right">
+          <div>
+            <v-icon x-large v-on:click="submit" color="error">check_circle</v-icon>
+          </div>
+        </v-col>
+      </v-row>
+    </v-sheet>
+
     <NoLoginModal v-if="showLoginModal" />
   </v-sheet>
 </template>
@@ -58,7 +82,7 @@ export default {
     return {
       sheet: true,
       tags: [],
-      items: [],
+      tagItems: [],
       tagsRules: [v => !!v || "シーンタグを入力して下さい"]
     };
   },
@@ -72,7 +96,8 @@ export default {
       isNew: "youtube/isNew",
       isLogin: "auth/check",
       showLoginModal: "noLoginModal/showLoginModal",
-      itemsList: "tagging/itemsList"
+      tagHistories: "tagging/tagHistories",
+      isEditting: "tagging/isEditting"
     })
   },
   methods: {
@@ -86,13 +111,17 @@ export default {
         let self = this;
         setTimeout(function() {
           if (self.$refs.form.validate()) {
-            //シーンタグをセットして保存
+            //シーンタグをセットし保存＋トースト表示
             self.$store.commit("tagging/setTags", self.tags);
-            self.$store.dispatch("tagging/storeSceneTags");
-            //シーン登録のトーストを表示
-            self.$emit("taggingSucceed");
-            //シーンタグの入力フォームであるcomboboxのリストに入力した値を追加
-            self.$store.commit("tagging/setItemsList", self.tags);
+            if (self.isEditting) {
+              //編集の場合
+              self.$store.dispatch("tagging/updateSceneTags");
+              self.$emit("updateSucceed");
+            } else {
+              //新規の場合
+              self.$store.dispatch("tagging/storeSceneTags");
+              self.$emit("taggingSucceed");
+            }
           }
         });
       } else {
@@ -114,14 +143,27 @@ export default {
       //TimeControlのシートへ戻る
       this.$store.commit("tagging/setShowTaggingControl", "TimeControl");
     },
-    initialize() {
+    setTagItems() {
+      let tagItemsArray;
+      this.tagHistories.forEach(tagHistory => {
+        tagItemsArray = tagHistory.split(/[\s| |　]/);
+        this.tagItems.push(...tagItemsArray);
+      });
+    },
+    async initialize() {
       //戻るボタンから表示された際の既入力値のセット
       this.tags = this.$store.getters["tagging/tags"];
+
+      if (this.isLogin) {
+        //シーンタグアイテムに使うシーンタグ履歴をロード
+        await this.$store.dispatch("tagging/getTagHistories");
+        //スペース区切りで配列に変換しシーンタグアイテムにセット
+        this.setTagItems();
+      }
     }
   },
   created() {
     this.initialize();
-    this.items = this.itemsList;
   }
 };
 </script>

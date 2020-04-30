@@ -1,0 +1,27 @@
+<template>
+  <div>
+    <v-sheet
+      v-for="(item, index) in numberOfItemsPerPagination"
+      v-bind:key="index"
+      class="px-3 pt-3 pb-3"
+    >
+      <v-card class="mx-auto" tile max-width="400" elevation="1">
+        <v-skeleton-loader width="auto" class="mx-auto" type="card-avatar"></v-skeleton-loader>
+      </v-card>
+    </v-sheet>
+  </div>
+</template>
+
+<script>
+import { mapState, mapGetters } from "vuex";
+import myMixin from "../util";
+
+export default {
+  props: {
+    numberOfItemsPerPagination: Number
+  },
+  mixins: [myMixin],
+  methods: {},
+  created() {}
+};
+</script>

@@ -18,18 +18,38 @@ class PlaylistController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    // public function index()
+    // {
+    //     //ログインユーザーを取得
+    //     $user = Auth::user();
+
+    //     //ユーザーが保存したプレイリストのリストを取得
+    //     $playlists = $user->playlists;
+
+    //     //保存したタグデータをリターン
+    //     return response()->json(
+    //         [
+    //             'playlists' => $playlists
+    //         ],
+    //         200,
+    //         [],
+    //         JSON_UNESCAPED_UNICODE
+    //     );
+    // }
+
+    //【レコメンド】プレイリスト一覧の取得
+    public function indexPlaylistAndTagPaginationOfRecommend()
     {
-        //ログインユーザーを取得
-        $user = Auth::user();
+        //プレイリストにタグのデータを結合し、直近30日のLike数が多い順・新しい順に並び替え
+        $contentsPerPage = 5;
+        $playlistAndTagPaginationOfRecommend = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+            $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
+        }
+        ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
-        //ユーザーが保存したプレイリストのリストを取得
-        $playlists = $user->playlists;
-
-        //保存したタグデータをリターン
         return response()->json(
             [
-                'playlists' => $playlists
+            'playlistAndTagPaginationOfRecommend' => $playlistAndTagPaginationOfRecommend
             ],
             200,
             [],
@@ -37,15 +57,16 @@ class PlaylistController extends Controller
         );
     }
 
-    //全プレイリストデータのロード
-    public function loadAllPlaylist()
+    //【新着】プレイリスト一覧の取得
+    public function indexPlaylistAndTagPaginationOfNew()
     {
-        //プレイリストにタグのデータを結合
-        $playlistTagData = Playlist::with('tags')->get();
+        //プレイリストにタグのデータを結合し、新しい順に並び替え
+        $contentsPerPage = 5;
+        $playlistAndTagPaginationOfNew = Playlist::with('tags')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
         return response()->json(
             [
-            'playlistTagData' => $playlistTagData
+            'playlistAndTagPaginationOfNew' => $playlistAndTagPaginationOfNew
             ],
             200,
             [],
@@ -53,21 +74,111 @@ class PlaylistController extends Controller
         );
     }
 
-    //Likeまたは作成したプレイリストをロード
-    public function loadMyPlaylist()
+    //【スポーツ】プレイリスト一覧の取得
+    public function indexPlaylistAndTagPaginationOfSports()
     {
-        //Likeしたプレイリストを取得
-        $LikedPlaylist = $this->loadLikedPlaylist();
+        //スポーツカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
+        $contentsPerPage = 5;
+        $playlistAndTagPaginationOfSports = Playlist::with('tags')->where('playlistCategory', 'Sports')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+            $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
+        }
+        ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
-        //作成したプレイリストを取得
-        $createdPlaylist = $this->loadCreatedPlaylist();
+        return response()->json(
+            [
+            'playlistAndTagPaginationOfSports' => $playlistAndTagPaginationOfSports
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
 
-        //Likeしたプレイリストと作成したプレイリストをマージ
-        $myPlaylist = $LikedPlaylist->merge($createdPlaylist);
+    //【エンターテイメント】プレイリスト一覧の取得
+    public function indexPlaylistAndTagPaginationOfEntertainment()
+    {
+        //エンターテイメントカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
+        $contentsPerPage = 5;
+        $playlistAndTagPaginationOfEntertainment = Playlist::with('tags')->where('playlistCategory', 'Entertainment')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+            $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
+        }
+        ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+
+        return response()->json(
+            [
+            'playlistAndTagPaginationOfEntertainment' => $playlistAndTagPaginationOfEntertainment
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    // ID指定でのプレイリストおよびタグ・動画データの取得
+    public function getPlaylistAndTagVideoDataById(Request $request)
+    {
+        //プレイリストとタグのデータを取得
+        $playlistId = $request->input('id');
+        $playlistAndTagData = Playlist::with('tags')->where('id', $playlistId)->first();
+
+        //タグから動画データを取得
+        $tagVideoData = [];
+        foreach ($playlistAndTagData->tags as $tag) {
+            $tagVideoData[] = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'category', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags.id', $tag->id)->first();
+        }
+
+        //プレイリスト・タグ・動画のデータを連結
+        $playlistAndTagVideoData = [
+            'playlist_id' => $playlistAndTagData->id,
+            'playlistName' => $playlistAndTagData->playlistName,
+            'privacySetting' => $playlistAndTagData->privacySetting,
+            'user_id' => $playlistAndTagData->user_id,
+            'playlist_created_at' => (new Carbon($playlistAndTagData->created_at))->toDateTimeString(),
+            'playlist_updated_at' => (new Carbon($playlistAndTagData->updated_at))->toDateTimeString(),
+            'tagVideoData' => $tagVideoData,
+        ];
+
+        return response()->json(
+            [
+            'playlistAndTagVideoData' => $playlistAndTagVideoData
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    //作成したプレイリスト一覧を取得
+    public function getMyCreatedPlaylist()
+    {
+        //作成したプレイリスト一覧を取得
+        $createdPlaylist = $this->createdPlaylist();
         
         return response()->json(
             [
-            'myPlaylist' => $myPlaylist
+            'myCreatedPlaylist' => $createdPlaylist
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    //Likeまたは作成したプレイリスト一覧をロード
+    public function loadMyCreatedAndLikedPlaylist()
+    {
+        //Likeしたプレイリストを取得
+        $LikedPlaylist = $this->likedPlaylist();
+
+        //作成したプレイリストを取得
+        $createdPlaylist = $this->createdPlaylist();
+
+        //Likeしたプレイリストと作成したプレイリストをマージ
+        $myCreatedAndLikedPlaylist = $LikedPlaylist->merge($createdPlaylist);
+        
+        return response()->json(
+            [
+            'myCreatedAndLikedPlaylist' => $myCreatedAndLikedPlaylist
             ],
             200,
             [],
@@ -76,7 +187,7 @@ class PlaylistController extends Controller
     }
 
     //Likeしたプレイリストを取得
-    public function loadLikedPlaylist()
+    public function likedPlaylist()
     {
         $likesPlaylists = LikesPlaylist::where('user_id', Auth::user()->id)->get();
         $likesPlaylistIds = [];
@@ -90,7 +201,7 @@ class PlaylistController extends Controller
     }
 
     //作成したプレイリストを取得
-    public function loadCreatedPlaylist()
+    public function createdPlaylist()
     {
         $createdPlaylist = Playlist::with('tags')->where('user_id', Auth::user()->id)->get();
 
@@ -110,6 +221,7 @@ class PlaylistController extends Controller
         $playlist->playlistName = $request->newPlaylistName;
         $playlist->privacySetting = $request->privacySetting;
         $playlist->user_id = Auth::user()->id;
+        $playlist->playlistCategory = $request->currentCategory;
         $playlist->save();
 
         //playlist_tagテーブルに保存

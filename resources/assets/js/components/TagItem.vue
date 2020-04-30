@@ -1,25 +1,51 @@
 <template>
-  <div v-if="isReady" class="container">
-    <div>
-      <span v-if="isNew">{{ newVideoData.title }}</span>
-      <span v-else>{{ videoData.title }}</span>
-    </div>
-    <transition-group name="tag-list" tag="p" class="tag__list">
-      <ul v-for="tagData in showTagDataArray" v-bind:key="tagData.id">
-        <li class="tag__list__item">
-          <span>
-            {{ formatToMinSec(tagData.start) }}〜{{
-            formatToMinSec(tagData.end)
-            }}
-          </span>
-          <span
-            class="tag"
-            v-for="tag in tagData.tags.split(/[\s| |　]/)"
-            v-bind:key="tagData + '.' + tag"
-          >{{ tag }}</span>
-        </li>
-      </ul>
-    </transition-group>
+  <div v-if="isReady">
+    <v-sheet tile class="mx-auto pa-1">
+      <div>
+        <span v-if="isNew">{{ newVideoData.title }}</span>
+        <span v-else>{{ videoData.title }}</span>
+      </div>
+    </v-sheet>
+
+    <v-sheet tile class="mx-auto pa-1">
+      <transition-group name="tag-list" tag="p" class="tag__list">
+        <v-row
+          v-for="tagData in showTagDataArray"
+          v-bind:key="tagData.id"
+          class="ma-0 pa-0"
+          align="center"
+        >
+          <v-col class="ma-0 pa-0">
+            <span>
+              {{ formatToMinSec(tagData.start) }}〜{{
+                formatToMinSec(tagData.end)
+              }}</span
+            >
+          </v-col>
+          <v-col cols="9" class="ma-0 pa-0">
+            <div class="horizontal-list-wrap">
+              <ul class="horizontal-list">
+                <li class="item">
+                  <v-chip
+                    v-for="tag in tagData.tags.split(/[\s| |　]/)"
+                    v-bind:key="tagData + '.' + tag"
+                    class="ma-2"
+                    small
+                    color="blue lighten-2"
+                    text-color="white"
+                  >
+                    <v-avatar left>
+                      <i class="fas fa-tag my-grey"></i>
+                    </v-avatar>
+                    {{ tag }}
+                  </v-chip>
+                </li>
+              </ul>
+            </div>
+          </v-col>
+        </v-row>
+      </transition-group>
+    </v-sheet>
   </div>
 </template>
 <script>
@@ -29,7 +55,7 @@ import myMixin from "../util";
 export default {
   data() {
     return {
-      showTagIndex: 0
+      showTagIndex: 0,
     };
   },
   mixins: [myMixin],
@@ -40,14 +66,14 @@ export default {
       newVideoData: "youtube/newVideoData",
       tagDataArray: "youtube/tagDataArray",
       isNew: "youtube/isNew",
-      isReady: "youtube/isReady"
+      isReady: "youtube/isReady",
     }),
     playingTagIndex() {
       let index = 0;
       if (this.tagDataArray) {
         //現在再生中のタグのインデックスを取得(なしの場合は-1)
         index = this.tagDataArray.findIndex(
-          tagData =>
+          (tagData) =>
             this.convertToSec(this.formatToMinSec(tagData.start)) <=
               this.convertToSec(this.currentTime) &&
             this.convertToSec(this.formatToMinSec(tagData.end)) >=
@@ -69,9 +95,9 @@ export default {
             this.playingTagIndex + 5
           )
         : "";
-    }
+    },
   },
   methods: {},
-  created() {}
+  created() {},
 };
 </script>

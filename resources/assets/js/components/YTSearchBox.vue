@@ -1,30 +1,29 @@
 <template>
-  <div>
-    <div>
-      <input
-        id="YTsearchBox"
-        type="text"
-        v-model="YTsearchWord"
-        v-on:input="YTsearchCandidates"
-        placeholder="キーワードまたはYoutubeのURLを入力"
-      />
-      <span id="YTsearchBtn" v-on:click="YTsearch">
-        <img alt="検索" src="/img/search.svg" />
-      </span>
-    </div>
-
-    <!-- <div v-bind:class="{ candidatesWrap: candidates.length != 0 }" v-if="YTsearchWord != ''">
-      <div v-for="(candidate, index) in candidates" v-bind:key="index">
-        <div
-          v-if="index < 10 && candidate.playlistName"
-          class="item"
-          v-bind:class="{ isEven: index % 2 == 1 }"
-        >
-          <p v-on:click="select(candidate.playlistName)">{{ candidate.playlistName }}</p>
-        </div>
-      </div>
-    </div>-->
-  </div>
+  <v-sheet color="grey lighten-3" class="search-box" fluid>
+    <v-container class="ma-0 pa-0 text-center">
+      <v-row class="ma-0 pa-0" align="center">
+        <v-col cols="1" class="ma-0 pa-0 text-center">
+          <v-icon v-on:click="back">mdi-arrow-left</v-icon>
+        </v-col>
+        <v-col class="ma-0 pa-0">
+          <v-autocomplete
+            v-model="model"
+            v-bind:search-input.sync="searchquery"
+            v-on:keydown.enter="YTsearch"
+            placeholder="キーワードまたはYouTubeのURLを入力"
+            cache-items
+            hide-no-data
+            clearable
+            dense
+          >
+            <template v-slot:append-outer>
+              <v-icon v-on:click="YTsearch">search</v-icon>
+            </template>
+          </v-autocomplete>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-sheet>
 </template>
 
 <script>
@@ -34,22 +33,28 @@ import router from "../router";
 export default {
   data() {
     return {
-      YTsearchWord: ""
+      model: null,
+      searchquery: null
     };
   },
   computed: {
-    // //検索候補
-    // ...mapGetters({
-    //   candidates: "search/candidates"
-    // })
+    ...mapGetters({})
   },
   methods: {
-    YTsearch() {
-      if (this.YTsearchWord == "") return;
+    YTsearch(event) {
+      // 日本語入力中のEnterキー操作は無効にする
+      if (event.keyCode != undefined && event.keyCode !== 13) return;
+
+      //空欄だった場合は検索実行せずリターン
+      if (this.searchquery == "") return;
+
+      //前回の検索結果を空にする
+      this.$store.commit("YTsearch/clearYTResult");
 
       //入力内容がYoutubeのURLかキーワードか判定
-      let youtubeId = this.YTsearchWord.match(/(\?v=|youtu.be\/)([^&]+)/);
+      let youtubeId = this.searchquery.match(/(\?v=|youtu.be\/)([^&]+)/);
       if (youtubeId) {
+        //YoutubeのURLの場合、直接再生ページへ
         router
           .push({
             path: "/youtube",
@@ -57,26 +62,16 @@ export default {
           })
           .catch(err => {});
       } else {
-        this.$store.commit("YTsearch/setYTsearchQuery", this.YTsearchWord);
-        this.$store.dispatch("YTsearch/YTsearch");
+        //キーワードの場合、検索結果表示へ
+        this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
         this.$store.commit("YTsearch/YTsearchResultPageTransit");
       }
 
-      // IFrame Player APIを呼び出すためにページをリロード
       window.location.reload();
     },
-    //入力を元に検索候補を取得
-    YTsearchCandidates() {
-      let input = $("#YTsearchBox").val();
-      // this.$store.dispatch("search/searchCandidates", input);
+    back() {
+      this.$router.go(-1);
     }
-    //検索候補をクリックするとそのまま検索
-    // select(candidateName) {
-    //   this.YTsearchWord = candidateName;
-    //   this.$store.commit("search/setSearchQuery", candidateName);
-    //   this.$store.dispatch("search/search");
-    //   this.$store.commit("search/searchResultPageTransit");
-    // }
   },
   created() {}
 };

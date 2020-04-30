@@ -33,6 +33,9 @@ export default {
     })
   },
   created() {
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+
     //リンク先の検索結果ページを初期化
     this.$store.commit("search/setTagVideoResult", null);
     this.$store.commit("search/setPlaylistTagResult", null);

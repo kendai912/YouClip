@@ -1,15 +1,12 @@
 <template>
   <div class="container--small">
-    <h1>Search</h1>
-    <div>
-      <SearchBox />
-      <SearchHint v-bind:searchHints="topSearchqueries" v-bind:hintCategory="topSearchquery" />
-      <SearchHint
-        v-if="isLogin"
-        v-bind:searchHints="searchHistories"
-        v-bind:hintCategory="searchHistory"
-      />
-    </div>
+    <SearchBox />
+    <SearchHint v-bind:searchHints="topSearchqueries" v-bind:hintCategory="topSearchquery" />
+    <SearchHint
+      v-if="isLogin"
+      v-bind:searchHints="searchHistories"
+      v-bind:hintCategory="searchHistory"
+    />
   </div>
 </template>
 
@@ -32,22 +29,22 @@ export default {
   computed: {
     //ログインチェック
     ...mapGetters({
-      isLogin: "auth/check"
-    }),
-    //人気の検索ワード
-    ...mapGetters({
-      topSearchqueries: "search/topSearchqueries"
-    }),
-    //検索履歴
-    ...mapGetters({
+      isLogin: "auth/check",
+      topSearchqueries: "search/topSearchqueries",
       searchHistories: "search/searchHistories"
     })
   },
-  created() {
+  async created() {
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+
     //人気の検索ワードを取得
-    this.$store.dispatch("search/getTopSearchqueries");
+    await this.$store.dispatch("search/getTopSearchqueries");
     //検索履歴を取得
-    this.$store.dispatch("search/getSearchHistories");
+    await this.$store.dispatch("search/getSearchHistories");
+
+    //ローディングを非表示
+    this.$store.commit("search/setIsLoadingSearchHint", false);
   }
 };
 </script>

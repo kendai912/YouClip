@@ -29,27 +29,24 @@ class TagController extends Controller
         );
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    //ID指定でのタグ・動画データの取得
+    public function getTagAndVideoDataById(Request $request)
     {
-        //
-    }
-    
-    //全ターグデータをロード
-    public function loadAllTag()
-    {
-        //動画・タグの全データを外部結合し抽出
-        $tagVideoData = Tag::leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
+        $tagId = $request->input('id');
+        $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'category', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags.id', $tagId)->get();
 
-        return $tagVideoData;
+        return response()->json(
+            [
+            'tagAndVideoData' => $tagAndVideoData
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 
     //Likeまたは作成したタグデータをロード
-    public function loadMyTag()
+    public function loadMyCreatedAndLikedTagVideo()
     {
         //LikeしたタグIDを取得
         $likes = Like::where('user_id', Auth::user()->id)->get();
@@ -59,11 +56,11 @@ class TagController extends Controller
         }
         
         // Likeしたタグデータと作成したタグデータを取得
-        $myTagVideoData = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
+        $myCreatedAndLikedTagVideo = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
 
         return response()->json(
             [
-            'myTagVideoData' => $myTagVideoData
+            'myCreatedAndLikedTagVideo' => $myCreatedAndLikedTagVideo
             ],
             200,
             [],
@@ -209,10 +206,11 @@ class TagController extends Controller
         $options->setDuration(3);
         $startSec = $this->convertToSec("00:".$request->start);
         $options->setStart($startSec);
+        // $options->setQuality(100);
 
         $previewFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
-        $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=XMR-JyEDdc4", $options);
-        $grabzIt->SaveTo("../storage/app/public/img/" . $previewFileName);
+        $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=" . $request->youtubeId, $options);
+        $grabzIt->SaveTo(storage_path(). "/app/public/img/" . $previewFileName);
 
         return $previewFileName;
     }
@@ -248,13 +246,33 @@ class TagController extends Controller
     public function update(Request $request)
     {
         //DBを更新
-        $tag = Tag::find($request->id);
-        $tag->tags = $request->tags;
+        $tag = Tag::find($request->tagId);
+        // 開始or終了時間が更新された場合はpreview用のgifを再取得
+        if ($this->convertToSec($tag->start) != $this->convertToSec("00:".$request->start) || $this->convertToSec($tag->end) != $this->convertToSec("00:".$request->end)) {
+            //既存のpreview用gifを削除
+            unlink(storage_path(). "/app/public/img/" . $tag->preview);
+
+            //更新したpreview用のgifを再取得
+            $previewFileName = $this->getPreviewFile($request);
+            $tag->preview = $previewFileName;
+        }
+        $tag->tags = implode(" ", $request->tags);
+        $start = $request->start;
         $tag->start = "00:".$request->start;
         $tag->end = "00:".$request->end;
         $tag->save();
-    }
 
+        //保存したタグデータをリターン
+        return response()->json(
+            [
+                'tag' => $tag
+            ],
+            201,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -262,9 +280,35 @@ class TagController extends Controller
      */
     public function delete(Request $request)
     {
+        //削除するシーンタグを取得
+        $tag = Tag::find($request->tagId);
+        //preview用gifを削除
+        unlink(storage_path(). "/app/public/img/" . $tag->preview);
         //DBから削除
-        $tag = Tag::find($request->id);
         $tag->delete();
+
+        return response(null, 204);
+    }
+
+    public function getTagHistories()
+    {
+        //ユーザーが登録した直近10件のシーンタグを取得
+        $tags = Tag::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->take(10)->get();
+
+        $tagHistories = [];
+        foreach ($tags as $tag) {
+            $tagHistories[] = $tag->tags;
+        }
+
+        //取得したタグデータをリターン
+        return response()->json(
+            [
+                'tagHistories' => $tagHistories
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 
     public static function convertToSec($time)

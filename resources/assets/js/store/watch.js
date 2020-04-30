@@ -1,6 +1,9 @@
 import axios from "axios";
+import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
 
 const state = {
+  playlistAndTagVideoData: null,
+  tagAndVideoData: null,
   watchList: null,
   listIndex: 0,
   playlistId: "",
@@ -8,46 +11,50 @@ const state = {
   currentYoutubeId: "",
   currentTagId: "",
   start: "",
-  end: ""
+  end: "",
 };
 
 const getters = {
-  watchList: state => state.watchList,
-  listIndex: state => state.listIndex,
-  playlistId: state => state.playlistId,
-  playlistName: state => state.playlistName,
-  currentYoutubeId: state => state.currentYoutubeId,
-  currentTagId: state => state.watchList[state.listIndex].tag_id,
-  currentTagName: state =>
+  playlistAndTagVideoData: (state) => state.playlistAndTagVideoData,
+  tagAndVideoData: (state) => state.tagAndVideoData,
+  watchList: (state) => state.watchList,
+  listIndex: (state) => state.listIndex,
+  playlistId: (state) => state.playlistId,
+  playlistName: (state) => state.playlistName,
+  currentYoutubeId: (state) => state.watchList[state.listIndex].youtubeId,
+  currentTagId: (state) => state.watchList[state.listIndex].tag_id,
+  currentTagName: (state) =>
     state.watchList ? state.watchList[state.listIndex].tags : "",
   currentTagNameArray: (state, getters) =>
     state.watchList ? getters.currentTagName.split(/[\s| |　]/) : "",
-  currentTitle: state =>
+  currentTitle: (state) =>
     state.watchList ? state.watchList[state.listIndex].title : "",
-  start: state => state.start,
-  end: state => state.end,
-  isPlaylist: state => (state.playlistId ? true : false)
+  currentCategory: (state) =>
+    state.watchList ? state.watchList[state.listIndex].category : "",
+  start: (state) => state.start,
+  end: (state) => state.end,
+  isPlaylist: (state) => (state.playlistId ? true : false),
 };
 
 const mutations = {
-  setPlaylistParameters(state, { playlistTagVideoArray, index }) {
+  //プレイリストの再生に必要なパラメータをセット
+  setYTPlaylistParameters(state, index) {
     //watchlistにコンテンツをセット
-    state.watchList = playlistTagVideoArray;
+    state.watchList = state.playlistAndTagVideoData.tagVideoData;
 
-    //プレイリストの場合はlistIndexは0からスタート
+    //watchlistの中のindexをセット
     state.listIndex = index;
 
     //watchlistのlistIndexのデータを再生関連パラメーターにセット
     mutations.setYTPlayerParameters(state);
   },
-  setIndivisualParameters(state, indivisualTagVideoArray) {
+  //シーンタグの再生に必要なパラメータをセット
+  setYTIndivisualParameters(state) {
     //watchlistにコンテンツをセット
-    state.watchList = indivisualTagVideoArray;
+    state.watchList = state.tagAndVideoData;
 
-    //watchlistからクリックしたタグIDのインデックスを検索しlistIndexにセット
-    state.listIndex = state.watchList.findIndex(
-      ({ tag_id }) => tag_id == state.currentTagId
-    );
+    //シーンタグの場合はindexはデフォルトで0
+    state.listIndex = 0;
 
     //watchlistのlistIndexのデータを再生関連パラメーターにセット
     mutations.setYTPlayerParameters(state);
@@ -60,6 +67,12 @@ const mutations = {
     //YTPlayerに必要なendをセット
     state.end = state.watchList[state.listIndex].end;
   },
+  setPlaylistAndTagVideoData(state, data) {
+    state.playlistAndTagVideoData = data;
+  },
+  setTagAndVideoData(state, data) {
+    state.tagAndVideoData = data;
+  },
   setPlaylistId(state, data) {
     state.playlistId = data;
   },
@@ -71,15 +84,47 @@ const mutations = {
   },
   setCurrentTagId(state, data) {
     state.currentTagId = data;
-  }
+  },
 };
 
-const actions = {};
+const actions = {
+  async getPlaylistAndTagVideoDataById(context, playlistId) {
+    const response = await axios.get(
+      "api/get/playlistAndTagVideoData?id=" + playlistId
+    );
+    if (response.status == OK) {
+      // 成功した時
+      context.commit(
+        "setPlaylistAndTagVideoData",
+        response.data.playlistAndTagVideoData
+      );
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  async getTagAndVideoDataById(context, tagId) {
+    const response = await axios.get("api/get/tagAndVideoData?id=" + tagId);
+    if (response.status == OK) {
+      // 成功した時
+      context.commit("setTagAndVideoData", response.data.tagAndVideoData);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+};
 
 export default {
   namespaced: true,
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

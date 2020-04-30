@@ -26,22 +26,16 @@ class SearchController extends Controller
         // $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-    }
-
     public function searchTag(Request $request)
     {
         //検索ワード
         $searchQuery = $request->searchQuery;
 
+        //ページネーション設定
+        $contentsPerPage = 5;
+
         //検索ワードに一致する動画・タグの全データを外部結合し取得
-        $tagVideoResult = Tag::leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags', 'LIKE', "%$searchQuery%")->orWhere('title', 'LIKE', "%$searchQuery%")->orderBy('tag_created_at', 'desc')->get();
+        $tagVideoResult = Tag::leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags', 'LIKE', "%$searchQuery%")->orWhere('title', 'LIKE', "%$searchQuery%")->orderBy('tag_created_at', 'desc')->paginate($contentsPerPage);
         
         return response()->json(
             [
@@ -58,8 +52,11 @@ class SearchController extends Controller
         //検索ワード
         $searchQuery = $request->searchQuery;
 
+        //ページネーション設定
+        $contentsPerPage = 5;
+
         //検索ワードにプレイリスト・タグのデータを取得
-        $playlistTagResult = Playlist::with('tags')->where('playlistName', 'LIKE', "%$searchQuery%")->get();
+        $playlistTagResult = Playlist::with('tags')->where('playlistName', 'LIKE', "%$searchQuery%")->paginate($contentsPerPage);
 
         return response()->json(
             [
@@ -71,28 +68,46 @@ class SearchController extends Controller
         );
     }
 
-    public function searchCandidates(Request $request)
+    //inputを元に検索キーワード候補を抽出
+    public function getSearchCandidates(Request $request)
     {
-        //inputを含むタグ名一覧を抽出
-        $tagCandidates = Tag::where('tags', 'LIKE', "%$request->input%")->select('tags')->get();
-        
-        //inputを含むタイトル一覧を抽出
-        $titleCandidates = Video::where('title', 'LIKE', "%$request->input%")->select('title')->get();
+        $input = $request->input('input');
+      
+        //人気の検索キーワードからサジェストを取得
+        $topSearchqueriesCandidates = Topsearchquery::whereIn('searchquery_id', function ($query) use ($input) {
+            $query->from('searchqueries')->where('searchQuery', 'LIKE', "%$input%")->select('id')->get();
+        })->with('searchquery')->orderBy('user_id_count', 'desc')->get();
 
-        //inputをプレイリスト名に含むプレイリスト一覧を抽出
-        $playlistCandidates = Playlist::where('playlistName', 'LIKE', "%$request->input%")->select('playlistName')->get();
+        if (!Auth::check()) {
+            //ログインしていない場合は、人気の検索キーワードのサジェストのみ返却
+            $searchCandidates["searchHistoryCandidates"] = "";
+            $searchCandidates["topSearchqueriesCandidates"] = $topSearchqueriesCandidates;
 
-        //タグ名一覧とタイトル一覧とプレイリスト名をマージ
-        $candidates = collect($tagCandidates)->merge($titleCandidates)->merge($playlistCandidates);
-        
-        return response()->json(
-            [
-                'candidates' => $candidates
-            ],
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+            return response()->json(
+                [
+                    'searchCandidates' => $searchCandidates,
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            //ログインしている場合は、過去の検索履歴からもサジェストを取得
+            $searchHistoryCandidates = Auth::user()->searchqueries()->where('searchQuery', 'LIKE', "%$input%")->select('searchQuery')->distinct()->get();
+            
+            $searchCandidates["searchHistoryCandidates"] = $searchHistoryCandidates;
+            $searchCandidates["topSearchqueriesCandidates"] = $topSearchqueriesCandidates;
+
+            //ログインしている場合は、人気の検索キーワード＋過去の検索履歴のサジェストを返却
+            return response()->json(
+                [
+                    'searchCandidates' => $searchCandidates,
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
 
     //検索ワードの履歴データを各テーブルに保存
@@ -176,11 +191,11 @@ class SearchController extends Controller
         }
     }
 
-    //人気の検索ワードを取得
+    //(直近1ヶ月の)人気の検索ワードを取得
     public function getTopSearchqueries()
     {
-        //user_id_countが上位10件を取得
-        $topSearchqueryDataArray = Topsearchquery::leftJoin('searchqueries', 'searchqueries.id', '=', 'topsearchqueries.searchquery_id')->select('topsearchqueries.id as topsearchqueries_id', 'topsearchqueries.searchquery_id', 'topsearchqueries.user_id_count', 'searchqueries.created_at')->orderBy('user_id_count', 'DESC')->orderBy('created_at', 'DESC')->take(10)->get();
+        //user_id_countが上位5件を取得
+        $topSearchqueryDataArray = Topsearchquery::leftJoin('searchqueries', 'searchqueries.id', '=', 'topsearchqueries.searchquery_id')->select('topsearchqueries.id as topsearchqueries_id', 'topsearchqueries.searchquery_id', 'topsearchqueries.user_id_count', 'searchqueries.created_at')->orderBy('user_id_count', 'DESC')->orderBy('created_at', 'DESC')->take(5)->get();
 
         //上位10件の検索ワードを取得
         $topSearchqueries = [];
@@ -209,7 +224,7 @@ class SearchController extends Controller
         //検索履歴を取得
         $searchHistoryArray = SearchqueryUser::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->distinct()->get();
 
-        //直近10件の検索履歴を取得
+        //直近5件の検索履歴を取得
         $searchHistories = [];
         $count = 0;
         foreach ($searchHistoryArray as $searchHistoryData) {
@@ -223,7 +238,7 @@ class SearchController extends Controller
             }
 
             //重複がなければ10件まで追加
-            if (!$duplicate_flag && $count < 10) {
+            if (!$duplicate_flag && $count < 5) {
                 $searchHistories[] = $addingSearchQuery;
                 $count++;
             }

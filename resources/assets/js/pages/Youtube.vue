@@ -1,10 +1,17 @@
 <template>
   <div class="container--small">
-    <div id="player"></div>
-    <div>
-      <TagItem />
+    <div class="yt-container">
+      <div id="player"></div>
     </div>
-    <SceneTagControl v-bind:player="player" />
+    <TagItem />
+    <SceneTagControl
+      v-bind:player="player"
+      v-on:taggingSucceed="taggingSucceed"
+    />
+    <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
+      {{ text }}
+      <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
+    </v-snackbar>
   </div>
 </template>
 
@@ -17,12 +24,15 @@ import myMixin from "../util";
 export default {
   components: {
     TagItem,
-    SceneTagControl
+    SceneTagControl,
   },
   data() {
     return {
       show: true,
-      player: null
+      player: null,
+      snackbar: false,
+      timeout: 5000,
+      text: "シーンタグを登録しました",
     };
   },
   mixins: [myMixin],
@@ -31,10 +41,19 @@ export default {
       youtubeId: "youtube/youtubeId",
       videoData: "youtube/videoData",
       tagDataArray: "youtube/tagDataArray",
-      isNew: "youtube/isNew"
-    })
+      isNew: "youtube/isNew",
+    }),
+  },
+  methods: {
+    //シーンタグ完了のトーストを表示
+    taggingSucceed() {
+      this.snackbar = true;
+    },
   },
   async created() {
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+
     //必要データを取得するまでTagItemは非表示
     this.$store.commit("youtube/setIsReady", false);
 
@@ -65,12 +84,12 @@ export default {
         videoId: this.youtubeId,
         events: {
           onReady: onPlayerReady,
-          onStateChange: onPlayerStateChange
-        }
+          onStateChange: onPlayerStateChange,
+        },
       });
     };
 
-    window.onPlayerReady = event => {
+    window.onPlayerReady = (event) => {
       event.target.mute();
       event.target.playVideo();
       this.isPlayerReady = true;
@@ -87,7 +106,7 @@ export default {
       this.$store.commit("youtube/setIsReady", true);
     };
 
-    window.onPlayerStateChange = event => {};
+    window.onPlayerStateChange = (event) => {};
 
     //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
     let from = this.$route.path;
@@ -97,7 +116,6 @@ export default {
         location.reload();
       }
     });
-
-  }
+  },
 };
 </script>

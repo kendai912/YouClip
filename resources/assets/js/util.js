@@ -1,6 +1,7 @@
 //システムエラー定義
 export const OK = 200;
 export const CREATED = 201;
+export const DELETED = 204;
 export const INTERNAL_SERVER_ERROR = 500;
 
 //バリデーションエラー定義
@@ -18,7 +19,7 @@ export function getCookieValue(searchKey) {
 
   let val = "";
 
-  document.cookie.split(";").forEach(cookie => {
+  document.cookie.split(";").forEach((cookie) => {
     const [key, value] = cookie.split("=");
     if (key === searchKey) {
       return (val = value);
@@ -41,11 +42,12 @@ export default {
             title: value.title,
             thumbnail: value.thumbnail,
             created_at: value.tag_created_at,
+            tagsList: "",
             tags: value.tags,
             tagArray: value.tags.split(/[\s| |　]/),
             start: this.formatToMinSec(value.start),
             end: this.formatToMinSec(value.end),
-            preview: value.preview
+            preview: value.preview,
           });
         });
       }
@@ -54,19 +56,21 @@ export default {
     putPlaylistTagIntoMediaItems: function(mediaItems, playlistTag) {
       if (playlistTag) {
         playlistTag.forEach((value, index) => {
-          mediaItems.push({
-            category: "playlist",
-            id: value.id,
-            title: value.playlistName,
-            thumbnail:
-              "https://watanabeseiji.com/wordpress/wp-content/themes/cyber/images/noimage.jpg",
-            created_at: value.created_at,
-            tags: "",
-            tagArray: "",
-            start: "",
-            end: "",
-            preview: value.tags[0].preview
-          });
+          if (value.tags[0]) {
+            mediaItems.push({
+              category: "playlist",
+              id: value.id,
+              title: value.playlistName,
+              thumbnail: "",
+              created_at: value.created_at,
+              tagsList: value.tags,
+              tags: "",
+              tagArray: "",
+              start: "",
+              end: "",
+              preview: value.tags[0].preview,
+            });
+          }
         });
       }
     },
@@ -92,61 +96,69 @@ export default {
 
       return minutes + ":" + seconds;
     },
-    setPlaylistParameters(playlistId, index) {
-      //プレイリストIDからプレイリスト名を取得
-      let playlistName = this.$store.getters[
-        "playlist/getPlaylistTagContentById"
-      ](playlistId).playlistName;
+    //APIで返ってきたdurationを分:秒に整形
+    convertTYdurationToMinSec(YTduration) {
+      if (YTduration.match(/PT(\d*)M(\d*)S/)) {
+        let result = YTduration.match(/PT(\d*)M(\d*)S/);
+        let min = result[1];
+        let sec = result[2];
+        if (sec < 10) sec = "0" + sec;
 
-      //プレイリストのIDと名前をwatchストアにセット
-      this.$store.commit("watch/setPlaylistId", playlistId);
-      this.$store.commit("watch/setPlaylistName", playlistName);
+        return min + ":" + sec;
+      } else if (YTduration.match(/PT(\d*)S/)) {
+        let result = YTduration.match(/PT(\d*)S/);
+        let sec = result[1];
+        if (sec < 10) sec = "0" + sec;
 
-      //プレイリストIDからplaylistストアのplaylistTagDataに格納されているtagデータを取得
-      let playlistTagArray = this.$store.getters[
-        "playlist/getPlaylistTagContentById"
-      ](playlistId).tags;
-
-      //tagデータとvideoデータを結合
-      let playlistTagVideoArray = [];
-      playlistTagArray.forEach(value => {
-        playlistTagVideoArray.push(
-          this.$store.getters["tag/getTagVideoContentById"](value.id)
-        );
-      });
-
-      //Watchストアに再生のためのパラメータをセット
-      this.$store.commit("watch/setPlaylistParameters", {
-        playlistTagVideoArray,
-        index
-      });
+        return "0:" + sec;
+      }
     },
-    //YTPlayerのタグの再生に必要なパラメータをセット
-    async setIndivisualParameters(currentTagId) {
-      let video_id = this.$store.getters["tag/getTagVideoContentById"](
-        currentTagId
-      ).video_id;
-
-      // //再生するtagIDをwatchストアにセット
-      this.$store.commit("watch/setCurrentTagId", currentTagId);
-
-      //VideoIDからtagデータ一覧を取得
-      await this.$store.dispatch("video/getTagListByVideoId", video_id);
-      let tagList = this.$store.getters["video/tagListOfVideo"];
-
-      //tagデータとvideoデータを結合
-      let indivisualTagVideoArray = [];
-      tagList.forEach(value => {
-        indivisualTagVideoArray.push(
-          this.$store.getters["tag/getTagVideoContentById"](value.id)
-        );
-      });
-
-      //Watchストアに再生のためのパラメータをセット
-      this.$store.commit(
-        "watch/setIndivisualParameters",
-        indivisualTagVideoArray
+    //数値の桁変換を行う関数
+    convertNumDigit(num) {
+      let units = ["", "万", "億"];
+      var ext = units[0];
+      for (var i = 1; i < units.length; i += 1) {
+        if (parseInt(num) >= 10000) {
+          num = parseInt(num) / 10000;
+          ext = units[i];
+        }
+      }
+      return Math.round(num) + ext;
+    },
+    //日付が現時点からどのくらい前か表示変換を行う関数
+    timeSince(publishedAt) {
+      let date = new Date(
+        publishedAt.substring(0, 4),
+        publishedAt.substring(5, 7) - 1,
+        publishedAt.substring(8, 10)
       );
-    }
-  }
+      let seconds = Math.floor((new Date() - date) / 1000);
+
+      let interval = Math.floor(seconds / 31536000);
+      if (interval > 1) {
+        return Math.floor(interval) + "年";
+      }
+      interval = Math.floor(seconds / 2592000);
+      if (interval > 1) {
+        return interval + "ヶ月";
+      }
+      interval = Math.floor((seconds / 86400) * 7);
+      if (interval > 1) {
+        return interval + "週間";
+      }
+      interval = Math.floor(seconds / 86400);
+      if (interval > 1) {
+        return interval + "日";
+      }
+      interval = Math.floor(seconds / 3600);
+      if (interval > 1) {
+        return interval + "時間";
+      }
+      interval = Math.floor(seconds / 60);
+      if (interval > 1) {
+        return interval + "分";
+      }
+      return Math.floor(seconds) + "秒";
+    },
+  },
 };

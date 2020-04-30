@@ -16,7 +16,7 @@ const mutations = {
       //スマホでのシェア
       navigator
         .share({
-          title: "ScenePicks",
+          title: "YouClip",
           text: state.shareText,
           url: state.shareUrl
         })
