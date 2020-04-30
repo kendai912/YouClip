@@ -19,7 +19,7 @@
       <!-- twitter -->
       <a
         v-on:click="shareOnSNS"
-        v-bind:href="'https://twitter.com/intent/tweet?url=' + encodedShareURI + '&text=[ScenePicks] ' + shareText"
+        v-bind:href="'https://twitter.com/intent/tweet?url=' + encodedShareURI + '&text=[YouClip] ' + shareText"
       >
         <i class="fab fa-twitter fa-2x" style="color: #339af0;"></i>
       </a>

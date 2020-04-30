@@ -1,7 +1,7 @@
 <template>
   <v-app-bar color="white" dense>
     <v-toolbar-title>
-      <router-link class="navbar__brand" to="/">ScenePicks</router-link>
+      <router-link class="navbar__brand" to="/">YouClip</router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <div class="navbar__menu">

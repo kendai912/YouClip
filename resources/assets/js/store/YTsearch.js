@@ -20,7 +20,7 @@ const state = {
     maxResults: "8", // 最大検索数
     pageToken: "",
     videoEmbeddable: true,
-    key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk", //ScenePicks
+    key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk", //YouClip
     // key: "AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU", //Futsal Movie Stock
     // key: "AIzaSyCUyFedDYTd9DZEOMVlSGofCJrV35EjQbc", //MangaVoice Translation
     // key: "AIzaSyCCX46YN-2sFhTBLEv3kVPgDjz7L1EOBUs", //IkinariDateCourse
@@ -28,7 +28,7 @@ const state = {
   paramsOfVideos: {
     part: "contentDetails,statistics",
     id: "",
-    key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk", //ScenePicks
+    key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk", //YouClip
     // key: "AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU", //Futsal Movie Stock
     // key: "AIzaSyCUyFedDYTd9DZEOMVlSGofCJrV35EjQbc", //MangaVoice Translation
     // key: "AIzaSyCCX46YN-2sFhTBLEv3kVPgDjz7L1EOBUs", //IkinariDateCourse
