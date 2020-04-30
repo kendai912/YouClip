@@ -22,7 +22,7 @@
                 v-bind:alt="item.title + '-thumbnail'"
                 class="white--text align-end right"
                 width="100%"
-                aspect-ratio="1.777"
+                aspect-ratio="1.778"
               >
                 <v-container class="pa-0 ma-0">
                   <v-row class="pa-0 ma-1 d-flex justify-end">
