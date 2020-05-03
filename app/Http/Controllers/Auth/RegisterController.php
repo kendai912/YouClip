@@ -73,6 +73,13 @@ class RegisterController extends Controller
     // ★ メソッド追加
     protected function registered(Request $request, $user)
     {
-        return $user;
+        return response()->json(
+            [
+                'user' => $user
+            ],
+            201,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 }
