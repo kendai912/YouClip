@@ -4,12 +4,7 @@
       <div id="player"></div>
     </div>
     <div v-if="isPlayerReady">
-      <v-sheet
-        v-if="isPlaylist"
-        color="grey lighten-3"
-        tile
-        class="mx-auto pa-1"
-      >
+      <v-sheet v-if="isPlaylist" color="grey lighten-3" tile class="mx-auto pa-1">
         <v-container class="ma-0 pa-0" fluid>
           <v-row class="ma-0 pa-0" align="center">
             <v-col cols="10" class="ma-0 pa-0">
@@ -20,10 +15,7 @@
                 <v-icon>mdi-share</v-icon>
               </span>
               <span v-on:click="toggleLikePlaylist">
-                <i
-                  class="fas fa-heart"
-                  v-bind:class="[isLikedPlaylist ? 'isLiked' : 'my-grey']"
-                ></i>
+                <i class="fas fa-heart" v-bind:class="[isLikedPlaylist ? 'isLiked' : 'my-grey']"></i>
               </span>
               <span>{{ likePlaylistCount }}</span>
             </v-col>
@@ -77,13 +69,12 @@
             <span v-on:click="addPlaylist">
               <v-icon>library_add</v-icon>
             </span>
-            <span v-on:click="shareTag"><v-icon>mdi-share</v-icon></span>
+            <span v-on:click="shareTag">
+              <v-icon>mdi-share</v-icon>
+            </span>
             <span v-on:click="toggleLike">
-              <i
-                class="fas fa-heart"
-                v-bind:class="[isLiked ? 'isLiked' : 'my-grey']"
-              ></i
-            ></span>
+              <i class="fas fa-heart" v-bind:class="[isLiked ? 'isLiked' : 'my-grey']"></i>
+            </span>
             <span>{{ likeCount }}</span>
           </v-col>
         </v-row>
@@ -121,7 +112,7 @@ export default {
     ShareModal,
     AddPlaylistModal,
     OtherActionModal,
-    SceneTagControl,
+    SceneTagControl
   },
   data() {
     return {
@@ -131,14 +122,14 @@ export default {
       isPlaying: true,
       isPlayerReady: false,
       player: null,
-      timer: null,
+      timer: null
     };
   },
   mixins: [myMixin],
   methods: {
     ...mapMutations({
       openShareModal: "shareModal/openShareModal",
-      openOtherActionModal: "otherActionModal/openOtherActionModal",
+      openOtherActionModal: "otherActionModal/openOtherActionModal"
     }),
     startTimer() {
       let self = this;
@@ -161,16 +152,16 @@ export default {
           path: "/watch",
           query: {
             playlist: playlistId,
-            index: index,
-          },
+            index: index
+          }
         })
-        .catch((err) => {});
+        .catch(err => {});
 
       //次のシーンをロードし再生
       this.player.loadVideoById({
         videoId: this.currentYoutubeId,
         startSeconds: this.convertToSec(this.formatToMinSec(this.startHis)),
-        endSeconds: this.convertToSec(this.formatToMinSec(this.endHis)),
+        endSeconds: this.convertToSec(this.formatToMinSec(this.endHis))
       });
     },
     toggleLike() {
@@ -289,22 +280,22 @@ export default {
           // 削除後に他のシーンがない場合、トップページに遷移
           this.$router
             .push({
-              path: "/home",
+              path: "/home"
             })
-            .catch((err) => {});
+            .catch(err => {});
         }
       } else if (this.$route.query.tag) {
         //タグ再生の場合、トップページに戻る
         this.$router
           .push({
-            path: "/home",
+            path: "/home"
           })
-          .catch((err) => {});
+          .catch(err => {});
       }
 
       //削除後のデータをリロード
       location.reload();
-    },
+    }
   },
   computed: {
     ...mapGetters({
@@ -328,7 +319,7 @@ export default {
       showAddPlaylistModal: "playlist/showAddPlaylistModal",
       showOtherActionModal: "otherActionModal/showOtherActionModal",
       showSceneTagControl: "tagging/showSceneTagControl",
-      isEditting: "tagging/isEditting",
+      isEditting: "tagging/isEditting"
     }),
     isLiked() {
       return this.$store.getters["like/isLiked"](this.currentTagId);
@@ -351,7 +342,7 @@ export default {
     },
     endIs() {
       return this.formatToMinSec(this.endHis);
-    },
+    }
   },
   mixins: [myMixin],
   mounted: async function() {
@@ -407,15 +398,21 @@ export default {
         playerVars: {
           start: this.convertToSec(this.formatToMinSec(this.startHis)),
           end: this.convertToSec(this.formatToMinSec(this.endHis)),
+          playsinline: 1,
+          autoplay: 1,
+          iv_load_policy: 3, //アノテーション非表示
+          modestbranding: 1, //YouTubeロゴ非表示
+          rel: 0, //関連動画非表示
+          showinfo: 0 //タイトルやアップロードしたユーザーなどの情報は非表示
         },
         events: {
           onReady: onPlayerReady,
-          onStateChange: onPlayerStateChange,
-        },
+          onStateChange: onPlayerStateChange
+        }
       });
     };
 
-    window.onPlayerReady = (event) => {
+    window.onPlayerReady = event => {
       event.target.mute();
       event.target.playVideo();
       this.isPlayerReady = true;
@@ -424,7 +421,7 @@ export default {
       this.startTimer();
     };
 
-    window.onPlayerStateChange = (event) => {
+    window.onPlayerStateChange = event => {
       if (event.data == YT.PlayerState.ENDED && this.isPlaying) {
         //フラグを停止中に反転
         this.isPlaying = !this.isPlaying;
@@ -465,6 +462,6 @@ export default {
         location.reload();
       }
     });
-  },
+  }
 };
 </script>
