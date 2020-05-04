@@ -4,6 +4,7 @@ const state = {
   user: null,
   apiStatus: null,
   loginErrorMessages: null,
+  registerErrorMessages: null,
 };
 
 const getters = {

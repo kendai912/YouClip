@@ -39,6 +39,7 @@
             <v-text-field
               v-model="registerForm.name"
               v-bind:rules="nameRules"
+              v-on:keydown.enter="register"
               label="Name"
               class="ma-0 pa-0"
               outlined
@@ -51,6 +52,7 @@
             <v-text-field
               v-model="registerForm.email"
               v-bind:rules="emailRules"
+              v-on:keydown.enter="register"
               label="Email"
               class="ma-0 pa-0"
               outlined
@@ -65,6 +67,7 @@
               v-bind:append-icon="passwordField ? 'mdi-eye' : 'mdi-eye-off'"
               v-bind:rules="[passwordRules.required, passwordRules.min]"
               v-bind:type="passwordField ? 'text' : 'password'"
+              v-on:keydown.enter="register"
               label="Password"
               hint="6文字以上で入力下さい"
               @click:append="passwordField = !passwordField"
@@ -80,6 +83,7 @@
               v-bind:append-icon="passwordConfirmationField ? 'mdi-eye' : 'mdi-eye-off'"
               v-bind:rules="[passwordRules.required, passwordRules.min]"
               v-bind:type="passwordConfirmationField ? 'text' : 'password'"
+              v-on:keydown.enter="register"
               label="Password (確認)"
               hint="6文字以上で入力下さい"
               @click:append="passwordConfirmationField = !passwordConfirmationField"
@@ -91,6 +95,38 @@
         <v-row class="ma-0 pa-0 text-right" align="center">
           <v-col class="ma-0 pa-0">
             <v-btn v-on:click="register" color="primary">新規登録</v-btn>
+          </v-col>
+        </v-row>
+        <v-row class="ma-0 pa-0" align="center">
+          <v-col class="ma-0 pa-0">
+            <v-list v-if="registerErrors" dense>
+              <v-list-item-group v-model="registerErrors">
+                <v-list-item
+                  v-for="(nameErrorItem, nameErrorIndex) in registerErrors.name"
+                  v-bind:key="nameErrorItem + nameErrorIndex"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title class="red--text" v-text="nameErrorItem"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item
+                  v-for="(emailErrorItem, emailErrorIndex) in registerErrors.email"
+                  v-bind:key="emailErrorItem + emailErrorIndex"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title class="red--text" v-text="emailErrorItem"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item
+                  v-for="(passwordErrorItem, passwordErrorIndex) in registerErrors.password"
+                  v-bind:key="passwordErrorItem + passwordErrorIndex"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title class="red--text" v-text="passwordErrorItem"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
           </v-col>
         </v-row>
       </v-container>
@@ -113,8 +149,8 @@ export default {
         v => /.+@.+\..+/.test(v) || "無効なメールアドレスです"
       ],
       passwordRules: {
-        required: value => !!value || "Required.",
-        min: v => v.length >= 6 || "Min 6 characters"
+        required: value => !!value || "必須項目です.",
+        min: v => v.length >= 6 || "パスワードは6文字以上で入力下さい"
       },
       passwordField: false,
       passwordConfirmationField: false,
@@ -128,6 +164,9 @@ export default {
   },
   methods: {
     async register() {
+      // 日本語入力中のEnterキー操作は無効にする
+      if (event.keyCode != undefined && event.keyCode !== 13) return;
+
       //authストアのregisterアクションを呼び出す
       await this.$store.dispatch("auth/register", this.registerForm);
 
@@ -135,16 +174,23 @@ export default {
         //トップページに移動する
         this.$router.push("/");
       }
+    },
+    clearError() {
+      this.$store.commit("auth/setLoginErrorMessages", null);
+      this.$store.commit("auth/setRegisterErrorMessages", null);
     }
   },
   computed: {
     ...mapState({
-      apiStatus: state => state.auth.apiStatus
+      apiStatus: state => state.auth.apiStatus,
+      registerErrors: state => state.auth.registerErrorMessages
     })
   },
   created() {
     //ナビバーを表示
     this.$store.commit("navbar/setShowNavbar", true);
+
+    this.clearError();
   }
 };
 </script>

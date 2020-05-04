@@ -39,6 +39,7 @@
             <v-text-field
               v-model="loginForm.email"
               v-bind:rules="emailRules"
+              v-on:keydown.enter="login"
               label="Email"
               class="ma-0 pa-0"
               outlined
@@ -50,6 +51,7 @@
           <v-col class="ma-0 pa-0">
             <v-text-field
               v-model="loginForm.password"
+              v-on:keydown.enter="login"
               label="Password"
               type="password"
               outlined
@@ -60,6 +62,30 @@
         <v-row class="ma-0 pa-0 text-right" align="center">
           <v-col class="ma-0 pa-0">
             <v-btn v-on:click="login" color="primary">ログイン</v-btn>
+          </v-col>
+        </v-row>
+        <v-row class="ma-0 pa-0" align="center">
+          <v-col class="ma-0 pa-0">
+            <v-list v-if="loginErrors" dense>
+              <v-list-item-group v-model="loginErrors">
+                <v-list-item
+                  v-for="(emailErrorItem, emailErrorIndex) in loginErrors.email"
+                  v-bind:key="emailErrorItem + emailErrorIndex"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title class="red--text" v-text="emailErrorItem"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item
+                  v-for="(passwordErrorItem, passwordErrorIndex) in loginErrors.password"
+                  v-bind:key="passwordErrorItem + passwordErrorIndex"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title class="red--text" v-text="passwordErrorItem"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
           </v-col>
         </v-row>
       </v-container>
@@ -85,6 +111,9 @@ export default {
   },
   methods: {
     async login() {
+      // 日本語入力中のEnterキー操作は無効にする
+      if (event.keyCode != undefined && event.keyCode !== 13) return;
+
       // authストアのloginアクションを呼び出す
       await this.$store.dispatch("auth/login", this.loginForm);
 
@@ -92,16 +121,23 @@ export default {
         //トップページに移動する
         this.$router.push("/");
       }
+    },
+    clearError() {
+      this.$store.commit("auth/setLoginErrorMessages", null);
+      this.$store.commit("auth/setRegisterErrorMessages", null);
     }
   },
   computed: {
     ...mapState({
-      apiStatus: state => state.auth.apiStatus
+      apiStatus: state => state.auth.apiStatus,
+      loginErrors: state => state.auth.loginErrorMessages
     })
   },
   created() {
     //ナビバーを表示
     this.$store.commit("navbar/setShowNavbar", true);
+
+    this.clearError();
   }
 };
 </script>

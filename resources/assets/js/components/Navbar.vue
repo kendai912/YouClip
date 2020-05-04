@@ -5,14 +5,20 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <div class="navbar__menu">
-      <div v-if="isLogin" class="navbar__item">
-        <v-btn v-on:click="logout">
-          <i class="fas fa-sign-out-alt"></i>
-        </v-btn>
-      </div>
-      <v-menu v-else offset-y>
+      <v-menu v-if="isLogin" offset-y>
         <template v-slot:activator="{ on }">
           <i v-on="on" class="fas fa-user-circle fa-2x" style="color:darkgreen;"></i>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-list-item-title class="button button--link" v-on:click="logout">ログアウト</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <v-menu v-else offset-y>
+        <template v-slot:activator="{ on }">
+          <i v-on="on" class="fas fa-user-circle fa-2x" style="color:grey;"></i>
         </template>
         <v-list>
           <v-list-item>
