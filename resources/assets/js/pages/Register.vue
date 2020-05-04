@@ -1,48 +1,100 @@
 <template>
   <div class="container--small">
-    <div>
-      <a href="/api/auth/google">
-        <i class="fab fa-google"></i>
-      </a>
-      <a href="/api/auth/facebook">
-        <i class="fab fa-facebook"></i>
-      </a>
-      <a href="/api/auth/twitter">
-        <i class="fab fa-twitter"></i>
-      </a>
-    </div>
-
-    <form class="form" @submit.prevent="register">
-      <div v-if="registerErrors" class="errors">
-        <div v-if="registerErrors" class="errors">
-          <ul v-if="registerErrors.name">
-            <li v-for="msg in registerErrors.name" v-bind:key="msg">{{ msg }}</li>
-          </ul>
-          <ul v-if="registerErrors.email">
-            <li v-for="msg in registerErrors.email" v-bind:key="msg">{{ msg }}</li>
-          </ul>
-          <ul v-if="registerErrors.password">
-            <li v-for="msg in registerErrors.password" v-bind:key="msg">{{ msg }}</li>
-          </ul>
-        </div>
-      </div>
-      <label for="username">Name</label>
-      <input type="text" class="form__item" id="username" v-model="registerForm.name" />
-      <label for="email">Email</label>
-      <input type="text" class="form__item" id="email" v-model="registerForm.email" />
-      <label for="password">Password</label>
-      <input type="password" class="form__item" id="password" v-model="registerForm.password" />
-      <label for="password-confirmation">Password (confirm)</label>
-      <input
-        type="password"
-        class="form__item"
-        id="password-confirmation"
-        v-model="registerForm.password_confirmation"
-      />
-      <div class="form__button">
-        <button type="submit" class="button button--inverse">register</button>
-      </div>
-    </form>
+    <v-sheet tile class="mx-auto py-3 px-2" align="center" justify="center" max-width="400px">
+      <v-container class="ma-0 pa-0" fluid>
+        <v-row class="ma-0 pa-0" align="center" justify="center" style="height: 40px;">
+          <v-col class="ma-0 pa-0">
+            <v-card-text class="text-center">連携済みアカウントで新規登録</v-card-text>
+          </v-col>
+        </v-row>
+        <v-row class="mb-4 pa-0" align="center">
+          <v-col class="ma-0 pa-0">
+            <a href="/api/auth/google">
+              <v-img width="44px" aspect-ratio="1" src="/storage/logos/google.png"></v-img>
+            </a>
+          </v-col>
+          <v-col class="ma-0 pa-0">
+            <a href="/api/auth/facebook">
+              <v-img width="44px" aspect-ratio="1" src="/storage/logos/icon_facebook.svg"></v-img>
+            </a>
+          </v-col>
+          <v-col class="ma-0 pa-0">
+            <a href="/api/auth/twitter">
+              <v-img width="44px" aspect-ratio="1" src="/storage/logos/icon_twitter.svg"></v-img>
+            </a>
+          </v-col>
+        </v-row>
+        <v-row class="ma-0 pa-0" align="center">
+          <v-col class="ma-0 pa-0">
+            <v-divider></v-divider>
+          </v-col>
+        </v-row>
+        <v-row class="my-2 pa-0" align="center" style="height: 40px;">
+          <v-col class="ma-0 pa-0">
+            <v-card-text class="ma-0 pa-0">名前・メールアドレス・パスワードで新規登録</v-card-text>
+          </v-col>
+        </v-row>
+        <v-row class="ma-0 pa-0" align="center">
+          <v-col class="ma-0 pa-0">
+            <v-text-field
+              v-model="registerForm.name"
+              v-bind:rules="nameRules"
+              label="Name"
+              class="ma-0 pa-0"
+              outlined
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row class="ma-0 pa-0" align="center">
+          <v-col class="ma-0 pa-0">
+            <v-text-field
+              v-model="registerForm.email"
+              v-bind:rules="emailRules"
+              label="Email"
+              class="ma-0 pa-0"
+              outlined
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row class="ma-0 pa-0" align="center">
+          <v-col class="ma-0 pa-0">
+            <v-text-field
+              v-model="registerForm.password"
+              v-bind:append-icon="passwordField ? 'mdi-eye' : 'mdi-eye-off'"
+              v-bind:rules="[passwordRules.required, passwordRules.min]"
+              v-bind:type="passwordField ? 'text' : 'password'"
+              label="Password"
+              hint="6文字以上で入力下さい"
+              @click:append="passwordField = !passwordField"
+              outlined
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row class="ma-0 pa-0" align="center">
+          <v-col class="ma-0 pa-0">
+            <v-text-field
+              v-model="registerForm.password_confirmation"
+              v-bind:append-icon="passwordConfirmationField ? 'mdi-eye' : 'mdi-eye-off'"
+              v-bind:rules="[passwordRules.required, passwordRules.min]"
+              v-bind:type="passwordConfirmationField ? 'text' : 'password'"
+              label="Password (確認)"
+              hint="6文字以上で入力下さい"
+              @click:append="passwordConfirmationField = !passwordConfirmationField"
+              outlined
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row class="ma-0 pa-0 text-right" align="center">
+          <v-col class="ma-0 pa-0">
+            <v-btn v-on:click="register" color="primary">新規登録</v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-sheet>
   </div>
 </template>
 
@@ -52,11 +104,20 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      tab: 1,
-      loginForm: {
-        email: "",
-        password: ""
+      nameRules: [
+        v => !!v || "必須項目です",
+        v => v.length <= 10 || "名前は10文字以下で記入下さい"
+      ],
+      emailRules: [
+        v => !!v || "必須項目です",
+        v => /.+@.+\..+/.test(v) || "無効なメールアドレスです"
+      ],
+      passwordRules: {
+        required: value => !!value || "Required.",
+        min: v => v.length >= 6 || "Min 6 characters"
       },
+      passwordField: false,
+      passwordConfirmationField: false,
       registerForm: {
         name: "",
         email: "",
@@ -66,15 +127,6 @@ export default {
     };
   },
   methods: {
-    async login() {
-      // authストアのloginアクションを呼び出す
-      await this.$store.dispatch("auth/login", this.loginForm);
-
-      if (this.apiStatus) {
-        //トップページに移動する
-        this.$router.push("/");
-      }
-    },
     async register() {
       //authストアのregisterアクションを呼び出す
       await this.$store.dispatch("auth/register", this.registerForm);
@@ -83,25 +135,16 @@ export default {
         //トップページに移動する
         this.$router.push("/");
       }
-    },
-    clearError() {
-      this.$store.commit("auth/setLoginErrorMessages", null);
-      this.$store.commit("auth/setRegisterErrorMessages", null);
     }
   },
   computed: {
     ...mapState({
-      apiStatus: state => state.auth.apiStatus,
-      loginErrors: state => state.auth.loginErrorMessages,
-      registerErrors: state => state.auth.registerErrorMessages
+      apiStatus: state => state.auth.apiStatus
     })
   },
   created() {
     //ナビバーを表示
     this.$store.commit("navbar/setShowNavbar", true);
-
-    //エラーを初期化
-    this.clearError();
   }
 };
 </script>

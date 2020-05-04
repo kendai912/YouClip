@@ -39,7 +39,7 @@
             <v-text-field
               v-model="loginForm.email"
               v-bind:rules="emailRules"
-              label="E-mail"
+              label="Email"
               class="ma-0 pa-0"
               outlined
               required
