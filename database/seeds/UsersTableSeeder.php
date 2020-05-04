@@ -18,6 +18,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '$2y$10$18ZWgsCYAlms/TRdA1yknOfRg936IXeF1OhERFEwyT3ysx3hoo3Ta', //testtest
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
+                'provider' => "test provider",
+                'provider_id' => "test provider ID",
             ],
             [
                 'name' => 'tester2',
@@ -25,6 +27,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '$2y$10$18ZWgsCYAlms/TRdA1yknOfRg936IXeF1OhERFEwyT3ysx3hoo3Ta', //testtest
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
+                'provider' => "test provider",
+                'provider_id' => "test provider ID",
             ],
         ]);
     }

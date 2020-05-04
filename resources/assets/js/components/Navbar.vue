@@ -6,11 +6,27 @@
     <v-spacer></v-spacer>
     <div class="navbar__menu">
       <div v-if="isLogin" class="navbar__item">
-        <button v-if="isLogin" class="button button--link" v-on:click="logout">Logout</button>
+        <v-btn v-on:click="logout">
+          <i class="fas fa-sign-out-alt"></i>
+        </v-btn>
       </div>
-      <div v-else class="navbar__item">
-        <router-link class="button button--link" to="/login">Login</router-link>
-      </div>
+      <v-menu v-else offset-y>
+        <template v-slot:activator="{ on }">
+          <i v-on="on" class="fas fa-user-circle fa-2x" style="color:darkgreen;"></i>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-list-item-title>
+              <router-link class="button button--link" to="/login">ログイン</router-link>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title>
+              <router-link class="button button--link" to="/register">新規登録</router-link>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </div>
   </v-app-bar>
 </template>
@@ -19,6 +35,9 @@
 import { mapState, mapGetters } from "vuex";
 
 export default {
+  data() {
+    return {};
+  },
   methods: {
     async logout() {
       await this.$store.dispatch("auth/logout");

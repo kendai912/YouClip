@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 // ページコンポーネントをインポートする
 import Home from "./pages/Home.vue";
 import Login from "./pages/Login.vue";
+import Register from "./pages/Register.vue";
 import Search from "./pages/Search.vue";
 import Result from "./pages/Result.vue";
 import YTresult from "./pages/YTresult.vue";
@@ -23,7 +24,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    component: Home
+    component: Home,
   },
   {
     path: "/login",
@@ -34,50 +35,61 @@ const routes = [
       } else {
         next();
       }
-    }
+    },
+  },
+  {
+    path: "/register",
+    component: Register,
+    beforeEnter(to, from, next) {
+      if (store.getters["auth/check"]) {
+        next("/");
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/home",
-    redirect: "/"
+    redirect: "/",
   },
   {
     path: "/search",
-    component: Search
+    component: Search,
   },
   {
     path: "/result",
-    component: Result
+    component: Result,
   },
   {
     path: "/tagging",
-    component: Tagging
+    component: Tagging,
   },
   {
     path: "/YTresult",
-    component: YTresult
+    component: YTresult,
   },
   {
     path: "/youtube",
-    component: Youtube
+    component: Youtube,
   },
   {
     path: "/watch",
-    component: Watch
+    component: Watch,
   },
   {
     path: "/mypage",
-    component: Mypage
+    component: Mypage,
   },
   {
     path: "/500",
-    component: SystemError
-  }
+    component: SystemError,
+  },
 ];
 
 // VueRouterインスタンスを作成する
 const router = new VueRouter({
   mode: "history",
-  routes
+  routes,
 });
 
 // VueRouterインスタンスをエクスポートする
