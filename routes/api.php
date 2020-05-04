@@ -12,6 +12,11 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//ソーシャル認証へリダイレクトさせる
+Route::get('/auth/{provider}', 'Auth\AuthController@redirectToProvider');
+//ソーシャル認証後に処理
+Route::get('/auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
+
 
 // 会員登録
 Route::post('/register', 'Auth\RegisterController@register')->name('register');

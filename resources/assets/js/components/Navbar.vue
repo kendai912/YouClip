@@ -9,7 +9,7 @@
         <button v-if="isLogin" class="button button--link" v-on:click="logout">Logout</button>
       </div>
       <div v-else class="navbar__item">
-        <RouterLink class="button button--link" to="/login">Login</RouterLink>
+        <router-link class="button button--link" to="/login">Login</router-link>
       </div>
     </div>
   </v-app-bar>

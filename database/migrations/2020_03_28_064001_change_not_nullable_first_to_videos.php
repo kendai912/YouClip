@@ -17,7 +17,7 @@ class ChangeNotNullableFirstToVideos extends Migration
             $table->string('title')->change();
             $table->string('thumbnail')->change();
             $table->time('duration')->change();
-            // $table->string('category');
+            $table->string('category')->change();
         });
     }
 
@@ -29,10 +29,10 @@ class ChangeNotNullableFirstToVideos extends Migration
     public function down()
     {
         Schema::table('videos', function (Blueprint $table) {
-            $table->string('title')->nullable()>change();
-            $table->string('thumbnail')->nullable()>change();
-            $table->time('duration')->nullable()>change();
-            $table->string('category')->nullable()>change();
+            $table->string('title')->nullable()->change();
+            $table->string('thumbnail')->nullable()->change();
+            $table->time('duration')->nullable()->change();
+            $table->string('category')->nullable()->change();
         });
     }
 }

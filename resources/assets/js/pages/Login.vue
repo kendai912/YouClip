@@ -12,7 +12,20 @@
         v-on:click="tab = 2"
       >Register</li>
     </ul>
+
     <div class="panel" v-show="tab === 1">
+      <div>
+        <a href="/api/auth/google">
+          <i class="fab fa-google"></i>
+        </a>
+        <a href="/api/auth/facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="/api/auth/twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </div>
+
       <form class="form" v-on:submit.prevent="login">
         <div v-if="loginErrors" class="errors">
           <ul v-if="loginErrors.email">
@@ -22,7 +35,6 @@
             <li v-for="msg in loginErrors.password" v-bind:key="msg">{{ msg }}</li>
           </ul>
         </div>
-
         <label for="login-email">Email</label>
         <input type="text" class="form__item" id="login-email" v-model="loginForm.email" />
         <label for="login-password">Password</label>
@@ -32,7 +44,20 @@
         </div>
       </form>
     </div>
+
     <div class="panel" v-show="tab === 2">
+      <div>
+        <a href="/api/auth/google">
+          <i class="fab fa-google"></i>
+        </a>
+        <a href="/api/auth/facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="/api/auth/twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </div>
+
       <form class="form" @submit.prevent="register">
         <div v-if="registerErrors" class="errors">
           <div v-if="registerErrors" class="errors">
@@ -47,7 +72,6 @@
             </ul>
           </div>
         </div>
-
         <label for="username">Name</label>
         <input type="text" class="form__item" id="username" v-model="registerForm.name" />
         <label for="email">Email</label>
@@ -112,15 +136,19 @@ export default {
       this.$store.commit("auth/setRegisterErrorMessages", null);
     }
   },
-  created() {
-    this.clearError();
-  },
   computed: {
     ...mapState({
       apiStatus: state => state.auth.apiStatus,
       loginErrors: state => state.auth.loginErrorMessages,
       registerErrors: state => state.auth.registerErrorMessages
     })
+  },
+  created() {
+    //ナビバーを非表示
+    this.$store.commit("navbar/setShowNavbar", false);
+
+    //エラーを初期化
+    this.clearError();
   }
 };
 </script>

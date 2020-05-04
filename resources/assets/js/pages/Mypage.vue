@@ -7,7 +7,7 @@
       <div>お気に入りのシーンをお楽しみいただけます</div>
       <div>ログインすると、Likeしたシーンやタグ付けしたシーンにアクセス出来ます</div>
       <div>
-        <RouterLink class="button button--link" to="/login">Login</RouterLink>
+        <router-link class="button button--link" to="/login">Login</router-link>
       </div>
     </div>
   </div>
