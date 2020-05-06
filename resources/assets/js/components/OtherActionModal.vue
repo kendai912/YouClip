@@ -36,7 +36,7 @@ export default {
       startHis: "watch/start",
       endHis: "watch/end",
       currentTagId: "watch/currentTagId",
-      currentTagNameArray: "watch/currentTagNameArray",
+      currentTagNameArray: "watch/currentTagNameArray"
     }),
     startIs() {
       return this.formatToMinSec(this.startHis);

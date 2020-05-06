@@ -1,40 +1,65 @@
 <template>
-  <div class="v-modal" v-on:click="closeAddPlaylistModal">
-    <div class="text-dark shadow rounded mb-7 modal-in-box" v-on:click.stop>
-      <div id="myPlaylists" v-if="hasMyPlaylists">
-        <span v-on:click="closeAddPlaylistModal">✕</span>
-        <div v-for="(myPlaylist, index) in myCreatedPlaylist" v-bind:key="index">
-          <div>
-            <input
-              type="checkbox"
-              v-bind:id="myPlaylist.id"
-              v-bind:value="myPlaylist.id"
-              v-model="checkedPlaylistIds"
-            />
-            <label v-bind:for="myPlaylist.id">{{ myPlaylist.playlistName }}</label>
-          </div>
-        </div>
-        <div v-on:click.stop="addMyPlaylists">完了</div>
-      </div>
-
-      <div id="newPlaylists">
-        <div class="form-group mb-4">
-          新規プレイリスト名
-          <input type="type" class="form-control" v-model="newPlaylistName" />
-        </div>
-        <div class="form-group mb-4">
-          プライバシー設定
-          <select name="playlistPrivacy" v-model="privacySetting" size="1">
-            <option value="open">公開</option>
-            <option value="private">非公開</option>
-          </select>
-        </div>
-        <div class="form-group mb-4">
-          <span v-on:click.stop="createPlaylist">作成</span>
-        </div>
-      </div>
-    </div>
-  </div>
+  <v-bottom-sheet v-model="showAddPlaylistModal" max-width="400px">
+    <v-sheet class="mx-auto">
+      <v-container class="ma-0 pa-0" fluid>
+        <v-row class="ma-0 pa-0" v-if="hasMyPlaylists">
+          <v-col class="ma-0 pa-0">
+            <v-list class="pb-0" dense>
+              <v-list-item-subtitle class="ma-0 pa-2 pb-0">既存プレイリストに追加</v-list-item-subtitle>
+              <v-list-item
+                v-for="myPlaylist in myCreatedPlaylist"
+                :key="myPlaylist.id"
+                @click="sheet = false"
+                style="height:30px;"
+              >
+                <v-checkbox dense v-model="checkedPlaylistIds" v-bind:value="myPlaylist.id"></v-checkbox>
+                <v-list-item-title>{{ myPlaylist.playlistName }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-col>
+        </v-row>
+        <v-row class="ma-0 pa-0">
+          <v-col class="ma-0 pa-0">
+            <v-list class="pb-0" dense>
+              <v-list-item-subtitle class="ma-0 pa-2 pb-3">新規プレイリストに登録</v-list-item-subtitle>
+              <v-list-item>
+                <v-text-field
+                  v-model="newPlaylistName"
+                  label="新規プレイリスト名"
+                  outlined
+                  dense
+                  style="font-size:80%;"
+                ></v-text-field>
+              </v-list-item>
+              <v-list-item>
+                <v-select
+                  v-model="privacySetting"
+                  v-bind:items="privacySettingItems"
+                  label="プライバシー設定"
+                  outlined
+                  dense
+                  style="font-size:80%;"
+                ></v-select>
+              </v-list-item>
+            </v-list>
+          </v-col>
+        </v-row>
+        <v-row class="ma-0 pa-0">
+          <v-col class="ma-0 pa-0">
+            <v-divider></v-divider>
+          </v-col>
+        </v-row>
+        <v-row class="ma-0 pa-2">
+          <v-col class="text-center ma-0 pa-0">
+            <v-btn v-on:click="addToPlaylist" width="90px" color="primary">完了</v-btn>
+          </v-col>
+          <v-col class="text-center ma-0 pa-0">
+            <v-btn v-on:click="closeAddPlaylistModal" width="90px" color="primary">キャンセル</v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-sheet>
+  </v-bottom-sheet>
 </template>
 
 <script>
@@ -48,7 +73,8 @@ export default {
     return {
       checkedPlaylistIds: [],
       newPlaylistName: "",
-      privacySetting: ""
+      privacySetting: "公開",
+      privacySettingItems: ["公開", "非公開"]
     };
   },
   computed: {
@@ -56,13 +82,19 @@ export default {
       user_id: "auth/user_id",
       currentTagId: "watch/currentTagId",
       currentCategory: "watch/currentCategory",
-      playlistIdsOfTag: "playlist/playlistIdsOfTag"
+      playlistIdsOfTag: "playlist/playlistIdsOfTag",
+      hasMyPlaylists: "playlist/hasMyPlaylists",
+      myCreatedPlaylist: "playlist/myCreatedPlaylist"
     }),
-    hasMyPlaylists() {
-      return this.$store.getters["playlist/hasMyPlaylists"];
-    },
-    myCreatedPlaylist() {
-      return this.$store.getters["playlist/myCreatedPlaylist"];
+    showAddPlaylistModal: {
+      get() {
+        this.player.pauseVideo();
+        return this.$store.getters["playlist/showAddPlaylistModal"];
+      },
+      set() {
+        this.player.playVideo();
+        return this.$store.commit("playlist/closeAddPlaylistModal");
+      }
     }
   },
   methods: {
@@ -73,24 +105,23 @@ export default {
       //プレイヤーを再開
       this.player.playVideo();
     },
-    //既存プレイリストへの追加
-    addMyPlaylists() {
+    //完了ボタン
+    addToPlaylist() {
+      //既存プレイリストへの追加
       this.$store.dispatch("playlist/addMyPlaylists", {
         checkedPlaylistIds: this.checkedPlaylistIds,
         currentTagId: this.currentTagId
       });
 
-      //プレイヤーを再開
-      this.player.playVideo();
-    },
-    //プレイリスト新規作成と選択中のタグの保存
-    createPlaylist() {
-      this.$store.dispatch("playlist/createPlaylist", {
-        newPlaylistName: this.newPlaylistName,
-        privacySetting: this.privacySetting,
-        currentTagId: this.currentTagId,
-        currentCategory: this.currentCategory
-      });
+      //プレイリスト新規作成と選択中のタグの保存
+      this.newPlaylistName
+        ? this.$store.dispatch("playlist/createPlaylist", {
+            newPlaylistName: this.newPlaylistName,
+            privacySetting: this.privacySetting,
+            currentTagId: this.currentTagId,
+            currentCategory: this.currentCategory
+          })
+        : "";
 
       //プレイヤーを再開
       this.player.playVideo();

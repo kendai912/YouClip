@@ -169,3 +169,7 @@
   align-content: flex-start;
   align-items: flex-start;
 }
+
+.v-label{
+  font-size: 80%;
+}

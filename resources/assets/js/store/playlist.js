@@ -55,7 +55,7 @@ const getters = {
     );
   },
   hasMyPlaylists: (state) => {
-    return !!state.myCreatedPlaylist;
+    return state.myCreatedPlaylist ? !!state.myCreatedPlaylist.length : false;
   },
 };
 
@@ -321,15 +321,15 @@ const actions = {
       context.commit("closeAddPlaylistModal");
 
       //ポップアップでプレイリストの作成完了を通知
-      toastr.success("[" + params.newPlaylistName + "]に保存しました");
+      // toastr.success("[" + params.newPlaylistName + "]に保存しました");
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
-      toastr.error("プレイリストへの追加に失敗しました");
+      // toastr.error("プレイリストへの追加に失敗しました");
     } else {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
-      toastr.error("プレイリストへの追加に失敗しました");
+      // toastr.error("プレイリストへの追加に失敗しました");
     }
   },
   //選択されたタグが追加済のユーザーのプレイリストIDを取得
