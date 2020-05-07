@@ -1,12 +1,12 @@
 <template>
   <v-app-bar color="white" dense>
     <v-toolbar-items>
-      <router-link class="navbar__brand" to="/">
+      <router-link to="/">
         <img src="/storage/logos/youclip_logo.png" style="position: relative; height: 58%; top:21%" />
       </router-link>
     </v-toolbar-items>
     <v-spacer></v-spacer>
-    <div class="navbar__menu">
+    <div>
       <v-menu v-if="isLogin" offset-y>
         <template v-slot:activator="{ on }">
           <i v-on="on" class="fas fa-user-circle fa-2x" style="color:darkgreen;"></i>

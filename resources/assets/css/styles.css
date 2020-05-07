@@ -1,22 +1,55 @@
-.container {
-  padding: 0px 0px 80px;
-  margin: 0;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 14px;
+}
+
+.button {
+  border: 1px solid #dedede;
+  border-radius: 0.25rem;
+  color: #8a8a8a;
+  cursor: pointer;
+  display: inline-block;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  outline: none;
+  padding: 0.5rem 0.75rem;
+  text-decoration: none;
+  -webkit-transition: border-color 300ms ease-in-out, color 300ms ease-in-out;
+  transition: border-color 300ms ease-in-out, color 300ms ease-in-out;
+}
+
+.button:hover {
+  border-color: #333;
+  color: inherit;
+}
+
+.button--link {
+  border: 0;
+}
+
+.container--small {
+  margin: 0 auto;
+  max-width: 600px;
 }
 
 .yt-container {
   width: 100%;
+  height: auto;
   position: relative;
   padding-bottom: 56.25%;
-  height: 0;
+  margin: 0 auto;
   overflow: hidden;
 }
 
 .yt-container iframe {
-  position: absolute;
+  position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
 }
 
 .isLiked {
@@ -170,6 +203,6 @@
   align-items: flex-start;
 }
 
-.v-label{
+.v-label {
   font-size: 80%;
 }

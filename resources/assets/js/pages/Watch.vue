@@ -410,6 +410,10 @@ export default {
           onStateChange: onPlayerStateChange
         }
       });
+
+      //縦・横のサイズをセット
+      $("iframe").width($(".yt-container").width());
+      $("iframe").height($(".container--small").height());
     };
 
     window.onPlayerReady = event => {
