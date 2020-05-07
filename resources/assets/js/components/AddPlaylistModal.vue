@@ -5,7 +5,7 @@
         <v-row class="ma-0 pa-0" v-if="hasMyPlaylists">
           <v-col class="ma-0 pa-0">
             <v-list class="pb-0" dense>
-              <v-list-item-subtitle class="ma-0 pa-2 pb-0">既存プレイリストに追加</v-list-item-subtitle>
+              <v-list-item-subtitle class="ma-0 pa-2 pb-0">既存プレイリストに登録(チェック外すと解除)</v-list-item-subtitle>
               <v-list-item
                 v-for="myPlaylist in myCreatedPlaylist"
                 :key="myPlaylist.id"
@@ -21,7 +21,7 @@
         <v-row class="ma-0 pa-0">
           <v-col class="ma-0 pa-0">
             <v-list class="pb-0" dense>
-              <v-list-item-subtitle class="ma-0 pa-2 pb-3">新規プレイリストに登録</v-list-item-subtitle>
+              <v-list-item-subtitle class="ma-0 pa-2 pb-3">新規プレイリストを作成</v-list-item-subtitle>
               <v-list-item>
                 <v-text-field
                   v-model="newPlaylistName"
@@ -107,7 +107,7 @@ export default {
     },
     //完了ボタン
     addToPlaylist() {
-      //既存プレイリストへの追加
+      //既存プレイリストへの登録
       this.$store.dispatch("playlist/addMyPlaylists", {
         checkedPlaylistIds: this.checkedPlaylistIds,
         currentTagId: this.currentTagId

@@ -1,8 +1,10 @@
 <template>
   <v-app-bar color="white" dense>
-    <v-toolbar-title>
-      <router-link class="navbar__brand" to="/">YouClip</router-link>
-    </v-toolbar-title>
+    <v-toolbar-items>
+      <router-link class="navbar__brand" to="/">
+        <img src="/storage/logos/youclip_logo.png" style="position: relative; height: 58%; top:21%" />
+      </router-link>
+    </v-toolbar-items>
     <v-spacer></v-spacer>
     <div class="navbar__menu">
       <v-menu v-if="isLogin" offset-y>
