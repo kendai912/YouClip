@@ -8,6 +8,26 @@
   font-size: 14px;
 }
 
+.container--small {
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.yt-container {
+  width: 100%;
+  height: auto;
+  position: relative;
+  padding-bottom: 56.25%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.yt-container iframe {
+  position: fixed;
+  top: 0;
+  z-index: 100;
+}
+
 .button {
   border: 1px solid #dedede;
   border-radius: 0.25rem;
@@ -31,25 +51,6 @@
 
 .button--link {
   border: 0;
-}
-
-.container--small {
-  margin: 0 auto;
-  max-width: 600px;
-}
-
-.yt-container {
-  width: 100%;
-  height: auto;
-  position: relative;
-  padding-bottom: 56.25%;
-  margin: 0 auto;
-  overflow: hidden;
-}
-
-.yt-container iframe {
-  position: fixed;
-  top: 0;
 }
 
 .isLiked {

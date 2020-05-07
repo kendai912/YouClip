@@ -2,7 +2,10 @@
   <v-app-bar color="white" dense>
     <v-toolbar-items>
       <router-link to="/">
-        <img src="/storage/logos/youclip_logo.png" style="position: relative; height: 58%; top:21%" />
+        <img
+          src="/storage/logos/youclip_logo.png"
+          style="position: absolute; height: 58%; top: 21%; left: 16px; object-fit: contain;"
+        />
       </router-link>
     </v-toolbar-items>
     <v-spacer></v-spacer>
