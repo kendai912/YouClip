@@ -13,6 +13,7 @@ import Youtube from "./pages/Youtube.vue";
 import Watch from "./pages/Watch.vue";
 import Mypage from "./pages/Mypage.vue";
 import SystemError from "./pages/errors/System.vue";
+import APIError from "./pages/errors/APIError.vue";
 
 import store from "./store";
 
@@ -83,6 +84,10 @@ const routes = [
   {
     path: "/500",
     component: SystemError,
+  },
+  {
+    path: "/403",
+    component: APIError,
   },
 ];
 

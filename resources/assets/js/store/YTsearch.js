@@ -1,5 +1,11 @@
 import axios from "axios";
-import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
+import {
+  OK,
+  CREATED,
+  DELETED,
+  FORBIDDEN,
+  INTERNAL_SERVER_ERROR,
+} from "../util";
 import router from "../router";
 
 const state = {
@@ -20,19 +26,20 @@ const state = {
     maxResults: "8", // 最大検索数
     pageToken: "",
     videoEmbeddable: true,
-    key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk", //YouClip
-    // key: "AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU", //Futsal Movie Stock
-    // key: "AIzaSyCUyFedDYTd9DZEOMVlSGofCJrV35EjQbc", //MangaVoice Translation
-    // key: "AIzaSyCCX46YN-2sFhTBLEv3kVPgDjz7L1EOBUs", //IkinariDateCourse
+    key: "",
   },
   paramsOfVideos: {
     part: "contentDetails,statistics",
     id: "",
-    key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk", //YouClip
-    // key: "AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU", //Futsal Movie Stock
-    // key: "AIzaSyCUyFedDYTd9DZEOMVlSGofCJrV35EjQbc", //MangaVoice Translation
-    // key: "AIzaSyCCX46YN-2sFhTBLEv3kVPgDjz7L1EOBUs", //IkinariDateCourse
+    key: "",
   },
+  keyIndex: 0,
+  keyArray: [
+    "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk", //YouClip
+    "AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU", //Futsal Movie Stock
+    "AIzaSyCUyFedDYTd9DZEOMVlSGofCJrV35EjQbc", //MangaVoice Translation
+    "AIzaSyCCX46YN-2sFhTBLEv3kVPgDjz7L1EOBUs", //IkinariDateCourse
+  ],
   isYTLoading: false,
   numberOfYTItemsPerPagination: 8,
   isYTSearching: false,
@@ -40,6 +47,8 @@ const state = {
 
 const getters = {
   YTsearchQuery: (state) => state.YTsearchQuery,
+  keyIndex: (state) => state.keyIndex,
+  keyArray: (state) => state.keyArray,
   candidates: (state) => state.candidates,
   YTresult: (state) => state.YTresult,
   topYTSearchqueries: (state) => state.topYTSearchqueries,
@@ -74,6 +83,15 @@ const mutations = {
   },
   setYTsearchHistories(state, data) {
     state.YTsearchHistories = data;
+  },
+  setKeyIndex(state, data) {
+    state.keyIndex = data;
+  },
+  setKeyOfSearch(state, keyIndex) {
+    state.paramsOfSearch.key = state.keyArray[keyIndex];
+  },
+  setKeyOfVideos(state, keyIndex) {
+    state.paramsOfVideos.key = state.keyArray[keyIndex];
   },
   setYoutubeIdsOfParamsOfVideos(state, data) {
     let youtubeIdsURIStr;
@@ -120,6 +138,10 @@ const actions = {
     //検索結果が帰ってくる前に連続でリクエストをかけないようにフラグをセット
     context.commit("setIsYTSearching", true);
 
+    //検索と動画データのAPI Keyをセット
+    context.commit("setKeyOfSearch", context.getters["keyIndex"]);
+    context.commit("setKeyOfVideos", context.getters["keyIndex"]);
+
     const response = await axios.get(state.apiOfSearch, {
       params: state.paramsOfSearch,
     });
@@ -156,8 +178,17 @@ const actions = {
 
       //連続リクエストを制御するフラグを解除
       context.commit("setIsYTSearching", false);
+    } else if (response.status == FORBIDDEN) {
+      // API Keyの上限オーバーで失敗した時
+      //次のAPI Keyにスイッチして再度検索実行
+      context.commit("setKeyIndex", context.getters["keyIndex"] + 1);
+
+      //API Keyのストックを超えたら直接URLで検索するようにエラーページを表示
+      context.getters["keyIndex"] >= context.getters["keyArray"].length
+        ? context.commit("error/setCode", response.status, { root: true })
+        : await actions.searchYTResult(context);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
-      // 失敗した時
+      // インターナルサーバーエラーで失敗した時
       context.commit("error/setCode", response.status, { root: true });
     } else {
       // 上記以外で失敗した時

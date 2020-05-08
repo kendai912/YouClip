@@ -36,7 +36,6 @@ export default {
     return {
       tab: null,
       items: ["プレイリスト", "シーン"],
-      // tab: 1,
       pageOfPlaylist: 1,
       pageOfTagVideo: 1,
       playlistMediaItems: [],

@@ -14,7 +14,7 @@ import { mapState, mapGetters, mapMutations } from "vuex";
 import Navbar from "./components/Navbar.vue";
 import Snackbar from "./components/Snackbar.vue";
 import Footer from "./components/Footer.vue";
-import { INTERNAL_SERVER_ERROR } from "./util";
+import { INTERNAL_SERVER_ERROR, FORBIDDEN } from "./util";
 import myMixin from "./util";
 
 export default {
@@ -37,6 +37,8 @@ export default {
       handler(val) {
         if (val === INTERNAL_SERVER_ERROR) {
           this.$router.push("/500");
+        } else if (val === FORBIDDEN) {
+          this.$router.push("/403");
         }
       },
       immediate: true //createdと同じ

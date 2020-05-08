@@ -1,6 +1,6 @@
 <template>
   <div class="container--small">
-      <YTSearchBox />
+    <YTSearchBox />
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import YTSearchBox from "../components/YTSearchBox.vue";
 
 export default {
   components: {
-    YTSearchBox,
+    YTSearchBox
   },
   data() {
     return {};
@@ -19,6 +19,6 @@ export default {
   created() {
     //ナビバーを非表示
     this.$store.commit("navbar/setShowNavbar", false);
-  },
+  }
 };
 </script>
