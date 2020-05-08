@@ -227,3 +227,7 @@
 .short-text-field .v-input__slot {
   width: 80px;
 }
+
+.my-login-font-color {
+  color: rgb(6, 95, 212) !important;
+}

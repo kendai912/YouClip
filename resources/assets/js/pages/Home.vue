@@ -192,7 +192,9 @@ export default {
     this.$store.commit("navbar/setShowNavbar", true);
 
     //以前に開いていたタブをセッションストレージからセット
-    this.tab = parseInt(window.sessionStorage.getItem("topTabIndex"));
+    window.sessionStorage.getItem("topTabIndex")
+      ? (this.tab = parseInt(window.sessionStorage.getItem("topTabIndex")))
+      : "";
 
     this.$store.commit("playlist/setToLoadRecommend", true);
     this.$store.commit("playlist/setToLoadNew", true);

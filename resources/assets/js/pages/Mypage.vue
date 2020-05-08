@@ -4,12 +4,14 @@
       <MyList />
     </div>
     <v-card v-else class="text-center pa-3 ma-3" title elevation="0">
-      <v-icon size="120">video_library</v-icon>
-      <v-card-title class="pa-1 mt-2 justify-center">ログインが必要です</v-card-title>
-      <v-card-subtitle class="pa-1 mt-0 darkgrey--text">ログインすると、イイねやタグ付けしたプレイリスト・シーンにアクセス出来ます</v-card-subtitle>
-      <v-card-actions class="justify-center pa-1 mt-4">
-        <v-btn v-on:click="openLoginPage" outlined style="color: rgb(6, 95, 212);">
-          <i class="fas fa-user-circle fa-2x" style="color: rgb(6, 95, 212);"></i>ログイン
+      <v-card-title class="pa-0 ma-0 justify-center">
+        <v-icon class="pa-0 ma-0" size="100">video_library</v-icon>
+      </v-card-title>
+      <v-card-title class="pa-1 mt-2 mx-0 justify-center">ログインが必要です</v-card-title>
+      <v-card-subtitle class="pa-1 mt-0 mx-0 darkgrey--text">ログインすると、イイねや作成したプレイリスト・シーンにアクセス出来ます</v-card-subtitle>
+      <v-card-actions class="justify-center pa-1 mt-4 mx-0">
+        <v-btn v-on:click="openLoginPage" outlined class="my-login-font-color">
+          <i class="fas fa-user-circle fa-2x my-login-font-color"></i>ログイン
         </v-btn>
       </v-card-actions>
     </v-card>

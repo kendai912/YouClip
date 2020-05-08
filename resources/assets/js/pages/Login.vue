@@ -7,7 +7,7 @@
             <v-card-text class="text-center">連携済みアカウントでログイン</v-card-text>
           </v-col>
         </v-row>
-        <v-row class="mb-4 pa-0" align="center">
+        <v-row class="mb-4 mx-0 pa-0" align="center">
           <v-col class="ma-0 pa-0">
             <a href="/api/auth/google">
               <v-img width="44px" aspect-ratio="1" src="/storage/logos/google.png"></v-img>
@@ -29,7 +29,7 @@
             <v-divider></v-divider>
           </v-col>
         </v-row>
-        <v-row class="my-2 pa-0" align="center" style="height: 40px;">
+        <v-row class="my-2 mx-0 pa-0" align="center" style="height: 40px;">
           <v-col class="ma-0 pa-0">
             <v-card-text class="ma-0 pa-0">メールアドレス・パスワードでログイン</v-card-text>
           </v-col>
