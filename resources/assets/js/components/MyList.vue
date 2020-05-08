@@ -35,7 +35,7 @@ export default {
   props: {},
   data() {
     return {
-      tab: null,
+      tab: 1, //デフォルトはシーンタブを表示
       items: ["プレイリスト", "シーン"]
     };
   },
@@ -78,7 +78,9 @@ export default {
   },
   async created() {
     //以前に開いていたタブをセッションストレージからセット
-    this.tab = parseInt(window.sessionStorage.getItem("myPageTabIndex"));
+    window.sessionStorage.getItem("myPageTabIndex")
+      ? (this.tab = parseInt(window.sessionStorage.getItem("myPageTabIndex")))
+      : "";
     //Likeまたは作成したプレイリストをロード
     await this.$store.dispatch("playlist/loadMyCreatedAndLikedPlaylist");
     //Likeまたは作成したタグをロード
