@@ -3,34 +3,14 @@
     <v-sheet tile class="ma-0 pa-1">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0" align="center">
-          <v-col cols="2" class="ma-0 pa-0 text-left">
-            <i v-on:click="back" class="fas fa-chevron-left"></i>
-          </v-col>
-          <v-col cols="8" class="ma-0 pa-0">
+          <v-col class="ma-0 pa-0">
             <span>開始・終了時間を指定</span>
           </v-col>
-          <v-col cols="2" class="ma-0 pa-0"></v-col>
         </v-row>
       </v-container>
     </v-sheet>
 
     <v-divider></v-divider>
-
-    <v-sheet tile class="ma-0 pa-1">
-      <v-slider
-        v-model="slider.val"
-        v-on:mousedown="stopUpdateSlider"
-        v-on:mouseup="seekToAndRestartMouseup"
-        v-on:end="seekToAndRestartEnd"
-        ticks="always"
-        tick-size="0.01"
-        :thumb-color="slider.color"
-        thumb-label="always"
-        step="0.01"
-      >
-        <template v-slot:thumb-label="{ value }">{{ currentPositionTime }}</template>
-      </v-slider>
-    </v-sheet>
 
     <v-container class="ma-0 pa-0" fluid>
       <v-row class="ma-0 pa-0" align="center" justify="space-around">
@@ -52,12 +32,14 @@
         </v-col>
         <v-col v-on:click="forwardFiveSec">
           <span>
-            <i class="fas fa-step-forward fa-2x"></i>5
+            <i class="fas fa-step-forward fa-2x"></i>
+            5
           </span>
         </v-col>
         <v-col v-on:click="forwardThirtySec">
           <span>
-            <i class="fas fa-fast-forward fa-2x"></i>30
+            <i class="fas fa-fast-forward fa-2x"></i>
+            30
           </span>
         </v-col>
       </v-row>
@@ -97,6 +79,7 @@
           </v-col>
 
           <v-col></v-col>
+
           <v-col class="ma-0 pa-0">
             <v-card class="ma-0" tile elevation="0">
               <div>
@@ -125,14 +108,19 @@
       </v-container>
     </v-form>
 
-    <v-sheet tile class="ma-0 pa-1 text-right bottom-position">
-      <v-row align="center" fluid>
-        <v-col class="text-right">
-          <div>
-            <v-btn color="error" v-on:click="next">次へ</v-btn>
-          </div>
-        </v-col>
-      </v-row>
+    <v-sheet tile class="ma-0 pa-0 bottom-position" width="100%">
+      <v-container class="ma-0 pa-0" fluid>
+        <v-row align="center" class="ma-0 pa-0">
+          <v-col class="text-left ma-0">
+            <i v-on:click="back" class="fas fa-arrow-left fa-2x my-grey"></i>
+          </v-col>
+          <v-col class="text-right ma-0">
+            <div>
+              <v-btn color="error" v-on:click="next">次へ</v-btn>
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-sheet>
   </v-sheet>
 </template>

@@ -12,10 +12,13 @@
             </v-col>
             <v-col class="ma-0 pa-0 text-right">
               <span v-on:click="sharePlaylist">
-                <v-icon>mdi-share</v-icon>
+                <v-icon large>mdi-share</v-icon>
               </span>
               <span v-on:click="toggleLikePlaylist">
-                <i class="fas fa-heart" v-bind:class="[isLikedPlaylist ? 'isLiked' : 'my-grey']"></i>
+                <i
+                  class="fas fa-heart"
+                  v-bind:class="[isLikedPlaylist ? 'isLiked icon-large' : 'my-grey icon-large']"
+                ></i>
               </span>
               <span>{{ likePlaylistCount }}</span>
             </v-col>
@@ -65,15 +68,24 @@
 
       <v-sheet tile class="mx-auto pa-1">
         <v-row class="ma-0 pa-0" align="center">
-          <v-col class="ma-0 pa-0">
+          <v-col class="ma-0 pa-0 text-right">
+            <span v-if="isMuted" v-on:click="unmute">
+              <v-icon large>volume_up</v-icon>
+            </span>
+            <span v-else v-on:click="mute">
+              <v-icon large>volume_off</v-icon>
+            </span>
             <span v-on:click="addPlaylist">
-              <v-icon>library_add</v-icon>
+              <v-icon large>library_add</v-icon>
             </span>
             <span v-on:click="shareTag">
-              <v-icon>mdi-share</v-icon>
+              <v-icon large>mdi-share</v-icon>
             </span>
             <span v-on:click="toggleLike">
-              <i class="fas fa-heart" v-bind:class="[isLiked ? 'isLiked' : 'my-grey']"></i>
+              <i
+                class="fas fa-heart"
+                v-bind:class="[isLiked ? 'isLiked icon-large' : 'my-grey icon-large']"
+              ></i>
             </span>
             <span>{{ likeCount }}</span>
           </v-col>
@@ -122,7 +134,8 @@ export default {
       isPlaying: true,
       isPlayerReady: false,
       player: null,
-      timer: null
+      timer: null,
+      isMuted: true
     };
   },
   mixins: [myMixin],
@@ -295,6 +308,14 @@ export default {
 
       //削除後のデータをリロード
       location.reload();
+    },
+    unmute() {
+      this.player.unMute();
+      this.isMuted = false;
+    },
+    mute() {
+      this.player.mute();
+      this.isMuted = true;
     }
   },
   computed: {
@@ -420,7 +441,6 @@ export default {
       event.target.mute();
       event.target.playVideo();
       this.isPlayerReady = true;
-
       //0.4秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
       this.startTimer();
     };

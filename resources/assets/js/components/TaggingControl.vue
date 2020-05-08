@@ -3,13 +3,9 @@
     <v-sheet tile class="ma-0 pa-1">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0" align="center">
-          <v-col cols="2" class="ma-0 pa-0 text-left">
-            <i v-on:click="returnToTimeControl" class="fas fa-chevron-left"></i>
-          </v-col>
-          <v-col cols="8" class="ma-0 pa-0">
+          <v-col class="ma-0 pa-0">
             <span>シーンにタグ付け</span>
           </v-col>
-          <v-col cols="2" class="ma-0 pa-0"></v-col>
         </v-row>
       </v-container>
     </v-sheet>
@@ -52,14 +48,19 @@
       </v-form>
     </v-sheet>
 
-    <v-sheet tile class="ma-0 pa-1 text-right bottom-position">
-      <v-row align="center" fluid>
-        <v-col class="text-right">
-          <div>
-            <v-icon x-large v-on:click="submit" color="error">check_circle</v-icon>
-          </div>
-        </v-col>
-      </v-row>
+    <v-sheet tile class="ma-0 pa-0 bottom-position" width="100%">
+      <v-container class="ma-0 pa-0" fluid>
+        <v-row align="center" class="ma-0 pa-0">
+          <v-col class="text-left ma-0">
+            <i v-on:click="returnToTimeControl" class="fas fa-arrow-left fa-2x my-grey"></i>
+          </v-col>
+          <v-col class="text-right ma-0">
+            <div>
+              <v-icon x-large v-on:click="submit" color="error">check_circle</v-icon>
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-sheet>
 
     <NoLoginModal v-if="showLoginModal" />

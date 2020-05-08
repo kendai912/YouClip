@@ -85,6 +85,7 @@ export default {
       let min =
         parseInt(His.split(":")[0], 10) * 60 + parseInt(His.split(":")[1], 10);
       let sec = parseInt(His.split(":")[2], 10);
+      sec = sec < 10 ? "0" + sec : sec;
       return min + ":" + sec;
     },
     //playerが取得した時間を「分:秒」に整形
