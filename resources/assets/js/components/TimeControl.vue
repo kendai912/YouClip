@@ -1,5 +1,5 @@
 <template>
-  <v-sheet height="360" tile class="text-center">
+  <v-sheet height="240" tile class="text-center">
     <v-sheet tile class="ma-0 pa-1">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0" align="center">
@@ -53,57 +53,67 @@
     <v-form ref="form">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0" align="center">
-          <v-col></v-col>
           <v-col class="ma-0 pa-0">
             <v-card class="ma-0" tile elevation="0">
-              <div>
-                <v-bottom-navigation class="bottom_navigation_no_shadow" elevation="0">
-                  <v-btn v-on:click="tapStartBtn">
-                    <span>START</span>
-                    <v-icon x-large>alarm_on</v-icon>
-                  </v-btn>
-                </v-bottom-navigation>
-              </div>
-              <div>
-                <v-text-field
-                  v-model="startTimeInput"
-                  v-bind:rules="startRules"
-                  ref="startBtn"
-                  required
-                  placeholder="0:00"
-                  validate-on-blur
-                  flat
-                ></v-text-field>
-              </div>
+              <v-row class="ma-0 pa-0 flex-nowrap">
+                <v-col class="ma-0 pa-0 d-flex align-start">
+                  <v-bottom-navigation
+                    class="bottom_navigation_no_shadow"
+                    elevation="0"
+                    height="64"
+                    style="justify-content: flex-end;"
+                  >
+                    <v-btn v-on:click="tapStartBtn" class="ma-0 pa-0">
+                      <span>START</span>
+                      <v-icon x-large>alarm_on</v-icon>
+                    </v-btn>
+                  </v-bottom-navigation>
+                </v-col>
+                <v-col class="ma-0 pa-0 d-flex align-end">
+                  <v-text-field
+                    v-model="startTimeInput"
+                    v-bind:rules="startRules"
+                    required
+                    placeholder="0:00"
+                    validate-on-blur
+                    flat
+                    class="ma-0 pa-0 short-text-field"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
             </v-card>
           </v-col>
 
-          <v-col></v-col>
-
           <v-col class="ma-0 pa-0">
             <v-card class="ma-0" tile elevation="0">
-              <div>
-                <v-bottom-navigation class="bottom_navigation_no_shadow" elevation="0">
-                  <v-btn v-on:click="tapStopBtn">
-                    <span>STOP</span>
-                    <v-icon x-large>alarm_off</v-icon>
-                  </v-btn>
-                </v-bottom-navigation>
-              </div>
-              <div>
-                <v-text-field
-                  v-model="endTimeInput"
-                  v-bind:rules="endRules"
-                  ref="stopBtn"
-                  required
-                  placeholder="0:00"
-                  validate-on-blur
-                  flat
-                ></v-text-field>
-              </div>
+              <v-row class="ma-0 pa-0 flex-nowrap">
+                <v-col class="ma-0 pa-0 d-flex align-start">
+                  <v-bottom-navigation
+                    class="bottom_navigation_no_shadow"
+                    elevation="0"
+                    height="64"
+                    style="justify-content: flex-end;"
+                  >
+                    <v-btn v-on:click="tapStopBtn" class="ma-0 pa-0">
+                      <span>STOP</span>
+                      <v-icon x-large>alarm_off</v-icon>
+                    </v-btn>
+                  </v-bottom-navigation>
+                </v-col>
+                <v-col class="ma-0 pa-0 d-flex align-end">
+                  <v-text-field
+                    v-model="endTimeInput"
+                    v-bind:rules="endRules"
+                    required
+                    placeholder="0:00"
+                    validate-on-blur
+                    flat
+                    class="ma-0 pa-0 short-text-field"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
             </v-card>
           </v-col>
-          <v-col></v-col>
         </v-row>
       </v-container>
     </v-form>
@@ -111,10 +121,10 @@
     <v-sheet tile class="ma-0 pa-0 bottom-position" width="100%">
       <v-container class="ma-0 pa-0" fluid>
         <v-row align="center" class="ma-0 pa-0">
-          <v-col class="text-left ma-0">
+          <v-col class="text-left ma-0 pa-1">
             <i v-on:click="back" class="fas fa-arrow-left fa-2x my-grey"></i>
           </v-col>
-          <v-col class="text-center ma-0">
+          <v-col class="text-center ma-0 pa-1">
             <v-bottom-navigation v-if="isMuted" class="bottom_navigation_no_shadow" elevation="0">
               <v-btn v-on:click="unmute">
                 <span>ミュート解除</span>
@@ -128,7 +138,7 @@
               </v-btn>
             </v-bottom-navigation>
           </v-col>
-          <v-col class="text-right ma-0">
+          <v-col class="text-right ma-0 pa-1">
             <div>
               <v-btn color="error" v-on:click="next">次へ</v-btn>
             </div>
@@ -251,14 +261,10 @@ export default {
     },
     tapStartBtn() {
       this.startTimeInput = this.currentTime;
-      //バリデーションチェックのためフォーカスを開始時間フォームに移す
-      this.$refs.startBtn.focus();
       this.player.playVideo();
     },
     tapStopBtn() {
       this.endTimeInput = this.currentTime;
-      //バリデーションチェックのためフォーカスを終了時間フォームに移す
-      this.$refs.stopBtn.focus();
       this.player.pauseVideo();
     },
     //再生

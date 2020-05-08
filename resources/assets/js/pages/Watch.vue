@@ -19,7 +19,7 @@
               >
                 <v-btn v-on:click="sharePlaylist" class="ma-0 pa-0 narrow-btn">
                   <span>リスト共有</span>
-                  <v-icon class="icon-large">mdi-share</v-icon>
+                  <v-icon class="icon-large my-grey">mdi-share</v-icon>
                 </v-btn>
                 <v-btn v-on:click="toggleLikePlaylist" class="ma-0 pa-0 narrow-btn">
                   <span>{{ likePlaylistCount }}</span>
@@ -97,7 +97,7 @@
               </v-btn>
               <v-btn v-on:click="shareTag" class="ma-0 pa-0 narrow-btn">
                 <span>シーン共有</span>
-                <v-icon class="icon-large">mdi-share</v-icon>
+                <v-icon class="icon-large my-grey">mdi-share</v-icon>
               </v-btn>
               <v-btn v-on:click="toggleLike" class="ma-0 pa-0 narrow-btn">
                 <span>{{ likeCount }}</span>

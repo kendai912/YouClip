@@ -1,5 +1,5 @@
 <template>
-  <v-sheet height="360" tile class="text-center">
+  <v-sheet height="240" tile class="text-center">
     <v-sheet tile class="ma-0 pa-1">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0" align="center">
