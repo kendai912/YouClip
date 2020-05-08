@@ -209,5 +209,17 @@
 }
 
 .icon-large {
-  font-size: 29px;
+  font-size: 28px !important;
+}
+
+.fa-heart-font {
+  font-size: 23px !important;
+}
+
+.share-font {
+  font-size: 36px !important;
+}
+
+.narrow-btn {
+  min-width: 64px !important;
 }

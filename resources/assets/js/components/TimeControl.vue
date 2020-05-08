@@ -114,6 +114,20 @@
           <v-col class="text-left ma-0">
             <i v-on:click="back" class="fas fa-arrow-left fa-2x my-grey"></i>
           </v-col>
+          <v-col class="text-center ma-0">
+            <v-bottom-navigation v-if="isMuted" class="bottom_navigation_no_shadow" elevation="0">
+              <v-btn v-on:click="unmute">
+                <span>ミュート解除</span>
+                <v-icon large>volume_up</v-icon>
+              </v-btn>
+            </v-bottom-navigation>
+            <v-bottom-navigation v-else class="bottom_navigation_no_shadow" elevation="0">
+              <v-btn v-on:click="mute">
+                <span>ミュート</span>
+                <v-icon large>volume_off</v-icon>
+              </v-btn>
+            </v-bottom-navigation>
+          </v-col>
           <v-col class="text-right ma-0">
             <div>
               <v-btn color="error" v-on:click="next">次へ</v-btn>
@@ -140,6 +154,7 @@ export default {
       sliderInterval: null,
       startTimeInput: null,
       endTimeInput: null,
+      isMuted: true,
       startRules: [
         v => !!v || "開始時間を入力して下さい",
         v => {
@@ -282,6 +297,14 @@ export default {
       this.isEditting
         ? this.$store.commit("tagging/setShowSceneTagControl", false)
         : this.$router.go(-1);
+    },
+    unmute() {
+      this.player.unMute();
+      this.isMuted = false;
+    },
+    mute() {
+      this.player.mute();
+      this.isMuted = true;
     },
     //初期化処理
     initialize() {
