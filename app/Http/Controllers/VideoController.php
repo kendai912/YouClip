@@ -142,54 +142,54 @@ class VideoController extends Controller
         ]);
     }
 
-    //登録処理
-    public function store(VideoStoreRequest $request)
-    {
-        //URLからYoutubeIDを取得
-        preg_match('/(\?v=|youtu.be\/)(?<youtubeId>[^&]+)/', $request->url, $match);
-        $youtubeId = $match['youtubeId'];
+    // //登録処理
+    // public function store(VideoStoreRequest $request)
+    // {
+    //     //URLからYoutubeIDを取得
+    //     preg_match('/(\?v=|youtu.be\/)(?<youtubeId>[^&]+)/', $request->url, $match);
+    //     $youtubeId = $match['youtubeId'];
 
-        // YouTubeAPIでタイトル・サムネイル・再生時間を取得
-        // $apikey = 'AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU';
-        $apikey = 'AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk';
-        $googleApiUrl = 'https://www.googleapis.com/youtube/v3/videos?id=' . $youtubeId . '&key=' . $apikey . '&part=snippet,contentDetails';
+    //     // YouTubeAPIでタイトル・サムネイル・再生時間を取得
+    //     // $apikey = 'AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU';
+    //     $apikey = 'AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk';
+    //     $googleApiUrl = 'https://www.googleapis.com/youtube/v3/videos?id=' . $youtubeId . '&key=' . $apikey . '&part=snippet,contentDetails';
         
-        $ch = curl_init();
+    //     $ch = curl_init();
         
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_URL, $googleApiUrl);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_VERBOSE, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $response = curl_exec($ch);
-        curl_close($ch);
+    //     curl_setopt($ch, CURLOPT_HEADER, 0);
+    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    //     curl_setopt($ch, CURLOPT_URL, $googleApiUrl);
+    //     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    //     curl_setopt($ch, CURLOPT_VERBOSE, 0);
+    //     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    //     $response = curl_exec($ch);
+    //     curl_close($ch);
             
-        $data = json_decode($response);
-        $value = json_decode(json_encode($data), true);
+    //     $data = json_decode($response);
+    //     $value = json_decode(json_encode($data), true);
             
-        $title = $value['items'][0]['snippet']['title'];
-        $thumbnail = $value['items'][0]['snippet']['thumbnails']['high']['url'];
-        preg_match('/PT(?<minutes>\d*)M(?<seconds>\d*)S/', $value['items'][0]['contentDetails']['duration'], $matches);
-        $duration = date('H:i:s', strtotime("00:".$matches['minutes'].":".$matches['seconds']));
+    //     $title = $value['items'][0]['snippet']['title'];
+    //     $thumbnail = $value['items'][0]['snippet']['thumbnails']['high']['url'];
+    //     preg_match('/PT(?<minutes>\d*)M(?<seconds>\d*)S/', $value['items'][0]['contentDetails']['duration'], $matches);
+    //     $duration = date('H:i:s', strtotime("00:".$matches['minutes'].":".$matches['seconds']));
 
-        //DBに保存
-        $videos = new Video;
-        $videos->youtubeId = $youtubeId;
-        $videos->user_id = $request->user_id;
-        $videos->url = $request->url;
-        $videos->title = $title;
-        $videos->thumbnail = $thumbnail;
-        $videos->duration = $duration;
-        $videos->save();
+    //     //DBに保存
+    //     $videos = new Video;
+    //     $videos->youtubeId = $youtubeId;
+    //     $videos->user_id = $request->user_id;
+    //     $videos->url = $request->url;
+    //     $videos->title = $title;
+    //     $videos->thumbnail = $thumbnail;
+    //     $videos->duration = $duration;
+    //     $videos->save();
         
-        return response()->json(
-            [
-                'video_id' => $videos->id,
-            ],
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
-    }
+    //     return response()->json(
+    //         [
+    //             'video_id' => $videos->id,
+    //         ],
+    //         200,
+    //         [],
+    //         JSON_UNESCAPED_UNICODE
+    //     );
+    // }
 }

@@ -49,6 +49,7 @@ const getters = {
   YTsearchQuery: (state) => state.YTsearchQuery,
   keyIndex: (state) => state.keyIndex,
   keyArray: (state) => state.keyArray,
+  key: (state) => state.keyArray[state.keyIndex],
   candidates: (state) => state.candidates,
   YTresult: (state) => state.YTresult,
   topYTSearchqueries: (state) => state.topYTSearchqueries,

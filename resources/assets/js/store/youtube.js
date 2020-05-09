@@ -1,5 +1,6 @@
 import axios from "axios";
-import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
+import { OK, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR } from "../util";
+import store from "../store";
 
 const state = {
   youtubeId: "",
@@ -14,7 +15,14 @@ const state = {
   },
   currentTime: "0:00",
   isReady: false,
-  key: "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk",
+  key: "",
+  keyIndex: 0,
+  keyArray: [
+    "AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk", //YouClip
+    "AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU", //Futsal Movie Stock
+    "AIzaSyCUyFedDYTd9DZEOMVlSGofCJrV35EjQbc", //MangaVoice Translation
+    "AIzaSyCCX46YN-2sFhTBLEv3kVPgDjz7L1EOBUs", //IkinariDateCourse
+  ],
 };
 
 const getters = {
@@ -25,6 +33,9 @@ const getters = {
   isNew: (state) => state.isNew,
   currentTime: (state) => state.currentTime,
   isReady: (state) => state.isReady,
+  keyIndex: (state) => state.keyIndex,
+  keyArray: (state) => state.keyArray,
+  key: (state) => state.keyArray[state.keyIndex],
 };
 
 const mutations = {
@@ -66,6 +77,12 @@ const mutations = {
   },
   setIsReady(state, data) {
     state.isReady = data;
+  },
+  setKeyIndex(state, data) {
+    state.keyIndex = data;
+  },
+  setKey(state, keyIndex) {
+    state.key = state.keyArray[keyIndex];
   },
 };
 
@@ -135,6 +152,9 @@ const actions = {
   },
   //YoutubeIDを元にData APIから動画情報を取得
   async getNewVideoData(context) {
+    //API Keyをセット
+    context.commit("setKey", context.getters["keyIndex"]);
+
     let api = "https://www.googleapis.com/youtube/v3/videos";
     let params = {
       id: state.youtubeId,
@@ -159,6 +179,15 @@ const actions = {
         response.data.items[0].snippet.categoryId
       );
       // context.commit("setYTResult", response.data.items);
+    } else if (response.status == FORBIDDEN) {
+      // API Keyの上限オーバーで失敗した時
+      //次のAPI Keyにスイッチして再度検索実行
+      context.commit("setKeyIndex", context.getters["keyIndex"] + 1);
+
+      //API Keyのストックを超えたら直接URLで検索するようにエラーページを表示
+      context.getters["keyIndex"] >= context.getters["keyArray"].length
+        ? context.commit("error/setCode", response.status, { root: true })
+        : await actions.getNewVideoData(context);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
@@ -169,6 +198,9 @@ const actions = {
   },
   //Data APIでCategoryIDからカテゴリ名を取得
   async getVideoCategoryTitleById(context, categoryId) {
+    //API Keyをセット
+    context.commit("setKey", context.getters["keyIndex"]);
+
     let api = "https://www.googleapis.com/youtube/v3/videoCategories";
     let params = {
       part: "snippet",
@@ -183,6 +215,15 @@ const actions = {
         "setNewVideoCategory",
         response.data.items[0].snippet.title
       );
+    } else if (response.status == FORBIDDEN) {
+      // API Keyの上限オーバーで失敗した時
+      //次のAPI Keyにスイッチして再度検索実行
+      context.commit("setKeyIndex", context.getters["keyIndex"] + 1);
+
+      //API Keyのストックを超えたら直接URLで検索するようにエラーページを表示
+      context.getters["keyIndex"] >= context.getters["keyArray"].length
+        ? context.commit("error/setCode", response.status, { root: true })
+        : await actions.getVideoCategoryTitleById(context);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
