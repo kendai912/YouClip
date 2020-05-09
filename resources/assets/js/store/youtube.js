@@ -22,6 +22,20 @@ const state = {
     "AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU", //Futsal Movie Stock
     "AIzaSyCUyFedDYTd9DZEOMVlSGofCJrV35EjQbc", //MangaVoice Translation
     "AIzaSyCCX46YN-2sFhTBLEv3kVPgDjz7L1EOBUs", //IkinariDateCourse
+    "AIzaSyBxlIZX9pR1wIG7CqMe7wvyObXpf_BGvN8", //My First Project
+    "AIzaSyDy9y9xNIyj9ciuebX5bP8wB7sWOIylfz8", //AutoML-Sample
+    "AIzaSyDHseNOxUV-81QHSYjNAK9oHDC428OJYmc", //practice1
+    "AIzaSyBxfD1UJz1WZ6OIYD96712OBwxZ_YyXaZE", //practice2
+    "AIzaSyA7WmuL5HRjtWOmdSeOmDCEqH55kJSfDDY", //practice3
+    "AIzaSyBe0B2ImZYGRGzmqkxFF_JtQnyL_8_PYQM", //practice4
+    "AIzaSyAZUVrV-CyO0Noi4hcMv7fCMPaBJIHhrMg", //practice5
+    "AIzaSyDVODBVpbVdpz8MpzBjge2prP8-xXqKb8s", //practice6
+    "AIzaSyCedMzCqkoV6lFj1X6QJWOxJNSVb8gQsQ8", //practice7
+    "AIzaSyAAUZgJnemWC4QHlugTXg1wPHrWxOdA4Tg", //practice8
+    "AIzaSyAv3Z4y2-U0rFUw7us42bQVSpa50PVK3WA", //practice9
+    "AIzaSyB3MtM2gwKDaGxUW90ybEjMvpbpsWr6f1o", //practice10
+    "AIzaSyC0ytLKKn_W44MZMH94PO6wfqk_cgSYTUg", //practice11
+    "AIzaSyAu7Endr6bQ8lnwzITuzngHtCxQ-4MzOac", //practice12
   ],
 };
 
