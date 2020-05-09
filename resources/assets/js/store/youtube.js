@@ -70,10 +70,12 @@ const mutations = {
       let result = data.match(/PT(\d*)M(\d*)S/);
       let min = result[1];
       let sec = result[2];
+      if (sec < 10) sec = "0" + sec;
       state.newVideoData.duration = min + ":" + sec;
     } else if (data.match(/PT(\d*)S/)) {
       let result = data.match(/PT(\d*)S/);
       let sec = result[1];
+      if (sec < 10) sec = "0" + sec;
       state.newVideoData.duration = "0:" + sec;
     }
   },

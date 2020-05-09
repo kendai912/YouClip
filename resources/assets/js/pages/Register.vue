@@ -8,11 +8,11 @@
           </v-col>
         </v-row>
         <v-row class="mb-4 pa-0" align="center">
-          <v-col class="ma-0 pa-0">
+          <!-- <v-col class="ma-0 pa-0">
             <a href="/api/auth/google">
               <v-img width="44px" aspect-ratio="1" src="/storage/logos/google.png"></v-img>
             </a>
-          </v-col>
+          </v-col>-->
           <v-col class="ma-0 pa-0">
             <a href="/api/auth/facebook">
               <v-img width="44px" aspect-ratio="1" src="/storage/logos/icon_facebook.svg"></v-img>
