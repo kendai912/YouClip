@@ -86,14 +86,14 @@
               >
                 <v-btn v-if="isMuted" v-on:click="unmute" class="ma-0 pa-0 narrow-btn">
                   <span>消音解除</span>
-                  <v-icon class="icon-large">volume_up</v-icon>
+                  <v-icon class="icon-large">volume_off</v-icon>
                 </v-btn>
                 <v-btn v-else v-on:click="mute" class="ma-0 pa-0 narrow-btn">
                   <span>消音</span>
-                  <v-icon class="icon-large">volume_off</v-icon>
+                  <v-icon class="icon-large">volume_up</v-icon>
                 </v-btn>
                 <v-btn v-on:click="addPlaylist" class="ma-0 pa-0 narrow-btn">
-                  <span>保存</span>
+                  <span>リスト登録</span>
                   <v-icon class="icon-large">library_add</v-icon>
                 </v-btn>
                 <v-btn v-on:click="shareTag" class="ma-0 pa-0 narrow-btn">

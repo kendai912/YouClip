@@ -128,13 +128,13 @@
             <v-bottom-navigation v-if="isMuted" class="bottom_navigation_no_shadow" elevation="0">
               <v-btn v-on:click="unmute">
                 <span>ミュート解除</span>
-                <v-icon large>volume_up</v-icon>
+                <v-icon large>volume_off</v-icon>
               </v-btn>
             </v-bottom-navigation>
             <v-bottom-navigation v-else class="bottom_navigation_no_shadow" elevation="0">
               <v-btn v-on:click="mute">
                 <span>ミュート</span>
-                <v-icon large>volume_off</v-icon>
+                <v-icon large>volume_up</v-icon>
               </v-btn>
             </v-bottom-navigation>
           </v-col>
