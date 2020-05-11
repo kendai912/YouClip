@@ -112,6 +112,10 @@
   color: gray;
 }
 
+.my-grey-heart {
+  color: rgb(158, 158, 158);
+}
+
 .horizontal-list-wrap {
   padding: 0;
   height: 40px;

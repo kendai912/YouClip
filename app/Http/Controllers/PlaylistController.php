@@ -62,7 +62,10 @@ class PlaylistController extends Controller
     {
         //プレイリストにタグのデータを結合し、新しい順に並び替え
         $contentsPerPage = 5;
-        $playlistAndTagPaginationOfNew = Playlist::with('tags')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        $playlistAndTagPaginationOfNew = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+            $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
+        }
+        ])->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
         return response()->json(
             [

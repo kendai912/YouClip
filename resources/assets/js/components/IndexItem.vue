@@ -27,8 +27,12 @@
                 <div v-on:click.stop="select(item)" class="grey--text text--darken-3">
                   <span>合計{{ item.totalDuration }}</span>
                   <span>{{ item.sceneCount }}シーン</span>
-                  <span>◯回視聴</span>
+                  <!-- <span>◯回視聴</span> -->
                   <span>{{ item.timeSince }}前</span>
+                  <span v-if="item.likeCount">
+                    <i class="fas fa-heart my-grey-heart"></i>
+                    {{ item.likeCount}}
+                  </span>
                 </div>
               </v-card-text>
             </v-list-item-content>

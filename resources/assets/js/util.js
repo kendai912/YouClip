@@ -56,7 +56,8 @@ export default {
             start: this.formatToMinSec(value.start),
             end: this.formatToMinSec(value.end),
             preview: value.preview,
-            sceneCount: 0,
+            sceneCount: 1,
+            likeCount: "",
           });
         });
       }
@@ -92,6 +93,7 @@ export default {
               end: "",
               preview: value.tags[0].preview,
               sceneCount: sceneCount,
+              likeCount: value.likesPlaylist_count,
             });
           }
         });
