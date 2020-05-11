@@ -46,6 +46,7 @@ export default {
             title: value.title,
             thumbnail: value.thumbnail,
             created_at: value.tag_created_at,
+            timeSince: this.timeSince(value.tag_created_at),
             tagsList: "",
             tags: value.tags,
             tagArray: value.tags.split(/[\s| |　]/),
@@ -80,6 +81,7 @@ export default {
               title: value.playlistName,
               thumbnail: "",
               created_at: value.created_at,
+              timeSince: this.timeSince(value.created_at),
               tagsList: value.tags,
               tags: "",
               tagArray: "",
@@ -178,12 +180,12 @@ export default {
       if (interval > 1) {
         return interval + "ヶ月";
       }
-      interval = Math.floor((seconds / 86400) * 7);
+      interval = Math.floor(seconds / 604800);
       if (interval > 1) {
         return interval + "週間";
       }
       interval = Math.floor(seconds / 86400);
-      if (interval > 1) {
+      if (interval >= 1) {
         return interval + "日";
       }
       interval = Math.floor(seconds / 3600);

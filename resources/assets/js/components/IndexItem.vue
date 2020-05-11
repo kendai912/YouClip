@@ -28,7 +28,7 @@
                   <span>合計{{ item.totalDuration }}</span>
                   <span>{{ item.sceneCount }}シーン</span>
                   <span>◯回視聴</span>
-                  <span>◯週間前</span>
+                  <span>{{ item.timeSince }}前</span>
                 </div>
               </v-card-text>
             </v-list-item-content>
