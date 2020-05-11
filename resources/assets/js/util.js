@@ -55,6 +55,7 @@ export default {
             start: this.formatToMinSec(value.start),
             end: this.formatToMinSec(value.end),
             preview: value.preview,
+            sceneCount: 0,
           });
         });
       }
@@ -63,11 +64,13 @@ export default {
     putPlaylistTagIntoMediaItems: function(mediaItems, playlistTag) {
       if (playlistTag) {
         playlistTag.forEach((value, index) => {
-          //合計時間を計算
+          //合計時間とシーン数を計算
           let totalDuration = "00:00:00";
+          let sceneCount = 0;
           value.tags.forEach((tag) => {
             let duration = this.timeMath.sub(tag.end, tag.start);
             totalDuration = this.timeMath.sum(totalDuration, duration);
+            sceneCount++;
           });
 
           if (value.tags[0]) {
@@ -86,6 +89,7 @@ export default {
               start: "",
               end: "",
               preview: value.tags[0].preview,
+              sceneCount: sceneCount,
             });
           }
         });
