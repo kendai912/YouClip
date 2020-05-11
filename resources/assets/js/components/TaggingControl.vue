@@ -125,8 +125,6 @@ export default {
               self.$store.dispatch("tagging/storeSceneTags");
               self.$emit("taggingSucceed");
             }
-            //動画をDBに保存したのでisNewフラグをfalseにセット
-            self.isNew ? context.commit("youtube/setIsNew", false) : "";
 
             // //入力フォームをクリア
             self.$store.commit("tagging/setTags", "");

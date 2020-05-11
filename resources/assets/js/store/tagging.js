@@ -96,8 +96,14 @@ const actions = {
     const response = await axios.post("/api/tag/store", params);
     if (response.status == CREATED) {
       // 成功した時
-      //storeのタグデータを更新
-      context.dispatch("youtube/getTag", "", { root: true });
+      //storeのTagデータを更新
+      await context.dispatch("youtube/getTag", "", { root: true });
+      //動画をDBに保存したのでisNewフラグをfalseにセット
+      if (params.isNew) {
+        //storeのVideoデータを更新
+        await context.dispatch("youtube/getVideo", "", { root: true });
+        context.commit("youtube/setIsNew", false, { root: true });
+      }
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });

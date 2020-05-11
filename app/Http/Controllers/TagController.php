@@ -157,7 +157,10 @@ class TagController extends Controller
     public function store(Request $request)
     {
         //新規の場合、最初に動画をDBに保存
-        if ($request->isNew) {
+        if (Video::where('youtubeId', $request->youtubeId)->exists()) {
+            //既存の場合、テーブルからVideoオブジェクトを取得
+            $video = Video::where('youtubeId', $request->youtubeId)->first();
+        } else {
             $video = new Video;
             $video->youtubeId = $request->youtubeId;
             $video->user_id = Auth::user()->id;
@@ -166,9 +169,6 @@ class TagController extends Controller
             $video->duration = "00:".$request->newVideoData['duration'];
             $video->category = $request->newVideoData['category'];
             $video->save();
-        } else {
-            //既存の場合、テーブルからVideoオブジェクトを取得
-            $video = Video::where('youtubeId', $request->youtubeId)->first();
         }
 
         //タグの配列をスペース区切りの文字列に変換
