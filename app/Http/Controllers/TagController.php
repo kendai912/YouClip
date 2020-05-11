@@ -177,6 +177,8 @@ class TagController extends Controller
         //プレビュー用のgifを取得しファイル名を変数に格納
         $previewFileName = $this->getPreviewFile($request);
 
+        $start = $request->start;
+
         //タグをDBに保存
         $tag = new Tag;
         $tag->video_id = $video->id;

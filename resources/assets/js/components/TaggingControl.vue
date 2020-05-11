@@ -118,11 +118,24 @@ export default {
               //編集の場合
               self.$store.dispatch("tagging/updateSceneTags");
               self.$emit("updateSucceed");
+              //シーンタグ付けコンポーネントを非表示にし再生画面に戻る
+              self.$store.commit("tagging/setShowSceneTagControl", false);
             } else {
               //新規の場合
               self.$store.dispatch("tagging/storeSceneTags");
               self.$emit("taggingSucceed");
             }
+            //動画をDBに保存したのでisNewフラグをfalseにセット
+            self.isNew ? context.commit("youtube/setIsNew", false) : "";
+
+            // //入力フォームをクリア
+            self.$store.commit("tagging/setTags", "");
+            self.$store.commit("tagging/setStart", "");
+            self.$store.commit("tagging/setEnd", "");
+            //画面下部のシーンの遷移モードを変更(true:右スライド, false:左スライド)
+            self.$store.commit("tagging/setControlTransitNext", false);
+            //TimeControlのシートへ戻る
+            self.$store.commit("tagging/setShowTaggingControl", "TimeControl");
           }
         });
       } else {

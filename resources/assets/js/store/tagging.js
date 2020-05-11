@@ -12,19 +12,19 @@ const state = {
   end: null,
   controlTransitNext: true,
   tagHistories: [],
-  isEditting: false
+  isEditting: false,
 };
 
 const getters = {
-  showSceneTagControl: state => state.showSceneTagControl,
-  showTaggingControl: state => state.showTaggingControl,
-  tagId: state => state.tagId,
-  tags: state => state.tags,
-  start: state => state.start,
-  end: state => state.end,
-  controlTransitNext: state => state.controlTransitNext,
-  tagHistories: state => state.tagHistories,
-  isEditting: state => state.isEditting
+  showSceneTagControl: (state) => state.showSceneTagControl,
+  showTaggingControl: (state) => state.showTaggingControl,
+  tagId: (state) => state.tagId,
+  tags: (state) => state.tags,
+  start: (state) => state.start,
+  end: (state) => state.end,
+  controlTransitNext: (state) => state.controlTransitNext,
+  tagHistories: (state) => state.tagHistories,
+  isEditting: (state) => state.isEditting,
 };
 
 const mutations = {
@@ -75,7 +75,7 @@ const mutations = {
         i--;
       }
     }
-  }
+  },
 };
 
 const actions = {
@@ -90,21 +90,14 @@ const actions = {
       newVideoData: store.getters["youtube/newVideoData"],
       tags: state.tags,
       start: state.start,
-      end: state.end
+      end: state.end,
     };
 
     const response = await axios.post("/api/tag/store", params);
     if (response.status == CREATED) {
       // 成功した時
-      //入力フォームをクリア
-      context.commit("setTags", "");
-      context.commit("setStart", "");
-      context.commit("setEnd", "");
-
-      //画面下部のシーンの遷移モードを変更(true:右スライド, false:左スライド)
-      context.commit("setControlTransitNext", false);
-      //TimeControlのシートへ戻る
-      context.commit("setShowTaggingControl", "TimeControl");
+      //storeのタグデータを更新
+      context.dispatch("youtube/getTag", "", { root: true });
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
@@ -123,22 +116,14 @@ const actions = {
       tagId: state.tagId,
       tags: state.tags,
       start: state.start,
-      end: state.end
+      end: state.end,
     };
 
     const response = await axios.post("/api/tag/update", params);
     if (response.status == CREATED) {
       // 成功した時
-      //入力フォームをクリア
-      context.commit("setTags", "");
-      context.commit("setStart", "");
-      context.commit("setEnd", "");
-
-      //画面下部のシーンの遷移モードを変更(true:右スライド, false:左スライド)
-      context.commit("setControlTransitNext", false);
-      context.commit("setShowTaggingControl", "TimeControl");
-      //シーンタグ付けコンポーネントを非表示にし再生画面に戻る
-      context.commit("setShowSceneTagControl", false);
+      //storeのタグデータを更新
+      context.dispatch("youtube/getTag", "", { root: true });
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
@@ -149,7 +134,7 @@ const actions = {
   },
   async deleteTag(context) {
     let params = {
-      tagId: state.tagId
+      tagId: state.tagId,
     };
 
     const response = await axios.post("/api/tag/delete", params);
@@ -175,7 +160,7 @@ const actions = {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
     }
-  }
+  },
 };
 
 export default {
@@ -183,5 +168,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };
