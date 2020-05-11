@@ -25,7 +25,7 @@
               <v-card-title v-on:click.stop="select(item)" class="pb-0">{{ item.title }}</v-card-title>
               <v-card-text class="text--primary">
                 <div v-on:click.stop="select(item)" class="grey--text text--darken-3">
-                  <span>合計◯分</span>
+                  <span>合計{{ item.totalDuration }}</span>
                   <span>◯シーン</span>
                   <span>◯回視聴</span>
                   <span>◯週間前</span>

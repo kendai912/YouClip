@@ -37,6 +37,9 @@ export default {
     putTagVideoIntoMediaItems: function(mediaItems, tagVideo) {
       if (tagVideo) {
         tagVideo.forEach((value, index) => {
+          //合計時間を計算
+          let duration = this.timeMath.sub(value.end, value.start);
+
           mediaItems.push({
             category: "tag",
             id: value.tag_id,
@@ -46,6 +49,9 @@ export default {
             tagsList: "",
             tags: value.tags,
             tagArray: value.tags.split(/[\s| |　]/),
+            totalDuration: this.convertToKanjiTime(
+              this.convertToSec(this.formatToMinSec(duration))
+            ),
             start: this.formatToMinSec(value.start),
             end: this.formatToMinSec(value.end),
             preview: value.preview,
@@ -57,6 +63,13 @@ export default {
     putPlaylistTagIntoMediaItems: function(mediaItems, playlistTag) {
       if (playlistTag) {
         playlistTag.forEach((value, index) => {
+          //合計時間を計算
+          let totalDuration = "00:00:00";
+          value.tags.forEach((tag) => {
+            let duration = this.timeMath.sub(tag.end, tag.start);
+            totalDuration = this.timeMath.sum(totalDuration, duration);
+          });
+
           if (value.tags[0]) {
             mediaItems.push({
               category: "playlist",
@@ -67,6 +80,9 @@ export default {
               tagsList: value.tags,
               tags: "",
               tagArray: "",
+              totalDuration: this.convertToKanjiTime(
+                this.convertToSec(this.formatToMinSec(totalDuration))
+              ),
               start: "",
               end: "",
               preview: value.tags[0].preview,
@@ -74,6 +90,18 @@ export default {
           }
         });
       }
+    },
+    //ss表記から「◯時間」か「◯分」か「◯秒」に変換
+    convertToKanjiTime(s) {
+      let units = ["秒", "分", "時間"];
+      var ext = units[0];
+      for (var i = 1; i < units.length; i += 1) {
+        if (parseInt(s) >= 60) {
+          s = parseInt(s) / 60;
+          ext = units[i];
+        }
+      }
+      return Math.round(s) + ext;
     },
     //i:s表記から秒数に変換
     convertToSec(is) {
@@ -89,6 +117,7 @@ export default {
       sec = sec < 10 ? "0" + sec : sec;
       return min + ":" + sec;
     },
+
     //playerが取得した時間を「分:秒」に整形
     formatTime(time) {
       time = Math.round(time);
@@ -115,6 +144,7 @@ export default {
         return "0:" + sec;
       }
     },
+
     //数値の桁変換を行う関数
     convertNumDigit(num) {
       let units = ["", "万", "億"];
@@ -162,5 +192,190 @@ export default {
       }
       return Math.floor(seconds) + "秒";
     },
+  },
+
+  data() {
+    return {
+      timeMath: {
+        // 加算
+        sum: function() {
+          var result,
+            times,
+            second,
+            i,
+            len = arguments.length;
+
+          if (len === 0) return;
+
+          for (i = 0; i < len; i++) {
+            if (
+              !arguments[i] ||
+              !arguments[i].match(/^[0-9]+:[0-9]{2}:[0-9]{2}$/)
+            )
+              continue;
+
+            times = arguments[i].split(":");
+
+            second = this.toSecond(times[0], times[1], times[2]);
+
+            if (!second && second !== 0) continue;
+
+            if (i === 0) {
+              result = second;
+            } else {
+              result += second;
+            }
+          }
+
+          return this.toTimeFormat(result);
+        },
+
+        // 減算
+        sub: function() {
+          var result,
+            times,
+            second,
+            i,
+            len = arguments.length;
+
+          if (len === 0) return;
+
+          for (i = 0; i < len; i++) {
+            if (
+              !arguments[i] ||
+              !arguments[i].match(/^[0-9]+:[0-9]{2}:[0-9]{2}$/)
+            )
+              continue;
+
+            times = arguments[i].split(":");
+
+            second = this.toSecond(times[0], times[1], times[2]);
+
+            if (!second) continue;
+
+            if (i === 0) {
+              result = second;
+            } else {
+              result -= second;
+            }
+          }
+
+          return this.toTimeFormat(result);
+        },
+
+        // 乗算
+        multiply: function() {
+          var result,
+            times,
+            second,
+            i,
+            len = arguments.length;
+
+          if (len === 0) return;
+
+          for (i = 0; i < len; i++) {
+            if (
+              !arguments[i] ||
+              !arguments[i].match(/^[0-9]+:[0-9]{2}:[0-9]{2}$/)
+            )
+              continue;
+
+            times = arguments[i].split(":");
+
+            second = this.toSecond(times[0], times[1], times[2]);
+
+            if (!second) continue;
+
+            if (i === 0) {
+              result = second;
+            } else {
+              result *= second;
+            }
+          }
+
+          return this.toTimeFormat(result);
+        },
+
+        // 除算
+        division: function() {
+          var result,
+            times,
+            second,
+            i,
+            len = arguments.length;
+
+          if (len === 0) return;
+
+          for (i = 0; i < len; i++) {
+            if (
+              !arguments[i] ||
+              !arguments[i].match(/^[0-9]+:[0-9]{2}:[0-9]{2}$/)
+            )
+              continue;
+
+            times = arguments[i].split(":");
+
+            second = this.toSecond(times[0], times[1], times[2]);
+
+            if (!second) continue;
+
+            if (i === 0) {
+              result = second;
+            } else {
+              result /= second;
+            }
+          }
+
+          return this.toTimeFormat(result);
+        },
+
+        // 時間を秒に変換
+        toSecond: function(hour, minute, second) {
+          if (
+            (!hour && hour !== 0) ||
+            (!minute && minute !== 0) ||
+            (!second && second !== 0) ||
+            hour === null ||
+            minute === null ||
+            second === null ||
+            typeof hour === "boolean" ||
+            typeof minute === "boolean" ||
+            typeof second === "boolean" ||
+            typeof Number(hour) === "NaN" ||
+            typeof Number(minute) === "NaN" ||
+            typeof Number(second) === "NaN"
+          )
+            return;
+
+          return Number(hour) * 60 * 60 + Number(minute) * 60 + Number(second);
+        },
+
+        // 秒を時間（hh:mm:ss）のフォーマットに変換
+        toTimeFormat: function(fullSecond) {
+          var hour, minute, second;
+
+          if (
+            (!fullSecond && fullSecond !== 0) ||
+            !String(fullSecond).match(/^[\-0-9][0-9]*?$/)
+          )
+            return;
+
+          var paddingZero = function(n) {
+            return n < 10 ? "0" + n : n;
+          };
+
+          hour = Math.floor(Math.abs(fullSecond) / 3600);
+          minute = Math.floor((Math.abs(fullSecond) % 3600) / 60);
+          second = Math.floor(Math.abs(fullSecond) % 60);
+
+          minute = paddingZero(minute);
+          second = paddingZero(second);
+
+          return (
+            (fullSecond < 0 ? "-" : "") + hour + ":" + minute + ":" + second
+          );
+        },
+      },
+    };
   },
 };
