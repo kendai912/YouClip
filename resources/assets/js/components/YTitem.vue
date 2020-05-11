@@ -9,7 +9,7 @@
         max-width="400"
         elevation="0"
       >
-        <v-container class="px-3 pb-0 my-3">
+        <v-container class="px-3 my-3">
           <v-row
             v-on:click="select(item)"
             justify="center"

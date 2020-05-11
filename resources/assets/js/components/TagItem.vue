@@ -1,13 +1,13 @@
 <template>
   <div v-if="isReady">
-    <v-sheet tile class="mx-auto pa-1">
+    <v-sheet tile class="mx-auto pa-1 body-color">
       <div>
         <span v-if="isNew">{{ newVideoData.title }}</span>
         <span v-else>{{ videoData.title }}</span>
       </div>
     </v-sheet>
 
-    <v-sheet tile class="mx-auto pa-1">
+    <v-sheet tile class="mx-auto pa-1 body-color">
       <transition-group name="tag-list" tag="p" class="tag__list">
         <v-row
           v-for="tagData in showTagDataArray"

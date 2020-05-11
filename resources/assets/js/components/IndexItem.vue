@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="body-color">
     <v-row
       v-for="item in mediaItems"
       v-bind:key="item.category+'-'+item.id"

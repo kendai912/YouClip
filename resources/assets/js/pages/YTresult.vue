@@ -1,7 +1,7 @@
 <template>
   <div class="container--small">
     <YTSearchBox />
-    <YTitem v-bind:YTitems="YTresult" />
+    <YTitem v-bind:YTitems="YTresult" class="body-color" />
   </div>
 </template>
 

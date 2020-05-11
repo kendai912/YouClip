@@ -8,6 +8,14 @@
   font-size: 14px;
 }
 
+.v-application--wrap {
+  background-color: rgb(245, 245, 245);
+}
+
+.body-color {
+  background-color: rgb(245, 245, 245) !important;
+}
+
 .container--small {
   margin: 0 auto;
   max-width: 600px;

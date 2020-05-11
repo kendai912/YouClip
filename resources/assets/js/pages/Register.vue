@@ -1,6 +1,6 @@
 <template>
   <div class="container--small">
-    <v-sheet tile class="mx-auto py-3 px-2" align="center" justify="center" max-width="400px">
+    <v-sheet tile class="mx-auto py-3 px-2 body-color" align="center" justify="center" max-width="400px">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0" align="center" justify="center" style="height: 40px;">
           <v-col class="ma-0 pa-0">
