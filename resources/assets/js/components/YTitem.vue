@@ -5,7 +5,6 @@
         v-for="(item, index) in YTitems"
         v-bind:key="item.etag + index"
         class="mx-auto"
-        tile
         max-width="400"
         elevation="0"
       >

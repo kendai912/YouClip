@@ -5,7 +5,7 @@
       v-bind:key="index"
       class="px-3 pt-3 pb-3 body-color"
     >
-      <v-card class="mx-auto" tile max-width="400" elevation="1">
+      <v-card class="mx-auto" max-width="400" elevation="1">
         <v-skeleton-loader width="auto" class="mx-auto" type="card-avatar"></v-skeleton-loader>
       </v-card>
     </v-sheet>

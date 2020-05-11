@@ -7,7 +7,7 @@
       class="pa-0 ma-0"
     >
       <v-col>
-        <v-card class="mx-auto" tile max-width="400" elevation="1">
+        <v-card class="mx-auto" max-width="400" elevation="1">
           <v-img
             v-on:click.stop="select(item)"
             class="white--text align-end"
