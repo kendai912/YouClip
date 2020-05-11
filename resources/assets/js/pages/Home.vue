@@ -8,7 +8,7 @@
       >{{ item }}</v-tab>
     </v-tabs>
 
-    <v-tabs-items v-model="tab">
+    <v-tabs-items v-model="tab" class="body-margin-bottom">
       <v-tab-item>
         <v-card flat>
           <IndexItem v-bind:mediaItems="recommendMediaItems" />

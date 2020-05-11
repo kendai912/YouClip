@@ -14,6 +14,8 @@ import Watch from "./pages/Watch.vue";
 import Mypage from "./pages/Mypage.vue";
 import SystemError from "./pages/errors/System.vue";
 import APIError from "./pages/errors/APIError.vue";
+import PrivacyPolicy from "./pages/PrivacyPolicy.vue";
+import TermsOfService from "./pages/TermsOfService.vue";
 
 import store from "./store";
 
@@ -80,6 +82,14 @@ const routes = [
   {
     path: "/mypage",
     component: Mypage,
+  },
+  {
+    path: "/PrivacyPolicy",
+    component: PrivacyPolicy,
+  },
+  {
+    path: "/TermsOfService",
+    component: TermsOfService,
   },
   {
     path: "/500",

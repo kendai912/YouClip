@@ -1,6 +1,6 @@
 <template>
   <div class="container--small">
-    <v-card class="text-center pa-3 ma-3" title elevation="0">
+    <v-card class="text-center pa-3 ma-3 body-color" title elevation="0">
       <v-card-title class="pa-0 ma-0 justify-center">
         <v-icon class="pa-0 ma-0" size="100">report_problem</v-icon>
       </v-card-title>

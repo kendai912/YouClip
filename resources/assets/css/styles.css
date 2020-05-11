@@ -16,6 +16,10 @@
   background-color: rgb(245, 245, 245) !important;
 }
 
+.body-margin-bottom {
+  margin-bottom: 56px;
+}
+
 .container--small {
   margin: 0 auto;
   max-width: 600px;
