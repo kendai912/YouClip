@@ -157,9 +157,13 @@ const actions = {
     context.commit("setKeyOfSearch", context.getters["keyIndex"]);
     context.commit("setKeyOfVideos", context.getters["keyIndex"]);
 
-    const response = await axios.get(state.apiOfSearch, {
+    const response = await axios.get("https://cors-anywhere.herokuapp.com/"+state.apiOfSearch, {
       params: state.paramsOfSearch,
     });
+    // const response = await axios.post("api/search/getYoutubeSearch", {
+    //   params: state.paramsOfSearch,
+    //   searchUrl: state.apiOfSearch
+    // });
     if (response.status == OK) {
       // 成功した時
       //レスポンス内のvideoIdよりstatistics,contentDetailsをリクエストし結果をYTvideosResponse格納
@@ -215,7 +219,7 @@ const actions = {
     //paramsのidにリクエストするyoutubeIdをセット
     context.commit("setYoutubeIdsOfParamsOfVideos", youtubeIds);
 
-    const response = await axios.get(state.apiOfVideos, {
+    const response = await axios.get("https://cors-anywhere.herokuapp.com/"+state.apiOfVideos, {
       params: state.paramsOfVideos,
     });
     if (response.status == OK) {

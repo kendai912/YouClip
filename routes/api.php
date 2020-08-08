@@ -103,6 +103,9 @@ Route::post('/tag/update', 'TagController@update');
 //シーンタグの削除
 Route::post('/tag/delete', 'TagController@delete');
 
+//YT Search API
+// Route::post('/search/getYoutubeSearch', 'SearchController@getYTSearchList');
+
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();

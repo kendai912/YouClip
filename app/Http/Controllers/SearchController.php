@@ -13,6 +13,7 @@ use App\Playlist;
 use App\Searchquery;
 use App\SearchqueryUser;
 use App\Topsearchquery;
+use GuzzleHttp\Client;
 
 class SearchController extends Controller
 {
@@ -253,4 +254,15 @@ class SearchController extends Controller
             JSON_UNESCAPED_UNICODE
         );
     }
+    //get Youtube Search from google API
+    /* public function getYTSearchList(Request $request) {
+        $searchUrl = $request->searchUrl;
+        $params = $request->params;
+        $client = new Client();
+        $res = $client->get($searchUrl, [
+            'verify' => false,
+            'query' => $params
+        ]);
+        return $res->getBody();
+    } */
 }

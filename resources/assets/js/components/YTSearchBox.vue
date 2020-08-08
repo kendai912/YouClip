@@ -10,7 +10,7 @@
             v-model="model"
             v-bind:search-input.sync="searchquery"
             v-on:keydown.enter="YTsearch"
-            placeholder="キーワードまたはYouTubeのURLを入力"
+            placeholder="キーワードまたはYouTubeのURLを入力222"
             cache-items
             hide-no-data
             clearable
