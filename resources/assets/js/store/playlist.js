@@ -63,12 +63,6 @@ const mutations = {
   setPlaylistAndTagPaginationOfRecommend(state, data) {
     state.playlistAndTagPaginationOfRecommend = data;
   },
-  setPlaylistVisitCount(state, playlist_id) {
-    state.playlistAndTagPaginationOfRecommend.data.filter(playlist => {
-      return playlist.id === playlist_id;
-    }).playcount ++;
-    console.log("dddddddddddddddddddd", state.playlistAndTagPaginationOfRecommend.data);
-  },
   setPlaylistAndTagPaginationOfNew(state, data) {
     state.playlistAndTagPaginationOfNew = data;
   },
@@ -153,8 +147,7 @@ const actions = {
     const response = await axios.post(
       "api/addPlaylistVisitCount/" + playlist_id
     );
-    console.log("count response", response);
-    context.commit("setPlaylistVisitCount", playlist_id);
+    // context.commit("setPlaylistVisitCount", playlist_id);
   },
   // 【新着】プレイリスト一覧を取得
   async indexPlaylistAndTagPaginationOfNew(context, page) {

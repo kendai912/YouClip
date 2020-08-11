@@ -127,6 +127,7 @@ export default {
 
       //タグの場合
       if (mediaItem.category == "tag") {
+        console.log("eeeeeeeeeeee");
         //再生ページを表示
         this.$router
           .push({
