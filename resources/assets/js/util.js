@@ -56,6 +56,7 @@ export default {
             start: this.formatToMinSec(value.start),
             end: this.formatToMinSec(value.end),
             preview: value.preview,
+            previewgif: value.previewgif,
             sceneCount: 1,
             likeCount: "",
           });
@@ -92,6 +93,7 @@ export default {
               start: "",
               end: "",
               preview: value.tags[0].preview,
+              previewgif: value.tags[0].previewgif,
               sceneCount: sceneCount,
               likeCount: value.likesPlaylist_count,
               visitCount: value.play_count

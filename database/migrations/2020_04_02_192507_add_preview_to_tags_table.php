@@ -15,6 +15,7 @@ class AddPreviewToTagsTable extends Migration
     {
         Schema::table('tags', function (Blueprint $table) {
             $table->string('preview');
+            $table->string('previewgif');
         });
     }
 
@@ -27,6 +28,7 @@ class AddPreviewToTagsTable extends Migration
     {
         Schema::table('tags', function (Blueprint $table) {
             $table->dropColumn('preview');
+            $table->dropColumn('previewgif');
         });
     }
 }

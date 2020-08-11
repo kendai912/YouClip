@@ -33,7 +33,7 @@ class TagController extends Controller
     public function getTagAndVideoDataById(Request $request)
     {
         $tagId = $request->input('id');
-        $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'category', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags.id', $tagId)->get();
+        $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'category', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags.id', $tagId)->get();
 
         return response()->json(
             [
@@ -56,7 +56,7 @@ class TagController extends Controller
         }
         
         // Likeしたタグデータと作成したタグデータを取得
-        $myCreatedAndLikedTagVideo = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
+        $myCreatedAndLikedTagVideo = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
 
         return response()->json(
             [
@@ -166,7 +166,7 @@ class TagController extends Controller
             $video->user_id = Auth::user()->id;
             $video->title = $request->newVideoData['title'];
             $video->thumbnail = $request->newVideoData['thumbnail'];
-            $video->duration = "00:".$request->newVideoData['duration'];
+            $video->duration = $request->newVideoData['duration'];
             $video->category = $request->newVideoData['category'];
             $video->save();
         }
@@ -175,7 +175,9 @@ class TagController extends Controller
         $tags = implode(" ", $request->tags);
 
         //プレビュー用のgifを取得しファイル名を変数に格納
-        $previewFileName = $this->getPreviewFile($request);
+        $previewFiles = $this->getPreviewFiles($request);
+        $previewStaticFileName = $previewFiles[0];
+        $previewGifFileName = $previewFiles[1];
 
         $start = $request->start;
 
@@ -186,7 +188,8 @@ class TagController extends Controller
         $tag->tags = $tags;
         $tag->start = "00:".$request->start;
         $tag->end = "00:".$request->end;
-        $tag->preview = $previewFileName;
+        $tag->preview = $previewStaticFileName;
+        $tag->previewgif = $previewGifFileName;
         $tag->save();
 
         //保存したタグデータをリターン
@@ -200,7 +203,7 @@ class TagController extends Controller
         );
     }
 
-    public function getPreviewFile($request)
+    public function getPreviewFiles($request)
     {
         $grabzIt = resolve('grabzit');
 
@@ -208,13 +211,20 @@ class TagController extends Controller
         $options->setDuration(3);
         $startSec = $this->convertToSec("00:".$request->start);
         $options->setStart($startSec);
-        // $options->setQuality(100);
+        $options->setQuality(100);
+        $options->setWidth(600);
+        $options->setHeight(-1);
 
-        $previewFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
+        $previewGifFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
+        $previewFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".jpg";
+        $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=" . $request->youtubeId, $options);
+        $grabzIt->SaveTo(storage_path(). "/app/public/img/" . $previewGifFileName);
+
+        $options->setDuration(1);
         $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=" . $request->youtubeId, $options);
         $grabzIt->SaveTo(storage_path(). "/app/public/img/" . $previewFileName);
 
-        return $previewFileName;
+        return [$previewFileName, $previewGifFileName];
     }
 
     /**
@@ -253,10 +263,14 @@ class TagController extends Controller
         if ($this->convertToSec($tag->start) != $this->convertToSec("00:".$request->start) || $this->convertToSec($tag->end) != $this->convertToSec("00:".$request->end)) {
             //既存のpreview用gifを削除
             unlink(storage_path(). "/app/public/img/" . $tag->preview);
+            unlink(storage_path(). "/app/public/img/" . $tag->previewgif);
 
             //更新したpreview用のgifを再取得
-            $previewFileName = $this->getPreviewFile($request);
-            $tag->preview = $previewFileName;
+            $previewFiles = $this->getPreviewFiles($request);
+            $previewStaticFileName = $previewFiles[0];
+            $previewGifFileName = $previewFiles[1];
+            $tag->preview = $previewStaticFileName;
+            $tag->previewgif = $previewGifFileName;
         }
         $tag->tags = implode(" ", $request->tags);
         $start = $request->start;
@@ -286,6 +300,7 @@ class TagController extends Controller
         $tag = Tag::find($request->tagId);
         //preview用gifを削除
         unlink(storage_path(). "/app/public/img/" . $tag->preview);
+        unlink(storage_path(). "/app/public/img/" . $tag->previewgif);
         //DBから削除
         $tag->delete();
 

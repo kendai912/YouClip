@@ -92,6 +92,7 @@ const actions = {
       start: state.start,
       end: state.end,
     };
+    console.log("create scene tag", params);
 
     const response = await axios.post("/api/tag/store", params);
     if (response.status == CREATED) {
@@ -117,6 +118,7 @@ const actions = {
     // //シーンタグの余計なスペースを除去し整形
     context.commit("formatSceneTags");
 
+    console.log("update scene tag", params);
     let params = {
       youtubeId: store.getters["youtube/youtubeId"],
       tagId: state.tagId,
