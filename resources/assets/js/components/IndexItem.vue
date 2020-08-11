@@ -29,6 +29,7 @@
                   <span>{{ item.sceneCount }}シーン</span>
                   <!-- <span>◯回視聴</span> -->
                   <span>{{ item.timeSince }}前</span>
+                  <span>{{ item.visitCount }}訪問</span>
                   <span v-if="item.likeCount">
                     <i class="fas fa-heart my-grey-heart"></i>
                     {{ item.likeCount}}
@@ -109,6 +110,7 @@ export default {
   },
   methods: {
     async select(mediaItem) {
+      await this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
       //プレイリストの場合
       if (mediaItem.category == "playlist") {
         //再生ページを表示
@@ -140,6 +142,7 @@ export default {
       window.location.reload();
     }
   },
-  mounted() {}
+  mounted() {
+  }
 };
 </script>

@@ -103,8 +103,12 @@ Route::post('/tag/update', 'TagController@update');
 //シーンタグの削除
 Route::post('/tag/delete', 'TagController@delete');
 
+//Add Playlist Visit Count
+Route::post("/addPlaylistVisitCount/{playlist_id}", 'PlaylistController@addVisitCount');
 //YT Search API
-// Route::post('/search/getYoutubeSearch', 'SearchController@getYTSearchList');
+Route::post('/search/getYoutubeSearch', 'SearchController@getYTSearchList');
+Route::post('/search/getYoutubeVideos', 'VideoController@getYTVideoList');
+Route::post('/search/getYoutubeVideoCategories', 'VideoController@getYTVideoCategoryList');
 
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {

@@ -8,6 +8,7 @@ use App\Video;
 use App\Tag;
 use App\User;
 use App\Playlist;
+use App\Playlistlog;
 use App\LikesPlaylist;
 use Carbon\Carbon;
 
@@ -44,7 +45,7 @@ class PlaylistController extends Controller
         $contentsPerPage = 5;
         $playlistAndTagPaginationOfRecommend = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
-        }
+        }, 'playlistlogs as play_count'
         ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
         return response()->json(
@@ -64,7 +65,7 @@ class PlaylistController extends Controller
         $contentsPerPage = 5;
         $playlistAndTagPaginationOfNew = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
-        }
+        }, 'playlistlogs as play_count'
         ])->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
         return response()->json(
@@ -84,7 +85,7 @@ class PlaylistController extends Controller
         $contentsPerPage = 5;
         $playlistAndTagPaginationOfSports = Playlist::with('tags')->where('playlistCategory', 'Sports')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
-        }
+        }, 'playlistlogs as play_count'
         ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
         return response()->json(
@@ -104,7 +105,7 @@ class PlaylistController extends Controller
         $contentsPerPage = 5;
         $playlistAndTagPaginationOfEntertainment = Playlist::with('tags')->where('playlistCategory', 'Entertainment')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
-        }
+        }, 'playlistlogs as play_count'
         ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
         return response()->json(
@@ -338,5 +339,20 @@ class PlaylistController extends Controller
             [],
             JSON_UNESCAPED_UNICODE
         );
+    }
+
+    //Add Playlist Visit Count
+    public function addVisitCount(Request $request, $playlist_id) {
+        $user = Auth::user();
+        $playlist = Playlist::find($playlist_id);
+        $playlistlog = new Playlistlog();
+        $playlistlog->playlist_id = $playlist_id;
+        $playlistlog->user_id = $user->id;
+        try {
+            $playlist->playlistlogs()->save($playlistlog);
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 }

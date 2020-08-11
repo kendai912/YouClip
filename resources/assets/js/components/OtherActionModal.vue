@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-bottom-sheet v-model="showOtherActionModal">
       <v-list>
-        <v-list-item v-for="tile in tiles" :key="tile.title" v-on:click="tapTile(tile.action)">
+        <v-list-item v-for="tile in tiles" :key="tile.title" v-on:click="tapTile(tile.action)" v-show="tile.show==='always' || created_user_id == user_id">
           <v-list-item-avatar>
             <i v-bind:class="tile.img"></i>
           </v-list-item-avatar>
@@ -20,18 +20,20 @@ import myMixin from "../util";
 export default {
   data: () => ({
     tiles: [
-      { img: "fas fa-trash", title: "削除", action: "delete" },
-      { img: "fas fa-pen", title: "編集", action: "edit" },
-      { img: "fas fa-flag", title: "報告", action: "report" },
-      { img: "fas fa-times", title: "キャンセル", action: "cancel" }
+      { img: "fas fa-trash", title: "削除", action: "delete", show: "check" },
+      { img: "fas fa-pen", title: "編集", action: "edit", show: "check" },
+      { img: "fas fa-flag", title: "報告", action: "report", show: "always" },
+      { img: "fas fa-times", title: "キャンセル", action: "cancel", show: "always" }
     ]
   }),
   props: {
-    player: Object
+    player: Object,
+    created_user_id: Number
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
+      user_id: "auth/user_id",
       currentYoutubeId: "watch/currentYoutubeId",
       startHis: "watch/start",
       endHis: "watch/end",

@@ -10,6 +10,7 @@ use App\Video;
 use App\Tag;
 use App\User;
 use Auth;
+use GuzzleHttp\Client;
 
 class VideoController extends Controller
 {
@@ -140,6 +141,30 @@ class VideoController extends Controller
             'firstVideoId' => $firstVideoId,
             'firstTagId' => $firstTagId,
         ]);
+    }
+
+    //get Youtube Search from google API
+    public function getYTVideoList(Request $request) {
+        $apiUrl = $request->apiUrl;
+        $params = $request->params;
+        $client = new Client();
+        $res = $client->get($apiUrl, [
+            'verify' => false,
+            'query' => $params
+        ]);
+        return $res->getBody();
+    }
+
+    //get Youtube Category List from google API
+    public function getYTVideoCategoryList(Request $request) {
+        $apiUrl = $request->apiUrl;
+        $params = $request->params;
+        $client = new Client();
+        $res = $client->get($apiUrl, [
+            'verify' => false,
+            'query' => $params
+        ]);
+        return $res->getBody();
     }
 
     // //登録処理

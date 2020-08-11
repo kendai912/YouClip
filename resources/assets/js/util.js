@@ -94,6 +94,7 @@ export default {
               preview: value.tags[0].preview,
               sceneCount: sceneCount,
               likeCount: value.likesPlaylist_count,
+              visitCount: value.play_count
             });
           }
         });

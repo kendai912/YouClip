@@ -178,7 +178,11 @@ const actions = {
       part: "snippet, contentDetails",
     };
 
-    const response = await axios.get(api, { params: params });
+    // const response = await axios.get("https://cors-anywhere.herokuapp.com/"+api, { params: params });
+    const response = await axios.post("api/search/getYoutubeVideos", {
+      params: params,
+      apiUrl: api
+    });
     if (response.status == OK) {
       // 成功した時
       context.commit("setNewVideoTitle", response.data.items[0].snippet.title);
@@ -224,7 +228,11 @@ const actions = {
       key: state.key,
     };
 
-    const response = await axios.get(api, { params: params });
+    // const response = await axios.get("https://cors-anywhere.herokuapp.com/"+api, { params: params });
+    const response = await axios.post("api/search/getYoutubeVideoCategories", {
+      params: params,
+      apiUrl: api
+    });
     if (response.status == OK) {
       // 成功した時
       context.commit(

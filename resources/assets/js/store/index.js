@@ -18,6 +18,7 @@ import youtube from "./youtube";
 import tagging from "./tagging";
 import noLoginModal from "./noLoginModal";
 import otherActionModal from "./otherActionModal";
+import playSpeedModal from "./playSpeedModal";
 import error from "./error";
 
 Vue.use(Vuex);
@@ -41,6 +42,7 @@ const store = new Vuex.Store({
     tagging,
     noLoginModal,
     otherActionModal,
+    playSpeedModal,
     error,
   },
 });

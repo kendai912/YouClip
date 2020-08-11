@@ -84,6 +84,10 @@
                 background-color="transparent"
                 style="height: 48px; justify-content: flex-end"
               >
+                <v-btn v-on:click="openPlaySpeedModal" class="ma-0 pa-0 narrow-btn">
+                  <span>倍速視聴</span>
+                  <v-icon class="icon-large">speed</v-icon>
+                </v-btn>
                 <v-btn v-if="isMuted" v-on:click="unmute" class="ma-0 pa-0 narrow-btn">
                   <span>消音解除</span>
                   <v-icon class="icon-large">volume_off</v-icon>
@@ -118,7 +122,12 @@
         <OtherActionModal
           v-if="showOtherActionModal"
           v-bind:player="player"
+          v-bind:created_user_id="playlistAndTagVideoData.user_id"
           v-on:deleteSucceed="deleteSucceed"
+        />
+        <PlaySpeedModal
+          v-if="showPlaySpeedModal"
+          v-bind:player="player"
         />
         <SceneTagControl
           v-if="showSceneTagControl"
@@ -136,6 +145,7 @@ import NoLoginModal from "../components/NoLoginModal.vue";
 import ShareModal from "../components/ShareModal.vue";
 import AddPlaylistModal from "../components/AddPlaylistModal.vue";
 import OtherActionModal from "../components/OtherActionModal.vue";
+import PlaySpeedModal from "../components/PlaySpeedModal.vue";
 import SceneTagControl from "../components/SceneTagControl.vue";
 import myMixin from "../util";
 
@@ -145,6 +155,7 @@ export default {
     ShareModal,
     AddPlaylistModal,
     OtherActionModal,
+    PlaySpeedModal,
     SceneTagControl
   },
   data() {
@@ -163,7 +174,8 @@ export default {
   methods: {
     ...mapMutations({
       openShareModal: "shareModal/openShareModal",
-      openOtherActionModal: "otherActionModal/openOtherActionModal"
+      openOtherActionModal: "otherActionModal/openOtherActionModal",
+      openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal"
     }),
     startTimer() {
       let self = this;
@@ -360,8 +372,10 @@ export default {
       showShareModal: "shareModal/showShareModal",
       showAddPlaylistModal: "playlist/showAddPlaylistModal",
       showOtherActionModal: "otherActionModal/showOtherActionModal",
+      showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
       showSceneTagControl: "tagging/showSceneTagControl",
-      isEditting: "tagging/isEditting"
+      isEditting: "tagging/isEditting",
+      playSpeed: "watch/playSpeed"
     }),
     isLiked() {
       return this.$store.getters["like/isLiked"](this.currentTagId);

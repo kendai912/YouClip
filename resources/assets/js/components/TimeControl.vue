@@ -125,14 +125,16 @@
             <i v-on:click="back" class="fas fa-arrow-left fa-2x my-grey"></i>
           </v-col>
           <v-col class="text-center ma-0 pa-1">
-            <v-bottom-navigation v-if="isMuted" class="bottom_navigation_no_shadow" elevation="0">
-              <v-btn v-on:click="unmute">
+            <v-bottom-navigation class="bottom_navigation_no_shadow" elevation="0">
+                <v-btn v-on:click="openPlaySpeedModal" class="ma-0 pa-0 narrow-btn">
+                  <span>倍速視聴</span>
+                  <v-icon class="icon-large">speed</v-icon>
+                </v-btn>
+              <v-btn v-if="isMuted" v-on:click="unmute">
                 <span>ミュート解除</span>
                 <v-icon large>volume_off</v-icon>
               </v-btn>
-            </v-bottom-navigation>
-            <v-bottom-navigation v-else class="bottom_navigation_no_shadow" elevation="0">
-              <v-btn v-on:click="mute">
+              <v-btn v-else v-on:click="mute">
                 <span>ミュート</span>
                 <v-icon large>volume_up</v-icon>
               </v-btn>
@@ -146,14 +148,22 @@
         </v-row>
       </v-container>
     </v-sheet>
+  <PlaySpeedModal
+    v-if="showPlaySpeedModal"
+    v-bind:player="player"
+  />
   </v-sheet>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
 import myMixin from "../util";
+import PlaySpeedModal from "../components/PlaySpeedModal.vue";
 
 export default {
+  components: {
+    PlaySpeedModal
+  },
   props: {
     player: Object
   },
@@ -212,7 +222,8 @@ export default {
       newVideoData: "youtube/newVideoData",
       isReady: "youtube/isReady",
       isNew: "youtube/isNew",
-      isEditting: "tagging/isEditting"
+      isEditting: "tagging/isEditting",
+      showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal"
     }),
     currentPositionTime() {
       //sliderをドラッグした位置の秒数を取得
@@ -229,6 +240,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal"
+    }),
     //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
     startUpdateSlider() {
       let self = this;

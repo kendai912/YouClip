@@ -255,14 +255,14 @@ class SearchController extends Controller
         );
     }
     //get Youtube Search from google API
-    /* public function getYTSearchList(Request $request) {
-        $searchUrl = $request->searchUrl;
+    public function getYTSearchList(Request $request) {
+        $apiUrl = $request->apiUrl;
         $params = $request->params;
         $client = new Client();
-        $res = $client->get($searchUrl, [
+        $res = $client->get($apiUrl, [
             'verify' => false,
             'query' => $params
         ]);
         return $res->getBody();
-    } */
+    }
 }

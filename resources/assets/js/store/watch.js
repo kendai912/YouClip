@@ -12,6 +12,7 @@ const state = {
   currentTagId: "",
   start: "",
   end: "",
+  playSpeed: 1
 };
 
 const getters = {
@@ -34,6 +35,7 @@ const getters = {
   start: (state) => state.start,
   end: (state) => state.end,
   isPlaylist: (state) => (state.playlistId ? true : false),
+  playSpeed: (state) => state.playSpeed
 };
 
 const mutations = {
@@ -85,6 +87,9 @@ const mutations = {
   setCurrentTagId(state, data) {
     state.currentTagId = data;
   },
+  setPlaySpeed(state, data) {
+    state.playSpeed = data;
+  }
 };
 
 const actions = {
