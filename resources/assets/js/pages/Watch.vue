@@ -86,7 +86,11 @@
               >
                 <v-btn v-on:click="openPlaySpeedModal" class="ma-0 pa-0 narrow-btn">
                   <span>倍速視聴</span>
-                  <v-icon class="icon-large">speed</v-icon>
+                  <v-img
+                    src="../storage/icons/play_speed.ico"
+                    width="28px"
+                    max-height="28px"
+                  />
                 </v-btn>
                 <v-btn v-if="isMuted" v-on:click="unmute" class="ma-0 pa-0 narrow-btn">
                   <span>消音解除</span>

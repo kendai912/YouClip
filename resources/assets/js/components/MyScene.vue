@@ -1,7 +1,7 @@
 <template>
   <div v-on:click="select">
     <div class="thumbnail">
-      <img v-bind:src="'/storage/img/' + myTagVideo.preview" style="width: 300px; height:auto" />
+      <img v-bind:src="'../storage/img/' + myTagVideo.preview" style="width: 300px; height:auto" />
     </div>
     <div>{{ myTagVideo.title }}</div>
     <v-chip v-for="tag in myTagVideo.tags.split(/[\s| |　]/)" v-bind:key="tag" color="blue">
