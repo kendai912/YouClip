@@ -158,7 +158,7 @@ class SearchController extends Controller
             $user = Auth::user();
             $user->searchqueries()->attach(
                 ['searchquery_id' => $searchqueryModel->id],
-                ['created_at' => Carbon::now()],
+                ['created_at' => Carbon::now()]
             );
         }
     }

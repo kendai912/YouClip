@@ -21,7 +21,6 @@ class CreatePlaylistlogsTable extends Migration
 
             //外部キー制約
             $table->foreign('playlist_id')->references('id')->on('playlists')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

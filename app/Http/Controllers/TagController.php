@@ -123,7 +123,7 @@ class TagController extends Controller
         foreach ($checkedPlaylistIds as $playlistId) {
             $tag->playlists()->attach(
                 ['playlist_id' => $playlistId],
-                ['created_at' => Carbon::now()],
+                ['created_at' => Carbon::now()]
             );
         }
 
