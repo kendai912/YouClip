@@ -232,7 +232,7 @@ class PlaylistController extends Controller
         $playlist->tags()->attach(
             ['tag_id' => $request->currentTagId],
             ['created_at' => Carbon::now()],
-            ['updated_at' => Carbon::now()],
+            ['updated_at' => Carbon::now()]
         );
 
         return response()->json(
