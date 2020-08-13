@@ -3,7 +3,7 @@
     <v-toolbar-items>
       <router-link to="/">
         <img
-          src="../storage/logos/youclip_logo.png"
+          src="/storage/logos/youclip_logo.png"
           style="position: absolute; height: 58%; top: 21%; left: 16px; object-fit: contain;"
         />
       </router-link>
