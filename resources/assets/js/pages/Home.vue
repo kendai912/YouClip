@@ -1,11 +1,14 @@
 <template>
   <div class="container--small">
-    <v-tabs v-model="tab" background-color="transparent" grow hide-slider>
+    <v-tabs v-model="tab" background-color="transparent" class="mx-auto homepage-tabs" grow hide-slider>
       <v-tab
+        active-class="activated-tab"
         v-for="(item, key) in items"
         :key="item"
         v-on:click="setActiveTab(key); initialPaginate(key)"
-      >{{ item }}</v-tab>
+      >
+        {{ item }}
+      </v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab" class="body-margin-bottom">

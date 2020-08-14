@@ -106,8 +106,14 @@ export default {
       loginForm: {
         email: "",
         password: ""
-      }
+      },
+      beforeLoginUrl: "",
     };
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.beforeLoginUrl = from;
+    });
   },
   methods: {
     async login() {
@@ -119,7 +125,8 @@ export default {
 
       if (this.apiStatus) {
         //トップページに移動する
-        this.$router.push("/");
+        this.$router.push(this.beforeLoginUrl);
+        location.reload();
       }
     },
     clearError() {

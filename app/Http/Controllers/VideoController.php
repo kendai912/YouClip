@@ -11,6 +11,7 @@ use App\Tag;
 use App\User;
 use Auth;
 use GuzzleHttp\Client;
+use Exception;
 
 class VideoController extends Controller
 {
@@ -148,11 +149,16 @@ class VideoController extends Controller
         $apiUrl = $request->apiUrl;
         $params = $request->params;
         $client = new Client();
-        $res = $client->get($apiUrl, [
-            'verify' => false,
-            'query' => $params
-        ]);
-        return $res->getBody();
+        try {
+            $res = $client->get($apiUrl, [
+                'verify' => false,
+                'query' => $params
+            ]);
+            return $res->getBody();
+        }
+        catch (Exception $e) {
+            throw new Exception($e->getResponse()->getBody());
+        }
     }
 
     //get Youtube Category List from google API
@@ -160,10 +166,15 @@ class VideoController extends Controller
         $apiUrl = $request->apiUrl;
         $params = $request->params;
         $client = new Client();
-        $res = $client->get($apiUrl, [
-            'verify' => false,
-            'query' => $params
-        ]);
+        try {
+            $res = $client->get($apiUrl, [
+                'verify' => false,
+                'query' => $params
+            ]);
+        }
+        catch (Exception $e) {
+            throw new Exception($e->getResponse()->getBody());
+        }
         return $res->getBody();
     }
 

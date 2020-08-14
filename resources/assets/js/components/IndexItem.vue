@@ -16,7 +16,15 @@
                 v-bind:src="hover ? '/storage/img/' + item.previewgif : item.preview"
                 v-bind:alt="item.title"
                 aspect-ratio="1.5"
-              ></v-img>
+              >
+                <v-chip label color="rgb(111 111 111)" text-color="white" class="scene-chip">
+                  <v-img
+                    src="/storage/icons/playlist_icon.png"
+                    width="28px"
+                    max-height="28px"
+                  />&nbsp;{{item.sceneCount}}&nbsp;シーン
+                  </v-chip>
+              </v-img>
             <v-list-item>
               <v-list-item-avatar color="grey">
                 <v-icon dark>mdi-account-circle</v-icon>
@@ -41,15 +49,28 @@
 
             <v-card-text>
               <div class="horizontal-list-wrap">
-                <ul v-if="item.tagsList" class="horizontal-list">
+                <v-chip
+                  v-for="(tag, tagIndex) in item.tagArray"
+                  v-bind:key="item.id + '-' + tagIndex"
+                  class="tag-chip"
+                  small
+                  color="blue lighten-5"
+                  text-color="black"
+                >
+                  <v-avatar left>
+                    <i class="fas fa-tag my-black"></i>
+                  </v-avatar>
+                  {{ tag }}
+                </v-chip>
+                <!-- <ul v-if="item.tagsList" class="horizontal-list">
                   <li
                     class="item"
-                    v-for="(tagsList, tagsListIndex) in item.tagsList"
-                    v-bind:key="item.id + '-' + tagsListIndex"
+                    v-for="(tags, tagsIndex) in item.tagsList"
+                    v-bind:key="item.id + '-' + tagsIndex"
                   >
                     <v-chip
-                      v-for="(tag, tagIndex) in tagsList.tags.split(/[\s| |　]/)"
-                      v-bind:key="item.id + '-' + tagsListIndex + '-' + tagIndex"
+                      v-for="(tag, tagIndex) in tags.tags.split(/[\s| |　]/)"
+                      v-bind:key="item.id + '-' + tagsIndex + '-' + tagIndex"
                       class="ma-2"
                       small
                       color="blue lighten-2"
@@ -78,7 +99,7 @@
                       {{ tag }}
                     </v-chip>
                   </li>
-                </ul>
+                </ul> -->
               </div>
             </v-card-text>
           </v-card>
@@ -111,6 +132,7 @@ export default {
   },
   methods: {
     async select(mediaItem) {
+      console.log("media item data", mediaItem.tagArray);
       await this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
       //プレイリストの場合
       if (mediaItem.category == "playlist") {
@@ -128,7 +150,6 @@ export default {
 
       //タグの場合
       if (mediaItem.category == "tag") {
-        console.log("eeeeeeeeeeee");
         //再生ページを表示
         this.$router
           .push({

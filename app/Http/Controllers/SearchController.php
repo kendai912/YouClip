@@ -14,6 +14,7 @@ use App\Searchquery;
 use App\SearchqueryUser;
 use App\Topsearchquery;
 use GuzzleHttp\Client;
+use Exception;
 
 class SearchController extends Controller
 {
@@ -259,10 +260,15 @@ class SearchController extends Controller
         $apiUrl = $request->apiUrl;
         $params = $request->params;
         $client = new Client();
-        $res = $client->get($apiUrl, [
-            'verify' => false,
-            'query' => $params
-        ]);
+        try {
+            $res = $client->get($apiUrl, [
+                'verify' => false,
+                'query' => $params
+            ]);
+        }
+        catch (Exception $e) {
+            throw new Exception($e->getResponse()->getBody());
+        }
         return $res->getBody();
     }
 }

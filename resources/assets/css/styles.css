@@ -24,6 +24,9 @@
   margin: 0 auto;
   max-width: 600px;
 }
+.container--small .container {
+  padding: 12px 0px;
+}
 
 .yt-container {
   width: 100%;
@@ -130,7 +133,7 @@
 
 .horizontal-list-wrap {
   padding: 0;
-  height: 40px;
+  /* height: 40px; */
   overflow-x: hidden;
   overflow-y: hidden;
 }
@@ -141,7 +144,7 @@
   /* height: calc(100% + 17px); */
   /* width: 350px; */
   /* padding-bottom: 17px; */
-  overflow-x: scroll;
+  /* overflow-x: scroll; */
   white-space: nowrap;
 }
 /* https://qiita.com/naru0504/items/ff0c77775223dc5a9148 */
@@ -246,4 +249,42 @@
 
 .my-login-font-color {
   color: rgb(6, 95, 212) !important;
+}
+
+.homepage-tabs {
+  max-width: 400px;
+}
+.homepage-tabs .v-slide-group__prev {
+  display: none !important;
+}
+
+.homepage-tabs .activated-tab{
+  font-weight: bold;
+  position: relative;
+}
+
+.homepage-tabs .activated-tab::after {
+  position: absolute;
+  content: ' ';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #db8f01d0;
+  top: 13px;
+  right: 5px;
+}
+
+.scene-chip {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  padding: 5px;
+  /* white-space: pre; */
+}
+
+.tag-chip {
+  margin-left: 4px;
+  margin-right: 4px;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }

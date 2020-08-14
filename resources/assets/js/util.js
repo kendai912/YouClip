@@ -77,7 +77,7 @@ export default {
           });
 
           if (value.tags[0]) {
-            mediaItems.push({
+            let mediaItem = {
               category: "playlist",
               id: value.id,
               title: value.playlistName,
@@ -86,7 +86,7 @@ export default {
               timeSince: this.timeSince(value.created_at),
               tagsList: value.tags,
               tags: "",
-              tagArray: "",
+              tagArray: [],
               totalDuration: this.convertToKanjiTime(
                 this.convertToSec(this.formatToMinSec(totalDuration))
               ),
@@ -97,7 +97,16 @@ export default {
               sceneCount: sceneCount,
               likeCount: value.likesPlaylist_count,
               visitCount: value.play_count
-            });
+            };
+            value.tags.forEach(tag => {
+              if (tag.tags[0]) {
+                tag.tags.split(/[\s| |　]/).forEach(tag => {
+                  if (mediaItem.tagArray.indexOf(tag) === -1)
+                    mediaItem.tagArray.push(tag);
+                })
+              }
+            })
+            mediaItems.push(mediaItem);
           }
         });
       }

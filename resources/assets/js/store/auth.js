@@ -5,14 +5,12 @@ const state = {
   apiStatus: null,
   loginErrorMessages: null,
   registerErrorMessages: null,
-  beforeLoginUrl: "",
 };
 
 const getters = {
   check: (state) => !!state.user,
   username: (state) => (state.user ? state.user.name : ""),
   user_id: (state) => (state.user ? state.user.id : ""),
-  beforeLoginUrl: state => state.beforeLoginUrl
 };
 
 const mutations = {
@@ -28,9 +26,6 @@ const mutations = {
   setRegisterErrorMessages(state, messages) {
     state.registerErrorMessages = messages;
   },
-  setBeforeLoginUrl(state, url) {
-    state.beforeLoginUrl = url;
-  }
 };
 
 const actions = {
