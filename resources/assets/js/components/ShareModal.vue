@@ -24,7 +24,7 @@
                   class="mx-auto"
                   width="44px"
                   aspect-ratio="1"
-                  src="../storage/logos/twitter_square.png"
+                  src="/storage/logos/twitter_square.png"
                   style="border-radius: 8px;"
                 ></v-img>
               </v-col>
@@ -46,7 +46,7 @@
                   class="mx-auto"
                   width="44px"
                   aspect-ratio="1"
-                  src="../storage/logos/facebook_square.png"
+                  src="/storage/logos/facebook_square.png"
                   style="border-radius: 8px;"
                 ></v-img>
               </v-col>
@@ -68,7 +68,7 @@
                   class="mx-auto"
                   width="44px"
                   aspect-ratio="1"
-                  src="../storage/logos/line_square.png"
+                  src="/storage/logos/line_square.png"
                   style="border-radius: 8px;"
                 ></v-img>
               </v-col>

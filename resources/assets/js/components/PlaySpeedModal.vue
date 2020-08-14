@@ -6,20 +6,21 @@
         <v-divider></v-divider>
         <v-card-text style="height: 300px;">
           <v-radio-group v-model="model" column>
-            <v-radio label="0.25倍速" value="0.25"></v-radio>
-            <v-radio label="0.5倍速" value="0.5"></v-radio>
-            <v-radio label="0.75倍速" value="0.75"></v-radio>
-            <v-radio label="正常" value="1"></v-radio>
-            <v-radio label="1.25倍速" value="1.25"></v-radio>
-            <v-radio label="1.5倍速" value="1.5"></v-radio>
-            <v-radio label="1.75倍速" value="1.75"></v-radio>
-            <v-radio label="2倍速" value="2"></v-radio>
+            <v-radio
+              v-for="(playSpeed, i) in playSpeedValues"
+              v-bind:key="i"
+              :label="playSpeed.label" :value="playSpeed.value"
+              @click="setPlaySpeed(playSpeed.value)"
+            >
+            </v-radio>
           </v-radio-group>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="blue darken-1" text @click="showPlaySpeedModal = false">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="setPlaySpeed">Save</v-btn>
+          <v-btn color="blue darken-1" text @click="showPlaySpeedModal = false">
+            <v-icon left>close</v-icon>閉じる
+          </v-btn>
+          <!-- <v-btn color="blue darken-1" text @click="setPlaySpeed">保存</v-btn> -->
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -33,6 +34,16 @@ export default {
   data () {
     return {
       model: 1,
+      playSpeedValues: [
+        { label: "0.25倍速", value: 0.25 },
+        { label: "0.5倍速", value: 0.5 },
+        { label: "0.75倍速", value: 0.75 },
+        { label: "通常", value: 1 },
+        { label: "1.25倍速", value: 1.25 },
+        { label: "1.5倍速", value: 1.5 },
+        { label: "1.75倍速", value: 1.75 },
+        { label: "2倍速", value: 2 }
+      ]
     }
   },
   props: {
@@ -55,10 +66,13 @@ export default {
     }
   },
   methods: {
-    async setPlaySpeed() {
-      this.$store.commit("watch/setPlaySpeed", this.model);
+    async setPlaySpeed(value) {
+      this.$store.commit("watch/setPlaySpeed", value);
       this.showPlaySpeedModal = false;
     }
+  },
+  created () {
+    this.model = this.playSpeed;
   }
 }
 </script>

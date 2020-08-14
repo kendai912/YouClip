@@ -2,7 +2,7 @@
   <div v-if="myPlaylist.tags[0]" v-on:click="select">
     <div class="thumbnail">
       <img
-        v-bind:src="'../storage/img/' + myPlaylist.tags[0].preview"
+        v-bind:src="'/storage/img/' + myPlaylist.tags[0].preview"
         style="width: 300px; height:auto"
       />
     </div>

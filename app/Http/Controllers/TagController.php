@@ -175,9 +175,7 @@ class TagController extends Controller
         $tags = implode(" ", $request->tags);
 
         //プレビュー用のgifを取得しファイル名を変数に格納
-        $previewFiles = $this->getPreviewFiles($request);
-        $previewStaticFileName = $previewFiles[0];
-        $previewGifFileName = $previewFiles[1];
+        $previewGifFileName = $this->getPreviewFile($request);
 
         $start = $request->start;
 
@@ -188,7 +186,7 @@ class TagController extends Controller
         $tag->tags = $tags;
         $tag->start = "00:".$request->start;
         $tag->end = "00:".$request->end;
-        $tag->preview = $previewStaticFileName;
+        $tag->preview = $video->thumbnail;
         $tag->previewgif = $previewGifFileName;
         $tag->save();
 
@@ -203,7 +201,7 @@ class TagController extends Controller
         );
     }
 
-    public function getPreviewFiles($request)
+    public function getPreviewFile($request)
     {
         $grabzIt = resolve('grabzit');
 
@@ -216,15 +214,10 @@ class TagController extends Controller
         $options->setHeight(-1);
 
         $previewGifFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
-        $previewFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".jpg";
         $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=" . $request->youtubeId, $options);
         $grabzIt->SaveTo(storage_path(). "/app/public/img/" . $previewGifFileName);
 
-        $options->setDuration(1);
-        $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=" . $request->youtubeId, $options);
-        $grabzIt->SaveTo(storage_path(). "/app/public/img/" . $previewFileName);
-
-        return [$previewFileName, $previewGifFileName];
+        return $previewGifFileName;
     }
 
     /**
@@ -262,14 +255,10 @@ class TagController extends Controller
         // 開始or終了時間が更新された場合はpreview用のgifを再取得
         if ($this->convertToSec($tag->start) != $this->convertToSec("00:".$request->start) || $this->convertToSec($tag->end) != $this->convertToSec("00:".$request->end)) {
             //既存のpreview用gifを削除
-            unlink(storage_path(). "/app/public/img/" . $tag->preview);
             unlink(storage_path(). "/app/public/img/" . $tag->previewgif);
 
             //更新したpreview用のgifを再取得
-            $previewFiles = $this->getPreviewFiles($request);
-            $previewStaticFileName = $previewFiles[0];
-            $previewGifFileName = $previewFiles[1];
-            $tag->preview = $previewStaticFileName;
+            $previewGifFileName = $this->getPreviewFile($request);
             $tag->previewgif = $previewGifFileName;
         }
         $tag->tags = implode(" ", $request->tags);
@@ -299,7 +288,7 @@ class TagController extends Controller
         //削除するシーンタグを取得
         $tag = Tag::find($request->tagId);
         //preview用gifを削除
-        unlink(storage_path(). "/app/public/img/" . $tag->preview);
+        // unlink(storage_path(). "/app/public/img/" . $tag->preview);
         unlink(storage_path(). "/app/public/img/" . $tag->previewgif);
         //DBから削除
         $tag->delete();

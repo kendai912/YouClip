@@ -13,7 +13,7 @@
                 v-on:click.stop="select(item)"
                 class="white--text align-end"
                 max-height="266.66px"
-                v-bind:src="hover ? '../storage/img/' + item.previewgif : '../storage/img/' + item.preview"
+                v-bind:src="hover ? '/storage/img/' + item.previewgif : item.preview"
                 v-bind:alt="item.title"
                 aspect-ratio="1.5"
               ></v-img>
@@ -29,7 +29,7 @@
                     <span>{{ item.sceneCount }}シーン</span>
                     <!-- <span>◯回視聴</span> -->
                     <span>{{ item.timeSince }}前</span>
-                    <span>{{ item.visitCount }}訪問</span>
+                    <span>{{ item.visitCount }}回視聴</span>
                     <span v-if="item.likeCount">
                       <i class="fas fa-heart my-grey-heart"></i>
                       {{ item.likeCount}}

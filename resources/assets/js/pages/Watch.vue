@@ -87,7 +87,7 @@
                 <v-btn v-on:click="openPlaySpeedModal" class="ma-0 pa-0 narrow-btn">
                   <span>倍速視聴</span>
                   <v-img
-                    src="../storage/icons/play_speed.ico"
+                    src="/storage/icons/play_speed.ico"
                     width="28px"
                     max-height="28px"
                   />
@@ -126,7 +126,7 @@
         <OtherActionModal
           v-if="showOtherActionModal"
           v-bind:player="player"
-          v-bind:created_user_id="playlistAndTagVideoData.user_id"
+          v-bind:created_user_id="playlistIdUrl ? playlistAndTagVideoData.user_id : tagAndVideoData.user_id"
           v-on:deleteSucceed="deleteSucceed"
         />
         <PlaySpeedModal
@@ -366,7 +366,7 @@ export default {
       currentTagId: "watch/currentTagId",
       startHis: "watch/start",
       endHis: "watch/end",
-      playlistAndTagVideoData: "watch/playlistAndTagVideoData",
+      tagAndVideoData: "watch/tagAndVideoData",
       isPlaylist: "watch/isPlaylist",
       playlistName: "watch/playlistName",
       currentTagName: "watch/currentTagName",
