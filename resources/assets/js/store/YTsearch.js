@@ -159,7 +159,7 @@ const actions = {
 
     const response = await axios.post("api/search/getYoutubeSearch", {
       params: state.paramsOfSearch,
-      apiUrl: state.apiOfSearch
+      apiUrl: state.apiOfSearch,
     });
     if (response.status == OK) {
       // 成功した時
@@ -194,18 +194,20 @@ const actions = {
 
       //連続リクエストを制御するフラグを解除
       context.commit("setIsYTSearching", false);
-    } else if (response.status == FORBIDDEN) {
+    } else if (
+      response.status == FORBIDDEN ||
+      response.status == INTERNAL_SERVER_ERROR
+    ) {
       // API Keyの上限オーバーで失敗した時
       //次のAPI Keyにスイッチして再度検索実行
       context.commit("setKeyIndex", context.getters["keyIndex"] + 1);
 
       //API Keyのストックを超えたら直接URLで検索するようにエラーページを表示
       context.getters["keyIndex"] >= context.getters["keyArray"].length
-        ? context.commit("error/setCode", response.status, { root: true })
+        ? context.commit("error/setCode", response.status, {
+            root: true,
+          })
         : await actions.searchYTResult(context);
-    } else if (response.status == INTERNAL_SERVER_ERROR) {
-      // インターナルサーバーエラーで失敗した時
-      context.commit("error/setCode", response.status, { root: true });
     } else {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
@@ -218,7 +220,7 @@ const actions = {
 
     const response = await axios.post("api/search/getYoutubeVideos", {
       params: state.paramsOfVideos,
-      apiUrl: state.apiOfVideos
+      apiUrl: state.apiOfVideos,
     });
     if (response.status == OK) {
       // 成功した時
