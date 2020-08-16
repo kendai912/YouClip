@@ -22,7 +22,6 @@ class Playlist extends Model
         //Tagモデルのデータを引っ張ってくる
         return $this->belongsToMany('App\Tag')->withPivot('playlist_id', 'tag_id');
     }
-
     public function playlistlogs()
     {
         //Playlistlogモデルのデータを引っ張ってくる

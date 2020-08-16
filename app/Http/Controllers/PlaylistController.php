@@ -10,7 +10,10 @@ use App\User;
 use App\Playlist;
 use App\Playlistlog;
 use App\LikesPlaylist;
+use App\Like;
 use Carbon\Carbon;
+
+use DB;
 
 class PlaylistController extends Controller
 {
@@ -43,14 +46,38 @@ class PlaylistController extends Controller
     {
         //プレイリストにタグのデータを結合し、直近30日のLike数が多い順・新しい順に並び替え
         $contentsPerPage = 5;
-        $playlistAndTagPaginationOfRecommend = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
-            $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
-        }, 'playlistlogs as play_count'
-        ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
+        // $playlistAndTagPaginationOfRecommend = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+        //     $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
+        // }, 'playlistlogs as play_count'
+        // ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+
+        // DB::enableQueryLog();
+        $playlists = Playlist::with(array('tags'=> function($query) {
+            $likes_tags = Like::groupBy('tag_id')->select('tag_id', DB::raw('count(*) as likes_tag_count'))->orderBy('likes_tag_count', 'DESC');
+            $likes_tags_sql = $likes_tags->toSql();
+            $query->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
+                $join->on('tags.id', '=', 'likes_tags.tag_id');
+            })->select('*')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
+        }))
+        ->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+            $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
+        }, 'playlistlogs as play_count'])
+        ->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')
+        ->paginate($contentsPerPage);
+        $playlistAndTagPaginationOfRecommend = $playlists;
+        $playlistAndTagPaginationOfRecommend->data = $playlists->map(function($playlist) {
+            $playlist->setRelation('tags', $playlist->tags->take(5));
+            return $playlist;
+        });
+
+        // $query = DB::getQueryLog();
+        // $lastQuery = end($query);
+        // print_r($lastQuery);
+        // dd(DB::getQueryLog());
         return response()->json(
             [
-            'playlistAndTagPaginationOfRecommend' => $playlistAndTagPaginationOfRecommend
+            'playlistAndTagPaginationOfRecommend' => $playlistAndTagPaginationOfRecommend,
             ],
             200,
             [],
@@ -63,10 +90,21 @@ class PlaylistController extends Controller
     {
         //プレイリストにタグのデータを結合し、新しい順に並び替え
         $contentsPerPage = 5;
-        $playlistAndTagPaginationOfNew = Playlist::with('tags')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+        $playlists = Playlist::with(array('tags'=> function($query) {
+            $likes_tags = Like::groupBy('tag_id')->select('tag_id', DB::raw('count(*) as likes_tag_count'))->orderBy('likes_tag_count', 'DESC');
+            $likes_tags_sql = $likes_tags->toSql();
+            $query->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
+                $join->on('tags.id', '=', 'likes_tags.tag_id');
+            })->select('*')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
+        }))->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'
         ])->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        $playlistAndTagPaginationOfNew = $playlists;
+        $playlistAndTagPaginationOfNew->data = $playlists->map(function($playlist) {
+            $playlist->setRelation('tags', $playlist->tags->take(5));
+            return $playlist;
+        });
 
         return response()->json(
             [
@@ -83,10 +121,21 @@ class PlaylistController extends Controller
     {
         //スポーツカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
         $contentsPerPage = 5;
-        $playlistAndTagPaginationOfSports = Playlist::with('tags')->where('playlistCategory', 'Sports')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+        $playlists = Playlist::with(array('tags'=> function($query) {
+            $likes_tags = Like::groupBy('tag_id')->select('tag_id', DB::raw('count(*) as likes_tag_count'))->orderBy('likes_tag_count', 'DESC');
+            $likes_tags_sql = $likes_tags->toSql();
+            $query->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
+                $join->on('tags.id', '=', 'likes_tags.tag_id');
+            })->select('*')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
+        }))->where('playlistCategory', 'Sports')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'
         ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        $playlistAndTagPaginationOfSports = $playlists;
+        $playlistAndTagPaginationOfSports->data = $playlists->map(function($playlist) {
+            $playlist->setRelation('tags', $playlist->tags->take(5));
+            return $playlist;
+        });
 
         return response()->json(
             [
@@ -103,10 +152,20 @@ class PlaylistController extends Controller
     {
         //エンターテイメントカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
         $contentsPerPage = 5;
-        $playlistAndTagPaginationOfEntertainment = Playlist::with('tags')->where('playlistCategory', 'Entertainment')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+        $playlists = Playlist::with(array('tags'=> function($query) {
+            $likes_tags = Like::groupBy('tag_id')->select('tag_id', DB::raw('count(*) as likes_tag_count'))->orderBy('likes_tag_count', 'DESC');
+            $likes_tags_sql = $likes_tags->toSql();
+            $query->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
+                $join->on('tags.id', '=', 'likes_tags.tag_id');
+            })->select('*')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
+        }))->where('playlistCategory', 'Entertainment')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
-        }, 'playlistlogs as play_count'
-        ])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        }, 'playlistlogs as play_count'])->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        $playlistAndTagPaginationOfEntertainment = $playlists;
+        $playlistAndTagPaginationOfEntertainment->data = $playlists->map(function($playlist) {
+            $playlist->setRelation('tags', $playlist->tags->take(5));
+            return $playlist;
+        });
 
         return response()->json(
             [
