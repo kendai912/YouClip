@@ -63,12 +63,16 @@ export default {
             likeCount: "",
           };
           let tagCount = 0;
-          values.tags.split(/[\s| |　]/).forEach(tag => {
-            if (tagCount < 10) {
-              mediaItem.tagArray.push(tag);
-              tagCount ++;
-            }
-          })
+          if (Array.isArray(value.tags)) {
+            values.tags.split(/[\s| |　]/).forEach(tag => {
+              if (tagCount < 10) {
+                mediaItem.tagArray.push(tag);
+                tagCount ++;
+              }
+            })
+          } else {
+            mediaItem.tagArray.push(value.tags);
+          }
           mediaItems.push(mediaItem);
         });
       }
@@ -109,18 +113,22 @@ export default {
               visitCount: value.play_count
             };
             let tagCount = 0;
-            value.tags.forEach(tag => {
-              if (tag.tags[0]) {
-                tag.tags.split(/[\s| |　]/).forEach(tag => {
-                  if (mediaItem.tagArray.indexOf(tag) === -1) {
-                    if (tagCount < 10) {
-                      mediaItem.tagArray.push(tag);
-                      tagCount ++;
+            if (Array.isArray(value.tags)) {
+              value.tags.forEach(tag => {
+                if (tag.tags[0]) {
+                  tag.tags.split(/[\s| |　]/).forEach(tag => {
+                    if (mediaItem.tagArray.indexOf(tag) === -1) {
+                      if (tagCount < 10) {
+                        mediaItem.tagArray.push(tag);
+                        tagCount ++;
+                      }
                     }
-                  }
-                })
-              }
-            })
+                  })
+                }
+              })
+            } else {
+              mediaItem.tagArray.push(value.tags);
+            }
             mediaItems.push(mediaItem);
           }
         });
