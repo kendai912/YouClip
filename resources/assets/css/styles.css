@@ -17,7 +17,7 @@
 }
 
 .body-margin-bottom {
-  margin-bottom: 56px;
+  margin-bottom: 100px;
 }
 
 .container--small {
@@ -25,7 +25,7 @@
   max-width: 600px;
 }
 .container--small .container {
-  padding: 12px 0px;
+  padding: 0px 0px 12px 0px;
 }
 
 .yt-container {

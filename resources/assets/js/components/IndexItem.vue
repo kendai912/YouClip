@@ -37,7 +37,7 @@
                     <span>合計{{ item.totalDuration }}</span><span style="font-size:8px;">&nbsp;&nbsp;&#9679;&nbsp;&nbsp;</span>
                     <!-- <span>{{ item.sceneCount }}シーン</span> -->
                     <!-- <span>◯回視聴</span> -->
-                    <span>{{ item.timeSince }}前</span><span style="font-size:8px;">&nbsp;&nbsp;&#9679;&nbsp;&nbsp;</span>
+                    <span>{{ item.timeSince }}前</span><span v-if="item.likeCount" style="font-size:8px;">&nbsp;&nbsp;&#9679;&nbsp;&nbsp;</span>
                     <span v-if="item.likeCount">
                       <i class="fas fa-heart my-grey-heart"></i>
                       {{ item.likeCount}}

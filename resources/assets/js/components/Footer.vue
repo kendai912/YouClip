@@ -5,10 +5,10 @@
       <v-icon>mdi-home</v-icon>
     </v-btn>
 
-    <v-btn to="/search" v-on:click="saveFooterTabIndex(1)">
+    <!-- <v-btn to="/search" v-on:click="saveFooterTabIndex(1)">
       <span>検索</span>
       <i class="fas fa-search fa-2x"></i>
-    </v-btn>
+    </v-btn> -->
 
     <v-btn to="/tagging" v-on:click="saveFooterTabIndex(2)">
       <span>シーン登録</span>

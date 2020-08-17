@@ -88,7 +88,7 @@ export default {
       this.$store.commit("search/searchResultPageTransit");
     },
     back() {
-      this.$router.go(-1);
+      this.$router.push('home');
     }
   },
   created() {}

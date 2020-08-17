@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Searchquery extends Model
 {
-    public $timestamps = false;
     public function users()
     {
         //Userモデルのデータを引っ張ってくる

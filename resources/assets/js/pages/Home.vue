@@ -33,17 +33,20 @@
         </v-card>
       </v-tab-item>
     </v-tabs-items>
+    <SearchBox />
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
 import IndexItem from "../components/IndexItem.vue";
+import SearchBox from "../components/SearchBox.vue";
 import myMixin from "../util";
 
 export default {
   components: {
-    IndexItem
+    IndexItem,
+    SearchBox
   },
   data() {
     return {
