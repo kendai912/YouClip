@@ -179,7 +179,6 @@ const actions = {
   },
   //YoutubeIDを元にData APIから動画情報を取得
   async getNewVideoData(context) {
-    console.log("eeeeeeeeeeeeeeeeeeeeee");
     //API Keyをセット
     context.commit("setKey", context.getters["keyIndex"]);
 
@@ -211,7 +210,8 @@ const actions = {
         response.data.items[0].snippet.categoryId
       );
       // context.commit("setYTResult", response.data.items);
-    } else if (response.status == FORBIDDEN) {
+    } else if (response.status == FORBIDDEN ||
+      response.status == INTERNAL_SERVER_ERROR) {
       // API Keyの上限オーバーで失敗した時
       //次のAPI Keyにスイッチして再度検索実行
       context.commit("setKeyIndex", context.getters["keyIndex"] + 1);

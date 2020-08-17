@@ -22,7 +22,7 @@
           validate-on-blur
           chips
           clearable
-          label="シーンタグを入力"
+          label="シーンタグを入力111"
           multiple
           flat
         >
@@ -126,6 +126,10 @@ export default {
               self.$emit("taggingSucceed");
             }
 
+            localStorage.removeItem('startTime');
+            localStorage.removeItem('endTime');
+            localStorage.removeItem('showTaggingControl');
+            localStorage.removeItem('sceneTags');
             // //入力フォームをクリア
             self.$store.commit("tagging/setTags", "");
             self.$store.commit("tagging/setStart", "");
@@ -134,10 +138,12 @@ export default {
             self.$store.commit("tagging/setControlTransitNext", false);
             //TimeControlのシートへ戻る
             self.$store.commit("tagging/setShowTaggingControl", "TimeControl");
+
           }
         });
       } else {
         //未ログインの場合
+        localStorage.setItem('sceneTags', JSON.stringify(this.tags));
         this.$store.commit("noLoginModal/openLoginModal");
         this.$store.commit(
           "noLoginModal/setMessageWhenNotLogined",
@@ -164,7 +170,11 @@ export default {
     },
     async initialize() {
       //戻るボタンから表示された際の既入力値のセット
-      this.tags = this.$store.getters["tagging/tags"];
+      if (localStorage.getItem('sceneTags')) {
+        this.tags = JSON.parse(localStorage.getItem('sceneTags'));
+      } else {
+        this.tags = this.$store.getters["tagging/tags"];
+      }
 
       if (this.isLogin) {
         //シーンタグアイテムに使うシーンタグ履歴をロード

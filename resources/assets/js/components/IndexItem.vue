@@ -6,7 +6,7 @@
       dense
       class="pa-0 ma-0"
     >
-      <v-col>
+      <v-col class="px-0">
         <v-hover v-slot:default="{ hover }">
           <v-card class="mx-auto" max-width="400" elevation="1">
               <v-img
@@ -33,11 +33,11 @@
                 <v-card-title v-on:click.stop="select(item)" class="pb-0">{{ item.title }}</v-card-title>
                 <v-card-text class="text--primary">
                   <div v-on:click.stop="select(item)" class="grey--text text--darken-3">
-                    <span>合計{{ item.totalDuration }}</span>
-                    <span>{{ item.sceneCount }}シーン</span>
+                    <span>{{ item.visitCount }}回視聴</span><span style="font-size:8px;">&nbsp;&nbsp;&#9679;&nbsp;&nbsp;</span>
+                    <span>合計{{ item.totalDuration }}</span><span style="font-size:8px;">&nbsp;&nbsp;&#9679;&nbsp;&nbsp;</span>
+                    <!-- <span>{{ item.sceneCount }}シーン</span> -->
                     <!-- <span>◯回視聴</span> -->
-                    <span>{{ item.timeSince }}前</span>
-                    <span>{{ item.visitCount }}回視聴</span>
+                    <span>{{ item.timeSince }}前</span><span style="font-size:8px;">&nbsp;&nbsp;&#9679;&nbsp;&nbsp;</span>
                     <span v-if="item.likeCount">
                       <i class="fas fa-heart my-grey-heart"></i>
                       {{ item.likeCount}}

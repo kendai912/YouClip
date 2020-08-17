@@ -1,3 +1,5 @@
+import { values } from "lodash";
+
 //システムエラー定義
 export const OK = 200;
 export const CREATED = 201;
@@ -40,7 +42,7 @@ export default {
           //合計時間を計算
           let duration = this.timeMath.sub(value.end, value.start);
 
-          mediaItems.push({
+          let mediaItem = {
             category: "tag",
             id: value.tag_id,
             title: value.title,
@@ -49,7 +51,7 @@ export default {
             timeSince: this.timeSince(value.tag_created_at),
             tagsList: "",
             tags: value.tags,
-            tagArray: value.tags.split(/[\s| |　]/),
+            tagArray: [],
             totalDuration: this.convertToKanjiTime(
               this.convertToSec(this.formatToMinSec(duration))
             ),
@@ -59,7 +61,15 @@ export default {
             previewgif: value.previewgif,
             sceneCount: 1,
             likeCount: "",
-          });
+          };
+          let tagCount = 0;
+          values.tags.split(/[\s| |　]/).forEach(tag => {
+            if (tagCount < 10) {
+              mediaItem.tagArray.push(tag);
+              tagCount ++;
+            }
+          })
+          mediaItems.push(mediaItem);
         });
       }
     },
@@ -98,11 +108,16 @@ export default {
               likeCount: value.likesPlaylist_count,
               visitCount: value.play_count
             };
+            let tagCount = 0;
             value.tags.forEach(tag => {
               if (tag.tags[0]) {
                 tag.tags.split(/[\s| |　]/).forEach(tag => {
-                  if (mediaItem.tagArray.indexOf(tag) === -1)
-                    mediaItem.tagArray.push(tag);
+                  if (mediaItem.tagArray.indexOf(tag) === -1) {
+                    if (tagCount < 10) {
+                      mediaItem.tagArray.push(tag);
+                      tagCount ++;
+                    }
+                  }
                 })
               }
             })

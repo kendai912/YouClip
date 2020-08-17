@@ -55,6 +55,12 @@ export default {
       this.$emit("updateSucceed");
     }
   },
-  created() {}
+  created() {
+    console.log(localStorage.getItem('showTaggingControl'), "dddddddddddd", this.showTaggingControl);
+    // this.showTaggingControl = localStorage.getItem('showTaggingControl');
+    if (localStorage.getItem('showTaggingControl')) {
+      this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
+    }
+  }
 };
 </script>

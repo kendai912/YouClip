@@ -315,6 +315,9 @@ export default {
         this.$store.commit("tagging/setStart", this.startTimeInput);
         this.$store.commit("tagging/setEnd", this.endTimeInput);
         this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
+        localStorage.setItem('startTime', this.startTimeInput);
+        localStorage.setItem('endTime', this.endTimeInput);
+        localStorage.setItem('showTaggingControl', "TaggingControl");
       }
     },
     back() {
@@ -336,8 +339,16 @@ export default {
       this.startUpdateSlider();
 
       //戻るボタンから表示された際の既入力値のセット
-      this.startTimeInput = this.$store.getters["tagging/start"];
-      this.endTimeInput = this.$store.getters["tagging/end"];
+      if (localStorage.getItem('startTime')) {
+        this.startTimeInput = localStorage.getItem('startTime');
+      } else {
+        this.startTimeInput = this.$store.getters["tagging/start"];
+      }
+      if (localStorage.getItem('endTime')) {
+        this.endTimeInput = localStorage.getItem('endTime');
+      } else {
+        this.endTimeInput = this.$store.getters["tagging/end"];
+      }
 
       //シーンタグの遷移モードを変更(true:右スライド, false:左スライド)
       this.$store.commit("tagging/setControlTransitNext", true);
