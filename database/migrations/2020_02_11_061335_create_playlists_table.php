@@ -18,6 +18,7 @@ class CreatePlaylistsTable extends Migration
             $table->string('playlistName')->unique();
             $table->string('privacySetting');
             $table->integer('user_id');
+            $table->string('playlistCategory');
             $table->timestamps();
         });
     }

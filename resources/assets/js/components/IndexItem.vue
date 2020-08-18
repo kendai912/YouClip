@@ -23,7 +23,7 @@
                     width="28px"
                     max-height="28px"
                   />&nbsp;{{item.sceneCount}}&nbsp;シーン
-                  </v-chip>
+                </v-chip>
               </v-img>
             <v-list-item>
               <v-list-item-avatar color="grey">

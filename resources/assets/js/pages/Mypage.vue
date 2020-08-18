@@ -1,6 +1,7 @@
 <template>
   <div class="container--small">
     <div v-if="isLogin">
+      <My-Profile />
       <MyList />
     </div>
     <v-card v-else class="text-center pa-3 ma-3 body-color" title elevation="0">
@@ -21,11 +22,13 @@
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
 import MyList from "../components/MyList.vue";
+import MyProfile from "../components/MyProfile.vue";
 import myMixin from "../util";
 
 export default {
   components: {
-    MyList
+    MyList,
+    MyProfile
   },
   props: {},
   mixins: [myMixin],

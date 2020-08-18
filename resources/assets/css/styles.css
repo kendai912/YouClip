@@ -25,7 +25,7 @@
   max-width: 600px;
 }
 .container--small .container {
-  padding: 0px 0px 12px 0px;
+  /* padding: 0px 0px 12px 0px; */
 }
 
 .yt-container {
@@ -287,4 +287,8 @@
   margin-right: 4px;
   margin-top: 2px;
   margin-bottom: 2px;
+}
+
+.avatar-circle {
+  /* border-radius: 50%; */
 }

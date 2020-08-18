@@ -17,7 +17,7 @@ class CreateVideosTable extends Migration
             $table->increments('id');
             $table->string('youtubeId')->unique()->nullable();
             $table->integer('user_id');
-            $table->string('url');
+            // $table->string('url');
             $table->string('title')->nullable();
             $table->string('thumbnail')->nullable();
             $table->time('duration')->nullable();

@@ -22,7 +22,7 @@
           validate-on-blur
           chips
           clearable
-          label="シーンタグを入力111"
+          label="シーンタグを入力"
           multiple
           flat
         >
