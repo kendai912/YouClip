@@ -4,16 +4,15 @@
       <v-card>
         <v-card-title>速度を選択</v-card-title>
         <v-divider></v-divider>
-        <v-card-text style="height: 300px;">
-          <v-radio-group v-model="model" column>
-            <v-radio
-              v-for="(playSpeed, i) in playSpeedValues"
-              v-bind:key="i"
-              :label="playSpeed.label" :value="playSpeed.value"
-              @click="setPlaySpeed(playSpeed.value)"
-            >
-            </v-radio>
-          </v-radio-group>
+        <v-card-text style="height: 350px;">
+          <v-checkbox
+            v-model="model"
+            v-for="(playSpeed, i) in playSpeedValues"
+            v-bind:key="i"
+            :label="playSpeed.label" :value="playSpeed.value"
+            @click="setPlaySpeed(playSpeed.value)"
+            hide-details
+          ></v-checkbox>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
