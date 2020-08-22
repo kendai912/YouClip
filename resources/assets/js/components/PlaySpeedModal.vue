@@ -16,7 +16,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="blue darken-1" text @click="showPlaySpeedModal = false">
+          <v-btn color="grey darken-1" text @click="showPlaySpeedModal = false">
             <v-icon left>close</v-icon>閉じる
           </v-btn>
           <!-- <v-btn color="blue darken-1" text @click="setPlaySpeed">保存</v-btn> -->

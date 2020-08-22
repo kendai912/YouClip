@@ -38,11 +38,11 @@
                     <v-card-text class="text--primary" style="font-size: 11px;">
                       <div v-on:click.stop="select(item)" class="grey--text text--darken-3">
                         <span>{{ item.visitCount ? item.visitCount : 0 }}回視聴</span>
-                        <span style="font-size:8px;">&nbsp;&#9679;&nbsp;</span>
+                        <span style="font-size:8px;">&nbsp;&#8226;&nbsp;</span>
                         <span>合計{{ item.totalDuration }}</span>
-                        <span style="font-size:8px;">&nbsp;&#9679;&nbsp;</span>
+                        <span style="font-size:8px;">&nbsp;&#8226;&nbsp;</span>
                         <span>{{ item.timeSince }}前</span>
-                        <span v-if="item.likeCount" style="font-size:8px;">&nbsp;&#9679;&nbsp;</span>
+                        <span v-if="item.likeCount" style="font-size:8px;">&nbsp;&#8226;&nbsp;</span>
                         <span v-if="item.likeCount">
                           <i class="fas fa-heart my-grey-heart"></i>
                           {{ item.likeCount}}
