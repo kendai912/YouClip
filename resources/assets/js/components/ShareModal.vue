@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-sheet v-model="showShareModal" max-width="400px">
+  <v-bottom-sheet v-model="showShareModal" max-width="420px">
     <v-sheet class="mx-auto">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-2">

@@ -1,35 +1,72 @@
 <template>
-  <v-container class="body-color">
+  <v-container class="pa-0 body-color">
     <v-card
       class="mx-auto"
-      max-width="400"
+      max-width="420"
       tile
+      flat
+      color="rgb(245, 245, 245)"
     >
-      <v-row
-        class="fill-height"
-      >
+      <v-row>
+        <v-col class="pa-0 pt-2 text-center">
+          <span class="h5 font-weight-black">
+            Kendai Miyazawa
+          </span>
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col
-          align-self="start"
-          class="pa-0"
           cols="4"
         >
-          <v-avatar
-            class="profile"
-            color="grey"
-            size="164"
-          >
-            <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
-          </v-avatar>
+          <div class="text-center">
+            <!-- <v-badge
+              avatar
+              bottom
+              offset-x="25"
+              offset-y="25"
+            > -->
+              <v-avatar
+                class="profile"
+                size="100"
+              >
+                <v-img src="/storage/logos/pph_son.png"></v-img>
+              </v-avatar>
+            <!-- </v-badge> -->
+          </div>
         </v-col>
-        <v-col class="py-0">
-          <v-list-item
-            dark
-          >
-            <v-list-item-content>
-              <v-list-item-title class="title">Marcus Obrien</v-list-item-title>
-              <v-list-item-subtitle>Network Engineer</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
+        <v-col cols="4" class="d-flex justify-center align-center text-center">
+          <div>
+            <span class="h6 font-weight-medium">
+              100
+            </span> <br/>
+            <span class="h6 font-weight-medium">
+              フォロワー
+            </span>
+          </div>
+        </v-col>        
+        <v-col cols="4" class="d-flex justify-center align-center text-center">
+          <div>
+            <span class="h6 font-weight-medium">
+              100
+            </span> <br/>
+            <span class="h6 font-weight-medium">
+              フォロー中
+            </span>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row class="ma-0">
+        <v-col class="pt-0">
+          <div>
+            <span class="h6 font-weight-bold">
+              Kendai Miyazawa
+            </span>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row class="ma-0">
+        <v-col class="pb-1">
+          <v-btn width="100%" color="white" >プロフィールを編集</v-btn>
         </v-col>
       </v-row>
     </v-card>

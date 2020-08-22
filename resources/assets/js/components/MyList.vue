@@ -4,10 +4,10 @@
       <v-tab v-for="(item, key) in items" :key="item" v-on:click="setActiveTab(key)">{{ item }}</v-tab>
     </v-tabs>
 
-    <v-tabs-items v-model="tab" class="body-margin-bottom">
+    <v-tabs-items v-model="tab" class="pb-14">
       <v-tab-item>
         <v-card flat>
-          <IndexItem v-bind:mediaItems="myCreatedAndLikedPlaylistMediaItems" />
+          <MyPlaylistItem v-bind:mediaItems="myCreatedAndLikedPlaylistMediaItems" />
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -23,6 +23,7 @@
 import { mapState, mapGetters, mapMutations } from "vuex";
 import MyPlaylist from "../components/MyPlaylist.vue";
 import MyScene from "../components/MyScene.vue";
+import MyPlaylistItem from "../components/MyPlaylistItem.vue";
 import IndexItem from "../components/IndexItem.vue";
 import myMixin from "../util";
 
@@ -30,6 +31,7 @@ export default {
   components: {
     MyPlaylist,
     MyScene,
+    MyPlaylistItem,
     IndexItem
   },
   props: {},

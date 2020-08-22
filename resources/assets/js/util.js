@@ -6,6 +6,7 @@ export const CREATED = 201;
 export const DELETED = 204;
 export const FORBIDDEN = 403;
 export const INTERNAL_SERVER_ERROR = 500;
+export const UNAUTHORIZED = 401;
 
 //バリデーションエラー定義
 export const UNPROCESSABLE_ENTITY = 422;
@@ -61,17 +62,26 @@ export default {
             previewgif: value.previewgif,
             sceneCount: 1,
             likeCount: "",
+            user_id: value.user_id
           };
           let tagCount = 0;
           if (Array.isArray(value.tags)) {
-            values.tags.split(/[\s| |　]/).forEach(tag => {
+            value.tags.forEach(tagItem => {
+              tagItem.split(/[\s| |　]/).forEach(tag => {
+                if (tagCount < 10) {
+                  mediaItem.tagArray.push(tag);
+                  tagCount ++;
+                }
+              })
+            });
+          } else {
+            // mediaItem.tagArray.push(value.tags);
+            value.tags.split(/[\s| |　]/).forEach(tag => {
               if (tagCount < 10) {
                 mediaItem.tagArray.push(tag);
                 tagCount ++;
               }
             })
-          } else {
-            mediaItem.tagArray.push(value.tags);
           }
           mediaItems.push(mediaItem);
         });
@@ -110,13 +120,14 @@ export default {
               previewgif: value.tags[0].previewgif,
               sceneCount: sceneCount,
               likeCount: value.likesPlaylist_count,
-              visitCount: value.play_count
+              visitCount: value.play_count,
+              user_id: value.user_id
             };
             let tagCount = 0;
             if (Array.isArray(value.tags)) {
-              value.tags.forEach(tag => {
-                if (tag.tags[0]) {
-                  tag.tags.split(/[\s| |　]/).forEach(tag => {
+              value.tags.forEach(tagItem => {
+                if (tagItem.tags[0]) {
+                  tagItem.tags.split(/[\s| |　]/).forEach(tag => {
                     if (mediaItem.tagArray.indexOf(tag) === -1) {
                       if (tagCount < 10) {
                         mediaItem.tagArray.push(tag);
@@ -127,7 +138,15 @@ export default {
                 }
               })
             } else {
-              mediaItem.tagArray.push(value.tags);
+              // mediaItem.tagArray.push(value.tags);
+              value.tags.split(/[\s| |　]/).forEach(tag => {
+                if (mediaItem.tagArray.indexOf(tag) === -1) {
+                  if (tagCount < 10) {
+                    mediaItem.tagArray.push(tag);
+                    tagCount ++;
+                  }
+                }
+              })
             }
             mediaItems.push(mediaItem);
           }

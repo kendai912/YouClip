@@ -4,7 +4,7 @@
       v-for="(item, index) in numberOfYTItemsPerPagination"
       v-bind:key="index"
       class="mx-auto"
-      max-width="400"
+      max-width="420"
       elevation="0"
     >
       <v-container class="px-3 my-3">

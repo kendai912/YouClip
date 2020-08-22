@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-bottom-sheet v-model="showOtherActionModal">
       <v-list>
-        <v-list-item v-for="tile in tiles" :key="tile.title" v-on:click="tapTile(tile.action)" v-show="tile.show==='always' || user_id && created_user_id === user_id">
+        <v-list-item v-for="tile in tiles" :key="tile.title" v-on:click="tapTile(tile.action)" v-show="tile.show==='always' || (user_id && created_user_id === user_id)">
           <v-list-item-avatar>
             <i v-bind:class="tile.img"></i>
           </v-list-item-avatar>
@@ -97,6 +97,8 @@ export default {
       }
     }
   },
-  created() {}
+  created() {
+    console.log("dddddddddddd", this.created_user_id);
+  }
 };
 </script>

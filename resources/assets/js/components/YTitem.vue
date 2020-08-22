@@ -5,7 +5,7 @@
         v-for="(item, index) in YTitems"
         v-bind:key="item.etag + index"
         class="mx-auto"
-        max-width="400"
+        max-width="420"
         elevation="0"
       >
         <v-container class="px-3 my-3">

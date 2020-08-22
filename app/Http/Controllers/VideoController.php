@@ -157,7 +157,15 @@ class VideoController extends Controller
             return $res->getBody();
         }
         catch (Exception $e) {
-            throw new Exception($e->getResponse()->getBody());
+            $error = new Exception($e->getResponse()->getBody());
+            return response()->json(
+                [
+                    'message' => $error->error->message
+                ],
+                $error->error->code,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
         }
     }
 
@@ -171,11 +179,11 @@ class VideoController extends Controller
                 'verify' => false,
                 'query' => $params
             ]);
+            return $res->getBody();
         }
         catch (Exception $e) {
-            throw new Exception($e->getResponse()->getBody());
+            return new Exception($e->getResponse()->getBody());
         }
-        return $res->getBody();
     }
 
     // //登録処理

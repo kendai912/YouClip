@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="showLoginModal" max-width="290">
+  <v-dialog v-model="showLoginModal" max-width="300">
     <v-card>
       <v-card-title class="subtitle-1">{{ messageWhenNotLogined }}</v-card-title>
 

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
+import router from "../router";
 
 const state = {
   playlistAndTagPaginationOfRecommend: null,
@@ -247,6 +248,7 @@ const actions = {
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
+      router.push("/login");
     } else {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });

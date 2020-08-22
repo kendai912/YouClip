@@ -1,30 +1,30 @@
 <template>
-  <v-container class="body-color">
+  <v-container class="pa-0 pb-3 body-color">
     <v-row
       v-for="item in mediaItems"
       v-bind:key="item.category+'-'+item.id"
       dense
       class="pa-0 ma-0"
     >
-      <v-col class="px-0">
+      <v-col class="px-0" style="padding-top: 2px; paddint-bottom: 2px;">
         <v-hover v-slot:default="{ hover }">
-          <v-card class="mx-auto" max-width="400" elevation="1">
-              <v-img
-                v-on:click.stop="select(item)"
-                class="white--text align-end"
-                max-height="266.66px"
-                v-bind:src="hover ? '/storage/img/' + item.previewgif : item.preview"
-                v-bind:alt="item.title"
-                aspect-ratio="1.5"
-              >
-                <v-chip label color="rgb(111 111 111)" text-color="white" class="scene-chip">
-                  <v-img
-                    src="/storage/icons/playlist_icon.png"
-                    width="28px"
-                    max-height="28px"
-                  />&nbsp;{{item.sceneCount}}&nbsp;シーン
-                </v-chip>
-              </v-img>
+          <v-card class="mx-auto" max-width="420" elevation="1">
+            <v-img
+              v-on:click.stop="select(item)"
+              class="white--text align-end"
+              max-height="266.66px"
+              v-bind:src="hover ? '/storage/img/' + item.previewgif : item.preview"
+              v-bind:alt="item.title"
+              aspect-ratio="1.5"
+            >
+              <v-chip label color="rgb(111 111 111)" text-color="white" class="scene-chip">
+                <v-img
+                  src="/storage/icons/playlist_icon.png"
+                  width="28px"
+                  max-height="28px"
+                />&nbsp;{{item.sceneCount}}&nbsp;シーン
+              </v-chip>
+            </v-img>
             <v-list-item>
               <v-list-item-avatar color="grey">
                 <v-icon dark>mdi-account-circle</v-icon>
@@ -33,7 +33,7 @@
                 <v-card-title v-on:click.stop="select(item)" class="pb-0">{{ item.title }}</v-card-title>
                 <v-card-text class="text--primary">
                   <div v-on:click.stop="select(item)" class="grey--text text--darken-3">
-                    <span>{{ item.visitCount }}回視聴</span><span style="font-size:8px;">&nbsp;&nbsp;&#9679;&nbsp;&nbsp;</span>
+                    <span>{{ item.visitCount ? item.visitCount : 0 }}回視聴</span><span style="font-size:8px;">&nbsp;&nbsp;&#9679;&nbsp;&nbsp;</span>
                     <span>合計{{ item.totalDuration }}</span><span style="font-size:8px;">&nbsp;&nbsp;&#9679;&nbsp;&nbsp;</span>
                     <!-- <span>{{ item.sceneCount }}シーン</span> -->
                     <!-- <span>◯回視聴</span> -->
@@ -52,7 +52,7 @@
                 <v-chip
                   v-for="(tag, tagIndex) in item.tagArray"
                   v-bind:key="item.id + '-' + tagIndex"
-                  class="tag-chip"
+                  class="my-tag-chip"
                   small
                   color="blue lighten-5"
                   text-color="black"

@@ -126,7 +126,7 @@
         <OtherActionModal
           v-if="showOtherActionModal"
           v-bind:player="player"
-          v-bind:created_user_id="playlistIdUrl ? playlistAndTagVideoData.user_id : tagAndVideoData.user_id"
+          v-bind:created_user_id="playlistIdUrl ? playlistAndTagVideoData.user_id : tagAndVideoData[0].user_id"
           v-on:deleteSucceed="deleteSucceed"
         />
         <PlaySpeedModal
