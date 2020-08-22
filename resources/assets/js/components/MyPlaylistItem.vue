@@ -51,7 +51,7 @@
                     </v-card-text>
 
                     <v-card-text>
-                      <div class="horizontal-list-wrap block-chip">
+                      <div class="horizontal-list-wrap block-chip-lines2">
                         <v-chip
                           v-for="(tag, tagIndex) in item.tagArray"
                           v-bind:key="item.id + '-' + tagIndex"

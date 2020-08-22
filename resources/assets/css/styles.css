@@ -320,8 +320,8 @@
   text-overflow: ellipsis;
 }
 
-.block-chip {
-  height: 50px;
+.block-chip-lines2 {
+  max-height: 50px;
   /* display: block;
   display: -webkit-box;
   max-width: 100%;
@@ -333,4 +333,8 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis; */
+}
+
+.block-chip-lines3 {
+  max-height: 75px;
 }
