@@ -12,25 +12,29 @@
             v-bind:search-input.sync="searchquery"
             v-on:keydown.enter="search"
             placeholder="クリップ集を検索"
+            item-text="value"
+            item-value="value"
             cache-items
             hide-no-data
             clearable
             dense
           >
-            <!-- <template v-slot:item="data">
+            <template v-slot:item="data">
               <template v-if="typeof data.item !== 'object'">
                 <v-list-item-content v-text="data.item"></v-list-item-content>
               </template>
               <template v-else>
-                <v-list-item-avatar>
-                  <img :src="data.item.avatar">
-                </v-list-item-avatar>
+                <v-list-item-icon class="mr-4">
+                  <v-icon>{{data.item.icon}}</v-icon>
+                </v-list-item-icon>
                 <v-list-item-content>
-                  <v-list-item-title v-html="data.item.name"></v-list-item-title>
-                  <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
+                  <v-list-item-title v-html="data.item.value"></v-list-item-title>
                 </v-list-item-content>
+                <v-list-item-icon style="min-width:16px;">
+                  <v-img src="/storage/icons/north_west.svg" width="16px" max-height="16px"></v-img>
+                </v-list-item-icon>
               </template>
-            </template> -->
+            </template>
             <template v-slot:append-outer>
               <v-icon v-on:click="search">search</v-icon>
             </template>
@@ -66,7 +70,11 @@ export default {
       if (this.searchCandidates["searchHistoryCandidates"])
         this.searchCandidates["searchHistoryCandidates"].forEach(value => {
           if (itemCount++ < itemLimit) {
-            items.push(value.searchQuery);
+            let item = {
+              icon: 'history',
+              value: value.searchQuery,
+            }
+            items.push(item);
           }
         });
 
@@ -74,7 +82,11 @@ export default {
       if (this.searchCandidates["topSearchqueriesCandidates"])
         this.searchCandidates["topSearchqueriesCandidates"].forEach(value => {
           if (itemCount++ < itemLimit) {
-            items.push(value.searchquery.searchQuery);
+            let item = {
+              icon: 'search',
+              value: value.searchquery.searchQuery,
+            }
+            items.push(item);
           }
         });
 
@@ -107,6 +119,7 @@ export default {
   },
   async created() {
     await this.$store.dispatch("search/getSearchCandidates");
+    console.log("dddddddddddd", this.items)
   }
 };
 </script>
