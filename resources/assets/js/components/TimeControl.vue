@@ -126,14 +126,14 @@
           </v-col>
           <v-col class="text-center ma-0 pa-1">
             <v-bottom-navigation class="bottom_navigation_no_shadow" elevation="0">
-                <v-btn v-on:click="openPlaySpeedModal" class="ma-0 pa-0 narrow-btn">
-                  <span>倍速視聴</span>
-                  <v-img
-                    src="/storage/icons/play_speed.ico"
-                    width="36px"
-                    max-height="36px"
-                  />
-                </v-btn>
+              <v-btn v-on:click="openPlaySpeedModal" class="ma-0 pa-0 narrow-btn">
+                <span>倍速視聴</span>
+                <v-img
+                  src="/storage/icons/play_speed.png"
+                  width="36px"
+                  max-height="36px"
+                />
+              </v-btn>
               <v-btn v-if="isMuted" v-on:click="unmute">
                 <span>ミュート解除</span>
                 <v-icon large>volume_off</v-icon>

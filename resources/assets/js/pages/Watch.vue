@@ -87,7 +87,7 @@
                 <v-btn v-on:click="openPlaySpeedModal" class="ma-0 pa-0 narrow-btn">
                   <span>倍速視聴</span>
                   <v-img
-                    src="/storage/icons/play_speed.ico"
+                    src="/storage/icons/play_speed.png"
                     width="28px"
                     max-height="28px"
                   />

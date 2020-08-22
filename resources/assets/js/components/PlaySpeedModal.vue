@@ -9,7 +9,8 @@
             v-model="model"
             v-for="(playSpeed, i) in playSpeedValues"
             v-bind:key="i"
-            :label="playSpeed.label" :value="playSpeed.value"
+            :label="playSpeed.label"
+            :value="playSpeed.value"
             @click="setPlaySpeed(playSpeed.value)"
             hide-details
           ></v-checkbox>
@@ -58,7 +59,7 @@ export default {
         return this.$store.getters["playSpeedModal/showPlaySpeedModal"];
       },
       set() {
-        this.player.setPlaybackRate(parseInt(this.playSpeed));
+        this.player.setPlaybackRate(parseFloat(this.playSpeed));
         this.player.playVideo();
         return this.$store.commit("playSpeedModal/closePlaySpeedModal");
       }
@@ -66,7 +67,7 @@ export default {
   },
   methods: {
     async setPlaySpeed(value) {
-      this.$store.commit("watch/setPlaySpeed", value);
+      this.$store.commit("watch/setPlaySpeed", parseFloat(value));
       this.showPlaySpeedModal = false;
     }
   },

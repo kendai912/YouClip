@@ -43,6 +43,7 @@ export default {
           // this.$store.commit("snackbar/setColor", "blue");
           // this.$store.commit("snackbar/setText", "セッションが切れているので、もう一度ログインして下さい");
           // this.$store.commit("snackbar/setSnackbar", true);
+          this.$store.commit("auth/check", false);
           this.$router.push("/login");
         }
       },

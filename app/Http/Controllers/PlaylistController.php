@@ -230,23 +230,34 @@ class PlaylistController extends Controller
     //Likeまたは作成したプレイリスト一覧をロード
     public function loadMyCreatedAndLikedPlaylist()
     {
-        //Likeしたプレイリストを取得
-        $LikedPlaylist = $this->likedPlaylist();
+        if (Auth::user()) {
+            //Likeしたプレイリストを取得
+            $LikedPlaylist = $this->likedPlaylist();
 
-        //作成したプレイリストを取得
-        $createdPlaylist = $this->createdPlaylist();
+            //作成したプレイリストを取得
+            $createdPlaylist = $this->createdPlaylist();
 
-        //Likeしたプレイリストと作成したプレイリストをマージ
-        $myCreatedAndLikedPlaylist = $LikedPlaylist->merge($createdPlaylist);
-        
-        return response()->json(
-            [
-            'myCreatedAndLikedPlaylist' => $myCreatedAndLikedPlaylist
-            ],
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+            //Likeしたプレイリストと作成したプレイリストをマージ
+            $myCreatedAndLikedPlaylist = $LikedPlaylist->merge($createdPlaylist);
+            
+            return response()->json(
+                [
+                'myCreatedAndLikedPlaylist' => $myCreatedAndLikedPlaylist
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
 
     //Likeしたプレイリストを取得

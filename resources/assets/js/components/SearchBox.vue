@@ -3,7 +3,7 @@
     <v-container class="ma-0 pa-0 text-center">
       <v-row class="ma-0 pa-0" align="center">
         <v-col cols="1" class="ma-0 pa-0 text-center">
-          <v-icon v-on:click="back">mdi-arrow-left</v-icon>
+          <!-- <v-icon v-on:click="back">mdi-arrow-left</v-icon> -->
         </v-col>
         <v-col class="ma-0 pa-0">
           <v-autocomplete
@@ -11,12 +11,26 @@
             v-bind:items="items"
             v-bind:search-input.sync="searchquery"
             v-on:keydown.enter="search"
-            placeholder="プレイリストまたはシーンを入力"
+            placeholder="クリップ集を検索"
             cache-items
             hide-no-data
             clearable
             dense
           >
+            <!-- <template v-slot:item="data">
+              <template v-if="typeof data.item !== 'object'">
+                <v-list-item-content v-text="data.item"></v-list-item-content>
+              </template>
+              <template v-else>
+                <v-list-item-avatar>
+                  <img :src="data.item.avatar">
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-html="data.item.name"></v-list-item-title>
+                  <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
+                </v-list-item-content>
+              </template>
+            </template> -->
             <template v-slot:append-outer>
               <v-icon v-on:click="search">search</v-icon>
             </template>
@@ -88,9 +102,11 @@ export default {
       this.$store.commit("search/searchResultPageTransit");
     },
     back() {
-      this.$router.push('home');
+      this.$router.push('/home');
     }
   },
-  created() {}
+  async created() {
+    await this.$store.dispatch("search/getSearchCandidates");
+  }
 };
 </script>
