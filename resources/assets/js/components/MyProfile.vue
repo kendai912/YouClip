@@ -15,23 +15,14 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col
-          cols="4"
-        >
+        <v-col cols="4">
           <div class="text-center">
-            <!-- <v-badge
-              avatar
-              bottom
-              offset-x="25"
-              offset-y="25"
-            > -->
-              <v-avatar
-                class="profile"
-                size="100"
-              >
-                <v-img src="/storage/logos/pph_son.png"></v-img>
-              </v-avatar>
-            <!-- </v-badge> -->
+            <v-avatar
+              class="profile"
+              size="100"
+            >
+              <v-img src="/storage/logos/pph_son.png"></v-img>
+            </v-avatar>
           </div>
         </v-col>
         <v-col cols="4" class="d-flex justify-center align-center text-center">

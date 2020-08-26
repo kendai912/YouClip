@@ -417,6 +417,7 @@ class PlaylistController extends Controller
         $playlist = Playlist::find($playlist_id);
         $playlistlog = new Playlistlog();
         $playlistlog->playlist_id = $playlist_id;
+        print_r($playlist); exit;
         // $playlistlog->user_id = $user->id;
         try {
             $playlist->playlistlogs()->save($playlistlog);

@@ -88,7 +88,7 @@ export default {
           }
         })
         .catch(err => {});
-      location.reload();
+      // location.reload();
     }
   }
 };

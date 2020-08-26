@@ -67,7 +67,7 @@ export default {
         this.$store.commit("YTsearch/YTsearchResultPageTransit");
       }
 
-      window.location.reload();
+      // window.location.reload();
     },
     back() {
       this.$router.go(-1);

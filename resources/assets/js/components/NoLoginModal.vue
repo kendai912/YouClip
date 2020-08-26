@@ -1,13 +1,19 @@
 <template>
-  <v-dialog v-model="showLoginModal" max-width="300">
+  <v-dialog v-model="showLoginModal" max-width="360">
     <v-card>
-      <v-card-title class="subtitle-1">{{ messageWhenNotLogined }}</v-card-title>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="grey darken-1" text v-on:click="closeLoginModal">キャンセル</v-btn>
-        <v-btn class="my-login-font-color" v-on:click="openLoginPage" text>ログイン</v-btn>
-      </v-card-actions>
+      <v-btn icon dark small v-on:click="closeLoginModal">
+        <v-icon color="grey darken-1">mdi-close</v-icon>
+      </v-btn>
+      <v-card-title class="subtitle-1 py-0">{{ messageWhenNotLogined }}</v-card-title>
+      <v-row class="ma-0">
+        <v-col class="mx-6">
+          <v-btn width="100%" color="green lighten-1" class="white--text" v-on:click="openLoginPage">ログイン</v-btn>
+          <div class="mt-3" style="color: #757575">
+            アカウントをお持ちでないですか?
+            <v-btn color="green" class="ma-0 pa-0" height="100%" text v-on:click="openRegisterPage">登録する</v-btn>
+          </div>
+        </v-col>
+      </v-row>
     </v-card>
   </v-dialog>
 </template>
@@ -44,6 +50,11 @@ export default {
           path: "/login"
         })
         .catch(err => {});
+    },
+    openRegisterPage() {
+      this.$router.push({
+        path: "/register"
+      }).catch(err => {});
     }
   },
   created() {}

@@ -97,6 +97,7 @@ export default {
       $("iframe").width($(".yt-container").width());
       $("iframe").height($(".container--small").height());
     };
+    setTimeout(onYouTubeIframeAPIReady, 10);
 
     window.onPlayerReady = event => {
       event.target.mute();

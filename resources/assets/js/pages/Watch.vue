@@ -353,7 +353,7 @@ export default {
     mute() {
       this.player.mute();
       this.isMuted = true;
-    }
+    },
   },
   computed: {
     ...mapGetters({
@@ -404,7 +404,6 @@ export default {
       return this.formatToMinSec(this.endHis);
     }
   },
-  mixins: [myMixin],
   mounted: async function() {
     //ナビバーを非表示
     this.$store.commit("navbar/setShowNavbar", false);
@@ -475,6 +474,7 @@ export default {
       $("iframe").width($(".yt-container").width());
       $("iframe").height($(".container--small").height());
     };
+    setTimeout(onYouTubeIframeAPIReady, 10);
 
     window.onPlayerReady = event => {
       event.target.mute();

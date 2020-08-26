@@ -13,6 +13,7 @@ const state = {
   controlTransitNext: true,
   tagHistories: [],
   isEditting: false,
+  isKeep: false,
 };
 
 const getters = {
@@ -25,6 +26,7 @@ const getters = {
   controlTransitNext: (state) => state.controlTransitNext,
   tagHistories: (state) => state.tagHistories,
   isEditting: (state) => state.isEditting,
+  isKeep: (state) => state.isKeep,
 };
 
 const mutations = {
@@ -54,6 +56,9 @@ const mutations = {
   },
   setIsEditting(state, data) {
     state.isEditting = data;
+  },
+  setIsKeep(state, data) {
+    state.isKeep = data;
   },
   //シーンタグの余計なスペースを除去し整形
   formatSceneTags(state) {

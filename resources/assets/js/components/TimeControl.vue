@@ -227,7 +227,8 @@ export default {
       isReady: "youtube/isReady",
       isNew: "youtube/isNew",
       isEditting: "tagging/isEditting",
-      showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal"
+      showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
+      isLogin: "auth/check",
     }),
     currentPositionTime() {
       //sliderをドラッグした位置の秒数を取得
@@ -315,9 +316,11 @@ export default {
         this.$store.commit("tagging/setStart", this.startTimeInput);
         this.$store.commit("tagging/setEnd", this.endTimeInput);
         this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
-        localStorage.setItem('startTime', this.startTimeInput);
-        localStorage.setItem('endTime', this.endTimeInput);
-        localStorage.setItem('showTaggingControl', "TaggingControl");
+        if (!this.isLogin) {
+          localStorage.setItem("startTime", this.startTimeInput);
+          localStorage.setItem("endTime", this.endTimeInput);
+          localStorage.setItem("showTaggingControl", "TaggingControl");
+        }
       }
     },
     back() {
@@ -338,14 +341,14 @@ export default {
       //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
       this.startUpdateSlider();
 
-      //戻るボタンから表示された際の既入力値のセット
-      if (localStorage.getItem('startTime')) {
-        this.startTimeInput = localStorage.getItem('startTime');
+      if (localStorage.getItem("startTime")) {
+        this.startTimeInput = localStorage.getItem("startTime");
       } else {
         this.startTimeInput = this.$store.getters["tagging/start"];
       }
-      if (localStorage.getItem('endTime')) {
-        this.endTimeInput = localStorage.getItem('endTime');
+
+      if (localStorage.getItem("endTime")) {
+        this.endTimeInput = localStorage.getItem("endTime");
       } else {
         this.endTimeInput = this.$store.getters["tagging/end"];
       }

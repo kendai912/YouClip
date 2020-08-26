@@ -132,7 +132,6 @@ export default {
   },
   methods: {
     async select(mediaItem) {
-      console.log("media item data", mediaItem.tagArray);
       await this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
       //プレイリストの場合
       if (mediaItem.category == "playlist") {
@@ -162,7 +161,7 @@ export default {
       }
 
       // IFrame Player APIを呼び出すためにページをリロード
-      window.location.reload();
+      // window.location.reload();
     }
   },
   mounted() {

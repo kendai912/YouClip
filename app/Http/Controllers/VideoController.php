@@ -154,19 +154,11 @@ class VideoController extends Controller
                 'verify' => false,
                 'query' => $params
             ]);
-            return $res->getBody();
         }
         catch (Exception $e) {
-            $error = new Exception($e->getResponse()->getBody());
-            return response()->json(
-                [
-                    'message' => $error->error->message
-                ],
-                $error->error->code,
-                [],
-                JSON_UNESCAPED_UNICODE
-            );
+            throw new Exception($e->getResponse()->getBody());
         }
+        return $res->getBody();
     }
 
     //get Youtube Category List from google API
@@ -179,11 +171,11 @@ class VideoController extends Controller
                 'verify' => false,
                 'query' => $params
             ]);
-            return $res->getBody();
         }
         catch (Exception $e) {
-            return new Exception($e->getResponse()->getBody());
+            throw new Exception($e->getResponse()->getBody());
         }
+        return $res->getBody();
     }
 
     // //登録処理

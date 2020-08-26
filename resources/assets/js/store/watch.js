@@ -22,7 +22,7 @@ const getters = {
   listIndex: (state) => state.listIndex,
   playlistId: (state) => state.playlistId,
   playlistName: (state) => state.playlistName,
-  currentYoutubeId: (state) => state.watchList[state.listIndex].youtubeId,
+  currentYoutubeId: (state) => state.currentYoutubeId,
   currentTagId: (state) => state.watchList[state.listIndex].tag_id,
   currentTagName: (state) =>
     state.watchList ? state.watchList[state.listIndex].tags : "",

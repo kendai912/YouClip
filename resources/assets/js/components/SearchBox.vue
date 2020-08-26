@@ -4,6 +4,7 @@
       <v-row class="ma-0 pa-0" align="center">
         <v-col cols="1" class="ma-0 pa-0 text-center">
           <!-- <v-icon v-on:click="back">mdi-arrow-left</v-icon> -->
+          <v-icon v-on:click="search">search</v-icon>
         </v-col>
         <v-col class="ma-0 pa-0">
           <v-autocomplete
@@ -34,9 +35,6 @@
                   <v-img src="/storage/icons/north_west.svg" width="16px" max-height="16px"></v-img>
                 </v-list-item-icon>
               </template>
-            </template>
-            <template v-slot:append-outer>
-              <v-icon v-on:click="search">search</v-icon>
             </template>
           </v-autocomplete>
         </v-col>

@@ -190,7 +190,7 @@ export default {
       isIndexSportsPlaylistAndTagPaginating:
         "playlist/isIndexSportsPlaylistAndTagPaginating",
       isIndexEntertainmentPlaylistAndTagPaginating:
-        "playlist/isIndexEntertainmentPlaylistAndTagPaginating"
+        "playlist/isIndexEntertainmentPlaylistAndTagPaginating",
     })
   },
   mounted() {
@@ -227,6 +227,8 @@ export default {
     if (this.tab == 1) this.infinateLoadPlaylistOfNew();
     if (this.tab == 2) this.infinateLoadPlaylistOfSports();
     if (this.tab == 3) this.infinateLoadPlaylistOfEntertainment();
+  },
+  created() {
   }
 };
 </script>

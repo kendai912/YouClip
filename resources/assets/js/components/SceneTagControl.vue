@@ -41,7 +41,8 @@ export default {
     ...mapGetters({
       isReady: "youtube/isReady",
       showTaggingControl: "tagging/showTaggingControl",
-      controlTransitNext: "tagging/controlTransitNext"
+      controlTransitNext: "tagging/controlTransitNext",
+      isKeep: "tagging/isKeep",
     })
   },
   methods: {
@@ -56,11 +57,11 @@ export default {
     }
   },
   created() {
-    console.log(localStorage.getItem('showTaggingControl'), "dddddddddddd", this.showTaggingControl);
-    // this.showTaggingControl = localStorage.getItem('showTaggingControl');
-    if (localStorage.getItem('showTaggingControl')) {
-      this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
-    }
+    // if (localStorage.getItem("showTaggingControl")) {
+    //   this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
+    // } else {
+    //   this.$store.commit("tagging/setShowTaggingControl", "TimeControl");
+    // }
   }
 };
 </script>

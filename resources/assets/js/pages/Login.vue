@@ -126,7 +126,7 @@ export default {
       if (this.apiStatus) {
         //トップページに移動する
         this.$router.push(this.beforeLoginUrl);
-        location.reload();
+        // await location.reload();
       }
     },
     clearError() {

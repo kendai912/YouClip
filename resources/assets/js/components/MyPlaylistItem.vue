@@ -138,7 +138,7 @@ export default {
       }
 
       // IFrame Player APIを呼び出すためにページをリロード
-      window.location.reload();
+      // window.location.reload();
     },
     async editPlaylist() {
       console.log("edit playlist");

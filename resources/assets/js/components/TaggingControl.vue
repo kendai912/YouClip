@@ -98,7 +98,8 @@ export default {
       isLogin: "auth/check",
       showLoginModal: "noLoginModal/showLoginModal",
       tagHistories: "tagging/tagHistories",
-      isEditting: "tagging/isEditting"
+      isEditting: "tagging/isEditting",
+      isKeep: "tagging/isKeep",
     })
   },
   methods: {
@@ -126,10 +127,6 @@ export default {
               self.$emit("taggingSucceed");
             }
 
-            localStorage.removeItem('startTime');
-            localStorage.removeItem('endTime');
-            localStorage.removeItem('showTaggingControl');
-            localStorage.removeItem('sceneTags');
             // //入力フォームをクリア
             self.$store.commit("tagging/setTags", "");
             self.$store.commit("tagging/setStart", "");
@@ -138,12 +135,11 @@ export default {
             self.$store.commit("tagging/setControlTransitNext", false);
             //TimeControlのシートへ戻る
             self.$store.commit("tagging/setShowTaggingControl", "TimeControl");
-
           }
         });
       } else {
         //未ログインの場合
-        localStorage.setItem('sceneTags', JSON.stringify(this.tags));
+        localStorage.setItem("sceneTags", JSON.stringify(this.tags));
         this.$store.commit("noLoginModal/openLoginModal");
         this.$store.commit(
           "noLoginModal/setMessageWhenNotLogined",
@@ -152,6 +148,7 @@ export default {
       }
     },
     returnToTimeControl() {
+      this.$store.commit("tagging/setIsKeep", true);
       //入力中のシーンタグを保存
       this.$store.commit("tagging/setTags", this.tags);
 
@@ -160,6 +157,7 @@ export default {
 
       //TimeControlのシートへ戻る
       this.$store.commit("tagging/setShowTaggingControl", "TimeControl");
+      
     },
     setTagItems() {
       let tagItemsArray;
@@ -170,18 +168,22 @@ export default {
     },
     async initialize() {
       //戻るボタンから表示された際の既入力値のセット
-      if (localStorage.getItem('sceneTags')) {
-        this.tags = JSON.parse(localStorage.getItem('sceneTags'));
+      this.$store.commit("noLoginModal/closeLoginModal");
+      if (localStorage.getItem("sceneTags")) {
+        this.tags = JSON.parse(localStorage.getItem("sceneTags"));
       } else {
-        this.tags = this.$store.getters["tagging/tags"];
+        this.tags = this.$store.getters["tagging/tags"]; 
       }
-
       if (this.isLogin) {
         //シーンタグアイテムに使うシーンタグ履歴をロード
         await this.$store.dispatch("tagging/getTagHistories");
         //スペース区切りで配列に変換しシーンタグアイテムにセット
         this.setTagItems();
       }
+      localStorage.removeItem("startTime");
+      localStorage.removeItem("endTime");
+      localStorage.removeItem("sceneTags");
+      localStorage.removeItem("showTaggingControl");
     }
   },
   created() {

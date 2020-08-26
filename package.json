@@ -19,7 +19,7 @@
         "fibers": "^4.0.2",
         "jquery": "^3.2",
         "laravel-mix": "^1.0",
-        "lodash": "^4.17.4",
+        "lodash": "^4.17.20",
         "material-design-icons-iconfont": "^5.0.1",
         "sass": "^1.26.3",
         "sass-loader": "^7.1.0",
@@ -29,6 +29,9 @@
     },
     "dependencies": {
         "toastr": "^2.1.4",
+        "vue-lodash": "^2.1.2",
+        "vue-youtube": "^1.4.0",
+        "vue-youtube-embed": "^2.2.2",
         "vuetify": "^2.2.18"
     }
 }
