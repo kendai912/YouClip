@@ -4,7 +4,7 @@
       <v-tab v-for="(item, key) in items" :key="item" v-on:click="setActiveTab(key)">{{ item }}</v-tab>
     </v-tabs>
 
-    <v-tabs-items v-model="tab" class="pb-14">
+    <v-tabs-items v-model="tab" class="pb-14" style="background-color: transparent">
       <v-tab-item>
         <v-card flat>
           <MyPlaylistItem v-bind:mediaItems="myCreatedAndLikedPlaylistMediaItems" />

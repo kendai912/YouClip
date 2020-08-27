@@ -46,7 +46,7 @@ import myMixin from "../util";
 export default {
   components: {
     IndexItem,
-    SearchBox
+    SearchBox,
   },
   data() {
     return {

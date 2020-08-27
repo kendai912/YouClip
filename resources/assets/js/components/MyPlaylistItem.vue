@@ -8,7 +8,7 @@
     >
       <v-col class="px-0">
         <v-hover v-slot:default="{ hover }">
-          <v-card class="mx-auto" max-width="420" height="150" elevation="1">
+          <v-card class="mx-auto" max-width="420" height="160" elevation="1">
             <v-row class="ma-0">
               <v-col cols="11" class="pa-0">
                 <v-row class="ma-0">
@@ -21,7 +21,7 @@
                       aspect-ratio="1.5"
                       height="142"
                     >
-                      <v-chip label color="rgb(111 111 111)" text-color="white" class="my-scene-chip">
+                      <v-chip label color="#272525b8" text-color="white" class="my-scene-chip">
                         <v-img
                           src="/storage/icons/playlist_icon.png"
                           width="16px"
