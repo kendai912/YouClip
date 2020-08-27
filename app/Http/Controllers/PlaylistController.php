@@ -263,23 +263,45 @@ class PlaylistController extends Controller
     //Likeしたプレイリストを取得
     public function likedPlaylist()
     {
-        $likesPlaylists = LikesPlaylist::where('user_id', Auth::user()->id)->get();
-        $likesPlaylistIds = [];
-        foreach ($likesPlaylists as $likesPlaylist) {
-            $likesPlaylistIds[] = $likesPlaylist->playlist_id;
+        if (Auth::user()) {
+            $likesPlaylists = LikesPlaylist::where('user_id', Auth::user()->id)->get();
+            $likesPlaylistIds = [];
+            foreach ($likesPlaylists as $likesPlaylist) {
+                $likesPlaylistIds[] = $likesPlaylist->playlist_id;
+            }
+
+            $myLikedPlaylists = Playlist::with('tags')->find($likesPlaylistIds);
+
+            return $myLikedPlaylists;
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
         }
-
-        $myLikedPlaylists = Playlist::with('tags')->find($likesPlaylistIds);
-
-        return $myLikedPlaylists;
     }
 
     //作成したプレイリストを取得
     public function createdPlaylist()
     {
-        $createdPlaylist = Playlist::with('tags')->where('user_id', Auth::user()->id)->get();
+        if (Auth::user()) {
+            $createdPlaylist = Playlist::with('tags')->where('user_id', Auth::user()->id)->get();
 
-        return $createdPlaylist;
+            return $createdPlaylist;
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
 
     /**
@@ -291,28 +313,39 @@ class PlaylistController extends Controller
     public function create(Request $request)
     {
         //playlistテーブルに保存
-        $playlist = new Playlist;
-        $playlist->playlistName = $request->newPlaylistName;
-        $playlist->privacySetting = $request->privacySetting;
-        $playlist->user_id = Auth::user()->id;
-        $playlist->playlistCategory = $request->currentCategory;
-        $playlist->save();
+        if (Auth::user()) {
+            $playlist = new Playlist;
+            $playlist->playlistName = $request->newPlaylistName;
+            $playlist->privacySetting = $request->privacySetting;
+            $playlist->user_id = Auth::user()->id;
+            $playlist->playlistCategory = $request->currentCategory;
+            $playlist->save();
 
-        //playlist_tagテーブルに保存
-        $playlist->tags()->attach(
-            ['tag_id' => $request->currentTagId],
-            ['created_at' => Carbon::now()],
-            ['updated_at' => Carbon::now()]
-        );
+            //playlist_tagテーブルに保存
+            $playlist->tags()->attach(
+                ['tag_id' => $request->currentTagId],
+                ['created_at' => Carbon::now()],
+                ['updated_at' => Carbon::now()]
+            );
 
-        return response()->json(
-            [
-            'newPlaylist' => $playlist
-            ],
-            201,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+            return response()->json(
+                [
+                'newPlaylist' => $playlist
+                ],
+                201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
 
     /**
@@ -329,12 +362,23 @@ class PlaylistController extends Controller
     public function show()
     {
         //ログインユーザーを取得
-        $user = Auth::user();
+        if (Auth::user()) {
+            $user = Auth::user();
 
-        //ユーザーが保存したプレイリストのリストを取得
-        $playlists = $user->playlists;
+            //ユーザーが保存したプレイリストのリストを取得
+            $playlists = $user->playlists;
 
-        return view('playlist_show', compact('playlists'));
+            return view('playlist_show', compact('playlists'));
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
 
     /**

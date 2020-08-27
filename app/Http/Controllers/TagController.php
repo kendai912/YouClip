@@ -95,70 +95,92 @@ class TagController extends Controller
     public function getPlaylists(Tag $tag)
     {
         //ログインユーザーを取得
-        $user = Auth::user();
+        if (Auth::user()) {
+            $user = Auth::user();
 
-        $playlistIdArray = array();
-        foreach ($tag->playlists as $playlist) {
-            //タグが保存されているプレイリストのIDを取得
-            $playlistId = $playlist->pivot->playlist_id;
-            //該当プレイリストがログインユーザーのものか判定
-            if ($user->id == Playlist::find($playlistId)->user_id) {
-                $playlistIdArray[] = $playlistId;
-            }
-        };
+            $playlistIdArray = array();
+            foreach ($tag->playlists as $playlist) {
+                //タグが保存されているプレイリストのIDを取得
+                $playlistId = $playlist->pivot->playlist_id;
+                //該当プレイリストがログインユーザーのものか判定
+                if ($user->id == Playlist::find($playlistId)->user_id) {
+                    $playlistIdArray[] = $playlistId;
+                }
+            };
 
-        return response()->json(
-            [
-                'playlistIds' => $playlistIdArray
-            ],
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+            return response()->json(
+                [
+                    'playlistIds' => $playlistIdArray
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
 
     //タグをチェックの入ったプレイリストに保存
     public function addToPlaylists(Request $request, Tag $tag)
     {
         //ログインユーザーを取得
-        $user = Auth::user();
+        if (Auth::user()) {
+            $user = Auth::user();
 
-        //配列として操作出来るように別の変数に格納
-        $checkedPlaylistIds = $request->checkedPlaylistIds;
+            //配列として操作出来るように別の変数に格納
+            $checkedPlaylistIds = $request->checkedPlaylistIds;
 
-        foreach ($tag->playlists as $playlist) {
-            //タグが保存されているプレイリストのIDを取得
-            $playlistId = $playlist->pivot->playlist_id;
-            //該当プレイリストがログインユーザーのものか判定
-            if ($user->id == Playlist::find($playlistId)->user_id) {
-                //checkedPlaylistIdsに含まれているか判定
-                $key = array_search($playlistId, $checkedPlaylistIds);
-                if ($key !== false) {
-                    //ある場合は既存なので配列から削除
-                    array_splice($checkedPlaylistIds, $key, 1);
-                } else {
-                    //ない場合はdetach
-                    $tag->playlists()->detach($playlistId);
+            foreach ($tag->playlists as $playlist) {
+                //タグが保存されているプレイリストのIDを取得
+                $playlistId = $playlist->pivot->playlist_id;
+                //該当プレイリストがログインユーザーのものか判定
+                if ($user->id == Playlist::find($playlistId)->user_id) {
+                    //checkedPlaylistIdsに含まれているか判定
+                    $key = array_search($playlistId, $checkedPlaylistIds);
+                    if ($key !== false) {
+                        //ある場合は既存なので配列から削除
+                        array_splice($checkedPlaylistIds, $key, 1);
+                    } else {
+                        //ない場合はdetach
+                        $tag->playlists()->detach($playlistId);
+                    }
                 }
-            }
-        };
+            };
 
-        foreach ($checkedPlaylistIds as $playlistId) {
-            $tag->playlists()->attach(
-                ['playlist_id' => $playlistId],
-                ['created_at' => Carbon::now()]
+            foreach ($checkedPlaylistIds as $playlistId) {
+                $tag->playlists()->attach(
+                    ['playlist_id' => $playlistId],
+                    ['created_at' => Carbon::now()]
+                );
+            }
+
+            //保存したプレイリストデータをリターン
+            return response()->json(
+                [
+                    'playlists' => $tag->playlists
+                ],
+                201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
             );
         }
-
-        //保存したプレイリストデータをリターン
-        return response()->json(
-            [
-                'playlists' => $tag->playlists
-            ],
-            201,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
     }
 
     /**
@@ -180,48 +202,59 @@ class TagController extends Controller
     public function store(Request $request)
     {
         //新規の場合、最初に動画をDBに保存
-        if (Video::where('youtubeId', $request->youtubeId)->exists()) {
-            //既存の場合、テーブルからVideoオブジェクトを取得
-            $video = Video::where('youtubeId', $request->youtubeId)->first();
+        if (Auth::user()) {
+            if (Video::where('youtubeId', $request->youtubeId)->exists()) {
+                //既存の場合、テーブルからVideoオブジェクトを取得
+                $video = Video::where('youtubeId', $request->youtubeId)->first();
+            } else {
+                $video = new Video;
+                $video->youtubeId = $request->youtubeId;
+                $video->user_id = Auth::user()->id;
+                $video->title = $request->newVideoData['title'];
+                $video->thumbnail = $request->newVideoData['thumbnail'];
+                $video->duration = $request->newVideoData['duration'];
+                $video->category = $request->newVideoData['category'];
+                $video->save();
+            }
+
+            //タグの配列をスペース区切りの文字列に変換
+            $tags = implode(" ", $request->tags);
+
+            //プレビュー用のgifを取得しファイル名を変数に格納
+            $previewGifFileName = $this->getPreviewFile($request);
+
+            $start = $request->start;
+
+            //タグをDBに保存
+            $tag = new Tag;
+            $tag->video_id = $video->id;
+            $tag->user_id = Auth::user()->id;
+            $tag->tags = $tags;
+            $tag->start = "00:".$request->start;
+            $tag->end = "00:".$request->end;
+            $tag->preview = $video->thumbnail;
+            $tag->previewgif = $previewGifFileName;
+            $tag->save();
+
+            //保存したタグデータをリターン
+            return response()->json(
+                [
+                    'tag' => $tag
+                ],
+                201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
         } else {
-            $video = new Video;
-            $video->youtubeId = $request->youtubeId;
-            $video->user_id = Auth::user()->id;
-            $video->title = $request->newVideoData['title'];
-            $video->thumbnail = $request->newVideoData['thumbnail'];
-            $video->duration = $request->newVideoData['duration'];
-            $video->category = $request->newVideoData['category'];
-            $video->save();
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
         }
-
-        //タグの配列をスペース区切りの文字列に変換
-        $tags = implode(" ", $request->tags);
-
-        //プレビュー用のgifを取得しファイル名を変数に格納
-        $previewGifFileName = $this->getPreviewFile($request);
-
-        $start = $request->start;
-
-        //タグをDBに保存
-        $tag = new Tag;
-        $tag->video_id = $video->id;
-        $tag->user_id = Auth::user()->id;
-        $tag->tags = $tags;
-        $tag->start = "00:".$request->start;
-        $tag->end = "00:".$request->end;
-        $tag->preview = $video->thumbnail;
-        $tag->previewgif = $previewGifFileName;
-        $tag->save();
-
-        //保存したタグデータをリターン
-        return response()->json(
-            [
-                'tag' => $tag
-            ],
-            201,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
     }
 
     public function getPreviewFile($request)
@@ -322,22 +355,33 @@ class TagController extends Controller
     public function getTagHistories()
     {
         //ユーザーが登録した直近10件のシーンタグを取得
-        $tags = Tag::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->take(10)->get();
+        if (Auth::user()) {
+            $tags = Tag::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->take(10)->get();
 
-        $tagHistories = [];
-        foreach ($tags as $tag) {
-            $tagHistories[] = $tag->tags;
+            $tagHistories = [];
+            foreach ($tags as $tag) {
+                $tagHistories[] = $tag->tags;
+            }
+
+            //取得したタグデータをリターン
+            return response()->json(
+                [
+                    'tagHistories' => $tagHistories
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
         }
-
-        //取得したタグデータをリターン
-        return response()->json(
-            [
-                'tagHistories' => $tagHistories
-            ],
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
     }
 
     public static function convertToSec($time)
