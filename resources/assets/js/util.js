@@ -44,6 +44,7 @@ export default {
           let duration = this.timeMath.sub(value.end, value.start);
 
           let mediaItem = {
+            video_id: value.video_id,
             category: "tag",
             id: value.tag_id,
             title: value.title,

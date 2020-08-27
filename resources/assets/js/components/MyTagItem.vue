@@ -1,0 +1,128 @@
+<template>
+  <v-container class="pa-0 pb-3 body-color">
+    <v-row
+      v-for="videoItem in mediaItems"
+      v-bind:key="videoItem.video_id"
+      dense
+      class="pa-0 ma-auto mb-1 white"
+      style="max-width: 420px;"
+    >
+      <v-col cols="12">
+        <v-img
+          src="/storage/icons/yt_social_red.png"
+          width="28px"
+          max-height="28px"
+          class="float-left mr-2"
+        />
+        <div class="video-title">
+          {{videoItem.title}}
+        </div>
+      </v-col>
+      <v-col
+        style="padding-top: 2px; padding-bottom: 2px;"
+        v-for="item in videoItem.tagVideoData"
+        v-bind:key="item.category+'-'+item.id"
+        cols="6"
+      >
+        <v-hover v-slot:default="{ hover }">
+          <v-card class="mx-0" elevation="1">
+            <v-img
+              v-on:click.stop="select(item)"
+              class="white--text align-end"
+              max-height="266.66px"
+              v-bind:src="hover ? '/storage/img/' + item.previewgif : item.preview"
+              v-bind:alt="item.title"
+              aspect-ratio="1.5"
+            >
+              <v-chip label color="#272525b8" text-color="white" class="my-scene-time">
+                <span class="caption">{{item.start+'~'+item.end}}</span>
+              </v-chip>
+              <v-card-text class="px-1" style="position: absolute; bottom: 0;">
+                <div class="horizontal-list-wrap block-chip-line">
+                  <v-chip
+                    v-for="(tag, tagIndex) in item.tagArray"
+                    v-bind:key="item.id + '-' + tagIndex"
+                    class="my-tag-chip"
+                    small
+                    color="blue lighten-5"
+                    text-color="black"
+                  >
+                    <v-avatar left>
+                      <i class="fas fa-tag my-black"></i>
+                    </v-avatar>
+                    {{ tag }}
+                  </v-chip>
+                </div>
+              </v-card-text>
+            </v-img>
+            
+          </v-card>
+        </v-hover>
+      </v-col>
+      <!-- <v-col cols="12" class="px-1">
+        <v-divider></v-divider>
+      </v-col> -->
+    </v-row>
+    <LoadingItem v-if="isLoading" v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination" />
+  </v-container>
+</template>
+
+<script>
+import { mapState, mapGetters } from "vuex";
+import LoadingItem from "../components/LoadingItem.vue";
+import myMixin from "../util";
+
+export default {
+  data: () => ({}),
+  components: {
+    LoadingItem
+  },
+  props: {
+    mediaItems: Array
+  },
+  mixins: [myMixin],
+  computed: {
+    ...mapGetters({
+      isLoading: "loadingItem/isLoading",
+      numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination"
+    })
+  },
+  methods: {
+    async select(mediaItem) {
+      await this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
+      //プレイリストの場合
+      if (mediaItem.category == "playlist") {
+        //再生ページを表示
+        this.$router
+          .push({
+            path: "/watch",
+            query: {
+              playlist: mediaItem.id,
+              index: "0"
+            }
+          })
+          .catch(err => {});
+      }
+
+      //タグの場合
+      if (mediaItem.category == "tag") {
+        //再生ページを表示
+        this.$router
+          .push({
+            path: "/watch",
+            query: {
+              tag: mediaItem.id
+            }
+          })
+          .catch(err => {});
+      }
+
+      // IFrame Player APIを呼び出すためにページをリロード
+      // window.location.reload();
+    }
+  },
+  created() {
+    console.log("media items", this.mediaItems);
+  }
+};
+</script>

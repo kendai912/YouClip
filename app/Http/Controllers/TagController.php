@@ -10,6 +10,7 @@ use App\Like;
 use App\User;
 use App\Playlist;
 use Carbon\Carbon;
+use DB;
 
 class TagController extends Controller
 {
@@ -55,10 +56,21 @@ class TagController extends Controller
             foreach ($likes as $like) {
                 $likesIds[] = $like->tag_id;
             }
-            
+            // DB::enableQueryLog();
             // Likeしたタグデータと作成したタグデータを取得
             $myCreatedAndLikedTagVideo = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
 
+            // $myCreatedAndLikedTagVideo = Video::with(array('tags' => function($query) {
+            //     $likes = Like::where('user_id', Auth::user()->id)->get();
+            //     $likesIds = [];
+            //     foreach ($likes as $like) {
+            //         $likesIds[] = $like->tag_id;
+            //     }
+            //     $query->select('tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->orderBy('tag_created_at', 'desc')->get();
+            // }))->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at')->orderBy('video_created_at', 'desc')->get();
+
+            // $query = DB::getQueryLog();
+            // print_r($query); 
             return response()->json(
                 [
                 'myCreatedAndLikedTagVideo' => $myCreatedAndLikedTagVideo

@@ -41,10 +41,6 @@ export default {
         } else if (val === FORBIDDEN) {
           this.$router.push("/403");
         } else if (val === UNAUTHORIZED) {
-          // this.$store.commit("snackbar/setColor", "blue");
-          // this.$store.commit("snackbar/setText", "セッションが切れているので、もう一度ログインして下さい");
-          // this.$store.commit("snackbar/setSnackbar", true);
-          console.log("eeeeeeeeeeeeee", this.auth_check);
           this.$store.commit("auth/setUser", null);
           this.$router.push("/login");
         }

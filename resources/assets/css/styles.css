@@ -291,6 +291,14 @@
   /* white-space: pre; */
 }
 
+.my-scene-time {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 2px;
+  height: 20px !important;
+}
+
 .tag-chip {
   margin-left: 4px;
   margin-right: 4px;
@@ -337,4 +345,14 @@
 
 .block-chip-lines3 {
   max-height: 75px;
+}
+
+.block-chip-line {
+  max-height: 25px;
+}
+
+.video-title {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

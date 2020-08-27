@@ -12,7 +12,7 @@
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <IndexItem v-bind:mediaItems="myCreatedAndLikedTagVideoMediaItems" />
+          <MyTagItem v-bind:mediaItems="myCreatedAndLikedTagVideoMediaItems" />
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -24,7 +24,8 @@ import { mapState, mapGetters, mapMutations } from "vuex";
 import MyPlaylist from "../components/MyPlaylist.vue";
 import MyScene from "../components/MyScene.vue";
 import MyPlaylistItem from "../components/MyPlaylistItem.vue";
-import IndexItem from "../components/IndexItem.vue";
+import MyTagItem from "../components/MyTagItem.vue";
+// import IndexItem from "../components/IndexItem.vue";
 import myMixin from "../util";
 
 export default {
@@ -32,7 +33,8 @@ export default {
     MyPlaylist,
     MyScene,
     MyPlaylistItem,
-    IndexItem
+    MyTagItem,
+    // IndexItem
   },
   props: {},
   data() {
@@ -68,8 +70,62 @@ export default {
         mediaItems,
         this.myCreatedAndLikedTagVideo
       );
-
-      return mediaItems;
+      var groupedData = Object.values(mediaItems.reduce((result, {
+        video_id,
+        category,
+        id,
+        title,
+        thumbnail,
+        created_at,
+        timeSince,
+        tagsList,
+        tags,
+        tagArray,
+        totalDuration,
+        start,
+        end,
+        preview,
+        previewgif,
+        sceneCount,
+        likeCount,
+        user_id,
+      }) => {
+        // Create new group
+        if (!result[video_id]) { 
+          result[video_id] = {
+            video_id,
+            title,
+            tagVideoData: []
+          };
+        }
+        // if (!result[title]) {
+        //   result[title]
+        // }
+        // Append to group
+        result[video_id].tagVideoData.push({
+          category,
+          id,
+          title,
+          thumbnail,
+          created_at,
+          timeSince,
+          tagsList,
+          tags,
+          tagArray,
+          totalDuration,
+          start,
+          end,
+          preview,
+          previewgif,
+          sceneCount,
+          likeCount,
+          user_id,
+        });
+        return result;
+      }, {}));
+      groupedData.sort((a, b) => (a.video_id < b.video_id) ? 1 : -1)
+console.log("dddddddddddd", groupedData);
+      return groupedData;
     }
   },
   methods: {
