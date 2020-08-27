@@ -7,14 +7,14 @@
       flat
       color="rgb(245, 245, 245)"
     >
-      <v-row>
+      <v-row class="ma-0">
         <v-col class="pa-0 pt-2 text-center">
           <span class="h5 font-weight-black">
             Kendai Miyazawa
           </span>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row class="ma-0">
         <v-col cols="4">
           <div class="text-center">
             <v-avatar

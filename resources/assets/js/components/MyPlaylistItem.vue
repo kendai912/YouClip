@@ -21,7 +21,7 @@
                       aspect-ratio="1.5"
                       height="142"
                     >
-                      <v-chip label color="#272525b8" text-color="white" class="my-scene-chip">
+                      <v-chip label color="#27252582" text-color="white" class="my-scene-chip">
                         <v-img
                           src="/storage/icons/playlist_icon.png"
                           width="16px"
@@ -58,6 +58,7 @@
                           class="my-tag-chip px-2"
                           color="blue lighten-5"
                           text-color="black"
+                          style="font-weight: normal"
                         >
                           <v-avatar style="height: 20px !important; width: 20px !important; min-width: 20px !important;">
                             <i class="fas fa-tag my-black"></i>

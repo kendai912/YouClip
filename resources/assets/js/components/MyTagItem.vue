@@ -34,7 +34,7 @@
               v-bind:alt="item.title"
               aspect-ratio="1.5"
             >
-              <v-chip label color="#272525b8" text-color="white" class="my-scene-time">
+              <v-chip label color="#27252582" text-color="white" class="my-scene-time">
                 <span class="caption">{{item.start+'~'+item.end}}</span>
               </v-chip>
               <v-card-text class="px-1" style="position: absolute; bottom: 0;">
@@ -46,6 +46,7 @@
                     small
                     color="blue lighten-5"
                     text-color="black"
+                    style="font-weight: normal"
                   >
                     <v-avatar left>
                       <i class="fas fa-tag my-black"></i>

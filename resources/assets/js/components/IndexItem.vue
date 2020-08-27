@@ -17,7 +17,7 @@
               v-bind:alt="item.title"
               aspect-ratio="1.5"
             >
-              <v-chip label color="rgb(111 111 111)" text-color="white" class="scene-chip">
+              <v-chip label color="#27252582" text-color="white" class="scene-chip">
                 <v-img
                   src="/storage/icons/playlist_icon.png"
                   width="28px"
@@ -56,6 +56,7 @@
                   small
                   color="blue lighten-5"
                   text-color="black"
+                  style="font-weight: normal"
                 >
                   <v-avatar left>
                     <i class="fas fa-tag my-black"></i>
