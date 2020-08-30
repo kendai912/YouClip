@@ -32,8 +32,14 @@
                     </v-img>
                   </v-col>
                   <v-col cols="6" class="pa-1 py-3">
-                    <v-card-title v-on:click.stop="select(item)" class="py-0 block-playlist-title">
-                      <span>{{ item.title }}</span>
+                    <v-card-title v-on:click.stop="select(item)" class="py-0 d-inline">
+                      <v-img
+                        src="/storage/icons/clip.svg"
+                        width="16px"
+                        max-height="16px"
+                        class="float-left"
+                      />
+                      <span class="block-playlist-title">{{ item.title }}</span>
                     </v-card-title>
                     <v-card-text class="text--primary" style="font-size: 11px;">
                       <div v-on:click.stop="select(item)" class="grey--text text--darken-3">

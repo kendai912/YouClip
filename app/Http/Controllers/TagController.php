@@ -11,6 +11,10 @@ use App\User;
 use App\Playlist;
 use Carbon\Carbon;
 use DB;
+use FFMpeg;
+use FFMpeg\Format\ProgressListener\AbstractProgressListener;
+use ProtoneMedia\LaravelFFMpeg\FFMpeg\ProgressListenerDecorator;
+use YouTube\YouTubeDownloader;
 
 class TagController extends Controller
 {
@@ -256,24 +260,63 @@ class TagController extends Controller
             );
         }
     }
+    // public function getVideoInfo($youtubeId){ 
+    //     return file_get_contents("https://www.youtube.com/get_video_info?video_id=".$youtubeId."&cpn=CouQulsSRICzWn5E&eurl&el=adunit");
+    // }
+    // public function getVideoDownloadLink($youtubeId){ 
+    //     //parse the string separated by '&' to array 
+    //     parse_str($this->getVideoInfo($youtubeId), $data); 
+    //     $videoData = json_decode($data['player_response'], true); 
+    //     $videoDetails = $videoData['videoDetails']; 
+    //     $streamingData = $videoData['streamingData']; 
+    //     $streamingDataFormats = $streamingData['formats']; 
+          
+    //     //set video title 
+    //     $this->video_title = $videoDetails["title"]; 
+          
+    //     //Get the youtube root link that contains video information 
+    //     $final_stream_map_arr = array(); 
+          
+    //     //Create array containing the detail of video  
+    //     foreach($streamingDataFormats as $stream){ 
+    //         $stream_data = $stream; 
+    //         $stream_data["title"] = $this->video_title; 
+    //         $stream_data["mime"] = $stream_data["mimeType"]; 
+    //         $mime_type = explode(";", $stream_data["mime"]); 
+    //         $stream_data["mime"] = $mime_type[0]; 
+    //         $start = stripos($mime_type[0], "/"); 
+    //         $format = ltrim(substr($mime_type[0], $start), "/"); 
+    //         $stream_data["format"] = $format; 
+    //         unset($stream_data["mimeType"]); 
+    //         $final_stream_map_arr [] = $stream_data;          
+    //     } 
+    //     return $final_stream_map_arr; 
+    // } 
+       
+    function getYoutubeDirectLinkMp4($url){
+        $youtube = "https://maadhav-ytdl.herokuapp.com/video_info.php?url=".$url;
+
+        $curl = curl_init($youtube);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $return = curl_exec($curl);
+        curl_close($curl);
+        $res = json_decode($return, true);
+        $key = array_search('136', array_column($res['links'], 'itag'));
+        $yturl = $res['links'][$key]['url'];
+        return $yturl;
+    }
 
     public function getPreviewFile($request)
     {
-        $grabzIt = resolve('grabzit');
-
-        $options = new \GrabzIt\GrabzItAnimationOptions();
-        $options->setDuration(3);
+        $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
         $startSec = $this->convertToSec("00:".$request->start);
-        $options->setStart($startSec);
-        $options->setQuality(100);
-        $options->setWidth(600);
-        $options->setHeight(-1);
-
-        $previewGifFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
-        $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=" . $request->youtubeId, $options);
-        $grabzIt->SaveTo(storage_path(). "/app/public/img/" . $previewGifFileName);
-
-        return $previewGifFileName;
+        $duration = 3;
+        $endSec = $startSec + $duration;
+        $previewMp4Name = $request->youtubeId . "-" . $startSec . "-" . rand() . ".mp4";
+        $dl_cmd = 'ffmpeg  -ss '.$startSec.' -to '.$endSec.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/img/".$previewMp4Name.' 2>&1';
+        echo $dl_cmd; exit;
+        // var_dump($output);
+        return $previewMp4Name;
     }
 
     /**
