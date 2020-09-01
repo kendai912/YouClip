@@ -192,8 +192,16 @@ export default {
     },
     //APIで返ってきたdurationを分:秒に整形
     convertTYdurationToMinSec(YTduration) {
-      if (YTduration.match(/PT(\d*)M(\d*)S/)) {
+      if (YTduration.match(/PT(\d*)H(\d*)M(\d*)S/)) {
+        let result = YTduration.match(/PT(\d*)H(\d*)M(\d*)S/);
+        let hr = result[1];
+        let min = result[2];
+        let sec = result[3];
+        if (sec < 10) sec = "0" + sec;
+        return hr + ":" + min + ":" + sec;
+      } else if (YTduration.match(/PT(\d*)M(\d*)S/)) {
         let result = YTduration.match(/PT(\d*)M(\d*)S/);
+        console.log('duration', result);
         let min = result[1];
         let sec = result[2];
         if (sec < 10) sec = "0" + sec;
@@ -201,6 +209,7 @@ export default {
         return min + ":" + sec;
       } else if (YTduration.match(/PT(\d*)S/)) {
         let result = YTduration.match(/PT(\d*)S/);
+        console.log('duration', result);
         let sec = result[1];
         if (sec < 10) sec = "0" + sec;
 
@@ -222,38 +231,40 @@ export default {
     },
     //日付が現時点からどのくらい前か表示変換を行う関数
     timeSince(publishedAt) {
-      let date = new Date(
-        publishedAt.substring(0, 4),
-        publishedAt.substring(5, 7) - 1,
-        publishedAt.substring(8, 10)
-      );
-      let seconds = Math.floor((new Date() - date) / 1000);
+      if (publishedAt != null) {
+        let date = new Date(
+          publishedAt.substring(0, 4),
+          publishedAt.substring(5, 7) - 1,
+          publishedAt.substring(8, 10)
+        );
+        let seconds = Math.floor((new Date() - date) / 1000);
 
-      let interval = Math.floor(seconds / 31536000);
-      if (interval > 1) {
-        return Math.floor(interval) + "年";
+        let interval = Math.floor(seconds / 31536000);
+        if (interval > 1) {
+          return Math.floor(interval) + "年";
+        }
+        interval = Math.floor(seconds / 2592000);
+        if (interval > 1) {
+          return interval + "ヶ月";
+        }
+        interval = Math.floor(seconds / 604800);
+        if (interval > 1) {
+          return interval + "週間";
+        }
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) {
+          return interval + "日";
+        }
+        interval = Math.floor(seconds / 3600);
+        if (interval > 1) {
+          return interval + "時間";
+        }
+        interval = Math.floor(seconds / 60);
+        if (interval > 1) {
+          return interval + "分";
+        }
+        return Math.floor(seconds) + "秒";
       }
-      interval = Math.floor(seconds / 2592000);
-      if (interval > 1) {
-        return interval + "ヶ月";
-      }
-      interval = Math.floor(seconds / 604800);
-      if (interval > 1) {
-        return interval + "週間";
-      }
-      interval = Math.floor(seconds / 86400);
-      if (interval >= 1) {
-        return interval + "日";
-      }
-      interval = Math.floor(seconds / 3600);
-      if (interval > 1) {
-        return interval + "時間";
-      }
-      interval = Math.floor(seconds / 60);
-      if (interval > 1) {
-        return interval + "分";
-      }
-      return Math.floor(seconds) + "秒";
     },
   },
 

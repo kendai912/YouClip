@@ -87,7 +87,6 @@ export default {
             items.push(item);
           }
         });
-
       return items;
     }
   },

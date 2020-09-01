@@ -9,14 +9,33 @@
         <v-col class="ma-0 pa-0">
           <v-autocomplete
             v-model="model"
+            v-bind:items="items"
             v-bind:search-input.sync="searchquery"
             v-on:keydown.enter="YTsearch"
             placeholder="キーワードまたはYouTubeのURLを入力"
+            item-text="value"
+            item-value="value"
             cache-items
             hide-no-data
             clearable
             dense
           >
+            <template v-slot:item="data">
+              <template v-if="typeof data.item !== 'object'">
+                <v-list-item-content v-text="data.item"></v-list-item-content>
+              </template>
+              <template v-else>
+                <v-list-item-icon class="mr-4">
+                  <v-icon>{{data.item.icon}}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-html="data.item.value"></v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-icon style="min-width:16px;">
+                  <v-img src="/storage/icons/north_west.svg" width="16px" max-height="16px"></v-img>
+                </v-list-item-icon>
+              </template>
+            </template>
           </v-autocomplete>
         </v-col>
       </v-row>
@@ -26,7 +45,6 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import router from "../router";
 
 export default {
   data() {
@@ -36,9 +54,65 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({})
+    //検索候補
+    ...mapGetters({
+      searchCandidates: "YTsearch/candidates"
+    }),
+    //過去の検索履歴と人気の検索履歴を履歴優先で合計7件までサジェストに表示
+    items() {
+      let items = [];
+      let itemLimit = 7;
+      let itemCount = 0;
+
+      //過去の検索履歴をサジェストに追加
+      if (this.searchCandidates["searchHistoryCandidates"])
+        this.searchCandidates["searchHistoryCandidates"].forEach(value => {
+          if (itemCount++ < itemLimit) {
+            let item = {
+              icon: 'history',
+              value: value.searchQuery,
+            }
+            items.push(item);
+          }
+        });
+
+      //人気の検索履歴をサジェストに追加
+      if (this.searchCandidates["topSearchqueriesCandidates"])
+        this.searchCandidates["topSearchqueriesCandidates"].forEach(value => {
+          if (itemCount++ < itemLimit) {
+            let item = {
+              icon: 'search',
+              value: value.searchquery.searchQuery,
+            }
+            items.push(item);
+          }
+        });
+      return items;
+    }
+  },
+  watch: {
+    async searchquery(input) {
+      // Items have already been requested
+      if (this.isLoading) return;
+
+      //入力を元に検索候補を取得
+      await this.$store.dispatch("YTsearch/getCandidates", input);
+    }
   },
   methods: {
+    // search(event) {
+    //   // 日本語入力中のEnterキー操作は無効にする
+    //   if (event.keyCode != undefined && event.keyCode !== 13) return;
+
+    //   //空欄だった場合は検索実行せずリターン
+    //   if (this.searchquery == "") return;
+
+    //   this.$store.commit("search/setSearchQuery", this.searchquery);
+    //   this.$store.commit("search/searchResultPageTransit");
+    // },
+    // back() {
+    //   this.$router.push('/home');
+    // },
     YTsearch(event) {
       // 日本語入力中のEnterキー操作は無効にする
       if (event.keyCode != undefined && event.keyCode !== 13) return;
@@ -66,10 +140,10 @@ export default {
       }
       window.location.reload();
     },
-    // back() {
-    //   this.$router.go(-1);
-    // }
   },
-  created() {}
+  async created() {
+    await this.$store.dispatch("YTsearch/getCandidates");
+    console.log("dddddddddddd", this.items)
+  }
 };
 </script>

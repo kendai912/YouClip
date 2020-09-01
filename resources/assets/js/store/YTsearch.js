@@ -12,6 +12,7 @@ const state = {
   YTsearchQuery: null,
   candidates: [],
   YTresult: [],
+  YTRecentVideos: [],
   YTsearchResponse: [],
   YTvideosResponse: [],
   topYTSearchqueries: [],
@@ -66,6 +67,7 @@ const getters = {
   key: (state) => state.keyArray[state.keyIndex],
   candidates: (state) => state.candidates,
   YTresult: (state) => state.YTresult,
+  YTRecentVideos: (state) => state.YTRecentVideos,
   topYTSearchqueries: (state) => state.topYTSearchqueries,
   YTsearchHistories: (state) => state.YTsearchHistories,
   isYTLoading: (state) => state.isYTLoading,
@@ -84,8 +86,14 @@ const mutations = {
   setYTResult(state, data) {
     state.YTresult.push(...data);
   },
+  setYTRecentVideos(state, data) {
+    state.YTRecentVideos.push(...data);
+  },
   clearYTResult(state) {
     state.YTresult = [];
+  },
+  clearYTRecentVideos(state) {
+    state.YTRecentVideos = [];
   },
   setYTsearchResponse(state, data) {
     state.YTsearchResponse = data;
@@ -146,7 +154,10 @@ const actions = {
   //検索結果データを取得
   async YTsearch(context) {
     await actions.searchYTResult(context);
-    // actions.storeYTSearchRecord(context);
+    actions.storeYTSearchRecord(context);
+  },
+  async YTRecentVideos(context) {
+    await actions.searchYTRecentVideos(context);
   },
   //検索ワードをYoutube動画を検索
   async searchYTResult(context) {
@@ -208,6 +219,53 @@ const actions = {
             root: true,
           })
         : await actions.searchYTResult(context);
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+
+  async searchYTRecentVideos(context) {
+    const response = await axios.post("api/search/getRecentVideos");
+    if (response.status == OK) {
+      context.commit("setYTRecentVideos", response.data.videoList);
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+
+  async storeYTSearchRecord(context) {
+    let params = {
+      searchQuery: state.YTsearchQuery,
+      searchOption: 1
+    };
+
+    const response = await axios.post("api/store/searchrecord", params);
+    if (response.status == CREATED) {
+      // 成功した時
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+
+  async getCandidates(context, input) {
+    let params = {
+      input: input,
+      searchOption: 1,
+    };
+
+    const response = await axios.post("api/search/getSearchCandidates", params);
+    if (response.status == OK) {
+      // 成功した時
+      context.commit("setCandidates", response.data.searchCandidates);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
     } else {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });

@@ -38,7 +38,7 @@ class TagController extends Controller
     public function getTagAndVideoDataById(Request $request)
     {
         $tagId = $request->input('id');
-        $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id as video_user_id', 'title', 'thumbnail', 'duration', 'category', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags.user_id as tag_user_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags.id', $tagId)->get();
+        $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id as video_user_id', 'title', 'thumbnail', 'duration', 'category', 'channel_title', 'published_at','view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags.user_id as tag_user_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags.id', $tagId)->get();
 
         return response()->json(
             [
@@ -62,7 +62,7 @@ class TagController extends Controller
             }
             // DB::enableQueryLog();
             // Likeしたタグデータと作成したタグデータを取得
-            $myCreatedAndLikedTagVideo = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
+            $myCreatedAndLikedTagVideo = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'channel_title', 'published_at','view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
 
             // $myCreatedAndLikedTagVideo = Video::with(array('tags' => function($query) {
             //     $likes = Like::where('user_id', Auth::user()->id)->get();
@@ -210,6 +210,8 @@ class TagController extends Controller
             if (Video::where('youtubeId', $request->youtubeId)->exists()) {
                 //既存の場合、テーブルからVideoオブジェクトを取得
                 $video = Video::where('youtubeId', $request->youtubeId)->first();
+                $video->view_count = $request->newVideoData['view_count'];
+                $video->save();
             } else {
                 $video = new Video;
                 $video->youtubeId = $request->youtubeId;
@@ -218,6 +220,9 @@ class TagController extends Controller
                 $video->thumbnail = $request->newVideoData['thumbnail'];
                 $video->duration = $request->newVideoData['duration'];
                 $video->category = $request->newVideoData['category'];
+                $video->channel_title = $request->newVideoData['channel_title'];
+                $video->published_at = $request->newVideoData['published_at'];
+                $video->view_count = $request->newVideoData['view_count'];
                 $video->save();
             }
 
@@ -294,27 +299,32 @@ class TagController extends Controller
     // } 
        
     function getYoutubeDirectLinkMp4($url){
-        $youtube = "https://maadhav-ytdl.herokuapp.com/video_info.php?url=".$url;
+        // $youtube = "https://maadhav-ytdl.herokuapp.com/video_info.php?url=".$url;
 
-        $curl = curl_init($youtube);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $return = curl_exec($curl);
-        curl_close($curl);
-        $res = json_decode($return, true);
-        $key = array_search('136', array_column($res['links'], 'itag'));
-        $yturl = $res['links'][$key]['url'];
+        // $curl = curl_init($youtube);
+        // curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        // $return = curl_exec($curl);
+        // curl_close($curl);
+        // $links = json_decode($return, true);
+        $yt = new YouTubeDownloader();
+        $links = $yt->getDownloadLinks($url);
+
+        // var_dump($links);
+        $key = array_search('136', array_column($links['links'], 'itag'));
+        $yturl = $links['links'][$key]['url'];
         return $yturl;
     }
 
     public function getPreviewFile($request)
     {
         $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
+        // $ytDirectUrl = "https://r3---sn-p5qs7nee.googlevideo.com/videoplayback?expire=1598750209&ei=oalKX96GDbO0hwa7uozABw&ip=54.85.38.58&id=o-AMmIxwxWPNeYEFFe8GJxBmHPiTGbaOVnP9Y_YrRc5RK6&itag=136&aitags=133%2C134%2C135%2C136%2C137%2C160%2C242%2C243%2C244%2C247%2C248%2C271%2C278%2C313&source=youtube&requiressl=yes&mh=R0&mm=31%2C26&mn=sn-p5qs7nee%2Csn-vgqsener&ms=au%2Conr&mv=u&mvi=3&pl=19&vprv=1&mime=video%2Fmp4&gir=yes&clen=19295743&dur=270.403&lmt=1577976841824023&mt=1598728020&fvip=3&keepalive=yes&c=WEB&txp=5532432&sparams=expire%2Cei%2Cip%2Cid%2Caitags%2Csource%2Crequiressl%2Cvprv%2Cmime%2Cgir%2Cclen%2Cdur%2Clmt&sig=AOq0QJ8wRAIgc7wx0CQs_Rnr6cnF8q00ppk38pvODZBAcAHFcF4VCBUCIBsEHk-AdD0A_NvwQjK8VicnHFzfvLkFOe-vrt1berkY&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl&lsig=AG3C_xAwRQIhAK_iAxxuI7-dL5HsHXtwfg7g8meFTdkDFVi7eHaFBicVAiBBwoiC6DqTNrYwYDDvEXNrr5vEIyUE7AXxokoUDuLe2w%3D%3D";
         $startSec = $this->convertToSec("00:".$request->start);
         $duration = 3;
         $endSec = $startSec + $duration;
         $previewMp4Name = $request->youtubeId . "-" . $startSec . "-" . rand() . ".mp4";
         $dl_cmd = 'ffmpeg  -ss '.$startSec.' -to '.$endSec.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/img/".$previewMp4Name.' 2>&1';
-        echo $dl_cmd; exit;
+        // echo $dl_cmd; exit;
         // var_dump($output);
         return $previewMp4Name;
     }

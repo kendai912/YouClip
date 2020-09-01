@@ -66,10 +66,10 @@ class VideoController extends Controller
         //該当動画のタグが存在するか判定
         if (Tag::where('video_id', intval($video_id))->exists()) {
             //存在する場合、動画とタグ一覧をテーブルから取得
-            $result = Video::where('videos.id', intval($video_id))->join('tags', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'videos.youtubeId', 'videos.user_id', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags.user_id as tag_user_id', 'tags', 'start', 'end', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('start', 'asc')->get();
+            $result = Video::where('videos.id', intval($video_id))->join('tags', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'videos.youtubeId', 'videos.user_id', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.channel_title', 'videos.published_at','videos.view_count','videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags.user_id as tag_user_id', 'tags', 'start', 'end', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('start', 'asc')->get();
         } else {
             //存在しない場合、動画をテーブルから取得
-            $result = Video::where('videos.id', intval($video_id))->select('videos.id as video_id', 'videos.youtubeId', 'videos.user_id', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at')->get();
+            $result = Video::where('videos.id', intval($video_id))->select('videos.id as video_id', 'videos.youtubeId', 'videos.user_id', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.channel_title', 'videos.published_at','videos.view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at')->get();
         }
         
         //動画毎にタグをまとめる
@@ -176,6 +176,31 @@ class VideoController extends Controller
             throw new Exception($e->getResponse()->getBody());
         }
         return $res->getBody();
+    }
+    //get Youtube Category List from google API
+    public function getYTRecentVideoList(Request $request) {
+        if (Auth::check()) {
+            $user_id = Auth::user()->id;
+            $recentVideoList = Video::where('user_id', $user_id)->orderBy('created_at', 'DESC')->get();
+
+            return response()->json(
+                [
+                    'videoList' => $recentVideoList
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                    'videoList' => []
+                ],
+                201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
 
     // //登録処理

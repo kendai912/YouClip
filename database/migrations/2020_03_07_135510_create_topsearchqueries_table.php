@@ -17,6 +17,7 @@ class CreateTopsearchqueriesTable extends Migration
             $table->increments('id');
             $table->integer('searchquery_id')->unsigned();
             $table->integer('user_id_count')->unsigned();
+            $table->tinyInteger('searchOption');
             $table->timestamps();
 
             //外部キー制約

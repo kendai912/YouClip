@@ -58,7 +58,7 @@ Route::get("/load/tagLike", 'LikeController@loadTagLike');
 Route::get("/load/playlistLike", 'LikesPlaylistController@loadPlaylistLike');
 
 //検索キーワード候補を取得
-Route::get('/search/getSearchCandidates', 'SearchController@getSearchCandidates');
+Route::post('/search/getSearchCandidates', 'SearchController@getSearchCandidates');
 // //過去の検索履歴から検索ワード候補を取得
 // Route::get('/search/getSearchHistoryCandidates', 'SearchController@getSearchHistoryCandidates');
 // //人気の検索履歴から検索ワード候補を取得
@@ -70,9 +70,9 @@ Route::post('/search/playlist', 'SearchController@searchPlaylist');
 //検索レコードの保存
 Route::post('/store/searchrecord', 'SearchController@storeSearchRecord');
 //人気の検索ワードの取得
-Route::get('/topSearchqueries', 'SearchController@getTopSearchqueries');
+Route::post('/topSearchqueries', 'SearchController@getTopSearchqueries');
 //検索履歴の取得
-Route::get('/searchHistories', 'SearchController@getSearchHistories');
+Route::post('/searchHistories', 'SearchController@getSearchHistories');
 
 //動画のタグ一覧の取得
 Route::get("/taglist/video", 'VideoController@getTagList');
@@ -109,6 +109,7 @@ Route::post("/addPlaylistVisitCount/{playlist_id}", 'PlaylistController@addVisit
 Route::post('/search/getYoutubeSearch', 'SearchController@getYTSearchList');
 Route::post('/search/getYoutubeVideos', 'VideoController@getYTVideoList');
 Route::post('/search/getYoutubeVideoCategories', 'VideoController@getYTVideoCategoryList');
+Route::post('/search/getRecentVideos', 'VideoController@getYTRecentVideoList');
 
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {

@@ -12,6 +12,9 @@ const state = {
     thumbnail: "",
     duration: "",
     category: "",
+    channel_title: "",
+    published_at: "",
+    view_count: "",
   },
   currentTime: "0:00",
   isReady: false,
@@ -92,6 +95,15 @@ const mutations = {
   },
   setNewVideoCategory(state, data) {
     state.newVideoData.category = data;
+  },
+  setNewVideoChannelTitle(state, data) {
+    state.newVideoData.channel_title = data;
+  },
+  setNewVideoPublishedAt(state, data) {
+    state.newVideoData.published_at = data;
+  },
+  setNewVideoViewCount(state, data) {
+    state.newVideoData.view_count = data;
   },
   setTagDataArray(state, data) {
     state.tagDataArray = data;
@@ -186,7 +198,7 @@ const actions = {
     let params = {
       id: state.youtubeId,
       key: state.key,
-      part: "snippet, contentDetails",
+      part: "snippet, contentDetails, statistics",
     };
 
     // const response = await axios.get("https://cors-anywhere.herokuapp.com/"+api, { params: params });
@@ -209,6 +221,9 @@ const actions = {
         "getVideoCategoryTitleById",
         response.data.items[0].snippet.categoryId
       );
+      context.commit("setNewVideoChannelTitle", response.data.items[0].snippet.channelTitle);
+      context.commit("setNewVideoPublishedAt", response.data.items[0].snippet.publishedAt);
+      context.commit("setNewVideoViewCount", response.data.items[0].statistics.viewCount);
       // context.commit("setYTResult", response.data.items);
     } else if (response.status == FORBIDDEN ||
       response.status == INTERNAL_SERVER_ERROR) {

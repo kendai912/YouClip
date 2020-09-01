@@ -37,6 +37,9 @@ class Video extends Model
                         'title'=>$value->title,
                         'thumbnail'=>$value->thumbnail,
                         'duration'=>$value->duration,
+                        'channel_title'=>$value->channel_title,
+                        'view_count'=>$value->view_count,
+                        'published_at'=>$value->published_at,
                         'tags'=>[
                                 [
                                 'tag_id'=> $value->tag_id,
@@ -62,6 +65,9 @@ class Video extends Model
                         'title'=>$value->title,
                         'thumbnail'=>$value->thumbnail,
                         'duration'=>$value->duration,
+                        'channel_title'=>$value->channel_title,
+                        'view_count'=>$value->view_count,
+                        'published_at'=>$value->published_at,
                         'tags'=>[
                                 [
                                 'tag_id'=> $value->tag_id,

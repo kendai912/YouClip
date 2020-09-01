@@ -130,7 +130,7 @@ class LikeController extends Controller
 
             $likedScenes = Like::where('user_id', $user_id)->get();
             foreach ($likedScenes as $likedScene) {
-                $likes[] = $likedScene->tag()->join('videos', 'tags.video_id', '=', 'videos.id')->select('videos.id as video_id', 'videos.youtubeId', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end')->get();
+                $likes[] = $likedScene->tag()->join('videos', 'tags.video_id', '=', 'videos.id')->select('videos.id as video_id', 'videos.youtubeId', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.channel_title', 'videos.published_at', 'videos.view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end')->get();
             }
 
             return view('like_index', compact('likes'));

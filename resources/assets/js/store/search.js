@@ -4,6 +4,7 @@ import router from "../router";
 
 const state = {
   searchQuery: null,
+  searchOption: 0,
   searchCandidates: [],
   tagVideoResult: [],
   playlistTagResult: [],
@@ -18,6 +19,7 @@ const state = {
 
 const getters = {
   searchQuery: (state) => state.searchQuery,
+  searchOption: (state) => state.searchOption,
   searchCandidates: (state) => state.searchCandidates,
   tagVideoResult: (state) => state.tagVideoResult,
   playlistTagResult: (state) => state.playlistTagResult,
@@ -33,6 +35,9 @@ const getters = {
 const mutations = {
   setSearchQuery(state, data) {
     state.searchQuery = data;
+  },
+  setSearchOption(state, data) {
+    state.searchOption = data;
   },
   setSearchCandidates(state, data) {
     state.searchCandidates = data;
@@ -86,13 +91,12 @@ const actions = {
   },
   //検索ワード候補を取得(インクリメンタルサーチ)
   async getSearchCandidates(context, input) {
-    let queries = {
+    let params = {
       input: input,
+      searchOption: 0,
     };
 
-    const response = await axios.get("api/search/getSearchCandidates", {
-      params: queries,
-    });
+    const response = await axios.post("api/search/getSearchCandidates", params);
     if (response.status == OK) {
       // 成功した時
       context.commit("setSearchCandidates", response.data.searchCandidates);
@@ -169,6 +173,7 @@ const actions = {
   async storeSearchRecord(context) {
     let params = {
       searchQuery: state.searchQuery,
+      searchOption: 0
     };
 
     const response = await axios.post("api/store/searchrecord", params);
@@ -184,7 +189,10 @@ const actions = {
   },
   //人気の検索ワードを取得
   async getTopSearchqueries(context) {
-    const response = await axios.get("api/topSearchqueries");
+    const params = {
+      searchOption: 0
+    }
+    const response = await axios.post("api/topSearchqueries", params);
     if (response.status == OK) {
       // 成功した時
       // context.commit("setIsLoadingTopSearchqueries", false);
@@ -199,7 +207,10 @@ const actions = {
   },
   //検索履歴を取得
   async getSearchHistories(context) {
-    const response = await axios.get("api/searchHistories");
+    const params = {
+      searchOption: 0
+    }
+    const response = await axios.post("api/searchHistories", params);
     if (response.status == OK) {
       // 成功した時
       // context.commit("setIsLoadingSearchHistories", false);

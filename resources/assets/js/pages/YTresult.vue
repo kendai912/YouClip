@@ -1,5 +1,8 @@
 <template>
   <div class="container--small">
+    <div class="px-3 mt-3">
+      YouTube検索結果
+    </div>
     <YTSearchBox />
     <YTitem v-bind:YTitems="YTresult" class="body-color" />
   </div>
