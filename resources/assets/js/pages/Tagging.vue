@@ -1,6 +1,6 @@
 <template>
   <div class="container--small">
-    <div class="px-3 mt-3">
+    <div class="px-3 mt-3" v-if="YTRecentVideos.length>0">
       最近シーン登録したYouTube動画
     </div>
     <YTSearchBox />
@@ -55,6 +55,7 @@ export default {
     //前回の検索結果を空にする
     this.$store.commit("YTsearch/clearYTRecentVideos");
     this.getYTRecentVideos();
+    console.log("eeeeeeeeeeeeee", this.YTRecentVideos);
   }
 };
 </script>

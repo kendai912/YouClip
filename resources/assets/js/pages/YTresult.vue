@@ -64,6 +64,12 @@ export default {
       }
     };
     this.infinateScrollYTresults();
+    
+    this.$store.commit("tagging/setTags", "");
+    this.$store.commit("tagging/setStart", "");
+    this.$store.commit("tagging/setEnd", "");
+    this.$store.commit("tagging/setShowTaggingControl", "TimeControl");
+    
   }
 };
 </script>
