@@ -14,12 +14,19 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import "@mdi/font/css/materialdesignicons.css";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 import colors from "vuetify/lib/util/colors";
-import lodash from 'lodash';
+import lodash from "lodash";
+import VueGtag from "vue-gtag";
 
 Vue.use(Vuetify);
+Vue.use(
+  VueGtag,
+  {
+    config: { id: "UA-11415493-3" },
+  },
+  router
+);
 
-
-Vue.prototype._ = lodash
+Vue.prototype._ = lodash;
 
 const createApp = async () => {
   await store.dispatch("auth/currentUser");
