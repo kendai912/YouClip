@@ -27,7 +27,7 @@
               <ul class="horizontal-list">
                 <li class="item">
                   <v-chip
-                    v-for="tag in tagData.tags.split(/[\s| |　]/)"
+                    v-for="tag in tagData.tags.split(/::/)"
                     v-bind:key="tagData + '.' + tag"
                     class="ma-2"
                     small

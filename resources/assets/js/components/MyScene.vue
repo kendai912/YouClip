@@ -4,7 +4,7 @@
       <img v-bind:src="'/storage/img/' + myTagVideo.preview" style="width: 300px; height:auto" />
     </div>
     <div>{{ myTagVideo.title }}</div>
-    <v-chip v-for="tag in myTagVideo.tags.split(/[\s| |　]/)" v-bind:key="tag" color="blue">
+    <v-chip v-for="tag in myTagVideo.tags.split(/::/)" v-bind:key="tag" color="blue">
       <v-icon left>mdi-label</v-icon>
       <strong v-on:click.stop="search(tag)">{{ tag }}</strong>
     </v-chip>

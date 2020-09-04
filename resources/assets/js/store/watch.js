@@ -27,7 +27,8 @@ const getters = {
   currentTagName: (state) =>
     state.watchList ? state.watchList[state.listIndex].tags : "",
   currentTagNameArray: (state, getters) =>
-    state.watchList ? getters.currentTagName.split(/[\s| |　]/) : "",
+    // state.watchList ? getters.currentTagName.split(/[\s| |　]/) : "",
+    state.watchList ? getters.currentTagName.split(/::/) : "",
   currentTitle: (state) =>
     state.watchList ? state.watchList[state.listIndex].title : "",
   currentCategory: (state) =>

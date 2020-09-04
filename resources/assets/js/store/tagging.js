@@ -62,17 +62,17 @@ const mutations = {
   },
   //シーンタグの余計なスペースを除去し整形
   formatSceneTags(state) {
-    let valDividedBySpace;
-    for (let i = 0; i < state.tags.length; i++) {
-      //スペースが含まれる場合はシーンタグを分割し追加
-      if (state.tags[i].match(/[\s| |　]/)) {
-        valDividedBySpace = state.tags[i].split(/[\s| |　]/);
-        Array.prototype.splice.apply(
-          state.tags,
-          [i, 1].concat(valDividedBySpace)
-        );
-      }
-    }
+    // let valDividedBySpace;
+    // for (let i = 0; i < state.tags.length; i++) {
+    //   //スペースが含まれる場合はシーンタグを分割し追加
+    //   if (state.tags[i].match(/[\s| |　]/)) {
+    //     valDividedBySpace = state.tags[i].split(/[\s| |　]/);
+    //     Array.prototype.splice.apply(
+    //       state.tags,
+    //       [i, 1].concat(valDividedBySpace)
+    //     );
+    //   }
+    // }
     //スペースのみのシーンタグを削除
     for (let i = 0; i < state.tags.length; i++) {
       if (state.tags[i] == "") {

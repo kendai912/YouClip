@@ -162,7 +162,7 @@ export default {
     setTagItems() {
       let tagItemsArray;
       this.tagHistories.forEach(tagHistory => {
-        tagItemsArray = tagHistory.split(/[\s| |　]/);
+        tagItemsArray = tagHistory.split(/::/);
         this.tagItems.push(...tagItemsArray);
       });
     },
