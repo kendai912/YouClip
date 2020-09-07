@@ -1,6 +1,6 @@
 <template>
   <div class="container--small">
-    <div class="px-3 mt-3">
+    <div class="px-3 pt-3">
       YouTube検索結果
     </div>
     <YTSearchBox />

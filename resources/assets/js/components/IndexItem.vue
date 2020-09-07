@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 pb-3 body-color">
+  <v-container class="pa-0 pb-3">
     <v-row
       v-for="item in mediaItems"
       v-bind:key="item.category+'-'+item.id"
@@ -8,7 +8,7 @@
     >
       <v-col class="px-0" style="padding-top: 2px; paddint-bottom: 2px;">
         <v-hover v-slot:default="{ hover }">
-          <v-card class="mx-auto" max-width="420" elevation="1">
+          <v-card class="mx-auto" max-width="420" elevation="0" style="border-radius: 2px;">
             <v-img
               v-on:click.stop="select(item)"
               class="white--text align-end"
@@ -25,18 +25,17 @@
                 />&nbsp;{{item.sceneCount}}&nbsp;シーン
               </v-chip>
             </v-img>
+
             <v-list-item>
-              <v-list-item-avatar color="grey">
-                <v-icon dark>mdi-account-circle</v-icon>
-              </v-list-item-avatar>
+              <v-list width="55px" class="pt-1 pb-0 pl-1 pr-3 ">
+                <v-img src="/storage/icons/clip.svg"/>
+              </v-list>
               <v-list-item-content>
-                <v-card-title v-on:click.stop="select(item)" class="pb-0">{{ item.title }}</v-card-title>
+                <v-card-title v-on:click.stop="select(item)" class="pb-0 mb-0">{{ item.title }}</v-card-title>
                 <v-card-text class="text--primary">
                   <div v-on:click.stop="select(item)" class="grey--text text--darken-3">
                     <span>{{ item.visitCount ? item.visitCount : 0 }}回視聴</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
                     <span>合計{{ item.totalDuration }}</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
-                    <!-- <span>{{ item.sceneCount }}シーン</span> -->
-                    <!-- <span>◯回視聴</span> -->
                     <span>{{ item.timeSince }}前</span><span v-if="item.likeCount" style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
                     <span v-if="item.likeCount">
                       <i class="fas fa-heart my-grey-heart"></i>
@@ -63,44 +62,6 @@
                   </v-avatar>
                   {{ tag }}
                 </v-chip>
-                <!-- <ul v-if="item.tagsList" class="horizontal-list">
-                  <li
-                    class="item"
-                    v-for="(tags, tagsIndex) in item.tagsList"
-                    v-bind:key="item.id + '-' + tagsIndex"
-                  >
-                    <v-chip
-                      v-for="(tag, tagIndex) in tags.tags.split(/[\s| |　]/)"
-                      v-bind:key="item.id + '-' + tagsIndex + '-' + tagIndex"
-                      class="ma-2"
-                      small
-                      color="blue lighten-2"
-                      text-color="white"
-                    >
-                      <v-avatar left>
-                        <i class="fas fa-tag my-grey"></i>
-                      </v-avatar>
-                      {{ tag }}
-                    </v-chip>
-                  </li>
-                </ul>
-                <ul v-else class="horizontal-list">
-                  <li class="item">
-                    <v-chip
-                      v-for="(tag, tagIndex) in item.tags.split(/[\s| |　]/)"
-                      v-bind:key="item.id + '-' + tagIndex"
-                      class="ma-2"
-                      small
-                      color="blue lighten-2"
-                      text-color="white"
-                    >
-                      <v-avatar left>
-                        <i class="fas fa-tag my-grey"></i>
-                      </v-avatar>
-                      {{ tag }}
-                    </v-chip>
-                  </li>
-                </ul> -->
               </div>
             </v-card-text>
           </v-card>

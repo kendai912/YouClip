@@ -23,9 +23,8 @@
 .container--small {
   margin: 0 auto;
   max-width: 600px;
-}
-.container--small .container {
-  /* padding: 0px 0px 12px 0px; */
+  height: 100vh;
+  background-color: white;
 }
 
 .yt-container {
