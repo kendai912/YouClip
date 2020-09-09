@@ -1,6 +1,7 @@
 import axios from "axios";
 import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
 import router from "../router";
+import store from "../store";
 
 const state = {
   playlistAndTagPaginationOfRecommend: null,
@@ -19,6 +20,7 @@ const state = {
   isIndexNewPlaylistAndTagPaginating: false,
   isIndexSportsPlaylistAndTagPaginating: false,
   isIndexEntertainmentPlaylistAndTagPaginating: false,
+  sceneListofPlaylist: null,
 };
 
 const getters = {
@@ -58,6 +60,7 @@ const getters = {
   hasMyPlaylists: (state) => {
     return state.myCreatedPlaylist ? !!state.myCreatedPlaylist.length : false;
   },
+  sceneListofPlaylist: (state) => state.sceneListofPlaylist,
 };
 
 const mutations = {
@@ -111,6 +114,9 @@ const mutations = {
   },
   setIsIndexEntertainmentPlaylistAndTagPaginating(state, data) {
     state.isIndexEntertainmentPlaylistAndTagPaginating = data;
+  },
+  setSceneListofPlaylist(state, data) {
+    state.sceneListofPlaylist = data;
   },
 };
 
@@ -304,6 +310,102 @@ const actions = {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
       toastr.error("プレイリストへの保存に失敗しました");
+    }
+  },
+  async updatePlaylistTitle(context, playlist) {
+    this.errors = {};
+
+    // Toastrオプション変更
+    // toastr.options = {
+    //   positionClass: "toast-bottom-left",
+    //   timeOut: "5000",
+    // };
+
+    //チェックの入ったプレイリストをパラメータとして格納
+    var params = {
+      playlistName: playlist.playlistName,
+      playlist_id: playlist.playlist_id
+    };
+
+    const response = await axios.post(
+      "/api/playlist/updateTitle",
+      params
+    );
+    if (response.status == CREATED) {
+      //ポップアップでプレイリストの作成完了を通知
+      console.log("success");
+      // toastr.success("プレイリストに保存しました");
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      // toastr.error("プレイリストへの保存に失敗しました");
+      console.log("server error");
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+      console.log("error-setcode");
+      // toastr.error("プレイリストへの保存に失敗しました");
+    }
+  },
+  async updatePlaylistPrivacy(context, playlist) {
+    this.errors = {};
+
+    // Toastrオプション変更
+    // toastr.options = {
+    //   positionClass: "toast-bottom-left",
+    //   timeOut: "5000",
+    // };
+
+    //チェックの入ったプレイリストをパラメータとして格納
+    var params = {
+      privacySetting: playlist.privacySetting,
+      playlist_id: playlist.playlist_id
+    };
+
+    const response = await axios.post(
+      "/api/playlist/updatePrivacy",
+      params
+    );
+    if (response.status == CREATED) {
+      //ポップアップでプレイリストの作成完了を通知
+      // toastr.success("プレイリストに保存しました");
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      // toastr.error("プレイリストへの保存に失敗しました");
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+      // toastr.error("プレイリストへの保存に失敗しました");
+    }
+  },
+  async updatePlaylistSceneOrder(context, playlist) {
+    this.errors = {};
+
+    // Toastrオプション変更
+    // toastr.options = {
+    //   positionClass: "toast-bottom-left",
+    //   timeOut: "5000",
+    // };
+
+    //チェックの入ったプレイリストをパラメータとして格納
+    // var params = {
+    //   playlist_id: playlist.playlist_id,
+    //   tagVideoData: playlist.sceneListofPlaylist
+    // };
+console.log("playlistttttttt", playlist);
+    const response = await axios.post(
+      "/api/playlist/updateSceneOrder",
+      playlist
+    );
+    if (response.status == CREATED) {
+      //ポップアップでプレイリストの作成完了を通知
+      // toastr.success("プレイリストに保存しました");
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      // toastr.error("プレイリストへの保存に失敗しました");
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+      // toastr.error("プレイリストへの保存に失敗しました");
     }
   },
   //プレイリスト新規作成と選択中のタグの保存

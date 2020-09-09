@@ -74,7 +74,7 @@ export default {
       checkedPlaylistIds: [],
       newPlaylistName: "",
       privacySetting: "公開",
-      privacySettingItems: ["公開", "非公開"]
+      privacySettingItems: ["公開", "限定公開", "非公開"]
     };
   },
   computed: {

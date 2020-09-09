@@ -160,8 +160,10 @@ class TagController extends Controller
             };
 
             foreach ($checkedPlaylistIds as $playlistId) {
+                $scene_order = 1;
                 $tag->playlists()->attach(
                     ['playlist_id' => $playlistId],
+                    ['scene_order' => $scene_order],
                     ['created_at' => Carbon::now()]
                 );
             }
@@ -230,7 +232,8 @@ class TagController extends Controller
             $tags = implode(" ", $request->tags);
 
             //プレビュー用のgifを取得しファイル名を変数に格納
-            $previewGifFileName = $this->getPreviewFile($request);
+            // $previewGifFileName = $this->getPreviewFile($request);
+            $previewGifFileName = "";
 
             $start = $request->start;
 
@@ -317,16 +320,31 @@ class TagController extends Controller
 
     public function getPreviewFile($request)
     {
-        $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
-        // $ytDirectUrl = "https://r3---sn-p5qs7nee.googlevideo.com/videoplayback?expire=1598750209&ei=oalKX96GDbO0hwa7uozABw&ip=54.85.38.58&id=o-AMmIxwxWPNeYEFFe8GJxBmHPiTGbaOVnP9Y_YrRc5RK6&itag=136&aitags=133%2C134%2C135%2C136%2C137%2C160%2C242%2C243%2C244%2C247%2C248%2C271%2C278%2C313&source=youtube&requiressl=yes&mh=R0&mm=31%2C26&mn=sn-p5qs7nee%2Csn-vgqsener&ms=au%2Conr&mv=u&mvi=3&pl=19&vprv=1&mime=video%2Fmp4&gir=yes&clen=19295743&dur=270.403&lmt=1577976841824023&mt=1598728020&fvip=3&keepalive=yes&c=WEB&txp=5532432&sparams=expire%2Cei%2Cip%2Cid%2Caitags%2Csource%2Crequiressl%2Cvprv%2Cmime%2Cgir%2Cclen%2Cdur%2Clmt&sig=AOq0QJ8wRAIgc7wx0CQs_Rnr6cnF8q00ppk38pvODZBAcAHFcF4VCBUCIBsEHk-AdD0A_NvwQjK8VicnHFzfvLkFOe-vrt1berkY&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl&lsig=AG3C_xAwRQIhAK_iAxxuI7-dL5HsHXtwfg7g8meFTdkDFVi7eHaFBicVAiBBwoiC6DqTNrYwYDDvEXNrr5vEIyUE7AXxokoUDuLe2w%3D%3D";
+        // $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
+        // $startSec = $this->convertToSec("00:".$request->start);
+        // $duration = 3;
+        // $endSec = $startSec + $duration;
+        // $previewMp4Name = $request->youtubeId . "-" . $startSec . "-" . rand() . ".mp4";
+        // $dl_cmd = 'ffmpeg  -ss '.$startSec.' -to '.$endSec.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/img/".$previewMp4Name.' 2>&1';
+        // // echo $dl_cmd; exit;
+        // // var_dump($output);
+        // return $previewMp4Name;
+
+        $grabzIt = resolve('grabzit');
+
+        $options = new \GrabzIt\GrabzItAnimationOptions();
+        $options->setDuration(3);
         $startSec = $this->convertToSec("00:".$request->start);
-        $duration = 3;
-        $endSec = $startSec + $duration;
-        $previewMp4Name = $request->youtubeId . "-" . $startSec . "-" . rand() . ".mp4";
-        $dl_cmd = 'ffmpeg  -ss '.$startSec.' -to '.$endSec.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/img/".$previewMp4Name.' 2>&1';
-        // echo $dl_cmd; exit;
-        // var_dump($output);
-        return $previewMp4Name;
+        $options->setStart($startSec);
+        $options->setQuality(100);
+        $options->setWidth(600);
+        $options->setHeight(-1);
+
+        $previewGifFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
+        $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=" . $request->youtubeId, $options);
+        $grabzIt->SaveTo(storage_path(). "/app/public/img/" . $previewGifFileName);
+
+        return $previewGifFileName;
     }
 
     /**
