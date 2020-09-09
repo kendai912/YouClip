@@ -518,14 +518,14 @@ class PlaylistController extends Controller
         $playlist = Playlist::find($request->playlist_id);
         // DB::table('playlist_tag')->where('playlist_id', $request->playlist_id)->delete();
         foreach ($request->tagVideoData as $key => $scene ) {
-            $playlist->tags()->detach($scene['tag_id']);
+            $playlist->tags()->detach($scene['id']);
         }
         // print_r($playlist->tags()->count()); exit;
         $sceneOrder = 0;
         foreach ($request->tagVideoData as $key => $scene ) {
             $sceneOrder ++;
             $playlist->tags()->attach(
-                ['tag_id' => $scene['tag_id']],
+                ['tag_id' => $scene['id']],
                 ['scene_order' => $sceneOrder],
                 ['created_at' => Carbon::now()],
                 ['updated_at' => Carbon::now()]

@@ -133,6 +133,7 @@ export default {
       } else {
         this.isEditPrivacy = false;
         console.log(this.$refs.testelement.focus);
+        this.$refs.testelement.focus();
         var playlist = {
           playlist_id: this.playlistAndTagVideoData.playlist_id,
           privacySetting: this.privacySetting
@@ -169,8 +170,10 @@ export default {
       this.playCount = this.playlistAndTagVideoData.play_count;
       this.sceneCount = this.playlistAndTagVideoData.tagVideoData.length;
       this.lastUpdatedAt = this.convertToYMD(this.playlistAndTagVideoData.playlist_updated_at);
-      this.$store.commit("playlist/setSceneListofPlaylist", this.playlistAndTagVideoData.tagVideoData);
-      console.log("eeeeeeeeeee", this.playlistAndTagVideoData);
+
+      let mediaItems = [];
+      this.putTagVideoIntoMediaItems(mediaItems, this.playlistAndTagVideoData.tagVideoData);
+      this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
     }
   }
 };

@@ -391,7 +391,6 @@ const actions = {
     //   playlist_id: playlist.playlist_id,
     //   tagVideoData: playlist.sceneListofPlaylist
     // };
-console.log("playlistttttttt", playlist);
     const response = await axios.post(
       "/api/playlist/updateSceneOrder",
       playlist

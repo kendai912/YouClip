@@ -10,13 +10,13 @@
       >
         <v-row
           v-for="item in sceneListofPlaylist"
-          v-bind:key="item.category+'-'+item.tag_id"
+          v-bind:key="item.category+'-'+item.id"
           dense
           class="pa-0 ma-0"
         >
           <v-col class="px-0">
             <v-hover v-slot:default="{ hover }">
-              <v-card class="mx-auto" max-width="420" height="160" elevation="1">
+              <v-card class="mx-auto" max-width="420" height="128" elevation="1">
                 <v-row class="ma-0">
                   <v-col class="pa-0">
                     <v-row class="ma-0">
@@ -27,7 +27,7 @@
                           v-bind:src="hover ? '/storage/img/' + item.previewgif : item.preview"
                           v-bind:alt="item.title"
                           aspect-ratio="1.5"
-                          height="142"
+                          height="120"
                         >
                           <v-chip label color="#27252582" text-color="white" class="my-scene-chip">
                             <!-- <v-img
@@ -43,8 +43,8 @@
                         <v-card-title v-on:click.stop="select(item)" class="py-0 d-inline">
                           <span class="block-playlist-title">{{ item.title }}</span>
                         </v-card-title>
-                        <!-- <v-card-text>
-                          <div class="horizontal-list-wrap block-chip-lines2">
+                        <!-- <v-card-text> -->
+                          <div class="horizontal-list-wrap block-chip-lines3">
                             <v-chip
                               v-for="(tag, tagIndex) in item.tagArray"
                               v-bind:key="item.id + '-' + tagIndex"
@@ -59,7 +59,7 @@
                               {{ tag }}
                             </v-chip>
                           </div>
-                        </v-card-text> -->
+                        <!-- </v-card-text> -->
                       </v-col>
                     </v-row>
                   </v-col>
@@ -69,9 +69,6 @@
           </v-col>
         </v-row>
       </draggable>
-      <div>
-        adsfadsfasdfasdf
-      </div>
     </div>
     <LoadingItem v-if="isLoading" v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination" />
   </v-container>
@@ -119,10 +116,8 @@ export default {
       setSceneListofPlaylist: "playlist/setSceneListofPlaylist"
     }),
     checkMove (e) {
-      console.log("Future index: " + e.draggedContext.futureIndex);
     },
     async select(mediaItem) {
-      console.log("media item data", mediaItem);
       // await this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
       // //プレイリストの場合
       // if (mediaItem.category == "playlist") {
