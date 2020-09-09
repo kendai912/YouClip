@@ -1,35 +1,39 @@
 <template>
   <div class="container--small">
-    <v-tabs v-model="tab" background-color="transparent" class="mx-auto homepage-tabs" grow hide-slider>
+    <v-tabs
+      v-model="tab"
+      background-color="transparent"
+      class="mx-auto homepage-tabs"
+      grow
+      hide-slider
+    >
       <v-tab
         active-class="activated-tab"
         v-for="(item, key) in items"
         :key="item"
         v-on:click="setActiveTab(key); initialPaginate(key)"
-      >
-        {{ item }}
-      </v-tab>
+      >{{ item }}</v-tab>
     </v-tabs>
 
-    <v-tabs-items v-model="tab" class="body-margin-bottom">
+    <v-tabs-items v-model="tab">
       <v-tab-item>
         <v-card flat>
-          <IndexItem v-bind:mediaItems="recommendMediaItems" />
+          <PlaylistMediaItem v-bind:mediaItems="recommendMediaItems" />
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <IndexItem v-bind:mediaItems="newMediaItems" />
+          <PlaylistMediaItem v-bind:mediaItems="newMediaItems" />
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <IndexItem v-bind:mediaItems="sportsMediaItems" />
+          <PlaylistMediaItem v-bind:mediaItems="sportsMediaItems" />
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <IndexItem v-bind:mediaItems="entertainmentMediaItems" />
+          <PlaylistMediaItem v-bind:mediaItems="entertainmentMediaItems" />
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -39,13 +43,13 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import IndexItem from "../components/IndexItem.vue";
+import PlaylistMediaItem from "../components/PlaylistMediaItem.vue";
 import SearchBox from "../components/SearchBox.vue";
 import myMixin from "../util";
 
 export default {
   components: {
-    IndexItem,
+    PlaylistMediaItem,
     SearchBox,
   },
   data() {
@@ -59,7 +63,7 @@ export default {
       recommendMediaItems: [],
       newMediaItems: [],
       sportsMediaItems: [],
-      entertainmentMediaItems: []
+      entertainmentMediaItems: [],
     };
   },
   mixins: [myMixin],
@@ -168,7 +172,7 @@ export default {
 
       //ローディングを非表示
       this.$store.commit("loadingItem/setIsLoading", false);
-    }
+    },
   },
   computed: {
     ...mapGetters({
@@ -191,7 +195,7 @@ export default {
         "playlist/isIndexSportsPlaylistAndTagPaginating",
       isIndexEntertainmentPlaylistAndTagPaginating:
         "playlist/isIndexEntertainmentPlaylistAndTagPaginating",
-    })
+    }),
   },
   mounted() {
     //ナビバーを表示
@@ -228,7 +232,6 @@ export default {
     if (this.tab == 2) this.infinateLoadPlaylistOfSports();
     if (this.tab == 3) this.infinateLoadPlaylistOfEntertainment();
   },
-  created() {
-  }
+  created() {},
 };
 </script>

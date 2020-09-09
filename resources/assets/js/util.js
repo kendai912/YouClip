@@ -264,6 +264,13 @@ export default {
         return Math.floor(seconds) + "秒";
       }
     },
+    convertToYMD(updatedAt) {
+      console.log("ddddddddd", updatedAt);
+      if (updatedAt != null) {
+        let ymd = updatedAt.split(" ")[0];
+        return ymd;
+      }
+    }
   },
 
   data() {

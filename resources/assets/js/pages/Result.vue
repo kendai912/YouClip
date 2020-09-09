@@ -9,12 +9,12 @@
     <v-tabs-items v-model="tab">
       <v-tab-item>
         <v-card flat>
-          <IndexItem v-bind:mediaItems="playlistMediaItems" />
+          <PlaylistMediaItem v-bind:mediaItems="playlistMediaItems" />
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <IndexItem v-bind:mediaItems="tagVideoMediaItems" />
+          <SceneMediaItem v-bind:mediaItems="tagVideoMediaItems" />
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -24,13 +24,15 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import SearchBox from "../components/SearchBox.vue";
-import IndexItem from "../components/IndexItem.vue";
+import PlaylistMediaItem from "../components/PlaylistMediaItem.vue";
+import SceneMediaItem from "../components/SceneMediaItem.vue";
 import myMixin from "../util";
 
 export default {
   components: {
     SearchBox,
-    IndexItem
+    PlaylistMediaItem,
+    SceneMediaItem,
   },
   data() {
     return {
@@ -39,18 +41,11 @@ export default {
       pageOfPlaylist: 1,
       pageOfTagVideo: 1,
       playlistMediaItems: [],
-      tagVideoMediaItems: []
+      tagVideoMediaItems: [],
     };
   },
   mixins: [myMixin],
   methods: {
-    //i:s形式に変換
-    formatToMinSec(His) {
-      let min =
-        parseInt(His.split(":")[0], 10) * 60 + parseInt(His.split(":")[1], 10);
-      let sec = parseInt(His.split(":")[2], 10);
-      return min + ":" + sec;
-    },
     //初回ロード
     async initializeSearchResult() {
       //ローディングを表示
@@ -132,7 +127,7 @@ export default {
     setActiveTab(key) {
       //開いたタブをセッションストレージに保存
       window.sessionStorage.setItem("searchTabIndex", JSON.stringify(key));
-    }
+    },
   },
   computed: {
     ...mapGetters({
@@ -142,8 +137,8 @@ export default {
       tagVideoResultToLoad: "search/tagVideoResultToLoad",
       playlistResultToLoad: "search/playlistResultToLoad",
       isSearchingPlaylistTagResult: "search/isSearchingPlaylistTagResult",
-      isSearchingTagVideoResult: "search/isSearchingTagVideoResult"
-    })
+      isSearchingTagVideoResult: "search/isSearchingTagVideoResult",
+    }),
   },
   created() {
     //以前に開いていたタブをセッションストレージからセット
@@ -173,12 +168,12 @@ export default {
     //戻るor進むが押された場合は画面を再ロード
     let self = this;
     let from = this.$route.path;
-    window.addEventListener("popstate", function(e) {
+    window.addEventListener("popstate", function (e) {
       let to = self.$route.path;
       if (from == "/result" && to == "/result") {
         location.reload();
       }
     });
-  }
+  },
 };
 </script>

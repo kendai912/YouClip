@@ -1,5 +1,10 @@
 <template>
-  <v-sheet color="grey lighten-3" class="search-box" fluid>
+  <v-sheet
+    color="grey lighten-3"
+    elevation="1"
+    class="search-box pr-2"
+    style="border-radius: 10px;"
+  >
     <v-container class="ma-0 pa-0 text-center">
       <v-row class="ma-0 pa-0" align="center">
         <v-col cols="1" class="ma-0 pa-0 text-center">
@@ -26,13 +31,19 @@
               </template>
               <template v-else>
                 <v-list-item-icon class="mr-4">
-                  <v-icon>{{data.item.icon}}</v-icon>
+                  <v-icon>{{ data.item.icon }}</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
-                  <v-list-item-title v-html="data.item.value"></v-list-item-title>
+                  <v-list-item-title
+                    v-html="data.item.value"
+                  ></v-list-item-title>
                 </v-list-item-content>
                 <v-list-item-icon style="min-width:16px;">
-                  <v-img src="/storage/icons/north_west.svg" width="16px" max-height="16px"></v-img>
+                  <v-img
+                    src="/storage/icons/north_west.svg"
+                    width="16px"
+                    max-height="16px"
+                  ></v-img>
                 </v-list-item-icon>
               </template>
             </template>
@@ -50,13 +61,13 @@ export default {
   data() {
     return {
       model: null,
-      searchquery: null
+      searchquery: null,
     };
   },
   computed: {
     //検索候補
     ...mapGetters({
-      searchCandidates: "YTsearch/candidates"
+      searchCandidates: "YTsearch/candidates",
     }),
     //過去の検索履歴と人気の検索履歴を履歴優先で合計7件までサジェストに表示
     items() {
@@ -66,29 +77,29 @@ export default {
 
       //過去の検索履歴をサジェストに追加
       if (this.searchCandidates["searchHistoryCandidates"])
-        this.searchCandidates["searchHistoryCandidates"].forEach(value => {
+        this.searchCandidates["searchHistoryCandidates"].forEach((value) => {
           if (itemCount++ < itemLimit) {
             let item = {
-              icon: 'history',
+              icon: "history",
               value: value.searchQuery,
-            }
+            };
             items.push(item);
           }
         });
 
       //人気の検索履歴をサジェストに追加
       if (this.searchCandidates["topSearchqueriesCandidates"])
-        this.searchCandidates["topSearchqueriesCandidates"].forEach(value => {
+        this.searchCandidates["topSearchqueriesCandidates"].forEach((value) => {
           if (itemCount++ < itemLimit) {
             let item = {
-              icon: 'search',
+              icon: "search",
               value: value.searchquery.searchQuery,
-            }
+            };
             items.push(item);
           }
         });
       return items;
-    }
+    },
   },
   watch: {
     async searchquery(input) {
@@ -97,7 +108,7 @@ export default {
 
       //入力を元に検索候補を取得
       await this.$store.dispatch("YTsearch/getCandidates", input);
-    }
+    },
   },
   methods: {
     // search(event) {
@@ -130,9 +141,9 @@ export default {
         router
           .push({
             path: "/youtube",
-            query: { v: youtubeId[2] }
+            query: { v: youtubeId[2] },
           })
-          .catch(err => {});
+          .catch((err) => {});
       } else {
         //キーワードの場合、検索結果表示へ
         this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
@@ -143,7 +154,7 @@ export default {
   },
   async created() {
     await this.$store.dispatch("YTsearch/getCandidates");
-    console.log("dddddddddddd", this.items)
-  }
+    console.log("dddddddddddd", this.items);
+  },
 };
 </script>

@@ -1,10 +1,10 @@
 <template>
   <div class="container--small">
-    <div class="px-3 mt-3" v-if="YTRecentVideos.length>0">
+    <div class="px-3 pt-3" v-if="YTRecentVideos.length>0">
       最近シーン登録したYouTube動画
     </div>
     <YTSearchBox />
-    <YTRecentItem v-bind:YTRecentItems="YTRecentVideos" class="body-color body-margin-bottom" />
+    <YTRecentItem v-bind:YTRecentItems="YTRecentVideos" />
   </div>
 </template>
 

@@ -8,6 +8,7 @@
       <v-tab-item>
         <v-card flat>
           <MyPlaylistItem v-bind:mediaItems="myCreatedAndLikedPlaylistMediaItems" />
+          <!-- <MyPlaylistItem v-bind:mediaItems="myPlaylist" /> -->
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -25,7 +26,7 @@ import MyPlaylist from "../components/MyPlaylist.vue";
 import MyScene from "../components/MyScene.vue";
 import MyPlaylistItem from "../components/MyPlaylistItem.vue";
 import MyTagItem from "../components/MyTagItem.vue";
-// import IndexItem from "../components/IndexItem.vue";
+// import PlaylistMediaItem from "../components/PlaylistMediaItem.vue";
 import myMixin from "../util";
 
 export default {
@@ -34,20 +35,20 @@ export default {
     MyScene,
     MyPlaylistItem,
     MyTagItem,
-    // IndexItem
+    // PlaylistMediaItem
   },
   props: {},
   data() {
     return {
       tab: 1, //デフォルトはシーンタブを表示
-      items: ["プレイリスト", "シーン"]
+      items: ["プレイリスト", "シーン"],
     };
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
       myCreatedAndLikedPlaylist: "playlist/myCreatedAndLikedPlaylist",
-      myCreatedAndLikedTagVideo: "tag/myCreatedAndLikedTagVideo"
+      myCreatedAndLikedTagVideo: "tag/myCreatedAndLikedTagVideo",
     }),
     myCreatedAndLikedPlaylistMediaItems() {
       if (!this.myCreatedAndLikedPlaylist) return;
@@ -58,7 +59,8 @@ export default {
         mediaItems,
         this.myCreatedAndLikedPlaylist
       );
-
+      console.log("media items", mediaItems);
+      
       return mediaItems;
     },
     myCreatedAndLikedTagVideoMediaItems() {
@@ -70,6 +72,7 @@ export default {
         mediaItems,
         this.myCreatedAndLikedTagVideo
       );
+
       var groupedData = Object.values(mediaItems.reduce((result, {
         video_id,
         category,
@@ -123,16 +126,29 @@ export default {
         });
         return result;
       }, {}));
-      groupedData.sort((a, b) => (a.video_id < b.video_id) ? 1 : -1)
-console.log("dddddddddddd", groupedData);
+      groupedData.sort((a, b) => (a.video_id < b.video_id) ? 1 : -1);
       return groupedData;
-    }
+    },
   },
   methods: {
+  //   myCreatedAndLikedPlaylistMediaItems() {
+  //     if (!this.myCreatedAndLikedPlaylist) return;
+
+  //     // プレイリストのデータをmyCreatedAndLikedPlaylistMediaItemsに格納
+  //     let mediaItems = [];
+  //     this.putPlaylistTagIntoMediaItems(
+  //       mediaItems,
+  //       this.myCreatedAndLikedPlaylist
+  //     );
+  //     console.log("media items", mediaItems);
+  //     setTimeout(this.$store.commit("playlist/setMyPlaylist", mediaItems), 10);
+      
+  //     return mediaItems;
+  //   },
     setActiveTab(key) {
       //開いたタブをセッションストレージに保存
       window.sessionStorage.setItem("myPageTabIndex", JSON.stringify(key));
-    }
+    },
   },
   async created() {
     //以前に開いていたタブをセッションストレージからセット
@@ -141,8 +157,9 @@ console.log("dddddddddddd", groupedData);
       : "";
     //Likeまたは作成したプレイリストをロード
     await this.$store.dispatch("playlist/loadMyCreatedAndLikedPlaylist");
+    // this.myCreatedAndLikedPlaylistMediaItems();
     //Likeまたは作成したタグをロード
     await this.$store.dispatch("tag/loadMyCreatedAndLikedTagVideo");
-  }
+  },
 };
 </script>
