@@ -1,5 +1,5 @@
 <template>
-  <v-sheet color="grey lighten-3" class="search-box" fluid>
+  <v-sheet color="grey lighten-3" elevation="1" class="search-box pr-2"  style="border-radius: 10px;">
     <v-container class="ma-0 pa-0 text-center">
       <v-row class="ma-0 pa-0" align="center">
         <v-col cols="1" class="ma-0 pa-0 text-center">
@@ -12,7 +12,7 @@
             v-bind:items="items"
             v-bind:search-input.sync="searchquery"
             v-on:keydown.enter="search"
-            placeholder="クリップ集を検索"
+            placeholder="クリップとシーンを検索"
             item-text="value"
             item-value="value"
             cache-items
