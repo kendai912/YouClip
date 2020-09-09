@@ -25,7 +25,7 @@ import MyPlaylist from "../components/MyPlaylist.vue";
 import MyScene from "../components/MyScene.vue";
 import MyPlaylistItem from "../components/MyPlaylistItem.vue";
 import MyTagItem from "../components/MyTagItem.vue";
-// import IndexItem from "../components/IndexItem.vue";
+// import PlaylistMediaItem from "../components/PlaylistMediaItem.vue";
 import myMixin from "../util";
 
 export default {
@@ -34,20 +34,20 @@ export default {
     MyScene,
     MyPlaylistItem,
     MyTagItem,
-    // IndexItem
+    // PlaylistMediaItem
   },
   props: {},
   data() {
     return {
       tab: 1, //デフォルトはシーンタブを表示
-      items: ["プレイリスト", "シーン"]
+      items: ["プレイリスト", "シーン"],
     };
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
       myCreatedAndLikedPlaylist: "playlist/myCreatedAndLikedPlaylist",
-      myCreatedAndLikedTagVideo: "tag/myCreatedAndLikedTagVideo"
+      myCreatedAndLikedTagVideo: "tag/myCreatedAndLikedTagVideo",
     }),
     myCreatedAndLikedPlaylistMediaItems() {
       if (!this.myCreatedAndLikedPlaylist) return;
@@ -70,69 +70,77 @@ export default {
         mediaItems,
         this.myCreatedAndLikedTagVideo
       );
-      var groupedData = Object.values(mediaItems.reduce((result, {
-        video_id,
-        category,
-        id,
-        title,
-        thumbnail,
-        created_at,
-        timeSince,
-        tagsList,
-        tags,
-        tagArray,
-        totalDuration,
-        start,
-        end,
-        preview,
-        previewgif,
-        sceneCount,
-        likeCount,
-        user_id,
-      }) => {
-        // Create new group
-        if (!result[video_id]) { 
-          result[video_id] = {
-            video_id,
-            title,
-            tagVideoData: []
-          };
-        }
-        // if (!result[title]) {
-        //   result[title]
-        // }
-        // Append to group
-        result[video_id].tagVideoData.push({
-          category,
-          id,
-          title,
-          thumbnail,
-          created_at,
-          timeSince,
-          tagsList,
-          tags,
-          tagArray,
-          totalDuration,
-          start,
-          end,
-          preview,
-          previewgif,
-          sceneCount,
-          likeCount,
-          user_id,
-        });
-        return result;
-      }, {}));
-      groupedData.sort((a, b) => (a.video_id < b.video_id) ? 1 : -1)
-console.log("dddddddddddd", groupedData);
+      var groupedData = Object.values(
+        mediaItems.reduce(
+          (
+            result,
+            {
+              video_id,
+              category,
+              id,
+              title,
+              thumbnail,
+              created_at,
+              timeSince,
+              tagsList,
+              tags,
+              tagArray,
+              totalDuration,
+              start,
+              end,
+              preview,
+              previewgif,
+              sceneCount,
+              likeCount,
+              user_id,
+            }
+          ) => {
+            // Create new group
+            if (!result[video_id]) {
+              result[video_id] = {
+                video_id,
+                title,
+                tagVideoData: [],
+              };
+            }
+            // if (!result[title]) {
+            //   result[title]
+            // }
+            // Append to group
+            result[video_id].tagVideoData.push({
+              category,
+              id,
+              title,
+              thumbnail,
+              created_at,
+              timeSince,
+              tagsList,
+              tags,
+              tagArray,
+              totalDuration,
+              start,
+              end,
+              preview,
+              previewgif,
+              sceneCount,
+              likeCount,
+              user_id,
+            });
+            return result;
+          },
+          {}
+        )
+      );
+      groupedData.sort((a, b) => (a.video_id < b.video_id ? 1 : -1));
+      console.log("dddddddddddd", groupedData);
       return groupedData;
-    }
+    },
   },
   methods: {
     setActiveTab(key) {
       //開いたタブをセッションストレージに保存
       window.sessionStorage.setItem("myPageTabIndex", JSON.stringify(key));
-    }
+    },
   },
   async created() {
     //以前に開いていたタブをセッションストレージからセット
@@ -143,6 +151,6 @@ console.log("dddddddddddd", groupedData);
     await this.$store.dispatch("playlist/loadMyCreatedAndLikedPlaylist");
     //Likeまたは作成したタグをロード
     await this.$store.dispatch("tag/loadMyCreatedAndLikedTagVideo");
-  }
+  },
 };
 </script>

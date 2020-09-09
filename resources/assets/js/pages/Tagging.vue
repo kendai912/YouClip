@@ -4,7 +4,7 @@
       最近シーン登録したYouTube動画
     </div>
     <YTSearchBox />
-    <YTRecentItem v-bind:YTRecentItems="YTRecentVideos" class="body-margin-bottom" />
+    <YTRecentItem v-bind:YTRecentItems="YTRecentVideos" />
   </div>
 </template>
 
