@@ -2,7 +2,7 @@
   <div class="container--small">
     <div>
       <v-card
-        class="mx-auto"
+        class="mx-auto pa-2"
         max-width="420"
         tile
         flat
@@ -20,6 +20,7 @@
               label="タイトル"
               v-on:keydown.enter="saveTitle"
               @click:append="saveTitle"
+              hide-details
               ref="playlistTitle"
             ></v-text-field>
             <!-- <v-select
@@ -39,12 +40,13 @@
               :append-icon="isEditPrivacy ? 'fas fa-save' : 'mdi-pen'"
               :readonly="!isEditPrivacy"
               @click:append="savePrivacy"
+              hide-details
             ></v-select>
           </v-col>
         </v-row>
         <v-row class="ma-0">
           <v-col class="pa-0 pt-2">
-            <v-text-field ref="testelement" value="ddddddddddddd" style="width:0; height:0;">
+            <v-text-field ref="testelement" value="ddddddddddddd" style="width:0; height:0;" hide-details>
             </v-text-field>
             <div class="grey--text text--darken-3">
               <span>{{ sceneCount }}シーン</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
