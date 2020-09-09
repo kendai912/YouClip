@@ -68,7 +68,7 @@ export default {
           let tagCount = 0;
           if (Array.isArray(value.tags)) {
             value.tags.forEach(tagItem => {
-              tagItem.split(/[\s| |　]/).forEach(tag => {
+              tagItem.split(/::/).forEach(tag => {
                 if (tagCount < 10) {
                   mediaItem.tagArray.push(tag);
                   tagCount ++;
@@ -77,7 +77,7 @@ export default {
             });
           } else {
             // mediaItem.tagArray.push(value.tags);
-            value.tags.split(/[\s| |　]/).forEach(tag => {
+            value.tags.split(/::/).forEach(tag => {
               if (tagCount < 10) {
                 mediaItem.tagArray.push(tag);
                 tagCount ++;
@@ -128,7 +128,7 @@ export default {
             if (Array.isArray(value.tags)) {
               value.tags.forEach(tagItem => {
                 if (tagItem.tags[0]) {
-                  tagItem.tags.split(/[\s| |　]/).forEach(tag => {
+                  tagItem.tags.split(/::/).forEach(tag => {
                     if (mediaItem.tagArray.indexOf(tag) === -1) {
                       if (tagCount < 10) {
                         mediaItem.tagArray.push(tag);
@@ -140,7 +140,7 @@ export default {
               })
             } else {
               // mediaItem.tagArray.push(value.tags);
-              value.tags.split(/[\s| |　]/).forEach(tag => {
+              value.tags.split(/::/).forEach(tag => {
                 if (mediaItem.tagArray.indexOf(tag) === -1) {
                   if (tagCount < 10) {
                     mediaItem.tagArray.push(tag);

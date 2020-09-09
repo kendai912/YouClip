@@ -228,8 +228,8 @@ class TagController extends Controller
                 $video->save();
             }
 
-            //タグの配列をスペース区切りの文字列に変換
-            $tags = implode(" ", $request->tags);
+            //タグの配列を「::」で区切った文字列に変換
+            $tags = implode("::", $request->tags);
 
             //プレビュー用のgifを取得しファイル名を変数に格納
             // $previewGifFileName = $this->getPreviewFile($request);
@@ -388,7 +388,7 @@ class TagController extends Controller
             $previewGifFileName = $this->getPreviewFile($request);
             $tag->previewgif = $previewGifFileName;
         }
-        $tag->tags = implode(" ", $request->tags);
+        $tag->tags = implode("::", $request->tags); //タグの配列を「::」で区切った文字列に変換
         $start = $request->start;
         $tag->start = "00:".$request->start;
         $tag->end = "00:".$request->end;
