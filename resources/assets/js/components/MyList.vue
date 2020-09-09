@@ -8,6 +8,7 @@
       <v-tab-item>
         <v-card flat>
           <MyPlaylistItem v-bind:mediaItems="myCreatedAndLikedPlaylistMediaItems" />
+          <!-- <MyPlaylistItem v-bind:mediaItems="myPlaylist" /> -->
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -58,7 +59,8 @@ export default {
         mediaItems,
         this.myCreatedAndLikedPlaylist
       );
-
+      console.log("media items", mediaItems);
+      
       return mediaItems;
     },
     myCreatedAndLikedTagVideoMediaItems() {
@@ -70,73 +72,79 @@ export default {
         mediaItems,
         this.myCreatedAndLikedTagVideo
       );
-      var groupedData = Object.values(
-        mediaItems.reduce(
-          (
-            result,
-            {
-              video_id,
-              category,
-              id,
-              title,
-              thumbnail,
-              created_at,
-              timeSince,
-              tagsList,
-              tags,
-              tagArray,
-              totalDuration,
-              start,
-              end,
-              preview,
-              previewgif,
-              sceneCount,
-              likeCount,
-              user_id,
-            }
-          ) => {
-            // Create new group
-            if (!result[video_id]) {
-              result[video_id] = {
-                video_id,
-                title,
-                tagVideoData: [],
-              };
-            }
-            // if (!result[title]) {
-            //   result[title]
-            // }
-            // Append to group
-            result[video_id].tagVideoData.push({
-              category,
-              id,
-              title,
-              thumbnail,
-              created_at,
-              timeSince,
-              tagsList,
-              tags,
-              tagArray,
-              totalDuration,
-              start,
-              end,
-              preview,
-              previewgif,
-              sceneCount,
-              likeCount,
-              user_id,
-            });
-            return result;
-          },
-          {}
-        )
-      );
-      groupedData.sort((a, b) => (a.video_id < b.video_id ? 1 : -1));
-      console.log("dddddddddddd", groupedData);
+
+      var groupedData = Object.values(mediaItems.reduce((result, {
+        video_id,
+        category,
+        id,
+        title,
+        thumbnail,
+        created_at,
+        timeSince,
+        tagsList,
+        tags,
+        tagArray,
+        totalDuration,
+        start,
+        end,
+        preview,
+        previewgif,
+        sceneCount,
+        likeCount,
+        user_id,
+      }) => {
+        // Create new group
+        if (!result[video_id]) { 
+          result[video_id] = {
+            video_id,
+            title,
+            tagVideoData: []
+          };
+        }
+        // if (!result[title]) {
+        //   result[title]
+        // }
+        // Append to group
+        result[video_id].tagVideoData.push({
+          category,
+          id,
+          title,
+          thumbnail,
+          created_at,
+          timeSince,
+          tagsList,
+          tags,
+          tagArray,
+          totalDuration,
+          start,
+          end,
+          preview,
+          previewgif,
+          sceneCount,
+          likeCount,
+          user_id,
+        });
+        return result;
+      }, {}));
+      groupedData.sort((a, b) => (a.video_id < b.video_id) ? 1 : -1);
       return groupedData;
     },
   },
   methods: {
+  //   myCreatedAndLikedPlaylistMediaItems() {
+  //     if (!this.myCreatedAndLikedPlaylist) return;
+
+  //     // プレイリストのデータをmyCreatedAndLikedPlaylistMediaItemsに格納
+  //     let mediaItems = [];
+  //     this.putPlaylistTagIntoMediaItems(
+  //       mediaItems,
+  //       this.myCreatedAndLikedPlaylist
+  //     );
+  //     console.log("media items", mediaItems);
+  //     setTimeout(this.$store.commit("playlist/setMyPlaylist", mediaItems), 10);
+      
+  //     return mediaItems;
+  //   },
     setActiveTab(key) {
       //開いたタブをセッションストレージに保存
       window.sessionStorage.setItem("myPageTabIndex", JSON.stringify(key));
@@ -149,6 +157,7 @@ export default {
       : "";
     //Likeまたは作成したプレイリストをロード
     await this.$store.dispatch("playlist/loadMyCreatedAndLikedPlaylist");
+    // this.myCreatedAndLikedPlaylistMediaItems();
     //Likeまたは作成したタグをロード
     await this.$store.dispatch("tag/loadMyCreatedAndLikedTagVideo");
   },

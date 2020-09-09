@@ -68,12 +68,6 @@
 
 export default {
   data: () => ({
-    item: {
-      color: '#952175',
-      src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
-      title: 'Halcyon Days',
-      artist: 'Ellie Goulding',
-    },
   }),
 }
 </script>

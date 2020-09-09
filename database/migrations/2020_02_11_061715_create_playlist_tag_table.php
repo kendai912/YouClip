@@ -16,6 +16,7 @@ class CreatePlaylistTagTable extends Migration
         Schema::create('playlist_tag', function (Blueprint $table) {
             $table->integer('playlist_id')->unsigned();
             $table->integer('tag_id')->unsigned();
+            $table->integer('scene_order')->unsigned();
             $table->primary(['playlist_id', 'tag_id']);
             $table->timestamps();
 
