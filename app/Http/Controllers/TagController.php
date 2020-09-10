@@ -329,10 +329,10 @@ class TagController extends Controller
         // echo $dl_cmd; exit;
 
         // shell_exec($dl_cmd);
-        $escaped_command = escapeshellcmd($dl_cmd);
-        echo $escaped_command;
+        // $escaped_command = escapeshellcmd($dl_cmd);
+        echo $dl_cmd;
         echo "command running";
-        system($escaped_command);
+        system($dl_cmd);
         echo "the end";
         exit;
         // var_dump($output);
