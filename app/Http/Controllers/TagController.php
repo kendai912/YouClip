@@ -323,9 +323,14 @@ class TagController extends Controller
         $previewThumbName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".png";
         $previewMp4Name = $request->youtubeId . "-" . $startSec . "-" . rand() . ".mp4";
         $cmd_png = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 2 '.storage_path()."/app/public/img/".$previewThumbName.' 2>&1';
+        echo "png start!!!";
         system($cmd_png);
+        echo "png end!!!";
+
         $cmd_avi = 'ffmpeg  -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/videos/".$previewMp4Name.' 2>&1';
+        echo "mp4 start!!!";
         system($cmd_avi);
+        echo "mp4 end!!!";
         $previews = [];
         $previews->previewThumbName = $previewThumbName;
         $previews->previewMp4Name = $previewMp4Name;
