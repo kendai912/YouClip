@@ -330,7 +330,7 @@ class TagController extends Controller
 
         // shell_exec($dl_cmd);
         $escaped_command = escapeshellcmd($dl_cmd);
-        system($escaped_command);
+        system($escaped_command); exit;
         // var_dump($output);
         return $previewMp4Name;
 
