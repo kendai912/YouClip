@@ -270,38 +270,6 @@ class TagController extends Controller
             );
         }
     }
-    // public function getVideoInfo($youtubeId){ 
-    //     return file_get_contents("https://www.youtube.com/get_video_info?video_id=".$youtubeId."&cpn=CouQulsSRICzWn5E&eurl&el=adunit");
-    // }
-    // public function getVideoDownloadLink($youtubeId){ 
-    //     //parse the string separated by '&' to array 
-    //     parse_str($this->getVideoInfo($youtubeId), $data); 
-    //     $videoData = json_decode($data['player_response'], true); 
-    //     $videoDetails = $videoData['videoDetails']; 
-    //     $streamingData = $videoData['streamingData']; 
-    //     $streamingDataFormats = $streamingData['formats']; 
-          
-    //     //set video title 
-    //     $this->video_title = $videoDetails["title"]; 
-          
-    //     //Get the youtube root link that contains video information 
-    //     $final_stream_map_arr = array(); 
-          
-    //     //Create array containing the detail of video  
-    //     foreach($streamingDataFormats as $stream){ 
-    //         $stream_data = $stream; 
-    //         $stream_data["title"] = $this->video_title; 
-    //         $stream_data["mime"] = $stream_data["mimeType"]; 
-    //         $mime_type = explode(";", $stream_data["mime"]); 
-    //         $stream_data["mime"] = $mime_type[0]; 
-    //         $start = stripos($mime_type[0], "/"); 
-    //         $format = ltrim(substr($mime_type[0], $start), "/"); 
-    //         $stream_data["format"] = $format; 
-    //         unset($stream_data["mimeType"]); 
-    //         $final_stream_map_arr [] = $stream_data;          
-    //     } 
-    //     return $final_stream_map_arr; 
-    // } 
        
     function getYoutubeDirectLinkMp4($url){
         $yt = new YouTubeDownloader();
