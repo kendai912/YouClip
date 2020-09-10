@@ -24,10 +24,10 @@
         v-bind:key="item.category+'-'+item.id"
         cols="6"
       >
-        <v-card class="mx-0" elevation="1" v-on:click.stop="select(item)">
+        <v-card class="mx-0" elevation="1" v-on:click.stop="switchThumb">
           <v-hover v-slot:default="{ hover }">
             <v-img
-              v-if="!hover"
+              v-if="!hover || isThumb"
               class="white--text align-end"
               max-height="266.66px"
               v-bind:src="'/storage/img/' + item.preview"
@@ -77,7 +77,9 @@ import LoadingItem from "../components/LoadingItem.vue";
 import myMixin from "../util";
 
 export default {
-  data: () => ({}),
+  data: () => ({
+    isThumb: true,
+  }),
   components: {
     LoadingItem
   },
@@ -92,10 +94,13 @@ export default {
     })
   },
   methods: {
+    switchThumb() {
+      this.isThumb = !this.isThumb;
+    },
     async select(mediaItem) {
-      await this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
       //プレイリストの場合
       if (mediaItem.category == "playlist") {
+        await this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
         //再生ページを表示
         this.$router
           .push({

@@ -120,12 +120,12 @@ export default {
   },
   methods: {
     async select(mediaItem) {
-      await this.$store.dispatch(
-        "playlist/addPlaylistVisitCount",
-        mediaItem.id
-      );
       //プレイリストの場合
       if (mediaItem.category == "playlist") {
+        await this.$store.dispatch(
+          "playlist/addPlaylistVisitCount",
+          mediaItem.id
+        );
         //再生ページを表示
         this.$router
           .push({
