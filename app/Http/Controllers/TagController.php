@@ -325,7 +325,7 @@ class TagController extends Controller
         $duration = 3;
         $endSec = $startSec + $duration;
         $previewMp4Name = $request->youtubeId . "-" . $startSec . "-" . rand() . ".avi";
-        $dl_cmd = 'ffmpeg  -ss '.$startSec.' -to '.$endSec.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/img/".$previewMp4Name.' 2>&1';
+        $dl_cmd = 'ffmpeg  -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/img/".$previewMp4Name.' 2>&1';
         // echo $dl_cmd; exit;
 
         // shell_exec($dl_cmd);
