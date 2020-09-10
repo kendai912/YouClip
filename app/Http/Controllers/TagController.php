@@ -332,8 +332,8 @@ class TagController extends Controller
         system($cmd_avi);
         echo "mp4 end!!!";
         $previews = [];
-        $previews->previewThumbName = $previewThumbName;
-        $previews->previewMp4Name = $previewMp4Name;
+        $previews['previewThumbName'] = $previewThumbName;
+        $previews['previewMp4Name'] = $previewMp4Name;
         return $previews;
 
         // $grabzIt = resolve('grabzit');
