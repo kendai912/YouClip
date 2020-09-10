@@ -232,7 +232,9 @@ class TagController extends Controller
             $tags = implode("::", $request->tags);
 
             //プレビュー用のgifを取得しファイル名を変数に格納
-            $previewGifFileName = $this->getPreviewFile($request);
+            $previews = $this->getPreviewFile($request);
+            $previewThumbName = $previews->previewThumbName;
+            $previewMp4Name = $previews->previewMp4Name;
             // $previewGifFileName = "";
 
             $start = $request->start;
@@ -244,8 +246,8 @@ class TagController extends Controller
             $tag->tags = $tags;
             $tag->start = "00:".$request->start;
             $tag->end = "00:".$request->end;
-            $tag->preview = $video->thumbnail;
-            $tag->previewgif = $previewGifFileName;
+            $tag->preview = $previewThumbName;
+            $tag->previewgif = $previewMp4Name;
             $tag->save();
 
             //保存したタグデータをリターン
@@ -302,13 +304,6 @@ class TagController extends Controller
     // } 
        
     function getYoutubeDirectLinkMp4($url){
-        // $youtube = "https://maadhav-ytdl.herokuapp.com/video_info.php?url=".$url;
-
-        // $curl = curl_init($youtube);
-        // curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        // $return = curl_exec($curl);
-        // curl_close($curl);
-        // $links = json_decode($return, true);
         $yt = new YouTubeDownloader();
         $links = $yt->getDownloadLinks($url);
 
@@ -324,19 +319,17 @@ class TagController extends Controller
         $startSec = $this->convertToSec("00:".$request->start);
         $duration = 3;
         $endSec = $startSec + $duration;
-        $previewMp4Name = $request->youtubeId . "-" . $startSec . "-" . rand() . ".avi";
-        $dl_cmd = 'ffmpeg  -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/img/".$previewMp4Name.' 2>&1';
-        // echo $dl_cmd; exit;
 
-        // shell_exec($dl_cmd);
-        // $escaped_command = escapeshellcmd($dl_cmd);
-        echo $dl_cmd;
-        echo "command running";
-        system($dl_cmd);
-        echo "the end";
-        exit;
-        // var_dump($output);
-        return $previewMp4Name;
+        $previewThumbName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".png";
+        $previewMp4Name = $request->youtubeId . "-" . $startSec . "-" . rand() . ".mp4";
+        $cmd_png = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 2 '.storage_path()."/app/public/img/".$previewThumbName.' 2>&1';
+        system($cmd_png);
+        $cmd_avi = 'ffmpeg  -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/videos/".$previewMp4Name.' 2>&1';
+        system($cmd_avi);
+        $previews = [];
+        $previews->previewThumbName = $previewThumbName;
+        $previews->previewMp4Name = $previewMp4Name;
+        return $previews;
 
         // $grabzIt = resolve('grabzit');
 
