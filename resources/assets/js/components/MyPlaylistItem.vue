@@ -92,7 +92,7 @@
                 <v-col cols="1" class="ma-0 pa-0 pt-4 text-center">
                   <div class="ma-auto" style="width: 20px; height: 20px;" v-if="user_id === item.user_id" v-on:click="editPlaylist(item)">
                     <span>
-                      <i class="fas fa-ellipsis-v my-grey"></i>
+                      <v-icon class="my-grey">mdi-pen</v-icon>
                     </span>
                   </div>
                 </v-col>

@@ -353,6 +353,13 @@
   font-weight: bold;
 }
 
+.color-black{
+  color: #000000;
+}
+.color-light-blue {
+  color: #e3f2fd;
+}
+
 .block-chip-lines2 {
   max-height: 50px;
   display: block;
