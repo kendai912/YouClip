@@ -233,8 +233,8 @@ class TagController extends Controller
 
             //プレビュー用のgifを取得しファイル名を変数に格納
             $previews = $this->getPreviewFile($request);
-            $previewThumbName = $previews->previewThumbName;
-            $previewMp4Name = $previews->previewMp4Name;
+            $previewThumbName = $previews['previewThumbName'];
+            $previewMp4Name = $previews['previewMp4Name'];
             // $previewGifFileName = "";
 
             $start = $request->start;
