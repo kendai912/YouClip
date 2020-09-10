@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 pb-3 body-color">
+  <v-container class="pa-0 py-3 body-color">
     <v-row
       v-for="videoItem in mediaItems"
       v-bind:key="videoItem.video_id"

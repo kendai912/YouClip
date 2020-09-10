@@ -193,7 +193,13 @@ class PlaylistController extends Controller
             $tagVideoDatas[] = $tagVideoData;
         }
 
-        usort($tagVideoDatas, fn($a, $b) => strcmp($a->scene_order, $b->scene_order));
+        // usort($tagVideoDatas, fn($a, $b) => strcmp($a->scene_order, $b->scene_order));
+        usort($tagVideoDatas, function($a, $b)
+             {
+                 if ($a["scene_order"] == $b["scene_order"])
+                     return (0);
+                 return (($a["scene_order"] < $b["scene_order"]) ? -1 : 1);
+             });
 
         //プレイリスト・タグ・動画のデータを連結
         $playlistAndTagVideoData = [
