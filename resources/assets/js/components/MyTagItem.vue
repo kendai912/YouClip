@@ -24,11 +24,10 @@
         v-bind:key="item.category+'-'+item.id"
         cols="6"
       >
-        <v-card class="mx-0" elevation="1">
+        <v-card class="mx-0" elevation="1" v-on:click.stop="select(item)">
           <v-hover v-slot:default="{ hover }">
             <v-img
               v-if="!hover"
-              v-on:click.stop="select(item)"
               class="white--text align-end"
               max-height="266.66px"
               v-bind:src="'/storage/img/' + item.preview"
