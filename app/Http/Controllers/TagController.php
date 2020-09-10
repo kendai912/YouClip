@@ -232,8 +232,8 @@ class TagController extends Controller
             $tags = implode("::", $request->tags);
 
             //プレビュー用のgifを取得しファイル名を変数に格納
-            // $previewGifFileName = $this->getPreviewFile($request);
-            $previewGifFileName = "";
+            $previewGifFileName = $this->getPreviewFile($request);
+            // $previewGifFileName = "";
 
             $start = $request->start;
 
@@ -320,31 +320,31 @@ class TagController extends Controller
 
     public function getPreviewFile($request)
     {
-        // $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
-        // $startSec = $this->convertToSec("00:".$request->start);
-        // $duration = 3;
-        // $endSec = $startSec + $duration;
-        // $previewMp4Name = $request->youtubeId . "-" . $startSec . "-" . rand() . ".mp4";
-        // $dl_cmd = 'ffmpeg  -ss '.$startSec.' -to '.$endSec.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/img/".$previewMp4Name.' 2>&1';
-        // // echo $dl_cmd; exit;
-        // // var_dump($output);
-        // return $previewMp4Name;
-
-        $grabzIt = resolve('grabzit');
-
-        $options = new \GrabzIt\GrabzItAnimationOptions();
-        $options->setDuration(3);
+        $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
         $startSec = $this->convertToSec("00:".$request->start);
-        $options->setStart($startSec);
-        $options->setQuality(100);
-        $options->setWidth(600);
-        $options->setHeight(-1);
+        $duration = 3;
+        $endSec = $startSec + $duration;
+        $previewMp4Name = $request->youtubeId . "-" . $startSec . "-" . rand() . ".mp4";
+        $dl_cmd = 'ffmpeg  -ss '.$startSec.' -to '.$endSec.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/img/".$previewMp4Name.' 2>&1';
+        echo $dl_cmd; exit;
+        // var_dump($output);
+        return $previewMp4Name;
 
-        $previewGifFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
-        $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=" . $request->youtubeId, $options);
-        $grabzIt->SaveTo(storage_path(). "/app/public/img/" . $previewGifFileName);
+        // $grabzIt = resolve('grabzit');
 
-        return $previewGifFileName;
+        // $options = new \GrabzIt\GrabzItAnimationOptions();
+        // $options->setDuration(3);
+        // $startSec = $this->convertToSec("00:".$request->start);
+        // $options->setStart($startSec);
+        // $options->setQuality(100);
+        // $options->setWidth(600);
+        // $options->setHeight(-1);
+
+        // $previewGifFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
+        // $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=" . $request->youtubeId, $options);
+        // $grabzIt->SaveTo(storage_path(). "/app/public/img/" . $previewGifFileName);
+
+        // return $previewGifFileName;
     }
 
     /**
