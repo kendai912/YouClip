@@ -41,7 +41,7 @@
                 </div>
               </v-card-text>
             </v-img>
-            <video v-else controls autoplay muted style="width: 100%; height: 150px;">
+            <video v-else controls autoplay muted style="width: 100%; height: 100%;">
               <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
             </video>
           </v-hover>
