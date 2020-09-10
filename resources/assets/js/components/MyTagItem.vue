@@ -24,13 +24,14 @@
         v-bind:key="item.category+'-'+item.id"
         cols="6"
       >
-        <v-hover v-slot:default="{ hover }">
-          <v-card class="mx-0" elevation="1">
+        <v-card class="mx-0" elevation="1">
+          <v-hover v-slot:default="{ hover }">
             <v-img
+              v-if="!hover"
               v-on:click.stop="select(item)"
               class="white--text align-end"
               max-height="266.66px"
-              v-bind:src="hover ? '/storage/img/' + item.previewgif : item.preview"
+              v-bind:src="'/storage/img/' + item.preview"
               v-bind:alt="item.title"
               aspect-ratio="1.5"
             >
@@ -56,9 +57,12 @@
                 </div>
               </v-card-text>
             </v-img>
+            <video v-else controls autoplay muted style="width: 100%; height: 150px;">
+              <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
+            </video>
+          </v-hover>
             
-          </v-card>
-        </v-hover>
+        </v-card>
       </v-col>
       <!-- <v-col cols="12" class="px-1">
         <v-divider></v-divider>
