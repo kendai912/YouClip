@@ -328,7 +328,9 @@ class TagController extends Controller
         $dl_cmd = 'ffmpeg  -ss '.$startSec.' -to '.$endSec.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/img/".$previewMp4Name.' 2>&1';
         // echo $dl_cmd; exit;
 
-        shell_exec($dl_cmd);
+        // shell_exec($dl_cmd);
+        $escaped_command = escapeshellcmd($dl_cmd);
+        system($escaped_command);
         // var_dump($output);
         return $previewMp4Name;
 
