@@ -98,6 +98,7 @@ export default {
   data: () => ({
     enabled: true,
     dragging: false,
+    isMobile: false
   }),
   components: {
     LoadingItem,
@@ -158,6 +159,7 @@ export default {
     }
   },
   created() {
+    this.isMobile = this.checkMobile();
   }
 };
 </script>
