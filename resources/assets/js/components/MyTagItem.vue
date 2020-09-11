@@ -29,7 +29,7 @@
             <v-img
               class="white--text align-end"
               max-height="266.66px"
-              v-bind:src="hover ? '/storage/img/' + item.previewgif: '/storage/img/' + item.preview"
+              v-bind:src="hover ? '/storage/gifs/' + item.previewgif: '/storage/img/' + item.preview"
               v-bind:alt="item.title"
               aspect-ratio="1.5"
             >
