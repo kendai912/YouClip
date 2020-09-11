@@ -24,8 +24,8 @@
         v-bind:key="item.category+'-'+item.id"
         cols="6"
       >
-        <v-card class="mx-0" elevation="1" v-if="!isMobile" v-on:click.stop="select(item)">
-          <v-hover v-slot:default="{ hover }">
+        <v-card class="mx-0" elevation="1" v-on:click.stop="select(item)">
+          <v-hover v-if="!isMobile" v-slot:default="{ hover }">
             <v-img
               class="white--text align-end"
               max-height="266.66px"
@@ -59,14 +59,13 @@
               <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
             </video> -->
           </v-hover>
-        </v-card>
-        <v-card class="mx-0" elevation="1" v-on:click.stop="select(item)" v-else>
           <v-img
-              class="white--text align-end"
-              max-height="266.66px"
-              v-bind:src="'/storage/gifs/' + item.previewgif"
-              v-bind:alt="item.title"
-              aspect-ratio="1.5"
+            v-else
+            class="white--text align-end"
+            max-height="266.66px"
+            v-bind:src="'/storage/gifs/' + item.previewgif"
+            v-bind:alt="item.title"
+            aspect-ratio="1.5"
           >
             <v-chip label color="#27252582" text-color="white" class="my-scene-time">
               <span class="caption">{{item.start+'~'+item.end}}</span>

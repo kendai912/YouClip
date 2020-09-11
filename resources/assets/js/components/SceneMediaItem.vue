@@ -8,7 +8,7 @@
     >
       <v-col class="px-0" style="padding-top: 2px; paddint-bottom: 2px;">
         <v-card class="mx-auto" max-width="420" elevation="0" style="border-radius: 2px;">
-          <v-hover v-slot:default="{ hover }">
+          <v-hover v-if="!isMobile" v-slot:default="{ hover }">
             <v-img
               v-on:click.stop="select(item)"
               class="white--text align-end"
@@ -44,6 +44,38 @@
               <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
             </video> -->
           </v-hover>
+          <v-img
+            v-else
+            v-on:click.stop="select(item)"
+            class="white--text align-end"
+            max-height="266.66px"
+            v-bind:src="'/storage/gifs/' + item.previewgif"
+            v-bind:alt="item.title"
+            aspect-ratio="1.5"
+          >
+            <v-chip label color="#27252582" text-color="white" class="scene-chip">
+              {{item.start+'&nbsp;~&nbsp;'+item.end}}
+            </v-chip>
+
+            <v-card-text class="pa-2">
+              <div class="horizontal-list-wrap block-chip-lines3">
+                <v-chip
+                  v-for="(tag, tagIndex) in item.tagArray"
+                  v-bind:key="item.id + '-' + tagIndex"
+                  class="my-tag-chip"
+                  small
+                  color="blue lighten-5"
+                  text-color="black"
+                  style="font-weight: normal"
+                >
+                  <v-avatar left>
+                    <i class="fas fa-tag my-black"></i>
+                  </v-avatar>
+                  {{ tag }}
+                </v-chip>
+              </div>
+            </v-card-text>
+          </v-img>
           <v-list-item class="px-2 pt-0 pb-2 mb-2">
             <v-list width="55px" class="py-1 pl-1 pr-3">
               <v-img src="/storage/icons/yt_social_red.png" />
@@ -103,7 +135,9 @@ import LoadingItem from "../components/LoadingItem.vue";
 import myMixin from "../util";
 
 export default {
-  data: () => ({}),
+  data: () => ({
+    isMobile: false,
+  }),
   components: {
     LoadingItem,
   },
@@ -155,5 +189,8 @@ export default {
     },
   },
   mounted() {},
+  created() {
+    this.isMobile = this.checkMobile();
+  }
 };
 </script>
