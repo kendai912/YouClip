@@ -277,7 +277,7 @@ class TagController extends Controller
 
         $key = array_search('136', array_column($links, 'itag'));
         $yturl = $links[$key]['url'];
-        var_dump($yturl); exit;
+        // var_dump($yturl); exit;
         return $yturl;
     }
 
