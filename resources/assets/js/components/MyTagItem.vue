@@ -27,10 +27,9 @@
         <v-card class="mx-0" elevation="1" v-on:click.stop="switchThumb">
           <v-hover v-slot:default="{ hover }">
             <v-img
-              v-if="!hover || isThumb"
               class="white--text align-end"
               max-height="266.66px"
-              v-bind:src="'/storage/img/' + item.preview"
+              v-bind:src="hover ? '/storage/img/' + item.previewgif: '/storage/img/' + item.preview"
               v-bind:alt="item.title"
               aspect-ratio="1.5"
             >
@@ -56,9 +55,9 @@
                 </div>
               </v-card-text>
             </v-img>
-            <video v-else :poster="'/storage/videos/'+item.preview" autoplay muted playsinline style="width: 100%; height: 100%;">
+            <!-- <video v-else :poster="'/storage/videos/'+item.preview" autoplay muted playsinline style="width: 100%; height: 100%;">
               <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
-            </video>
+            </video> -->
           </v-hover>
             
         </v-card>

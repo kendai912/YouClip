@@ -234,7 +234,7 @@ class TagController extends Controller
             //プレビュー用のgifを取得しファイル名を変数に格納
             $previews = $this->getPreviewFile($request);
             $previewThumbName = $previews['previewThumbName'];
-            $previewMp4Name = $previews['previewMp4Name'];
+            $previewGifName = $previews['previewGifName'];
             // $previewGifFileName = "";
 
             $start = $request->start;
@@ -247,7 +247,7 @@ class TagController extends Controller
             $tag->start = "00:".$request->start;
             $tag->end = "00:".$request->end;
             $tag->preview = $previewThumbName;
-            $tag->previewgif = $previewMp4Name;
+            $tag->previewgif = $previewGifName;
             $tag->save();
 
             //保存したタグデータをリターン
@@ -289,19 +289,20 @@ class TagController extends Controller
         $endSec = $startSec + $duration;
 
         $previewThumbName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".png";
-        $previewMp4Name = $request->youtubeId . "-" . $startSec . "-" . rand() . ".mp4";
+        $previewGifName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
         $cmd_png = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 2 '.storage_path()."/app/public/img/".$previewThumbName.' 2>&1';
         echo "png start!!!";
         system($cmd_png);
         echo "png end!!!";
 
-        $cmd_avi = 'ffmpeg  -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/videos/".$previewMp4Name.' 2>&1';
-        echo "mp4 start!!!";
-        system($cmd_avi);
-        echo "mp4 end!!!";
+        $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
+        // $cmd_avi = 'ffmpeg  -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/videos/".$previewMp4Name.' 2>&1';
+        echo "gif start!!!";
+        system($cmd_gif);
+        echo "gif end!!!";
         $previews = [];
         $previews['previewThumbName'] = $previewThumbName;
-        $previews['previewMp4Name'] = $previewMp4Name;
+        $previews['previewGifName'] = $previewGifName;
         return $previews;
 
         // $grabzIt = resolve('grabzit');
@@ -361,10 +362,10 @@ class TagController extends Controller
             //更新したpreview用のgifを再取得
             $previews = $this->getPreviewFile($request);
             $previewThumbName = $previews['previewThumbName'];
-            $previewMp4Name = $previews['previewMp4Name'];
+            $previewGifName = $previews['previewGifName'];
             // $previewGifFileName = $this->getPreviewFile($request);
             $tag->preview = $previewThumbName;
-            $tag->previewgif = $previewMp4Name;
+            $tag->previewgif = $previewGifName;
         }
         $tag->tags = implode("::", $request->tags); //タグの配列を「::」で区切った文字列に変換
         $start = $request->start;
