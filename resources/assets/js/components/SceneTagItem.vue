@@ -27,10 +27,9 @@
                     <v-col cols="6" class="pa-1">
                       <v-hover v-slot:default="{ hover }">
                         <v-img
-                          v-if="!hover"
                           v-on:click.stop="select(item)"
                           class="white--text align-end"
-                          v-bind:src="'/storage/img/' + item.preview"
+                          v-bind:src="hover ? '/storage/gifs/' + item.previewgif: '/storage/img/' + item.preview"
                           v-bind:alt="item.title"
                           aspect-ratio="1.5"
                           height="120"
@@ -39,9 +38,9 @@
                             <span class="caption">{{item.start+'~'+item.end}}</span>
                           </v-chip>
                         </v-img>
-                        <video v-else controls autoplay muted style="width: 100%; height: 100%;">
+                        <!-- <video v-else controls autoplay muted style="width: 100%; height: 100%;">
                           <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
-                        </video>
+                        </video> -->
                       </v-hover>
                     </v-col>
                     <v-col cols="6" class="pa-1 py-3">
