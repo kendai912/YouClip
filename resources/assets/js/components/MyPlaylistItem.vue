@@ -20,7 +20,7 @@
                 <v-col cols="11" class="pa-0">
                   <v-row class="ma-0">
                     <v-col cols="6" class="pa-1">
-                      <v-hover v-slot:default="{ hover }">
+                      <v-hover v-if="!isMobile" v-slot:default="{ hover }">
                         <v-img
                           v-on:click.stop="select(item)"
                           class="white--text align-end"
@@ -42,6 +42,27 @@
                           <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
                         </video> -->
                       </v-hover>
+                      <v-img
+                        v-else
+                        v-on:click.stop="select(item)"
+                        class="white--text align-end"
+                        v-bind:src="'/storage/gifs/' + item.previewgif"
+                        v-bind:alt="item.title"
+                        aspect-ratio="1.5"
+                        height="142"
+                      >
+                        <v-chip label color="#27252582" text-color="white" class="my-scene-chip">
+                          <v-img
+                            src="/storage/icons/playlist_icon.png"
+                            width="16px"
+                            max-height="16px"
+                          />
+                          <span class="caption">&nbsp;{{item.sceneCount}}&nbsp;シーン</span>
+                        </v-chip>
+                      </v-img>
+                      <!-- <video v-else controls autoplay muted style="width: 100%; height: 100%;">
+                        <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
+                      </video> -->
                     </v-col>
                     <v-col cols="6" class="pa-1 py-3">
                       <v-card-title v-on:click.stop="select(item)" class="py-0 d-inline">
@@ -115,7 +136,8 @@ import myMixin from "../util";
 export default {
   data: () => ({
     enabled: true,
-    dragging: false
+    dragging: false,
+    isMobile: false
   }),
   components: {
     LoadingItem,
@@ -185,6 +207,9 @@ export default {
     }
   },
   mounted() {
+  },
+  created() {
+    this.isMobile = this.checkMobile();
   }
 };
 </script>

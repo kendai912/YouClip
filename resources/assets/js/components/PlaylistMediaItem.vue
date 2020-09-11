@@ -8,7 +8,7 @@
     >
       <v-col class="px-0" style="padding-top: 2px; paddint-bottom: 2px;">
         <v-card class="mx-auto" max-width="420" elevation="0" style="border-radius: 2px;">
-          <v-hover v-slot:default="{ hover }">
+          <v-hover v-if="!isMobile" v-slot:default="{ hover }">
             <v-img
               v-on:click.stop="select(item)"
               class="white--text align-end"
@@ -29,6 +29,23 @@
               <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
             </video> -->
           </v-hover>
+          <v-img
+            v-else
+            v-on:click.stop="select(item)"
+            class="white--text align-end"
+            max-height="266.66px"
+            v-bind:src="'/storage/gifs/' + item.previewgif"
+            v-bind:alt="item.title"
+            aspect-ratio="1.5"
+          >
+            <v-chip label color="#27252582" text-color="white" class="scene-chip">
+              <v-img
+                src="/storage/icons/playlist_icon.png"
+                width="28px"
+                max-height="28px"
+              />&nbsp;{{item.sceneCount}}&nbsp;シーン
+            </v-chip>
+          </v-img>
           <v-list-item class="pl-2 mb-0">
             <v-list width="55px" class="pt-1 pb-0 pl-1 pr-3 ">
               <v-img src="/storage/icons/clip.svg"/>
@@ -80,7 +97,9 @@ import LoadingItem from "../components/LoadingItem.vue";
 import myMixin from "../util";
 
 export default {
-  data: () => ({}),
+  data: () => ({
+    isMobile: false,
+  }),
   components: {
     LoadingItem
   },
@@ -129,6 +148,9 @@ export default {
     }
   },
   mounted() {
+  },
+  created() {
+    this.isMobile = this.checkMobile();
   }
 };
 </script>
