@@ -10,11 +10,10 @@
         <v-card class="mx-auto" max-width="420" elevation="0" style="border-radius: 2px;">
           <v-hover v-slot:default="{ hover }">
             <v-img
-              v-if="!hover"
               v-on:click.stop="select(item)"
               class="white--text align-end"
               max-height="266.66px"
-              v-bind:src="'/storage/img/' + item.preview"
+              v-bind:src="hover ? '/storage/gifs/' + item.previewgif: '/storage/img/' + item.preview"
               v-bind:alt="item.title"
               aspect-ratio="1.5"
             >
@@ -41,9 +40,9 @@
                 </div>
               </v-card-text>
             </v-img>
-            <video v-else controls autoplay muted style="width: 100%; height: 100%;">
+            <!-- <video v-else controls autoplay muted style="width: 100%; height: 100%;">
               <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
-            </video>
+            </video> -->
           </v-hover>
           <v-list-item class="px-2 pt-0 pb-2 mb-2">
             <v-list width="55px" class="py-1 pl-1 pr-3">

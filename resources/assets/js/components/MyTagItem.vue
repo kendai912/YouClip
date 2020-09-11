@@ -24,8 +24,8 @@
         v-bind:key="item.category+'-'+item.id"
         cols="6"
       >
-        <v-card class="mx-0" elevation="1" v-on:click.stop="switchThumb">
-          <v-hover v-slot:default="{ hover }">
+        <v-card class="mx-0" elevation="1" v-on:click.stop="select(item)">
+          <v-hover v-if="isMobile" v-slot:default="{ hover }">
             <v-img
               class="white--text align-end"
               max-height="266.66px"
@@ -59,7 +59,36 @@
               <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
             </video> -->
           </v-hover>
-            
+          <v-img
+              v-else
+              class="white--text align-end"
+              max-height="266.66px"
+              v-bind:src="'/storage/gifs/' + item.previewgif"
+              v-bind:alt="item.title"
+              aspect-ratio="1.5"
+          >
+            <v-chip label color="#27252582" text-color="white" class="my-scene-time">
+              <span class="caption">{{item.start+'~'+item.end}}</span>
+            </v-chip>
+            <v-card-text class="px-1" style="position: absolute; bottom: 0;">
+              <div class="horizontal-list-wrap block-chip-line">
+                <v-chip
+                  v-for="(tag, tagIndex) in item.tagArray"
+                  v-bind:key="item.id + '-' + tagIndex"
+                  class="my-tag-chip"
+                  small
+                  color="blue lighten-5"
+                  text-color="black"
+                  style="font-weight: normal"
+                >
+                  <v-avatar left>
+                    <i class="fas fa-tag my-black"></i>
+                  </v-avatar>
+                  {{ tag }}
+                </v-chip>
+              </div>
+            </v-card-text>
+          </v-img>
         </v-card>
       </v-col>
       <!-- <v-col cols="12" class="px-1">
@@ -77,7 +106,7 @@ import myMixin from "../util";
 
 export default {
   data: () => ({
-    isThumb: true,
+    isMobile: false,
   }),
   components: {
     LoadingItem
@@ -131,6 +160,7 @@ export default {
   },
   created() {
     console.log("media items", this.mediaItems);
+    this.isMobile = this.mobileCheck();
   }
 };
 </script>
