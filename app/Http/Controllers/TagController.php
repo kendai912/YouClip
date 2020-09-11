@@ -276,8 +276,8 @@ class TagController extends Controller
         $links = $yt->getDownloadLinks($url);
 
         $key = array_search('136', array_column($links, 'itag'));
-        var_dump($key); exit;
         $yturl = $links[$key]['url'];
+        var_dump($yturl); exit;
         return $yturl;
     }
 
