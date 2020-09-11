@@ -359,8 +359,12 @@ class TagController extends Controller
             unlink(storage_path(). "/app/public/img/" . $tag->previewgif);
 
             //更新したpreview用のgifを再取得
-            $previewGifFileName = $this->getPreviewFile($request);
-            $tag->previewgif = $previewGifFileName;
+            $previews = $this->getPreviewFile($request);
+            $previewThumbName = $previews['previewThumbName'];
+            $previewMp4Name = $previews['previewMp4Name'];
+            // $previewGifFileName = $this->getPreviewFile($request);
+            $tag->preview = $previewThumbName;
+            $tag->previewgif = $previewMp4Name;
         }
         $tag->tags = implode("::", $request->tags); //タグの配列を「::」で区切った文字列に変換
         $start = $request->start;
