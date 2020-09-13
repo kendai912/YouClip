@@ -19,6 +19,11 @@ export default {
     YTSearchBox,
     YTitem
   },
+  data() {
+    return {
+      pageNumber: 1
+    }
+  },
   mixins: [myMixin],
   methods: {
     //表示するYoutube検索結果の無限スクロール
@@ -27,7 +32,8 @@ export default {
       this.$store.commit("YTsearch/setIsYTLoading", true);
 
       //無限スクロールに合わせてYoutubeの検索結果を取得
-      await this.$store.dispatch("YTsearch/YTsearch");
+      await this.$store.dispatch("YTsearch/YTsearch", this.pageNumber);
+      this.pageNumber ++;
 
       //ローディングを非表示
       this.$store.commit("YTsearch/setIsYTLoading", false);

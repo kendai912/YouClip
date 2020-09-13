@@ -55,7 +55,6 @@ export default {
     //前回の検索結果を空にする
     this.$store.commit("YTsearch/clearYTRecentVideos");
     this.getYTRecentVideos();
-    console.log("eeeeeeeeeeeeee", this.YTRecentVideos);
   }
 };
 </script>
