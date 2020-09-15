@@ -233,7 +233,7 @@ const actions = {
     context.commit("setKeyOfSearch", context.getters["keyIndex"]);
     context.commit("setKeyOfVideos", context.getters["keyIndex"]);
 
-    const response = await axios.get("http://youtube-scrape.herokuapp.com/api/search", {
+    const response = await axios.get("http://ec2-54-238-6-75.ap-northeast-1.compute.amazonaws.com:3000/api/search", {
       params: {
         q:state.paramsOfSearch.q,
         page: pageNumber
@@ -253,22 +253,19 @@ const actions = {
 
       // //searchのAPI検索結果を格納
       // context.commit("setYTsearchResponse", response.data.items);
-      let res = response.results;
+      let res = response.data.results;
       //searchとvideosのAPI検索結果をまとめてYTresultに格納
       let YTresult = [];
       for (let i = 0; i < res.length; i++) {
-        if (res[i].video) {
-          let viewCount = res[i].video.views.split(" ")[0].replace(",", "");
-          YTresult[i] = {
-            youtubeId: res[i].video.id,
-            thumbnails: res[i].video.thumbnail_src,
-            title: res[i].video.title,
-            // channelTitle: state.YTsearchResponse[i].snippet.channelTitle,
-            // publishedAt: state.YTsearchResponse[i].snippet.publishedAt,
-            duration: res[i].video.duration,
-            viewCount: parseInt(viewCount),
-          };
-        }
+        YTresult[i] = {
+          youtubeId: res[i].id,
+          thumbnails: res[i].thumbnail_src,
+          title: res[i].title,
+          // channelTitle: state.YTsearchResponse[i].snippet.channelTitle,
+          publishedAt: res[i].release_date,
+          duration: res[i].duration,
+          viewCount: res[i].num_views
+        };
       }
       console.log("yt result", YTresult);
       context.commit("setYTResult", YTresult);
