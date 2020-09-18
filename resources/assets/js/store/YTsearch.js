@@ -240,7 +240,7 @@ const actions = {
     //   },
     //   apiUrl: state.apiOfScraping,
     // });
-    const response = await axios.get("https://ytserver.net/:3000/api/search", {
+    const response = await axios.get("https://ytserver.net:3000/api/search", {
       params: {
         q:state.paramsOfSearch.q,
         page: pageNumber
