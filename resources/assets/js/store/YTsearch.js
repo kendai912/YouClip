@@ -17,6 +17,7 @@ const state = {
   YTvideosResponse: [],
   topYTSearchqueries: [],
   YTsearchHistories: [],
+  apiOfScraping: "http://ec2-54-238-6-75.ap-northeast-1.compute.amazonaws.com:3000",
   apiOfSearch: "https://www.googleapis.com/youtube/v3/search",
   apiOfVideos: "https://www.googleapis.com/youtube/v3/videos",
   paramsOfSearch: {
@@ -232,8 +233,14 @@ const actions = {
     //検索と動画データのAPI Keyをセット
     context.commit("setKeyOfSearch", context.getters["keyIndex"]);
     context.commit("setKeyOfVideos", context.getters["keyIndex"]);
-
-    const response = await axios.get("http://ec2-54-238-6-75.ap-northeast-1.compute.amazonaws.com:3000/api/search", {
+    // const response = await axios.post("api/search/getYoutubeScrapingResults", {
+    //   params: {
+    //     q:state.paramsOfSearch.q,
+    //     page: pageNumber
+    //   },
+    //   apiUrl: state.apiOfScraping,
+    // });
+    const response = await axios.get("https://ytserver.net/:3000/api/search", {
       params: {
         q:state.paramsOfSearch.q,
         page: pageNumber
@@ -261,7 +268,7 @@ const actions = {
           youtubeId: res[i].id,
           thumbnails: res[i].thumbnail_src,
           title: res[i].title,
-          // channelTitle: state.YTsearchResponse[i].snippet.channelTitle,
+          channelTitle: res[i].channel,
           publishedAt: res[i].release_date,
           duration: res[i].duration,
           viewCount: res[i].num_views

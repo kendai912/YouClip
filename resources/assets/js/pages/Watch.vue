@@ -9,7 +9,38 @@
           <v-container class="ma-0 pa-0" fluid>
             <v-row class="ma-0 pa-0" align="center">
               <v-col class="ma-0 pa-0">
-                <span>{{ playlistName }}</span>
+                <v-row v-if="playlistIdUrl" class="ma-0 pa-0">
+                  <v-col cols="1" class="ma-0 pa-0 text-center d-flex mx-2">
+                    <v-img
+                      src="/storage/icons/clip.svg"
+                      width="24px"
+                      max-width="24px"
+                      max-height="24px"
+                      class="ma-auto"
+                    />
+                  </v-col>
+                  <v-col cols="auto" class="ma-0 pa-0">
+                    <div>
+                      <span class="font-weight-bold">{{ playlistName }}</span>
+                    </div>
+                    <div>
+                      <v-avatar size="16" v-on:click.stop="gotoFollow">
+                        <v-img
+                          src="/storage/logos/pph_son.png"
+                          class="float-left"
+                        />
+                      </v-avatar>
+                      <span>{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span>
+                      <span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
+                      <span>合計{{ totalDuration }}</span>
+                      <span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
+                      <span>{{ playlistCreatedAt }}前</span>
+                    </div>
+                  </v-col>
+                </v-row>
+                <!-- <v-row v-else class="ma-0 pa-0">
+                </v-row> -->
+                <span v-else class="font-weight-bold">{{ playlistName }}</span>
               </v-col>
               <v-col cols="auto" class="ma-0 pa-0 text-right">
                 <v-bottom-navigation
@@ -19,7 +50,7 @@
                   style="height: 48px; justify-content: flex-end"
                 >
                   <v-btn v-on:click="sharePlaylist" class="ma-0 pa-0 narrow-btn">
-                    <span>リスト共有</span>
+                    <span>クリップ共有</span>
                     <v-icon class="icon-large my-grey">mdi-share</v-icon>
                   </v-btn>
                   <v-btn v-on:click="toggleLikePlaylist" class="ma-0 pa-0 narrow-btn">
@@ -36,9 +67,24 @@
         </v-sheet>
 
         <v-sheet tile class="mx-auto pa-1">
-          <div>
-            <span>{{ currentTitle }}</span>
-          </div>
+          <v-row class="ma-0 pa-0">
+            <v-col class="ma-0 pa-0">
+              <v-img
+                src="/storage/icons/yt_social_red.png"
+                width="28px"
+                max-height="28px"
+                class="float-left mr-2"
+              />
+              <div>
+                <span>{{ currentTitle }}</span>
+              </div>
+            </v-col>
+            <v-col cols="1" class="ma-0 pa-0 text-right">
+              <span v-on:click="openOtherActionModal">
+                <i class="fas fa-ellipsis-v my-grey"></i>
+              </span>
+            </v-col>
+          </v-row>
         </v-sheet>
 
         <v-sheet tile class="mx-auto pa-1">
@@ -46,7 +92,7 @@
             <v-col class="ma-0 pa-0">
               <span>{{ startIs }}〜{{ endIs }}</span>
             </v-col>
-            <v-col cols="8" class="ma-0 pa-0">
+            <v-col cols="9" class="ma-0 pa-0">
               <div class="horizontal-list-wrap">
                 <ul class="horizontal-list">
                   <li class="item">
@@ -67,30 +113,21 @@
                 </ul>
               </div>
             </v-col>
-            <v-col cols="1" class="ma-0 pa-0 text-right">
-              <span v-on:click="openOtherActionModal">
-                <i class="fas fa-ellipsis-v my-grey"></i>
-              </span>
-            </v-col>
           </v-row>
         </v-sheet>
 
         <v-sheet tile class="mx-auto pa-1">
-          <v-row class="ma-0 pa-0" align="center" justify="end">
-            <v-col cols="auto" class="ma-0 pa-0">
+          <v-row class="ma-0 pa-0" align="center" justify="between">
+            <v-col class="ma-0 pa-0">
               <v-bottom-navigation
                 class="bottom_navigation_no_shadow"
                 elevation="0"
                 background-color="transparent"
-                style="height: 48px; justify-content: flex-end"
+                style="height: 48px; justify-content: space-between"
               >
                 <v-btn v-on:click="openPlaySpeedModal" class="ma-0 pa-0 narrow-btn">
                   <span>倍速視聴</span>
-                  <v-img
-                    src="/storage/icons/play_speed.png"
-                    width="28px"
-                    max-height="28px"
-                  />
+                  <v-img src="/storage/icons/play_speed.png" width="28px" max-height="28px" />
                 </v-btn>
                 <v-btn v-if="isMuted" v-on:click="unmute" class="ma-0 pa-0 narrow-btn">
                   <span>消音解除</span>
@@ -129,10 +166,7 @@
           v-bind:created_user_id="playlistIdUrl ? playlistAndTagVideoData.user_id : tagAndVideoData[0].tag_user_id"
           v-on:deleteSucceed="deleteSucceed"
         />
-        <PlaySpeedModal
-          v-if="showPlaySpeedModal"
-          v-bind:player="player"
-        />
+        <PlaySpeedModal v-if="showPlaySpeedModal" v-bind:player="player" />
         <SceneTagControl
           v-if="showSceneTagControl"
           v-bind:player="player"
@@ -160,7 +194,7 @@ export default {
     AddPlaylistModal,
     OtherActionModal,
     PlaySpeedModal,
-    SceneTagControl
+    SceneTagControl,
   },
   data() {
     return {
@@ -171,7 +205,10 @@ export default {
       isPlayerReady: false,
       player: null,
       timer: null,
-      isMuted: true
+      isMuted: true,
+      mediaItems: [],
+      playlistCreatedAt: "",
+      totalDuration: "00:00:00"
     };
   },
   mixins: [myMixin],
@@ -179,12 +216,12 @@ export default {
     ...mapMutations({
       openShareModal: "shareModal/openShareModal",
       openOtherActionModal: "otherActionModal/openOtherActionModal",
-      openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal"
+      openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal",
     }),
     startTimer() {
       let self = this;
 
-      this.timer = setInterval(function() {
+      this.timer = setInterval(function () {
         //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
         self.$store.commit(
           "youtube/setCurrentTime",
@@ -202,16 +239,16 @@ export default {
           path: "/watch",
           query: {
             playlist: playlistId,
-            index: index
-          }
+            index: index,
+          },
         })
-        .catch(err => {});
+        .catch((err) => {});
 
       //次のシーンをロードし再生
       this.player.loadVideoById({
         videoId: this.currentYoutubeId,
         startSeconds: this.convertToSec(this.formatToMinSec(this.startHis)),
-        endSeconds: this.convertToSec(this.formatToMinSec(this.endHis))
+        endSeconds: this.convertToSec(this.formatToMinSec(this.endHis)),
       });
     },
     toggleLike() {
@@ -330,17 +367,17 @@ export default {
           // 削除後に他のシーンがない場合、トップページに遷移
           this.$router
             .push({
-              path: "/home"
+              path: "/home",
             })
-            .catch(err => {});
+            .catch((err) => {});
         }
       } else if (this.$route.query.tag) {
         //タグ再生の場合、トップページに戻る
         this.$router
           .push({
-            path: "/home"
+            path: "/home",
           })
-          .catch(err => {});
+          .catch((err) => {});
       }
 
       //削除後のデータをリロード
@@ -353,6 +390,17 @@ export default {
     mute() {
       this.player.mute();
       this.isMuted = true;
+    },
+    gotoFollow() {
+      let user_id = this.playlistIdUrl ? this.playlistAndTagVideoData.user_id : this.tagAndVideoData[0].tag_user_id
+      this.$router
+        .push({
+          path: "/myfollow",
+          query: {
+            user_id: user_id
+          }
+        })
+        .catch(err => {});
     },
   },
   computed: {
@@ -369,6 +417,7 @@ export default {
       tagAndVideoData: "watch/tagAndVideoData",
       isPlaylist: "watch/isPlaylist",
       playlistName: "watch/playlistName",
+      playlistViewCount: "watch/playlistViewCount",
       currentTagName: "watch/currentTagName",
       currentTagNameArray: "watch/currentTagNameArray",
       showLoginModal: "noLoginModal/showLoginModal",
@@ -379,7 +428,7 @@ export default {
       showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
       showSceneTagControl: "tagging/showSceneTagControl",
       isEditting: "tagging/isEditting",
-      playSpeed: "watch/playSpeed"
+      playSpeed: "watch/playSpeed",
     }),
     isLiked() {
       return this.$store.getters["like/isLiked"](this.currentTagId);
@@ -402,9 +451,9 @@ export default {
     },
     endIs() {
       return this.formatToMinSec(this.endHis);
-    }
+    },
   },
-  mounted: async function() {
+  mounted: async function () {
     //ナビバーを非表示
     this.$store.commit("navbar/setShowNavbar", false);
 
@@ -420,12 +469,29 @@ export default {
         this.playlistIdUrl
       );
 
+      // this.putTagVideoIntoMediaItems(
+      //   this.mediaItems,
+      //   this.playlistAndTagVideoData.tagVideoData
+      // );
+
       //プレイリストIDとプレイリスト名をwatchストアに格納
       this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
       this.$store.commit(
         "watch/setPlaylistName",
         this.playlistAndTagVideoData.playlistName
       );
+
+      this.$store.commit(
+        "watch/setPlaylistViewCount",
+        this.playlistAndTagVideoData.play_count
+      );
+      this.playlistCreatedAt = this.timeSince(this.playlistAndTagVideoData.playlist_created_at);
+
+      this.playlistAndTagVideoData.tagVideoData.forEach((tag) => {
+        let duration = this.timeMath.sub(tag.end, tag.start);
+        this.totalDuration = this.timeMath.sum(this.totalDuration, duration);
+      });
+      // console.log("total duration", total);
 
       //YTPlayerのプレイリストの再生に必要なパラメータをセット
       this.$store.commit("watch/setYTPlaylistParameters", this.indexUrl);
@@ -462,12 +528,12 @@ export default {
           iv_load_policy: 3, //アノテーション非表示
           modestbranding: 1, //YouTubeロゴ非表示
           rel: 0, //関連動画非表示
-          showinfo: 0 //タイトルやアップロードしたユーザーなどの情報は非表示
+          showinfo: 0, //タイトルやアップロードしたユーザーなどの情報は非表示
         },
         events: {
           onReady: onPlayerReady,
-          onStateChange: onPlayerStateChange
-        }
+          onStateChange: onPlayerStateChange,
+        },
       });
 
       //縦・横のサイズをセット
@@ -476,7 +542,7 @@ export default {
     };
     setTimeout(onYouTubeIframeAPIReady, 10);
 
-    window.onPlayerReady = event => {
+    window.onPlayerReady = (event) => {
       event.target.mute();
       event.target.playVideo();
       this.isPlayerReady = true;
@@ -484,7 +550,7 @@ export default {
       this.startTimer();
     };
 
-    window.onPlayerStateChange = event => {
+    window.onPlayerStateChange = (event) => {
       if (event.data == YT.PlayerState.ENDED && this.isPlaying) {
         //フラグを停止中に反転
         this.isPlaying = !this.isPlaying;
@@ -519,12 +585,12 @@ export default {
 
     //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
     let from = this.$route.path;
-    window.addEventListener("popstate", function(e) {
+    window.addEventListener("popstate", function (e) {
       let to = self.$route.path;
       if (from == "/watch" && to == "/watch") {
         location.reload();
       }
     });
-  }
+  },
 };
 </script>

@@ -21,6 +21,8 @@ const state = {
   isIndexSportsPlaylistAndTagPaginating: false,
   isIndexEntertainmentPlaylistAndTagPaginating: false,
   sceneListofPlaylist: null,
+  publicPlaylist: null,
+  createdSceneList: null,
 };
 
 const getters = {
@@ -33,6 +35,8 @@ const getters = {
     state.playlistAndTagPaginationOfEntertainment,
   myCreatedPlaylist: (state) => state.myCreatedPlaylist,
   myCreatedAndLikedPlaylist: (state) => state.myCreatedAndLikedPlaylist,
+  publicPlaylist: (state) => state.publicPlaylist,
+  createdSceneList: (state) => state.createdSceneList,
   showAddPlaylistModal: (state) => state.showAddPlaylistModal,
   playlistIdsOfTag: (state) => state.playlistIdsOfTag,
   toLoadRecommend: (state) => state.toLoadRecommend,
@@ -81,6 +85,12 @@ const mutations = {
   },
   setMyCreatedAndLikedPlaylist(state, data) {
     state.myCreatedAndLikedPlaylist = data;
+  },
+  setPublicPlaylist(state, data) {
+    state.publicPlaylist = data;
+  },
+  setCreatedSceneList(state, data) {
+    state.createdSceneList = data;
   },
   openAddPlaylistModal(state) {
     state.showAddPlaylistModal = true;
@@ -269,6 +279,27 @@ const actions = {
         "setMyCreatedAndLikedPlaylist",
         response.data.myCreatedAndLikedPlaylist
       );
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  //Public playlist data and scene list
+  async loadPublicPlaylistAndScenelist(context, user_id) {
+    let params = {
+      created_user: user_id
+    };
+    const response = await axios.post("api/load/publicPlaylistAndScenelist", params);
+    if (response.status == OK) {
+      // 成功した時
+      context.commit(
+        "setPublicPlaylist",
+        response.data.publicPlaylist
+      );
+      context.commit("setCreatedSceneList", response.data.createdTagList);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });

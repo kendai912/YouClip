@@ -296,7 +296,6 @@ class TagController extends Controller
         echo "png end!!!";
 
         $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
-        // $cmd_avi = 'ffmpeg  -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -c copy '.storage_path()."/app/public/videos/".$previewMp4Name.' 2>&1';
         echo "gif start!!!";
         system($cmd_gif);
         echo "gif end!!!";
@@ -304,22 +303,6 @@ class TagController extends Controller
         $previews['previewThumbName'] = $previewThumbName;
         $previews['previewGifName'] = $previewGifName;
         return $previews;
-
-        // $grabzIt = resolve('grabzit');
-
-        // $options = new \GrabzIt\GrabzItAnimationOptions();
-        // $options->setDuration(3);
-        // $startSec = $this->convertToSec("00:".$request->start);
-        // $options->setStart($startSec);
-        // $options->setQuality(100);
-        // $options->setWidth(600);
-        // $options->setHeight(-1);
-
-        // $previewGifFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
-        // $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=" . $request->youtubeId, $options);
-        // $grabzIt->SaveTo(storage_path(). "/app/public/img/" . $previewGifFileName);
-
-        // return $previewGifFileName;
     }
 
     /**

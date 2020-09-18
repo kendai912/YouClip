@@ -12,6 +12,7 @@ import Tagging from "./pages/Tagging.vue";
 import Youtube from "./pages/Youtube.vue";
 import Watch from "./pages/Watch.vue";
 import Mypage from "./pages/Mypage.vue";
+import MyFollow from "./pages/MyFollow.vue";
 import SystemError from "./pages/errors/System.vue";
 import APIError from "./pages/errors/APIError.vue";
 import PrivacyPolicy from "./pages/PrivacyPolicy.vue";
@@ -83,6 +84,10 @@ const routes = [
   {
     path: "/mypage",
     component: Mypage,
+  },
+  {
+    path: "/myfollow",
+    component: MyFollow,
   },
   {
     path: "/editmyplaylist",

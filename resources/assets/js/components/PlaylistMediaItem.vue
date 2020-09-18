@@ -150,7 +150,7 @@ export default {
   mounted() {
   },
   created() {
-    this.isMobile = this.checkMobile();
+    this.isMobile = this.mobileCheck();
   }
 };
 </script>

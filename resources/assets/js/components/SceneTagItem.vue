@@ -159,7 +159,7 @@ export default {
     }
   },
   created() {
-    this.isMobile = this.checkMobile();
+    this.isMobile = this.mobileCheck();
   }
 };
 </script>

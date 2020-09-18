@@ -280,4 +280,20 @@ class SearchController extends Controller
         }
         return $res->getBody();
     }
+    //get Youtube Search Results from scraping API
+    public function getYTScrapingResultList(Request $request) {
+        $apiUrl = $request->apiUrl;
+        $params = $request->params;
+        $client = new Client();
+        try {
+            $res = $client->get($apiUrl, [
+                'verify' => false,
+                'query' => $params
+            ]);
+        }
+        catch (Exception $e) {
+            throw new Exception($e->getResponse()->getBody());
+        }
+        return $res->getBody();
+    }
 }
