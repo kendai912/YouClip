@@ -21,6 +21,7 @@ const state = {
   isIndexSportsPlaylistAndTagPaginating: false,
   isIndexEntertainmentPlaylistAndTagPaginating: false,
   sceneListofPlaylist: null,
+  newPlaylistId: null,
 };
 
 const getters = {
@@ -61,6 +62,7 @@ const getters = {
     return state.myCreatedPlaylist ? !!state.myCreatedPlaylist.length : false;
   },
   sceneListofPlaylist: (state) => state.sceneListofPlaylist,
+  newPlaylistId: (state) => state.newPlaylistId,
 };
 
 const mutations = {
@@ -117,6 +119,9 @@ const mutations = {
   },
   setSceneListofPlaylist(state, data) {
     state.sceneListofPlaylist = data;
+  },
+  setNewPlaylistId(state, data) {
+    state.newPlaylistId = data;
   },
 };
 
@@ -296,6 +301,8 @@ const actions = {
       "/api/tag/addToPlaylists/" + input.currentTagId,
       params
     );
+    console.log(params);
+    console.log(response);
     if (response.status == CREATED) {
       // 成功した時
       context.commit("closeAddPlaylistModal");
@@ -324,13 +331,10 @@ const actions = {
     //チェックの入ったプレイリストをパラメータとして格納
     var params = {
       playlistName: playlist.playlistName,
-      playlist_id: playlist.playlist_id
+      playlist_id: playlist.playlist_id,
     };
 
-    const response = await axios.post(
-      "/api/playlist/updateTitle",
-      params
-    );
+    const response = await axios.post("/api/playlist/updateTitle", params);
     if (response.status == CREATED) {
       //ポップアップでプレイリストの作成完了を通知
       console.log("success");
@@ -358,13 +362,10 @@ const actions = {
     //チェックの入ったプレイリストをパラメータとして格納
     var params = {
       privacySetting: playlist.privacySetting,
-      playlist_id: playlist.playlist_id
+      playlist_id: playlist.playlist_id,
     };
 
-    const response = await axios.post(
-      "/api/playlist/updatePrivacy",
-      params
-    );
+    const response = await axios.post("/api/playlist/updatePrivacy", params);
     if (response.status == CREATED) {
       //ポップアップでプレイリストの作成完了を通知
       // toastr.success("プレイリストに保存しました");
@@ -427,7 +428,8 @@ const actions = {
 
     const response = await axios.post("/api/playlist/create", params);
     if (response.status == CREATED) {
-      // 成功した時
+      // 成功した場合は新しく作成したプレイリストのIDをセットし、プレイリスト新規作成モーダルを閉じる
+      context.commit("setNewPlaylistId", response.data.newPlaylist.id);
       context.commit("closeAddPlaylistModal");
 
       //ポップアップでプレイリストの作成完了を通知

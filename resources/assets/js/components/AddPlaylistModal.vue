@@ -67,14 +67,24 @@ import { mapState, mapGetters, mapMutations } from "vuex";
 
 export default {
   props: {
-    player: Object
+    player: Object,
   },
   data() {
     return {
       checkedPlaylistIds: [],
       newPlaylistName: "",
-      privacySetting: "公開",
-      privacySettingItems: ["公開", "限定公開", "非公開"]
+      privacySetting: "public",
+      privacySettingItems: [
+        { text: "公開", value: "public" },
+        {
+          text: "限定公開",
+          value: "limited",
+        },
+        {
+          text: "非公開",
+          value: "private",
+        },
+      ],
     };
   },
   computed: {
@@ -84,7 +94,7 @@ export default {
       currentCategory: "watch/currentCategory",
       playlistIdsOfTag: "playlist/playlistIdsOfTag",
       hasMyPlaylists: "playlist/hasMyPlaylists",
-      myCreatedPlaylist: "playlist/myCreatedPlaylist"
+      myCreatedPlaylist: "playlist/myCreatedPlaylist",
     }),
     showAddPlaylistModal: {
       get() {
@@ -94,8 +104,8 @@ export default {
       set() {
         this.player.playVideo();
         return this.$store.commit("playlist/closeAddPlaylistModal");
-      }
-    }
+      },
+    },
   },
   methods: {
     //モーダルを閉じてプレイヤーを再開
@@ -110,7 +120,7 @@ export default {
       //既存プレイリストへの登録
       this.$store.dispatch("playlist/addMyPlaylists", {
         checkedPlaylistIds: this.checkedPlaylistIds,
-        currentTagId: this.currentTagId
+        currentTagId: this.currentTagId,
       });
 
       //プレイリスト新規作成と選択中のタグの保存
@@ -119,16 +129,16 @@ export default {
             newPlaylistName: this.newPlaylistName,
             privacySetting: this.privacySetting,
             currentTagId: this.currentTagId,
-            currentCategory: this.currentCategory
+            currentCategory: this.currentCategory,
           })
         : "";
 
       //プレイヤーを再開
       this.player.playVideo();
-    }
+    },
   },
   created() {
     this.checkedPlaylistIds = this.playlistIdsOfTag;
-  }
+  },
 };
 </script>

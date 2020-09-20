@@ -222,6 +222,23 @@
   font-size: 80%;
 }
 
+.scenePrivacySettingBox .v-label {
+  font-size: 100%;
+}
+
+.sceneTagInputBox .v-label {
+  font-size: 14px;
+  top: 18px;
+}
+
+.sceneTagInputBox .v-label--active {
+  transform: translateY(-28px) scale(0.75);
+}
+
+.sceneTagInputBox .v-input__append-inner {
+  margin-top: 13px !important;
+}
+
 .icon-large {
   font-size: 28px !important;
 }
@@ -353,7 +370,7 @@
   font-weight: bold;
 }
 
-.color-black{
+.color-black {
   color: #000000;
 }
 .color-light-blue {

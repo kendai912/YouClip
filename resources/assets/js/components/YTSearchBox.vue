@@ -17,7 +17,7 @@
             v-bind:items="items"
             v-bind:search-input.sync="searchquery"
             v-on:keydown.enter="YTsearch"
-            placeholder="キーワードまたはYouTubeのURLを入力"
+            placeholder="YouTubeのキーワードまたはURLを入力"
             item-text="value"
             item-value="value"
             cache-items

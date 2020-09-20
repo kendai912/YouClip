@@ -1,5 +1,5 @@
 import axios from "axios";
-import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
+import { OK, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR } from "../util";
 
 const state = {
   playlistAndTagVideoData: null,
@@ -9,11 +9,12 @@ const state = {
   playlistId: "",
   playlistName: "",
   privacySetting: "",
+  tagPrivacySetting: "",
   currentYoutubeId: "",
   currentTagId: "",
   start: "",
   end: "",
-  playSpeed: 1
+  playSpeed: 1,
 };
 
 const getters = {
@@ -29,8 +30,9 @@ const getters = {
   currentTagName: (state) =>
     state.watchList ? state.watchList[state.listIndex].tags : "",
   currentTagNameArray: (state, getters) =>
-    // state.watchList ? getters.currentTagName.split(/[\s| |　]/) : "",
     state.watchList ? getters.currentTagName.split(/::/) : "",
+  tagPrivacySetting: (state) =>
+    state.watchList ? state.watchList[state.listIndex].privacySetting : "",
   currentTitle: (state) =>
     state.watchList ? state.watchList[state.listIndex].title : "",
   currentCategory: (state) =>
@@ -38,7 +40,7 @@ const getters = {
   start: (state) => state.start,
   end: (state) => state.end,
   isPlaylist: (state) => (state.playlistId ? true : false),
-  playSpeed: (state) => state.playSpeed
+  playSpeed: (state) => state.playSpeed,
 };
 
 const mutations = {
@@ -95,7 +97,7 @@ const mutations = {
   },
   setPlaySpeed(state, data) {
     state.playSpeed = data;
-  }
+  },
 };
 
 const actions = {
@@ -103,6 +105,7 @@ const actions = {
     const response = await axios.get(
       "api/get/playlistAndTagVideoData?id=" + playlistId
     );
+    console.log(response);
     if (response.status == OK) {
       // 成功した時
       context.commit(
@@ -111,6 +114,9 @@ const actions = {
       );
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else if (response.status == FORBIDDEN) {
+      // 非公開データのため失敗した時
       context.commit("error/setCode", response.status, { root: true });
     } else {
       // 上記以外で失敗した時
@@ -124,6 +130,9 @@ const actions = {
       context.commit("setTagAndVideoData", response.data.tagAndVideoData);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else if (response.status == FORBIDDEN) {
+      // 非公開データのため失敗した時
       context.commit("error/setCode", response.status, { root: true });
     } else {
       // 上記以外で失敗した時
