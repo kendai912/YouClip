@@ -31,15 +31,13 @@
                         />
                       </v-avatar>
                       <span>{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span>
-                      <span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
+                      <span style="font-size:8px;">&nbsp;&#8226;&nbsp;</span>
                       <span>合計{{ totalDuration }}</span>
-                      <span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
+                      <span style="font-size:8px;">&nbsp;&#8226;&nbsp;</span>
                       <span>{{ playlistCreatedAt }}前</span>
                     </div>
                   </v-col>
                 </v-row>
-                <!-- <v-row v-else class="ma-0 pa-0">
-                </v-row> -->
                 <span v-else class="font-weight-bold">{{ playlistName }}</span>
               </v-col>
               <v-col cols="auto" class="ma-0 pa-0 text-right">
@@ -53,7 +51,7 @@
                     <span>クリップ共有</span>
                     <v-icon class="icon-large my-grey">mdi-share</v-icon>
                   </v-btn>
-                  <v-btn v-on:click="toggleLikePlaylist" class="ma-0 pa-0 narrow-btn">
+                  <v-btn v-on:click="toggleLikePlaylist" class="ma-0 pa-0 ex-narrow-btn">
                     <span>{{ likePlaylistCount }}</span>
                     <i
                       class="fas fa-heart fa-heart-font"
@@ -117,7 +115,7 @@
         </v-sheet>
 
         <v-sheet tile class="mx-auto pa-1">
-          <v-row class="ma-0 pa-0" align="center" justify="between">
+          <v-row class="ma-0 pa-0" align="center" justify="space-between">
             <v-col class="ma-0 pa-0">
               <v-bottom-navigation
                 class="bottom_navigation_no_shadow"
@@ -157,6 +155,7 @@
           </v-row>
         </v-sheet>
 
+        <SceneListWatch v-bind:mediaItems="sceneListofPlaylist"/>
         <NoLoginModal v-if="showLoginModal" />
         <ShareModal v-if="showShareModal" v-bind:player="player" />
         <AddPlaylistModal v-if="showAddPlaylistModal" v-bind:player="player" />
@@ -185,6 +184,7 @@ import AddPlaylistModal from "../components/AddPlaylistModal.vue";
 import OtherActionModal from "../components/OtherActionModal.vue";
 import PlaySpeedModal from "../components/PlaySpeedModal.vue";
 import SceneTagControl from "../components/SceneTagControl.vue";
+import SceneListWatch from "../components/SceneListWatch.vue";
 import myMixin from "../util";
 
 export default {
@@ -195,6 +195,7 @@ export default {
     OtherActionModal,
     PlaySpeedModal,
     SceneTagControl,
+    SceneListWatch
   },
   data() {
     return {
@@ -407,6 +408,7 @@ export default {
     ...mapGetters({
       isLogin: "auth/check",
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
+      sceneListofPlaylist: "playlist/sceneListofPlaylist",
       watchList: "watch/watchList",
       listIndex: "watch/listIndex",
       currentYoutubeId: "watch/currentYoutubeId",
@@ -469,11 +471,6 @@ export default {
         this.playlistIdUrl
       );
 
-      // this.putTagVideoIntoMediaItems(
-      //   this.mediaItems,
-      //   this.playlistAndTagVideoData.tagVideoData
-      // );
-
       //プレイリストIDとプレイリスト名をwatchストアに格納
       this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
       this.$store.commit(
@@ -491,8 +488,11 @@ export default {
         let duration = this.timeMath.sub(tag.end, tag.start);
         this.totalDuration = this.timeMath.sum(this.totalDuration, duration);
       });
-      // console.log("total duration", total);
-
+      this.totalDuration = this.convertToKanjiTime(this.convertToSec(this.totalDuration))
+      let mediaItems = [];
+      this.putTagVideoIntoMediaItems(mediaItems, this.playlistAndTagVideoData.tagVideoData);
+      mediaItems.sort((a, b) => (a.title>b.title ? 1: -1));
+      this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
       //YTPlayerのプレイリストの再生に必要なパラメータをセット
       this.$store.commit("watch/setYTPlaylistParameters", this.indexUrl);
     } else if (this.$route.query.tag) {

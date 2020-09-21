@@ -238,6 +238,9 @@
   min-width: 64px !important;
 }
 
+.ex-narrow-btn {
+  min-width: 32px !important;
+}
 .short-text-field .v-input__slot {
   width: 80px;
 }
@@ -398,4 +401,17 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.v-expansion-panel-content__wrap {
+  padding: 0 2px 16px;
+}
+
+.scene-order {
+  border: 1px solid green;
+  color: green;
+  background-color: #F1F8E9;
+  position: absolute;
+  top: 5px;
+  left: 5px;
 }
