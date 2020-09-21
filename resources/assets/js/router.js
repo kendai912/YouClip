@@ -14,7 +14,7 @@ import Watch from "./pages/Watch.vue";
 import Mypage from "./pages/Mypage.vue";
 import MyFollow from "./pages/MyFollow.vue";
 import SystemError from "./pages/errors/System.vue";
-import APIError from "./pages/errors/APIError.vue";
+import ForbiddenError from "./pages/errors/ForbiddenError.vue";
 import PrivacyPolicy from "./pages/PrivacyPolicy.vue";
 import TermsOfService from "./pages/TermsOfService.vue";
 import EditMyPlaylist from "./pages/EditMyPlaylist.vue";
@@ -107,7 +107,7 @@ const routes = [
   },
   {
     path: "/403",
-    component: APIError,
+    component: ForbiddenError,
   },
 ];
 

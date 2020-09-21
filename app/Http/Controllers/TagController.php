@@ -38,7 +38,30 @@ class TagController extends Controller
     public function getTagAndVideoDataById(Request $request)
     {
         $tagId = $request->input('id');
-        $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id as video_user_id', 'title', 'thumbnail', 'duration', 'category', 'channel_title', 'published_at','view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags.user_id as tag_user_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags.id', $tagId)->get();
+        $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id as video_user_id', 'title', 'thumbnail', 'duration', 'category', 'channel_title', 'published_at', 'view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags.user_id as tag_user_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at', 'privacySetting')->where('tags.id', $tagId)->get();
+
+        // シーンが非公開かつログインユーザーのものでない場合はデータを返却しない
+        if ($tagAndVideoData[0]->privacySetting == 'private') {
+            if (!Auth::user()) {
+                return response()->json(
+                    [
+                    'tagAndVideoData' => 'private'
+                    ],
+                    403,
+                    [],
+                    JSON_UNESCAPED_UNICODE
+                );
+            } elseif ($tagAndVideoData[0]->tag_user_id != Auth::user()->id) {
+                return response()->json(
+                    [
+                    'tagAndVideoData' => 'private'
+                    ],
+                    403,
+                    [],
+                    JSON_UNESCAPED_UNICODE
+                );
+            }
+        }
 
         return response()->json(
             [
@@ -62,7 +85,7 @@ class TagController extends Controller
             }
             // DB::enableQueryLog();
             // Likeしたタグデータと作成したタグデータを取得
-            $myCreatedAndLikedTagVideo = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'channel_title', 'published_at','view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
+            $myCreatedAndLikedTagVideo = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'channel_title', 'published_at', 'view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
 
             // $myCreatedAndLikedTagVideo = Video::with(array('tags' => function($query) {
             //     $likes = Like::where('user_id', Auth::user()->id)->get();
@@ -160,10 +183,13 @@ class TagController extends Controller
             };
 
             foreach ($checkedPlaylistIds as $playlistId) {
-                $scene_order = 1;
+                //シーン番号の一番最後を確認
+                $currentLastSceneOrder = DB::table('playlist_tag')->where('playlist_id', $playlistId)->max('scene_order');
+                empty($currentLastSceneOrder) ? $currentLastSceneOrder = 0 : "";
+
                 $tag->playlists()->attach(
                     ['playlist_id' => $playlistId],
-                    ['scene_order' => $scene_order],
+                    ['scene_order' => $currentLastSceneOrder + 1], //シーン番号の一番後ろに追加
                     ['created_at' => Carbon::now()]
                 );
             }
@@ -207,14 +233,14 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //新規の場合、最初に動画をDBに保存
         if (Auth::user()) {
             if (Video::where('youtubeId', $request->youtubeId)->exists()) {
-                //既存の場合、テーブルからVideoオブジェクトを取得
+                //既存YouTube動画の場合、テーブルからVideoオブジェクトを取得
                 $video = Video::where('youtubeId', $request->youtubeId)->first();
                 $video->view_count = $request->newVideoData['view_count'];
                 $video->save();
             } else {
+                //新規YouTube動画の場合、最初に動画をDBに保存
                 $video = new Video;
                 $video->youtubeId = $request->youtubeId;
                 $video->user_id = Auth::user()->id;
@@ -246,9 +272,23 @@ class TagController extends Controller
             $tag->tags = $tags;
             $tag->start = "00:".$request->start;
             $tag->end = "00:".$request->end;
+            $tag->privacySetting = $request->privacySetting;
             $tag->preview = $previewThumbName;
             $tag->previewgif = $previewGifName;
             $tag->save();
+
+            //保存先プレイリストが指定されている場合
+            if ($request->myPlaylistToSave != "none") {
+                //シーン番号の一番最後を確認
+                $currentLastSceneOrder = DB::table('playlist_tag')->where('playlist_id', $request->myPlaylistToSave)->max('scene_order');
+                empty($currentLastSceneOrder) ? $currentLastSceneOrder = 0 : "";
+
+                $tag->playlists()->attach(
+                    ['playlist_id' => $request->myPlaylistToSave],
+                    ['scene_order' => $currentLastSceneOrder + 1],
+                    ['created_at' => Carbon::now()]
+                );
+            }
 
             //保存したタグデータをリターン
             return response()->json(
@@ -271,7 +311,8 @@ class TagController extends Controller
         }
     }
        
-    function getYoutubeDirectLinkMp4($url){
+    public function getYoutubeDirectLinkMp4($url)
+    {
         $yt = new YouTubeDownloader();
         $links = $yt->getDownloadLinks($url);
 
@@ -354,6 +395,7 @@ class TagController extends Controller
         $start = $request->start;
         $tag->start = "00:".$request->start;
         $tag->end = "00:".$request->end;
+        $tag->privacySetting = $request->privacySetting;
         $tag->save();
 
         //保存したタグデータをリターン

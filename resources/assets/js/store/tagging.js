@@ -10,10 +10,13 @@ const state = {
   tags: null,
   start: null,
   end: null,
+  privacySetting: "public",
+  myPlaylistToSave: "none",
   controlTransitNext: true,
   tagHistories: [],
   isEditting: false,
   isKeep: false,
+  showCreateNewPlaylistModal: false,
 };
 
 const getters = {
@@ -23,10 +26,13 @@ const getters = {
   tags: (state) => state.tags,
   start: (state) => state.start,
   end: (state) => state.end,
+  privacySetting: (state) => state.privacySetting,
+  myPlaylistToSave: (state) => state.myPlaylistToSave,
   controlTransitNext: (state) => state.controlTransitNext,
   tagHistories: (state) => state.tagHistories,
   isEditting: (state) => state.isEditting,
   isKeep: (state) => state.isKeep,
+  showCreateNewPlaylistModal: (state) => state.showCreateNewPlaylistModal,
 };
 
 const mutations = {
@@ -48,6 +54,12 @@ const mutations = {
   setEnd(state, data) {
     state.end = data;
   },
+  setPrivacySetting(state, data) {
+    state.privacySetting = data;
+  },
+  setMyPlaylistToSave(state, data) {
+    state.myPlaylistToSave = data;
+  },
   setControlTransitNext(state, data) {
     state.controlTransitNext = data;
   },
@@ -62,17 +74,6 @@ const mutations = {
   },
   //シーンタグの余計なスペースを除去し整形
   formatSceneTags(state) {
-    // let valDividedBySpace;
-    // for (let i = 0; i < state.tags.length; i++) {
-    //   //スペースが含まれる場合はシーンタグを分割し追加
-    //   if (state.tags[i].match(/[\s| |　]/)) {
-    //     valDividedBySpace = state.tags[i].split(/[\s| |　]/);
-    //     Array.prototype.splice.apply(
-    //       state.tags,
-    //       [i, 1].concat(valDividedBySpace)
-    //     );
-    //   }
-    // }
     //スペースのみのシーンタグを削除
     for (let i = 0; i < state.tags.length; i++) {
       if (state.tags[i] == "") {
@@ -80,6 +81,12 @@ const mutations = {
         i--;
       }
     }
+  },
+  openCreateNewPlaylistModal(state) {
+    state.showCreateNewPlaylistModal = true;
+  },
+  closeCreateNewPlaylistModal(state) {
+    state.showCreateNewPlaylistModal = false;
   },
 };
 
@@ -96,6 +103,8 @@ const actions = {
       tags: state.tags,
       start: state.start,
       end: state.end,
+      privacySetting: state.privacySetting,
+      myPlaylistToSave: state.myPlaylistToSave, //playlist ID
     };
     console.log("create scene tag", params);
 
@@ -130,6 +139,7 @@ const actions = {
       tags: state.tags,
       start: state.start,
       end: state.end,
+      privacySetting: state.privacySetting,
     };
 
     const response = await axios.post("/api/tag/update", params);

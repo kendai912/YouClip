@@ -1,13 +1,7 @@
 <template>
   <div class="container--small">
     <div>
-      <v-card
-        class="mx-auto pa-2"
-        max-width="420"
-        tile
-        flat
-        color="rgb(245, 245, 245)"
-      >
+      <v-card class="mx-auto pa-2" max-width="420" tile flat color="rgb(245, 245, 245)">
         <v-row class="ma-0">
           <v-col class="pa-0 pt-2 text-center">
             <v-text-field
@@ -27,7 +21,7 @@
               v-model="playlistPrivacySetting"
               :items="privacySettingList"
             >
-            </v-select> -->
+            </v-select>-->
           </v-col>
         </v-row>
         <v-row class="ma-0">
@@ -46,8 +40,12 @@
         </v-row>
         <v-row class="ma-0">
           <v-col class="pa-0 pt-2">
-            <v-text-field ref="testelement" value="ddddddddddddd" style="width:0; height:0;" hide-details>
-            </v-text-field>
+            <v-text-field
+              ref="testelement"
+              value="ddddddddddddd"
+              style="width:0; height:0;"
+              hide-details
+            ></v-text-field>
             <div class="grey--text text--darken-3">
               <span>{{ sceneCount }}シーン</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
               <span>{{ playCount ? playCount : 0 }}回視聴</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
@@ -56,7 +54,7 @@
           </v-col>
         </v-row>
       </v-card>
-      <SceneTagItem v-bind:mediaItems="sceneListofPlaylist"  />
+      <SceneTagItem v-bind:mediaItems="sceneListofPlaylist" />
     </div>
   </div>
 </template>
@@ -76,9 +74,19 @@ export default {
       isEditTitle: false,
       isEditPrivacy: false,
       isTitleFocused: false,
-      privacySettingList: ["public", "limited", "private"],
+      privacySettingList: [
+        { text: "公開", value: "public" },
+        {
+          text: "限定公開",
+          value: "limited",
+        },
+        {
+          text: "非公開",
+          value: "private",
+        },
+      ],
       rules: {
-        required: value => !!value || 'Required.',
+        required: (value) => !!value || "Required.",
       },
       privacy: "",
       playCount: 0,
@@ -93,7 +101,7 @@ export default {
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
       playlistName: "watch/playlistName",
-      privacySetting: "watch/privacySetting"
+      privacySetting: "watch/privacySetting",
     }),
     playlistTitle: {
       get() {
@@ -101,7 +109,7 @@ export default {
       },
       set(val) {
         this.$store.commit("watch/setPlaylistName", val);
-      }
+      },
     },
     playlistPrivacySetting: {
       get() {
@@ -109,8 +117,8 @@ export default {
       },
       set(val) {
         this.$store.commit("watch/setPrivacySetting", val);
-      }
-    }
+      },
+    },
   },
   methods: {
     async saveTitle() {
@@ -121,12 +129,9 @@ export default {
         this.$refs.testelement.focus();
         var playlist = {
           playlist_id: this.playlistAndTagVideoData.playlist_id,
-          playlistName: this.playlistName
-        }
-        await this.$store.dispatch(
-          "playlist/updatePlaylistTitle",
-          playlist
-        );
+          playlistName: this.playlistName,
+        };
+        await this.$store.dispatch("playlist/updatePlaylistTitle", playlist);
       }
     },
     async savePrivacy() {
@@ -138,14 +143,11 @@ export default {
         this.$refs.testelement.focus();
         var playlist = {
           playlist_id: this.playlistAndTagVideoData.playlist_id,
-          privacySetting: this.privacySetting
-        }
-        await this.$store.dispatch(
-          "playlist/updatePlaylistPrivacy",
-          playlist
-        );
+          privacySetting: this.privacySetting,
+        };
+        await this.$store.dispatch("playlist/updatePlaylistPrivacy", playlist);
       }
-    }
+    },
   },
   async created() {
     if (this.$route.query.playlist) {
@@ -171,12 +173,17 @@ export default {
       );
       this.playCount = this.playlistAndTagVideoData.play_count;
       this.sceneCount = this.playlistAndTagVideoData.tagVideoData.length;
-      this.lastUpdatedAt = this.convertToYMD(this.playlistAndTagVideoData.playlist_updated_at);
+      this.lastUpdatedAt = this.convertToYMD(
+        this.playlistAndTagVideoData.playlist_updated_at
+      );
 
       let mediaItems = [];
-      this.putTagVideoIntoMediaItems(mediaItems, this.playlistAndTagVideoData.tagVideoData);
+      this.putTagVideoIntoMediaItems(
+        mediaItems,
+        this.playlistAndTagVideoData.tagVideoData
+      );
       this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
     }
-  }
+  },
 };
 </script>

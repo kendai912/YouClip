@@ -4,7 +4,10 @@
       <div id="player"></div>
     </div>
     <TagItem />
-    <SceneTagControl v-bind:player="player" v-on:taggingSucceed="taggingSucceed" />
+    <SceneTagControl
+      v-bind:player="player"
+      v-on:taggingSucceed="taggingSucceed"
+    />
     <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
       {{ text }}
       <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
@@ -21,7 +24,7 @@ import myMixin from "../util";
 export default {
   components: {
     TagItem,
-    SceneTagControl
+    SceneTagControl,
   },
   data() {
     return {
@@ -29,23 +32,24 @@ export default {
       player: null,
       snackbar: false,
       timeout: 5000,
-      text: "シーンタグを登録しました"
+      text: "シーンタグを登録しました",
     };
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
+      isLogin: "auth/check",
       youtubeId: "youtube/youtubeId",
       videoData: "youtube/videoData",
       tagDataArray: "youtube/tagDataArray",
-      isNew: "youtube/isNew"
-    })
+      isNew: "youtube/isNew",
+    }),
   },
   methods: {
     //シーンタグ完了のトーストを表示
     taggingSucceed() {
       this.snackbar = true;
-    }
+    },
   },
   async created() {
     //ナビバーを非表示
@@ -64,6 +68,11 @@ export default {
     if (this.isNew) {
       //新規動画・タグの場合はData APIから取得
       await this.$store.dispatch("youtube/getNewVideoData");
+    }
+
+    //ログイン済の場合ユーザーが作成したプレイリスト一覧を取得
+    if (this.isLogin) {
+      this.$store.dispatch("playlist/getMyCreatedPlaylist");
     }
 
     // This code loads the IFrame Player API code asynchronously.
@@ -85,12 +94,12 @@ export default {
           iv_load_policy: 3, //アノテーション非表示
           modestbranding: 1, //YouTubeロゴ非表示
           rel: 0, //関連動画非表示
-          showinfo: 0 //タイトルやアップロードしたユーザーなどの情報は非表示
+          showinfo: 0, //タイトルやアップロードしたユーザーなどの情報は非表示
         },
         events: {
           onReady: onPlayerReady,
-          onStateChange: onPlayerStateChange
-        }
+          onStateChange: onPlayerStateChange,
+        },
       });
 
       //縦・横のサイズをセット
@@ -99,7 +108,7 @@ export default {
     };
     setTimeout(onYouTubeIframeAPIReady, 10);
 
-    window.onPlayerReady = event => {
+    window.onPlayerReady = (event) => {
       event.target.mute();
       event.target.playVideo();
       this.isPlayerReady = true;
@@ -116,7 +125,7 @@ export default {
       this.$store.commit("youtube/setIsReady", true);
     };
 
-    window.onPlayerStateChange = event => {};
+    window.onPlayerStateChange = (event) => {};
 
     //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
     let from = this.$route.path;
@@ -126,6 +135,6 @@ export default {
         location.reload();
       }
     });
-  }
+  },
 };
 </script>

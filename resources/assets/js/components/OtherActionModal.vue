@@ -2,7 +2,12 @@
   <div class="text-center">
     <v-bottom-sheet v-model="showOtherActionModal">
       <v-list>
-        <v-list-item v-for="tile in tiles" :key="tile.title" v-on:click="tapTile(tile.action)" v-show="tile.show==='always' || (user_id && created_user_id === user_id)">
+        <v-list-item
+          v-for="tile in tiles"
+          :key="tile.title"
+          v-on:click="tapTile(tile.action)"
+          v-show="tile.show==='always' || (user_id && created_user_id === user_id)"
+        >
           <v-list-item-avatar>
             <i v-bind:class="tile.img"></i>
           </v-list-item-avatar>
@@ -23,12 +28,17 @@ export default {
       { img: "fas fa-trash", title: "削除", action: "delete", show: "check" },
       { img: "fas fa-pen", title: "編集", action: "edit", show: "check" },
       { img: "fas fa-flag", title: "報告", action: "report", show: "always" },
-      { img: "fas fa-times", title: "キャンセル", action: "cancel", show: "always" }
-    ]
+      {
+        img: "fas fa-times",
+        title: "キャンセル",
+        action: "cancel",
+        show: "always",
+      },
+    ],
   }),
   props: {
     player: Object,
-    created_user_id: Number
+    created_user_id: Number,
   },
   mixins: [myMixin],
   computed: {
@@ -38,7 +48,8 @@ export default {
       startHis: "watch/start",
       endHis: "watch/end",
       currentTagId: "watch/currentTagId",
-      currentTagNameArray: "watch/currentTagNameArray"
+      currentTagNameArray: "watch/currentTagNameArray",
+      tagPrivacySetting: "watch/tagPrivacySetting",
     }),
     startIs() {
       return this.formatToMinSec(this.startHis);
@@ -54,12 +65,12 @@ export default {
       set() {
         this.player.playVideo();
         return this.$store.commit("otherActionModal/closeOtherActionModal");
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapMutations({
-      closeOtherActionModal: "otherActionModal/closeOtherActionModal"
+      closeOtherActionModal: "otherActionModal/closeOtherActionModal",
     }),
     async tapTile(action) {
       if (action == "delete") {
@@ -88,6 +99,7 @@ export default {
         this.$store.commit("tagging/setStart", this.startIs);
         this.$store.commit("tagging/setEnd", this.endIs);
         this.$store.commit("tagging/setTags", this.currentTagNameArray);
+        this.$store.commit("tagging/setPrivacySetting", this.tagPrivacySetting);
 
         //シーンタグ付けコンポーネントを表示
         this.$store.commit("tagging/setShowSceneTagControl", true);
@@ -95,10 +107,10 @@ export default {
       } else if (action == "cancel") {
         this.closeOtherActionModal();
       }
-    }
+    },
   },
   created() {
     console.log("dddddddddddd", this.created_user_id);
-  }
+  },
 };
 </script>

@@ -422,6 +422,7 @@ export default {
       playlistViewCount: "watch/playlistViewCount",
       currentTagName: "watch/currentTagName",
       currentTagNameArray: "watch/currentTagNameArray",
+      tagPrivacySetting: "watch/tagPrivacySetting",
       showLoginModal: "noLoginModal/showLoginModal",
       messageWhenNotLogined: "noLoginModal/messageWhenNotLogined",
       showShareModal: "shareModal/showShareModal",
