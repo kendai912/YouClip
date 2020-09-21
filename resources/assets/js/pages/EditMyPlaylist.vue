@@ -47,11 +47,9 @@
               hide-details
             ></v-text-field>
             <div class="grey--text text--darken-3">
-              <span>{{ sceneCount }}シーン</span>
-              <span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
-              <span>{{ playCount ? playCount : 0 }}回視聴</span>
-              <span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
-              <span>lastUpdatedAt: {{ lastUpdatedAt }}</span>
+              <span>{{ sceneCount }}シーン</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
+              <span>{{ playCount ? playCount : 0 }}回視聴</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
+              <span>最終更新日: {{ lastUpdatedAt }}</span>
             </div>
           </v-col>
         </v-row>

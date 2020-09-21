@@ -17,6 +17,7 @@ const state = {
   YTvideosResponse: [],
   topYTSearchqueries: [],
   YTsearchHistories: [],
+  apiOfScraping: "http://ec2-54-238-6-75.ap-northeast-1.compute.amazonaws.com:3000",
   apiOfSearch: "https://www.googleapis.com/youtube/v3/search",
   apiOfVideos: "https://www.googleapis.com/youtube/v3/videos",
   paramsOfSearch: {
@@ -152,55 +153,128 @@ const mutations = {
 
 const actions = {
   //検索結果データを取得
-  async YTsearch(context) {
-    await actions.searchYTResult(context);
+  async YTsearch(context, pageNumber) {
+    await actions.searchYTResult(context, pageNumber);
     actions.storeYTSearchRecord(context);
   },
   async YTRecentVideos(context) {
     await actions.searchYTRecentVideos(context);
   },
   //検索ワードをYoutube動画を検索
-  async searchYTResult(context) {
+  // async searchYTResult(context) {
+  //   //検索結果が帰ってくる前に連続でリクエストをかけないようにフラグをセット
+  //   context.commit("setIsYTSearching", true);
+
+  //   //検索と動画データのAPI Keyをセット
+  //   context.commit("setKeyOfSearch", context.getters["keyIndex"]);
+  //   context.commit("setKeyOfVideos", context.getters["keyIndex"]);
+
+  //   const response = await axios.post("api/search/getYoutubeSearch", {
+  //     params: state.paramsOfSearch,
+  //     apiUrl: state.apiOfSearch,
+  //   });
+  //   if (response.status == OK) {
+  //     // 成功した時
+  //     //レスポンス内のvideoIdよりstatistics,contentDetailsをリクエストし結果をYTvideosResponse格納
+  //     let youtubeIds = [];
+  //     response.data.items.forEach((value) => {
+  //       youtubeIds.push(value.id.videoId);
+  //     });
+  //     await context.dispatch("getYTstatisticsAndcontentDetails", youtubeIds);
+
+  //     //次の検索結果ページトークンをセット
+  //     context.commit("setPageToken", response.data.nextPageToken);
+
+  //     //searchのAPI検索結果を格納
+  //     context.commit("setYTsearchResponse", response.data.items);
+
+  //     //searchとvideosのAPI検索結果をまとめてYTresultに格納
+  //     let YTresult = [];
+  //     for (let i = 0; i < youtubeIds.length; i++) {
+  //       YTresult[i] = {
+  //         etag: state.YTsearchResponse[i].etag,
+  //         youtubeId: state.YTsearchResponse[i].id.videoId,
+  //         thumbnails: state.YTsearchResponse[i].snippet.thumbnails,
+  //         title: state.YTsearchResponse[i].snippet.title,
+  //         channelTitle: state.YTsearchResponse[i].snippet.channelTitle,
+  //         publishedAt: state.YTsearchResponse[i].snippet.publishedAt,
+  //         duration: state.YTvideosResponse[i].contentDetails.duration,
+  //         viewCount: state.YTvideosResponse[i].statistics.viewCount,
+  //       };
+  //     }
+  //     context.commit("setYTResult", YTresult);
+
+  //     //連続リクエストを制御するフラグを解除
+  //     context.commit("setIsYTSearching", false);
+  //   } else if (
+  //     response.status == FORBIDDEN ||
+  //     response.status == INTERNAL_SERVER_ERROR
+  //   ) {
+  //     // API Keyの上限オーバーで失敗した時
+  //     //次のAPI Keyにスイッチして再度検索実行
+  //     context.commit("setKeyIndex", context.getters["keyIndex"] + 1);
+
+  //     //API Keyのストックを超えたら直接URLで検索するようにエラーページを表示
+  //     context.getters["keyIndex"] >= context.getters["keyArray"].length
+  //       ? context.commit("error/setCode", response.status, {
+  //           root: true,
+  //         })
+  //       : await actions.searchYTResult(context);
+  //   } else {
+  //     // 上記以外で失敗した時
+  //     context.commit("error/setCode", response.status, { root: true });
+  //   }
+  // },
+
+  async searchYTResult(context, pageNumber) {
     //検索結果が帰ってくる前に連続でリクエストをかけないようにフラグをセット
     context.commit("setIsYTSearching", true);
 
     //検索と動画データのAPI Keyをセット
     context.commit("setKeyOfSearch", context.getters["keyIndex"]);
     context.commit("setKeyOfVideos", context.getters["keyIndex"]);
-
-    const response = await axios.post("api/search/getYoutubeSearch", {
-      params: state.paramsOfSearch,
-      apiUrl: state.apiOfSearch,
+    // const response = await axios.post("api/search/getYoutubeScrapingResults", {
+    //   params: {
+    //     q:state.paramsOfSearch.q,
+    //     page: pageNumber
+    //   },
+    //   apiUrl: state.apiOfScraping,
+    // });
+    const response = await axios.get("https://ytserver.net:3000/api/search", {
+      params: {
+        q:state.paramsOfSearch.q,
+        page: pageNumber
+      },
     });
     if (response.status == OK) {
       // 成功した時
       //レスポンス内のvideoIdよりstatistics,contentDetailsをリクエストし結果をYTvideosResponse格納
-      let youtubeIds = [];
-      response.data.items.forEach((value) => {
-        youtubeIds.push(value.id.videoId);
-      });
-      await context.dispatch("getYTstatisticsAndcontentDetails", youtubeIds);
+      // let youtubeIds = [];
+      // response.data.items.forEach((value) => {
+      //   youtubeIds.push(value.id.videoId);
+      // });
+      // await context.dispatch("getYTstatisticsAndcontentDetails", youtubeIds);
 
-      //次の検索結果ページトークンをセット
-      context.commit("setPageToken", response.data.nextPageToken);
+      // //次の検索結果ページトークンをセット
+      // context.commit("setPageToken", response.data.nextPageToken);
 
-      //searchのAPI検索結果を格納
-      context.commit("setYTsearchResponse", response.data.items);
-
+      // //searchのAPI検索結果を格納
+      // context.commit("setYTsearchResponse", response.data.items);
+      let res = response.data.results;
       //searchとvideosのAPI検索結果をまとめてYTresultに格納
       let YTresult = [];
-      for (let i = 0; i < youtubeIds.length; i++) {
+      for (let i = 0; i < res.length; i++) {
         YTresult[i] = {
-          etag: state.YTsearchResponse[i].etag,
-          youtubeId: state.YTsearchResponse[i].id.videoId,
-          thumbnails: state.YTsearchResponse[i].snippet.thumbnails,
-          title: state.YTsearchResponse[i].snippet.title,
-          channelTitle: state.YTsearchResponse[i].snippet.channelTitle,
-          publishedAt: state.YTsearchResponse[i].snippet.publishedAt,
-          duration: state.YTvideosResponse[i].contentDetails.duration,
-          viewCount: state.YTvideosResponse[i].statistics.viewCount,
+          youtubeId: res[i].id,
+          thumbnails: res[i].thumbnail_src,
+          title: res[i].title,
+          channelTitle: res[i].channel,
+          publishedAt: res[i].release_date,
+          duration: res[i].duration,
+          viewCount: res[i].num_views
         };
       }
+      console.log("yt result", YTresult);
       context.commit("setYTResult", YTresult);
 
       //連続リクエストを制御するフラグを解除
@@ -224,7 +298,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
-
+  
   async searchYTRecentVideos(context) {
     const response = await axios.post("api/search/getRecentVideos");
     if (response.status == OK) {

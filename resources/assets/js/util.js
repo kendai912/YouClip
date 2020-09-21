@@ -174,9 +174,15 @@ export default {
     },
     //i:s表記から秒数に変換
     convertToSec(is) {
-      return (
-        parseInt(is.split(":")[0], 10) * 60 + parseInt(is.split(":")[1], 10)
-      );
+      if (is.split(":").length>2) {
+        return (
+          parseInt(is.split(":")[0], 10) * 3600 + parseInt(is.split(":")[1], 10) * 60 + parseInt(is.split(":")[2], 10)
+        );
+      } else {
+        return (
+          parseInt(is.split(":")[0], 10) * 60 + parseInt(is.split(":")[1], 10)
+        );
+      }
     },
     //H:i:sをi:s表記にフォーマット
     formatToMinSec(His) {

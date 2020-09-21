@@ -51,6 +51,8 @@ Route::get('/get/playlistAndTagVideoData', 'PlaylistController@getPlaylistAndTag
 Route::get('/get/myCreatedPlaylist', 'PlaylistController@getMyCreatedPlaylist');
 //Likeまたは作成したプレイリスト一覧をロード
 Route::get('/load/myCreatedAndLikedPlaylist', 'PlaylistController@loadMyCreatedAndLikedPlaylist');
+Route::post('/load/publicPlaylistAndScenelist', 'PlaylistController@loadPublicPlaylistAndScenelist');
+
 
 //タグへのLikeデータのロード
 Route::get("/load/tagLike", 'LikeController@loadTagLike');
@@ -109,6 +111,7 @@ Route::post('/tag/delete', 'TagController@delete');
 //Add Playlist Visit Count
 Route::post("/addPlaylistVisitCount/{playlist_id}", 'PlaylistController@addVisitCount');
 //YT Search API
+Route::post('/search/getYoutubeScrapingResults', 'SearchController@getYTScrapingResultList');
 Route::post('/search/getYoutubeSearch', 'SearchController@getYTSearchList');
 Route::post('/search/getYoutubeVideos', 'VideoController@getYTVideoList');
 Route::post('/search/getYoutubeVideoCategories', 'VideoController@getYTVideoCategoryList');

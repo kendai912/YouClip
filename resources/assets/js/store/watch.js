@@ -8,6 +8,7 @@ const state = {
   listIndex: 0,
   playlistId: "",
   playlistName: "",
+  playlistViewCount: "",
   privacySetting: "",
   tagPrivacySetting: "",
   currentYoutubeId: "",
@@ -24,6 +25,7 @@ const getters = {
   listIndex: (state) => state.listIndex,
   playlistId: (state) => state.playlistId,
   playlistName: (state) => state.playlistName,
+  playlistViewCount: (state) => state.playlistViewCount,
   privacySetting: (state) => state.privacySetting,
   currentYoutubeId: (state) => state.currentYoutubeId,
   currentTagId: (state) => state.watchList[state.listIndex].tag_id,
@@ -85,6 +87,9 @@ const mutations = {
   },
   setPlaylistName(state, data) {
     state.playlistName = data;
+  },
+  setPlaylistViewCount(state, data) {
+    state.playlistViewCount = data;
   },
   setPrivacySetting(state, data) {
     state.privacySetting = data;
