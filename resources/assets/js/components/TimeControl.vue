@@ -359,6 +359,7 @@ export default {
   },
   created() {
     this.initialize();
+    console.log("Ddddddddddd", this.currentTime);
   }
 };
 </script>
