@@ -332,8 +332,6 @@ const actions = {
       "/api/tag/addToPlaylists/" + input.currentTagId,
       params
     );
-    console.log(params);
-    console.log(response);
     if (response.status == CREATED) {
       // 成功した時
       context.commit("closeAddPlaylistModal");

@@ -128,11 +128,7 @@
             <v-bottom-navigation class="bottom_navigation_no_shadow" elevation="0">
               <v-btn v-on:click="openPlaySpeedModal" class="ma-0 pa-0 narrow-btn">
                 <span>倍速視聴</span>
-                <v-img
-                  src="/storage/icons/play_speed.png"
-                  width="36px"
-                  max-height="36px"
-                />
+                <v-img src="/storage/icons/play_speed.png" width="36px" max-height="36px" />
               </v-btn>
               <v-btn v-if="isMuted" v-on:click="unmute">
                 <span>ミュート解除</span>
@@ -152,10 +148,7 @@
         </v-row>
       </v-container>
     </v-sheet>
-  <PlaySpeedModal
-    v-if="showPlaySpeedModal"
-    v-bind:player="player"
-  />
+    <PlaySpeedModal v-if="showPlaySpeedModal" v-bind:player="player" />
   </v-sheet>
 </template>
 
@@ -166,10 +159,10 @@ import PlaySpeedModal from "../components/PlaySpeedModal.vue";
 
 export default {
   components: {
-    PlaySpeedModal
+    PlaySpeedModal,
   },
   props: {
-    player: Object
+    player: Object,
   },
   data() {
     return {
@@ -180,21 +173,8 @@ export default {
       endTimeInput: null,
       isMuted: true,
       startRules: [
-        v => !!v || "開始時間を入力して下さい",
-        v => {
-          let regex = /^\d+:\d{1,2}$/;
-          if (!v || regex.test(v)) {
-            return true;
-          }
-
-          if (!regex.test(v)) {
-            return "分:秒の形式で入力して下さい";
-          }
-        }
-      ],
-      endRules: [
-        v => !!v || "終了時間を入力して下さい",
-        v => {
+        (v) => !!v || "開始時間を入力して下さい",
+        (v) => {
           let regex = /^\d+:\d{1,2}$/;
           if (!v || regex.test(v)) {
             return true;
@@ -204,7 +184,20 @@ export default {
             return "分:秒の形式で入力して下さい";
           }
         },
-        v => {
+      ],
+      endRules: [
+        (v) => !!v || "終了時間を入力して下さい",
+        (v) => {
+          let regex = /^\d+:\d{1,2}$/;
+          if (!v || regex.test(v)) {
+            return true;
+          }
+
+          if (!regex.test(v)) {
+            return "分:秒の形式で入力して下さい";
+          }
+        },
+        (v) => {
           if (this.startTimeInput) {
             if (
               parseInt(this.convertToSec(v)) <=
@@ -214,8 +207,8 @@ export default {
             }
           }
           return true;
-        }
-      ]
+        },
+      ],
     };
   },
   mixins: [myMixin],
@@ -230,54 +223,16 @@ export default {
       showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
       isLogin: "auth/check",
     }),
-    currentPositionTime() {
-      //sliderをドラッグした位置の秒数を取得
-      let currentPositionSec =
-        this.convertToSec(this.duration) * (this.slider.val / 100);
-
-      //分:秒のフォーマットに変換
-      return this.formatTime(currentPositionSec);
-    },
     duration() {
       return this.isNew
         ? this.newVideoData.duration
         : this.formatToMinSec(this.videoData.duration);
-    }
+    },
   },
   methods: {
     ...mapMutations({
-      openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal"
+      openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal",
     }),
-    //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
-    startUpdateSlider() {
-      let self = this;
-      self.sliderInterval = setInterval(function() {
-        let sliderPosition =
-          100 *
-          (self.convertToSec(self.currentTime) /
-            self.convertToSec(self.duration));
-
-        self.slider.val = sliderPosition;
-      }, 800);
-    },
-    stopUpdateSlider() {
-      clearInterval(this.sliderInterval);
-    },
-    //sliderをクリックした場合、その地点までplayerの再生時間をジャンプ
-    seekToAndRestartMouseup(end) {
-      let self = this;
-      setTimeout(function() {
-        self.player.seekTo(
-          self.convertToSec(self.duration) * (self.slider.val / 100)
-        );
-        self.startUpdateSlider();
-      }, 1000);
-    },
-    //sliderをドラッグした場合、その地点までplayerの再生時間をジャンプ
-    async seekToAndRestartEnd(end) {
-      await this.player.seekTo(this.convertToSec(this.duration) * (end / 100));
-      this.startUpdateSlider();
-    },
     tapStartBtn() {
       this.startTimeInput = this.currentTime;
       this.player.playVideo();
@@ -327,6 +282,9 @@ export default {
       this.isEditting
         ? this.$store.commit("tagging/setShowSceneTagControl", false)
         : this.$router.go(-1);
+
+      //編集モードフラグを解除
+      this.$store.commit("tagging/setIsEditting", false);
     },
     unmute() {
       this.player.unMute();
@@ -338,9 +296,6 @@ export default {
     },
     //初期化処理
     initialize() {
-      //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
-      this.startUpdateSlider();
-
       if (localStorage.getItem("startTime")) {
         this.startTimeInput = localStorage.getItem("startTime");
       } else {
@@ -355,11 +310,10 @@ export default {
 
       //シーンタグの遷移モードを変更(true:右スライド, false:左スライド)
       this.$store.commit("tagging/setControlTransitNext", true);
-    }
+    },
   },
   created() {
     this.initialize();
-    console.log("Ddddddddddd", this.currentTime);
-  }
+  },
 };
 </script>
