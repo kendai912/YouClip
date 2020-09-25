@@ -194,7 +194,8 @@ export default {
           user_id: this.user_id,
           comment_id: comment.comment_id,
           parent_id: comment.parent_id,
-          cmt_option: 1
+          cmt_option: 1,
+          isLiked: !comment.isLiked
         }
         if (this.$route.query.playlist) {
           data.cmt_option = 1;

@@ -81,7 +81,7 @@ class TagController extends Controller
             } else {
                 $commentData->isLiked = false;
             }
-            
+
             $likes_comment = LikesComment::where('comment_id', $comment->comment_id)->where('cmt_option', '0')->select(DB::raw('COUNT(*) as likes_count'))->groupBy('comment_id')->first();
             if ($likes_comment) {
                 $commentData->likes_count = $likes_comment->likes_count;
@@ -529,6 +529,8 @@ class TagController extends Controller
             if (!$request->parent_id) {
                 $newTagComment->replies = [];
             }
+            $newTagComment->isLiked = false;
+            $newTagComment->likes_count = 0;
             return response()->json(
                 [
                 'newComment' => $newTagComment

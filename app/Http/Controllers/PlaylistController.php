@@ -681,6 +681,8 @@ class PlaylistController extends Controller
             if (!$request->parent_id) {
                 $newPlaylistComment->replies = [];
             }
+            $newPlaylistComment->isLiked = false;
+            $newPlaylistComment->likes_count = 0;
             return response()->json(
                 [
                 'newComment' => $newPlaylistComment
