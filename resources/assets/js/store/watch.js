@@ -110,7 +110,6 @@ const actions = {
     const response = await axios.get(
       "api/get/playlistAndTagVideoData?id=" + playlistId
     );
-    console.log(response);
     if (response.status == OK) {
       // 成功した時
       context.commit(

@@ -25,10 +25,7 @@
                     </div>
                     <div>
                       <v-avatar size="16" v-on:click.stop="gotoFollow">
-                        <v-img
-                          src="/storage/logos/pph_son.png"
-                          class="float-left"
-                        />
+                        <v-img src="/storage/logos/pph_son.png" class="float-left" />
                       </v-avatar>
                       <span>{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span>
                       <span style="font-size:8px;">&nbsp;&#8226;&nbsp;</span>
@@ -213,7 +210,7 @@ export default {
       isMuted: true,
       mediaItems: [],
       playlistCreatedAt: "",
-      totalDuration: "00:00:00"
+      totalDuration: "00:00:00",
     };
   },
   mixins: [myMixin],
@@ -397,15 +394,17 @@ export default {
       this.isMuted = true;
     },
     gotoFollow() {
-      let user_id = this.playlistIdUrl ? this.playlistAndTagVideoData.user_id : this.tagAndVideoData[0].tag_user_id
+      let user_id = this.playlistIdUrl
+        ? this.playlistAndTagVideoData.user_id
+        : this.tagAndVideoData[0].tag_user_id;
       this.$router
         .push({
           path: "/myfollow",
           query: {
-            user_id: user_id
-          }
+            user_id: user_id,
+          },
         })
-        .catch(err => {});
+        .catch((err) => {});
     },
   },
   computed: {
@@ -480,27 +479,36 @@ export default {
         this.playlistIdUrl
       );
 
-      //プレイリストIDとプレイリスト名をwatchストアに格納
+      //プレイリストIDとプレイリスト名、視聴回数をwatchストアに格納
       this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
       this.$store.commit(
         "watch/setPlaylistName",
         this.playlistAndTagVideoData.playlistName
       );
-
       this.$store.commit(
         "watch/setPlaylistViewCount",
         this.playlistAndTagVideoData.play_count
       );
-      this.playlistCreatedAt = this.timeSince(this.playlistAndTagVideoData.playlist_created_at);
 
+      //Player直下のプレイリスト情報欄に表示する作成日・合計時間の情報を取得
+      this.playlistCreatedAt = this.timeSince(
+        this.playlistAndTagVideoData.playlist_created_at
+      );
       this.playlistAndTagVideoData.tagVideoData.forEach((tag) => {
         let duration = this.timeMath.sub(tag.end, tag.start);
         this.totalDuration = this.timeMath.sum(this.totalDuration, duration);
       });
-      this.totalDuration = this.convertToKanjiTime(this.convertToSec(this.totalDuration))
+      this.totalDuration = this.convertToKanjiTime(
+        this.convertToSec(this.totalDuration)
+      );
+
+      //シーンリストをセット
       let mediaItems = [];
-      this.putTagVideoIntoMediaItems(mediaItems, this.playlistAndTagVideoData.tagVideoData);
-      mediaItems.sort((a, b) => (a.title>b.title ? 1: -1));
+      this.putTagVideoIntoMediaItems(
+        mediaItems,
+        this.playlistAndTagVideoData.tagVideoData
+      );
+      mediaItems.sort((a, b) => (a.title > b.title ? 1 : -1));
       this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
       this.$store.commit("playlist/setCommentListofPlaylist", this.playlistAndTagVideoData.comments);
       //YTPlayerのプレイリストの再生に必要なパラメータをセット
@@ -602,6 +610,10 @@ export default {
         location.reload();
       }
     });
+  },
+  beforeDestroy() {
+    // シーンタグ付けコンポーネントの現在再生時間をセットするインターバルを停止する
+    clearInterval(this.timer);
   },
 };
 </script>
