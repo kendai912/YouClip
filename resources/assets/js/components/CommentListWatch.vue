@@ -88,7 +88,7 @@
                   <div class="placeholder-color">
                     {{ timeSince(replyItem.comment_publishedAt) }}前
                     &nbsp;
-                    <v-icon size="16" v-on:click="likeComment(item.comment_id)" :color="item.isLiked ? 'red':'grey'">fas fa-heart</v-icon>{{replyItem.likes_count}}
+                    <v-icon size="16" v-on:click="likeComment(replyItem)" :color="replyItem.isLiked ? 'red':'grey'">fas fa-heart</v-icon>{{replyItem.likes_count}}
                     &nbsp;
                     <v-icon size="16">comment</v-icon>
                   </div>
