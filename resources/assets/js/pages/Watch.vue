@@ -152,7 +152,9 @@
           </v-row>
         </v-sheet>
 
-        <SceneListWatch v-bind:mediaItems="sceneListofPlaylist" />
+        <SceneListWatch v-if="playlistIdUrl" v-bind:mediaItems="sceneListofPlaylist"/>
+        <CommentListWatch v-if="playlistIdUrl" v-bind:mediaItems="commentListofPlaylist"/>
+        <CommentListWatch v-else v-bind:mediaItems="commentListofTag"/>
         <NoLoginModal v-if="showLoginModal" />
         <ShareModal v-if="showShareModal" v-bind:player="player" />
         <AddPlaylistModal v-if="showAddPlaylistModal" v-bind:player="player" />
@@ -182,6 +184,7 @@ import OtherActionModal from "../components/OtherActionModal.vue";
 import PlaySpeedModal from "../components/PlaySpeedModal.vue";
 import SceneTagControl from "../components/SceneTagControl.vue";
 import SceneListWatch from "../components/SceneListWatch.vue";
+import CommentListWatch from "../components/CommentListWatch.vue";
 import myMixin from "../util";
 
 export default {
@@ -193,6 +196,7 @@ export default {
     PlaySpeedModal,
     SceneTagControl,
     SceneListWatch,
+    CommentListWatch
   },
   data() {
     return {
@@ -408,6 +412,8 @@ export default {
       isLogin: "auth/check",
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
+      commentListofPlaylist: "playlist/commentListofPlaylist",
+      commentListofTag: "tag/commentListofTag",
       watchList: "watch/watchList",
       listIndex: "watch/listIndex",
       currentYoutubeId: "watch/currentYoutubeId",
@@ -458,6 +464,8 @@ export default {
   mounted: async function () {
     //ナビバーを非表示
     this.$store.commit("navbar/setShowNavbar", false);
+    this.playlistIdUrl = "";
+    this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
 
     if (this.$route.query.playlist) {
       //特定シーン再生の場合
@@ -502,7 +510,7 @@ export default {
       );
       mediaItems.sort((a, b) => (a.title > b.title ? 1 : -1));
       this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
-
+      this.$store.commit("playlist/setCommentListofPlaylist", this.playlistAndTagVideoData.comments);
       //YTPlayerのプレイリストの再生に必要なパラメータをセット
       this.$store.commit("watch/setYTPlaylistParameters", this.indexUrl);
     } else if (this.$route.query.tag) {
@@ -512,7 +520,8 @@ export default {
 
       //動画・タグデータを取得
       await this.$store.dispatch("watch/getTagAndVideoDataById", this.tagIdUrl);
-
+      console.log("tag data", this.tagAndVideoData[0].comments);
+      this.$store.commit("tag/setCommentListofTag", this.tagAndVideoData[0].comments);
       //YTPlayerのタグの再生に必要なパラメータをセット
       this.$store.commit("watch/setYTIndivisualParameters");
     }
@@ -527,8 +536,8 @@ export default {
     //Youtube Playerの初期処理
     window.onYouTubeIframeAPIReady = () => {
       self.player = new YT.Player("player", {
-        width: "560",
-        height: "315",
+        width: "56",
+        height: "31",
         videoId: this.currentYoutubeId,
         playerVars: {
           start: this.convertToSec(this.formatToMinSec(this.startHis)),

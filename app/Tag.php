@@ -8,6 +8,7 @@ use App\Video;
 use App\Like;
 use App\Playlist;
 use App\Taglog;
+use App\TagComment;
 
 class Tag extends Model
 {
@@ -39,5 +40,8 @@ class Tag extends Model
     {
         //Taglogモデルのデータを引っ張ってくる
         return $this->hasMany('App\Taglog');
+    }
+    public function tag_comments() {
+        return $this->hasMany('App\TagComment');
     }
 }

@@ -6,6 +6,7 @@ use App\User;
 use App\Video;
 use App\Tag;
 use App\Playlistlog;
+use App\PlaylistComment;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,5 +33,9 @@ class Playlist extends Model
     {
         //LikesPlaylistモデルのデータを引っ張ってくる
         return $this->hasMany('App\LikesPlaylist');
+    }
+
+    public function playlist_comments() {
+        return $this->hasMany('App\PlaylistComment');
     }
 }

@@ -9,6 +9,9 @@ use App\Tag;
 use App\Like;
 use App\User;
 use App\Playlist;
+use App\TagComment;
+use App\LikesComment;
+
 use Carbon\Carbon;
 use DB;
 use FFMpeg;
@@ -39,6 +42,56 @@ class TagController extends Controller
     {
         $tagId = $request->input('id');
         $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id as video_user_id', 'title', 'thumbnail', 'duration', 'category', 'channel_title', 'published_at', 'view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags.user_id as tag_user_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at', 'privacySetting')->where('tags.id', $tagId)->get();
+
+        $comments = TagComment::leftJoin('users', 'users.id', '=', 'tag_comments.user_id')->select('tag_comments.id as comment_id', 'tag_comments.created_at as comment_publishedAt', 'tag_comments.*', 'users.*')->where('tag_comments.tag_id', $tagId)->where('tag_comments.parent_id', '0')->orderBy('comment_publishedAt', 'desc')->get();
+        $commentDatas = [];
+
+        foreach ($comments as $comment) {
+            $commentData = $comment;
+            $child_comments = TagComment::leftJoin('users', 'users.id', '=', 'tag_comments.user_id')->select('tag_comments.id as comment_id', 'tag_comments.created_at as comment_publishedAt', 'tag_comments.*', 'users.*')->where('parent_id', $comment->comment_id)->orderBy('comment_publishedAt', 'desc')->get();
+
+            $childCommentDatas = [];
+            foreach($child_comments as $child) {
+                $childCommentData = $child;
+                $likes_child = LikesComment::where('comment_id', $child->comment_id)->where('cmt_option', '0')->select(DB::raw('COUNT(*) as likes_count'))->groupBy('comment_id')->first();
+                if ($likes_child) {
+                    $childCommentData->likes_count = $likes_child->likes_count;
+                } else {
+                    $childCommentData->likes_count = 0;
+                }
+                if (Auth::user()) {
+                    $isLiked = LikesComment::where('comment_id', $child->comment_id)->where('cmt_option', '0')->where('user_id', Auth::user()->id)->first();
+                    if ($isLiked)
+                        $childCommentData->isLiked = true;
+                    else 
+                        $childCommentData->isLiked = false;
+                } else {
+                    $childCommentData->isLiked = false;
+                }
+                $childCommentDatas[] = $childCommentData;
+            }
+            $commentData->replies = $childCommentDatas;
+
+            if (Auth::user()) {
+                $isLiked = LikesComment::where('comment_id', $comment->comment_id)->where('cmt_option', '0')->where('user_id', Auth::user()->id)->first();
+                if ($isLiked)
+                    $commentData->isLiked = true;
+                else 
+                    $commentData->isLiked = false;
+            } else {
+                $commentData->isLiked = false;
+            }
+            
+            $likes_comment = LikesComment::where('comment_id', $comment->comment_id)->where('cmt_option', '0')->select(DB::raw('COUNT(*) as likes_count'))->groupBy('comment_id')->first();
+            if ($likes_comment) {
+                $commentData->likes_count = $likes_comment->likes_count;
+            } else {
+                $commentData->likes_count = 0;
+            }
+            $commentDatas[] = $commentData;
+        }
+
+        $tagAndVideoData[0]['comments'] = $commentDatas;
 
         // シーンが非公開かつログインユーザーのものでない場合はデータを返却しない
         if ($tagAndVideoData[0]->privacySetting == 'private') {
@@ -462,5 +515,37 @@ class TagController extends Controller
     public static function convertToSec($time)
     {
         return 3600 * intval(date("H", strtotime($time))) + 60 * intval(date("i", strtotime($time))) + intval(date("s", strtotime($time)));
+    }
+
+    public function addTagComment(Request $request) {
+        if (Auth::user()) {
+            $tagComment = new TagComment;
+            $tagComment->tag_id = $request->tag_id;
+            $tagComment->content = $request->content;
+            $tagComment->user_id = $request->user_id;
+            $tagComment->parent_id = $request->parent_id;
+            $tagComment->save();
+            $newTagComment = TagComment::leftJoin('users', 'users.id', '=', 'tag_comments.user_id')->select('tag_comments.id as comment_id', 'tag_comments.created_at as comment_publishedAt', 'tag_comments.*', 'users.*')->where('tag_comments.id', $tagComment->id)->first();
+            if (!$request->parent_id) {
+                $newTagComment->replies = [];
+            }
+            return response()->json(
+                [
+                'newComment' => $newTagComment
+                ],
+                201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
 }
