@@ -3,6 +3,8 @@
     <div class="container--small">
       <div class="yt-container">
         <div id="player"></div>
+        <!-- <v-btn>aaa</v-btn>
+        <v-btn>bbb</v-btn> -->
       </div>
       <div v-if="isPlayerReady">
         <v-sheet v-if="isPlaylist" color="grey lighten-3" tile class="mx-auto pa-1">

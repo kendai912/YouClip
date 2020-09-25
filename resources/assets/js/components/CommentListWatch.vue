@@ -3,7 +3,7 @@
     <v-expansion-panels>
       <v-expansion-panel>
         <v-expansion-panel-header>
-          <span>コメント&nbsp;&#8226;&nbsp;{{mediaItems.length}}</span>        
+          <span>コメント&nbsp;&#8226;&nbsp;{{getTotal(mediaItems)}}</span>        
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <v-row class="ma-0 pa-0">
@@ -90,7 +90,7 @@
                     &nbsp;
                     <v-icon size="16" v-on:click="likeComment(replyItem)" :color="replyItem.isLiked ? 'red':'grey'">fas fa-heart</v-icon>{{replyItem.likes_count}}
                     &nbsp;
-                    <v-icon size="16">comment</v-icon>
+                    <v-icon size="16" v-on:click="addCommentReply(item.comment_id)">comment</v-icon>
                   </div>
                 </v-col>
               </v-row>
@@ -141,8 +141,12 @@ export default {
     }),
   },
   methods: {
-    select(item) {
-      console.log("itemmmmmmmmmm", item);
+    getTotal(items) {
+      let total = items.length;
+      items.forEach(item => {
+        total += item.replies.length;
+      });
+      return total;
     },
     async addComment() {
       if (this.$route.query.playlist) {
