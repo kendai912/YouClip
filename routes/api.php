@@ -89,11 +89,16 @@ Route::get('/tag/getPlaylists/{tag}', 'TagController@getPlaylists');
 
 //既存プレイリストへの追加
 Route::post('/tag/addToPlaylists/{tag}', 'TagController@addToPlaylists');
+
+Route::post('/tag/addComment', 'TagController@addTagComment');
 //新規プレイリストの作成とタグの追加
 Route::post('/playlist/create', 'PlaylistController@create');
 Route::post('/playlist/updateTitle', 'PlaylistController@updateTitle');
 Route::post('/playlist/updatePrivacy', 'PlaylistController@updatePrivacy');
 Route::post('/playlist/updateSceneOrder', 'PlaylistController@updateSceneOrder');
+
+Route::post('/playlist/addComment', 'PlaylistController@addPlaylistComment');
+Route::post('/playlist/likeComment', 'PlaylistController@likeComment');
 
 //シーン登録におけるyoutubeIdから既存のvideoIdの取得
 Route::get('/youtube/getVideo', 'VideoController@getVideoByYoutubeId');

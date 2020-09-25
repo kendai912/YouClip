@@ -11,6 +11,9 @@ use App\Playlist;
 use App\Playlistlog;
 use App\LikesPlaylist;
 use App\Like;
+use App\PlaylistComment;
+use App\LikesComment;
+
 use Carbon\Carbon;
 
 use DB;
@@ -161,7 +164,6 @@ class PlaylistController extends Controller
         //プレイリストとタグのデータを取得
         $playlistId = $request->input('id');
         $playlistAndTagData = Playlist::with('tags')->where('id', $playlistId)->withCount(['playlistlogs as play_count'])->first();
-
         //タグから動画データを取得
         $tagVideoDatas = [];
         foreach ($playlistAndTagData->tags as $tag) {
@@ -187,6 +189,52 @@ class PlaylistController extends Controller
             return (($a["scene_order"] < $b["scene_order"]) ? -1 : 1);
         });
 
+        $comments = PlaylistComment::leftJoin('users', 'users.id', '=', 'playlist_comments.user_id')->select('playlist_comments.id as comment_id', 'playlist_comments.created_at as comment_publishedAt', 'playlist_comments.*', 'users.*')->where('playlist_comments.playlist_id', $playlistId)->where('playlist_comments.parent_id', '0')->orderBy('comment_publishedAt', 'desc')->get();
+        $commentDatas = [];
+
+        foreach ($comments as $comment) {
+            $commentData = $comment;
+            $child_comments = PlaylistComment::leftJoin('users', 'users.id', '=', 'playlist_comments.user_id')->select('playlist_comments.id as comment_id', 'playlist_comments.created_at as comment_publishedAt', 'playlist_comments.*', 'users.*')->where('parent_id', $comment->comment_id)->orderBy('comment_publishedAt', 'desc')->get();
+            $childCommentDatas = [];
+            foreach($child_comments as $child) {
+                $childCommentData = $child;
+                $likes_child = LikesComment::where('comment_id', $child->comment_id)->where('cmt_option', '1')->select(DB::raw('COUNT(*) as likes_count'))->groupBy('comment_id')->first();
+                if ($likes_child) {
+                    $childCommentData->likes_count = $likes_child->likes_count;
+                } else {
+                    $childCommentData->likes_count = 0;
+                }
+                if (Auth::user()) {
+                    $isLiked = LikesComment::where('comment_id', $child->comment_id)->where('cmt_option', '1')->where('user_id', Auth::user()->id)->first();
+                    if ($isLiked)
+                        $childCommentData->isLiked = true;
+                    else 
+                        $childCommentData->isLiked = false;
+                } else {
+                    $childCommentData->isLiked = false;
+                }
+                $childCommentDatas[] = $childCommentData;
+            }
+            $commentData->replies = $childCommentDatas;
+
+            if (Auth::user()) {
+                $isLiked = LikesComment::where('comment_id', $comment->comment_id)->where('cmt_option', '1')->where('user_id', Auth::user()->id)->first();
+                if ($isLiked)
+                    $commentData->isLiked = true;
+                else 
+                    $commentData->isLiked = false;
+            } else {
+                $commentData->isLiked = false;
+            }
+            $likes_comment = LikesComment::where('comment_id', $comment->comment_id)->where('cmt_option', '1')->select(DB::raw('COUNT(*) as likes_count'))->groupBy('comment_id')->first();
+            if ($likes_comment) {
+                $commentData->likes_count = $likes_comment->likes_count;
+            } else {
+                $commentData->likes_count = 0;
+            }
+            $commentDatas[] = $commentData;
+        }
+
         //プレイリスト・タグ・動画のデータを連結
         $playlistAndTagVideoData = [
             'playlist_id' => $playlistAndTagData->id,
@@ -197,6 +245,7 @@ class PlaylistController extends Controller
             'playlist_created_at' => (new Carbon($playlistAndTagData->created_at))->toDateTimeString(),
             'playlist_updated_at' => (new Carbon($playlistAndTagData->updated_at))->toDateTimeString(),
             'tagVideoData' => $tagVideoDatas,
+            'comments' =>$commentDatas
         ];
 
         // プレイリストが非公開かつログインユーザーのものでない場合はデータを返却しない
@@ -609,6 +658,76 @@ class PlaylistController extends Controller
                 [],
                 JSON_UNESCAPED_UNICODE
             );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
+    }
+    public function addPlaylistComment(Request $request) {
+        if (Auth::user()) {
+            $playlistComment = new PlaylistComment;
+            $playlistComment->playlist_id = $request->playlist_id;
+            $playlistComment->content = $request->content;
+            $playlistComment->user_id = $request->user_id;
+            $playlistComment->parent_id = $request->parent_id;
+            $playlistComment->save();
+            $newPlaylistComment = PlaylistComment::leftJoin('users', 'users.id', '=', 'playlist_comments.user_id')->select('playlist_comments.id as comment_id', 'playlist_comments.created_at as comment_publishedAt', 'playlist_comments.*', 'users.*')->where('playlist_comments.id', $playlistComment->id)->first();
+            if (!$request->parent_id) {
+                $newPlaylistComment->replies = [];
+            }
+            return response()->json(
+                [
+                'newComment' => $newPlaylistComment
+                ],
+                201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
+    }
+    public function likeComment(Request $request) {
+        if (Auth::user()) {
+            $likeComment = LikesComment::where('comment_id', $request->comment_id)->where('cmt_option', $request->cmt_option)->where('user_id', $request->user_id)->first();
+            if ($likeComment) {
+                $likeComment->delete();
+                return response()->json(
+                    [
+                    'isLiked' => false
+                    ],
+                    201,
+                    [],
+                    JSON_UNESCAPED_UNICODE
+                );
+            } else {
+                $likeComment = new LikesComment;
+                $likeComment->comment_id = $request->comment_id;
+                $likeComment->user_id = $request->user_id;
+                $likeComment->cmt_option = $request->cmt_option;
+                $likeComment->save();
+                return response()->json(
+                    [
+                    'isLiked' => true
+                    ],
+                    201,
+                    [],
+                    JSON_UNESCAPED_UNICODE
+                );
+            }
         } else {
             return response()->json(
                 [

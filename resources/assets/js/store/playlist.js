@@ -2,6 +2,7 @@ import axios from "axios";
 import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
 import router from "../router";
 import store from "../store";
+import { times } from "lodash";
 
 const state = {
   playlistAndTagPaginationOfRecommend: null,
@@ -21,6 +22,7 @@ const state = {
   isIndexSportsPlaylistAndTagPaginating: false,
   isIndexEntertainmentPlaylistAndTagPaginating: false,
   sceneListofPlaylist: null,
+  commentListofPlaylist: null,
   newPlaylistId: null,
   publicPlaylist: null,
   createdSceneList: null,
@@ -66,6 +68,7 @@ const getters = {
     return state.myCreatedPlaylist ? !!state.myCreatedPlaylist.length : false;
   },
   sceneListofPlaylist: (state) => state.sceneListofPlaylist,
+  commentListofPlaylist: (state) => state.commentListofPlaylist,
   newPlaylistId: (state) => state.newPlaylistId,
 };
 
@@ -129,6 +132,9 @@ const mutations = {
   },
   setSceneListofPlaylist(state, data) {
     state.sceneListofPlaylist = data;
+  },
+  setCommentListofPlaylist(state, data) {
+    state.commentListofPlaylist = data;
   },
   setNewPlaylistId(state, data) {
     state.newPlaylistId = data;
@@ -332,8 +338,6 @@ const actions = {
       "/api/tag/addToPlaylists/" + input.currentTagId,
       params
     );
-    console.log(params);
-    console.log(response);
     if (response.status == CREATED) {
       // 成功した時
       context.commit("closeAddPlaylistModal");
@@ -493,6 +497,64 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+  async addPlaylistComment(context, data) {
+    const params = data;
+    const response = await axios.post("api/playlist/addComment", params);
+    if (response.status == CREATED) {
+      // 成功した時
+      //storeのタグデータを更新
+      const newPlaylistComment = response.data.newComment;
+      const comments = state.commentListofPlaylist;
+      if (!newPlaylistComment.parent_id) {
+        comments.unshift(newPlaylistComment);
+      } else {
+        const parentIndex = comments.findIndex(comment => comment.comment_id === newPlaylistComment.parent_id);
+        comments[parentIndex].replies.unshift(newPlaylistComment);
+      }
+      context.commit("setCommentListofPlaylist", comments);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  async likeComment(context, data) {
+    const params = data;
+    const response = await axios.post("api/playlist/likeComment", params);
+    if (response.status == CREATED) {
+      // 成功した時
+      //storeのタグデータを更新
+      const isLiked = response.data.isLiked;
+      const comments = state.commentListofPlaylist;
+      if (!data.parent_id) {
+        const commentIndex = comments.findIndex(comment => comment.comment_id === data.comment_id);
+        comments[commentIndex].isLiked = isLiked;
+        if (isLiked) {
+          comments[commentIndex].likes_count ++;
+        } else {
+          comments[commentIndex].likes_count --;
+        }
+      } else {
+        const parentIndex = comments.findIndex(comment => comment.comment_id === data.parent_id);
+        const commentIndex = comments[parentIndex].replies.findIndex(reply => reply.comment_id === data.comment_id);
+        comments[parentIndex].replies[commentIndex].isLiked = isLiked;
+        if (isLiked) {
+          comments[commentIndex].replies[commentIndex].likes_count ++;
+        } else {
+          comments[commentIndex].replies[commentIndex].likes_count --;
+        }
+      }
+      context.commit("setCommentListofPlaylist", comments);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  }
 };
 
 export default {

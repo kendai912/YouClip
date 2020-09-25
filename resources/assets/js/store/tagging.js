@@ -106,7 +106,6 @@ const actions = {
       privacySetting: state.privacySetting,
       myPlaylistToSave: state.myPlaylistToSave, //playlist ID
     };
-    console.log("create scene tag", params);
 
     const response = await axios.post("/api/tag/store", params);
     if (response.status == CREATED) {

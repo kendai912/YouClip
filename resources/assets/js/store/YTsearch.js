@@ -274,7 +274,6 @@ const actions = {
           viewCount: res[i].num_views
         };
       }
-      console.log("yt result", YTresult);
       context.commit("setYTResult", YTresult);
 
       //連続リクエストを制御するフラグを解除
