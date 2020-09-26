@@ -159,9 +159,7 @@ export default {
     }
   },
   created() {
-    console.log("media items", this.mediaItems);
     this.isMobile = this.mobileCheck();
-    console.log("is mobile", this.isMobile);
   }
 };
 </script>

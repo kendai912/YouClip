@@ -150,7 +150,6 @@ export default {
     },
     async endDragging() {
       this.dragging = false;
-      console.log("end dragging", this.sceneListofPlaylist);
       let playlist = {
         playlist_id: this.playlistId,
         tagVideoData: this.sceneListofPlaylist

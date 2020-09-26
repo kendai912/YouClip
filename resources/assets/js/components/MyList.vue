@@ -59,7 +59,6 @@ export default {
         mediaItems,
         this.myCreatedAndLikedPlaylist
       );
-      console.log("media items", mediaItems);
       
       return mediaItems;
     },

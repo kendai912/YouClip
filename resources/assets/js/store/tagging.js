@@ -130,8 +130,6 @@ const actions = {
   async updateSceneTags(context) {
     // //シーンタグの余計なスペースを除去し整形
     context.commit("formatSceneTags");
-
-    console.log("update scene tag", params);
     let params = {
       youtubeId: store.getters["youtube/youtubeId"],
       tagId: state.tagId,

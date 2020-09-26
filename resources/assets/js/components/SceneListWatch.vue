@@ -101,7 +101,6 @@ export default {
   },
   methods: {
     select(item) {
-      console.log("itemmmmmmmmmm", item);
     }
   },
   created() {

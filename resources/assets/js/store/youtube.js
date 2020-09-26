@@ -69,10 +69,8 @@ const mutations = {
     state.newVideoData.thumbnail = data;
   },
   setNewVideoDuration(state, data) {
-    console.log("video data", data);
     if (data.match(/PT(\d*)H(\d*)M(\d*)S/)) {
       let result = data.match(/PT(\d*)H(\d*)M(\d*)S/);
-      console.log("video data match1", result);
       let hr = result[1];
       let min = result[2];
       let sec = result[3];
@@ -80,14 +78,12 @@ const mutations = {
       state.newVideoData.duration = hr + ":" + min + ":" + sec;
     } else if (data.match(/PT(\d*)M(\d*)S/)) {
       let result = data.match(/PT(\d*)M(\d*)S/);
-      console.log("video data match2", result);
       let min = result[1];
       let sec = result[2];
       if (sec < 10) sec = "0" + sec;
       state.newVideoData.duration = "00:" + min + ":" + sec;
     } else if (data.match(/PT(\d*)S/)) {
       let result = data.match(/PT(\d*)S/);
-      console.log("video data match2", result);
       let sec = result[1];
       if (sec < 10) sec = "0" + sec;
       state.newVideoData.duration = "0:" + "0:" + sec;

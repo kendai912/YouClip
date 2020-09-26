@@ -139,7 +139,6 @@ export default {
         this.isEditPrivacy = true;
       } else {
         this.isEditPrivacy = false;
-        console.log(this.$refs.testelement.focus);
         this.$refs.testelement.focus();
         var playlist = {
           playlist_id: this.playlistAndTagVideoData.playlist_id,

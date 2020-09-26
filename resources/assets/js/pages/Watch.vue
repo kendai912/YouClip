@@ -522,7 +522,6 @@ export default {
 
       //動画・タグデータを取得
       await this.$store.dispatch("watch/getTagAndVideoDataById", this.tagIdUrl);
-      console.log("tag data", this.tagAndVideoData[0].comments);
       this.$store.commit("tag/setCommentListofTag", this.tagAndVideoData[0].comments);
       //YTPlayerのタグの再生に必要なパラメータをセット
       this.$store.commit("watch/setYTIndivisualParameters");

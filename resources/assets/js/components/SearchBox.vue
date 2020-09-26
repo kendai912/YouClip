@@ -116,7 +116,6 @@ export default {
   },
   async created() {
     await this.$store.dispatch("search/getSearchCandidates");
-    console.log("dddddddddddd", this.items)
   }
 };
 </script>

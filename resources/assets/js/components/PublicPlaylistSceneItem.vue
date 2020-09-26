@@ -234,10 +234,8 @@ export default {
   },
   methods: {
     checkMove (e) {
-      console.log("Future index: " + e.draggedContext.futureIndex);
     },
     async select(mediaItem) {
-      console.log("media item data", mediaItem.tagArray);
       //プレイリストの場合
       if (mediaItem.category == "playlist") {
         await this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
@@ -270,7 +268,6 @@ export default {
       // window.location.reload();
     },
     async editPlaylist(mediaItem) {
-      console.log("edit playlist");
       this.$router
         .push({
           path: "/editmyplaylist",
@@ -281,7 +278,6 @@ export default {
         .catch(err => {});
     },
     endDragging() {
-      console.log("end dragging", this.mediaItems);
     }
   },
   mounted() {
