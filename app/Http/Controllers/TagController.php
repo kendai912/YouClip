@@ -473,8 +473,8 @@ class TagController extends Controller
         //削除するシーンタグを取得
         $tag = Tag::find($request->tagId);
         //preview用gifを削除
-        // unlink(storage_path(). "/app/public/img/" . $tag->preview);
-        unlink(storage_path(). "/app/public/img/" . $tag->previewgif);
+        unlink(storage_path(). "/app/public/img/" . $tag->preview);
+        unlink(storage_path(). "/app/public/gifs/" . $tag->previewgif);
         //DBから削除
         $tag->delete();
 
