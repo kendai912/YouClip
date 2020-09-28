@@ -322,11 +322,19 @@
 }
 
 .my-tag-chip {
-  margin-left: 4px;
-  margin-right: 4px;
+  margin-left: 3px;
+  margin-right: 3px;
   margin-top: 2px;
   margin-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 8px;
   height: 20px !important;
+}
+
+.v-application--is-ltr .v-chip .v-avatar--left,
+.v-application--is-ltr .v-chip .v-icon--left {
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 .block-playlist-title {
@@ -427,7 +435,7 @@
 .scene-order {
   border: 1px solid green;
   color: green;
-  background-color: #F1F8E9;
+  background-color: #f1f8e9;
   position: absolute;
   top: 5px;
   left: 5px;
