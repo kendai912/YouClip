@@ -434,7 +434,8 @@ class TagController extends Controller
         // 開始or終了時間が更新された場合はpreview用のgifを再取得
         if ($this->convertToSec($tag->start) != $this->convertToSec("00:".$request->start) || $this->convertToSec($tag->end) != $this->convertToSec("00:".$request->end)) {
             //既存のpreview用gifを削除
-            unlink(storage_path(). "/app/public/img/" . $tag->previewgif);
+            unlink(storage_path(). "/app/public/img/" . $tag->preview);
+            unlink(storage_path(). "/app/public/gifs/" . $tag->previewgif);
 
             //更新したpreview用のgifを再取得
             $previews = $this->getPreviewFile($request);

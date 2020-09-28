@@ -65,7 +65,7 @@
               hide-details
               dense
               class="scenePrivacySettingBox"
-              style="font-size: 14px;"
+              style="font-size: 14px"
             ></v-select>
           </v-col>
         </v-row>
@@ -79,7 +79,7 @@
               hide-details
               dense
               class="scenePrivacySettingBox"
-              style="font-size: 14px;"
+              style="font-size: 14px"
             ></v-select>
           </v-col>
         </v-row>
@@ -90,11 +90,16 @@
       <v-container class="ma-0 pa-0" fluid>
         <v-row align="center" class="ma-0 pa-0">
           <v-col class="text-left pa-1 ma-0">
-            <i v-on:click="returnToTimeControl" class="fas fa-arrow-left fa-2x my-grey"></i>
+            <i
+              v-on:click="returnToTimeControl"
+              class="fas fa-arrow-left fa-2x my-grey"
+            ></i>
           </v-col>
           <v-col class="text-right pa-1 ma-0">
             <div>
-              <v-icon x-large v-on:click="submit" color="error">check_circle</v-icon>
+              <v-icon x-large v-on:click="submit" color="error"
+                >check_circle</v-icon
+              >
             </div>
           </v-col>
         </v-row>
@@ -225,7 +230,7 @@ export default {
       if (this.isLogin) {
         //ログイン済の場合
         let self = this;
-        setTimeout(function () {
+        setTimeout(async function () {
           if (self.$refs.form.validate()) {
             if (self.isEditting) {
               //編集の場合
@@ -236,12 +241,17 @@ export default {
                 self.privacySetting
               );
 
-              //シーンの更新＆トースト表示
-              self.$store.dispatch("tagging/updateSceneTags");
+              //更新完了トースト表示
               self.$emit("updateSucceed");
 
               //シーンタグ付けコンポーネントを非表示にし再生画面に戻る
               self.$store.commit("tagging/setShowSceneTagControl", false);
+
+              //データを更新
+              await self.$store.dispatch("tagging/updateSceneTags");
+
+              //リロード
+              window.location.reload();
             } else {
               //新規の場合
               //入力済データをセット
@@ -256,7 +266,7 @@ export default {
               );
 
               //シーンの追加＆トースト表示
-              self.$store.dispatch("tagging/storeSceneTags");
+              await self.$store.dispatch("tagging/storeSceneTags");
               self.$emit("taggingSucceed");
             }
 
