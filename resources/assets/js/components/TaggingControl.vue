@@ -200,7 +200,7 @@ export default {
     },
   },
   watch: {
-    myPlaylistToSave: function (newPlaylist, oldPlaylist) {
+    myPlaylistToSave: function(newPlaylist, oldPlaylist) {
       // プレイリスト新規作成の場合は、プレイリスト作成モーダルを表示
       if (newPlaylist == "new") {
         if (this.isLogin) {
@@ -230,7 +230,7 @@ export default {
       if (this.isLogin) {
         //ログイン済の場合
         let self = this;
-        setTimeout(async function () {
+        setTimeout(async function() {
           if (self.$refs.form.validate()) {
             if (self.isEditting) {
               //編集の場合

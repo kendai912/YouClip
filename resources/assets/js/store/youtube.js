@@ -46,6 +46,8 @@ const getters = {
   youtubeId: (state) => state.youtubeId,
   videoData: (state) => state.videoData,
   newVideoData: (state) => state.newVideoData,
+  currentCategory: (state) =>
+    state.isNew ? state.newVideoData.category : state.videoData.category,
   tagDataArray: (state) => state.tagDataArray,
   isNew: (state) => state.isNew,
   currentTime: (state) => state.currentTime,
@@ -200,7 +202,7 @@ const actions = {
     // const response = await axios.get("https://cors-anywhere.herokuapp.com/"+api, { params: params });
     const response = await axios.post("api/search/getYoutubeVideos", {
       params: params,
-      apiUrl: api
+      apiUrl: api,
     });
     if (response.status == OK) {
       // 成功した時
@@ -217,12 +219,23 @@ const actions = {
         "getVideoCategoryTitleById",
         response.data.items[0].snippet.categoryId
       );
-      context.commit("setNewVideoChannelTitle", response.data.items[0].snippet.channelTitle);
-      context.commit("setNewVideoPublishedAt", response.data.items[0].snippet.publishedAt);
-      context.commit("setNewVideoViewCount", response.data.items[0].statistics.viewCount);
+      context.commit(
+        "setNewVideoChannelTitle",
+        response.data.items[0].snippet.channelTitle
+      );
+      context.commit(
+        "setNewVideoPublishedAt",
+        response.data.items[0].snippet.publishedAt
+      );
+      context.commit(
+        "setNewVideoViewCount",
+        response.data.items[0].statistics.viewCount
+      );
       // context.commit("setYTResult", response.data.items);
-    } else if (response.status == FORBIDDEN ||
-      response.status == INTERNAL_SERVER_ERROR) {
+    } else if (
+      response.status == FORBIDDEN ||
+      response.status == INTERNAL_SERVER_ERROR
+    ) {
       // API Keyの上限オーバーで失敗した時
       //次のAPI Keyにスイッチして再度検索実行
       context.commit("setKeyIndex", context.getters["keyIndex"] + 1);
@@ -254,7 +267,7 @@ const actions = {
     // const response = await axios.get("https://cors-anywhere.herokuapp.com/"+api, { params: params });
     const response = await axios.post("api/search/getYoutubeVideoCategories", {
       params: params,
-      apiUrl: api
+      apiUrl: api,
     });
     if (response.status == OK) {
       // 成功した時

@@ -5,7 +5,9 @@
         <v-row class="ma-0 pa-0">
           <v-col class="ma-0 pa-0">
             <v-list class="pb-0" dense>
-              <v-list-item-subtitle class="ma-0 pa-2 pb-3">新規プレイリストを作成</v-list-item-subtitle>
+              <v-list-item-subtitle class="ma-0 pa-2 pb-3"
+                >新規プレイリストを作成</v-list-item-subtitle
+              >
               <v-list-item>
                 <v-text-field
                   v-model="newPlaylistName"
@@ -35,10 +37,17 @@
         </v-row>
         <v-row class="ma-0 pa-2">
           <v-col class="text-center ma-0 pa-0">
-            <v-btn v-on:click="submitNewPlaylist" width="90px" color="primary">完了</v-btn>
+            <v-btn v-on:click="submitNewPlaylist" width="90px" color="primary"
+              >完了</v-btn
+            >
           </v-col>
           <v-col class="text-center ma-0 pa-0">
-            <v-btn v-on:click="closeCreateNewPlaylistModal" width="90px" color="primary">キャンセル</v-btn>
+            <v-btn
+              v-on:click="closeCreateNewPlaylistModal"
+              width="90px"
+              color="primary"
+              >キャンセル</v-btn
+            >
           </v-col>
         </v-row>
       </v-container>
@@ -71,6 +80,7 @@ export default {
   computed: {
     ...mapGetters({
       user_id: "auth/user_id",
+      currentCategory: "youtube/currentCategory",
     }),
     showCreateNewPlaylistModal: {
       get() {
@@ -80,9 +90,9 @@ export default {
         return this.$store.commit("tagging/closeCreateNewPlaylistModal");
       },
     },
-    currentCategory() {
-      return this.$store.getters["youtube/newVideoData"].category;
-    },
+    // currentCategory() {
+    // return this.$store.getters["youtube/newVideoData"].category;
+    // },
   },
   methods: {
     //モーダルを閉じる
