@@ -154,7 +154,6 @@ export default {
   },
   async created() {
     await this.$store.dispatch("YTsearch/getCandidates");
-    console.log("dddddddddddd", this.items);
   },
 };
 </script>

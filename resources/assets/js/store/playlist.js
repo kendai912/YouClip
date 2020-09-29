@@ -372,16 +372,13 @@ const actions = {
     const response = await axios.post("/api/playlist/updateTitle", params);
     if (response.status == CREATED) {
       //ポップアップでプレイリストの作成完了を通知
-      console.log("success");
       // toastr.success("プレイリストに保存しました");
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       // toastr.error("プレイリストへの保存に失敗しました");
-      console.log("server error");
     } else {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
-      console.log("error-setcode");
       // toastr.error("プレイリストへの保存に失敗しました");
     }
   },
@@ -527,7 +524,6 @@ const actions = {
     if (!data.parent_id) {
       const commentIndex = comments.findIndex(comment => comment.comment_id === data.comment_id);
       comments[commentIndex].isLiked = isLiked;
-      console.log("comment index", comments[commentIndex]);
       if (isLiked) {
         comments[commentIndex].likes_count ++;
       } else {

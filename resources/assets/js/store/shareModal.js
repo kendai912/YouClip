@@ -21,10 +21,8 @@ const mutations = {
           url: state.shareUrl
         })
         .then(() => {
-          console.log("Share succeeded");
         })
         .catch(error => {
-          console.log("Share failed", error);
         });
     } else {
       //スマホ以外でのシェア

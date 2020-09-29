@@ -21,17 +21,17 @@ export default {
   components: {
     Navbar,
     Snackbar,
-    Footer
+    Footer,
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
       showNavbar: "navbar/showNavbar",
-      auth_check: "auth/check"
+      auth_check: "auth/check",
     }),
     errorCode() {
       return this.$store.state.error.code;
-    }
+    },
   },
   watch: {
     errorCode: {
@@ -45,29 +45,24 @@ export default {
           this.$router.push("/login");
         }
       },
-      immediate: true //createdと同じ
+      immediate: true, //createdと同じ
     },
     $route() {
       this.$store.commit("error/setCode", null);
-    }
+    },
   },
   created() {
     this.$store.dispatch("like/loadTagLike");
     this.$store.dispatch("likePlaylist/loadPlaylistLike");
 
     //URLのtoastパラメータを見てトーストを表示
-    if (window.sessionStorage.getItem("updateSuccess")) {
-      this.$store.commit("snackbar/setColor", "blue");
-      this.$store.commit("snackbar/setText", "シーンタグを更新しました");
-      this.$store.commit("snackbar/setSnackbar", true);
-      window.sessionStorage.removeItem("updateSuccess");
-    } else if (window.sessionStorage.getItem("deleteSuccess")) {
+    if (window.sessionStorage.getItem("deleteSuccess")) {
       this.$store.commit("snackbar/setColor", "grey lighten-1");
       this.$store.commit("snackbar/setText", "シーンタグを削除しました");
       this.$store.commit("snackbar/setSnackbar", true);
       window.sessionStorage.removeItem("deleteSuccess");
     }
-  }
+  },
 };
 </script>
 <style>

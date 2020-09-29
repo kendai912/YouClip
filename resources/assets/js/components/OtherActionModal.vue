@@ -110,7 +110,6 @@ export default {
     },
   },
   created() {
-    console.log("dddddddddddd", this.created_user_id);
   },
 };
 </script>

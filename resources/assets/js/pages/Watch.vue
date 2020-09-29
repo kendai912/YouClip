@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100vh; background-color: white;">
+  <div style="height: 100vh; background-color: white">
     <div class="container--small">
       <div class="yt-container">
         <div id="player"></div>
@@ -27,12 +27,19 @@
                     </div>
                     <div>
                       <v-avatar size="16" v-on:click.stop="gotoFollow">
-                        <v-img src="/storage/logos/pph_son.png" class="float-left" />
+                        <v-img
+                          src="/storage/logos/pph_son.png"
+                          class="float-left"
+                        />
                       </v-avatar>
-                      <span>{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span>
-                      <span style="font-size:8px;">&nbsp;&#8226;&nbsp;</span>
+                      <span
+                        >{{
+                          playlistViewCount ? playlistViewCount : 0
+                        }}回視聴</span
+                      >
+                      <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
                       <span>合計{{ totalDuration }}</span>
-                      <span style="font-size:8px;">&nbsp;&#8226;&nbsp;</span>
+                      <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
                       <span>{{ playlistCreatedAt }}前</span>
                     </div>
                   </v-col>
@@ -46,11 +53,17 @@
                   background-color="transparent"
                   style="height: 48px; justify-content: flex-end"
                 >
-                  <v-btn v-on:click="sharePlaylist" class="ma-0 pa-0 narrow-btn">
+                  <v-btn
+                    v-on:click="sharePlaylist"
+                    class="ma-0 pa-0 narrow-btn"
+                  >
                     <span>クリップ共有</span>
                     <v-icon class="icon-large my-grey">mdi-share</v-icon>
                   </v-btn>
-                  <v-btn v-on:click="toggleLikePlaylist" class="ma-0 pa-0 ex-narrow-btn">
+                  <v-btn
+                    v-on:click="toggleLikePlaylist"
+                    class="ma-0 pa-0 ex-narrow-btn"
+                  >
                     <span>{{ likePlaylistCount }}</span>
                     <i
                       class="fas fa-heart fa-heart-font"
@@ -122,11 +135,22 @@
                 background-color="transparent"
                 style="height: 48px; justify-content: space-between"
               >
-                <v-btn v-on:click="openPlaySpeedModal" class="ma-0 pa-0 narrow-btn">
+                <v-btn
+                  v-on:click="openPlaySpeedModal"
+                  class="ma-0 pa-0 narrow-btn"
+                >
                   <span>倍速視聴</span>
-                  <v-img src="/storage/icons/play_speed.png" width="28px" max-height="28px" />
+                  <v-img
+                    src="/storage/icons/play_speed.png"
+                    width="28px"
+                    max-height="28px"
+                  />
                 </v-btn>
-                <v-btn v-if="isMuted" v-on:click="unmute" class="ma-0 pa-0 narrow-btn">
+                <v-btn
+                  v-if="isMuted"
+                  v-on:click="unmute"
+                  class="ma-0 pa-0 narrow-btn"
+                >
                   <span>消音解除</span>
                   <v-icon class="icon-large">volume_off</v-icon>
                 </v-btn>
@@ -154,16 +178,26 @@
           </v-row>
         </v-sheet>
 
-        <CommentListWatch v-if="playlistIdUrl" v-bind:mediaItems="commentListofPlaylist"/>
-        <CommentListWatch v-else v-bind:mediaItems="commentListofTag"/>
-        <SceneListWatch v-if="playlistIdUrl" v-bind:mediaItems="sceneListofPlaylist"/>
+        <SceneListWatch
+          v-if="playlistIdUrl"
+          v-bind:mediaItems="sceneListofPlaylist"
+        />
+        <CommentListWatch
+          v-if="playlistIdUrl"
+          v-bind:mediaItems="commentListofPlaylist"
+        />
+        <CommentListWatch v-else v-bind:mediaItems="commentListofTag" />
         <NoLoginModal v-if="showLoginModal" />
         <ShareModal v-if="showShareModal" v-bind:player="player" />
         <AddPlaylistModal v-if="showAddPlaylistModal" v-bind:player="player" />
         <OtherActionModal
           v-if="showOtherActionModal"
           v-bind:player="player"
-          v-bind:created_user_id="playlistIdUrl ? playlistAndTagVideoData.user_id : tagAndVideoData[0].tag_user_id"
+          v-bind:created_user_id="
+            playlistIdUrl
+              ? playlistAndTagVideoData.user_id
+              : tagAndVideoData[0].tag_user_id
+          "
           v-on:deleteSucceed="deleteSucceed"
         />
         <PlaySpeedModal v-if="showPlaySpeedModal" v-bind:player="player" />
@@ -172,6 +206,10 @@
           v-bind:player="player"
           v-on:updateSucceed="updateSucceed"
         />
+        <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
+          {{ text }}
+          <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
+        </v-snackbar>
       </div>
     </div>
   </div>
@@ -198,7 +236,7 @@ export default {
     PlaySpeedModal,
     SceneTagControl,
     SceneListWatch,
-    CommentListWatch
+    CommentListWatch,
   },
   data() {
     return {
@@ -213,6 +251,9 @@ export default {
       mediaItems: [],
       playlistCreatedAt: "",
       totalDuration: "00:00:00",
+      snackbar: false,
+      timeout: 5000,
+      text: "",
     };
   },
   mixins: [myMixin],
@@ -344,10 +385,8 @@ export default {
     },
     //リロードした後にシーンタグ更新完了トーストを表示するためのフラグをセッションに格納
     updateSucceed() {
-      //更新完了トーストFlagをセッションストレージに保存
-      window.sessionStorage.setItem("updateSuccess", true);
-      // リロード
-      window.location.reload();
+      this.text = "シーンタグを更新しました";
+      this.snackbar = true;
     },
     //シーンタグ削除完了のトーストを表示し戻る＆リロード
     deleteSucceed() {
@@ -512,7 +551,10 @@ export default {
       );
       mediaItems.sort((a, b) => (a.title > b.title ? 1 : -1));
       this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
-      this.$store.commit("playlist/setCommentListofPlaylist", this.playlistAndTagVideoData.comments);
+      this.$store.commit(
+        "playlist/setCommentListofPlaylist",
+        this.playlistAndTagVideoData.comments
+      );
       //YTPlayerのプレイリストの再生に必要なパラメータをセット
       this.$store.commit("watch/setYTPlaylistParameters", this.indexUrl);
     } else if (this.$route.query.tag) {
@@ -522,8 +564,10 @@ export default {
 
       //動画・タグデータを取得
       await this.$store.dispatch("watch/getTagAndVideoDataById", this.tagIdUrl);
-      console.log("tag data", this.tagAndVideoData[0].comments);
-      this.$store.commit("tag/setCommentListofTag", this.tagAndVideoData[0].comments);
+      this.$store.commit(
+        "tag/setCommentListofTag",
+        this.tagAndVideoData[0].comments
+      );
       //YTPlayerのタグの再生に必要なパラメータをセット
       this.$store.commit("watch/setYTIndivisualParameters");
     }

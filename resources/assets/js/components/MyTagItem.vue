@@ -15,13 +15,13 @@
           class="float-left mr-2"
         />
         <div class="video-title">
-          {{videoItem.title}}
+          {{ videoItem.title }}
         </div>
       </v-col>
       <v-col
         style="padding-top: 2px; padding-bottom: 2px;"
         v-for="item in videoItem.tagVideoData"
-        v-bind:key="item.category+'-'+item.id"
+        v-bind:key="item.category + '-' + item.id"
         cols="6"
       >
         <v-card class="mx-0" elevation="1" v-on:click.stop="select(item)">
@@ -29,12 +29,21 @@
             <v-img
               class="white--text align-end"
               max-height="266.66px"
-              v-bind:src="hover ? '/storage/gifs/' + item.previewgif: '/storage/img/' + item.preview"
+              v-bind:src="
+                hover
+                  ? '/storage/gifs/' + item.previewgif
+                  : '/storage/img/' + item.preview
+              "
               v-bind:alt="item.title"
               aspect-ratio="1.5"
             >
-              <v-chip label color="#27252582" text-color="white" class="my-scene-time">
-                <span class="caption">{{item.start+'~'+item.end}}</span>
+              <v-chip
+                label
+                color="#27252582"
+                text-color="white"
+                class="my-scene-time"
+              >
+                <span class="caption">{{ item.start + "~" + item.end }}</span>
               </v-chip>
               <v-card-text class="px-1" style="position: absolute; bottom: 0;">
                 <div class="horizontal-list-wrap block-chip-line">
@@ -67,10 +76,15 @@
             v-bind:alt="item.title"
             aspect-ratio="1.5"
           >
-            <v-chip label color="#27252582" text-color="white" class="my-scene-time">
-              <span class="caption">{{item.start+'~'+item.end}}</span>
+            <v-chip
+              label
+              color="#27252582"
+              text-color="white"
+              class="my-scene-time"
+            >
+              <span class="caption">{{ item.start + "~" + item.end }}</span>
             </v-chip>
-            <v-card-text class="px-1" style="position: absolute; bottom: 0;">
+            <v-card-text class="px-1 horizontal-list-wrap block-chip-line" style="position: absolute; bottom: 0;">
               <div class="horizontal-list-wrap block-chip-line">
                 <v-chip
                   v-for="(tag, tagIndex) in item.tagArray"
@@ -95,7 +109,10 @@
         <v-divider></v-divider>
       </v-col> -->
     </v-row>
-    <LoadingItem v-if="isLoading" v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination" />
+    <LoadingItem
+      v-if="isLoading"
+      v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination"
+    />
   </v-container>
 </template>
 
@@ -109,17 +126,17 @@ export default {
     isMobile: false,
   }),
   components: {
-    LoadingItem
+    LoadingItem,
   },
   props: {
-    mediaItems: Array
+    mediaItems: Array,
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
       isLoading: "loadingItem/isLoading",
-      numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination"
-    })
+      numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination",
+    }),
   },
   methods: {
     switchThumb() {
@@ -128,17 +145,20 @@ export default {
     async select(mediaItem) {
       //プレイリストの場合
       if (mediaItem.category == "playlist") {
-        await this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
+        await this.$store.dispatch(
+          "playlist/addPlaylistVisitCount",
+          mediaItem.id
+        );
         //再生ページを表示
         this.$router
           .push({
             path: "/watch",
             query: {
               playlist: mediaItem.id,
-              index: "0"
-            }
+              index: "0",
+            },
           })
-          .catch(err => {});
+          .catch((err) => {});
       }
 
       //タグの場合
@@ -148,20 +168,18 @@ export default {
           .push({
             path: "/watch",
             query: {
-              tag: mediaItem.id
-            }
+              tag: mediaItem.id,
+            },
           })
-          .catch(err => {});
+          .catch((err) => {});
       }
 
       // IFrame Player APIを呼び出すためにページをリロード
       // window.location.reload();
-    }
+    },
   },
   created() {
-    console.log("media items", this.mediaItems);
     this.isMobile = this.mobileCheck();
-    console.log("is mobile", this.isMobile);
-  }
+  },
 };
 </script>
