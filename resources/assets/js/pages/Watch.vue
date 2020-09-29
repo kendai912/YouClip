@@ -7,7 +7,7 @@
         <v-btn>bbb</v-btn> -->
       </div>
       <div v-if="isPlayerReady">
-        <v-sheet v-if="isPlaylist" color="grey lighten-3" tile class="mx-auto pa-1">
+        <v-sheet v-if="isPlaylist" color="light-green lighten-4" tile class="mx-auto pa-1">
           <v-container class="ma-0 pa-0" fluid>
             <v-row class="ma-0 pa-0" align="center">
               <v-col class="ma-0 pa-0">
@@ -154,9 +154,9 @@
           </v-row>
         </v-sheet>
 
-        <SceneListWatch v-if="playlistIdUrl" v-bind:mediaItems="sceneListofPlaylist"/>
         <CommentListWatch v-if="playlistIdUrl" v-bind:mediaItems="commentListofPlaylist"/>
         <CommentListWatch v-else v-bind:mediaItems="commentListofTag"/>
+        <SceneListWatch v-if="playlistIdUrl" v-bind:mediaItems="sceneListofPlaylist"/>
         <NoLoginModal v-if="showLoginModal" />
         <ShareModal v-if="showShareModal" v-bind:player="player" />
         <AddPlaylistModal v-if="showAddPlaylistModal" v-bind:player="player" />
