@@ -33,6 +33,7 @@ export default {
       snackbar: false,
       timeout: 5000,
       text: "シーンタグを登録しました",
+      timer: null,
     };
   },
   mixins: [myMixin],
@@ -114,7 +115,7 @@ export default {
       this.isPlayerReady = true;
 
       //0.4秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
-      setInterval(function() {
+      self.timer = setInterval(function() {
         //playerが取得した時間を「分:秒」に整形しcurrentTimeに格納
         let currentTime = self.formatTime(event.target.getCurrentTime());
         //currentTimeをyoutubeストアにセット
@@ -135,6 +136,10 @@ export default {
         location.reload();
       }
     });
+  },
+  beforeDestroy() {
+    // シーンタグ付けコンポーネントの現在再生時間をセットするインターバルを停止する
+    clearInterval(this.timer);
   },
 };
 </script>
