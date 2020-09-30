@@ -375,7 +375,6 @@ class TagController extends Controller
         $duration = 3;
         $endSec = $startSec + $duration;
 
-        
         //サムネイル画像を取得しS3に保存
         $previewThumbName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".png";
         FFMpeg::openUrl($ytDirectUrl)->getFrameFromSeconds($startSec)->export()->toDisk('s3')->save('thumbs/'.$previewThumbName);
@@ -437,9 +436,9 @@ class TagController extends Controller
         $tag = Tag::find($request->tagId);
         // 開始or終了時間が更新された場合はpreview用のgifを再取得
         if ($this->convertToSec($tag->start) != $this->convertToSec("00:".$request->start) || $this->convertToSec($tag->end) != $this->convertToSec("00:".$request->end)) {
-            //既存のpreview用gifを削除
-            unlink(storage_path(). "/app/public/img/" . $tag->preview);
-            unlink(storage_path(). "/app/public/gifs/" . $tag->previewgif);
+            //既存のS3に保存されているサムネイルとプレビューgifを削除
+            Storage::disk('s3')->delete('thumbs/'.$tag->preview);
+            Storage::disk('s3')->delete('gifs/'.$tag->previewgif);
 
             //更新したpreview用のgifを再取得
             $previews = $this->getPreviewFile($request);
@@ -476,9 +475,11 @@ class TagController extends Controller
     {
         //削除するシーンタグを取得
         $tag = Tag::find($request->tagId);
-        //preview用gifを削除
-        unlink(storage_path(). "/app/public/img/" . $tag->preview);
-        unlink(storage_path(). "/app/public/gifs/" . $tag->previewgif);
+
+        //S3に保存されているサムネイルとプレビューgifを削除
+        Storage::disk('s3')->delete('thumbs/'.$tag->preview);
+        Storage::disk('s3')->delete('gifs/'.$tag->previewgif);
+
         //DBから削除
         $tag->delete();
 

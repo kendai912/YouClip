@@ -17,19 +17,18 @@ export default {
   methods: {},
   computed: {
     ...mapGetters({
-      snackbar: "snackbar/snackbar",
       timeout: "snackbar/timeout",
       color: "snackbar/color",
-      text: "snackbar/text"
+      text: "snackbar/text",
     }),
     snackbar: {
       get() {
         return this.$store.getters["snackbar/snackbar"];
       },
-      set() {
-        return this.$store.commit("snackbar/setSnackbar", true);
-      }
-    }
-  }
+      set(val) {
+        return this.$store.commit("snackbar/setSnackbar", val);
+      },
+    },
+  },
 };
 </script>
