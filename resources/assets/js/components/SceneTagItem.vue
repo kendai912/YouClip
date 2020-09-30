@@ -29,7 +29,7 @@
                         <v-img
                           v-on:click.stop="select(item)"
                           class="white--text align-end"
-                          v-bind:src="hover ? '/storage/gifs/' + item.previewgif: '/storage/img/' + item.preview"
+                          v-bind:src="hover ? gifStoragePath + item.previewgif: thumbStoragePath + item.preview"
                           v-bind:alt="item.title"
                           aspect-ratio="1.5"
                           height="120"
@@ -46,7 +46,7 @@
                         v-else
                         v-on:click.stop="select(item)"
                         class="white--text align-end"
-                        v-bind:src="'/storage/gifs/' + item.previewgif"
+                        v-bind:src="gifStoragePath + item.previewgif"
                         v-bind:alt="item.title"
                         aspect-ratio="1.5"
                         height="120"

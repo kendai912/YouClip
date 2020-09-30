@@ -33,7 +33,7 @@
                     <v-hover v-slot:default="{ hover }">
                       <v-img
                         class="white--text align-end"
-                        v-bind:src="hover ? '/storage/gifs/' + item.previewgif: '/storage/img/' + item.preview"
+                        v-bind:src="hover ? gifStoragePath + item.previewgif: thumbStoragePath + item.preview"
                         v-bind:alt="item.title"
                         aspect-ratio="1.5"
                         height="120"
@@ -86,6 +86,7 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
+import myMixin from "../util";
 
 export default {
   data() {

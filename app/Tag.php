@@ -27,7 +27,7 @@ class Tag extends Model
     public function playlists()
     {
         //Playlistモデルのデータを引っ張ってくる
-        return $this->belongsToMany('App\Playlist')->withPivot('playlist_id', 'tag_id');
+        return $this->belongsToMany('App\Playlist')->withPivot('playlist_id', 'tag_id', 'scene_order')->orderBy('scene_order');
     }
 
     public function likes()
@@ -41,7 +41,8 @@ class Tag extends Model
         //Taglogモデルのデータを引っ張ってくる
         return $this->hasMany('App\Taglog');
     }
-    public function tag_comments() {
+    public function tag_comments()
+    {
         return $this->hasMany('App\TagComment');
     }
 }

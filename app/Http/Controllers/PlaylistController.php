@@ -196,7 +196,7 @@ class PlaylistController extends Controller
             $commentData = $comment;
             $child_comments = PlaylistComment::leftJoin('users', 'users.id', '=', 'playlist_comments.user_id')->select('playlist_comments.id as comment_id', 'playlist_comments.created_at as comment_publishedAt', 'playlist_comments.*', 'users.*')->where('parent_id', $comment->comment_id)->orderBy('comment_publishedAt', 'desc')->get();
             $childCommentDatas = [];
-            foreach($child_comments as $child) {
+            foreach ($child_comments as $child) {
                 $childCommentData = $child;
                 $likes_child = LikesComment::where('comment_id', $child->comment_id)->where('cmt_option', '1')->select(DB::raw('COUNT(*) as likes_count'))->groupBy('comment_id')->first();
                 if ($likes_child) {
@@ -206,10 +206,11 @@ class PlaylistController extends Controller
                 }
                 if (Auth::user()) {
                     $isLiked = LikesComment::where('comment_id', $child->comment_id)->where('cmt_option', '1')->where('user_id', Auth::user()->id)->first();
-                    if ($isLiked)
+                    if ($isLiked) {
                         $childCommentData->isLiked = true;
-                    else 
+                    } else {
                         $childCommentData->isLiked = false;
+                    }
                 } else {
                     $childCommentData->isLiked = false;
                 }
@@ -219,10 +220,11 @@ class PlaylistController extends Controller
 
             if (Auth::user()) {
                 $isLiked = LikesComment::where('comment_id', $comment->comment_id)->where('cmt_option', '1')->where('user_id', Auth::user()->id)->first();
-                if ($isLiked)
+                if ($isLiked) {
                     $commentData->isLiked = true;
-                else 
+                } else {
                     $commentData->isLiked = false;
+                }
             } else {
                 $commentData->isLiked = false;
             }
@@ -320,6 +322,22 @@ class PlaylistController extends Controller
             //Likeしたプレイリストと作成したプレイリストをマージ
             $myCreatedAndLikedPlaylist = $LikedPlaylist->merge($createdPlaylist);
             
+            //更新日順に並び替え
+            $myCreatedAndLikedPlaylist = $myCreatedAndLikedPlaylist->toArray();
+            usort($myCreatedAndLikedPlaylist, function ($a, $b) {
+                if ($a['updated_at'] != $b['updated_at']) {
+                    // 両者のupdated_atが異なる、つまり比較が可能
+                    return ($a['updated_at'] < $b['updated_at']) ? +1 : -1;
+                }
+
+                if ($a['created_at'] != $b['created_at']) {
+                    return ($a['created_at'] < $b['created_at']) ? +1 : -1;
+                }
+
+                // 両者のupdated_at、created_atが同じ場合、idで比較
+                return ($a['id'] < $b['id']) ? +1 : -1;
+            });
+
             return response()->json(
                 [
                 'myCreatedAndLikedPlaylist' => $myCreatedAndLikedPlaylist
@@ -632,10 +650,11 @@ class PlaylistController extends Controller
             return [];
         }
     }
-    public function createdTagListByUser($user) {
+    public function createdTagListByUser($user)
+    {
         if (Auth::user()) {
             // $createdTagList = Playlist::with('tags')->where('privacySetting', 'public')->get();
-            $createdTagList = Tag::Where('tags.user_id', $user)->where('privacySetting', 'public')->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'channel_title', 'published_at','view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
+            $createdTagList = Tag::Where('tags.user_id', $user)->where('privacySetting', 'public')->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'channel_title', 'published_at', 'view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
             return $createdTagList;
         } else {
             return [];
@@ -669,7 +688,8 @@ class PlaylistController extends Controller
             );
         }
     }
-    public function addPlaylistComment(Request $request) {
+    public function addPlaylistComment(Request $request)
+    {
         if (Auth::user()) {
             $playlistComment = new PlaylistComment;
             $playlistComment->playlist_id = $request->playlist_id;
@@ -702,7 +722,8 @@ class PlaylistController extends Controller
             );
         }
     }
-    public function likeComment(Request $request) {
+    public function likeComment(Request $request)
+    {
         if (Auth::user()) {
             $likeComment = LikesComment::where('comment_id', $request->comment_id)->where('cmt_option', $request->cmt_option)->where('user_id', $request->user_id)->first();
             if ($likeComment) {

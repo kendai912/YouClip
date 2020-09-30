@@ -31,8 +31,8 @@
               max-height="266.66px"
               v-bind:src="
                 hover
-                  ? '/storage/gifs/' + item.previewgif
-                  : '/storage/img/' + item.preview
+                  ? gifStoragePath + item.previewgif
+                  : thumbStoragePath + item.preview
               "
               v-bind:alt="item.title"
               aspect-ratio="1.5"
@@ -72,7 +72,7 @@
             v-else
             class="white--text align-end"
             max-height="266.66px"
-            v-bind:src="'/storage/gifs/' + item.previewgif"
+            v-bind:src="gifStoragePath + item.previewgif"
             v-bind:alt="item.title"
             aspect-ratio="1.5"
           >
@@ -84,7 +84,10 @@
             >
               <span class="caption">{{ item.start + "~" + item.end }}</span>
             </v-chip>
-            <v-card-text class="px-1 horizontal-list-wrap block-chip-line" style="position: absolute; bottom: 0;">
+            <v-card-text
+              class="px-1 horizontal-list-wrap block-chip-line"
+              style="position: absolute; bottom: 0;"
+            >
               <div class="horizontal-list-wrap block-chip-line">
                 <v-chip
                   v-for="(tag, tagIndex) in item.tagArray"

@@ -284,6 +284,7 @@ const actions = {
   //Likeまたは作成したプレイリストをロード
   async loadMyCreatedAndLikedPlaylist(context) {
     const response = await axios.get("api/load/myCreatedAndLikedPlaylist");
+    console.log(response.data);
     if (response.status == OK) {
       // 成功した時
       context.commit(
@@ -301,15 +302,15 @@ const actions = {
   //Public playlist data and scene list
   async loadPublicPlaylistAndScenelist(context, user_id) {
     let params = {
-      created_user: user_id
+      created_user: user_id,
     };
-    const response = await axios.post("api/load/publicPlaylistAndScenelist", params);
+    const response = await axios.post(
+      "api/load/publicPlaylistAndScenelist",
+      params
+    );
     if (response.status == OK) {
       // 成功した時
-      context.commit(
-        "setPublicPlaylist",
-        response.data.publicPlaylist
-      );
+      context.commit("setPublicPlaylist", response.data.publicPlaylist);
       context.commit("setCreatedSceneList", response.data.createdTagList);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
@@ -505,7 +506,9 @@ const actions = {
       if (!newPlaylistComment.parent_id) {
         comments.unshift(newPlaylistComment);
       } else {
-        const parentIndex = comments.findIndex(comment => comment.comment_id === newPlaylistComment.parent_id);
+        const parentIndex = comments.findIndex(
+          (comment) => comment.comment_id === newPlaylistComment.parent_id
+        );
         comments[parentIndex].replies.unshift(newPlaylistComment);
       }
       context.commit("setCommentListofPlaylist", comments);
@@ -522,21 +525,27 @@ const actions = {
     const isLiked = data.isLiked;
     const comments = state.commentListofPlaylist;
     if (!data.parent_id) {
-      const commentIndex = comments.findIndex(comment => comment.comment_id === data.comment_id);
+      const commentIndex = comments.findIndex(
+        (comment) => comment.comment_id === data.comment_id
+      );
       comments[commentIndex].isLiked = isLiked;
       if (isLiked) {
-        comments[commentIndex].likes_count ++;
+        comments[commentIndex].likes_count++;
       } else {
-        comments[commentIndex].likes_count --;
+        comments[commentIndex].likes_count--;
       }
     } else {
-      const parentIndex = comments.findIndex(comment => comment.comment_id === data.parent_id);
-      const commentIndex = comments[parentIndex].replies.findIndex(reply => reply.comment_id === data.comment_id);
+      const parentIndex = comments.findIndex(
+        (comment) => comment.comment_id === data.parent_id
+      );
+      const commentIndex = comments[parentIndex].replies.findIndex(
+        (reply) => reply.comment_id === data.comment_id
+      );
       comments[parentIndex].replies[commentIndex].isLiked = isLiked;
       if (isLiked) {
-        comments[parentIndex].replies[commentIndex].likes_count ++;
+        comments[parentIndex].replies[commentIndex].likes_count++;
       } else {
-        comments[parentIndex].replies[commentIndex].likes_count --;
+        comments[parentIndex].replies[commentIndex].likes_count--;
       }
     }
     context.commit("setCommentListofPlaylist", comments);
@@ -552,7 +561,7 @@ const actions = {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
     }
-  }
+  },
 };
 
 export default {

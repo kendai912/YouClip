@@ -337,6 +337,10 @@
   margin-right: 0px;
 }
 
+.theme--light.v-select .v-select__selection--disabled {
+  color: black;
+}
+
 .block-playlist-title {
   display: block;
   display: -webkit-box;
