@@ -16,7 +16,12 @@
           <v-col
             class="text-center ma-0 pa-0"
             v-on:click="shareOnSNS"
-            v-bind:data-href="'https://twitter.com/intent/tweet?url=' + encodedShareURI + '&text=[YouClip] ' + shareText"
+            v-bind:data-href="
+              'https://twitter.com/intent/tweet?url=' +
+                encodedShareURI +
+                '&text=[YouClip] ' +
+                shareText
+            "
           >
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
@@ -31,14 +36,18 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <v-card-text class="grey--text text--darken-3">Twitter</v-card-text>
+                <v-card-text class="grey--text text--darken-3"
+                  >Twitter</v-card-text
+                >
               </v-col>
             </v-row>
           </v-col>
           <v-col
             class="text-center ma-0 pa-0"
             v-on:click="shareOnSNS"
-            v-bind:data-href="'http://www.facebook.com/sharer.php?u=' + encodedShareURI"
+            v-bind:data-href="
+              'http://www.facebook.com/sharer.php?u=' + encodedShareURI
+            "
           >
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
@@ -53,14 +62,19 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <v-card-text class="grey--text text--darken-3">Facebook</v-card-text>
+                <v-card-text class="grey--text text--darken-3"
+                  >Facebook</v-card-text
+                >
               </v-col>
             </v-row>
           </v-col>
           <v-col
             class="text-center ma-0 pa-0"
             v-on:click="shareOnSNS"
-            v-bind:data-href="'https://social-plugins.line.me/lineit/share?url=' + encodedShareURI"
+            v-bind:data-href="
+              'https://social-plugins.line.me/lineit/share?url=' +
+                encodedShareURI
+            "
           >
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
@@ -75,7 +89,9 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <v-card-text class="grey--text text--darken-3">LINE</v-card-text>
+                <v-card-text class="grey--text text--darken-3"
+                  >LINE</v-card-text
+                >
               </v-col>
             </v-row>
           </v-col>
@@ -91,7 +107,9 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <v-card-text class="grey--text text--darken-3">URLをコピー</v-card-text>
+                <v-card-text class="grey--text text--darken-3"
+                  >URLをコピー</v-card-text
+                >
               </v-col>
             </v-row>
           </v-col>
@@ -110,7 +128,8 @@
               v-on:click="closeShareModal"
               width="100%"
               color="grey darken-3"
-            >キャンセル</v-btn>
+              >キャンセル</v-btn
+            >
           </v-col>
         </v-row>
       </v-container>
@@ -146,12 +165,12 @@ import { mapState, mapGetters, mapMutations } from "vuex";
 
 export default {
   props: {
-    player: Object
+    player: Object,
   },
   computed: {
     ...mapGetters({
       shareUrl: "shareModal/shareUrl",
-      shareText: "shareModal/shareText"
+      shareText: "shareModal/shareText",
     }),
     showShareModal: {
       get() {
@@ -161,11 +180,11 @@ export default {
       set() {
         this.player.playVideo();
         return this.$store.commit("shareModal/closeShareModal");
-      }
+      },
     },
     encodedShareURI: function() {
       return encodeURIComponent(this.shareUrl);
-    }
+    },
   },
   methods: {
     closeShareModal() {
@@ -192,9 +211,9 @@ export default {
         '<div id="tmp_copy_for_range" style="position:fixed;right:100vw;font-size:16px;" readonly="readonly">' +
           this.shareUrl +
           "</div>" +
-          '<input id="tmp_copy_for_select" style="position:fixed;right:100vw;font-size:16px;" readonly="readonly">' +
+          '<div style="position:fixed;right:100vw;font-size:16px;"><input id="tmp_copy_for_select" readonly="readonly">' +
           this.shareUrl +
-          "</input>"
+          "</input></div>"
       );
 
       //rangeファンクション用(iOS向け)
@@ -227,7 +246,7 @@ export default {
 
       //モーダルを閉じる
       this.closeShareModal();
-    }
-  }
+    },
+  },
 };
 </script>

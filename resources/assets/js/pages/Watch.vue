@@ -271,7 +271,7 @@ export default {
     startTimer() {
       let self = this;
 
-      this.timer = setInterval(function () {
+      this.timer = setInterval(function() {
         //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
         self.$store.commit(
           "youtube/setCurrentTime",
@@ -507,7 +507,7 @@ export default {
       return this.formatToMinSec(this.endHis);
     },
   },
-  mounted: async function () {
+  mounted: async function() {
     //ナビバーを非表示
     this.$store.commit("navbar/setShowNavbar", false);
     this.playlistIdUrl = "";
@@ -655,7 +655,7 @@ export default {
 
     //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
     let from = this.$route.path;
-    window.addEventListener("popstate", function (e) {
+    window.addEventListener("popstate", function(e) {
       let to = self.$route.path;
       if (from == "/watch" && to == "/watch") {
         location.reload();
