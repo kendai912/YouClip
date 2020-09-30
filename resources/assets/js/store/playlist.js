@@ -284,7 +284,6 @@ const actions = {
   //Likeまたは作成したプレイリストをロード
   async loadMyCreatedAndLikedPlaylist(context) {
     const response = await axios.get("api/load/myCreatedAndLikedPlaylist");
-    console.log(response.data);
     if (response.status == OK) {
       // 成功した時
       context.commit(

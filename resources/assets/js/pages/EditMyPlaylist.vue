@@ -193,7 +193,6 @@ export default {
         mediaItems,
         this.playlistAndTagVideoData.tagVideoData
       );
-      console.log(mediaItems);
       this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
     }
   },

@@ -53,7 +53,6 @@ export default {
     },
     //タグデータをレコメンド画面に表示するメディアアイテムに格納
     putTagVideoIntoMediaItems: function(mediaItems, tagVideo) {
-      console.log(tagVideo)
       if (tagVideo) {
         tagVideo.forEach((value, index) => {
           //合計時間を計算
@@ -106,7 +105,6 @@ export default {
     },
     //プレイリストデータをメディアアイテムに追加格納
     putPlaylistTagIntoMediaItems: function(mediaItems, playlistTag) {
-      console.log(playlistTag)
       if (playlistTag) {
         playlistTag.forEach((value, index) => {
           //合計時間とシーン数を計算
