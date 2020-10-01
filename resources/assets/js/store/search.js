@@ -173,7 +173,7 @@ const actions = {
   async storeSearchRecord(context) {
     let params = {
       searchQuery: state.searchQuery,
-      searchOption: 0
+      searchOption: 0,
     };
 
     const response = await axios.post("api/store/searchrecord", params);
@@ -190,8 +190,8 @@ const actions = {
   //人気の検索ワードを取得
   async getTopSearchqueries(context) {
     const params = {
-      searchOption: 0
-    }
+      searchOption: 0,
+    };
     const response = await axios.post("api/topSearchqueries", params);
     if (response.status == OK) {
       // 成功した時
@@ -208,8 +208,8 @@ const actions = {
   //検索履歴を取得
   async getSearchHistories(context) {
     const params = {
-      searchOption: 0
-    }
+      searchOption: 0,
+    };
     const response = await axios.post("api/searchHistories", params);
     if (response.status == OK) {
       // 成功した時
