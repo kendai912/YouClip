@@ -6,7 +6,9 @@
           v-for="tile in tiles"
           :key="tile.title"
           v-on:click="tapTile(tile.action)"
-          v-show="tile.show==='always' || (user_id && created_user_id === user_id)"
+          v-show="
+            tile.show === 'always' || (user_id && created_user_id === user_id)
+          "
         >
           <v-list-item-avatar>
             <i v-bind:class="tile.img"></i>
@@ -105,11 +107,11 @@ export default {
         this.$store.commit("tagging/setShowSceneTagControl", true);
       } else if (action == "report") {
       } else if (action == "cancel") {
+        this.player.playVideo();
         this.closeOtherActionModal();
       }
     },
   },
-  created() {
-  },
+  created() {},
 };
 </script>
