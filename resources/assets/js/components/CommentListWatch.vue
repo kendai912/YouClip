@@ -16,15 +16,18 @@
               </v-avatar>
             </v-col>
             <v-col class="ma-0 pa-0">
-              <v-textarea
-                outlined
-                rows="3"
-                hide-details
-                name="comment_box"
-                :placeholder="'公開コメントを入力'"
-                class="pa-2"
-                v-model="content"
-              ></v-textarea>
+              <v-form ref="form">
+                <v-textarea
+                  v-model="content"
+                  v-bind:rules="commentRules"
+                  outlined
+                  rows="3"
+                  hide-details
+                  name="comment_box"
+                  :placeholder="'公開コメントを入力'"
+                  class="pa-2"
+                ></v-textarea>
+              </v-form>
             </v-col>
           </v-row>
           <div class="text-right mx-3">
@@ -102,7 +105,7 @@
                   <div class="placeholder-color">
                     {{ replyItem.name }}
                   </div>
-                  <div class="comment-body">
+                  <div class="comment-body py-1">
                     {{ replyItem.content }}
                   </div>
                   <div class="placeholder-color">
@@ -151,6 +154,7 @@ export default {
       showReplyList: [],
       content: "",
       parentId: 0,
+      commentRules: [(v) => !!v || "コメントを入力して下さい"],
     };
   },
   props: {
@@ -179,14 +183,16 @@ export default {
     async addComment() {
       if (this.$route.query.playlist) {
         if (this.isLogin) {
-          const data = {
-            playlist_id: this.$route.query.playlist,
-            content: this.content,
-            user_id: this.user_id,
-            parent_id: 0,
-          };
-          await this.$store.dispatch("playlist/addPlaylistComment", data);
-          this.content = "";
+          if (this.$refs.form.validate()) {
+            const data = {
+              playlist_id: this.$route.query.playlist,
+              content: this.content,
+              user_id: this.user_id,
+              parent_id: 0,
+            };
+            await this.$store.dispatch("playlist/addPlaylistComment", data);
+            this.content = "";
+          }
         } else {
           this.$store.commit("noLoginModal/openLoginModal");
           this.$store.commit(
@@ -196,14 +202,16 @@ export default {
         }
       } else if (this.$route.query.tag) {
         if (this.isLogin) {
-          const data = {
-            tag_id: this.$route.query.tag,
-            content: this.content,
-            user_id: this.user_id,
-            parent_id: 0,
-          };
-          await this.$store.dispatch("tag/addTagComment", data);
-          this.content = "";
+          if (this.$refs.form.validate()) {
+            const data = {
+              tag_id: this.$route.query.tag,
+              content: this.content,
+              user_id: this.user_id,
+              parent_id: 0,
+            };
+            await this.$store.dispatch("tag/addTagComment", data);
+            this.content = "";
+          }
         } else {
           this.$store.commit("noLoginModal/openLoginModal");
           this.$store.commit(
