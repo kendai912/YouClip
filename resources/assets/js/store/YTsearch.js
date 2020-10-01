@@ -260,6 +260,7 @@ const actions = {
 
       // //searchのAPI検索結果を格納
       // context.commit("setYTsearchResponse", response.data.items);
+      console.log(response.data)
       let res = response.data.results;
       //searchとvideosのAPI検索結果をまとめてYTresultに格納
       let YTresult = [];

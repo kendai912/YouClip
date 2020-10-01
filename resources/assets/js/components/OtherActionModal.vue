@@ -27,7 +27,7 @@ export default {
     tiles: [
       { img: "fas fa-trash", title: "削除", action: "delete", show: "check" },
       { img: "fas fa-pen", title: "編集", action: "edit", show: "check" },
-      { img: "fas fa-flag", title: "報告", action: "report", show: "always" },
+      // { img: "fas fa-flag", title: "報告", action: "report", show: "always" },
       {
         img: "fas fa-times",
         title: "キャンセル",

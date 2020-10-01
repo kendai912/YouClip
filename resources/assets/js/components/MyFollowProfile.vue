@@ -5,7 +5,6 @@
       max-width="420"
       tile
       flat
-      color="rgb(245, 245, 245)"
     >
       <v-row class="ma-0">
         <v-col class="pa-0 pt-2 text-center">

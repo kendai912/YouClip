@@ -22,7 +22,7 @@
                 hide-details
                 name="comment_box"
                 label="公開コメントを入力"
-                :placeholder="'公開コメントを入力\nシーン番号 (半角)でシーンへのリンクが追加されます'"
+                :placeholder="'公開コメントを入力'"
                 class="pa-2"
                 v-model="content"
               ></v-textarea>

@@ -23,14 +23,14 @@
                 width="100%"
                 aspect-ratio="1.778"
               >
-                <v-container class="pa-0 ma-0">
+                <!-- <v-container class="pa-0 ma-0">
                   <v-row class="pa-0 ma-1 d-flex justify-end">
                     <v-col
                       cols="auto"
                       class="pa-1 ma-0 text-center black lighten-2 font-weight-bold opacity-background corner-radius"
                     >{{ item.duration }}</v-col>
                   </v-row>
-                </v-container>
+                </v-container> -->
               </v-img>
             </v-col>
 
