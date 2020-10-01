@@ -1,7 +1,13 @@
 <template>
   <div class="container--small">
     <div>
-      <v-card class="mx-auto pa-2" max-width="420" tile flat color="rgb(245, 245, 245)">
+      <v-card
+        class="mx-auto pa-2"
+        max-width="420"
+        tile
+        flat
+        color="rgb(245, 245, 245)"
+      >
         <v-row class="ma-0">
           <v-col class="pa-0 pt-2 text-center">
             <v-text-field
@@ -29,7 +35,7 @@
             <v-select
               v-model="playlistPrivacySetting"
               :items="privacySettingList"
-              label="プレイリスト"
+              label="プライバシー設定"
               prepend-icon="mdi-earth"
               :append-icon="isEditPrivacy ? 'fas fa-save' : 'mdi-pen'"
               :readonly="!isEditPrivacy"
@@ -47,8 +53,14 @@
               hide-details
             ></v-text-field>
             <div class="grey--text text--darken-3">
-              <span>{{ sceneCount }}シーン</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
-              <span>{{ playCount ? playCount : 0 }}回視聴</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
+              <span>{{ sceneCount }}シーン</span
+              ><span style="font-size:8px;"
+                >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
+              >
+              <span>{{ playCount ? playCount : 0 }}回視聴</span
+              ><span style="font-size:8px;"
+                >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
+              >
               <span>最終更新日: {{ lastUpdatedAt }}</span>
             </div>
           </v-col>

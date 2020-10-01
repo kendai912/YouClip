@@ -11,13 +11,16 @@ use App\User;
 use App\Playlist;
 use App\TagComment;
 use App\LikesComment;
-
 use Carbon\Carbon;
 use DB;
 use FFMpeg;
+use FFMpeg\Filters\Video\VideoFilters;
+use FFMpeg\Media\Gif;
 use FFMpeg\Format\ProgressListener\AbstractProgressListener;
 use ProtoneMedia\LaravelFFMpeg\FFMpeg\ProgressListenerDecorator;
 use YouTube\YouTubeDownloader;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
 
 class TagController extends Controller
 {
@@ -51,7 +54,7 @@ class TagController extends Controller
             $child_comments = TagComment::leftJoin('users', 'users.id', '=', 'tag_comments.user_id')->select('tag_comments.id as comment_id', 'tag_comments.created_at as comment_publishedAt', 'tag_comments.*', 'users.*')->where('parent_id', $comment->comment_id)->orderBy('comment_publishedAt', 'desc')->get();
 
             $childCommentDatas = [];
-            foreach($child_comments as $child) {
+            foreach ($child_comments as $child) {
                 $childCommentData = $child;
                 $likes_child = LikesComment::where('comment_id', $child->comment_id)->where('cmt_option', '0')->select(DB::raw('COUNT(*) as likes_count'))->groupBy('comment_id')->first();
                 if ($likes_child) {
@@ -61,10 +64,11 @@ class TagController extends Controller
                 }
                 if (Auth::user()) {
                     $isLiked = LikesComment::where('comment_id', $child->comment_id)->where('cmt_option', '0')->where('user_id', Auth::user()->id)->first();
-                    if ($isLiked)
+                    if ($isLiked) {
                         $childCommentData->isLiked = true;
-                    else 
+                    } else {
                         $childCommentData->isLiked = false;
+                    }
                 } else {
                     $childCommentData->isLiked = false;
                 }
@@ -74,10 +78,11 @@ class TagController extends Controller
 
             if (Auth::user()) {
                 $isLiked = LikesComment::where('comment_id', $comment->comment_id)->where('cmt_option', '0')->where('user_id', Auth::user()->id)->first();
-                if ($isLiked)
+                if ($isLiked) {
                     $commentData->isLiked = true;
-                else 
+                } else {
                     $commentData->isLiked = false;
+                }
             } else {
                 $commentData->isLiked = false;
             }
@@ -140,17 +145,6 @@ class TagController extends Controller
             // Likeしたタグデータと作成したタグデータを取得
             $myCreatedAndLikedTagVideo = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'channel_title', 'published_at', 'view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
 
-            // $myCreatedAndLikedTagVideo = Video::with(array('tags' => function($query) {
-            //     $likes = Like::where('user_id', Auth::user()->id)->get();
-            //     $likesIds = [];
-            //     foreach ($likes as $like) {
-            //         $likesIds[] = $like->tag_id;
-            //     }
-            //     $query->select('tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->orderBy('tag_created_at', 'desc')->get();
-            // }))->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at')->orderBy('video_created_at', 'desc')->get();
-
-            // $query = DB::getQueryLog();
-            // print_r($query);
             return response()->json(
                 [
                 'myCreatedAndLikedTagVideo' => $myCreatedAndLikedTagVideo
@@ -371,7 +365,6 @@ class TagController extends Controller
 
         $key = array_search('136', array_column($links, 'itag'));
         $yturl = $links[$key]['url'];
-        // var_dump($yturl); exit;
         return $yturl;
     }
 
@@ -382,17 +375,27 @@ class TagController extends Controller
         $duration = 3;
         $endSec = $startSec + $duration;
 
+        //サムネイル画像を取得しS3に保存
         $previewThumbName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".png";
+        FFMpeg::openUrl($ytDirectUrl)->getFrameFromSeconds($startSec)->export()->toDisk('s3')->save('thumbs/'.$previewThumbName);
+        // $cmd_png = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 2 '.storage_path()."/app/public/img/".$previewThumbName.' 2>&1';
+        // system($cmd_png);
+        
+        //プレビュー動画を取得しS3に保存
         $previewGifName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
-        $cmd_png = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 2 '.storage_path()."/app/public/img/".$previewThumbName.' 2>&1';
-        echo "png start!!!";
-        system($cmd_png);
-        echo "png end!!!";
-
         $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
-        echo "gif start!!!";
         system($cmd_gif);
-        echo "gif end!!!";
+        Storage::disk('s3')->putFileAs('gifs', new File(storage_path()."/app/public/gifs/".$previewGifName), $previewGifName, 'public');
+
+        //一時的にローカルに保存したgifを削除
+        unlink(storage_path(). "/app/public/gifs/" . $previewGifName);
+
+        // プレビュー動画をWebm形式でS3に保存する場合
+        // $startTimeCode = \FFMpeg\Coordinate\TimeCode::fromSeconds($startSec);
+        // $durationTimeCode = \FFMpeg\Coordinate\TimeCode::fromSeconds($duration);
+        // $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($startTimeCode, $durationTimeCode);
+        // FFMpeg::openUrl($ytDirectUrl)->addFilter($clipFilter)->export()->toDisk('s3')->inFormat(new \FFMpeg\Format\Video\WebM)->save('test.webm');
+
         $previews = [];
         $previews['previewThumbName'] = $previewThumbName;
         $previews['previewGifName'] = $previewGifName;
@@ -433,9 +436,9 @@ class TagController extends Controller
         $tag = Tag::find($request->tagId);
         // 開始or終了時間が更新された場合はpreview用のgifを再取得
         if ($this->convertToSec($tag->start) != $this->convertToSec("00:".$request->start) || $this->convertToSec($tag->end) != $this->convertToSec("00:".$request->end)) {
-            //既存のpreview用gifを削除
-            unlink(storage_path(). "/app/public/img/" . $tag->preview);
-            unlink(storage_path(). "/app/public/gifs/" . $tag->previewgif);
+            //既存のS3に保存されているサムネイルとプレビューgifを削除
+            Storage::disk('s3')->delete('thumbs/'.$tag->preview);
+            Storage::disk('s3')->delete('gifs/'.$tag->previewgif);
 
             //更新したpreview用のgifを再取得
             $previews = $this->getPreviewFile($request);
@@ -472,9 +475,11 @@ class TagController extends Controller
     {
         //削除するシーンタグを取得
         $tag = Tag::find($request->tagId);
-        //preview用gifを削除
-        unlink(storage_path(). "/app/public/img/" . $tag->preview);
-        unlink(storage_path(). "/app/public/gifs/" . $tag->previewgif);
+
+        //S3に保存されているサムネイルとプレビューgifを削除
+        Storage::disk('s3')->delete('thumbs/'.$tag->preview);
+        Storage::disk('s3')->delete('gifs/'.$tag->previewgif);
+
         //DBから削除
         $tag->delete();
 
@@ -518,7 +523,8 @@ class TagController extends Controller
         return 3600 * intval(date("H", strtotime($time))) + 60 * intval(date("i", strtotime($time))) + intval(date("s", strtotime($time)));
     }
 
-    public function addTagComment(Request $request) {
+    public function addTagComment(Request $request)
+    {
         if (Auth::user()) {
             $tagComment = new TagComment;
             $tagComment->tag_id = $request->tag_id;

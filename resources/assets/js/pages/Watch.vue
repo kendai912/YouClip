@@ -3,48 +3,60 @@
     <div class="container--small">
       <div class="yt-container">
         <div id="player"></div>
-        <!-- <v-btn>aaa</v-btn>
-        <v-btn>bbb</v-btn> -->
       </div>
       <div v-if="isPlayerReady">
-        <v-sheet v-if="isPlaylist" color="light-green lighten-4" tile class="mx-auto pa-1">
+        <v-sheet
+          v-if="isPlaylist"
+          color="primary lighten-5"
+          class="mx-auto pt-1 pl-0 pr-1 pb-1"
+          rounded
+        >
           <v-container class="ma-0 pa-0" fluid>
             <v-row class="ma-0 pa-0" align="center">
               <v-col class="ma-0 pa-0">
-                <v-row v-if="playlistIdUrl" class="ma-0 pa-0">
-                  <v-col cols="1" class="ma-0 pa-0 text-center d-flex mx-2">
+                <!-- <v-row v-if="playlistIdUrl" class="ma-0 pa-0"> -->
+                <v-row class="ma-0 pa-0">
+                  <v-col
+                    cols="auto"
+                    class="ma-0 pa-1"
+                    align="left"
+                  >
                     <v-img
                       src="/storage/icons/clip.svg"
-                      width="24px"
-                      max-width="24px"
-                      max-height="24px"
-                      class="ma-auto"
+                      width="28px"
+                      max-height="28px"
                     />
                   </v-col>
                   <v-col cols="auto" class="ma-0 pa-0">
                     <div>
-                      <span class="font-weight-bold">{{ playlistName }}</span>
+                      <span class="text-h6" style="line-height: 1.0;">{{
+                        playlistName
+                      }}</span>
                     </div>
-                    <div>
-                      <v-avatar size="16" v-on:click.stop="gotoFollow">
+                    <div class="my-grey" style="line-height: 1.0;">
+                      <!-- <v-avatar size="16" v-on:click.stop="gotoFollow">
                         <v-img
                           src="/storage/logos/pph_son.png"
                           class="float-left"
                         />
-                      </v-avatar>
-                      <span
+                      </v-avatar> -->
+                      <span style="font-size: 12px"
                         >{{
                           playlistViewCount ? playlistViewCount : 0
                         }}回視聴</span
                       >
                       <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
-                      <span>合計{{ totalDuration }}</span>
+                      <span style="font-size: 12px"
+                        >合計{{ totalDuration }}</span
+                      >
                       <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
-                      <span>{{ playlistCreatedAt }}前</span>
+                      <span style="font-size: 12px"
+                        >{{ playlistCreatedAt }}前</span
+                      >
                     </div>
                   </v-col>
                 </v-row>
-                <span v-else class="font-weight-bold">{{ playlistName }}</span>
+                <!-- <span v-else class="font-weight-bold">{{ playlistName }}</span> -->
               </v-col>
               <v-col cols="auto" class="ma-0 pa-0 text-right">
                 <v-bottom-navigation
@@ -76,7 +88,7 @@
           </v-container>
         </v-sheet>
 
-        <v-sheet tile class="mx-auto pa-1">
+        <v-sheet tile class="mx-auto px-1 py-2">
           <v-row class="ma-0 pa-0">
             <v-col class="ma-0 pa-0">
               <v-img
@@ -266,7 +278,7 @@ export default {
     startTimer() {
       let self = this;
 
-      this.timer = setInterval(function () {
+      this.timer = setInterval(function() {
         //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
         self.$store.commit(
           "youtube/setCurrentTime",
@@ -502,7 +514,7 @@ export default {
       return this.formatToMinSec(this.endHis);
     },
   },
-  mounted: async function () {
+  mounted: async function() {
     //ナビバーを非表示
     this.$store.commit("navbar/setShowNavbar", false);
     this.playlistIdUrl = "";
@@ -650,7 +662,7 @@ export default {
 
     //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
     let from = this.$route.path;
-    window.addEventListener("popstate", function (e) {
+    window.addEventListener("popstate", function(e) {
       let to = self.$route.path;
       if (from == "/watch" && to == "/watch") {
         location.reload();

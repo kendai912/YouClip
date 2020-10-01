@@ -55,7 +55,8 @@ export default {
   data() {
     return {
       tab: 0,
-      items: ["おすすめ", "新着", "スポーツ", "エンターテイメント"],
+      // items: ["おすすめ", "新着", "スポーツ", "エンターテイメント"],
+      items: ["おすすめ", "新着"],
       recommendPage: 1,
       newPage: 1,
       sportsPage: 1,

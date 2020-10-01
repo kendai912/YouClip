@@ -265,9 +265,11 @@ export default {
                 self.myPlaylistToSave
               );
 
-              //シーンの追加＆トースト表示
-              await self.$store.dispatch("tagging/storeSceneTags");
+              //登録完了トースト表示
               self.$emit("taggingSucceed");
+
+              //データを登録
+              self.$store.dispatch("tagging/storeSceneTags");
             }
 
             // 入力フォームをクリア(プライバシー設定と保存先プレイリストは初期値をセット)
@@ -276,8 +278,10 @@ export default {
             self.$store.commit("tagging/setEnd", "");
             self.$store.commit("tagging/setPrivacySetting", "public");
             self.$store.commit("tagging/setMyPlaylistToSave", "none");
+
             //画面下部のシーンの遷移モードを変更(true:右スライド, false:左スライド)
             self.$store.commit("tagging/setControlTransitNext", false);
+
             //TimeControlのシートへ戻る
             self.$store.commit("tagging/setShowTaggingControl", "TimeControl");
           }

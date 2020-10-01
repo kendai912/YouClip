@@ -5,17 +5,12 @@
       <v-icon>mdi-home</v-icon>
     </v-btn>
 
-    <!-- <v-btn to="/search" v-on:click="saveFooterTabIndex(1)">
-      <span>検索</span>
-      <i class="fas fa-search fa-2x"></i>
-    </v-btn> -->
-
-    <v-btn to="/tagging" v-on:click="saveFooterTabIndex(2)">
+    <v-btn to="/tagging" v-on:click="saveFooterTabIndex(1)">
       <span>シーン登録</span>
       <v-icon>mdi-plus-circle</v-icon>
     </v-btn>
 
-    <v-btn to="/mypage" v-on:click="saveFooterTabIndex(3)">
+    <v-btn to="/mypage" v-on:click="saveFooterTabIndex(2)">
       <span>マイページ</span>
       <v-icon>mdi-account</v-icon>
     </v-btn>

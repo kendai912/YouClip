@@ -6,7 +6,9 @@
           v-for="tile in tiles"
           :key="tile.title"
           v-on:click="tapTile(tile.action)"
-          v-show="tile.show==='always' || (user_id && created_user_id === user_id)"
+          v-show="
+            tile.show === 'always' || (user_id && created_user_id === user_id)
+          "
         >
           <v-list-item-avatar>
             <i v-bind:class="tile.img"></i>
@@ -27,7 +29,7 @@ export default {
     tiles: [
       { img: "fas fa-trash", title: "削除", action: "delete", show: "check" },
       { img: "fas fa-pen", title: "編集", action: "edit", show: "check" },
-      { img: "fas fa-flag", title: "報告", action: "report", show: "always" },
+      // { img: "fas fa-flag", title: "報告", action: "report", show: "always" },
       {
         img: "fas fa-times",
         title: "キャンセル",
@@ -105,11 +107,11 @@ export default {
         this.$store.commit("tagging/setShowSceneTagControl", true);
       } else if (action == "report") {
       } else if (action == "cancel") {
+        this.player.playVideo();
         this.closeOtherActionModal();
       }
     },
   },
-  created() {
-  },
+  created() {},
 };
 </script>

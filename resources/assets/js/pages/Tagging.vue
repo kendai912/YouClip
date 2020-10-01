@@ -1,7 +1,13 @@
 <template>
   <div class="container--small">
-    <div class="px-3 pt-3" v-if="YTRecentVideos.length>0">
-      最近シーン登録したYouTube動画
+    <div class="px-3 pt-3" v-if="YTRecentVideos.length > 0">
+      <v-img
+        src="/storage/icons/yt_social_red.png"
+        width="28px"
+        max-height="28px"
+        class="float-left mr-2"
+      />
+      <span>最近シーン登録したYouTube動画</span>
     </div>
     <YTSearchBox />
     <YTRecentItem v-bind:YTRecentItems="YTRecentVideos" />
@@ -42,12 +48,12 @@ export default {
       await this.$store.dispatch("YTsearch/YTRecentVideos");
       //ローディングを非表示
       this.$store.commit("YTsearch/setIsYTLoading", false);
-    }
+    },
   },
   computed: {
     ...mapGetters({
       YTRecentVideos: "YTsearch/YTRecentVideos",
-    })
+    }),
   },
   created() {
     //ナビバーを非表示
@@ -55,6 +61,6 @@ export default {
     //前回の検索結果を空にする
     this.$store.commit("YTsearch/clearYTRecentVideos");
     this.getYTRecentVideos();
-  }
+  },
 };
 </script>

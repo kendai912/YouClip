@@ -9,11 +9,12 @@
 }
 
 .v-application--wrap {
-  background-color: rgb(245, 245, 245);
+  background-color: white;
 }
 
 .body-color {
-  background-color: rgb(245, 245, 245) !important;
+  /* background-color: rgb(245, 245, 245) !important; */
+  background-color: white;
 }
 
 .container--small {
@@ -21,6 +22,11 @@
   max-width: 600px;
   background-color: white;
   padding-bottom: 125px;
+  /* min-height: 100vh;  */
+}
+
+.v-expansion-panel--active > .v-expansion-panel-header {
+  min-height: 32px !important;
 }
 
 .yt-container {
@@ -286,7 +292,8 @@
   border-radius: 50%;
   background-color: #db8f01d0;
   top: 13px;
-  right: 5px;
+  /* right: 5px; */
+  right: 60px;
 }
 
 .scene-chip {
@@ -335,6 +342,10 @@
 .v-application--is-ltr .v-chip .v-icon--left {
   margin-left: 0px;
   margin-right: 0px;
+}
+
+.theme--light.v-select .v-select__selection--disabled {
+  color: black;
 }
 
 .block-playlist-title {
@@ -451,4 +462,5 @@
 }
 .placeholder-color {
   color: #777676;
+  font-size: 13px;
 }
