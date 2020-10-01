@@ -67,12 +67,21 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'provider' => "email",
+            'provider_id' => "na",
         ]);
     }
     
     // ★ メソッド追加
     protected function registered(Request $request, $user)
     {
-        return $user;
+        return response()->json(
+            [
+                'user' => $user
+            ],
+            201,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 }

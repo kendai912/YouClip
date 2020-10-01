@@ -3,13 +3,12 @@
     <transition-group name="fade-transition" mode="out-in">
       <v-card
         v-for="(item, index) in YTitems"
-        v-bind:key="item.etag + index"
+        v-bind:key="item.youtubeId + index"
         class="mx-auto"
-        tile
-        max-width="400"
+        max-width="420"
         elevation="0"
       >
-        <v-container class="px-3 pb-0 my-3">
+        <v-container class="px-3 my-3">
           <v-row
             v-on:click="select(item)"
             justify="center"
@@ -18,20 +17,20 @@
           >
             <v-col cols="6" class="pa-0 ma-0">
               <v-img
-                v-bind:src="item.thumbnails.high.url"
+                v-bind:src="item.thumbnails"
                 v-bind:alt="item.title + '-thumbnail'"
                 class="white--text align-end right"
                 width="100%"
                 aspect-ratio="1.778"
               >
-                <v-container class="pa-0 ma-0">
+                <!-- <v-container class="pa-0 ma-0">
                   <v-row class="pa-0 ma-1 d-flex justify-end">
                     <v-col
                       cols="auto"
                       class="pa-1 ma-0 text-center black lighten-2 font-weight-bold opacity-background corner-radius"
-                    >{{ convertTYdurationToMinSec(item.duration) }}</v-col>
+                    >{{ item.duration }}</v-col>
                   </v-row>
-                </v-container>
+                </v-container> -->
               </v-img>
             </v-col>
 
@@ -41,8 +40,10 @@
                   <v-list-item-title class="wrap-text">{{ item.title }}</v-list-item-title>
                   <v-list-item-subtitle>{{ item.channelTitle }}</v-list-item-subtitle>
                   <v-list-item-subtitle>
-                    <span>{{ convertNumDigit(item.viewCount) }}回視聴</span>
-                    <span>{{ timeSince(item.publishedAt) }}前</span>
+                    <!-- <span>{{ convertNumDigit(item.viewCount) }}回視聴</span>
+                    <span>{{ timeSince(item.publishedAt) }}前</span> -->
+                    <span>{{ item.viewCount }}</span>
+                    <span>{{ item.publishedAt }}</span>
                   </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
@@ -89,7 +90,7 @@ export default {
           }
         })
         .catch(err => {});
-      location.reload();
+      // location.reload();
     }
   }
 };

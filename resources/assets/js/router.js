@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 // ページコンポーネントをインポートする
 import Home from "./pages/Home.vue";
 import Login from "./pages/Login.vue";
+import Register from "./pages/Register.vue";
 import Search from "./pages/Search.vue";
 import Result from "./pages/Result.vue";
 import YTresult from "./pages/YTresult.vue";
@@ -11,7 +12,12 @@ import Tagging from "./pages/Tagging.vue";
 import Youtube from "./pages/Youtube.vue";
 import Watch from "./pages/Watch.vue";
 import Mypage from "./pages/Mypage.vue";
+import MyFollow from "./pages/MyFollow.vue";
 import SystemError from "./pages/errors/System.vue";
+import ForbiddenError from "./pages/errors/ForbiddenError.vue";
+import PrivacyPolicy from "./pages/PrivacyPolicy.vue";
+import TermsOfService from "./pages/TermsOfService.vue";
+import EditMyPlaylist from "./pages/EditMyPlaylist.vue";
 
 import store from "./store";
 
@@ -23,7 +29,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    component: Home
+    component: Home,
   },
   {
     path: "/login",
@@ -34,50 +40,81 @@ const routes = [
       } else {
         next();
       }
-    }
+    },
+  },
+  {
+    path: "/register",
+    component: Register,
+    beforeEnter(to, from, next) {
+      if (store.getters["auth/check"]) {
+        next("/");
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/home",
-    redirect: "/"
+    redirect: "/",
   },
   {
     path: "/search",
-    component: Search
+    component: Search,
   },
   {
     path: "/result",
-    component: Result
+    component: Result,
   },
   {
     path: "/tagging",
-    component: Tagging
+    component: Tagging,
   },
   {
     path: "/YTresult",
-    component: YTresult
+    component: YTresult,
   },
   {
     path: "/youtube",
-    component: Youtube
+    component: Youtube,
   },
   {
     path: "/watch",
-    component: Watch
+    component: Watch,
   },
   {
     path: "/mypage",
-    component: Mypage
+    component: Mypage,
+  },
+  {
+    path: "/myfollow",
+    component: MyFollow,
+  },
+  {
+    path: "/editmyplaylist",
+    component: EditMyPlaylist,
+  },
+  {
+    path: "/PrivacyPolicy",
+    component: PrivacyPolicy,
+  },
+  {
+    path: "/TermsOfService",
+    component: TermsOfService,
   },
   {
     path: "/500",
-    component: SystemError
-  }
+    component: SystemError,
+  },
+  {
+    path: "/403",
+    component: ForbiddenError,
+  },
 ];
 
 // VueRouterインスタンスを作成する
 const router = new VueRouter({
   mode: "history",
-  routes
+  routes,
 });
 
 // VueRouterインスタンスをエクスポートする

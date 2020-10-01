@@ -17,11 +17,14 @@ class CreateVideosTable extends Migration
             $table->increments('id');
             $table->string('youtubeId')->unique()->nullable();
             $table->integer('user_id');
-            $table->string('url');
+            // $table->string('url');
             $table->string('title')->nullable();
+            $table->string('channel_title')->nullable();
             $table->string('thumbnail')->nullable();
             $table->time('duration')->nullable();
             $table->string('category')->nullable();
+            $table->string('view_count')->nullable();
+            $table->string('published_at')->nullable();
             $table->timestamps();
         });
     }

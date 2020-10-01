@@ -10,6 +10,8 @@ use App\Video;
 use App\Tag;
 use App\User;
 use Auth;
+use GuzzleHttp\Client;
+use Exception;
 
 class VideoController extends Controller
 {
@@ -64,10 +66,10 @@ class VideoController extends Controller
         //該当動画のタグが存在するか判定
         if (Tag::where('video_id', intval($video_id))->exists()) {
             //存在する場合、動画とタグ一覧をテーブルから取得
-            $result = Video::where('videos.id', intval($video_id))->join('tags', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'videos.youtubeId', 'videos.user_id', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags.user_id as tag_user_id', 'tags', 'start', 'end', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('start', 'asc')->get();
+            $result = Video::where('videos.id', intval($video_id))->join('tags', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'videos.youtubeId', 'videos.user_id', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.channel_title', 'videos.published_at','videos.view_count','videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags.user_id as tag_user_id', 'tags', 'start', 'end', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('start', 'asc')->get();
         } else {
             //存在しない場合、動画をテーブルから取得
-            $result = Video::where('videos.id', intval($video_id))->select('videos.id as video_id', 'videos.youtubeId', 'videos.user_id', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at')->get();
+            $result = Video::where('videos.id', intval($video_id))->select('videos.id as video_id', 'videos.youtubeId', 'videos.user_id', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.channel_title', 'videos.published_at','videos.view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at')->get();
         }
         
         //動画毎にタグをまとめる
@@ -142,54 +144,113 @@ class VideoController extends Controller
         ]);
     }
 
-    //登録処理
-    public function store(VideoStoreRequest $request)
-    {
-        //URLからYoutubeIDを取得
-        preg_match('/(\?v=|youtu.be\/)(?<youtubeId>[^&]+)/', $request->url, $match);
-        $youtubeId = $match['youtubeId'];
-
-        // YouTubeAPIでタイトル・サムネイル・再生時間を取得
-        // $apikey = 'AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU';
-        $apikey = 'AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk';
-        $googleApiUrl = 'https://www.googleapis.com/youtube/v3/videos?id=' . $youtubeId . '&key=' . $apikey . '&part=snippet,contentDetails';
-        
-        $ch = curl_init();
-        
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_URL, $googleApiUrl);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_VERBOSE, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $response = curl_exec($ch);
-        curl_close($ch);
-            
-        $data = json_decode($response);
-        $value = json_decode(json_encode($data), true);
-            
-        $title = $value['items'][0]['snippet']['title'];
-        $thumbnail = $value['items'][0]['snippet']['thumbnails']['high']['url'];
-        preg_match('/PT(?<minutes>\d*)M(?<seconds>\d*)S/', $value['items'][0]['contentDetails']['duration'], $matches);
-        $duration = date('H:i:s', strtotime("00:".$matches['minutes'].":".$matches['seconds']));
-
-        //DBに保存
-        $videos = new Video;
-        $videos->youtubeId = $youtubeId;
-        $videos->user_id = $request->user_id;
-        $videos->url = $request->url;
-        $videos->title = $title;
-        $videos->thumbnail = $thumbnail;
-        $videos->duration = $duration;
-        $videos->save();
-        
-        return response()->json(
-            [
-                'video_id' => $videos->id,
-            ],
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+    //get Youtube Search from google API
+    public function getYTVideoList(Request $request) {
+        $apiUrl = $request->apiUrl;
+        $params = $request->params;
+        $client = new Client();
+        try {
+            $res = $client->get($apiUrl, [
+                'verify' => false,
+                'query' => $params
+            ]);
+        }
+        catch (Exception $e) {
+            throw new Exception($e->getResponse()->getBody());
+        }
+        return $res->getBody();
     }
+
+    //get Youtube Category List from google API
+    public function getYTVideoCategoryList(Request $request) {
+        $apiUrl = $request->apiUrl;
+        $params = $request->params;
+        $client = new Client();
+        try {
+            $res = $client->get($apiUrl, [
+                'verify' => false,
+                'query' => $params
+            ]);
+        }
+        catch (Exception $e) {
+            throw new Exception($e->getResponse()->getBody());
+        }
+        return $res->getBody();
+    }
+    //get Youtube Category List from google API
+    public function getYTRecentVideoList(Request $request) {
+        if (Auth::check()) {
+            $user_id = Auth::user()->id;
+            $recentVideoList = Video::where('user_id', $user_id)->orderBy('created_at', 'DESC')->get();
+
+            return response()->json(
+                [
+                    'videoList' => $recentVideoList
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                    'videoList' => []
+                ],
+                201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
+    }
+
+    // //登録処理
+    // public function store(VideoStoreRequest $request)
+    // {
+    //     //URLからYoutubeIDを取得
+    //     preg_match('/(\?v=|youtu.be\/)(?<youtubeId>[^&]+)/', $request->url, $match);
+    //     $youtubeId = $match['youtubeId'];
+
+    //     // YouTubeAPIでタイトル・サムネイル・再生時間を取得
+    //     // $apikey = 'AIzaSyDwBA7llTxUe3ZP4fMV8whf8Hug3ND4HRU';
+    //     $apikey = 'AIzaSyBo4eCIvHHW73lvmoztAWt-hyAJvVhV-fk';
+    //     $googleApiUrl = 'https://www.googleapis.com/youtube/v3/videos?id=' . $youtubeId . '&key=' . $apikey . '&part=snippet,contentDetails';
+        
+    //     $ch = curl_init();
+        
+    //     curl_setopt($ch, CURLOPT_HEADER, 0);
+    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    //     curl_setopt($ch, CURLOPT_URL, $googleApiUrl);
+    //     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    //     curl_setopt($ch, CURLOPT_VERBOSE, 0);
+    //     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    //     $response = curl_exec($ch);
+    //     curl_close($ch);
+            
+    //     $data = json_decode($response);
+    //     $value = json_decode(json_encode($data), true);
+            
+    //     $title = $value['items'][0]['snippet']['title'];
+    //     $thumbnail = $value['items'][0]['snippet']['thumbnails']['high']['url'];
+    //     preg_match('/PT(?<minutes>\d*)M(?<seconds>\d*)S/', $value['items'][0]['contentDetails']['duration'], $matches);
+    //     $duration = date('H:i:s', strtotime("00:".$matches['minutes'].":".$matches['seconds']));
+
+    //     //DBに保存
+    //     $videos = new Video;
+    //     $videos->youtubeId = $youtubeId;
+    //     $videos->user_id = $request->user_id;
+    //     $videos->url = $request->url;
+    //     $videos->title = $title;
+    //     $videos->thumbnail = $thumbnail;
+    //     $videos->duration = $duration;
+    //     $videos->save();
+        
+    //     return response()->json(
+    //         [
+    //             'video_id' => $videos->id,
+    //         ],
+    //         200,
+    //         [],
+    //         JSON_UNESCAPED_UNICODE
+    //     );
+    // }
 }

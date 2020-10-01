@@ -20,6 +20,8 @@ class CreateTagsTable extends Migration
             $table->string('tags');
             $table->time('start');
             $table->time('end');
+            $table->string('preview');
+            $table->string('previewgif');
             $table->timestamps();
         });
     }

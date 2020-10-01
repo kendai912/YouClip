@@ -8,10 +8,12 @@ use App\Playlist;
 
 class Playlistlog extends Model
 {
-    public function user()
-    {
-        return $this->belongsTo('App\User');
-    }
+    public $timestamps = false;
+
+    // public function user()
+    // {
+    //     return $this->belongsTo('App\User');
+    // }
 
     public function playlist()
     {

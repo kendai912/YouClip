@@ -9,7 +9,18 @@ use App\Tag;
 use App\Like;
 use App\User;
 use App\Playlist;
+use App\TagComment;
+use App\LikesComment;
 use Carbon\Carbon;
+use DB;
+use FFMpeg;
+use FFMpeg\Filters\Video\VideoFilters;
+use FFMpeg\Media\Gif;
+use FFMpeg\Format\ProgressListener\AbstractProgressListener;
+use ProtoneMedia\LaravelFFMpeg\FFMpeg\ProgressListenerDecorator;
+use YouTube\YouTubeDownloader;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
 
 class TagController extends Controller
 {
@@ -33,7 +44,82 @@ class TagController extends Controller
     public function getTagAndVideoDataById(Request $request)
     {
         $tagId = $request->input('id');
-        $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'category', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->where('tags.id', $tagId)->get();
+        $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id as video_user_id', 'title', 'thumbnail', 'duration', 'category', 'channel_title', 'published_at', 'view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags.user_id as tag_user_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at', 'privacySetting')->where('tags.id', $tagId)->get();
+
+        $comments = TagComment::leftJoin('users', 'users.id', '=', 'tag_comments.user_id')->select('tag_comments.id as comment_id', 'tag_comments.created_at as comment_publishedAt', 'tag_comments.*', 'users.*')->where('tag_comments.tag_id', $tagId)->where('tag_comments.parent_id', '0')->orderBy('comment_publishedAt', 'desc')->get();
+        $commentDatas = [];
+
+        foreach ($comments as $comment) {
+            $commentData = $comment;
+            $child_comments = TagComment::leftJoin('users', 'users.id', '=', 'tag_comments.user_id')->select('tag_comments.id as comment_id', 'tag_comments.created_at as comment_publishedAt', 'tag_comments.*', 'users.*')->where('parent_id', $comment->comment_id)->orderBy('comment_publishedAt', 'desc')->get();
+
+            $childCommentDatas = [];
+            foreach ($child_comments as $child) {
+                $childCommentData = $child;
+                $likes_child = LikesComment::where('comment_id', $child->comment_id)->where('cmt_option', '0')->select(DB::raw('COUNT(*) as likes_count'))->groupBy('comment_id')->first();
+                if ($likes_child) {
+                    $childCommentData->likes_count = $likes_child->likes_count;
+                } else {
+                    $childCommentData->likes_count = 0;
+                }
+                if (Auth::user()) {
+                    $isLiked = LikesComment::where('comment_id', $child->comment_id)->where('cmt_option', '0')->where('user_id', Auth::user()->id)->first();
+                    if ($isLiked) {
+                        $childCommentData->isLiked = true;
+                    } else {
+                        $childCommentData->isLiked = false;
+                    }
+                } else {
+                    $childCommentData->isLiked = false;
+                }
+                $childCommentDatas[] = $childCommentData;
+            }
+            $commentData->replies = $childCommentDatas;
+
+            if (Auth::user()) {
+                $isLiked = LikesComment::where('comment_id', $comment->comment_id)->where('cmt_option', '0')->where('user_id', Auth::user()->id)->first();
+                if ($isLiked) {
+                    $commentData->isLiked = true;
+                } else {
+                    $commentData->isLiked = false;
+                }
+            } else {
+                $commentData->isLiked = false;
+            }
+
+            $likes_comment = LikesComment::where('comment_id', $comment->comment_id)->where('cmt_option', '0')->select(DB::raw('COUNT(*) as likes_count'))->groupBy('comment_id')->first();
+            if ($likes_comment) {
+                $commentData->likes_count = $likes_comment->likes_count;
+            } else {
+                $commentData->likes_count = 0;
+            }
+            $commentDatas[] = $commentData;
+        }
+
+        $tagAndVideoData[0]['comments'] = $commentDatas;
+
+        // シーンが非公開かつログインユーザーのものでない場合はデータを返却しない
+        if ($tagAndVideoData[0]->privacySetting == 'private') {
+            if (!Auth::user()) {
+                return response()->json(
+                    [
+                    'tagAndVideoData' => 'private'
+                    ],
+                    403,
+                    [],
+                    JSON_UNESCAPED_UNICODE
+                );
+            } elseif ($tagAndVideoData[0]->tag_user_id != Auth::user()->id) {
+                return response()->json(
+                    [
+                    'tagAndVideoData' => 'private'
+                    ],
+                    403,
+                    [],
+                    JSON_UNESCAPED_UNICODE
+                );
+            }
+        }
 
         return response()->json(
             [
@@ -49,93 +135,131 @@ class TagController extends Controller
     public function loadMyCreatedAndLikedTagVideo()
     {
         //LikeしたタグIDを取得
-        $likes = Like::where('user_id', Auth::user()->id)->get();
-        $likesIds = [];
-        foreach ($likes as $like) {
-            $likesIds[] = $like->tag_id;
-        }
-        
-        // Likeしたタグデータと作成したタグデータを取得
-        $myCreatedAndLikedTagVideo = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
+        if (Auth::user()) {
+            $likes = Like::where('user_id', Auth::user()->id)->get();
+            $likesIds = [];
+            foreach ($likes as $like) {
+                $likesIds[] = $like->tag_id;
+            }
+            // DB::enableQueryLog();
+            // Likeしたタグデータと作成したタグデータを取得
+            $myCreatedAndLikedTagVideo = Tag::whereIn('tags.id', $likesIds)->orWhere('tags.user_id', Auth::user()->id)->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'channel_title', 'published_at', 'view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
 
-        return response()->json(
-            [
-            'myCreatedAndLikedTagVideo' => $myCreatedAndLikedTagVideo
-            ],
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+            return response()->json(
+                [
+                'myCreatedAndLikedTagVideo' => $myCreatedAndLikedTagVideo
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
 
     //タグが保存されているユーザーのプレイリストIDをリターン
     public function getPlaylists(Tag $tag)
     {
         //ログインユーザーを取得
-        $user = Auth::user();
+        if (Auth::user()) {
+            $user = Auth::user();
 
-        $playlistIdArray = array();
-        foreach ($tag->playlists as $playlist) {
-            //タグが保存されているプレイリストのIDを取得
-            $playlistId = $playlist->pivot->playlist_id;
-            //該当プレイリストがログインユーザーのものか判定
-            if ($user->id == Playlist::find($playlistId)->user_id) {
-                $playlistIdArray[] = $playlistId;
-            }
-        };
+            $playlistIdArray = array();
+            foreach ($tag->playlists as $playlist) {
+                //タグが保存されているプレイリストのIDを取得
+                $playlistId = $playlist->pivot->playlist_id;
+                //該当プレイリストがログインユーザーのものか判定
+                if ($user->id == Playlist::find($playlistId)->user_id) {
+                    $playlistIdArray[] = $playlistId;
+                }
+            };
 
-        return response()->json(
-            [
-                'playlistIds' => $playlistIdArray
-            ],
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+            return response()->json(
+                [
+                    'playlistIds' => $playlistIdArray
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
 
     //タグをチェックの入ったプレイリストに保存
     public function addToPlaylists(Request $request, Tag $tag)
     {
         //ログインユーザーを取得
-        $user = Auth::user();
+        if (Auth::user()) {
+            $user = Auth::user();
 
-        //配列として操作出来るように別の変数に格納
-        $checkedPlaylistIds = $request->checkedPlaylistIds;
+            //配列として操作出来るように別の変数に格納
+            $checkedPlaylistIds = $request->checkedPlaylistIds;
 
-        foreach ($tag->playlists as $playlist) {
-            //タグが保存されているプレイリストのIDを取得
-            $playlistId = $playlist->pivot->playlist_id;
-            //該当プレイリストがログインユーザーのものか判定
-            if ($user->id == Playlist::find($playlistId)->user_id) {
-                //checkedPlaylistIdsに含まれているか判定
-                $key = array_search($playlistId, $checkedPlaylistIds);
-                if ($key !== false) {
-                    //ある場合は既存なので配列から削除
-                    array_splice($checkedPlaylistIds, $key, 1);
-                } else {
-                    //ない場合はdetach
-                    $tag->playlists()->detach($playlistId);
+            foreach ($tag->playlists as $playlist) {
+                //タグが保存されているプレイリストのIDを取得
+                $playlistId = $playlist->pivot->playlist_id;
+                //該当プレイリストがログインユーザーのものか判定
+                if ($user->id == Playlist::find($playlistId)->user_id) {
+                    //checkedPlaylistIdsに含まれているか判定
+                    $key = array_search($playlistId, $checkedPlaylistIds);
+                    if ($key !== false) {
+                        //ある場合は既存なので配列から削除
+                        array_splice($checkedPlaylistIds, $key, 1);
+                    } else {
+                        //ない場合はdetach
+                        $tag->playlists()->detach($playlistId);
+                    }
                 }
-            }
-        };
+            };
 
-        foreach ($checkedPlaylistIds as $playlistId) {
-            $tag->playlists()->attach(
-                ['playlist_id' => $playlistId],
-                ['created_at' => Carbon::now()],
+            foreach ($checkedPlaylistIds as $playlistId) {
+                //シーン番号の一番最後を確認
+                $currentLastSceneOrder = DB::table('playlist_tag')->where('playlist_id', $playlistId)->max('scene_order');
+                empty($currentLastSceneOrder) ? $currentLastSceneOrder = 0 : "";
+
+                $tag->playlists()->attach(
+                    ['playlist_id' => $playlistId],
+                    ['scene_order' => $currentLastSceneOrder + 1], //シーン番号の一番後ろに追加
+                    ['created_at' => Carbon::now()]
+                );
+            }
+
+            //保存したプレイリストデータをリターン
+            return response()->json(
+                [
+                    'playlists' => $tag->playlists
+                ],
+                201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
             );
         }
-
-        //保存したプレイリストデータをリターン
-        return response()->json(
-            [
-                'playlists' => $tag->playlists
-            ],
-            201,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
     }
 
     /**
@@ -156,63 +280,126 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //新規の場合、最初に動画をDBに保存
-        if ($request->isNew) {
-            $video = new Video;
-            $video->youtubeId = $request->youtubeId;
-            $video->user_id = Auth::user()->id;
-            $video->title = $request->newVideoData['title'];
-            $video->thumbnail = $request->newVideoData['thumbnail'];
-            $video->duration = "00:".$request->newVideoData['duration'];
-            $video->category = $request->newVideoData['category'];
-            $video->save();
+        if (Auth::user()) {
+            if (Video::where('youtubeId', $request->youtubeId)->exists()) {
+                //既存YouTube動画の場合、テーブルからVideoオブジェクトを取得
+                $video = Video::where('youtubeId', $request->youtubeId)->first();
+                $video->view_count = $request->newVideoData['view_count'];
+                $video->save();
+            } else {
+                //新規YouTube動画の場合、最初に動画をDBに保存
+                $video = new Video;
+                $video->youtubeId = $request->youtubeId;
+                $video->user_id = Auth::user()->id;
+                $video->title = $request->newVideoData['title'];
+                $video->thumbnail = $request->newVideoData['thumbnail'];
+                $video->duration = $request->newVideoData['duration'];
+                $video->category = $request->newVideoData['category'];
+                $video->channel_title = $request->newVideoData['channel_title'];
+                $video->published_at = $request->newVideoData['published_at'];
+                $video->view_count = $request->newVideoData['view_count'];
+                $video->save();
+            }
+
+            //タグの配列を「::」で区切った文字列に変換
+            $tags = implode("::", $request->tags);
+
+            //プレビュー用のgifを取得しファイル名を変数に格納
+            $previews = $this->getPreviewFile($request);
+            $previewThumbName = $previews['previewThumbName'];
+            $previewGifName = $previews['previewGifName'];
+            // $previewGifFileName = "";
+
+            $start = $request->start;
+
+            //タグをDBに保存
+            $tag = new Tag;
+            $tag->video_id = $video->id;
+            $tag->user_id = Auth::user()->id;
+            $tag->tags = $tags;
+            $tag->start = "00:".$request->start;
+            $tag->end = "00:".$request->end;
+            $tag->privacySetting = $request->privacySetting;
+            $tag->preview = $previewThumbName;
+            $tag->previewgif = $previewGifName;
+            $tag->save();
+
+            //保存先プレイリストが指定されている場合
+            if ($request->myPlaylistToSave != "none") {
+                //シーン番号の一番最後を確認
+                $currentLastSceneOrder = DB::table('playlist_tag')->where('playlist_id', $request->myPlaylistToSave)->max('scene_order');
+                empty($currentLastSceneOrder) ? $currentLastSceneOrder = 0 : "";
+
+                $tag->playlists()->attach(
+                    ['playlist_id' => $request->myPlaylistToSave],
+                    ['scene_order' => $currentLastSceneOrder + 1],
+                    ['created_at' => Carbon::now()]
+                );
+            }
+
+            //保存したタグデータをリターン
+            return response()->json(
+                [
+                    'tag' => $tag
+                ],
+                201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
         } else {
-            //既存の場合、テーブルからVideoオブジェクトを取得
-            $video = Video::where('youtubeId', $request->youtubeId)->first();
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
         }
+    }
+       
+    public function getYoutubeDirectLinkMp4($url)
+    {
+        $yt = new YouTubeDownloader();
+        $links = $yt->getDownloadLinks($url);
 
-        //タグの配列をスペース区切りの文字列に変換
-        $tags = implode(" ", $request->tags);
-
-        //プレビュー用のgifを取得しファイル名を変数に格納
-        $previewFileName = $this->getPreviewFile($request);
-
-        //タグをDBに保存
-        $tag = new Tag;
-        $tag->video_id = $video->id;
-        $tag->user_id = Auth::user()->id;
-        $tag->tags = $tags;
-        $tag->start = "00:".$request->start;
-        $tag->end = "00:".$request->end;
-        $tag->preview = $previewFileName;
-        $tag->save();
-
-        //保存したタグデータをリターン
-        return response()->json(
-            [
-                'tag' => $tag
-            ],
-            201,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+        $key = array_search('136', array_column($links, 'itag'));
+        $yturl = $links[$key]['url'];
+        return $yturl;
     }
 
     public function getPreviewFile($request)
     {
-        $grabzIt = resolve('grabzit');
-
-        $options = new \GrabzIt\GrabzItAnimationOptions();
-        $options->setDuration(3);
+        $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
         $startSec = $this->convertToSec("00:".$request->start);
-        $options->setStart($startSec);
-        // $options->setQuality(100);
+        $duration = 3;
+        $endSec = $startSec + $duration;
 
-        $previewFileName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
-        $grabzIt->URLToAnimation("https://www.youtube.com/watch?v=" . $request->youtubeId, $options);
-        $grabzIt->SaveTo(storage_path(). "/app/public/img/" . $previewFileName);
+        //サムネイル画像を取得しS3に保存
+        $previewThumbName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".png";
+        FFMpeg::openUrl($ytDirectUrl)->getFrameFromSeconds($startSec)->export()->toDisk('s3')->save('thumbs/'.$previewThumbName);
+        // $cmd_png = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 2 '.storage_path()."/app/public/img/".$previewThumbName.' 2>&1';
+        // system($cmd_png);
+        
+        //プレビュー動画を取得しS3に保存
+        $previewGifName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
+        $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
+        system($cmd_gif);
+        Storage::disk('s3')->putFileAs('gifs', new File(storage_path()."/app/public/gifs/".$previewGifName), $previewGifName, 'public');
 
-        return $previewFileName;
+        //一時的にローカルに保存したgifを削除
+        unlink(storage_path(). "/app/public/gifs/" . $previewGifName);
+
+        // プレビュー動画をWebm形式でS3に保存する場合
+        // $startTimeCode = \FFMpeg\Coordinate\TimeCode::fromSeconds($startSec);
+        // $durationTimeCode = \FFMpeg\Coordinate\TimeCode::fromSeconds($duration);
+        // $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($startTimeCode, $durationTimeCode);
+        // FFMpeg::openUrl($ytDirectUrl)->addFilter($clipFilter)->export()->toDisk('s3')->inFormat(new \FFMpeg\Format\Video\WebM)->save('test.webm');
+
+        $previews = [];
+        $previews['previewThumbName'] = $previewThumbName;
+        $previews['previewGifName'] = $previewGifName;
+        return $previews;
     }
 
     /**
@@ -249,17 +436,23 @@ class TagController extends Controller
         $tag = Tag::find($request->tagId);
         // 開始or終了時間が更新された場合はpreview用のgifを再取得
         if ($this->convertToSec($tag->start) != $this->convertToSec("00:".$request->start) || $this->convertToSec($tag->end) != $this->convertToSec("00:".$request->end)) {
-            //既存のpreview用gifを削除
-            unlink(storage_path(). "/app/public/img/" . $tag->preview);
+            //既存のS3に保存されているサムネイルとプレビューgifを削除
+            Storage::disk('s3')->delete('thumbs/'.$tag->preview);
+            Storage::disk('s3')->delete('gifs/'.$tag->previewgif);
 
             //更新したpreview用のgifを再取得
-            $previewFileName = $this->getPreviewFile($request);
-            $tag->preview = $previewFileName;
+            $previews = $this->getPreviewFile($request);
+            $previewThumbName = $previews['previewThumbName'];
+            $previewGifName = $previews['previewGifName'];
+            // $previewGifFileName = $this->getPreviewFile($request);
+            $tag->preview = $previewThumbName;
+            $tag->previewgif = $previewGifName;
         }
-        $tag->tags = implode(" ", $request->tags);
+        $tag->tags = implode("::", $request->tags); //タグの配列を「::」で区切った文字列に変換
         $start = $request->start;
         $tag->start = "00:".$request->start;
         $tag->end = "00:".$request->end;
+        $tag->privacySetting = $request->privacySetting;
         $tag->save();
 
         //保存したタグデータをリターン
@@ -282,8 +475,11 @@ class TagController extends Controller
     {
         //削除するシーンタグを取得
         $tag = Tag::find($request->tagId);
-        //preview用gifを削除
-        unlink(storage_path(). "/app/public/img/" . $tag->preview);
+
+        //S3に保存されているサムネイルとプレビューgifを削除
+        Storage::disk('s3')->delete('thumbs/'.$tag->preview);
+        Storage::disk('s3')->delete('gifs/'.$tag->previewgif);
+
         //DBから削除
         $tag->delete();
 
@@ -293,26 +489,72 @@ class TagController extends Controller
     public function getTagHistories()
     {
         //ユーザーが登録した直近10件のシーンタグを取得
-        $tags = Tag::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->take(10)->get();
+        if (Auth::user()) {
+            $tags = Tag::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->take(10)->get();
 
-        $tagHistories = [];
-        foreach ($tags as $tag) {
-            $tagHistories[] = $tag->tags;
+            $tagHistories = [];
+            foreach ($tags as $tag) {
+                $tagHistories[] = $tag->tags;
+            }
+
+            //取得したタグデータをリターン
+            return response()->json(
+                [
+                    'tagHistories' => $tagHistories
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
         }
-
-        //取得したタグデータをリターン
-        return response()->json(
-            [
-                'tagHistories' => $tagHistories
-            ],
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
     }
 
     public static function convertToSec($time)
     {
         return 3600 * intval(date("H", strtotime($time))) + 60 * intval(date("i", strtotime($time))) + intval(date("s", strtotime($time)));
+    }
+
+    public function addTagComment(Request $request)
+    {
+        if (Auth::user()) {
+            $tagComment = new TagComment;
+            $tagComment->tag_id = $request->tag_id;
+            $tagComment->content = $request->content;
+            $tagComment->user_id = $request->user_id;
+            $tagComment->parent_id = $request->parent_id;
+            $tagComment->save();
+            $newTagComment = TagComment::leftJoin('users', 'users.id', '=', 'tag_comments.user_id')->select('tag_comments.id as comment_id', 'tag_comments.created_at as comment_publishedAt', 'tag_comments.*', 'users.*')->where('tag_comments.id', $tagComment->id)->first();
+            if (!$request->parent_id) {
+                $newTagComment->replies = [];
+            }
+            $newTagComment->isLiked = false;
+            $newTagComment->likes_count = 0;
+            return response()->json(
+                [
+                'newComment' => $newTagComment
+                ],
+                201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
 }

@@ -41,7 +41,8 @@ export default {
     ...mapGetters({
       isReady: "youtube/isReady",
       showTaggingControl: "tagging/showTaggingControl",
-      controlTransitNext: "tagging/controlTransitNext"
+      controlTransitNext: "tagging/controlTransitNext",
+      isKeep: "tagging/isKeep",
     })
   },
   methods: {
@@ -55,6 +56,12 @@ export default {
       this.$emit("updateSucceed");
     }
   },
-  created() {}
+  created() {
+    // if (localStorage.getItem("showTaggingControl")) {
+    //   this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
+    // } else {
+    //   this.$store.commit("tagging/setShowTaggingControl", "TimeControl");
+    // }
+  }
 };
 </script>

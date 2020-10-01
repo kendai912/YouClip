@@ -13,8 +13,20 @@ import "vuetify/dist/vuetify.min.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@mdi/font/css/materialdesignicons.css";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
+import colors from "vuetify/lib/util/colors";
+import lodash from "lodash";
+import VueGtag from "vue-gtag";
 
 Vue.use(Vuetify);
+Vue.use(
+  VueGtag,
+  {
+    config: { id: "UA-11415493-3" },
+  },
+  router
+);
+
+Vue.prototype._ = lodash;
 
 const createApp = async () => {
   await store.dispatch("auth/currentUser");
@@ -22,7 +34,18 @@ const createApp = async () => {
   new Vue({
     el: "#app",
     router, // ルーティングの定義を読み込む
-    vuetify: new Vuetify(),
+    vuetify: new Vuetify({
+      theme: {
+        themes: {
+          light: {
+            primary: colors.green,
+            secondary: colors.grey.darken1,
+            accent: colors.shades.black,
+            error: colors.red.accent3,
+          },
+        },
+      },
+    }),
     store,
     icons: {
       iconfont: "fa mdi md",

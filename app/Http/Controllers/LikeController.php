@@ -88,66 +88,99 @@ class LikeController extends Controller
     public function toggleLike(Request $request)
     {
         //ログインユーザーIDを取得
-        $user_id = Auth::user()->id;
-                
-        //既にLike済みかチェック
-        if (!$this->checkLiked($user_id, $request->tag_id)) {
-            //未だLikeしていない場合
-            $this->store($user_id, $request->tag_id);
-            $data = "like stored";
-        } else {
-            //Like済みの場合
-            $this->destroy($user_id, $request->tag_id);
-            $data = "like destroyed";
-        }
+        if (Auth::user()) {
+            $user_id = Auth::user()->id;
+                    
+            //既にLike済みかチェック
+            if (!$this->checkLiked($user_id, $request->tag_id)) {
+                //未だLikeしていない場合
+                $this->store($user_id, $request->tag_id);
+                $data = "like stored";
+            } else {
+                //Like済みの場合
+                $this->destroy($user_id, $request->tag_id);
+                $data = "like destroyed";
+            }
 
-        return response()->json(
-            [
-                'data' => $data
-            ],
-            201,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+            return response()->json(
+                [
+                    'data' => $data
+                ],
+                201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
 
     public function index()
     {
         //ログインユーザーIDを取得
-        $user_id = Auth::user()->id;
+        if (Auth::user()) {
+            $user_id = Auth::user()->id;
 
-        $likedScenes = Like::where('user_id', $user_id)->get();
-        foreach ($likedScenes as $likedScene) {
-            $likes[] = $likedScene->tag()->join('videos', 'tags.video_id', '=', 'videos.id')->select('videos.id as video_id', 'videos.youtubeId', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end')->get();
+            $likedScenes = Like::where('user_id', $user_id)->get();
+            foreach ($likedScenes as $likedScene) {
+                $likes[] = $likedScene->tag()->join('videos', 'tags.video_id', '=', 'videos.id')->select('videos.id as video_id', 'videos.youtubeId', 'videos.url', 'videos.title', 'videos.thumbnail', 'videos.duration', 'videos.channel_title', 'videos.published_at', 'videos.view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end')->get();
+            }
+
+            return view('like_index', compact('likes'));
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
         }
-
-        return view('like_index', compact('likes'));
     }
 
     public function toggle(Request $request)
     {
         //ログインユーザーIDを取得
-        $user_id = Auth::user()->id;
-                
-        //既にLike済みかチェック
-        if (!$this->checkLiked($user_id, $request->tag_id)) {
-            //未だLikeしていない場合
-            $this->store($user_id, $request->tag_id);
-            $data = "like stored";
-        } else {
-            //Like済みの場合
-            $this->destroy($user_id, $request->tag_id);
-            $data = "like destroyed";
-        }
+        if (Auth::user()) {
+            $user_id = Auth::user()->id;
+                    
+            //既にLike済みかチェック
+            if (!$this->checkLiked($user_id, $request->tag_id)) {
+                //未だLikeしていない場合
+                $this->store($user_id, $request->tag_id);
+                $data = "like stored";
+            } else {
+                //Like済みの場合
+                $this->destroy($user_id, $request->tag_id);
+                $data = "like destroyed";
+            }
 
-        return response()->json(
-            [
-                'data' => $data
-            ],
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+            return response()->json(
+                [
+                    'data' => $data
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
 
     public function store($user_id, $tag_id)

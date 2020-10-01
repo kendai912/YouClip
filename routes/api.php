@@ -12,6 +12,11 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//ソーシャル認証へリダイレクトさせる
+Route::get('/auth/{provider}', 'Auth\AuthController@redirectToProvider');
+//ソーシャル認証後に処理
+Route::get('/auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
+
 
 // 会員登録
 Route::post('/register', 'Auth\RegisterController@register')->name('register');
@@ -46,6 +51,8 @@ Route::get('/get/playlistAndTagVideoData', 'PlaylistController@getPlaylistAndTag
 Route::get('/get/myCreatedPlaylist', 'PlaylistController@getMyCreatedPlaylist');
 //Likeまたは作成したプレイリスト一覧をロード
 Route::get('/load/myCreatedAndLikedPlaylist', 'PlaylistController@loadMyCreatedAndLikedPlaylist');
+Route::post('/load/publicPlaylistAndScenelist', 'PlaylistController@loadPublicPlaylistAndScenelist');
+
 
 //タグへのLikeデータのロード
 Route::get("/load/tagLike", 'LikeController@loadTagLike');
@@ -53,7 +60,7 @@ Route::get("/load/tagLike", 'LikeController@loadTagLike');
 Route::get("/load/playlistLike", 'LikesPlaylistController@loadPlaylistLike');
 
 //検索キーワード候補を取得
-Route::get('/search/getSearchCandidates', 'SearchController@getSearchCandidates');
+Route::post('/search/getSearchCandidates', 'SearchController@getSearchCandidates');
 // //過去の検索履歴から検索ワード候補を取得
 // Route::get('/search/getSearchHistoryCandidates', 'SearchController@getSearchHistoryCandidates');
 // //人気の検索履歴から検索ワード候補を取得
@@ -65,9 +72,9 @@ Route::post('/search/playlist', 'SearchController@searchPlaylist');
 //検索レコードの保存
 Route::post('/store/searchrecord', 'SearchController@storeSearchRecord');
 //人気の検索ワードの取得
-Route::get('/topSearchqueries', 'SearchController@getTopSearchqueries');
+Route::post('/topSearchqueries', 'SearchController@getTopSearchqueries');
 //検索履歴の取得
-Route::get('/searchHistories', 'SearchController@getSearchHistories');
+Route::post('/searchHistories', 'SearchController@getSearchHistories');
 
 //動画のタグ一覧の取得
 Route::get("/taglist/video", 'VideoController@getTagList');
@@ -82,8 +89,16 @@ Route::get('/tag/getPlaylists/{tag}', 'TagController@getPlaylists');
 
 //既存プレイリストへの追加
 Route::post('/tag/addToPlaylists/{tag}', 'TagController@addToPlaylists');
+
+Route::post('/tag/addComment', 'TagController@addTagComment');
 //新規プレイリストの作成とタグの追加
 Route::post('/playlist/create', 'PlaylistController@create');
+Route::post('/playlist/updateTitle', 'PlaylistController@updateTitle');
+Route::post('/playlist/updatePrivacy', 'PlaylistController@updatePrivacy');
+Route::post('/playlist/updateSceneOrder', 'PlaylistController@updateSceneOrder');
+
+Route::post('/playlist/addComment', 'PlaylistController@addPlaylistComment');
+Route::post('/playlist/likeComment', 'PlaylistController@likeComment');
 
 //シーン登録におけるyoutubeIdから既存のvideoIdの取得
 Route::get('/youtube/getVideo', 'VideoController@getVideoByYoutubeId');
@@ -97,6 +112,15 @@ Route::post('/tag/store', 'TagController@store');
 Route::post('/tag/update', 'TagController@update');
 //シーンタグの削除
 Route::post('/tag/delete', 'TagController@delete');
+
+//Add Playlist Visit Count
+Route::post("/addPlaylistVisitCount/{playlist_id}", 'PlaylistController@addVisitCount');
+//YT Search API
+Route::post('/search/getYoutubeScrapingResults', 'SearchController@getYTScrapingResultList');
+Route::post('/search/getYoutubeSearch', 'SearchController@getYTSearchList');
+Route::post('/search/getYoutubeVideos', 'VideoController@getYTVideoList');
+Route::post('/search/getYoutubeVideoCategories', 'VideoController@getYTVideoCategoryList');
+Route::post('/search/getRecentVideos', 'VideoController@getYTRecentVideoList');
 
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {

@@ -16,12 +16,11 @@ class CreatePlaylistlogsTable extends Migration
         Schema::create('playlistlogs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('playlist_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            // $table->integer('user_id')->unsigned();
             $table->timestamp('created_at');
 
             //外部キー制約
             $table->foreign('playlist_id')->references('id')->on('playlists')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

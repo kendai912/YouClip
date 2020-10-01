@@ -88,27 +88,38 @@ class LikesPlaylistController extends Controller
     public function toggleLikePlaylist(Request $request)
     {
         //ログインユーザーIDを取得
-        $user_id = Auth::user()->id;
-                
-        //既にLike済みかチェック
-        if (!$this->checkLiked($user_id, $request->playlist_id)) {
-            //未だLikeしていない場合
-            $this->store($user_id, $request->playlist_id);
-            $data = "like stored";
-        } else {
-            //Like済みの場合
-            $this->destroy($user_id, $request->playlist_id);
-            $data = "like destroyed";
-        }
+        if (Auth::user()) {
+            $user_id = Auth::user()->id;
+                    
+            //既にLike済みかチェック
+            if (!$this->checkLiked($user_id, $request->playlist_id)) {
+                //未だLikeしていない場合
+                $this->store($user_id, $request->playlist_id);
+                $data = "like stored";
+            } else {
+                //Like済みの場合
+                $this->destroy($user_id, $request->playlist_id);
+                $data = "like destroyed";
+            }
 
-        return response()->json(
-            [
-                'data' => $data
-            ],
-            201,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+            return response()->json(
+                [
+                    'data' => $data
+                ],
+                201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
     }
 
     public function store($user_id, $playlist_id)

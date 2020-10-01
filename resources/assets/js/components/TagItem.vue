@@ -1,13 +1,19 @@
 <template>
   <div v-if="isReady">
-    <v-sheet tile class="mx-auto pa-1">
+    <v-sheet tile class="mx-auto px-1 py-2 body-color">
       <div>
+        <v-img
+          src="/storage/icons/yt_social_red.png"
+          width="28px"
+          max-height="28px"
+          class="float-left mr-2"
+        />
         <span v-if="isNew">{{ newVideoData.title }}</span>
         <span v-else>{{ videoData.title }}</span>
       </div>
     </v-sheet>
 
-    <v-sheet tile class="mx-auto pa-1">
+    <v-sheet tile class="mx-auto pa-1 body-color">
       <transition-group name="tag-list" tag="p" class="tag__list">
         <v-row
           v-for="tagData in showTagDataArray"
@@ -19,15 +25,15 @@
             <span>
               {{ formatToMinSec(tagData.start) }}〜{{
                 formatToMinSec(tagData.end)
-              }}</span
-            >
+              }}
+            </span>
           </v-col>
           <v-col cols="9" class="ma-0 pa-0">
             <div class="horizontal-list-wrap">
               <ul class="horizontal-list">
                 <li class="item">
                   <v-chip
-                    v-for="tag in tagData.tags.split(/[\s| |　]/)"
+                    v-for="tag in tagData.tags.split(/::/)"
                     v-bind:key="tagData + '.' + tag"
                     class="ma-2"
                     small

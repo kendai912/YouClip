@@ -17,7 +17,7 @@ class CreateSearchqueryUserTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('searchquery_id')->unsigned();
-            $table->timestamp('created_at');
+            $table->timestamps();
 
 
             //外部キー制約

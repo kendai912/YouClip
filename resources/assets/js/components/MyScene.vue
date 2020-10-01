@@ -1,23 +1,30 @@
 <template>
   <div v-on:click="select">
     <div class="thumbnail">
-      <img v-bind:src="'/storage/img/' + myTagVideo.preview" style="width: 300px; height:auto" />
+      <img
+        v-bind:src="thumbStoragePath + myTagVideo.preview"
+        style="width: 300px; height:auto"
+      />
     </div>
     <div>{{ myTagVideo.title }}</div>
-    <v-chip v-for="tag in myTagVideo.tags.split(/[\s| |　]/)" v-bind:key="tag" color="blue">
+    <v-chip
+      v-for="tag in myTagVideo.tags.split(/::/)"
+      v-bind:key="tag"
+      color="blue"
+    >
       <v-icon left>mdi-label</v-icon>
       <strong v-on:click.stop="search(tag)">{{ tag }}</strong>
     </v-chip>
   </div>
 </template>
-  
+
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
 import myMixin from "../util";
 
 export default {
   props: {
-    myTagVideo: Object
+    myTagVideo: Object,
   },
   data() {
     return {};
@@ -25,8 +32,8 @@ export default {
   mixins: [myMixin],
   computed: {
     ...mapGetters({
-      activeTab: "mypage/activeTab"
-    })
+      activeTab: "mypage/activeTab",
+    }),
   },
   methods: {
     select() {
@@ -35,10 +42,10 @@ export default {
         .push({
           path: "/watch",
           query: {
-            tag: this.myTagVideo.tag_id
-          }
+            tag: this.myTagVideo.tag_id,
+          },
         })
-        .catch(err => {});
+        .catch((err) => {});
 
       // IFrame Player APIを呼び出すためにページをリロード
       window.location.reload();
@@ -48,11 +55,11 @@ export default {
       this.$router
         .push({
           path: "result",
-          query: { search_query: tag }
+          query: { search_query: tag },
         })
-        .catch(err => {});
-    }
+        .catch((err) => {});
+    },
   },
-  created() {}
+  created() {},
 };
 </script>

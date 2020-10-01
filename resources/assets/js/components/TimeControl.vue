@@ -1,36 +1,16 @@
 <template>
-  <v-sheet height="360" tile class="text-center">
+  <v-sheet height="240" tile class="text-center">
     <v-sheet tile class="ma-0 pa-1">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0" align="center">
-          <v-col cols="2" class="ma-0 pa-0 text-left">
-            <i v-on:click="back" class="fas fa-chevron-left"></i>
-          </v-col>
-          <v-col cols="8" class="ma-0 pa-0">
+          <v-col class="ma-0 pa-0">
             <span>開始・終了時間を指定</span>
           </v-col>
-          <v-col cols="2" class="ma-0 pa-0"></v-col>
         </v-row>
       </v-container>
     </v-sheet>
 
     <v-divider></v-divider>
-
-    <v-sheet tile class="ma-0 pa-1">
-      <v-slider
-        v-model="slider.val"
-        v-on:mousedown="stopUpdateSlider"
-        v-on:mouseup="seekToAndRestartMouseup"
-        v-on:end="seekToAndRestartEnd"
-        ticks="always"
-        tick-size="0.01"
-        :thumb-color="slider.color"
-        thumb-label="always"
-        step="0.01"
-      >
-        <template v-slot:thumb-label="{ value }">{{ currentPositionTime }}</template>
-      </v-slider>
-    </v-sheet>
 
     <v-container class="ma-0 pa-0" fluid>
       <v-row class="ma-0 pa-0" align="center" justify="space-around">
@@ -52,12 +32,14 @@
         </v-col>
         <v-col v-on:click="forwardFiveSec">
           <span>
-            <i class="fas fa-step-forward fa-2x"></i>5
+            <i class="fas fa-step-forward fa-2x"></i>
+            5
           </span>
         </v-col>
         <v-col v-on:click="forwardThirtySec">
           <span>
-            <i class="fas fa-fast-forward fa-2x"></i>30
+            <i class="fas fa-fast-forward fa-2x"></i>
+            30
           </span>
         </v-col>
       </v-row>
@@ -71,79 +53,126 @@
     <v-form ref="form">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0" align="center">
-          <v-col></v-col>
           <v-col class="ma-0 pa-0">
             <v-card class="ma-0" tile elevation="0">
-              <div>
-                <v-bottom-navigation class="bottom_navigation_no_shadow" elevation="0">
-                  <v-btn v-on:click="tapStartBtn">
-                    <span>START</span>
-                    <v-icon x-large>alarm_on</v-icon>
-                  </v-btn>
-                </v-bottom-navigation>
-              </div>
-              <div>
-                <v-text-field
-                  v-model="startTimeInput"
-                  v-bind:rules="startRules"
-                  ref="startBtn"
-                  required
-                  placeholder="0:00"
-                  validate-on-blur
-                  flat
-                ></v-text-field>
-              </div>
+              <v-row class="ma-0 pa-0 flex-nowrap">
+                <v-col class="ma-0 pa-0 d-flex align-start">
+                  <v-bottom-navigation
+                    class="bottom_navigation_no_shadow"
+                    elevation="0"
+                    height="64"
+                    style="justify-content: flex-end;"
+                  >
+                    <v-btn v-on:click="tapStartBtn" class="ma-0 pa-0">
+                      <span>START</span>
+                      <v-icon x-large>alarm_on</v-icon>
+                    </v-btn>
+                  </v-bottom-navigation>
+                </v-col>
+                <v-col class="ma-0 pa-0 d-flex align-end">
+                  <v-text-field
+                    v-model="startTimeInput"
+                    v-bind:rules="startRules"
+                    required
+                    placeholder="0:00"
+                    validate-on-blur
+                    flat
+                    class="ma-0 pa-0 short-text-field"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
             </v-card>
           </v-col>
 
-          <v-col></v-col>
           <v-col class="ma-0 pa-0">
             <v-card class="ma-0" tile elevation="0">
-              <div>
-                <v-bottom-navigation class="bottom_navigation_no_shadow" elevation="0">
-                  <v-btn v-on:click="tapStopBtn">
-                    <span>STOP</span>
-                    <v-icon x-large>alarm_off</v-icon>
-                  </v-btn>
-                </v-bottom-navigation>
-              </div>
-              <div>
-                <v-text-field
-                  v-model="endTimeInput"
-                  v-bind:rules="endRules"
-                  ref="stopBtn"
-                  required
-                  placeholder="0:00"
-                  validate-on-blur
-                  flat
-                ></v-text-field>
-              </div>
+              <v-row class="ma-0 pa-0 flex-nowrap">
+                <v-col class="ma-0 pa-0 d-flex align-start">
+                  <v-bottom-navigation
+                    class="bottom_navigation_no_shadow"
+                    elevation="0"
+                    height="64"
+                    style="justify-content: flex-end;"
+                  >
+                    <v-btn v-on:click="tapStopBtn" class="ma-0 pa-0">
+                      <span>STOP</span>
+                      <v-icon x-large>alarm_off</v-icon>
+                    </v-btn>
+                  </v-bottom-navigation>
+                </v-col>
+                <v-col class="ma-0 pa-0 d-flex align-end">
+                  <v-text-field
+                    v-model="endTimeInput"
+                    v-bind:rules="endRules"
+                    required
+                    placeholder="0:00"
+                    validate-on-blur
+                    flat
+                    class="ma-0 pa-0 short-text-field"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
             </v-card>
           </v-col>
-          <v-col></v-col>
         </v-row>
       </v-container>
     </v-form>
 
-    <v-sheet tile class="ma-0 pa-1 text-right bottom-position">
-      <v-row align="center" fluid>
-        <v-col class="text-right">
-          <div>
-            <v-btn color="error" v-on:click="next">次へ</v-btn>
-          </div>
-        </v-col>
-      </v-row>
+    <v-sheet tile class="ma-0 pa-0 bottom-position" width="100%">
+      <v-container class="ma-0 pa-0" fluid>
+        <v-row align="center" class="ma-0 pa-0">
+          <v-col class="text-left ma-0 pa-1">
+            <i v-on:click="back" class="fas fa-arrow-left fa-2x my-grey"></i>
+          </v-col>
+          <v-col class="text-center ma-0 pa-1">
+            <v-bottom-navigation
+              class="bottom_navigation_no_shadow"
+              elevation="0"
+            >
+              <v-btn
+                v-on:click="openPlaySpeedModal"
+                class="ma-0 pa-0 narrow-btn"
+              >
+                <span>倍速視聴</span>
+                <v-img
+                  src="/storage/icons/play_speed.png"
+                  width="36px"
+                  max-height="36px"
+                />
+              </v-btn>
+              <v-btn v-if="isMuted" v-on:click="unmute">
+                <span>ミュート解除</span>
+                <v-icon large>volume_off</v-icon>
+              </v-btn>
+              <v-btn v-else v-on:click="mute">
+                <span>ミュート</span>
+                <v-icon large>volume_up</v-icon>
+              </v-btn>
+            </v-bottom-navigation>
+          </v-col>
+          <v-col class="text-right ma-0 pa-1">
+            <div>
+              <v-btn color="error" v-on:click="next">次へ</v-btn>
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-sheet>
+    <PlaySpeedModal v-if="showPlaySpeedModal" v-bind:player="player" />
   </v-sheet>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
 import myMixin from "../util";
+import PlaySpeedModal from "../components/PlaySpeedModal.vue";
 
 export default {
+  components: {
+    PlaySpeedModal,
+  },
   props: {
-    player: Object
+    player: Object,
   },
   data() {
     return {
@@ -152,22 +181,10 @@ export default {
       sliderInterval: null,
       startTimeInput: null,
       endTimeInput: null,
+      isMuted: true,
       startRules: [
-        v => !!v || "開始時間を入力して下さい",
-        v => {
-          let regex = /^\d+:\d{1,2}$/;
-          if (!v || regex.test(v)) {
-            return true;
-          }
-
-          if (!regex.test(v)) {
-            return "分:秒の形式で入力して下さい";
-          }
-        }
-      ],
-      endRules: [
-        v => !!v || "終了時間を入力して下さい",
-        v => {
+        (v) => !!v || "開始時間を入力して下さい",
+        (v) => {
           let regex = /^\d+:\d{1,2}$/;
           if (!v || regex.test(v)) {
             return true;
@@ -177,7 +194,20 @@ export default {
             return "分:秒の形式で入力して下さい";
           }
         },
-        v => {
+      ],
+      endRules: [
+        (v) => !!v || "終了時間を入力して下さい",
+        (v) => {
+          let regex = /^\d+:\d{1,2}$/;
+          if (!v || regex.test(v)) {
+            return true;
+          }
+
+          if (!regex.test(v)) {
+            return "分:秒の形式で入力して下さい";
+          }
+        },
+        (v) => {
           if (this.startTimeInput) {
             if (
               parseInt(this.convertToSec(v)) <=
@@ -187,8 +217,8 @@ export default {
             }
           }
           return true;
-        }
-      ]
+        },
+      ],
     };
   },
   mixins: [myMixin],
@@ -199,63 +229,26 @@ export default {
       newVideoData: "youtube/newVideoData",
       isReady: "youtube/isReady",
       isNew: "youtube/isNew",
-      isEditting: "tagging/isEditting"
+      isEditting: "tagging/isEditting",
+      showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
+      isLogin: "auth/check",
     }),
-    currentPositionTime() {
-      //sliderをドラッグした位置の秒数を取得
-      let currentPositionSec =
-        this.convertToSec(this.duration) * (this.slider.val / 100);
-
-      //分:秒のフォーマットに変換
-      return this.formatTime(currentPositionSec);
-    },
     duration() {
       return this.isNew
         ? this.newVideoData.duration
         : this.formatToMinSec(this.videoData.duration);
-    }
+    },
   },
   methods: {
-    //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
-    startUpdateSlider() {
-      let self = this;
-      self.sliderInterval = setInterval(function() {
-        let sliderPosition =
-          100 *
-          (self.convertToSec(self.currentTime) /
-            self.convertToSec(self.duration));
-
-        self.slider.val = sliderPosition;
-      }, 800);
-    },
-    stopUpdateSlider() {
-      clearInterval(this.sliderInterval);
-    },
-    //sliderをクリックした場合、その地点までplayerの再生時間をジャンプ
-    seekToAndRestartMouseup(end) {
-      let self = this;
-      setTimeout(function() {
-        self.player.seekTo(
-          self.convertToSec(self.duration) * (self.slider.val / 100)
-        );
-        self.startUpdateSlider();
-      }, 1000);
-    },
-    //sliderをドラッグした場合、その地点までplayerの再生時間をジャンプ
-    async seekToAndRestartEnd(end) {
-      await this.player.seekTo(this.convertToSec(this.duration) * (end / 100));
-      this.startUpdateSlider();
-    },
+    ...mapMutations({
+      openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal",
+    }),
     tapStartBtn() {
       this.startTimeInput = this.currentTime;
-      //バリデーションチェックのためフォーカスを開始時間フォームに移す
-      this.$refs.startBtn.focus();
       this.player.playVideo();
     },
     tapStopBtn() {
       this.endTimeInput = this.currentTime;
-      //バリデーションチェックのためフォーカスを終了時間フォームに移す
-      this.$refs.stopBtn.focus();
       this.player.pauseVideo();
     },
     //再生
@@ -288,28 +281,49 @@ export default {
         this.$store.commit("tagging/setStart", this.startTimeInput);
         this.$store.commit("tagging/setEnd", this.endTimeInput);
         this.$store.commit("tagging/setShowTaggingControl", "TaggingControl");
+        if (!this.isLogin) {
+          localStorage.setItem("startTime", this.startTimeInput);
+          localStorage.setItem("endTime", this.endTimeInput);
+          localStorage.setItem("showTaggingControl", "TaggingControl");
+        }
       }
     },
     back() {
       this.isEditting
         ? this.$store.commit("tagging/setShowSceneTagControl", false)
         : this.$router.go(-1);
+
+      //編集モードフラグを解除
+      this.$store.commit("tagging/setIsEditting", false);
+    },
+    unmute() {
+      this.player.unMute();
+      this.isMuted = false;
+    },
+    mute() {
+      this.player.mute();
+      this.isMuted = true;
     },
     //初期化処理
     initialize() {
-      //0.8秒毎に現在のplayerの再生時間を取得しv-sliderの位置に反映
-      this.startUpdateSlider();
+      if (localStorage.getItem("startTime")) {
+        this.startTimeInput = localStorage.getItem("startTime");
+      } else {
+        this.startTimeInput = this.$store.getters["tagging/start"];
+      }
 
-      //戻るボタンから表示された際の既入力値のセット
-      this.startTimeInput = this.$store.getters["tagging/start"];
-      this.endTimeInput = this.$store.getters["tagging/end"];
+      if (localStorage.getItem("endTime")) {
+        this.endTimeInput = localStorage.getItem("endTime");
+      } else {
+        this.endTimeInput = this.$store.getters["tagging/end"];
+      }
 
       //シーンタグの遷移モードを変更(true:右スライド, false:左スライド)
       this.$store.commit("tagging/setControlTransitNext", true);
-    }
+    },
   },
   created() {
     this.initialize();
-  }
+  },
 };
 </script>

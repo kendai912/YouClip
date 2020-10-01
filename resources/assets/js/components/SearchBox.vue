@@ -1,9 +1,10 @@
 <template>
-  <v-sheet color="grey lighten-3" class="search-box" fluid>
+  <v-sheet color="grey lighten-3" elevation="1" class="search-box pr-2"  style="border-radius: 10px;">
     <v-container class="ma-0 pa-0 text-center">
       <v-row class="ma-0 pa-0" align="center">
         <v-col cols="1" class="ma-0 pa-0 text-center">
-          <v-icon v-on:click="back">mdi-arrow-left</v-icon>
+          <!-- <v-icon v-on:click="back">mdi-arrow-left</v-icon> -->
+          <v-icon v-on:click="search">search</v-icon>
         </v-col>
         <v-col class="ma-0 pa-0">
           <v-autocomplete
@@ -11,14 +12,29 @@
             v-bind:items="items"
             v-bind:search-input.sync="searchquery"
             v-on:keydown.enter="search"
-            placeholder="プレイリストまたはシーンを入力"
+            placeholder="クリップとシーンを検索"
+            item-text="value"
+            item-value="value"
             cache-items
             hide-no-data
             clearable
             dense
           >
-            <template v-slot:append-outer>
-              <v-icon v-on:click="search">search</v-icon>
+            <template v-slot:item="data">
+              <template v-if="typeof data.item !== 'object'">
+                <v-list-item-content v-text="data.item"></v-list-item-content>
+              </template>
+              <template v-else>
+                <v-list-item-icon class="mr-4">
+                  <v-icon>{{data.item.icon}}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-html="data.item.value"></v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-icon style="min-width:16px;">
+                  <v-img src="/storage/icons/north_west.svg" width="16px" max-height="16px"></v-img>
+                </v-list-item-icon>
+              </template>
             </template>
           </v-autocomplete>
         </v-col>
@@ -52,7 +68,11 @@ export default {
       if (this.searchCandidates["searchHistoryCandidates"])
         this.searchCandidates["searchHistoryCandidates"].forEach(value => {
           if (itemCount++ < itemLimit) {
-            items.push(value.searchQuery);
+            let item = {
+              icon: 'history',
+              value: value.searchQuery,
+            }
+            items.push(item);
           }
         });
 
@@ -60,10 +80,13 @@ export default {
       if (this.searchCandidates["topSearchqueriesCandidates"])
         this.searchCandidates["topSearchqueriesCandidates"].forEach(value => {
           if (itemCount++ < itemLimit) {
-            items.push(value.searchquery.searchQuery);
+            let item = {
+              icon: 'search',
+              value: value.searchquery.searchQuery,
+            }
+            items.push(item);
           }
         });
-
       return items;
     }
   },
@@ -88,9 +111,11 @@ export default {
       this.$store.commit("search/searchResultPageTransit");
     },
     back() {
-      this.$router.go(-1);
+      this.$router.push('/home');
     }
   },
-  created() {}
+  async created() {
+    await this.$store.dispatch("search/getSearchCandidates");
+  }
 };
 </script>

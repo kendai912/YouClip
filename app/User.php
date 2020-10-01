@@ -22,7 +22,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'provider', 'provider_id',
     ];
 
     /**
@@ -70,11 +70,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Searchquery')->using('App\SearchqueryUser');
     }
 
-    public function playlistlogs()
-    {
-        //Taglogモデルのデータを引っ張ってくる
-        return $this->hasMany('App\Playlistlog');
-    }
+    // public function playlistlogs()
+    // {
+    //     //Taglogモデルのデータを引っ張ってくる
+    //     return $this->hasMany('App\Playlistlog');
+    // }
 
     public function taglogs()
     {

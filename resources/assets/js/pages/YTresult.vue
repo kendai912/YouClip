@@ -1,5 +1,14 @@
 <template>
   <div class="container--small">
+    <div class="px-3 pt-3">
+      <v-img
+        src="/storage/icons/yt_social_red.png"
+        width="28px"
+        max-height="28px"
+        class="float-left mr-2"
+      />
+      <span>YouTube検索結果</span>
+    </div>
     <YTSearchBox />
     <YTitem v-bind:YTitems="YTresult" />
   </div>
@@ -14,7 +23,12 @@ import myMixin from "../util";
 export default {
   components: {
     YTSearchBox,
-    YTitem
+    YTitem,
+  },
+  data() {
+    return {
+      pageNumber: 1,
+    };
   },
   mixins: [myMixin],
   methods: {
@@ -24,19 +38,20 @@ export default {
       this.$store.commit("YTsearch/setIsYTLoading", true);
 
       //無限スクロールに合わせてYoutubeの検索結果を取得
-      await this.$store.dispatch("YTsearch/YTsearch");
+      await this.$store.dispatch("YTsearch/YTsearch", this.pageNumber);
+      this.pageNumber++;
 
       //ローディングを非表示
       this.$store.commit("YTsearch/setIsYTLoading", false);
-    }
+    },
   },
   computed: {
     ...mapGetters({
       YTsearchQuery: "YTsearch/YTsearchQuery",
       YTresult: "YTsearch/YTresult",
       isYTSearching: "YTsearch/isYTSearching",
-      isYTLoading: "YTsearch/isYTLoading"
-    })
+      isYTLoading: "YTsearch/isYTLoading",
+    }),
   },
   mounted() {
     //ナビバーを非表示
@@ -61,6 +76,11 @@ export default {
       }
     };
     this.infinateScrollYTresults();
-  }
+
+    this.$store.commit("tagging/setTags", "");
+    this.$store.commit("tagging/setStart", "");
+    this.$store.commit("tagging/setEnd", "");
+    this.$store.commit("tagging/setShowTaggingControl", "TimeControl");
+  },
 };
 </script>

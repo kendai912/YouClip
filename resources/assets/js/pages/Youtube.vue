@@ -33,11 +33,13 @@ export default {
       snackbar: false,
       timeout: 5000,
       text: "シーンタグを登録しました",
+      timer: null,
     };
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
+      isLogin: "auth/check",
       youtubeId: "youtube/youtubeId",
       videoData: "youtube/videoData",
       tagDataArray: "youtube/tagDataArray",
@@ -69,6 +71,11 @@ export default {
       await this.$store.dispatch("youtube/getNewVideoData");
     }
 
+    //ログイン済の場合ユーザーが作成したプレイリスト一覧を取得
+    if (this.isLogin) {
+      this.$store.dispatch("playlist/getMyCreatedPlaylist");
+    }
+
     // This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
@@ -82,12 +89,25 @@ export default {
         width: "560",
         height: "315",
         videoId: this.youtubeId,
+        playerVars: {
+          playsinline: 1,
+          autoplay: 1,
+          iv_load_policy: 3, //アノテーション非表示
+          modestbranding: 1, //YouTubeロゴ非表示
+          rel: 0, //関連動画非表示
+          showinfo: 0, //タイトルやアップロードしたユーザーなどの情報は非表示
+        },
         events: {
           onReady: onPlayerReady,
           onStateChange: onPlayerStateChange,
         },
       });
+
+      //縦・横のサイズをセット
+      $("iframe").width($(".yt-container").width());
+      $("iframe").height($(".container--small").height());
     };
+    setTimeout(onYouTubeIframeAPIReady, 10);
 
     window.onPlayerReady = (event) => {
       event.target.mute();
@@ -95,7 +115,7 @@ export default {
       this.isPlayerReady = true;
 
       //0.4秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
-      setInterval(function() {
+      self.timer = setInterval(function() {
         //playerが取得した時間を「分:秒」に整形しcurrentTimeに格納
         let currentTime = self.formatTime(event.target.getCurrentTime());
         //currentTimeをyoutubeストアにセット
@@ -116,6 +136,10 @@ export default {
         location.reload();
       }
     });
+  },
+  beforeDestroy() {
+    // シーンタグ付けコンポーネントの現在再生時間をセットするインターバルを停止する
+    clearInterval(this.timer);
   },
 };
 </script>

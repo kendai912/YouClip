@@ -1,11 +1,16 @@
 <template>
   <div class="container--small">
     <SearchBox />
-    <SearchHint v-bind:searchHints="topSearchqueries" v-bind:hintCategory="topSearchquery" />
+    <SearchHint
+      v-bind:searchHints="topSearchqueries"
+      v-bind:hintCategory="topSearchquery"
+      class="body-color"
+    />
     <SearchHint
       v-if="isLogin"
       v-bind:searchHints="searchHistories"
       v-bind:hintCategory="searchHistory"
+      class="body-color"
     />
   </div>
 </template>
