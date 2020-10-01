@@ -25,6 +25,10 @@
   /* min-height: 100vh;  */
 }
 
+.v-expansion-panel--active > .v-expansion-panel-header {
+  min-height: 32px !important;
+}
+
 .yt-container {
   width: 100%;
   height: auto;
@@ -458,4 +462,5 @@
 }
 .placeholder-color {
   color: #777676;
+  font-size: 13px;
 }
