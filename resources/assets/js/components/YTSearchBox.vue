@@ -3,7 +3,7 @@
     color="grey lighten-3"
     elevation="1"
     class="search-box pr-2"
-    style="border-radius: 10px;"
+    style="border-radius: 10px"
   >
     <v-container class="ma-0 pa-0 text-center">
       <v-row class="ma-0 pa-0" align="center">
@@ -38,7 +38,7 @@
                     v-html="data.item.value"
                   ></v-list-item-title>
                 </v-list-item-content>
-                <v-list-item-icon style="min-width:16px;">
+                <v-list-item-icon style="min-width: 16px">
                   <v-img
                     src="/storage/icons/north_west.svg"
                     width="16px"
@@ -138,7 +138,7 @@ export default {
       let youtubeId = this.searchquery.match(/(\?v=|youtu.be\/)([^&]+)/);
       if (youtubeId) {
         //YoutubeのURLの場合、直接再生ページへ
-        router
+        this.$router
           .push({
             path: "/youtube",
             query: { v: youtubeId[2] },
