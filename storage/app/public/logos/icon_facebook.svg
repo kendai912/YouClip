@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="44px" height="44px" viewBox="0 0 44 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon_facebook</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="44" height="44" rx="22"></rect>
+    </defs>
+    <g id="icon_facebook" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <use id="Rectangle" fill="#FFFFFF" xlink:href="#path-1"></use>
+        <path d="M44,22.1344495 C44,9.90992159 34.1502734,0 22,0 C9.84972656,0 0,9.90992159 0,22.1344495 C0,33.1823931 8.04508203,42.339484 18.5625,44 L18.5625,28.5326888 L12.9765625,28.5326888 L12.9765625,22.1344495 L18.5625,22.1344495 L18.5625,17.2579536 C18.5625,11.7105072 21.8469453,8.64626933 26.8722266,8.64626933 C29.279207,8.64626933 31.796875,9.0785828 31.796875,9.0785828 L31.796875,14.5257325 L29.0227266,14.5257325 C26.2897852,14.5257325 25.4375,16.231944 25.4375,17.9823813 L25.4375,22.1344495 L31.5390625,22.1344495 L30.5636719,28.5326888 L25.4375,28.5326888 L25.4375,44 C35.954918,42.339484 44,33.1823931 44,22.1344495" id="Fill-1" fill="#1877F2" mask="url(#mask-2)"></path>
+    </g>
+</svg>

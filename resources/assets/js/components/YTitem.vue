@@ -1,0 +1,97 @@
+<template>
+  <v-sheet>
+    <transition-group name="fade-transition" mode="out-in">
+      <v-card
+        v-for="(item, index) in YTitems"
+        v-bind:key="item.youtubeId + index"
+        class="mx-auto"
+        max-width="420"
+        elevation="0"
+      >
+        <v-container class="px-3 my-3">
+          <v-row
+            v-on:click="select(item)"
+            justify="center"
+            align-content="center"
+            class="pa-0 ma-0"
+          >
+            <v-col cols="6" class="pa-0 ma-0">
+              <v-img
+                v-bind:src="item.thumbnails"
+                v-bind:alt="item.title + '-thumbnail'"
+                class="white--text align-end right"
+                width="100%"
+                aspect-ratio="1.778"
+              >
+                <!-- <v-container class="pa-0 ma-0">
+                  <v-row class="pa-0 ma-1 d-flex justify-end">
+                    <v-col
+                      cols="auto"
+                      class="pa-1 ma-0 text-center black lighten-2 font-weight-bold opacity-background corner-radius"
+                    >{{ item.duration }}</v-col>
+                  </v-row>
+                </v-container> -->
+              </v-img>
+            </v-col>
+
+            <v-col cols="6" class="pa-0 ma-0">
+              <v-list-item class="px-2 ma-0">
+                <v-list-item-content>
+                  <v-list-item-title class="wrap-text">{{ item.title }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ item.channelTitle }}</v-list-item-subtitle>
+                  <v-list-item-subtitle>
+                    <!-- <span>{{ convertNumDigit(item.viewCount) }}回視聴</span>
+                    <span>{{ timeSince(item.publishedAt) }}前</span> -->
+                    <span>{{ item.viewCount }}</span>
+                    <span>{{ item.publishedAt }}</span>
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+      <YTLoadingItem
+        v-if="isYTLoading"
+        v-bind:numberOfYTItemsPerPagination="numberOfYTItemsPerPagination"
+        key="YTLoadingItem"
+      />
+    </transition-group>
+  </v-sheet>
+</template>
+
+<script>
+import { mapState, mapGetters } from "vuex";
+import YTLoadingItem from "../components/YTLoadingItem.vue";
+import myMixin from "../util";
+
+export default {
+  components: {
+    YTLoadingItem
+  },
+  props: {
+    YTitems: Array
+  },
+  mixins: [myMixin],
+  computed: {
+    ...mapGetters({
+      isYTLoading: "YTsearch/isYTLoading",
+      numberOfYTItemsPerPagination: "YTsearch/numberOfYTItemsPerPagination"
+    })
+  },
+  methods: {
+    select(item) {
+      //シーンタグ付けページを表示
+      this.$router
+        .push({
+          path: "/youtube",
+          query: {
+            v: item.youtubeId
+          }
+        })
+        .catch(err => {});
+      // location.reload();
+    }
+  }
+};
+</script>
