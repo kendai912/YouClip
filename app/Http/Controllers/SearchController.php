@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Auth;
-use Debugbar;
 use Carbon\Carbon;
 use App\Video;
 use App\Tag;
@@ -283,7 +282,8 @@ class SearchController extends Controller
         return $res->getBody();
     }
     //get Youtube Search Results from scraping API
-    public function getYTScrapingResultList(Request $request) {
+    public function getYTScrapingResultList(Request $request)
+    {
         $apiUrl = $request->apiUrl;
         $params = $request->params;
         $client = new Client();
@@ -292,8 +292,7 @@ class SearchController extends Controller
                 'verify' => false,
                 'query' => $params
             ]);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             throw new Exception($e->getResponse()->getBody());
         }
         return $res->getBody();

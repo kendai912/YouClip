@@ -363,7 +363,7 @@ class TagController extends Controller
         $yt = new YouTubeDownloader();
         $links = $yt->getDownloadLinks($url);
 
-        $key = array_search('136', array_column($links, 'itag'));
+        $key = array_search('22', array_column($links, 'itag'));
         $yturl = $links[$key]['url'];
         return $yturl;
     }
