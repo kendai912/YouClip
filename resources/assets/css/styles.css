@@ -464,3 +464,7 @@
   color: #777676;
   font-size: 13px;
 }
+
+div.v-snack:not(.v-snack--absolute) {
+  height: 100%;
+}
