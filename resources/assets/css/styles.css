@@ -228,12 +228,17 @@
   font-size: 80%;
 }
 
-.scenePrivacySettingBox .v-label {
+.scenePrivacySettingBox label {
+  left: -33px !important;
+}
+
+.scenePrivacySettingBox .v-label,
+.sceneMyPlaylistToSaveBox .v-label,
+.sceneTagInputBox .v-label {
   font-size: 100%;
 }
 
 .sceneTagInputBox .v-label {
-  font-size: 14px;
   top: 18px;
 }
 
@@ -463,4 +468,8 @@
 .placeholder-color {
   color: #777676;
   font-size: 13px;
+}
+
+div.v-snack:not(.v-snack--absolute) {
+  height: 100%;
 }
