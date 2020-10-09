@@ -149,7 +149,7 @@ export default {
         this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
         this.$store.commit("YTsearch/YTsearchResultPageTransit");
       }
-      window.location.reload();
+      // window.location.reload();
     },
   },
   async created() {
