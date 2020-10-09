@@ -1,5 +1,5 @@
 <template>
-  <v-sheet height="240" tile class="text-center">
+  <v-sheet height="240" tile class="text-center" id="tagControlSheet">
     <v-sheet tile class="ma-0 pa-1">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0" align="center">
@@ -14,7 +14,7 @@
           </v-col>
         </v-row>
 
-        <v-row class="mt-2 mx-0 mb-0 px-1">
+        <v-row class="mt-2 mx-0 mb-0 px-1" ref="tagsBox">
           <v-col class="ma-0 pa-0">
             <v-form ref="form" class="ma-0 pa-0">
               <v-combobox
@@ -141,6 +141,8 @@ export default {
         },
       ],
       isEditPrivacy: false,
+      tagControlSheetDefaultHeight: "",
+      tagsBoxDefaultHeight: "",
     };
   },
   mixins: [myMixin],
@@ -217,6 +219,16 @@ export default {
           );
         }
       }
+    },
+    tags: function() {
+      //タグのコンボボックスの高さに合わせてシート全体の高さを伸長
+      this.$nextTick(() => {
+        let diffHeight =
+          this.$refs.tagsBox.clientHeight - this.tagsBoxDefaultHeight;
+        $("#tagControlSheet").outerHeight(
+          this.tagControlSheetDefaultHeight + diffHeight
+        );
+      });
     },
   },
   methods: {
@@ -345,6 +357,11 @@ export default {
   },
   created() {
     this.initialize();
+  },
+  mounted() {
+    // シートとタグのコンボボックスのデフォルトの高さを保存
+    this.tagControlSheetDefaultHeight = $("#tagControlSheet").outerHeight();
+    this.tagsBoxDefaultHeight = this.$refs.tagsBox.clientHeight;
   },
 };
 </script>
