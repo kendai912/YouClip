@@ -15,11 +15,16 @@
         class="pa-0 ma-0"
       >
         <v-col class="px-0">
-          <v-card class="mx-auto" max-width="420" height="160" elevation="1">
-            <v-row class="ma-0">
-              <v-col cols="11" class="pa-0">
+          <v-card
+            class="mx-auto d-flex"
+            max-width="420"
+            height="160"
+            elevation="1"
+          >
+            <v-row class="ma-0" align="center">
+              <v-col class="pa-0">
                 <v-row class="ma-0">
-                  <v-col cols="6" class="pa-1">
+                  <v-col class="pa-2">
                     <v-hover v-if="!isMobile" v-slot:default="{ hover }">
                       <v-img
                         v-on:click.stop="select(item)"
@@ -82,7 +87,7 @@
                         <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
                       </video> -->
                   </v-col>
-                  <v-col cols="6" class="pa-1 py-3">
+                  <v-col class="pa-2">
                     <v-card-title
                       v-on:click.stop="select(item)"
                       class="py-0 d-inline"
@@ -91,7 +96,7 @@
                         src="/storage/icons/clip.svg"
                         width="16px"
                         max-height="16px"
-                        class="float-left"
+                        class="float-left mr-1"
                       />
                       <span class="block-playlist-title">{{ item.title }}</span>
                     </v-card-title>
@@ -139,19 +144,19 @@
                       </div>
                     </v-card-text>
                   </v-col>
+                  <v-col cols="auto" class="pa-2 text-center">
+                    <div
+                      class="ma-auto"
+                      style="width: 20px; height: 20px;"
+                      v-if="user_id === item.user_id"
+                      v-on:click="editPlaylist(item)"
+                    >
+                      <span>
+                        <v-icon class="my-grey">mdi-pencil</v-icon>
+                      </span>
+                    </div>
+                  </v-col>
                 </v-row>
-              </v-col>
-              <v-col cols="1" class="ma-0 pa-0 pt-4 text-center">
-                <div
-                  class="ma-auto"
-                  style="width: 20px; height: 20px;"
-                  v-if="user_id === item.user_id"
-                  v-on:click="editPlaylist(item)"
-                >
-                  <span>
-                    <v-icon class="my-grey">mdi-pen</v-icon>
-                  </span>
-                </div>
               </v-col>
             </v-row>
           </v-card>

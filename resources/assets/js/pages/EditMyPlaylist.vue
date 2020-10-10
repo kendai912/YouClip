@@ -1,18 +1,12 @@
 <template>
   <div class="container--small">
     <div>
-      <v-card
-        class="mx-auto pa-2"
-        max-width="420"
-        tile
-        flat
-        color="rgb(245, 245, 245)"
-      >
+      <v-card class="mx-auto pa-2 align-center" max-width="420" tile flat>
         <v-row class="ma-0">
           <v-col class="pa-0 pt-2 text-center">
             <v-text-field
               v-model="playlistTitle"
-              :append-icon="isEditTitle ? 'fas fa-save' : 'mdi-pen'"
+              :append-icon="isEditTitle ? 'fas fa-save' : 'mdi-pencil'"
               :rules="[rules.required]"
               :readonly="!isEditTitle"
               type="text"
@@ -37,22 +31,17 @@
               :items="privacySettingList"
               label="プライバシー設定"
               prepend-icon="mdi-earth"
-              :append-icon="isEditPrivacy ? 'fas fa-save' : 'mdi-pen'"
+              :append-icon="isEditPrivacy ? 'fas fa-save' : 'mdi-pencil'"
               :readonly="!isEditPrivacy"
               @click:append="savePrivacy"
               hide-details
+              class="scenePrivacySettingBox"
             ></v-select>
           </v-col>
         </v-row>
         <v-row class="ma-0">
-          <v-col class="pa-0 pt-2">
-            <v-text-field
-              ref="testelement"
-              value="ddddddddddddd"
-              style="width:0; height:0;"
-              hide-details
-            ></v-text-field>
-            <div class="grey--text text--darken-3">
+          <v-col class="pa-0 pt-2 align-bottom" align-self="end">
+            <v-card elevation="0">
               <span>{{ sceneCount }}シーン</span
               ><span style="font-size:8px;"
                 >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
@@ -62,7 +51,10 @@
                 >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
               >
               <span>最終更新日: {{ lastUpdatedAt }}</span>
-            </div>
+            </v-card>
+          </v-col>
+          <v-col class="pa-0 pt-2 text-right" cols="auto">
+            <span><v-icon class="my-grey">mdi-delete</v-icon></span>
           </v-col>
         </v-row>
       </v-card>
@@ -138,7 +130,6 @@ export default {
         this.isEditTitle = true;
       } else {
         this.isEditTitle = false;
-        this.$refs.testelement.focus();
         var playlist = {
           playlist_id: this.playlistAndTagVideoData.playlist_id,
           playlistName: this.playlistName,
@@ -151,7 +142,6 @@ export default {
         this.isEditPrivacy = true;
       } else {
         this.isEditPrivacy = false;
-        this.$refs.testelement.focus();
         var playlist = {
           playlist_id: this.playlistAndTagVideoData.playlist_id,
           privacySetting: this.privacySetting,
