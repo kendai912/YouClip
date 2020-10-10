@@ -1,26 +1,51 @@
 <template>
   <div class="container--small">
-    <v-sheet tile class="mx-auto py-3 px-2 body-color" align="center" justify="center" max-width="420px">
+    <v-sheet
+      tile
+      class="mx-auto py-3 px-2 body-color"
+      align="center"
+      justify="center"
+      max-width="420px"
+    >
       <v-container class="ma-0 pa-0" fluid>
-        <v-row class="ma-0 pa-0" align="center" justify="center" style="height: 40px;">
+        <v-row
+          class="ma-0 pa-0"
+          align="center"
+          justify="center"
+          style="height: 40px;"
+        >
           <v-col class="ma-0 pa-0">
-            <v-card-text class="text-center">連携済みアカウントで新規登録</v-card-text>
+            <v-card-text class="text-center"
+              >連携済みアカウントで新規登録</v-card-text
+            >
           </v-col>
         </v-row>
         <v-row class="mb-4 pa-0" align="center">
-          <!-- <v-col class="ma-0 pa-0">
+          <v-col class="ma-0 pa-0">
             <a href="/api/auth/google">
-              <v-img width="44px" aspect-ratio="1" src="/storage/logos/google.png"></v-img>
+              <v-img
+                width="44px"
+                aspect-ratio="1"
+                src="/storage/logos/google.png"
+              ></v-img>
             </a>
-          </v-col>-->
+          </v-col>
           <v-col class="ma-0 pa-0">
             <a href="/api/auth/facebook">
-              <v-img width="44px" aspect-ratio="1" src="/storage/logos/icon_facebook.svg"></v-img>
+              <v-img
+                width="44px"
+                aspect-ratio="1"
+                src="/storage/logos/icon_facebook.svg"
+              ></v-img>
             </a>
           </v-col>
           <v-col class="ma-0 pa-0">
             <a href="/api/auth/twitter">
-              <v-img width="44px" aspect-ratio="1" src="/storage/logos/icon_twitter.svg"></v-img>
+              <v-img
+                width="44px"
+                aspect-ratio="1"
+                src="/storage/logos/icon_twitter.svg"
+              ></v-img>
             </a>
           </v-col>
         </v-row>
@@ -31,7 +56,9 @@
         </v-row>
         <v-row class="my-2 pa-0" align="center" style="height: 40px;">
           <v-col class="ma-0 pa-0">
-            <v-card-text class="ma-0 pa-0">名前・メールアドレス・パスワードで新規登録</v-card-text>
+            <v-card-text class="ma-0 pa-0"
+              >名前・メールアドレス・パスワードで新規登録</v-card-text
+            >
           </v-col>
         </v-row>
         <v-row class="ma-0 pa-0" align="center">
@@ -80,13 +107,17 @@
           <v-col class="ma-0 pa-0">
             <v-text-field
               v-model="registerForm.password_confirmation"
-              v-bind:append-icon="passwordConfirmationField ? 'mdi-eye' : 'mdi-eye-off'"
+              v-bind:append-icon="
+                passwordConfirmationField ? 'mdi-eye' : 'mdi-eye-off'
+              "
               v-bind:rules="[passwordRules.required, passwordRules.min]"
               v-bind:type="passwordConfirmationField ? 'text' : 'password'"
               v-on:keydown.enter="register"
               label="Password (確認)"
               hint="6文字以上で入力下さい"
-              @click:append="passwordConfirmationField = !passwordConfirmationField"
+              @click:append="
+                passwordConfirmationField = !passwordConfirmationField
+              "
               outlined
               required
             ></v-text-field>
@@ -106,23 +137,34 @@
                   v-bind:key="nameErrorItem + nameErrorIndex"
                 >
                   <v-list-item-content>
-                    <v-list-item-title class="red--text" v-text="nameErrorItem"></v-list-item-title>
+                    <v-list-item-title
+                      class="red--text"
+                      v-text="nameErrorItem"
+                    ></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item
-                  v-for="(emailErrorItem, emailErrorIndex) in registerErrors.email"
+                  v-for="(emailErrorItem,
+                  emailErrorIndex) in registerErrors.email"
                   v-bind:key="emailErrorItem + emailErrorIndex"
                 >
                   <v-list-item-content>
-                    <v-list-item-title class="red--text" v-text="emailErrorItem"></v-list-item-title>
+                    <v-list-item-title
+                      class="red--text"
+                      v-text="emailErrorItem"
+                    ></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item
-                  v-for="(passwordErrorItem, passwordErrorIndex) in registerErrors.password"
+                  v-for="(passwordErrorItem,
+                  passwordErrorIndex) in registerErrors.password"
                   v-bind:key="passwordErrorItem + passwordErrorIndex"
                 >
                   <v-list-item-content>
-                    <v-list-item-title class="red--text" v-text="passwordErrorItem"></v-list-item-title>
+                    <v-list-item-title
+                      class="red--text"
+                      v-text="passwordErrorItem"
+                    ></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
@@ -141,16 +183,16 @@ export default {
   data() {
     return {
       nameRules: [
-        v => !!v || "必須項目です",
-        v => v.length <= 10 || "名前は10文字以下で記入下さい"
+        (v) => !!v || "必須項目です",
+        (v) => v.length <= 10 || "名前は10文字以下で記入下さい",
       ],
       emailRules: [
-        v => !!v || "必須項目です",
-        v => /.+@.+\..+/.test(v) || "無効なメールアドレスです"
+        (v) => !!v || "必須項目です",
+        (v) => /.+@.+\..+/.test(v) || "無効なメールアドレスです",
       ],
       passwordRules: {
-        required: value => !!value || "必須項目です.",
-        min: v => v.length >= 6 || "パスワードは6文字以上で入力下さい"
+        required: (value) => !!value || "必須項目です.",
+        min: (v) => v.length >= 6 || "パスワードは6文字以上で入力下さい",
       },
       passwordField: false,
       passwordConfirmationField: false,
@@ -158,9 +200,9 @@ export default {
         name: "",
         email: "",
         password: "",
-        password_confirmation: ""
+        password_confirmation: "",
       },
-      beforeLoginUrl: ""
+      beforeLoginUrl: "",
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -177,27 +219,26 @@ export default {
       await this.$store.dispatch("auth/register", this.registerForm);
 
       if (this.apiStatus) {
-        //トップページに移動する
-        // this.$router.push("/");
+        //元いたページに移動する
         this.$router.push(this.beforeLoginUrl);
       }
     },
     clearError() {
       this.$store.commit("auth/setLoginErrorMessages", null);
       this.$store.commit("auth/setRegisterErrorMessages", null);
-    }
+    },
   },
   computed: {
     ...mapState({
-      apiStatus: state => state.auth.apiStatus,
-      registerErrors: state => state.auth.registerErrorMessages
-    })
+      apiStatus: (state) => state.auth.apiStatus,
+      registerErrors: (state) => state.auth.registerErrorMessages,
+    }),
   },
   created() {
     //ナビバーを表示
     this.$store.commit("navbar/setShowNavbar", true);
 
     this.clearError();
-  }
+  },
 };
 </script>

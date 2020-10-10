@@ -52,9 +52,6 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("like/loadTagLike");
-    this.$store.dispatch("likePlaylist/loadPlaylistLike");
-
     //URLのtoastパラメータを見てトーストを表示
     if (window.sessionStorage.getItem("deleteSuccess")) {
       this.$store.commit("snackbar/setText", "シーンタグを削除しました");

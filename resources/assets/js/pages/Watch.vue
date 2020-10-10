@@ -16,11 +16,7 @@
               <v-col class="ma-0 pa-0">
                 <!-- <v-row v-if="playlistIdUrl" class="ma-0 pa-0"> -->
                 <v-row class="ma-0 pa-0">
-                  <v-col
-                    cols="auto"
-                    class="ma-0 pa-1"
-                    align="left"
-                  >
+                  <v-col cols="auto" class="ma-0 pa-1" align="left">
                     <v-img
                       src="/storage/icons/clip.svg"
                       width="28px"
@@ -519,6 +515,10 @@ export default {
     this.$store.commit("navbar/setShowNavbar", false);
     this.playlistIdUrl = "";
     this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
+
+    //タグおよびプレイリストのLikeデータをロード
+    this.$store.dispatch("like/loadTagLike");
+    this.$store.dispatch("likePlaylist/loadPlaylistLike");
 
     if (this.$route.query.playlist) {
       //特定シーン再生の場合
