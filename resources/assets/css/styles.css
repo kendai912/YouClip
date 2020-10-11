@@ -232,6 +232,7 @@
   left: -33px !important;
 }
 
+.playlistTitleInputBox .v-label,
 .scenePrivacySettingBox .v-label,
 .sceneMyPlaylistToSaveBox .v-label,
 .sceneTagInputBox .v-label {

@@ -16,12 +16,8 @@
               @click:append="saveTitle"
               hide-details
               ref="playlistTitle"
+              class="playlistTitleInputBox"
             ></v-text-field>
-            <!-- <v-select
-              v-model="playlistPrivacySetting"
-              :items="privacySettingList"
-            >
-            </v-select>-->
           </v-col>
         </v-row>
         <v-row class="ma-0">
@@ -42,6 +38,7 @@
         <v-row class="ma-0">
           <v-col class="pa-0 pt-2 align-bottom" align-self="end">
             <v-card elevation="0">
+              <v-card-subtitle class="pa-0 ma-0 subtitle-1 my-grey">
               <span>{{ sceneCount }}シーン</span
               ><span style="font-size:8px;"
                 >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
@@ -51,6 +48,7 @@
                 >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
               >
               <span>最終更新日: {{ lastUpdatedAt }}</span>
+              </v-card-subtitle>
             </v-card>
           </v-col>
           <v-col class="pa-0 pt-2 text-right" cols="auto">
@@ -61,6 +59,22 @@
                 >mdi-delete</v-icon
               ></span
             >
+          </v-col>
+        </v-row>
+        <v-row class="ma-0">
+          <v-col class="pa-0 pt-2 text-left" cols="auto">
+            <span
+              ><v-icon
+                v-on:click="openPlaylistDeleteModal(playlistId, playlistName)"
+                class="my-grey"
+                >mdi-sort-variant</v-icon
+              ></span
+            >
+          </v-col>
+          <v-col class="pa-0 pt-2 align-bottom" align-self="end">
+            <v-card elevation="0">
+              <v-card-title class="pa-0 pl-2 ma-0 subtitle-1 my-grey">シーンの並び替え(ドラッグ＆ドロップ)</v-card-title>
+            </v-card>
           </v-col>
         </v-row>
       </v-card>
