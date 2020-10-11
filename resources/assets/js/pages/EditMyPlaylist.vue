@@ -54,23 +54,32 @@
             </v-card>
           </v-col>
           <v-col class="pa-0 pt-2 text-right" cols="auto">
-            <span><v-icon class="my-grey">mdi-delete</v-icon></span>
+            <span
+              ><v-icon
+                v-on:click="openPlaylistDeleteModal(playlistId, playlistName)"
+                class="my-grey"
+                >mdi-delete</v-icon
+              ></span
+            >
           </v-col>
         </v-row>
       </v-card>
       <SceneTagItem v-bind:mediaItems="sceneListofPlaylist" />
+      <PlaylistDeleteModal v-if="showPlaylistDeleteModal" />
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
-import SceneTagItem from "../components/SceneTagItem.vue";
 import myMixin from "../util";
+import SceneTagItem from "../components/SceneTagItem.vue";
+import PlaylistDeleteModal from "../components/PlaylistDeleteModal.vue";
 
 export default {
   components: {
     SceneTagItem,
+    PlaylistDeleteModal,
   },
   data() {
     return {
@@ -106,6 +115,7 @@ export default {
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
       playlistName: "watch/playlistName",
       privacySetting: "watch/privacySetting",
+      showPlaylistDeleteModal: "playlistDeleteModal/showPlaylistDeleteModal",
     }),
     playlistTitle: {
       get() {
@@ -148,6 +158,11 @@ export default {
         };
         await this.$store.dispatch("playlist/updatePlaylistPrivacy", playlist);
       }
+    },
+    openPlaylistDeleteModal(playlistId, playlistName) {
+      this.$store.commit("playlistDeleteModal/setPlaylistId", playlistId);
+      this.$store.commit("playlistDeleteModal/setPlaylistName", playlistName);
+      this.$store.commit("playlistDeleteModal/openPlaylistDeleteModal");
     },
   },
   async created() {

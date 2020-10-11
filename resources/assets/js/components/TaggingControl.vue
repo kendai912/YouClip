@@ -111,9 +111,9 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
+import myMixin from "../util";
 import NoLoginModal from "../components/NoLoginModal.vue";
 import CreateNewPlaylistModal from "../components/CreateNewPlaylistModal.vue";
-import myMixin from "../util";
 
 export default {
   components: {
