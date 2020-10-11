@@ -1,26 +1,51 @@
 <template>
   <div class="container--small">
-    <v-sheet tile class="mx-auto py-3 px-2 body-color" align="center" justify="center" max-width="420px">
+    <v-sheet
+      tile
+      class="mx-auto py-3 px-2 body-color"
+      align="center"
+      justify="center"
+      max-width="420px"
+    >
       <v-container class="ma-0 pa-0" fluid>
-        <v-row class="ma-0 pa-0" align="center" justify="center" style="height: 40px;">
+        <v-row
+          class="ma-0 pa-0"
+          align="center"
+          justify="center"
+          style="height: 40px;"
+        >
           <v-col class="ma-0 pa-0">
-            <v-card-text class="text-center">連携済みアカウントでログイン</v-card-text>
+            <v-card-text class="text-center"
+              >連携済みアカウントでログイン</v-card-text
+            >
           </v-col>
         </v-row>
         <v-row class="mb-4 mx-0 pa-0" align="center">
           <v-col class="ma-0 pa-0">
             <a href="/api/auth/google">
-              <v-img width="44px" aspect-ratio="1" src="/storage/logos/google.png"></v-img>
+              <v-img
+                width="44px"
+                aspect-ratio="1"
+                src="/storage/logos/google.png"
+              ></v-img>
             </a>
           </v-col>
           <v-col class="ma-0 pa-0">
             <a href="/api/auth/facebook">
-              <v-img width="44px" aspect-ratio="1" src="/storage/logos/icon_facebook.svg"></v-img>
+              <v-img
+                width="44px"
+                aspect-ratio="1"
+                src="/storage/logos/icon_facebook.svg"
+              ></v-img>
             </a>
           </v-col>
           <v-col class="ma-0 pa-0">
             <a href="/api/auth/twitter">
-              <v-img width="44px" aspect-ratio="1" src="/storage/logos/icon_twitter.svg"></v-img>
+              <v-img
+                width="44px"
+                aspect-ratio="1"
+                src="/storage/logos/icon_twitter.svg"
+              ></v-img>
             </a>
           </v-col>
         </v-row>
@@ -31,7 +56,9 @@
         </v-row>
         <v-row class="my-2 mx-0 pa-0" align="center" style="height: 40px;">
           <v-col class="ma-0 pa-0">
-            <v-card-text class="ma-0 pa-0">メールアドレス・パスワードでログイン</v-card-text>
+            <v-card-text class="ma-0 pa-0"
+              >メールアドレス・パスワードでログイン</v-card-text
+            >
           </v-col>
         </v-row>
         <v-row class="ma-0 pa-0" align="center">
@@ -73,15 +100,22 @@
                   v-bind:key="emailErrorItem + emailErrorIndex"
                 >
                   <v-list-item-content>
-                    <v-list-item-title class="red--text" v-text="emailErrorItem"></v-list-item-title>
+                    <v-list-item-title
+                      class="red--text"
+                      v-text="emailErrorItem"
+                    ></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item
-                  v-for="(passwordErrorItem, passwordErrorIndex) in loginErrors.password"
+                  v-for="(passwordErrorItem,
+                  passwordErrorIndex) in loginErrors.password"
                   v-bind:key="passwordErrorItem + passwordErrorIndex"
                 >
                   <v-list-item-content>
-                    <v-list-item-title class="red--text" v-text="passwordErrorItem"></v-list-item-title>
+                    <v-list-item-title
+                      class="red--text"
+                      v-text="passwordErrorItem"
+                    ></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
@@ -100,12 +134,12 @@ export default {
   data() {
     return {
       emailRules: [
-        v => !!v || "E-mail is required",
-        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+        (v) => !!v || "E-mail is required",
+        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
       ],
       loginForm: {
         email: "",
-        password: ""
+        password: "",
       },
       beforeLoginUrl: "",
     };
@@ -124,27 +158,26 @@ export default {
       await this.$store.dispatch("auth/login", this.loginForm);
 
       if (this.apiStatus) {
-        //トップページに移動する
+        //元いたページに移動する
         this.$router.push(this.beforeLoginUrl);
-        // await location.reload();
       }
     },
     clearError() {
       this.$store.commit("auth/setLoginErrorMessages", null);
       this.$store.commit("auth/setRegisterErrorMessages", null);
-    }
+    },
   },
   computed: {
     ...mapState({
-      apiStatus: state => state.auth.apiStatus,
-      loginErrors: state => state.auth.loginErrorMessages
-    })
+      apiStatus: (state) => state.auth.apiStatus,
+      loginErrors: (state) => state.auth.loginErrorMessages,
+    }),
   },
   created() {
     //ナビバーを表示
     this.$store.commit("navbar/setShowNavbar", true);
 
     this.clearError();
-  }
+  },
 };
 </script>

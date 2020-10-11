@@ -232,6 +232,7 @@
   left: -33px !important;
 }
 
+.playlistTitleInputBox .v-label,
 .scenePrivacySettingBox .v-label,
 .sceneMyPlaylistToSaveBox .v-label,
 .sceneTagInputBox .v-label {
@@ -239,11 +240,11 @@
 }
 
 .sceneTagInputBox .v-label {
-  top: 18px;
+  top: 16px;
 }
 
 .sceneTagInputBox .v-label--active {
-  transform: translateY(-28px) scale(0.75);
+  transform: translateY(-26px) scale(0.75);
 }
 
 .sceneTagInputBox .v-input__append-inner {

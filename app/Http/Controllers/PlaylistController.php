@@ -491,15 +491,15 @@ class PlaylistController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
+        //削除するプレイリストを取得
+        $playlist = Playlist::find($request->playlistId);
+
+        //DBから削除
+        $playlist->delete();
+
+        return response(null, 204);
     }
 
     //プレイリストの最初のタグと動画のIDを取得(複数プレイリストをリターン)

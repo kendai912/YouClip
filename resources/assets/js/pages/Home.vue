@@ -11,8 +11,12 @@
         active-class="activated-tab"
         v-for="(item, key) in items"
         :key="item"
-        v-on:click="setActiveTab(key); initialPaginate(key)"
-      >{{ item }}</v-tab>
+        v-on:click="
+          setActiveTab(key);
+          initialPaginate(key);
+        "
+        >{{ item }}</v-tab
+      >
     </v-tabs>
 
     <v-tabs-items v-model="tab">
@@ -201,6 +205,10 @@ export default {
   mounted() {
     //ナビバーを表示
     this.$store.commit("navbar/setShowNavbar", true);
+
+    //タグおよびプレイリストのLikeデータをロード
+    this.$store.dispatch("like/loadTagLike");
+    this.$store.dispatch("likePlaylist/loadPlaylistLike");
 
     //以前に開いていたタブをセッションストレージからセット
     window.sessionStorage.getItem("topTabIndex")

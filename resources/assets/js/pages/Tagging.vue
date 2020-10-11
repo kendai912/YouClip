@@ -30,17 +30,6 @@ export default {
   },
   mixins: [myMixin],
   methods: {
-    //表示するYoutube検索結果の無限スクロール
-    // async infinateScrollYTresults() {
-    //   //ローディングを表示
-    //   this.$store.commit("YTsearch/setIsYTLoading", true);
-
-    //   //無限スクロールに合わせてYoutubeの検索結果を取得
-    //   await this.$store.dispatch("YTsearch/YTsearch");
-
-    //   //ローディングを非表示
-    //   this.$store.commit("YTsearch/setIsYTLoading", false);
-    // }
     async getYTRecentVideos() {
       //ローディングを表示
       this.$store.commit("YTsearch/setIsYTLoading", true);

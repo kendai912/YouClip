@@ -30,7 +30,7 @@
                       <v-col
                         cols="auto"
                         class="pa-1 ma-0 text-center black lighten-2 font-weight-bold opacity-background corner-radius"
-                      >{{ item.duration }}</v-col>
+                      >{{ formatToMinSec(item.duration) }}</v-col>
                     </v-row>
                   </v-container>
                 </v-img>
@@ -65,11 +65,6 @@
           </v-row>
         </v-container>
       </v-card>
-      <!-- <YTLoadingItem
-        v-if="isYTLoading"
-        v-bind:numberOfYTItemsPerPagination="numberOfYTItemsPerPagination"
-        key="YTLoadingItem"
-      /> -->
     </transition-group>
   </v-sheet>
 </template>

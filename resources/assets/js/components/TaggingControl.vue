@@ -1,5 +1,5 @@
 <template>
-  <v-sheet height="240" tile class="text-center">
+  <v-sheet height="240" tile class="text-center" id="tagControlSheet">
     <v-sheet tile class="ma-0 pa-1">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0" align="center">
@@ -14,7 +14,7 @@
           </v-col>
         </v-row>
 
-        <v-row class="mt-2 mx-0 mb-0 px-1">
+        <v-row class="mt-2 mx-0 mb-0 px-1" ref="tagsBox">
           <v-col class="ma-0 pa-0">
             <v-form ref="form" class="ma-0 pa-0">
               <v-combobox
@@ -111,9 +111,9 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
+import myMixin from "../util";
 import NoLoginModal from "../components/NoLoginModal.vue";
 import CreateNewPlaylistModal from "../components/CreateNewPlaylistModal.vue";
-import myMixin from "../util";
 
 export default {
   components: {
@@ -141,6 +141,8 @@ export default {
         },
       ],
       isEditPrivacy: false,
+      tagControlSheetDefaultHeight: "",
+      tagsBoxDefaultHeight: "",
     };
   },
   mixins: [myMixin],
@@ -198,7 +200,7 @@ export default {
     },
   },
   watch: {
-    myPlaylistToSave: function (newPlaylist, oldPlaylist) {
+    myPlaylistToSave: function(newPlaylist, oldPlaylist) {
       // プレイリスト新規作成の場合は、プレイリスト作成モーダルを表示
       if (newPlaylist == "new") {
         if (this.isLogin) {
@@ -218,6 +220,16 @@ export default {
         }
       }
     },
+    tags: function() {
+      //タグのコンボボックスの高さに合わせてシート全体の高さを伸長
+      this.$nextTick(() => {
+        let diffHeight =
+          this.$refs.tagsBox.clientHeight - this.tagsBoxDefaultHeight;
+        $("#tagControlSheet").outerHeight(
+          this.tagControlSheetDefaultHeight + diffHeight
+        );
+      });
+    },
   },
   methods: {
     remove(item) {
@@ -228,7 +240,7 @@ export default {
       if (this.isLogin) {
         //ログイン済の場合
         let self = this;
-        setTimeout(async function () {
+        setTimeout(async function() {
           if (self.$refs.form.validate()) {
             if (self.isEditting) {
               //編集の場合
@@ -248,7 +260,7 @@ export default {
               //データを更新
               await self.$store.dispatch("tagging/updateSceneTags");
 
-              //リロード
+              //iframeプレイヤーを更新した開始・終了時間で読み込むためリロード
               window.location.reload();
             } else {
               //新規の場合
@@ -345,6 +357,11 @@ export default {
   },
   created() {
     this.initialize();
+  },
+  mounted() {
+    // シートとタグのコンボボックスのデフォルトの高さを保存
+    this.tagControlSheetDefaultHeight = $("#tagControlSheet").outerHeight();
+    this.tagsBoxDefaultHeight = this.$refs.tagsBox.clientHeight;
   },
 };
 </script>
