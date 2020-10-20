@@ -13,6 +13,8 @@ import navbar from "./navbar";
 import search from "./search";
 import shareModal from "./shareModal";
 import snackbar from "./snackbar";
+import highlight from "./highlight";
+import highlightHeader from "./highlightHeader";
 import YTsearch from "./YTsearch";
 import youtube from "./youtube";
 import tagging from "./tagging";
@@ -39,6 +41,8 @@ const store = new Vuex.Store({
     search,
     shareModal,
     snackbar,
+    highlight,
+    highlightHeader,
     YTsearch,
     youtube,
     tagging,

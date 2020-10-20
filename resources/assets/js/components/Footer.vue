@@ -5,8 +5,8 @@
       <v-icon>mdi-home</v-icon>
     </v-btn>
 
-    <v-btn to="/tagging" v-on:click="saveFooterTabIndex(1)">
-      <span>シーン登録</span>
+    <v-btn to="/highlight" v-on:click="saveFooterTabIndex(1)">
+      <span>ハイライト作成</span>
       <v-icon>mdi-plus-circle</v-icon>
     </v-btn>
 

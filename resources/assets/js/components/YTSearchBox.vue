@@ -8,7 +8,6 @@
     <v-container class="ma-0 pa-0 text-center">
       <v-row class="ma-0 pa-0" align="center">
         <v-col cols="1" class="ma-0 pa-0 text-center">
-          <!-- <v-icon v-on:click="back">mdi-arrow-left</v-icon> -->
           <v-icon v-on:click="YTsearch">search</v-icon>
         </v-col>
         <v-col class="ma-0 pa-0">
@@ -111,19 +110,6 @@ export default {
     },
   },
   methods: {
-    // search(event) {
-    //   // 日本語入力中のEnterキー操作は無効にする
-    //   if (event.keyCode != undefined && event.keyCode !== 13) return;
-
-    //   //空欄だった場合は検索実行せずリターン
-    //   if (this.searchquery == "") return;
-
-    //   this.$store.commit("search/setSearchQuery", this.searchquery);
-    //   this.$store.commit("search/searchResultPageTransit");
-    // },
-    // back() {
-    //   this.$router.push('/home');
-    // },
     YTsearch(event) {
       // 日本語入力中のEnterキー操作は無効にする
       if (event.keyCode != undefined && event.keyCode !== 13) return;

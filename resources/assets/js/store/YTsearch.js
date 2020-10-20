@@ -17,7 +17,8 @@ const state = {
   YTvideosResponse: [],
   topYTSearchqueries: [],
   YTsearchHistories: [],
-  apiOfScraping: "http://ec2-54-238-6-75.ap-northeast-1.compute.amazonaws.com:3000",
+  apiOfScraping:
+    "http://ec2-54-238-6-75.ap-northeast-1.compute.amazonaws.com:3000",
   apiOfSearch: "https://www.googleapis.com/youtube/v3/search",
   apiOfVideos: "https://www.googleapis.com/youtube/v3/videos",
   paramsOfSearch: {
@@ -144,7 +145,7 @@ const mutations = {
   YTsearchResultPageTransit() {
     router
       .push({
-        path: "/YTresult",
+        path: "/highlight",
         query: { search_query: state.YTsearchQuery },
       })
       .catch((err) => {});
@@ -242,8 +243,8 @@ const actions = {
     // });
     const response = await axios.get("https://ytserver.net:3000/api/search", {
       params: {
-        q:state.paramsOfSearch.q,
-        page: pageNumber
+        q: state.paramsOfSearch.q,
+        page: pageNumber,
       },
     });
     if (response.status == OK) {
@@ -271,7 +272,7 @@ const actions = {
           channelTitle: res[i].channel,
           publishedAt: res[i].release_date,
           duration: res[i].duration,
-          viewCount: res[i].num_views
+          viewCount: res[i].num_views,
         };
       }
       context.commit("setYTResult", YTresult);
@@ -297,7 +298,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
-  
+
   async searchYTRecentVideos(context) {
     const response = await axios.post("api/search/getRecentVideos");
     if (response.status == OK) {
@@ -311,7 +312,7 @@ const actions = {
   async storeYTSearchRecord(context) {
     let params = {
       searchQuery: state.YTsearchQuery,
-      searchOption: 1
+      searchOption: 1,
     };
 
     const response = await axios.post("api/store/searchrecord", params);
