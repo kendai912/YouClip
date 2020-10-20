@@ -53,8 +53,6 @@ export default {
   mixins: [myMixin],
   methods: {
     initialize() {
-      console.log("YTvideoSelectBox created");
-
       //URLのsearch_queryを検索ワードにセット
       this.$store.commit(
         "YTsearch/setYTsearchQuery",
