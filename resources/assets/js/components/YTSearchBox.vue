@@ -3,7 +3,6 @@
     color="grey lighten-3"
     elevation="1"
     class="search-box pr-2"
-    style="border-radius: 10px"
   >
     <v-container class="ma-0 pa-0 text-center">
       <v-row class="ma-0 pa-0" align="center">

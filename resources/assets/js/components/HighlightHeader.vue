@@ -1,6 +1,6 @@
 <template>
-  <v-sheet class="ma-0 pa-0" elevation="0">
-    <v-container class="ma-0 pa-0" fluid>
+  <v-sheet class="ma-0 pa-0 highlight-header" height="48" elevation="0">
+    <v-container class="ma-0 pa-0" fluid fill-height>
       <v-row class="ma-0 pa-0">
         <v-col class="ma-0 pa-0 text-center">
           <span>{{ headerMessage }}</span>

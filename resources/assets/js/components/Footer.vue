@@ -5,7 +5,7 @@
       <v-icon>mdi-home</v-icon>
     </v-btn>
 
-    <v-btn to="/highlight" v-on:click="saveFooterTabIndex(1)">
+    <v-btn v-on:click="openHighlight(1)">
       <span>ハイライト作成</span>
       <v-icon>mdi-plus-circle</v-icon>
     </v-btn>
@@ -23,7 +23,7 @@ import { mapState, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      activeBtn: 0
+      activeBtn: 0,
     };
   },
   methods: {
@@ -36,19 +36,28 @@ export default {
     //開いたタブをセッションストレージに保存
     saveFooterTabIndex(index) {
       window.sessionStorage.setItem("footerTabIndex", JSON.stringify(index));
-    }
+    },
+    openHighlight(index) {
+      this.saveFooterTabIndex(index);
+
+      // 表示するコンポーネントをYTvideoSelectBoxにセットし、ハイライト作成ページに遷移
+      this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
+      this.$router.push({
+        path: "/highlight",
+      });
+    },
   },
   computed: {
     ...mapState({
-      apiStatus: state => state.auth.apiStatus
+      apiStatus: (state) => state.auth.apiStatus,
     }),
     ...mapGetters({
-      isLogin: "auth/check"
-    })
+      isLogin: "auth/check",
+    }),
   },
   mounted() {
     //以前に開いていたタブをセッションストレージからセット
     this.activeBtn = parseInt(window.sessionStorage.getItem("footerTabIndex"));
-  }
+  },
 };
 </script>

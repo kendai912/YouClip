@@ -2,8 +2,8 @@
   <div class="container--small">
     <HighlightHeader />
     <YTSearchBox />
-    <div v-if="YTsearchQuery">
-      <div class="px-3 pt-3">
+    <div v-if="YTsearchQuery" class="highlight-body">
+      <div class="px-3 pt-4">
         <v-img
           src="/storage/icons/yt_social_red.png"
           width="28px"
@@ -15,7 +15,7 @@
       <YTitem v-bind:YTitems="YTresult" />
     </div>
 
-    <div v-else>
+    <div v-else class="highlight-body">
       <div class="px-3 pt-3" v-if="YTRecentVideos.length > 0">
         <v-img
           src="/storage/icons/yt_social_red.png"

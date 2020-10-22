@@ -155,8 +155,8 @@ const mutations = {
 const actions = {
   //検索結果データを取得
   async YTsearch(context, pageNumber) {
-    await actions.searchYTResult(context, pageNumber);
     actions.storeYTSearchRecord(context);
+    await actions.searchYTResult(context, pageNumber);
   },
   async YTRecentVideos(context) {
     await actions.searchYTRecentVideos(context);
@@ -312,7 +312,7 @@ const actions = {
   async storeYTSearchRecord(context) {
     let params = {
       searchQuery: state.YTsearchQuery,
-      searchOption: 1,
+      searchOption: 1, //option 1 shows ytsearch query
     };
 
     const response = await axios.post("api/store/searchrecord", params);

@@ -80,7 +80,7 @@ const routes = [
   },
   {
     path: "/youtube",
-    component: Youtube,
+    component: Highlight,
   },
   {
     path: "/watch",
