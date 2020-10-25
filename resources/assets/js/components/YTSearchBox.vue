@@ -116,9 +116,6 @@ export default {
       //空欄だった場合は検索実行せずリターン
       if (this.searchquery == "") return;
 
-      //前回の検索結果を空にする
-      this.$store.commit("YTsearch/clearYTResult");
-
       //入力内容がYoutubeのURLかキーワードか判定
       let youtubeId = this.searchquery.match(/(\?v=|youtu.be\/)([^&]+)/);
       if (youtubeId) {

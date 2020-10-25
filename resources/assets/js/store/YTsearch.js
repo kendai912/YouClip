@@ -60,6 +60,9 @@ const state = {
   isYTLoading: false,
   numberOfYTItemsPerPagination: 8,
   isYTSearching: false,
+  YTResultPageNumber: 1,
+  YTSearchKey: '',
+  YTSearchPageToken: ''
 };
 
 const getters = {
@@ -75,6 +78,9 @@ const getters = {
   isYTLoading: (state) => state.isYTLoading,
   numberOfYTItemsPerPagination: (state) => state.numberOfYTItemsPerPagination,
   isYTSearching: (state) => state.isYTSearching,
+  YTResultPageNumber: (state) => state.YTResultPageNumber,
+  YTSearchKey: (state) => state.YTSearchKey,
+  YTSearchPageToken: (state) => state.YTSearchPageToken
 };
 
 const mutations = {
@@ -150,6 +156,15 @@ const mutations = {
       })
       .catch((err) => {});
   },
+  setYTResultPageNumber(state, data) {
+    state.YTResultPageNumber = data;
+  },
+  setYTSearchKey(state, data) {
+    state.YTSearchKey = data;
+  },
+  setYTSearchPageToken(state, data) {
+    state.YTSearchPageToken = data;
+  }
 };
 
 const actions = {
@@ -241,11 +256,14 @@ const actions = {
     //   },
     //   apiUrl: state.apiOfScraping,
     // });
-    const response = await axios.get("https://ytserver.net:3000/api/search", {
-      params: {
-        q: state.paramsOfSearch.q,
-        page: pageNumber,
-      },
+    let params = {};
+    params = {
+      q: state.paramsOfSearch.q,
+      key: state.YTSearchKey,
+      pageToken: state.YTSearchPageToken
+    }
+    const response = await axios.get("http://ytserver.net:3000/api/search", {
+      params: params,
     });
     if (response.status == OK) {
       // 成功した時
@@ -262,6 +280,10 @@ const actions = {
       // //searchのAPI検索結果を格納
       // context.commit("setYTsearchResponse", response.data.items);
       let res = response.data.results;
+      let key = response.data.key;
+      context.commit("setYTSearchKey", key);
+      let pageToken = response.data.nextPageToken;
+      context.commit("setYTSearchPageToken", pageToken);
       //searchとvideosのAPI検索結果をまとめてYTresultに格納
       let YTresult = [];
       for (let i = 0; i < res.length; i++) {

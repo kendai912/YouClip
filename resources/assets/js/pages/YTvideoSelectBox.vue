@@ -47,7 +47,7 @@ export default {
   },
   data() {
     return {
-      pageNumber: 1,
+      // pageNumber: 1,
     };
   },
   mixins: [myMixin],
@@ -58,6 +58,12 @@ export default {
         "YTsearch/setYTsearchQuery",
         this.$route.query.search_query
       );
+      //前回の検索結果を空にする
+      this.$store.commit("YTsearch/clearYTResult");
+      this.$store.commit("YTsearch/setYTResultPageNumber", 1);
+      this.$store.commit("YTsearch/setYTSearchKey", '');
+      this.$store.commit("YTsearch/setYTSearchPageToken", '');
+      // this.pageNumber = 1;
 
       if (this.YTsearchQuery == null) {
         //検索ワードがセットされていない場合、最近ハイライトしたYouTube動画を表示
@@ -90,12 +96,14 @@ export default {
     },
     //表示するYoutube検索結果の無限スクロール
     async infinateScrollYTresults() {
+      console.log("yt search start");
       //ローディングを表示
       this.$store.commit("YTsearch/setIsYTLoading", true);
 
       //無限スクロールに合わせてYoutubeの検索結果を取得
       await this.$store.dispatch("YTsearch/YTsearch", this.pageNumber);
-      this.pageNumber++;
+      this.$store.commit("YTsearch/setYTResultPageNumber", this.pageNumber+1);
+      // this.pageNumber++;
 
       //ローディングを非表示
       this.$store.commit("YTsearch/setIsYTLoading", false);
@@ -105,6 +113,7 @@ export default {
       this.$store.commit("YTsearch/setNumberOfYTItemsPerPagination", 8);
 
       window.onscroll = () => {
+        console.log("yt result scroll");
         //ウィンドウの下に達したら次のプレイリストアイテムを読み込み
         let bottomOfWindow =
           document.documentElement.scrollTop + window.innerHeight >=
@@ -127,6 +136,7 @@ export default {
       YTRecentVideos: "YTsearch/YTRecentVideos",
       isYTSearching: "YTsearch/isYTSearching",
       isYTLoading: "YTsearch/isYTLoading",
+      pageNumber: "YTsearch/YTResultPageNumber"
     }),
   },
   watch: {
