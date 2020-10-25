@@ -40,7 +40,14 @@
 
 .yt-container iframe {
   position: fixed;
-  top: 0;
+  top: 0px;
+  z-index: 100;
+}
+
+.highlight-body .yt-container iframe {
+  position: absolute;
+  top: 0px;
+  height: auto;
   z-index: 100;
 }
 
@@ -315,8 +322,9 @@
 .ex-narrow-btn {
   min-width: 32px !important;
 }
-.short-text-field .v-input__slot {
-  width: 80px;
+
+.centered-input input {
+  text-align: center;
 }
 
 .my-login-font-color {

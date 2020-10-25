@@ -1,30 +1,135 @@
 <template>
   <div class="container--small">
-    <div class="yt-container">
-      <div id="player"></div>
+    <HighlightHeader />
+    <div class="highlight-body">
+      <div class="yt-container">
+        <div id="player"></div>
+      </div>
+      <v-sheet height="100" tile v-if="player != null">
+        <v-container class="ma-0 pa-0" fluid>
+          <v-row class="ma-0 pa-0 text-left" align="left">
+            <v-col>
+              <v-img
+                src="/storage/icons/yt_social_red.png"
+                width="28px"
+                max-height="28px"
+                class="float-left mr-2"
+              />
+              <span v-if="isNew">{{ newVideoData.title }}</span>
+              <span v-else>{{ videoData.title }}</span></v-col
+            >
+          </v-row>
+          <v-row
+            class="ma-0 pa-0 text-center"
+            align="center"
+            justify="space-around"
+          >
+            <v-col v-on:click="backwardFiveSec">
+              <span>
+                5秒戻る
+                <i class="fas fa-step-backward fa-2x"></i>
+              </span>
+            </v-col>
+            <v-col>
+              <span>{{ currentTime }} / {{ duration }}</span>
+            </v-col>
+            <v-col v-on:click="forwardFiveSec">
+              <span>
+                <i class="fas fa-step-forward fa-2x"></i>
+                5秒進む
+              </span>
+            </v-col>
+          </v-row>
+
+          <v-form ref="form">
+            <v-row class="ma-0 pa-0" align="center">
+              <v-col class="ma-0 pa-0">
+                <v-card class="ma-0" tile elevation="0">
+                  <v-row class="ma-0 pa-0">
+                    <v-col class="ma-0 pa-0" justify="center">
+                      <v-bottom-navigation
+                        class="bottom_navigation_no_shadow"
+                        elevation="0"
+                        height="64"
+                      >
+                        <v-btn v-on:click="tapStartBtn" class="ma-0 pa-0">
+                          <span>開始</span>
+                          <v-icon x-large>alarm_on</v-icon>
+                        </v-btn>
+                      </v-bottom-navigation>
+                    </v-col>
+                  </v-row>
+                  <v-row class="ma-0 pa-0" justify="center">
+                    <v-col class="ma-0 pa-0" cols="3">
+                      <v-text-field
+                        v-model="startTimeInput"
+                        v-bind:rules="startRules"
+                        required
+                        placeholder="0:00"
+                        validate-on-blur
+                        flat
+                        class="ma-0 pa-0 centered-input"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </v-col>
+
+              <v-col class="ma-0 pa-0">
+                <v-card class="ma-0" tile elevation="0">
+                  <v-row class="ma-0 pa-0">
+                    <v-col class="ma-0 pa-0" justify="center">
+                      <v-bottom-navigation
+                        class="bottom_navigation_no_shadow"
+                        elevation="0"
+                        height="64"
+                      >
+                        <v-btn v-on:click="tapStopBtn" class="ma-0 pa-0">
+                          <span>終了</span>
+                          <v-icon x-large>alarm_off</v-icon>
+                        </v-btn>
+                      </v-bottom-navigation>
+                    </v-col>
+                  </v-row>
+                  <v-row class="ma-0 pa-0" justify="center">
+                    <v-col class="ma-0 pa-0" cols="3">
+                      <v-text-field
+                        v-model="endTimeInput"
+                        v-bind:rules="endRules"
+                        required
+                        placeholder="0:00"
+                        validate-on-blur
+                        flat
+                        class="ma-0 pa-0 centered-input"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-container>
+      </v-sheet>
+      <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
+        {{ text }}
+        <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
+      </v-snackbar>
     </div>
-    <TagItem />
-    <SceneTagControl
-      v-bind:player="player"
-      v-on:taggingSucceed="taggingSucceed"
-    />
-    <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
-      {{ text }}
-      <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
-    </v-snackbar>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import HighlightHeader from "../components/HighlightHeader.vue";
 import TagItem from "../components/TagItem.vue";
-import SceneTagControl from "../components/SceneTagControl.vue";
+import TimeControl from "../components/TimeControl.vue";
 import myMixin from "../util";
 
 export default {
   components: {
+    HighlightHeader,
     TagItem,
-    SceneTagControl,
+    TimeControl,
   },
   data() {
     return {
@@ -41,20 +146,55 @@ export default {
     ...mapGetters({
       isLogin: "auth/check",
       youtubeId: "youtube/youtubeId",
-      videoData: "youtube/videoData",
       tagDataArray: "youtube/tagDataArray",
       isNew: "youtube/isNew",
+      currentTime: "youtube/currentTime",
+      isNew: "youtube/isNew",
+      videoData: "youtube/videoData",
+      newVideoData: "youtube/newVideoData",
     }),
+    duration() {
+      if (this.isNew) {
+        return this.newVideoData ? this.newVideoData.duration : "0:00";
+      } else {
+        return this.videoData
+          ? this.formatToMinSec(this.videoData.duration)
+          : "0:00";
+      }
+    },
   },
   methods: {
+    initialize() {
+      //ナビバーを非表示
+      this.$store.commit("navbar/setShowNavbar", false);
+
+      //headerの文言をセット
+      this.$store.commit(
+        "highlightHeader/setHeaderMessage",
+        "切り抜く場面を指定"
+      );
+    },
     //シーンタグ完了のトーストを表示
     taggingSucceed() {
       this.snackbar = true;
     },
+    //5秒戻る
+    backwardFiveSec() {
+      this.player.seekTo(this.convertToSec(this.currentTime) - 5);
+    },
+    //5秒進む
+    forwardFiveSec() {
+      this.player.seekTo(this.convertToSec(this.currentTime) + 5);
+    },
+  },
+  watch: {
+    // 検索バーによるルート変更後の初期化処理
+    $route() {
+      this.initialize();
+    },
   },
   async created() {
-    //ナビバーを非表示
-    this.$store.commit("navbar/setShowNavbar", false);
+    this.initialize();
 
     //必要データを取得するまでTagItemは非表示
     this.$store.commit("youtube/setIsReady", false);
