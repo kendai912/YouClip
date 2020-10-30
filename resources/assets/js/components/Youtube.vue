@@ -355,7 +355,7 @@ export default {
         console.log("------------------");
 
       $(".ytp-pause-overlay").css({ display: "none" });
-        window.parent.postMessage("test", "http://localhost/youtube?v=zzpf_DQKsvg");
+        window.parent.postMessage("test", "https://youclip.jp/youtube");
       // }
     };
 
