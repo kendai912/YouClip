@@ -5,15 +5,20 @@ import store from "../store";
 
 const state = {
   headerMessage: "",
+  showBackIcon: false,
 };
 
 const getters = {
   headerMessage: (state) => state.headerMessage,
+  showBackIcon: (state) => state.showBackIcon,
 };
 
 const mutations = {
   setHeaderMessage(state, data) {
     state.headerMessage = data;
+  },
+  setShowBackIcon(state, data) {
+    state.showBackIcon = data;
   },
 };
 

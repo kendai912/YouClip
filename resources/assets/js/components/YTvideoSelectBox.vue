@@ -23,7 +23,7 @@
           max-height="28px"
           class="float-left mr-2"
         />
-        <span>最近ハイライトしたYouTube動画</span>
+        <span>最近まとめたYouTube動画</span>
       </div>
       <YTRecentItem v-bind:YTRecentItems="YTRecentVideos" />
     </div>
@@ -66,17 +66,17 @@ export default {
       // this.pageNumber = 1;
 
       if (this.YTsearchQuery == null) {
-        //検索ワードがセットされていない場合、最近ハイライトしたYouTube動画を表示
+        //検索ワードがセットされていない場合、最近まとめたYouTube動画を表示
         this.$store.commit(
           "highlightHeader/setHeaderMessage",
-          "ハイライトを作成する動画を検索"
+          "まとめを作成する動画を検索"
         );
         this.getYTRecentVideos();
       } else {
         //検索ワードがセットされている場合、YouTube検索結果を表示
         this.$store.commit(
           "highlightHeader/setHeaderMessage",
-          "ハイライトを作成する動画を選択"
+          "まとめを作成する動画を選択"
         );
         this.showYTresult();
       }
@@ -88,7 +88,7 @@ export default {
       // ローディングを表示
       this.$store.commit("YTsearch/setIsYTLoading", true);
 
-      // ハイライトを作成したYouTube動画履歴データを取得
+      // まとめを作成したYouTube動画履歴データを取得
       await this.$store.dispatch("YTsearch/YTRecentVideos");
 
       // ローディングを非表示
@@ -96,7 +96,6 @@ export default {
     },
     //表示するYoutube検索結果の無限スクロール
     async infinateScrollYTresults() {
-      console.log("yt search start");
       //ローディングを表示
       this.$store.commit("YTsearch/setIsYTLoading", true);
 
@@ -113,7 +112,6 @@ export default {
       this.$store.commit("YTsearch/setNumberOfYTItemsPerPagination", 8);
 
       window.onscroll = () => {
-        console.log("yt result scroll");
         //ウィンドウの下に達したら次のプレイリストアイテムを読み込み
         let bottomOfWindow =
           document.documentElement.scrollTop + window.innerHeight >=

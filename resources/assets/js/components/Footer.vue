@@ -6,7 +6,7 @@
     </v-btn>
 
     <v-btn v-on:click="openHighlight(1)">
-      <span>ハイライト作成</span>
+      <span>まとめ作成</span>
       <v-icon>mdi-plus-circle</v-icon>
     </v-btn>
 
@@ -40,7 +40,7 @@ export default {
     openHighlight(index) {
       this.saveFooterTabIndex(index);
 
-      // 表示するコンポーネントをYTvideoSelectBoxにセットし、ハイライト作成ページに遷移
+      // 表示するコンポーネントをYTvideoSelectBoxにセットし、まとめ作成ページに遷移
       this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
       this.$router.push({
         path: "/highlight",

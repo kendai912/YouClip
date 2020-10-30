@@ -5,9 +5,9 @@
       <div class="yt-container">
         <div id="player"></div>
       </div>
-      <v-sheet height="100" tile v-if="player != null">
+      <v-sheet tile v-if="player != null">
         <v-container class="ma-0 pa-0" fluid>
-          <v-row class="ma-0 pa-0 text-left" align="left">
+          <v-row class="ma-0 pa-0 text-left" align="start">
             <v-col>
               <v-img
                 src="/storage/icons/yt_social_red.png"
@@ -20,7 +20,7 @@
             >
           </v-row>
           <v-row
-            class="ma-0 pa-0 text-center"
+            class="ma-0 pt-2 text-center"
             align="center"
             justify="space-around"
           >
@@ -42,7 +42,7 @@
           </v-row>
 
           <v-form ref="form">
-            <v-row class="ma-0 pa-0" align="center">
+            <v-row class="ma-0 pt-4" align="center">
               <v-col class="ma-0 pa-0">
                 <v-card class="ma-0" tile elevation="0">
                   <v-row class="ma-0 pa-0">
@@ -53,8 +53,10 @@
                         height="64"
                       >
                         <v-btn v-on:click="tapStartBtn" class="ma-0 pa-0">
-                          <span>開始</span>
-                          <v-icon x-large>alarm_on</v-icon>
+                          <span class="green--text text--lighten-1">開始</span>
+                          <v-icon color="green lighten-1" x-large
+                            >alarm_on</v-icon
+                          >
                         </v-btn>
                       </v-bottom-navigation>
                     </v-col>
@@ -85,8 +87,10 @@
                         height="64"
                       >
                         <v-btn v-on:click="tapStopBtn" class="ma-0 pa-0">
-                          <span>終了</span>
-                          <v-icon x-large>alarm_off</v-icon>
+                          <span class="red--text text--darken-1">終了</span>
+                          <v-icon color="red darken-1" x-large
+                            >alarm_off</v-icon
+                          >
                         </v-btn>
                       </v-bottom-navigation>
                     </v-col>
@@ -115,6 +119,23 @@
         <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
       </v-snackbar>
     </div>
+
+    <v-sheet
+      v-if="player != null"
+      tile
+      class="ma-0 pa-0 bottom-position"
+      width="100%"
+    >
+      <v-container class="ma-0 pa-0" fluid>
+        <v-row align="center" class="ma-0 pa-0">
+          <v-col class="text-right ma-0 pa-2">
+            <v-btn color="red lighten-2 white--text" v-on:click="next"
+              >確認</v-btn
+            >
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-sheet>
   </div>
 </template>
 
@@ -139,6 +160,45 @@ export default {
       timeout: 5000,
       text: "シーンタグを登録しました",
       timer: null,
+      startTimeInput: null,
+      endTimeInput: null,
+      startRules: [
+        (v) => !!v || "開始時間を入力して下さい",
+        (v) => {
+          let regex = /^\d+:\d{1,2}$/;
+          if (!v || regex.test(v)) {
+            return true;
+          }
+
+          if (!regex.test(v)) {
+            return "分:秒の形式で入力して下さい";
+          }
+        },
+      ],
+      endRules: [
+        (v) => !!v || "終了時間を入力して下さい",
+        (v) => {
+          let regex = /^\d+:\d{1,2}$/;
+          if (!v || regex.test(v)) {
+            return true;
+          }
+
+          if (!regex.test(v)) {
+            return "分:秒の形式で入力して下さい";
+          }
+        },
+        (v) => {
+          if (this.startTimeInput) {
+            if (
+              parseInt(this.convertToSec(v)) <=
+              parseInt(this.convertToSec(this.startTimeInput))
+            ) {
+              return "開始時間より後ろの時間を入力下さい";
+            }
+          }
+          return true;
+        },
+      ],
     };
   },
   mixins: [myMixin],
@@ -173,6 +233,9 @@ export default {
         "highlightHeader/setHeaderMessage",
         "切り抜く場面を指定"
       );
+
+      //headerに戻るアイコンを表示
+      this.$store.commit("highlightHeader/setShowBackIcon", true);
     },
     //シーンタグ完了のトーストを表示
     taggingSucceed() {
@@ -185,6 +248,23 @@ export default {
     //5秒進む
     forwardFiveSec() {
       this.player.seekTo(this.convertToSec(this.currentTime) + 5);
+    },
+    tapStartBtn() {
+      this.startTimeInput = this.currentTime;
+      this.player.playVideo();
+    },
+    tapStopBtn() {
+      this.endTimeInput = this.currentTime;
+      this.player.pauseVideo();
+    },
+    // タグ入力へ進む
+    next() {
+      if (this.$refs.form.validate()) {
+        this.$store.commit("tagging/setStart", this.startTimeInput);
+        this.$store.commit("tagging/setEnd", this.endTimeInput);
+
+        this.$store.commit("highlight/setDisplayComponent", "Scene");
+      }
     },
   },
   watch: {
@@ -235,7 +315,11 @@ export default {
           iv_load_policy: 3, //アノテーション非表示
           modestbranding: 1, //YouTubeロゴ非表示
           rel: 0, //関連動画非表示
-          showinfo: 0, //タイトルやアップロードしたユーザーなどの情報は非表示
+          controls: 0, //プレイーコントロールを非表示
+          fs: 0, //全画面表示ボタンを非表示
+          iv_load_policy: 3, //動画アノテーションを非表示
+          modestbranding: 1, //YouTubeロゴ非表示
+          enablejsapi: 1, //postMessageを有効にするのに必要
         },
         events: {
           onReady: onPlayerReady,
@@ -266,7 +350,19 @@ export default {
       this.$store.commit("youtube/setIsReady", true);
     };
 
-    window.onPlayerStateChange = (event) => {};
+    window.onPlayerStateChange = (event) => {
+      // if (event.data == 2) {
+        console.log("------------------");
+
+      $(".ytp-pause-overlay").css({ display: "none" });
+        window.parent.postMessage("test", "http://localhost/youtube?v=zzpf_DQKsvg");
+      // }
+    };
+
+    $(window).on("message", function(e) {
+      // console.log(e.originalEvent.data);
+      $(".ytp-pause-overlay").css({ display: "none" });
+    });
 
     //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
     let from = this.$route.path;
@@ -280,6 +376,9 @@ export default {
   beforeDestroy() {
     // シーンタグ付けコンポーネントの現在再生時間をセットするインターバルを停止する
     clearInterval(this.timer);
+
+    //headerの戻るアイコンを非表示
+    this.$store.commit("highlightHeader/setShowBackIcon", false);
   },
 };
 </script>

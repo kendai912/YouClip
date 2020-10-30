@@ -10,7 +10,6 @@ import Result from "./pages/Result.vue";
 import Highlight from "./pages/Highlight.vue";
 import YTresult from "./pages/YTresult.vue";
 import Tagging from "./pages/Tagging.vue";
-import Youtube from "./pages/Youtube.vue";
 import Watch from "./pages/Watch.vue";
 import Mypage from "./pages/Mypage.vue";
 import MyFollow from "./pages/MyFollow.vue";

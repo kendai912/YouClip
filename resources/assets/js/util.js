@@ -51,6 +51,14 @@ export default {
       })(navigator.userAgent || navigator.vendor || window.opera);
       return check;
     },
+    //シーンタグ入力項目を初期化
+    clearTaggingInput() {
+      this.$store.commit("tagging/setTagId", "");
+      this.$store.commit("tagging/setStart", "");
+      this.$store.commit("tagging/setEnd", "");
+      this.$store.commit("tagging/setTags", "");
+      this.$store.commit("tagging/setPrivacySetting", "");
+    },
     //タグデータをレコメンド画面に表示するメディアアイテムに格納
     putTagVideoIntoMediaItems: function(mediaItems, tagVideo) {
       if (tagVideo) {

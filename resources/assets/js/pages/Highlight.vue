@@ -9,13 +9,15 @@
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
 import myMixin from "../util";
-import YTvideoSelectBox from "./YTvideoSelectBox.vue";
-import Youtube from "../pages/Youtube.vue";
+import YTvideoSelectBox from "../components/YTvideoSelectBox.vue";
+import Youtube from "../components/Youtube.vue";
+import Scene from "../components/Scene.vue";
 
 export default {
   components: {
     YTvideoSelectBox,
     Youtube,
+    Scene
   },
   data() {
     return {};
