@@ -110,6 +110,7 @@ export default {
   props: {
     mediaItems: Array,
   },
+  mixins: [myMixin],
   computed: {
     ...mapGetters({
       listIndex: "watch/listIndex",
