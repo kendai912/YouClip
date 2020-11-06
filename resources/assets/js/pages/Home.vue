@@ -106,6 +106,12 @@ export default {
         "playlist/indexPlaylistAndTagPaginationOfRecommend",
         this.recommendPage++
       );
+      // // ページネーションのデータをrecommendMediaItemsに格納
+      // this.playlistAndTagPaginationOfRecommend &&
+      //   this.putPlaylistTagIntoMediaItems(
+      //     this.recommendMediaItems,
+      //     this.playlistAndTagPaginationOfRecommend.data
+      //   );
       // ページネーションのデータをrecommendMediaItemsに格納
       this.putPlaylistTagIntoMediaItems(
         this.recommendMediaItems,
