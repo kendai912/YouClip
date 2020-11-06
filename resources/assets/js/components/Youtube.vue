@@ -259,12 +259,20 @@ export default {
     },
     // タグ入力へ進む
     next() {
-      if (this.$refs.form.validate()) {
-        this.$store.commit("tagging/setStart", this.startTimeInput);
-        this.$store.commit("tagging/setEnd", this.endTimeInput);
-
-        this.$store.commit("highlight/setDisplayComponent", "Scene");
-      }
+      this.player
+        .getIframe()
+        .contentWindow.document.querySelector(
+          ".ytp-pause-overlay.ytp-scroll-min"
+        )
+        .remove();
+      $("#player")
+        .find(".ytp-pause-overlay ytp-scroll-min")
+        .css("display", "none");
+      // if (this.$refs.form.validate()) {
+      //   this.$store.commit("tagging/setStart", this.startTimeInput);
+      //   this.$store.commit("tagging/setEnd", this.endTimeInput);
+      //   this.$store.commit("highlight/setDisplayComponent", "Scene");
+      // }
     },
   },
   watch: {
@@ -351,18 +359,27 @@ export default {
     };
 
     window.onPlayerStateChange = (event) => {
-      // if (event.data == 2) {
-        console.log("------------------");
-
-      $(".ytp-pause-overlay").css({ display: "none" });
-        window.parent.postMessage("test", "https://youclip.jp/youtube");
-      // }
+      if (event.data == 2) {
+        var obj = $(".ytp-pause-overlay");
+        obj = JSON.parse(JSON.stringify(obj));
+        console.log(obj);
+        window.parent.postMessage(obj, "*");
+      }
     };
 
-    $(window).on("message", function(e) {
-      // console.log(e.originalEvent.data);
-      $(".ytp-pause-overlay").css({ display: "none" });
-    });
+    // $(window).on("message", function(event) {
+    // console.log(event.originalEvent.data);
+    // $(".event.originalEvent.data").css({ display: "none" });
+    // });
+
+    // window.onload = function() {
+    //   let myiFrame = document.getElementById("player");
+    //   let doc = myiFrame.contentDocument;
+    //   console.log(doc);
+    //   doc.body.innerHTML =
+    //     doc.body.innerHTML +
+    //     "<style>.ytp-pause-overlay { display: none; }</style>";
+    // };
 
     //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
     let from = this.$route.path;

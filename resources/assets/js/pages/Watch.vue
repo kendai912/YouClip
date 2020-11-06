@@ -270,6 +270,7 @@ export default {
       openShareModal: "shareModal/openShareModal",
       openOtherActionModal: "otherActionModal/openOtherActionModal",
       openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal",
+      setListIndex: "watch/setListIndex",
     }),
     startTimer() {
       let self = this;
@@ -456,6 +457,12 @@ export default {
         .catch((err) => {});
     },
   },
+  watch: {
+    //シーン切替時のlistIndexセット
+    $route() {
+      this.setListIndex(this.$route.query.index);
+    },
+  },
   computed: {
     ...mapGetters({
       isLogin: "auth/check",
@@ -561,7 +568,7 @@ export default {
         mediaItems,
         this.playlistAndTagVideoData.tagVideoData
       );
-      mediaItems.sort((a, b) => (a.title > b.title ? 1 : -1));
+      mediaItems.sort((a, b) => (a.scene_order > b.scene_order ? 1 : -1));
       this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
       this.$store.commit(
         "playlist/setCommentListofPlaylist",
