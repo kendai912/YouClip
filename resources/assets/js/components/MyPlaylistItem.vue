@@ -18,7 +18,6 @@
           <v-card
             class="mx-auto d-flex"
             max-width="420"
-            height="160"
             elevation="1"
           >
             <v-row class="ma-0" align="center">
@@ -35,24 +34,24 @@
                             : thumbStoragePath + item.preview
                         "
                         v-bind:alt="item.title"
-                        aspect-ratio="1.5"
-                        height="142"
+                        aspect-ratio="1.78"
+                        height="100"
                       >
-                        <v-chip
-                          label
-                          color="#27252582"
-                          text-color="white"
-                          class="my-scene-chip"
-                        >
-                          <v-img
-                            src="/storage/icons/playlist_icon.png"
-                            width="16px"
-                            max-height="16px"
-                          />
-                          <span class="caption"
-                            >&nbsp;{{ item.sceneCount }}&nbsp;シーン</span
-                          >
-                        </v-chip>
+<!--                        <v-chip-->
+<!--                          label-->
+<!--                          color="#27252582"-->
+<!--                          text-color="white"-->
+<!--                          class="my-scene-chip"-->
+<!--                        >-->
+<!--                          <v-img-->
+<!--                            src="/storage/icons/playlist_icon.png"-->
+<!--                            width="16px"-->
+<!--                            max-height="16px"-->
+<!--                          />-->
+<!--                          <span class="caption"-->
+<!--                            >&nbsp;{{ item.sceneCount }}&nbsp;シーン</span-->
+<!--                          >-->
+<!--                        </v-chip>-->
                       </v-img>
                       <!-- <video v-else controls autoplay muted style="width: 100%; height: 100%;">
                           <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
@@ -67,43 +66,43 @@
                       aspect-ratio="1.5"
                       height="142"
                     >
-                      <v-chip
-                        label
-                        color="#27252582"
-                        text-color="white"
-                        class="my-scene-chip"
-                      >
-                        <v-img
-                          src="/storage/icons/playlist_icon.png"
-                          width="16px"
-                          max-height="16px"
-                        />
-                        <span class="caption"
-                          >&nbsp;{{ item.sceneCount }}&nbsp;シーン</span
-                        >
-                      </v-chip>
+<!--                      <v-chip-->
+<!--                        label-->
+<!--                        color="#27252582"-->
+<!--                        text-color="white"-->
+<!--                        class="my-scene-chip"-->
+<!--                      >-->
+<!--                        <v-img-->
+<!--                          src="/storage/icons/playlist_icon.png"-->
+<!--                          width="16px"-->
+<!--                          max-height="16px"-->
+<!--                        />-->
+<!--                        <span class="caption"-->
+<!--                          >&nbsp;{{ item.sceneCount }}&nbsp;シーン</span-->
+<!--                        >-->
+<!--                      </v-chip>-->
                     </v-img>
                     <!-- <video v-else controls autoplay muted style="width: 100%; height: 100%;">
                         <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
                       </video> -->
                   </v-col>
                   <v-col class="pa-2">
-                    <v-card-title
+                    <div
                       v-on:click.stop="select(item)"
-                      class="py-0 d-inline"
+                      class="py-1"
                     >
-                      <v-img
-                        src="/storage/icons/clip.svg"
-                        width="16px"
-                        max-height="16px"
-                        class="float-left mr-1"
-                      />
+<!--                      <v-img-->
+<!--                        src="/storage/icons/clip.svg"-->
+<!--                        width="16px"-->
+<!--                        max-height="16px"-->
+<!--                        class="float-left mr-1"-->
+<!--                      />-->
                       <span class="block-playlist-title">{{ item.title }}</span>
-                    </v-card-title>
-                    <v-card-text class="text--primary" style="font-size: 11px;">
+                    </div>
                       <div
                         v-on:click.stop="select(item)"
-                        class="grey--text text--darken-3"
+                        class="grey--text text--darken-3 py-1"
+                        style="font-size: 12px; padding-left: 0;"
                       >
                         <span
                           >{{
@@ -122,27 +121,26 @@
                           {{ item.likeCount }}
                         </span>
                       </div>
-                    </v-card-text>
 
-                    <v-card-text>
-                      <div class="horizontal-list-wrap block-chip-lines2">
-                        <v-chip
-                          v-for="(tag, tagIndex) in item.tagArray"
-                          v-bind:key="item.id + '-' + tagIndex"
-                          class="my-tag-chip px-2"
-                          color="blue lighten-5"
-                          text-color="black"
-                          style="font-weight: normal"
-                        >
-                          <v-avatar
-                            style="height: 20px !important; width: 20px !important; min-width: 20px !important;"
-                          >
-                            <i class="fas fa-tag my-black"></i>
-                          </v-avatar>
-                          {{ tag }}
-                        </v-chip>
-                      </div>
-                    </v-card-text>
+<!--                    <v-card-text>-->
+<!--                      <div class="horizontal-list-wrap block-chip-lines2">-->
+<!--                        <v-chip-->
+<!--                          v-for="(tag, tagIndex) in item.tagArray"-->
+<!--                          v-bind:key="item.id + '-' + tagIndex"-->
+<!--                          class="my-tag-chip px-2"-->
+<!--                          color="blue lighten-5"-->
+<!--                          text-color="black"-->
+<!--                          style="font-weight: normal"-->
+<!--                        >-->
+<!--                          <v-avatar-->
+<!--                            style="height: 20px !important; width: 20px !important; min-width: 20px !important;"-->
+<!--                          >-->
+<!--                            <i class="fas fa-tag my-black"></i>-->
+<!--                          </v-avatar>-->
+<!--                          {{ tag }}-->
+<!--                        </v-chip>-->
+<!--                      </div>-->
+<!--                    </v-card-text>-->
                   </v-col>
                   <v-col cols="auto" class="pa-2 text-center">
                     <div
@@ -152,7 +150,7 @@
                       v-on:click="editPlaylist(item)"
                     >
                       <span>
-                        <v-icon class="my-grey">mdi-pencil</v-icon>
+                        <v-icon class="my-grey outlined-icon">mdi-pencil</v-icon>
                       </span>
                     </div>
                   </v-col>

@@ -16,7 +16,7 @@
               @click:append="saveTitle"
               hide-details
               ref="playlistTitle"
-              class="playlistTitleInputBox"
+              class="playlistTitleInputBox inner-outlined-icon"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -31,15 +31,33 @@
               :readonly="!isEditPrivacy"
               @click:append="savePrivacy"
               hide-details
-              class="scenePrivacySettingBox"
+              class="scenePrivacySettingBox inner-outlined-icon"
             ></v-select>
+          </v-col>
+        </v-row>
+        <v-row class="ma-0">
+          <v-col class="pa-0 pt-2 text-center">
+            <v-text-field
+                    v-model="playlistEditMode"
+                    :append-icon="isEditEditMode ? 'fas fa-save' : 'mdi-pencil'"
+                    :rules="[rules.required]"
+                    :readonly="!isEditEditMode"
+                    type="text"
+                    name="playlistEditMode"
+                    label="編集設定"
+                    v-on:keydown.enter="saveEditMode"
+                    @click:append="saveEditMode"
+                    hide-details
+                    ref="playlistEditMode"
+                    class="playlistEditModeInputBox inner-outlined-icon"
+            ></v-text-field>
           </v-col>
         </v-row>
         <v-row class="ma-0">
           <v-col class="pa-0 pt-2 align-bottom" align-self="end">
             <v-card elevation="0">
               <v-card-subtitle class="pa-0 ma-0 subtitle-1 my-grey">
-              <span>{{ sceneCount }}シーン</span
+              <span>{{ convertToKanjiTime(totalDuration) }}</span
               ><span style="font-size:8px;"
                 >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
               >
@@ -55,7 +73,7 @@
             <span
               ><v-icon
                 v-on:click="openPlaylistDeleteModal(playlistId, playlistName)"
-                class="my-grey"
+                class="my-grey outlined-icon"
                 >mdi-delete</v-icon
               ></span
             >
@@ -100,6 +118,7 @@ export default {
       playlistId: "",
       isEditTitle: false,
       isEditPrivacy: false,
+      isEditEditMode: false,
       isTitleFocused: false,
       privacySettingList: [
         { text: "公開", value: "public" },
@@ -118,6 +137,7 @@ export default {
       privacy: "",
       playCount: 0,
       sceneCount: 0,
+      totalDuration: 0,
       lastUpdatedAt: "",
     };
   },
@@ -147,6 +167,16 @@ export default {
         this.$store.commit("watch/setPrivacySetting", val);
       },
     },
+    playlistEditMode: {
+      // todo get/set EditMode
+      get(){
+        //return this.$store.state.watch.privacySetting;
+        return '誰でも編集可能';
+      },
+      set(val){
+        //this.$store.commit("watch/setEditMode", val);
+      }
+    }
   },
   methods: {
     async saveTitle() {
@@ -173,10 +203,32 @@ export default {
         await this.$store.dispatch("playlist/updatePlaylistPrivacy", playlist);
       }
     },
+    async saveEditMode() {
+      // todo - save EditMode
+    },
     openPlaylistDeleteModal(playlistId, playlistName) {
       this.$store.commit("playlistDeleteModal/setPlaylistId", playlistId);
       this.$store.commit("playlistDeleteModal/setPlaylistName", playlistName);
       this.$store.commit("playlistDeleteModal/openPlaylistDeleteModal");
+    },
+    convertToKanjiTime(s) {
+      let units = ["秒", "分"];
+      var ext = units[0];
+      var retStr = '';
+      for (var i = 0; i < units.length; i += 1) {
+        if (parseInt(s) >= 60) {
+          let v = parseInt(s) % 60;
+          s = parseInt(s) / 60;
+          ext = units[i];
+          retStr = `${v}` + ext + retStr;
+        } else {
+          s = parseInt(s);
+          return `${s}` + units[i] + retStr;
+        }
+      }
+
+      s = parseInt(s);
+      return `${s}時間` + retStr;
     },
   },
   async created() {
@@ -203,6 +255,7 @@ export default {
       );
       this.playCount = this.playlistAndTagVideoData.play_count;
       this.sceneCount = this.playlistAndTagVideoData.tagVideoData.length;
+      this.totalDuration = this.playlistAndTagVideoData.playlist_total_duration;
       this.lastUpdatedAt = this.convertToYMD(
         this.playlistAndTagVideoData.playlist_updated_at
       );
