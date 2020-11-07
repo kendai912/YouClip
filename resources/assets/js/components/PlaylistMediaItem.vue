@@ -39,7 +39,6 @@
             v-bind:alt="item.title"
             aspect-ratio="1.5"
             v-touch:touchhold="() => longtapHandler(item)"
-            v-touch:end="upHandler"
           >
             <v-chip label color="#27252582" text-color="white" class="scene-chip">
               <v-img
