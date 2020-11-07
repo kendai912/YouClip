@@ -476,3 +476,34 @@ div.v-snack:not(.v-snack--absolute) {
 .my-full-bar {
   max-width: 1100px !important;
 }
+.my-footer-icon {
+  font-size: 2.5rem !important;
+}
+
+.my-footer-home-icon {
+  margin-top: -22px;
+}
+
+.my-footer-home-icon .my-footer-icon{
+  font-size: 3.5rem !important;
+}
+.v-bottom-navigation {
+  box-shadow: 1px 0 6px rgba(33,33,33, 0.5) !important;
+}
+.v-bottom-navigation:before {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  display: block;
+  content: ' ';
+  width: 60px;
+  height: 60px;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 1px 0 6px rgba(33,33,33, 0.5);
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+.btn-footer {
+  background-color: white !important;
+}
