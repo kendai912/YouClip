@@ -1,8 +1,8 @@
 <template>
   <v-bottom-navigation fixed v-bind:value="activeBtn" grow color="primary">
-    <v-btn to="/home" v-on:click="saveFooterTabIndex(0)">
+    <v-btn to="/home" class="py-2" v-on:click="saveFooterTabIndex(0)">
       <span>ホーム</span>
-      <v-icon>mdi-home</v-icon>
+      <v-icon class="outlined-icon fz-36">mdi-home</v-icon>
     </v-btn>
 
     <v-btn v-on:click="openHighlight(1)">
@@ -12,7 +12,7 @@
 
     <v-btn to="/mypage" v-on:click="saveFooterTabIndex(2)">
       <span>マイページ</span>
-      <v-icon>mdi-account</v-icon>
+      <v-icon class="outlined-icon fz-36">mdi-account</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>

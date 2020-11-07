@@ -27,7 +27,7 @@ export default {
     // コンポーネント遷移処理
     switchComponent() {
       if (this.$route.query.v != null) {
-        // パラメーターvがある場合は、Youtubeコンポーネントを表示
+        // パラメーターがある場合は、Youtubeコンポーネントを表示
         this.$store.commit("highlight/setDisplayComponent", "Youtube");
       } else {
         // パラメーターがない場合は、YTvideoSelectBoxコンポーネントを表示

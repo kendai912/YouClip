@@ -166,6 +166,18 @@
   color: gray;
 }
 
+.outlined-icon{
+  color: transparent !important;
+  -webkit-text-stroke-color: #ababab;
+  -webkit-text-stroke-width: 1px;
+}
+
+.inner-outlined-icon .v-icon{
+  color: transparent !important;
+  -webkit-text-stroke-color: #ababab;
+  -webkit-text-stroke-width: 1px;
+}
+
 .my-grey-heart {
   color: rgb(158, 158, 158);
 }
@@ -290,6 +302,7 @@
 
 .playlistTitleInputBox .v-label,
 .scenePrivacySettingBox .v-label,
+.playlistEditModeInputBox .v-label,
 .sceneMyPlaylistToSaveBox .v-label,
 .sceneTagInputBox .v-label {
   font-size: 100%;
@@ -417,7 +430,7 @@
   max-width: 100%;
   max-height: 45px;
   margin: 0 auto;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -460,6 +473,9 @@
 }
 .color-light-blue {
   color: #e3f2fd;
+}
+.cursor-pointer{
+  cursor: pointer !important;
 }
 
 .block-chip-lines2 {
@@ -532,6 +548,12 @@ div.v-snack:not(.v-snack--absolute) {
   height: 100%;
 }
 
-.ytp-pause-overlay {
-  display: none;
+.add-play-screen {
+  display:flex;
+  width: 100%;
+  height:94px;
+  background: #e0e0e0;
+}
+.fz-36 {
+  font-size: 36px !important;
 }

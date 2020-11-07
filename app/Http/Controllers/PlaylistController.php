@@ -166,11 +166,15 @@ class PlaylistController extends Controller
         $playlistAndTagData = Playlist::with('tags')->where('id', $playlistId)->withCount(['playlistlogs as play_count'])->first();
         //タグから動画データを取得
         $tagVideoDatas = [];
+        $total_duration = 0;
         foreach ($playlistAndTagData->tags as $tag) {
             $tagVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'channel_title', 'published_at', 'view_count', 'category', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at', 'privacySetting')->where('tags.id', $tag->id)->first();
             $sceneOrder = DB::table('playlist_tag')->where('playlist_id', $playlistId)->where('tag_id', $tag->id)->select('scene_order')->first();
             $tagVideoData->scene_order = $sceneOrder->scene_order;
 
+            sscanf($tagVideoData->duration, "%d:%d:%d", $hours, $minutes, $seconds);
+            $time_seconds = isset($hours) ? $hours * 3600 + $minutes * 60 + $seconds : $minutes * 60 + $seconds;
+            $total_duration += $time_seconds;
             // シーンが公開設定、限定公開、もしくは非公開設定だがユーザーが作成したものの場合のみ追加
             if ($tagVideoData->privacySetting == 'public' || $tagVideoData->privacySetting == 'limited') {
                 $tagVideoDatas[] = $tagVideoData;
@@ -242,6 +246,7 @@ class PlaylistController extends Controller
             'playlist_id' => $playlistAndTagData->id,
             'playlistName' => $playlistAndTagData->playlistName,
             'privacySetting' => $playlistAndTagData->privacySetting,
+            'playlist_total_duration' => $total_duration,
             'play_count' => $playlistAndTagData->play_count,
             'user_id' => $playlistAndTagData->user_id,
             'playlist_created_at' => (new Carbon($playlistAndTagData->created_at))->toDateTimeString(),
