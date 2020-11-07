@@ -34,9 +34,12 @@
             v-on:click.stop="select(item)"
             class="white--text align-end"
             max-height="266.66px"
-            v-bind:src="gifStoragePath + item.previewgif"
+            pressingItemId
+            v-bind:src="pressingItemId===item.id ? gifStoragePath + item.previewgif: thumbStoragePath + item.preview"
             v-bind:alt="item.title"
             aspect-ratio="1.5"
+            v-touch:touchhold="() => longtapHandler(item)"
+            v-touch:end="upHandler"
           >
             <v-chip label color="#27252582" text-color="white" class="scene-chip">
               <v-img
@@ -106,35 +109,45 @@ import myMixin from "../util";
 export default {
   data: () => ({
     isMobile: false,
+    pressingItemId: -1
   }),
   components: {
-    LoadingItem
+    LoadingItem,
   },
   props: {
-    mediaItems: Array
+    mediaItems: Array,
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
       isLoading: "loadingItem/isLoading",
-      numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination"
-    })
+      numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination",
+    }),
   },
   methods: {
+    longtapHandler(item) {
+      this.pressingItemId = item.id
+    },
+    upHandler() {
+      this.pressingItemId = -1
+    },
     async select(mediaItem) {
       //プレイリストの場合
       if (mediaItem.category == "playlist") {
-        await this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
+        await this.$store.dispatch(
+          "playlist/addPlaylistVisitCount",
+          mediaItem.id
+        );
         //再生ページを表示
         this.$router
           .push({
             path: "/watch",
             query: {
               playlist: mediaItem.id,
-              index: "0"
-            }
+              index: "0",
+            },
           })
-          .catch(err => {});
+          .catch((err) => {});
       }
 
       //タグの場合
@@ -144,20 +157,19 @@ export default {
           .push({
             path: "/watch",
             query: {
-              tag: mediaItem.id
-            }
+              tag: mediaItem.id,
+            },
           })
-          .catch(err => {});
+          .catch((err) => {});
       }
 
       // IFrame Player APIを呼び出すためにページをリロード
       // window.location.reload();
-    }
+    },
   },
-  mounted() {
-  },
+  mounted() {},
   created() {
     this.isMobile = this.mobileCheck();
-  }
+  },
 };
 </script>

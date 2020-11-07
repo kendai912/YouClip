@@ -12,7 +12,7 @@
             ref="autocomplete"
             v-bind:items="items"
             v-bind:search-input.sync="searchquery"
-            v-on:keydown.enter="search"
+            v-on:keydown.enter="do_search"
             placeholder="クリップとシーンを検索"
             item-text="value"
             item-value="value"
@@ -139,9 +139,13 @@ export default {
         this.$router.push("/login");
       }
     },
-    search(event) {
+    do_search(event) {
       // 日本語入力中のEnterキー操作は無効にする
       if (event.keyCode != undefined && event.keyCode !== 13) return;
+      this.$store.commit("search/setSearchQuery", this.searchquery);
+      this.$store.commit("search/searchResultPageTransit");
+    },
+    search(event) {
 
       //空欄だった場合は検索実行せずリターン
       this.isActive = true;
@@ -207,6 +211,7 @@ export default {
   },
   watch: {
     async searchquery(input) {
+      console.log('searchquery', input)
       // Items have already been requested
       if (this.isLoading) return;
 
