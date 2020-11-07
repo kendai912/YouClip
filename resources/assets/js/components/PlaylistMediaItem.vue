@@ -47,21 +47,21 @@
             </v-chip>
           </v-img>
           <v-list-item class="pl-2 mb-0">
-            <v-list width="55px" class="pt-1 pb-0 pl-1 pr-3 ">
+            <!-- <v-list width="55px" class="pt-1 pb-0 pl-1 pr-3 ">
               <v-img src="/storage/icons/clip.svg"/>
-            </v-list>
+            </v-list> -->
             <v-list-item-content>
               <v-card-title v-on:click.stop="select(item)" class="pb-0 mb-0"><span class="home-and-search-result-title">{{ item.title }}</span></v-card-title>
               <v-card-text class="text--primary">
                 <div v-on:click.stop="select(item)" class="grey--text text--darken-3">
                   <div>
-                    <span>まとめ: 1分5秒 ← 元のYouTube動画:&nbsp;</span>
+                    <span>まとめ <i class="mdi mdi-arrow-left"></i> 元のYouTube動画:&nbsp;</span>
                     <span>{{ item.numberOfOriginalVideos ? item.numberOfOriginalVideos : 0 }}本&nbsp;</span>
                     <span>の合計{{item.totalDurationOriginal ? item.totalDurationOriginal : '84分35秒'}}</span>
                   </div>
                   <div>
                     <span>{{ item.visitCount ? item.visitCount : 0 }}回視聴</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
-                    <span>合計{{ item.totalDuration }}</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
+                    <span>1分5秒</span>
                     <span>{{ item.timeSince }}前</span><span v-if="item.likeCount" style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
                     <span v-if="item.likeCount">
                       <i class="fas fa-heart my-grey-heart"></i>

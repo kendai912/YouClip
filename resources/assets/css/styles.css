@@ -204,20 +204,6 @@
   bottom: 0;
   right: 0;
 }
-
-.search-box {
-  position: fixed;
-  width: 100vw;
-  height: 56px;
-  bottom: 56px;
-  left: 0;
-  z-index: 10;
-  display: flex;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-}
-
 .v-skeleton-loader__list-item-three-line {
   display: flex;
   align-content: flex-start;
@@ -473,4 +459,20 @@
 
 div.v-snack:not(.v-snack--absolute) {
   height: 100%;
+}
+
+/** edit on 2020-11-07 **/
+.my-app-bar {
+  transition: all 0.3s ease-in-out;
+}
+.my-search-span {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.my-autocomplete {
+  flex: 1;
+}
+.my-full-bar {
+  max-width: 1100px !important;
 }
