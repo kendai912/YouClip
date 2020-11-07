@@ -1,18 +1,19 @@
 <template>
   <v-bottom-navigation fixed v-bind:value="activeBtn" grow color="primary">
-    <v-btn to="/home" v-on:click="saveFooterTabIndex(0)">
+    <v-btn class="btn-footer" to="/home" v-on:click="saveFooterTabIndex(0)">
       <span>ホーム</span>
-      <v-icon>mdi-home</v-icon>
+      <v-icon class="my-footer-icon">mdi-home-outline</v-icon>
     </v-btn>
-
-    <v-btn v-on:click="openHighlight(1)">
+    <v-btn class="btn-footer" to="/tagging" v-on:click="openHighlight(1)">
       <span>まとめ作成</span>
-      <v-icon>mdi-plus-circle</v-icon>
+      <div class="my-footer-home-icon">
+        <v-icon class="my-footer-icon">mdi-plus-circle-outline</v-icon>
+      </div>
     </v-btn>
 
-    <v-btn to="/mypage" v-on:click="saveFooterTabIndex(2)">
+    <v-btn class="btn-footer" to="/mypage" v-on:click="saveFooterTabIndex(2)">
       <span>マイページ</span>
-      <v-icon>mdi-account</v-icon>
+      <v-icon class="my-footer-icon">mdi-account-outline</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>

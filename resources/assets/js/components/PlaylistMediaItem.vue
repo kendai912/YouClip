@@ -34,9 +34,12 @@
             v-on:click.stop="select(item)"
             class="white--text align-end"
             max-height="266.66px"
-            v-bind:src="gifStoragePath + item.previewgif"
+            pressingItemId
+            v-bind:src="pressingItemId===item.id ? gifStoragePath + item.previewgif: thumbStoragePath + item.preview"
             v-bind:alt="item.title"
             aspect-ratio="1.5"
+            v-touch:touchhold="() => longtapHandler(item)"
+            v-touch:end="upHandler"
           >
             <v-chip label color="#27252582" text-color="white" class="scene-chip">
               <v-img
@@ -47,20 +50,27 @@
             </v-chip>
           </v-img>
           <v-list-item class="pl-2 mb-0">
-            <v-list width="55px" class="pt-1 pb-0 pl-1 pr-3 ">
+            <!-- <v-list width="55px" class="pt-1 pb-0 pl-1 pr-3 ">
               <v-img src="/storage/icons/clip.svg"/>
-            </v-list>
+            </v-list> -->
             <v-list-item-content>
               <v-card-title v-on:click.stop="select(item)" class="pb-0 mb-0"><span class="home-and-search-result-title">{{ item.title }}</span></v-card-title>
               <v-card-text class="text--primary">
                 <div v-on:click.stop="select(item)" class="grey--text text--darken-3">
-                  <span>{{ item.visitCount ? item.visitCount : 0 }}回視聴</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
-                  <span>合計{{ item.totalDuration }}</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
-                  <span>{{ item.timeSince }}前</span><span v-if="item.likeCount" style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
-                  <span v-if="item.likeCount">
-                    <i class="fas fa-heart my-grey-heart"></i>
-                    {{ item.likeCount}}
-                  </span>
+                  <div>
+                    <span>まとめ <i class="mdi mdi-arrow-left"></i> 元のYouTube動画:&nbsp;</span>
+                    <span>{{ item.numberOfOriginalVideos ? item.numberOfOriginalVideos : 0 }}本&nbsp;</span>
+                    <span>の合計{{item.totalDurationOriginal ? item.totalDurationOriginal : '84分35秒'}}</span>
+                  </div>
+                  <div>
+                    <span>{{ item.visitCount ? item.visitCount : 0 }}回視聴</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
+                    <span>1分5秒</span>
+                    <span>{{ item.timeSince }}前</span><span v-if="item.likeCount" style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
+                    <span v-if="item.likeCount">
+                      <i class="fas fa-heart my-grey-heart"></i>
+                      {{ item.likeCount}}
+                    </span>
+                  </div>
                 </div>
               </v-card-text>
             </v-list-item-content>
@@ -99,35 +109,45 @@ import myMixin from "../util";
 export default {
   data: () => ({
     isMobile: false,
+    pressingItemId: -1
   }),
   components: {
-    LoadingItem
+    LoadingItem,
   },
   props: {
-    mediaItems: Array
+    mediaItems: Array,
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
       isLoading: "loadingItem/isLoading",
-      numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination"
-    })
+      numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination",
+    }),
   },
   methods: {
+    longtapHandler(item) {
+      this.pressingItemId = item.id
+    },
+    upHandler() {
+      this.pressingItemId = -1
+    },
     async select(mediaItem) {
       //プレイリストの場合
       if (mediaItem.category == "playlist") {
-        await this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
+        await this.$store.dispatch(
+          "playlist/addPlaylistVisitCount",
+          mediaItem.id
+        );
         //再生ページを表示
         this.$router
           .push({
             path: "/watch",
             query: {
               playlist: mediaItem.id,
-              index: "0"
-            }
+              index: "0",
+            },
           })
-          .catch(err => {});
+          .catch((err) => {});
       }
 
       //タグの場合
@@ -137,20 +157,19 @@ export default {
           .push({
             path: "/watch",
             query: {
-              tag: mediaItem.id
-            }
+              tag: mediaItem.id,
+            },
           })
-          .catch(err => {});
+          .catch((err) => {});
       }
 
       // IFrame Player APIを呼び出すためにページをリロード
       // window.location.reload();
-    }
+    },
   },
-  mounted() {
-  },
+  mounted() {},
   created() {
     this.isMobile = this.mobileCheck();
-  }
+  },
 };
 </script>

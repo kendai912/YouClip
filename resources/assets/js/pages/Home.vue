@@ -41,20 +41,17 @@
         </v-card>
       </v-tab-item>
     </v-tabs-items>
-    <SearchBox />
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
 import PlaylistMediaItem from "../components/PlaylistMediaItem.vue";
-import SearchBox from "../components/SearchBox.vue";
 import myMixin from "../util";
 
 export default {
   components: {
     PlaylistMediaItem,
-    SearchBox,
   },
   data() {
     return {
@@ -106,6 +103,12 @@ export default {
         "playlist/indexPlaylistAndTagPaginationOfRecommend",
         this.recommendPage++
       );
+      // // ページネーションのデータをrecommendMediaItemsに格納
+      // this.playlistAndTagPaginationOfRecommend &&
+      //   this.putPlaylistTagIntoMediaItems(
+      //     this.recommendMediaItems,
+      //     this.playlistAndTagPaginationOfRecommend.data
+      //   );
       // ページネーションのデータをrecommendMediaItemsに格納
       this.putPlaylistTagIntoMediaItems(
         this.recommendMediaItems,
