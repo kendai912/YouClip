@@ -2,49 +2,52 @@
   <v-app-bar color="white" dense class="my-app-bar">
     <v-container v-show="isActive" class="ma-0 pa-0 text-center my-full-bar">
       <v-row class="ma-0 pa-0" align="center">
-        <div class="mr-2 pa-0 text-center">
-          <!-- <v-icon v-on:click="back">mdi-arrow-left</v-icon> -->
-          <v-icon v-on:click="search">search</v-icon>
-        </div>
-        <div class="ma-0 pa-0 my-autocomplete">
-          <v-autocomplete
-            v-model="model"
-            ref="autocomplete"
-            v-bind:items="items"
-            v-bind:search-input.sync="searchquery"
-            v-on:keydown.enter="do_search"
-            placeholder="クリップとシーンを検索"
-            item-text="value"
-            item-value="value"
-            cache-items
-            hide-no-data
-            clearable
-            dense
-          >
-            <template v-slot:item="data">
-              <template v-if="typeof data.item !== 'object'">
-                <v-list-item-content v-text="data.item"></v-list-item-content>
+        <v-row v-bind:class="{ activeSearch: isActive }">
+          <div class="mr-2 pa-0 text-center">
+            <!-- <v-icon v-on:click="back">mdi-arrow-left</v-icon> -->
+            <v-icon v-on:click="search" class="mr-1 my-search-icon">search</v-icon>
+          </div>
+          <div class="ma-0 pa-0 my-autocomplete">
+            <v-autocomplete
+              v-model="model"
+              ref="autocomplete"
+              v-bind:items="items"
+              v-bind:search-input.sync="searchquery"
+              v-on:keydown.enter="do_search"
+              placeholder="クリップとシーンを検索"
+              item-text="value"
+              item-value="value"
+              cache-items
+              hide-no-data
+              clearable
+              dense
+              attach="#searchDropdown"
+            >
+              <template v-slot:item="data">
+                <template v-if="typeof data.item !== 'object'">
+                  <v-list-item-content v-text="data.item"></v-list-item-content>
+                </template>
+                <template v-else>
+                  <v-list-item-icon class="mr-4">
+                    <v-icon>{{ data.item.icon }}</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title class=""
+                      v-html="data.item.value"
+                    ></v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-icon style="min-width: 16px">
+                    <v-img
+                      src="/storage/icons/north_west.svg"
+                      width="16px"
+                      max-height="16px"
+                    ></v-img>
+                  </v-list-item-icon>
+                </template>
               </template>
-              <template v-else>
-                <v-list-item-icon class="mr-4">
-                  <v-icon>{{ data.item.icon }}</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title
-                    v-html="data.item.value"
-                  ></v-list-item-title>
-                </v-list-item-content>
-                <v-list-item-icon style="min-width: 16px">
-                  <v-img
-                    src="/storage/icons/north_west.svg"
-                    width="16px"
-                    max-height="16px"
-                  ></v-img>
-                </v-list-item-icon>
-              </template>
-            </template>
-          </v-autocomplete>
-        </div>
+            </v-autocomplete>
+          </div>
+        </v-row>
         <div class="ml-2 pa-0 text-center">
           <span v-on:click="cancel_search" class="my-search-span"
             >キャンセル</span
@@ -68,7 +71,7 @@
         </router-link>
       </v-toolbar-items>
       <v-spacer></v-spacer>
-      <v-icon v-on:click="search" class="mr-5">search</v-icon>
+      <v-icon v-on:click="search" class="mr-1 my-search-icon">search</v-icon>
       <div>
         <v-menu v-if="isLogin" offset-y>
           <template v-slot:activator="{ on }">
@@ -146,7 +149,6 @@ export default {
       this.$store.commit("search/searchResultPageTransit");
     },
     search(event) {
-
       //空欄だった場合は検索実行せずリターン
       this.isActive = true;
       this.$nextTick(() => {
@@ -211,7 +213,7 @@ export default {
   },
   watch: {
     async searchquery(input) {
-      console.log('searchquery', input)
+      console.log("searchquery", input);
       // Items have already been requested
       if (this.isLoading) return;
 

@@ -39,6 +39,7 @@
             v-bind:alt="item.title"
             aspect-ratio="1.5"
             v-touch:touchhold="() => longtapHandler(item)"
+            v-touch:start="() => upHandler(item)"
           >
             <v-chip label color="#27252582" text-color="white" class="scene-chip">
               <v-img
@@ -57,13 +58,12 @@
               <v-card-text class="text--primary">
                 <div v-on:click.stop="select(item)" class="grey--text text--darken-3">
                   <div>
-                    <span>まとめ <i class="mdi mdi-arrow-left"></i> 元のYouTube動画:&nbsp;</span>
+                    <span>まとめ: <span>1分5秒</span> <i class="mdi mdi-arrow-left"></i> 元のYouTube動画:&nbsp;</span>
                     <span>{{ item.numberOfOriginalVideos ? item.numberOfOriginalVideos : 0 }}本&nbsp;</span>
                     <span>の合計{{item.totalDurationOriginal ? item.totalDurationOriginal : '84分35秒'}}</span>
                   </div>
                   <div>
                     <span>{{ item.visitCount ? item.visitCount : 0 }}回視聴</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
-                    <span>1分5秒</span>
                     <span>{{ item.timeSince }}前</span><span v-if="item.likeCount" style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
                     <span v-if="item.likeCount">
                       <i class="fas fa-heart my-grey-heart"></i>
@@ -127,8 +127,9 @@ export default {
     longtapHandler(item) {
       this.pressingItemId = item.id
     },
-    upHandler() {
-      this.pressingItemId = -1
+    upHandler(item) {
+      if (this.pressingItemId != item.id)
+        this.pressingItemId = -1
     },
     async select(mediaItem) {
       //プレイリストの場合

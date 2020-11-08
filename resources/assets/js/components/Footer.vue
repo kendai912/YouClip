@@ -1,19 +1,19 @@
 <template>
-  <v-bottom-navigation fixed v-bind:value="activeBtn" grow color="primary">
-    <v-btn class="btn-footer" to="/home" v-on:click="saveFooterTabIndex(0)">
+  <v-bottom-navigation fixed v-bind:value="activeBtn" grow color="primary" class="my-footer-menu">
+    <v-btn class="btn-footer my-footer-icon" to="/home" v-on:click="saveFooterTabIndex(0)">
       <span>ホーム</span>
-      <v-icon class="my-footer-icon">mdi-home-outline</v-icon>
+      <v-icon>mdi-home-outline</v-icon>
     </v-btn>
-    <v-btn class="btn-footer" to="/tagging" v-on:click="openHighlight(1)">
+    <v-btn class="btn-footer my-footer-home-icon my-footer-icon" to="/tagging" v-on:click="openHighlight(1)">
       <span>まとめ作成</span>
-      <div class="my-footer-home-icon">
-        <v-icon class="my-footer-icon">mdi-plus-circle-outline</v-icon>
+      <div>
+        <v-icon>mdi-plus-circle-outline</v-icon>
       </div>
     </v-btn>
 
-    <v-btn class="btn-footer" to="/mypage" v-on:click="saveFooterTabIndex(2)">
+    <v-btn class="btn-footer my-footer-icon" to="/mypage" v-on:click="saveFooterTabIndex(2)">
       <span>マイページ</span>
-      <v-icon class="my-footer-icon">mdi-account-outline</v-icon>
+      <v-icon>mdi-account-outline</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
