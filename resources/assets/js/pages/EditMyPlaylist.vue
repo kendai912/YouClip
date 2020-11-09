@@ -258,7 +258,9 @@ export default {
       this.playCount = this.playlistAndTagVideoData.play_count;
       this.sceneCount = this.playlistAndTagVideoData.tagVideoData.length;
       //this.totalDuration = this.playlistAndTagVideoData.playlist_total_duration;
-      this.totalDuration = this.getTotalDuration(this.playlistAndTagVideoData.tagVideoData);
+      this.totalDuration = this.getTotalDuration(
+        this.playlistAndTagVideoData.tagVideoData
+      );
       this.lastUpdatedAt = this.convertToYMD(
         this.playlistAndTagVideoData.playlist_updated_at
       );
@@ -269,7 +271,6 @@ export default {
         this.playlistAndTagVideoData.tagVideoData
       );
       this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
-
     }
   },
 };

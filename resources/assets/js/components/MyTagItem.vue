@@ -35,7 +35,7 @@
                   : thumbStoragePath + item.preview
               "
               v-bind:alt="item.title"
-              aspect-ratio="1.5"
+              aspect-ratio="1.7777"
             >
               <v-chip
                 label
@@ -74,7 +74,7 @@
             max-height="266.66px"
             v-bind:src="gifStoragePath + item.previewgif"
             v-bind:alt="item.title"
-            aspect-ratio="1.5"
+            aspect-ratio="1.7777"
           >
             <v-chip
               label
