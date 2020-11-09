@@ -114,44 +114,44 @@ class SearchController extends Controller
         }
     }
 
-    //検索ワードの履歴データを各テーブルに保存
-    public function storeSearchRecord(Request $request)
-    {
-        //検索クエリテーブルに保存
-        // $storedSearchquery = $this->storeSearchQuery($request->searchQuery, $request->searchOption);
-        // //検索クエリとユーザーの中間ログテーブルに保存
-        // $this->storeSearchLog($storedSearchquery);
-        // //人気の検索クエリランキングを更新
-        // $this->updateTopSearchqueries($request->searchOption);
-
-        return response()->json(
-            [
-                'storedSearchQuery' => '$storedSearchquery'
-            ],
-            201,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
-    }
     // //検索ワードの履歴データを各テーブルに保存
     // public function storeSearchRecord(Request $request)
     // {
     //     //検索クエリテーブルに保存
-    //     $storedSearchquery = $this->storeSearchQuery($request->searchQuery, $request->searchOption);
-    //     //検索クエリとユーザーの中間ログテーブルに保存
-    //     $this->storeSearchLog($storedSearchquery);
-    //     //人気の検索クエリランキングを更新
-    //     $this->updateTopSearchqueries($request->searchOption);
+    //     // $storedSearchquery = $this->storeSearchQuery($request->searchQuery, $request->searchOption);
+    //     // //検索クエリとユーザーの中間ログテーブルに保存
+    //     // $this->storeSearchLog($storedSearchquery);
+    //     // //人気の検索クエリランキングを更新
+    //     // $this->updateTopSearchqueries($request->searchOption);
 
     //     return response()->json(
     //         [
-    //             'storedSearchQuery' => $storedSearchquery
+    //             'storedSearchQuery' => '$storedSearchquery'
     //         ],
     //         201,
     //         [],
     //         JSON_UNESCAPED_UNICODE
     //     );
     // }
+    //検索ワードの履歴データを各テーブルに保存
+    public function storeSearchRecord(Request $request)
+    {
+        //検索クエリテーブルに保存
+        $storedSearchquery = $this->storeSearchQuery($request->searchQuery, $request->searchOption);
+        //検索クエリとユーザーの中間ログテーブルに保存
+        $this->storeSearchLog($storedSearchquery);
+        //人気の検索クエリランキングを更新
+        $this->updateTopSearchqueries($request->searchOption);
+
+        return response()->json(
+            [
+                'storedSearchQuery' => $storedSearchquery
+            ],
+            201,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
 
     //検索クエリテーブルに保存
     public function storeSearchQuery($searchQuery, $searchOption)
