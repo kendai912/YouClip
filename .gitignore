@@ -18,3 +18,5 @@ yarn-error.log
 public/js/app.js.LICENSE.txt
 .eslintrc.js
 storage/.DS_Store
+.package-lock.json
+composer.lock
