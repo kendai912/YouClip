@@ -553,11 +553,11 @@ div.v-snack:not(.v-snack--absolute) {
 }
 
 .my-footer-home-icon i {
-  margin-top: -15px;
+  margin-top: -11px;
 }
 
 .my-footer-home-icon i{
-  font-size: 4.3rem !important;
+  font-size: 4rem !important;
 }
 .my-footer-menu {
   box-shadow: 1px 0 6px rgba(33,33,33, 0.5) !important;
@@ -583,7 +583,7 @@ div.v-snack:not(.v-snack--absolute) {
   margin-top: -3px;
 }
 .my-footer-home-icon span {
-  margin-top: -3px;
+  margin-top: -2px;
 }
 .my-footer-icon.v-btn--active .v-btn__content {
   color: inherit;
