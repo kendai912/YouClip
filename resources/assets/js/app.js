@@ -23,7 +23,7 @@ Vue.use(Vue2TouchEvents, {
   disableClick: false,
   touchClass: "tapAction",
   tapTolerance: 8,
-  touchHoldTolerance: 100,
+  touchHoldTolerance: 50,
 });
 Vue.use(
   VueGtag,
