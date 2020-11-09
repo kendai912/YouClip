@@ -17,7 +17,8 @@ const state = {
   YTvideosResponse: [],
   topYTSearchqueries: [],
   YTsearchHistories: [],
-  apiOfScraping: "http://ec2-54-238-6-75.ap-northeast-1.compute.amazonaws.com:3000",
+  apiOfScraping:
+    "http://ec2-54-238-6-75.ap-northeast-1.compute.amazonaws.com:3000",
   apiOfSearch: "https://www.googleapis.com/youtube/v3/search",
   apiOfVideos: "https://www.googleapis.com/youtube/v3/videos",
   paramsOfSearch: {
@@ -59,6 +60,9 @@ const state = {
   isYTLoading: false,
   numberOfYTItemsPerPagination: 8,
   isYTSearching: false,
+  YTResultPageNumber: 1,
+  YTSearchKey: '',
+  YTSearchPageToken: ''
 };
 
 const getters = {
@@ -74,6 +78,9 @@ const getters = {
   isYTLoading: (state) => state.isYTLoading,
   numberOfYTItemsPerPagination: (state) => state.numberOfYTItemsPerPagination,
   isYTSearching: (state) => state.isYTSearching,
+  YTResultPageNumber: (state) => state.YTResultPageNumber,
+  YTSearchKey: (state) => state.YTSearchKey,
+  YTSearchPageToken: (state) => state.YTSearchPageToken
 };
 
 const mutations = {
@@ -144,18 +151,27 @@ const mutations = {
   YTsearchResultPageTransit() {
     router
       .push({
-        path: "/YTresult",
+        path: "/highlight",
         query: { search_query: state.YTsearchQuery },
       })
       .catch((err) => {});
   },
+  setYTResultPageNumber(state, data) {
+    state.YTResultPageNumber = data;
+  },
+  setYTSearchKey(state, data) {
+    state.YTSearchKey = data;
+  },
+  setYTSearchPageToken(state, data) {
+    state.YTSearchPageToken = data;
+  }
 };
 
 const actions = {
   //検索結果データを取得
   async YTsearch(context, pageNumber) {
-    await actions.searchYTResult(context, pageNumber);
     actions.storeYTSearchRecord(context);
+    await actions.searchYTResult(context, pageNumber);
   },
   async YTRecentVideos(context) {
     await actions.searchYTRecentVideos(context);
@@ -240,11 +256,14 @@ const actions = {
     //   },
     //   apiUrl: state.apiOfScraping,
     // });
-    const response = await axios.get("https://ytserver.net:3000/api/search", {
-      params: {
-        q:state.paramsOfSearch.q,
-        page: pageNumber
-      },
+    let params = {};
+    params = {
+      q: state.paramsOfSearch.q,
+      key: state.YTSearchKey,
+      pageToken: state.YTSearchPageToken
+    }
+    const response = await axios.get("http://ytserver.net:3000/api/search", {
+      params: params,
     });
     if (response.status == OK) {
       // 成功した時
@@ -261,6 +280,10 @@ const actions = {
       // //searchのAPI検索結果を格納
       // context.commit("setYTsearchResponse", response.data.items);
       let res = response.data.results;
+      let key = response.data.key;
+      context.commit("setYTSearchKey", key);
+      let pageToken = response.data.nextPageToken;
+      context.commit("setYTSearchPageToken", pageToken);
       //searchとvideosのAPI検索結果をまとめてYTresultに格納
       let YTresult = [];
       for (let i = 0; i < res.length; i++) {
@@ -271,7 +294,7 @@ const actions = {
           channelTitle: res[i].channel,
           publishedAt: res[i].release_date,
           duration: res[i].duration,
-          viewCount: res[i].num_views
+          viewCount: res[i].num_views,
         };
       }
       context.commit("setYTResult", YTresult);
@@ -297,7 +320,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
-  
+
   async searchYTRecentVideos(context) {
     const response = await axios.post("api/search/getRecentVideos");
     if (response.status == OK) {
@@ -311,7 +334,7 @@ const actions = {
   async storeYTSearchRecord(context) {
     let params = {
       searchQuery: state.YTsearchQuery,
-      searchOption: 1
+      searchOption: 1, //option 1 shows ytsearch query
     };
 
     const response = await axios.post("api/store/searchrecord", params);

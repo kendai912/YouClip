@@ -101,6 +101,9 @@ export default {
   },
   methods: {
     select(item) {
+      //以前のシーンタグ入力項目を初期化
+      this.clearTaggingInput();
+
       //シーンタグ付けページを表示
       this.$router
         .push({

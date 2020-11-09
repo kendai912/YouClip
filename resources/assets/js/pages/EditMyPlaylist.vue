@@ -38,18 +38,18 @@
         <v-row class="ma-0">
           <v-col class="pa-0 pt-2 text-center">
             <v-text-field
-                    v-model="playlistEditMode"
-                    :append-icon="isEditEditMode ? 'fas fa-save' : 'mdi-pencil'"
-                    :rules="[rules.required]"
-                    :readonly="!isEditEditMode"
-                    type="text"
-                    name="playlistEditMode"
-                    label="編集設定"
-                    v-on:keydown.enter="saveEditMode"
-                    @click:append="saveEditMode"
-                    hide-details
-                    ref="playlistEditMode"
-                    class="playlistEditModeInputBox inner-outlined-icon"
+              v-model="playlistEditMode"
+              :append-icon="isEditEditMode ? 'fas fa-save' : 'mdi-pencil'"
+              :rules="[rules.required]"
+              :readonly="!isEditEditMode"
+              type="text"
+              name="playlistEditMode"
+              label="編集設定"
+              v-on:keydown.enter="saveEditMode"
+              @click:append="saveEditMode"
+              hide-details
+              ref="playlistEditMode"
+              class="playlistEditModeInputBox inner-outlined-icon"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -57,15 +57,15 @@
           <v-col class="pa-0 pt-2 align-bottom" align-self="end">
             <v-card elevation="0">
               <v-card-subtitle class="pa-0 ma-0 subtitle-1 my-grey">
-              <span>{{ convertToKanjiTime(totalDuration) }}</span
-              ><span style="font-size:8px;"
-                >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
-              >
-              <span>{{ playCount ? playCount : 0 }}回視聴</span
-              ><span style="font-size:8px;"
-                >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
-              >
-              <span>最終更新日: {{ lastUpdatedAt }}</span>
+                <span>{{ convertToKanjiTime(totalDuration) }}</span
+                ><span style="font-size:8px;"
+                  >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
+                >
+                <span>{{ playCount ? playCount : 0 }}回視聴</span
+                ><span style="font-size:8px;"
+                  >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
+                >
+                <span>最終更新日: {{ lastUpdatedAt }}</span>
               </v-card-subtitle>
             </v-card>
           </v-col>
@@ -91,7 +91,9 @@
           </v-col>
           <v-col class="pa-0 pt-2 align-bottom" align-self="end">
             <v-card elevation="0">
-              <v-card-title class="pa-0 pl-2 ma-0 subtitle-1 my-grey">シーンの並び替え(ドラッグ＆ドロップ)</v-card-title>
+              <v-card-title class="pa-0 pl-2 ma-0 subtitle-1 my-grey"
+                >場面の並び替え(ドラッグ＆ドロップ)</v-card-title
+              >
             </v-card>
           </v-col>
         </v-row>
@@ -169,14 +171,14 @@ export default {
     },
     playlistEditMode: {
       // todo get/set EditMode
-      get(){
+      get() {
         //return this.$store.state.watch.privacySetting;
-        return '誰でも編集可能';
+        return "誰でも編集可能";
       },
-      set(val){
+      set(val) {
         //this.$store.commit("watch/setEditMode", val);
-      }
-    }
+      },
+    },
   },
   methods: {
     async saveTitle() {
@@ -214,7 +216,7 @@ export default {
     convertToKanjiTime(s) {
       let units = ["秒", "分"];
       var ext = units[0];
-      var retStr = '';
+      var retStr = "";
       for (var i = 0; i < units.length; i += 1) {
         if (parseInt(s) >= 60) {
           let v = parseInt(s) % 60;

@@ -103,6 +103,9 @@ const mutations = {
   setPlaySpeed(state, data) {
     state.playSpeed = data;
   },
+  setListIndex(state, data) {
+    state.listIndex = data;
+  },
 };
 
 const actions = {

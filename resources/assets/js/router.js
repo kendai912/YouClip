@@ -7,9 +7,9 @@ import Login from "./pages/Login.vue";
 import Register from "./pages/Register.vue";
 import Search from "./pages/Search.vue";
 import Result from "./pages/Result.vue";
+import Highlight from "./pages/Highlight.vue";
 import YTresult from "./pages/YTresult.vue";
 import Tagging from "./pages/Tagging.vue";
-import Youtube from "./pages/Youtube.vue";
 import Watch from "./pages/Watch.vue";
 import Mypage from "./pages/Mypage.vue";
 import MyFollow from "./pages/MyFollow.vue";
@@ -66,6 +66,10 @@ const routes = [
     component: Result,
   },
   {
+    path: "/highlight",
+    component: Highlight,
+  },
+  {
     path: "/tagging",
     component: Tagging,
   },
@@ -75,7 +79,7 @@ const routes = [
   },
   {
     path: "/youtube",
-    component: Youtube,
+    component: Highlight,
   },
   {
     path: "/watch",

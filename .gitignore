@@ -16,3 +16,5 @@ yarn-error.log
 .env
 /storage/debugbar
 public/js/app.js.LICENSE.txt
+.eslintrc.js
+storage/.DS_Store
