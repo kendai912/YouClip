@@ -90,11 +90,11 @@
                                               <span style="font-size:8px;">&nbsp;~&nbsp;</span>
                                               <span>{{ item.end }}の場面</span>
                                           </div>
-                                          <div class="horizontal-list-wrap block-chip-lines3 color-black pt-2">
+                                          <div class="horizontal-list-wrap block-chip-lines3 color-black my-1">
                                               <v-chip
                                                       v-for="(tag, tagIndex) in item.tagArray"
                                                       v-bind:key="item.id + '-' + tagIndex"
-                                                      class="my-tag-chip px-2"
+                                                      class="my-tag-chip pr-2"
                                                       text-color="black"
                                                       style="font-weight: normal; border-color:#bdbdbd;"
                                                       outlined
@@ -112,59 +112,59 @@
                               </v-col>
                               <v-col cols="1" class="pa-1 py-0 text-center">
                                   <div style="font-size: 20px" @click="toggleItem(index)">
-                                      <i v-if="!toggleItems.includes(index)" class="fas fa-angle-down"></i>
-                                      <i v-else class="fas fa-angle-up"></i>
+                                      <i v-if="!toggleItems.includes(index)" class="fas fa-angle-down outlined-icon"></i>
+                                      <i v-else class="fas fa-angle-up outlined-icon"></i>
                                   </div>
                               </v-col>
                           </v-row>
                   </v-col>
               </v-row>
               <v-row v-if="toggleItems.includes(index)">
-                  <v-col cols="4" class="ma-auto">
+                  <v-col cols="4">
                       <div class="text-center cursor-pointer" v-on:click="deleteItem(index)">
                           <v-icon class="outlined-icon">mdi-delete</v-icon>
-                          <div>削除</div>
+                          <div class="fz-12">削除</div>
                       </div>
                   </v-col>
                   <v-col cols="4">
                       <div class="text-center cursor-pointer" v-on:click="editItem(index)">
                           <v-icon class="outlined-icon">mdi-pencil</v-icon>
-                          <div>編集</div>
+                          <div class="fz-12">編集</div>
                       </div>
                   </v-col>
                   <v-col cols="4">
                       <div class="text-center cursor-pointer" v-on:click="plusItem(index)">
                           <v-icon class="outlined-icon">mdi-plus-circle</v-icon>
-                          <div>他のまとめに追加</div>
+                          <div class="fz-12">他のまとめに追加</div>
                       </div>
                   </v-col>
               </v-row>
               </v-card>
           </div>
-          <v-card class="mx-auto my-1" max-width="420" elevation="1">
-              <v-row
-                      dense
-                      class="pa-0 ma-0"
-              >
-                  <v-col cols="1" class="pa-1 ma-auto">
-                  </v-col>
-                  <v-col cols="10" class="pa-1 ma-auto">
-                      <v-row class="ma-0">
-                          <v-col cols="6" class="pa-1">
-                              <div class="justify-center align-center add-play-screen">
-                                  <v-icon color="white" style="font-size:54px">mdi-plus</v-icon>
-                              </div>
-                          </v-col>
-                          <v-col cols="6" class="pa-1 align-center" style="display:flex">
-                              <div>新しい場面を追加</div>
-                          </v-col>
-                      </v-row>
-                  </v-col>
-                  <v-col cols="1" class="pa-1 ma-auto">
-                  </v-col>
-              </v-row>
-          </v-card>
       </draggable>
+      <v-card class="mx-auto my-1" max-width="420" elevation="1">
+          <v-row
+                  dense
+                  class="pa-0 ma-0"
+          >
+              <v-col cols="1" class="pa-1 ma-auto">
+              </v-col>
+              <v-col cols="10" class="pa-1 ma-auto">
+                  <v-row class="ma-0">
+                      <v-col cols="6" class="pa-1">
+                          <div class="justify-center align-center add-play-screen">
+                              <v-icon color="white" style="font-size:54px">mdi-plus</v-icon>
+                          </div>
+                      </v-col>
+                      <v-col cols="6" class="pa-1 align-center" style="display:flex">
+                          <div>新しい場面を追加</div>
+                      </v-col>
+                  </v-row>
+              </v-col>
+              <v-col cols="1" class="pa-1 ma-auto">
+              </v-col>
+          </v-row>
+      </v-card>
     </div>
     <LoadingItem
       v-if="isLoading"

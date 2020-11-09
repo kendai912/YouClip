@@ -60,7 +60,6 @@ export default {
         mediaItems,
         this.myCreatedAndLikedPlaylist
       );
-      
       return mediaItems;
     },
     myCreatedAndLikedTagVideoMediaItems() {

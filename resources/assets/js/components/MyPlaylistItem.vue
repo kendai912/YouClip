@@ -63,8 +63,8 @@
                       class="white--text align-end"
                       v-bind:src="gifStoragePath + item.previewgif"
                       v-bind:alt="item.title"
-                      aspect-ratio="1.5"
-                      height="142"
+                      aspect-ratio="1.78"
+                      height="100"
                     >
 <!--                      <v-chip-->
 <!--                        label-->

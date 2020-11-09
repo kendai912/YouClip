@@ -405,7 +405,6 @@
 }
 
 .my-tag-chip {
-  margin-left: 3px;
   margin-right: 3px;
   margin-top: 2px;
   margin-bottom: 2px;
@@ -556,4 +555,7 @@ div.v-snack:not(.v-snack--absolute) {
 }
 .fz-36 {
   font-size: 36px !important;
+}
+.fz-12{
+  font-size: 12px !important;
 }

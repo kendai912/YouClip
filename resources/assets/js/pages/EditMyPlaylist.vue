@@ -57,7 +57,7 @@
           <v-col class="pa-0 pt-2 align-bottom" align-self="end">
             <v-card elevation="0">
               <v-card-subtitle class="pa-0 ma-0 subtitle-1 my-grey">
-                <span>{{ convertToKanjiTime(totalDuration) }}</span
+                <span>{{ totalDuration }}</span
                 ><span style="font-size:8px;"
                   >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
                 >
@@ -139,7 +139,7 @@ export default {
       privacy: "",
       playCount: 0,
       sceneCount: 0,
-      totalDuration: 0,
+      totalDuration: "",
       lastUpdatedAt: "",
     };
   },
@@ -257,7 +257,8 @@ export default {
       );
       this.playCount = this.playlistAndTagVideoData.play_count;
       this.sceneCount = this.playlistAndTagVideoData.tagVideoData.length;
-      this.totalDuration = this.playlistAndTagVideoData.playlist_total_duration;
+      //this.totalDuration = this.playlistAndTagVideoData.playlist_total_duration;
+      this.totalDuration = this.getTotalDuration(this.playlistAndTagVideoData.tagVideoData);
       this.lastUpdatedAt = this.convertToYMD(
         this.playlistAndTagVideoData.playlist_updated_at
       );
@@ -268,6 +269,7 @@ export default {
         this.playlistAndTagVideoData.tagVideoData
       );
       this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
+
     }
   },
 };
