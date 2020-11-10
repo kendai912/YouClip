@@ -51,17 +51,22 @@ class PlaylistController extends Controller
         $contentsPerPage = 5;
 
         $playlistAndTagPaginationOfRecommend = Playlist::whereHas('tags', function ($query) {
+            //privacySettingがpublicのtagを最低1つ持つPlaylistを取得
             $query->where('privacySetting', 'public');
         })->with(array('tags'=> function ($query) {
+            //tagおよびtagへのlike数を取得
             $likes_tags = Like::groupBy('tag_id')->select('tag_id', DB::raw('count(*) as likes_tag_count'))->orderBy('likes_tag_count', 'DESC');
             $likes_tags_sql = $likes_tags->toSql();
-            $query->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
+            //tagに紐づくvideoデータを取得
+            $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
         }))
+        //直近30日のプレイリストへのlike数を取得
         ->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'])
+        //プレイリストのプライバシー設定がpublicに限定し、like数の降順で取得
         ->where('privacySetting', 'public')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')
         ->paginate($contentsPerPage);
 
@@ -85,7 +90,7 @@ class PlaylistController extends Controller
         })->with(array('tags'=> function ($query) {
             $likes_tags = Like::groupBy('tag_id')->select('tag_id', DB::raw('count(*) as likes_tag_count'))->orderBy('likes_tag_count', 'DESC');
             $likes_tags_sql = $likes_tags->toSql();
-            $query->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
+            $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
         }))->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
@@ -113,7 +118,7 @@ class PlaylistController extends Controller
         })->with(array('tags'=> function ($query) {
             $likes_tags = Like::groupBy('tag_id')->select('tag_id', DB::raw('count(*) as likes_tag_count'))->orderBy('likes_tag_count', 'DESC');
             $likes_tags_sql = $likes_tags->toSql();
-            $query->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
+            $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
         }))->where('playlistCategory', 'Sports')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
@@ -141,7 +146,7 @@ class PlaylistController extends Controller
         })->with(array('tags'=> function ($query) {
             $likes_tags = Like::groupBy('tag_id')->select('tag_id', DB::raw('count(*) as likes_tag_count'))->orderBy('likes_tag_count', 'DESC');
             $likes_tags_sql = $likes_tags->toSql();
-            $query->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
+            $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
         }))->where('playlistCategory', 'Entertainment')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
@@ -181,7 +186,7 @@ class PlaylistController extends Controller
             }
         }
 
-        // usort($tagVideoDatas, fn($a, $b) => strcmp($a->scene_order, $b->scene_order));
+        // Sort by scene order
         usort($tagVideoDatas, function ($a, $b) {
             if ($a["scene_order"] == $b["scene_order"]) {
                 return (0);

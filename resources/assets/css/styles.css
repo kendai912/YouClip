@@ -338,6 +338,7 @@
 .homepage-tabs {
   max-width: 400px;
 }
+
 .homepage-tabs .v-slide-group__prev {
   display: none !important;
 }
@@ -430,12 +431,16 @@
   display: -webkit-box;
   max-width: 100%;
   max-height: 45px;
-  font-size: 17.5px;
+  font-size: 16px;
   line-height: 1.5rem;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.fontsize-caption {
+  font-size: 12pt;
 }
 
 .block-chip-lines3 {
@@ -545,9 +550,9 @@ div.v-snack:not(.v-snack--absolute) {
   flex: 1;
 }
 .my-full-bar {
-  max-width: 1100px !important;
+  max-width: 1600px !important;
 }
-.my-footer-icon i{
+.my-footer-icon i {
   font-size: 3.5rem !important;
   -webkit-text-stroke: 2px white;
 }
@@ -556,23 +561,23 @@ div.v-snack:not(.v-snack--absolute) {
   margin-top: -11px;
 }
 
-.my-footer-home-icon i{
+.my-footer-home-icon i {
   font-size: 4rem !important;
 }
 .my-footer-menu {
-  box-shadow: 1px 0 6px rgba(33,33,33, 0.5) !important;
+  box-shadow: 1px 0 6px rgba(33, 33, 33, 0.5) !important;
 }
 .my-footer-menu:before {
   position: absolute;
   top: 10px;
   left: 50%;
   display: block;
-  content: ' ';
+  content: " ";
   width: 60px;
   height: 60px;
   background-color: white;
   border-radius: 50%;
-  box-shadow: 1px 0 6px rgba(33,33,33, 0.5);
+  box-shadow: 1px 0 6px rgba(33, 33, 33, 0.5);
   transform: translate(-50%, -50%);
   z-index: -1;
 }
@@ -601,7 +606,8 @@ div.v-snack:not(.v-snack--absolute) {
   margin: 0px -8px 0px -15px;
   padding: 0 5px;
 }
-.activeSearch .v-input__slot::after, .activeSearch .v-input__slot::before {
+.activeSearch .v-input__slot::after,
+.activeSearch .v-input__slot::before {
   border: none !important;
 }
 .activeSearch .v-text-field__details {
@@ -610,8 +616,18 @@ div.v-snack:not(.v-snack--absolute) {
 #searchDropdown {
   position: relative;
 }
-#searchDropdown .v-autocomplete__content{
+#searchDropdown .v-autocomplete__content {
   top: 1px !important;
   max-width: 100% !important;
   width: 100% !important;
+}
+
+.outlined-icon{
+  color: transparent !important;
+  -webkit-text-stroke-color: #ababab;
+  -webkit-text-stroke-width: 1px;
+}
+
+.fsz-36 {
+  font-size: 36px !important;
 }

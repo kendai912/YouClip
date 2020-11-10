@@ -16,15 +16,17 @@ import "material-design-icons-iconfont/dist/material-design-icons.css";
 import colors from "vuetify/lib/util/colors";
 import lodash from "lodash";
 import VueGtag from "vue-gtag";
-import Vue2TouchEvents from 'vue2-touch-events'
+import Vue2TouchEvents from "vue2-touch-events";
 
 Vue.use(Vuetify);
+
 Vue.use(Vue2TouchEvents, {
   disableClick: false,
   touchClass: "tapAction",
   tapTolerance: 8,
-  touchHoldTolerance: 50,
+  touchHoldTolerance: 10,
 });
+
 Vue.use(
   VueGtag,
   {

@@ -4,8 +4,7 @@
       <v-row class="ma-0 pa-0" align="center">
         <v-row v-bind:class="{ activeSearch: isActive }">
           <div class="mr-2 pa-0 text-center">
-            <!-- <v-icon v-on:click="back">mdi-arrow-left</v-icon> -->
-            <v-icon v-on:click="search" class="mr-1 my-search-icon">search</v-icon>
+            <v-icon v-on:click="search" size="37">search</v-icon>
           </div>
           <div class="ma-0 pa-0 my-autocomplete">
             <v-autocomplete
@@ -32,7 +31,7 @@
                     <v-icon>{{ data.item.icon }}</v-icon>
                   </v-list-item-icon>
                   <v-list-item-content>
-                    <v-list-item-title class=""
+                    <v-list-item-title
                       v-html="data.item.value"
                     ></v-list-item-title>
                   </v-list-item-content>
@@ -48,7 +47,7 @@
             </v-autocomplete>
           </div>
         </v-row>
-        <div class="ml-2 pa-0 text-center">
+        <div class="ml-4 ma-0 pa-0 text-center grey--text text--darken-3">
           <span v-on:click="cancel_search" class="my-search-span"
             >キャンセル</span
           >
@@ -71,7 +70,7 @@
         </router-link>
       </v-toolbar-items>
       <v-spacer></v-spacer>
-      <v-icon v-on:click="search" class="mr-1 my-search-icon">search</v-icon>
+      <v-icon v-on:click="search" size="37">search</v-icon>
       <div>
         <v-menu v-if="isLogin" offset-y>
           <template v-slot:activator="{ on }">
@@ -213,7 +212,6 @@ export default {
   },
   watch: {
     async searchquery(input) {
-      console.log("searchquery", input);
       // Items have already been requested
       if (this.isLoading) return;
 

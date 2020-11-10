@@ -15,7 +15,9 @@
           setActiveTab(key);
           initialPaginate(key);
         "
-        >{{ item }}</v-tab
+        ><span style="font-size: 1.214285rem!important; ">{{
+          item
+        }}</span></v-tab
       >
     </v-tabs>
 
