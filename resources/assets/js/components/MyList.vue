@@ -139,7 +139,6 @@ export default {
   //       mediaItems,
   //       this.myCreatedAndLikedPlaylist
   //     );
-  //     console.log("media items", mediaItems);
   //     setTimeout(this.$store.commit("playlist/setMyPlaylist", mediaItems), 10);
       
   //     return mediaItems;

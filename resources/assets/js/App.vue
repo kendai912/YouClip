@@ -2,6 +2,7 @@
   <v-app>
     <div>
       <Navbar v-if="showNavbar" />
+      <div id="searchDropdown" />
       <RouterView />
       <Snackbar />
       <Footer />

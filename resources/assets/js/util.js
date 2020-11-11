@@ -115,16 +115,32 @@ export default {
     //プレイリストデータをメディアアイテムに追加格納
     putPlaylistTagIntoMediaItems: function(mediaItems, playlistTag) {
       if (playlistTag) {
+        //プレイリスト毎にアイテム(mediaItem)をmediaItemsに格納
         playlistTag.forEach((value, index) => {
-          //合計時間とシーン数を計算
+          //1-1.合計時間とシーン数を計算するための変数
           let totalDuration = "00:00:00";
           let sceneCount = 0;
+          //2-1.元のYouTube動画の本数と合計時間を計算するための変数
+          let totalYTDuration = "00:00:00";
+          let numberOfYTvideos = 0;
+          let uniqueYTvideoArray = [];
           value.tags.forEach((tag) => {
+            //1-2.合計時間とシーン数を計算
             let duration = this.timeMath.sub(tag.end, tag.start);
             totalDuration = this.timeMath.sum(totalDuration, duration);
             sceneCount++;
+            //2-2.元のYouTube動画の本数と合計時間を計算
+            if (!uniqueYTvideoArray.includes(tag.video.id)) {
+              totalYTDuration = this.timeMath.sum(
+                totalYTDuration,
+                tag.video.duration
+              );
+              uniqueYTvideoArray.push(tag.video.id);
+            }
           });
+          numberOfYTvideos = uniqueYTvideoArray.length;
 
+          //データをmediaItemsに格納(サムネイル&プレビュー動画は最初のシーンのデータを格納)
           if (value.tags[0]) {
             let mediaItem = {
               category: "playlist",
@@ -147,6 +163,10 @@ export default {
               likeCount: value.likesPlaylist_count,
               visitCount: value.play_count,
               user_id: value.user_id,
+              numberOfYTvideos: numberOfYTvideos,
+              totalYTDuration: this.convertToKanjiTime(
+                this.convertToSec(this.formatToMinSec(totalYTDuration))
+              ),
             };
             let tagCount = 0;
             if (Array.isArray(value.tags)) {

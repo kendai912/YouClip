@@ -37,7 +37,8 @@
         "vue-template-compiler": "^2.6.12",
         "vue-youtube": "^1.4.0",
         "vue-youtube-embed": "^2.2.2",
-        "vuedraggable": "^2.24.2",
-        "vuetify": "^2.3.14"
+        "vue2-touch-events": "^2.3.2",
+        "vuedraggable": "^2.24.0",
+        "vuetify": "^2.2.18"
     }
 }

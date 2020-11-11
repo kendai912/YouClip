@@ -2,92 +2,86 @@
   <v-container class="pa-0 pb-3">
     <v-row
       v-for="item in mediaItems"
-      v-bind:key="item.category+'-'+item.id"
+      v-bind:key="item.category + '-' + item.id"
       dense
       class="pa-0 ma-0 mb-1"
     >
       <v-col class="px-0" style="padding-top: 2px; paddint-bottom: 2px;">
-        <v-card class="mx-auto" max-width="420" elevation="0" style="border-radius: 2px;">
+        <v-card class="mx-auto" max-width="420" elevation="0">
           <v-hover v-if="!isMobile" v-slot:default="{ hover }">
             <v-img
               v-on:click.stop="select(item)"
-              class="white--text align-end"
+              class="white--text align-end rounded"
               max-height="266.66px"
-              v-bind:src="hover ? gifStoragePath + item.previewgif: thumbStoragePath + item.preview"
+              v-bind:src="
+                hover
+                  ? gifStoragePath + item.previewgif
+                  : thumbStoragePath + item.preview
+              "
               v-bind:alt="item.title"
-              aspect-ratio="1.5"
+              aspect-ratio="1.778"
             >
-              <v-chip label color="#27252582" text-color="white" class="scene-chip">
-                <v-img
-                  src="/storage/icons/playlist_icon.png"
-                  width="28px"
-                  max-height="28px"
-                />&nbsp;{{item.sceneCount}}&nbsp;シーン
-              </v-chip>
             </v-img>
-            <!-- <video v-else controls autoplay muted style="width: 100%; height: 100%;">
-              <source v-bind:src="'/storage/videos/'+item.previewgif" type="video/mp4">
-            </video> -->
           </v-hover>
           <v-img
             v-else
             v-on:click.stop="select(item)"
-            class="white--text align-end"
+            class="white--text align-end rounded"
             max-height="266.66px"
-            v-bind:src="gifStoragePath + item.previewgif"
+            pressingItemId
+            v-bind:src="
+              pressingItemId === item.id
+                ? gifStoragePath + item.previewgif
+                : thumbStoragePath + item.preview
+            "
             v-bind:alt="item.title"
-            aspect-ratio="1.5"
+            aspect-ratio="1.778"
+            v-touch:touchhold="() => longtapHandler(item)"
+            v-touch:start="() => upHandler(item)"
           >
-            <v-chip label color="#27252582" text-color="white" class="scene-chip">
-              <v-img
-                src="/storage/icons/playlist_icon.png"
-                width="28px"
-                max-height="28px"
-              />&nbsp;{{item.sceneCount}}&nbsp;シーン
-            </v-chip>
           </v-img>
-          <v-list-item class="pl-2 mb-0">
-            <v-list width="55px" class="pt-1 pb-0 pl-1 pr-3 ">
-              <v-img src="/storage/icons/clip.svg"/>
-            </v-list>
-            <v-list-item-content>
-              <v-card-title v-on:click.stop="select(item)" class="pb-0 mb-0"><span class="home-and-search-result-title">{{ item.title }}</span></v-card-title>
-              <v-card-text class="text--primary">
-                <div v-on:click.stop="select(item)" class="grey--text text--darken-3">
-                  <span>{{ item.visitCount ? item.visitCount : 0 }}回視聴</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
-                  <span>合計{{ item.totalDuration }}</span><span style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
-                  <span>{{ item.timeSince }}前</span><span v-if="item.likeCount" style="font-size:8px;">&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span>
-                  <span v-if="item.likeCount">
-                    <i class="fas fa-heart my-grey-heart"></i>
-                    {{ item.likeCount}}
-                  </span>
-                </div>
-              </v-card-text>
-            </v-list-item-content>
-          </v-list-item>
 
-          <v-card-text class="px-2">
-            <div class="horizontal-list-wrap block-chip-lines3">
-              <v-chip
-                v-for="(tag, tagIndex) in item.tagArray"
-                v-bind:key="item.id + '-' + tagIndex"
-                class="my-tag-chip"
-                small
-                color="blue lighten-5"
-                text-color="black"
-                style="font-weight: normal"
-              >
-                <v-avatar left>
-                  <i class="fas fa-tag my-black"></i>
-                </v-avatar>
-                {{ tag }}
-              </v-chip>
-            </div>
+          <v-card-title v-on:click.stop="select(item)" class="pt-2 pl-2 ma-0"
+            ><span class="home-and-search-result-title">{{
+              item.title
+            }}</span></v-card-title
+          >
+          <v-card-text class="pl-2 ma-0 text--primary">
+            <v-container
+              v-on:click.stop="select(item)"
+              class="ma-0 pa-0 grey--text text--darken-3"
+              fluid
+            >
+              <v-row class="pa-0 ma-0" align-content="center">
+                <v-col class="pa-0 ma-0 d-flex align-center">
+                  <span style="font-size:12px;">
+                    まとめ:&nbsp;{{ item.totalDuration }}&nbsp;
+                    <v-icon small>mdi-arrow-left</v-icon>
+                    &nbsp;元のYouTube動画:&nbsp;{{
+                      item.numberOfYTvideos
+                    }}本の合計{{ item.totalYTDuration }}</span
+                  >
+                </v-col>
+              </v-row>
+              <v-row class="pa-0 ma-0" align-content="center">
+                <v-col class="pa-0 ma-0 d-flex align-center">
+                  <span style="font-size:12px;"
+                    >{{ item.visitCount ? item.visitCount : 0 }}回視聴</span
+                  ><span style="font-size:8px;"
+                    >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
+                  >
+                  <span style="font-size:12px;">{{ item.timeSince }}前</span>
+                </v-col>
+              </v-row>
+            </v-container>
           </v-card-text>
         </v-card>
       </v-col>
     </v-row>
-    <LoadingItem v-if="isLoading" v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination" />
+    <LoadingItem
+      v-if="isLoading"
+      v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination"
+    />
   </v-container>
 </template>
 
@@ -99,35 +93,45 @@ import myMixin from "../util";
 export default {
   data: () => ({
     isMobile: false,
+    pressingItemId: -1,
   }),
   components: {
-    LoadingItem
+    LoadingItem,
   },
   props: {
-    mediaItems: Array
+    mediaItems: Array,
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
       isLoading: "loadingItem/isLoading",
-      numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination"
-    })
+      numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination",
+    }),
   },
   methods: {
+    longtapHandler(item) {
+      this.pressingItemId = item.id;
+    },
+    upHandler(item) {
+      if (this.pressingItemId != item.id) this.pressingItemId = -1;
+    },
     async select(mediaItem) {
       //プレイリストの場合
       if (mediaItem.category == "playlist") {
-        await this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
+        await this.$store.dispatch(
+          "playlist/addPlaylistVisitCount",
+          mediaItem.id
+        );
         //再生ページを表示
         this.$router
           .push({
             path: "/watch",
             query: {
               playlist: mediaItem.id,
-              index: "0"
-            }
+              index: "0",
+            },
           })
-          .catch(err => {});
+          .catch((err) => {});
       }
 
       //タグの場合
@@ -137,20 +141,15 @@ export default {
           .push({
             path: "/watch",
             query: {
-              tag: mediaItem.id
-            }
+              tag: mediaItem.id,
+            },
           })
-          .catch(err => {});
+          .catch((err) => {});
       }
-
-      // IFrame Player APIを呼び出すためにページをリロード
-      // window.location.reload();
-    }
-  },
-  mounted() {
+    },
   },
   created() {
     this.isMobile = this.mobileCheck();
-  }
+  },
 };
 </script>

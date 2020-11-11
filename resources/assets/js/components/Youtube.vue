@@ -358,28 +358,7 @@ export default {
       this.$store.commit("youtube/setIsReady", true);
     };
 
-    window.onPlayerStateChange = (event) => {
-      if (event.data == 2) {
-        var obj = $(".ytp-pause-overlay");
-        obj = JSON.parse(JSON.stringify(obj));
-        console.log(obj);
-        window.parent.postMessage(obj, "*");
-      }
-    };
-
-    // $(window).on("message", function(event) {
-    // console.log(event.originalEvent.data);
-    // $(".event.originalEvent.data").css({ display: "none" });
-    // });
-
-    // window.onload = function() {
-    //   let myiFrame = document.getElementById("player");
-    //   let doc = myiFrame.contentDocument;
-    //   console.log(doc);
-    //   doc.body.innerHTML =
-    //     doc.body.innerHTML +
-    //     "<style>.ytp-pause-overlay { display: none; }</style>";
-    // };
+    window.onPlayerStateChange = (event) => {};
 
     //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
     let from = this.$route.path;
