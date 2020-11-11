@@ -112,6 +112,17 @@ export default {
         });
       }
     },
+    getTotalDuration: function(mediaItems){
+        if(mediaItems.length){
+            let totalDuration = "00:00:00";
+            mediaItems.forEach(item => {
+              let duration = this.timeMath.sub(item.end, item.start);
+              totalDuration = this.timeMath.sum(totalDuration, duration);
+            });
+            return this.convertToKanjiTime(this.convertToSec(this.formatToMinSec(totalDuration)));
+        }
+        return '0秒 ';
+    },
     //プレイリストデータをメディアアイテムに追加格納
     putPlaylistTagIntoMediaItems: function(mediaItems, playlistTag) {
       if (playlistTag) {

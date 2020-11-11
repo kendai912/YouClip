@@ -39,7 +39,7 @@
                           : thumbStoragePath + item.preview
                       "
                       v-bind:alt="item.title"
-                      aspect-ratio="1.5"
+                      aspect-ratio="1.7777"
                       height="120"
                     >
                       <v-avatar class="scene-order" size="20">

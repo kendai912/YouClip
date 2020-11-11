@@ -19,7 +19,7 @@
                   : thumbStoragePath + item.preview
               "
               v-bind:alt="item.title"
-              aspect-ratio="1.778"
+              aspect-ratio="1.7777"
             >
             </v-img>
           </v-hover>
@@ -35,9 +35,7 @@
                 : thumbStoragePath + item.preview
             "
             v-bind:alt="item.title"
-            aspect-ratio="1.778"
-            v-touch:touchhold="() => longtapHandler(item)"
-            v-touch:start="() => upHandler(item)"
+            aspect-ratio="1.7777"
           >
           </v-img>
 

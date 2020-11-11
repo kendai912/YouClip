@@ -19,7 +19,7 @@
                         class="white--text align-end"
                         v-bind:src="hover ? gifStoragePath + item.previewgif: thumbStoragePath + item.preview"
                         v-bind:alt="item.title"
-                        aspect-ratio="1.5"
+                        aspect-ratio="1.7777"
                         height="142"
                       >
                         <v-chip label color="#27252582" text-color="white" class="my-scene-chip">
@@ -41,7 +41,7 @@
                       class="white--text align-end"
                       v-bind:src="gifStoragePath + item.previewgif"
                       v-bind:alt="item.title"
-                      aspect-ratio="1.5"
+                      aspect-ratio="1.7777"
                       height="142"
                     >
                       <v-chip label color="#27252582" text-color="white" class="my-scene-chip">
@@ -126,7 +126,7 @@
                         class="white--text align-end"
                         v-bind:src="hover ? gifStoragePath + item.previewgif: thumbStoragePath + item.preview"
                         v-bind:alt="item.title"
-                        aspect-ratio="1.5"
+                        aspect-ratio="1.7777"
                         height="142"
                       >
                         <v-chip label color="#27252582" text-color="white" class="my-scene-chip">
@@ -145,7 +145,7 @@
                       class="white--text align-end"
                       v-bind:src="gifStoragePath + item.previewgif"
                       v-bind:alt="item.title"
-                      aspect-ratio="1.5"
+                      aspect-ratio="1.7777"
                       height="142"
                     >
                       <v-chip label color="#27252582" text-color="white" class="my-scene-chip">
