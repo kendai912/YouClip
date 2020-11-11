@@ -378,7 +378,10 @@ class PlaylistController extends Controller
                 $likesPlaylistIds[] = $likesPlaylist->playlist_id;
             }
 
-            $myLikedPlaylists = Playlist::with('tags')->withCount(['playlistlogs as play_count'])->find($likesPlaylistIds);
+            // $myLikedPlaylists = Playlist::with('tags')->withCount(['playlistlogs as play_count'])->find($likesPlaylistIds);
+            $myLikedPlaylists = Playlist::with(array('tags' => function ($query) {
+                $query->with('video')->select('*')->get();
+            }))->withCount(['playlistlogs as play_count'])->find($likesPlaylistIds);
 
             return $myLikedPlaylists;
         } else {
@@ -390,7 +393,10 @@ class PlaylistController extends Controller
     public function createdPlaylist()
     {
         if (Auth::user()) {
-            $createdPlaylist = Playlist::with('tags')->withCount(['playlistlogs as play_count'])->where('user_id', Auth::user()->id)->get();
+            // $createdPlaylist = Playlist::with('tags')->withCount(['playlistlogs as play_count'])->where('user_id', Auth::user()->id)->get();
+            $createdPlaylist = Playlist::with(array('tags' => function ($query) {
+                $query->with('video')->select('*')->get();
+            }))->withCount(['playlistlogs as play_count'])->where('user_id', Auth::user()->id)->get();
 
             return $createdPlaylist;
         } else {
