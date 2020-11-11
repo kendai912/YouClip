@@ -134,45 +134,17 @@
   transform: translateX(100vw);
 }
 
-/* .controle-next-enter-active,
-.controle-next-leave-active {
-  transition: all 1s;
-}
-
-.controle-next-enter {
-  transform: translateX(100vw);
-}
-
-.controle-next-leave-active {
-  position: absolute;
-  transform: translateX(-100vw);
-}
-
-.controle-previous-enter-active,
-.controle-previous-leave-active {
-  transition: all 1s;
-}
-
-.controle-previous-enter {
-  transform: translateX(-100vw);
-}
-
-.controle-previous-leave-active {
-  position: absolute;
-  transform: translateX(100vw);
-} */
-
 .my-grey {
   color: gray;
 }
 
-.outlined-icon{
+.outlined-icon {
   color: transparent !important;
   -webkit-text-stroke-color: #ababab;
   -webkit-text-stroke-width: 1px;
 }
 
-.inner-outlined-icon .v-icon{
+.inner-outlined-icon .v-icon {
   color: transparent !important;
   -webkit-text-stroke-color: #ababab;
   -webkit-text-stroke-width: 1px;
@@ -306,6 +278,12 @@
 .sceneMyPlaylistToSaveBox .v-label,
 .sceneTagInputBox .v-label {
   font-size: 100%;
+}
+
+.playlistTitleInputBox .v-label,
+.scenePrivacySettingBox .v-label,
+.playlistEditModeInputBox .v-label {
+  font-size: 14pt !important;
 }
 
 .sceneTagInputBox .v-label {
@@ -463,7 +441,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   color: #e3f2fd;
-  font-size: 20px;
+  font-size: 12px;
   font-weight: bold;
 }
 
@@ -473,7 +451,7 @@
 .color-light-blue {
   color: #e3f2fd;
 }
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer !important;
 }
 
@@ -548,14 +526,12 @@ div.v-snack:not(.v-snack--absolute) {
 }
 
 .add-play-screen {
-  display:flex;
+  display: flex;
   width: 100%;
-  height:94px;
+  height: 94px;
   background: #e0e0e0;
 }
-.fz-36 {
-  font-size: 36px !important;
-}
+
 .fz-12{
   font-size: 12px !important;
 }

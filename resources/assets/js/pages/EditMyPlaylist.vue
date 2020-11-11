@@ -79,7 +79,7 @@
             >
           </v-col>
         </v-row>
-        <v-row class="ma-0">
+        <v-row class="mt-2 ma-0">
           <v-col class="pa-0 pt-2 text-left" cols="auto">
             <span
               ><v-icon
@@ -206,7 +206,12 @@ export default {
       }
     },
     async saveEditMode() {
-      // todo - save EditMode
+      if (!this.isEditEditMode) {
+        this.isEditEditMode = true;
+      } else {
+        this.isEditEditMode = false;
+        // todo - save EditMode
+      }
     },
     openPlaylistDeleteModal(playlistId, playlistName) {
       this.$store.commit("playlistDeleteModal/setPlaylistId", playlistId);

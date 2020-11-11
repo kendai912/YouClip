@@ -85,6 +85,7 @@
                             text-color="black"
                             style="font-weight: normal; border-color:#bdbdbd;"
                             outlined
+                            small
                           >
                             {{ tag }}
                           </v-chip>
@@ -94,11 +95,12 @@
                   </v-col>
                   <v-col cols="1" class="pa-1 py-0 text-center">
                     <div style="font-size: 20px" @click="toggleItem(index)">
-                      <i
+                      <v-icon
                         v-if="!toggleItems.includes(index)"
-                        class="fas fa-angle-down outlined-icon"
-                      ></i>
-                      <i v-else class="fas fa-angle-up outlined-icon"></i>
+                        color="my-grey"
+                        >mdi-chevron-down</v-icon
+                      >
+                      <v-icon v-else color="my-grey">mdi-chevron-up</v-icon>
                     </div>
                   </v-col>
                 </v-row>
@@ -133,14 +135,14 @@
                 </div>
               </v-col>
             </v-row>
-           <v-divider></v-divider>
+            <v-divider></v-divider>
           </v-card>
         </div>
       </draggable>
       <v-card class="mx-auto my-1" max-width="420" elevation="0">
         <v-row dense class="pa-0 ma-0">
-          <v-col cols="1" class="pa-1 ma-auto"> </v-col>
-          <v-col cols="10" class="pa-1 ma-auto">
+          <v-col cols="1" class="pa-0 ma-auto"> </v-col>
+          <v-col cols="10" class="pa-0 ma-auto">
             <v-row class="ma-0">
               <v-col cols="6" class="pa-1">
                 <div class="justify-center align-center add-play-screen">
@@ -152,7 +154,7 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col cols="1" class="pa-1 ma-auto"> </v-col>
+          <v-col cols="1" class="pa-0 ma-auto"> </v-col>
         </v-row>
       </v-card>
     </div>
