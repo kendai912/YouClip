@@ -552,24 +552,10 @@ div.v-snack:not(.v-snack--absolute) {
 .my-full-bar {
   max-width: 1600px !important;
 }
-.my-footer-icon i {
-  font-size: 3.5rem !important;
-  -webkit-text-stroke: 2px white;
-}
 
-.my-footer-home-icon i {
-  margin-top: -11px;
-}
-
-.my-footer-home-icon i {
-  font-size: 4rem !important;
-}
-.my-footer-menu {
-  box-shadow: 1px 0 6px rgba(33, 33, 33, 0.5) !important;
-}
 .my-footer-menu:before {
   position: absolute;
-  top: 10px;
+  top: 20px;
   left: 50%;
   display: block;
   content: " ";
@@ -577,28 +563,22 @@ div.v-snack:not(.v-snack--absolute) {
   height: 60px;
   background-color: white;
   border-radius: 50%;
-  box-shadow: 1px 0 6px rgba(33, 33, 33, 0.5);
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+    0 1px 10px 0 rgba(0, 0, 0, 0.12);
   transform: translate(-50%, -50%);
   z-index: -1;
 }
-.btn-footer {
+
+.my-footer-icon {
   background-color: white !important;
 }
-.my-footer-menu span {
-  margin-top: -3px;
+.my-footer-icon i {
+  top: -3pt;
 }
-.my-footer-home-icon span {
+.my-footer-icon span {
   margin-top: -2px;
 }
-.my-footer-icon.v-btn--active .v-btn__content {
-  color: inherit;
-}
-.my-footer-icon .v-btn__content {
-  color: #dddddd;
-}
-.my-search-icon {
-  font-size: 35px;
-}
+
 .activeSearch {
   background-color: #dddddd;
   border-radius: 25px;
@@ -620,14 +600,4 @@ div.v-snack:not(.v-snack--absolute) {
   top: 1px !important;
   max-width: 100% !important;
   width: 100% !important;
-}
-
-.outlined-icon{
-  color: transparent !important;
-  -webkit-text-stroke-color: #ababab;
-  -webkit-text-stroke-width: 1px;
-}
-
-.fsz-36 {
-  font-size: 36px !important;
 }

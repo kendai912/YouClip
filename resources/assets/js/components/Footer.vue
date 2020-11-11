@@ -6,32 +6,25 @@
     color="primary"
     class="my-footer-menu"
   >
-    <v-btn
-      class="btn-footer my-footer-icon"
-      to="/home"
-      v-on:click="saveFooterTabIndex(0)"
-    >
+    <v-btn to="/home" v-on:click="saveFooterTabIndex(0)">
       <span>ホーム</span>
-      <v-icon class="">mdi-home-outline</v-icon>
+      <v-icon large>mdi-home-outline</v-icon>
     </v-btn>
+
     <v-btn
-      class="btn-footer my-footer-home-icon my-footer-icon"
+      class="my-footer-icon"
       to="/tagging"
       v-on:click="openHighlight(1)"
     >
       <span>まとめ作成</span>
       <div>
-        <v-icon>mdi-plus-circle-outline</v-icon>
+        <v-icon x-large>mdi-plus-circle-outline</v-icon>
       </div>
     </v-btn>
 
-    <v-btn
-      class="btn-footer my-footer-icon"
-      to="/mypage"
-      v-on:click="saveFooterTabIndex(2)"
-    >
+    <v-btn to="/mypage" v-on:click="saveFooterTabIndex(2)">
       <span>マイページ</span>
-      <v-icon class="">mdi-account-outline</v-icon>
+      <v-icon large>mdi-account-outline</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
