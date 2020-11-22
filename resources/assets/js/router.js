@@ -5,7 +5,6 @@ import VueRouter from "vue-router";
 import Home from "./pages/Home.vue";
 import Login from "./pages/Login.vue";
 import Register from "./pages/Register.vue";
-import Search from "./pages/Search.vue";
 import Result from "./pages/Result.vue";
 import Highlight from "./pages/Highlight.vue";
 import YTresult from "./pages/YTresult.vue";
@@ -56,10 +55,6 @@ const routes = [
   {
     path: "/home",
     redirect: "/",
-  },
-  {
-    path: "/search",
-    component: Search,
   },
   {
     path: "/result",

@@ -58,8 +58,12 @@ class SearchController extends Controller
         //ページネーション設定
         $contentsPerPage = 5;
 
-        //検索ワードにプレイリスト・タグのデータを取得
-        $playlistTagResult = Playlist::with('tags')->where('privacySetting', 'public')->where('playlistName', 'LIKE', "%$searchQuery%")->paginate($contentsPerPage);
+        //検索ワードに紐付くプレイリスト・ビデオ・タグのデータを取得
+        $playlistTagResult = Playlist::whereHas('tags', function ($query) {
+            $query->where('privacySetting', 'public');
+        })->with(array('tags' => function ($query) {
+            $query->with('video')->select('*')->get();
+        }))->where('privacySetting', 'public')->where('playlistName', 'LIKE', "%$searchQuery%")->paginate($contentsPerPage);
 
         return response()->json(
             [
@@ -284,6 +288,7 @@ class SearchController extends Controller
             JSON_UNESCAPED_UNICODE
         );
     }
+
     //get Youtube Search from google API
     public function getYTSearchList(Request $request)
     {
@@ -300,6 +305,7 @@ class SearchController extends Controller
         }
         return $res->getBody();
     }
+
     //get Youtube Search Results from scraping API
     public function getYTScrapingResultList(Request $request)
     {

@@ -1,16 +1,12 @@
 <template>
-  <v-sheet
-    color="grey lighten-3"
-    elevation="1"
-    class="search-box pr-2"
-  >
+  <v-sheet color="grey lighten-3" elevation="1" class="search-box pr-2">
     <v-container class="ma-0 pa-0 text-center">
       <v-row class="ma-0 pa-0" align="center">
         <v-col cols="1" class="ma-0 pa-0 text-center">
           <v-icon v-on:click="YTsearch">search</v-icon>
         </v-col>
         <v-col class="ma-0 pa-0">
-          <v-autocomplete
+          <v-combobox
             v-model="model"
             v-bind:items="items"
             v-bind:search-input.sync="searchquery"
@@ -45,7 +41,7 @@
                 </v-list-item-icon>
               </template>
             </template>
-          </v-autocomplete>
+          </v-combobox>
         </v-col>
       </v-row>
     </v-container>

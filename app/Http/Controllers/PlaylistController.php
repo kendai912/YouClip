@@ -378,7 +378,6 @@ class PlaylistController extends Controller
                 $likesPlaylistIds[] = $likesPlaylist->playlist_id;
             }
 
-            // $myLikedPlaylists = Playlist::with('tags')->withCount(['playlistlogs as play_count'])->find($likesPlaylistIds);
             $myLikedPlaylists = Playlist::with(array('tags' => function ($query) {
                 $query->with('video')->select('*')->get();
             }))->withCount(['playlistlogs as play_count'])->find($likesPlaylistIds);
@@ -393,7 +392,6 @@ class PlaylistController extends Controller
     public function createdPlaylist()
     {
         if (Auth::user()) {
-            // $createdPlaylist = Playlist::with('tags')->withCount(['playlistlogs as play_count'])->where('user_id', Auth::user()->id)->get();
             $createdPlaylist = Playlist::with(array('tags' => function ($query) {
                 $query->with('video')->select('*')->get();
             }))->withCount(['playlistlogs as play_count'])->where('user_id', Auth::user()->id)->get();
@@ -669,7 +667,6 @@ class PlaylistController extends Controller
     public function createdTagListByUser($user)
     {
         if (Auth::user()) {
-            // $createdTagList = Playlist::with('tags')->where('privacySetting', 'public')->get();
             $createdTagList = Tag::Where('tags.user_id', $user)->where('privacySetting', 'public')->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'channel_title', 'published_at', 'view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
             return $createdTagList;
         } else {

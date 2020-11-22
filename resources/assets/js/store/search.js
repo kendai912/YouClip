@@ -77,8 +77,6 @@ const mutations = {
         query: { search_query: state.searchQuery },
       })
       .catch((err) => {});
-
-    location.reload();
   },
 };
 

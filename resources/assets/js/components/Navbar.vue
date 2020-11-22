@@ -1,60 +1,58 @@
 <template>
   <v-app-bar color="white" dense class="my-app-bar">
-    <v-container v-show="isActive" class="ma-0 pa-0 text-center my-full-bar">
+    <v-container
+      v-show="isActiveSearch"
+      class="ma-0 pa-0 text-center my-full-bar"
+    >
       <v-row class="ma-0 pa-0" align="center">
-        <v-row v-bind:class="{ activeSearch: isActive }">
+        <v-row v-bind:class="{ activeSearch: isActiveSearch }">
           <div class="mr-2 pa-0 text-center">
             <v-icon v-on:click="search" size="37">search</v-icon>
           </div>
           <div class="ma-0 pa-0 my-autocomplete">
-            <v-autocomplete
+            <v-combobox
               v-model="model"
-              ref="autocomplete"
               v-bind:items="items"
               v-bind:search-input.sync="searchquery"
-              v-on:keydown.enter="do_search"
-              placeholder="クリップとシーンを検索"
+              v-on:keydown.enter="search"
+              placeholder="YouTube動画のまとめを検索"
               item-text="value"
               item-value="value"
               cache-items
               hide-no-data
               clearable
               dense
+              ref="searchInputBox"
               attach="#searchDropdown"
             >
               <template v-slot:item="data">
-                <template v-if="typeof data.item !== 'object'">
-                  <v-list-item-content v-text="data.item"></v-list-item-content>
-                </template>
-                <template v-else>
-                  <v-list-item-icon class="mr-4">
-                    <v-icon>{{ data.item.icon }}</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title
-                      v-html="data.item.value"
-                    ></v-list-item-title>
-                  </v-list-item-content>
-                  <v-list-item-icon style="min-width: 16px">
-                    <v-img
-                      src="/storage/icons/north_west.svg"
-                      width="16px"
-                      max-height="16px"
-                    ></v-img>
-                  </v-list-item-icon>
-                </template>
+                <v-list-item-icon class="mr-4">
+                  <v-icon>{{ data.item.icon }}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title
+                    v-html="data.item.value"
+                  ></v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-icon style="min-width: 16px">
+                  <v-img
+                    src="/storage/icons/north_west.svg"
+                    width="16px"
+                    max-height="16px"
+                  ></v-img>
+                </v-list-item-icon>
               </template>
-            </v-autocomplete>
+            </v-combobox>
           </div>
         </v-row>
         <div class="ml-4 ma-0 pa-0 text-center grey--text text--darken-3">
-          <span v-on:click="cancel_search" class="my-search-span"
+          <span v-on:click="cancelSearch" class="my-search-span"
             >キャンセル</span
           >
         </div>
       </v-row>
     </v-container>
-    <template v-if="!isActive">
+    <template v-if="!isActiveSearch">
       <v-toolbar-items>
         <router-link to="/">
           <img
@@ -121,63 +119,32 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import SearchBox from "./SearchBox.vue";
 
 export default {
   data() {
     return {
-      isActive: false,
       model: null,
-      searchquery: null,
     };
-  },
-  components: {
-    SearchBox,
-  },
-  methods: {
-    async logout() {
-      await this.$store.dispatch("auth/logout");
-      if (this.apiStatus) {
-        this.$router.push("/login");
-      }
-    },
-    do_search(event) {
-      // 日本語入力中のEnterキー操作は無効にする
-      if (event.keyCode != undefined && event.keyCode !== 13) return;
-      this.$store.commit("search/setSearchQuery", this.searchquery);
-      this.$store.commit("search/searchResultPageTransit");
-    },
-    search(event) {
-      //空欄だった場合は検索実行せずリターン
-      this.isActive = true;
-      this.$nextTick(() => {
-        this.$refs.autocomplete.focus();
-        this.$refs.autocomplete.isMenuActive = true; // open item list
-      });
-      // setTimeout(() => {
-      // }, 0);
-    },
-    back() {
-      this.$router.push("/home");
-    },
-    cancel_search() {
-      this.isActive = false;
-    },
   },
   computed: {
     ...mapGetters({
       username: "auth/username",
+      isLogin: "auth/check",
+      searchCandidates: "search/searchCandidates",
+      isActiveSearch: "navbar/isActiveSearch",
+      searchquery: "navbar/searchquery",
     }),
     ...mapState({
       apiStatus: (state) => state.auth.apiStatus,
     }),
-    ...mapGetters({
-      isLogin: "auth/check",
-    }),
-    //検索候補
-    ...mapGetters({
-      searchCandidates: "search/searchCandidates",
-    }),
+    searchquery: {
+      get() {
+        return this.$store.getters["navbar/searchquery"];
+      },
+      set(val) {
+        this.$store.commit("navbar/setSearchquery", val);
+      },
+    },
     //過去の検索履歴と人気の検索履歴を履歴優先で合計7件までサジェストに表示
     items() {
       let items = [];
@@ -210,13 +177,35 @@ export default {
       return items;
     },
   },
-  watch: {
-    async searchquery(input) {
-      // Items have already been requested
-      if (this.isLoading) return;
+  methods: {
+    async logout() {
+      await this.$store.dispatch("auth/logout");
+      if (this.apiStatus) {
+        this.$router.push("/login");
+      }
+    },
+    search(event) {
+      //検索バーを表示
+      this.$store.commit("navbar/setIsActiveSearch", true);
 
-      //入力を元に検索候補を取得
-      await this.$store.dispatch("search/getSearchCandidates", input);
+      // 日本語入力中のEnterキー操作は無効にする
+      if (event.keyCode != undefined && event.keyCode !== 13) return;
+
+      //検索ワードが空の場合も無効にする
+      if (!this.searchquery || !this.searchquery.match(/\S/g)) return;
+
+      //検索ワードをセットし検索結果を表示
+      this.$store.commit("search/setSearchQuery", this.searchquery);
+      this.$store.commit("search/searchResultPageTransit");
+
+      //インクリメンタルサーチの表示を消すためフォーカスを外す
+      this.$refs.searchInputBox.blur();
+    },
+    back() {
+      this.$router.push("/home");
+    },
+    cancelSearch() {
+      this.$store.commit("navbar/setIsActiveSearch", false);
     },
   },
   async created() {

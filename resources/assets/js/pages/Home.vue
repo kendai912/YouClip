@@ -208,7 +208,8 @@ export default {
     }),
   },
   mounted() {
-    //ナビバーを表示
+    //ナビバーのデータをリセットし表示
+    this.$store.commit("navbar/resetNavbar");
     this.$store.commit("navbar/setShowNavbar", true);
 
     //タグおよびプレイリストのLikeデータをロード
