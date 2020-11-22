@@ -22,6 +22,7 @@
               hide-no-data
               clearable
               dense
+              class="ma-0 pa-0"
               ref="searchInputBox"
               attach="#searchDropdown"
             >

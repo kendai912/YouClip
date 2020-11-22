@@ -1,11 +1,11 @@
 <template>
-  <v-sheet color="grey lighten-3" elevation="1" class="search-box pr-2">
+  <v-sheet elevation="0" class="search-box">
     <v-container class="ma-0 pa-0 text-center">
-      <v-row class="ma-0 pa-0" align="center">
+      <v-row class="ma-0 pa-0 activeSearch" align="center">
         <v-col cols="1" class="ma-0 pa-0 text-center">
           <v-icon v-on:click="YTsearch">search</v-icon>
         </v-col>
-        <v-col class="ma-0 pa-0">
+        <v-col class="ma-0 pa-0 my-autocomplete" align="center">
           <v-combobox
             v-model="model"
             v-bind:items="items"
@@ -18,6 +18,8 @@
             hide-no-data
             clearable
             dense
+            class="ma-0 pa-0"
+            ref="YTsearchInputBox"
           >
             <template v-slot:item="data">
               <template v-if="typeof data.item !== 'object'">
@@ -110,7 +112,7 @@ export default {
       if (event.keyCode != undefined && event.keyCode !== 13) return;
 
       //空欄だった場合は検索実行せずリターン
-      if (this.searchquery == "") return;
+      if (!this.searchquery || !this.searchquery.match(/\S/g)) return;
 
       //入力内容がYoutubeのURLかキーワードか判定
       let youtubeId = this.searchquery.match(/(\?v=|youtu.be\/)([^&]+)/);
@@ -127,7 +129,9 @@ export default {
         this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
         this.$store.commit("YTsearch/YTsearchResultPageTransit");
       }
-      // window.location.reload();
+
+      //インクリメンタルサーチの表示を消すためフォーカスを外す
+      this.$refs.YTsearchInputBox.blur();
     },
   },
   async created() {

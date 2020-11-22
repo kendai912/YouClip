@@ -1,5 +1,5 @@
 <template>
-  <div class="container--small">
+  <div class="container--small full-height">
     <HighlightHeader />
     <YTSearchBox />
     <div v-if="YTsearchQuery" class="highlight-body">
@@ -61,8 +61,8 @@ export default {
       //前回の検索結果を空にする
       this.$store.commit("YTsearch/clearYTResult");
       this.$store.commit("YTsearch/setYTResultPageNumber", 1);
-      this.$store.commit("YTsearch/setYTSearchKey", '');
-      this.$store.commit("YTsearch/setYTSearchPageToken", '');
+      this.$store.commit("YTsearch/setYTSearchKey", "");
+      this.$store.commit("YTsearch/setYTSearchPageToken", "");
       // this.pageNumber = 1;
 
       if (this.YTsearchQuery == null) {
@@ -101,7 +101,7 @@ export default {
 
       //無限スクロールに合わせてYoutubeの検索結果を取得
       await this.$store.dispatch("YTsearch/YTsearch", this.pageNumber);
-      this.$store.commit("YTsearch/setYTResultPageNumber", this.pageNumber+1);
+      this.$store.commit("YTsearch/setYTResultPageNumber", this.pageNumber + 1);
       // this.pageNumber++;
 
       //ローディングを非表示
@@ -134,7 +134,7 @@ export default {
       YTRecentVideos: "YTsearch/YTRecentVideos",
       isYTSearching: "YTsearch/isYTSearching",
       isYTLoading: "YTsearch/isYTLoading",
-      pageNumber: "YTsearch/YTResultPageNumber"
+      pageNumber: "YTsearch/YTResultPageNumber",
     }),
   },
   watch: {
