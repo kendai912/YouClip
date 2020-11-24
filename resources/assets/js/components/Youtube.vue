@@ -2,10 +2,10 @@
   <div class="container--small">
     <HighlightHeader />
     <div class="highlight-body">
-      <div class="yt-container">
+      <div class="ytPlayerWrapper">
         <div id="player"></div>
       </div>
-      <v-sheet tile v-if="player != null">
+      <v-sheet tile v-if="player != null" class="highlightControllerBody">
         <v-container class="ma-0 pa-0" fluid>
           <v-row class="ma-0 pa-0 text-left" align="start">
             <v-col>
@@ -259,15 +259,6 @@ export default {
     },
     // タグ入力へ進む
     next() {
-      this.player
-        .getIframe()
-        .contentWindow.document.querySelector(
-          ".ytp-pause-overlay.ytp-scroll-min"
-        )
-        .remove();
-      $("#player")
-        .find(".ytp-pause-overlay ytp-scroll-min")
-        .css("display", "none");
       // if (this.$refs.form.validate()) {
       //   this.$store.commit("tagging/setStart", this.startTimeInput);
       //   this.$store.commit("tagging/setEnd", this.endTimeInput);
@@ -335,9 +326,23 @@ export default {
         },
       });
 
-      //縦・横のサイズをセット
-      $("iframe").width($(".yt-container").width());
-      $("iframe").height($(".container--small").height());
+      //iframeの縦・横のサイズをセット(縦は952px、横は幅いっぱい)
+      $("iframe").width($(".ytPlayerWrapper").width());
+      $("iframe").height(952);
+
+      //iframe上部の黒分だけ上にスライド
+      $(".ytPlayerWrapper").css(
+        "top",
+        (($("iframe").height() - ($("iframe").width() * 9) / 16) / 2) * -1
+      );
+
+      //開始・終了ボタンがiframeの下に来るようにtopを調整
+      this.$nextTick(() => {
+        $(".highlightControllerBody").css(
+          "top",
+          ($("iframe").width() * 9) / 16
+        );
+      });
     };
     setTimeout(onYouTubeIframeAPIReady, 10);
 
