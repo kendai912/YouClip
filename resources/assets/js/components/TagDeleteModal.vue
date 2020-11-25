@@ -39,12 +39,6 @@ export default {
       vm.beforeLoginUrl = from;
     });
   },
-  props: {
-    tags: {
-      type: Array,
-      default: [],
-    }
-  },
   computed: {
     ...mapGetters({
       tagId: "tagDeleteModal/tagId",
