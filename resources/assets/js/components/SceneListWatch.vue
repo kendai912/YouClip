@@ -12,29 +12,24 @@
                 再生中の場面
               </span>
             </v-fade-transition>
-            <div v-if="panel !== 0" v-bind:class="{ 'sceneListExpansionPanelCustomHeaderContent': panel !== 0 }">
-              <v-row class="ma-0">
+            <v-row class="ma-0" v-if="panel !== 0" v-bind:class="{ 'sceneListExpansionPanelCustomHeaderContent': panel !== 0 }">
                 <v-col cols="6" class="pa-1 d-flex align-center">
                   <v-avatar size="20">
                     <span>{{ parseInt(listIndex) + 1 }} {{panel}}</span>
                   </v-avatar>
-                  <v-hover v-slot:default="{ hover }">
-                    <v-img
+                  <v-img
                       class="white--text align-end"
                       v-bind:src="
                         hover
                           ? gifStoragePath + mediaItems[listIndex].previewgif
-                          : thumbStoragePath + mediaItems[listIndex].preview
-                      "
-                      v-bind:alt="mediaItems[listIndex].title"
-                      aspect-ratio="1.7777"
+                          : thumbStoragePath + mediaItems[listIndex].preview"
                       height="120"
+                      width="120"
                     >
                     </v-img>
-                  </v-hover>
                 </v-col>
                 <v-col cols="6" class="pa-1 py-3">
-                  <v-card-title class="pt-0">
+                  <div class="pb-5">
                     <v-img
                       src="/storage/icons/yt_social_red.png"
                       width="28px"
@@ -44,30 +39,29 @@
                     <div>
                       <span class="block-playlist-title" style="font-size: 14pt;">{{ mediaItems[listIndex].title }}</span>
                     </div>
-                  </v-card-title>
-                  <v-card-text class="pb-0">
+                  </div>
+                  <div>
                     <div>
                       <span class="caption" style="font-size: 14pt !important; font-weight: bold;">{{
                           mediaItems[listIndex].start + "~" + mediaItems[listIndex].end
                         }}の場面</span>
                     </div>
                     <div>
-                    <v-chip
-                      v-for="(tag, tagIndex) in readMore(mediaItems[listIndex].tagArray)"
-                      v-bind:key="mediaItems[listIndex].id + '-' + tagIndex"
-                      class="my-tag-chip px-2"
-                      color="lighten-5"
-                      text-color="my-grey"
-                      style="font-weight: normal; color: #808080; background-color: #ffffff !important; border: 1px solid #d7d7d7 !important;"
-                    >
-                      {{ tag }}
-                    </v-chip>
-                    <span v-if="mediaItems[listIndex].tagArray.length > 2">...</span>
+                      <v-chip
+                        v-for="(tag, tagIndex) in readMore(mediaItems[listIndex].tagArray)"
+                        v-bind:key="mediaItems[listIndex].id + '-' + tagIndex"
+                        class="my-tag-chip px-2"
+                        color="lighten-5"
+                        text-color="my-grey"
+                        style="font-weight: normal; color: #808080; background-color: #ffffff !important; border: 1px solid #d7d7d7 !important;"
+                      >
+                        {{ tag }}
+                      </v-chip>
+                      <span v-if="mediaItems[listIndex].tagArray.length > 2">...</span>
+                    </div>
                   </div>
-                  </v-card-text>
                 </v-col>
-              </v-row>
-            </div>
+            </v-row>
             
           </template>
         </v-expansion-panel-header>
@@ -79,7 +73,63 @@
             class="pa-0 ma-0"
           >
             <v-col class="px-0">
-              <v-card
+              <div>
+                <v-row class="ma-0">
+                  <v-col cols="6" class="pa-1 d-flex align-center">
+                    <v-avatar size="20">
+                      <span>{{ index + 1 }}</span>
+                    </v-avatar>
+                    <v-hover v-slot:default="{ hover }">
+                      <v-img
+                        class="white--text align-end"
+                        v-bind:src="
+                          hover
+                            ? gifStoragePath + item.previewgif
+                            : thumbStoragePath + item.preview
+                        "
+                        v-bind:alt="item.title"
+                        aspect-ratio="1.7777"
+                        height="120"
+                      >
+                      </v-img>
+                    </v-hover>
+                  </v-col>
+                  <v-col cols="6" class="pa-1 py-3">
+                    <div class="pb-5">
+                      <v-img
+                        src="/storage/icons/yt_social_red.png"
+                        width="28px"
+                        max-height="28px"
+                        class="float-left mr-2"
+                      />
+                      <div>
+                        <span class="block-playlist-title" style="font-size: 14pt;">{{ item.title }}</span>
+                      </div>
+                    </div>
+                    <div class="pb-0">
+                      <div>
+                        <span class="caption" style="font-size: 14pt !important; font-weight: bold;">{{
+                            item.start + "~" + item.end
+                          }}の場面</span>
+                      </div>
+                      <div>
+                        <v-chip
+                          v-for="(tag, tagIndex) in readMore(item.tagArray)"
+                          v-bind:key="item.id + '-' + tagIndex"
+                          class="my-tag-chip px-2"
+                          color="lighten-5"
+                          text-color="my-grey"
+                          style="font-weight: normal; color: #808080; background-color: #ffffff !important; border: 1px solid #d7d7d7 !important;"
+                        >
+                          {{ tag }}
+                        </v-chip>
+                        <span v-if="item.tagArray.length > 2">...</span>
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
+              </div>
+              <!-- <v-card
                 class="mx-auto"
                 max-width="420"
                 height="128"
@@ -139,7 +189,7 @@
                     </v-card-text>
                   </v-col>
                 </v-row>
-              </v-card>
+              </v-card> -->
             </v-col>
           </v-row>
         </v-expansion-panel-content>
