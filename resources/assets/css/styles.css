@@ -151,6 +151,30 @@
   color: gray;
 }
 
+.commentListExpansionPanelCustomHeader {
+  align-items: start !important;
+  height: 70px;
+  padding-top: 15px !important;
+}
+
+.commentListExpansionPanelCustomHeaderContent {
+  position: absolute;
+  left: 15px;
+  bottom: 0;
+}
+
+.sceneListExpansionPanelCustomHeader {
+  align-items: start !important;
+  height: 170px;
+  padding-top: 15px !important;
+}
+
+.sceneListExpansionPanelCustomHeaderContent {
+  position: absolute;
+  left: 15px;
+  bottom: 0;
+}
+
 .outlined-icon {
   color: transparent !important;
   -webkit-text-stroke-color: #ababab;
