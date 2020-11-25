@@ -15,7 +15,7 @@
             <v-row class="ma-0 pa-0" align="center">
               <v-col class="ma-0 pa-0">
                 <v-row class="ma-0 pa-0">
-                  <v-col cols="auto" class="ma-0 pa-0">
+                  <v-col cols="auto" class="ma-0 pa-0" style="padding-left: 10px !important">
                     <div>
                       <span style="line-height: 1.0; font-size: 16pt;">{{
                         playlistName
