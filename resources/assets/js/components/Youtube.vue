@@ -330,7 +330,12 @@ export default {
       $("iframe").width($(".ytPlayerWrapper").width());
       $("iframe").height(952);
 
-      //iframe上部の黒分だけ上にスライド
+      //iframeが見える範囲の高さをセットし、iframe上部の黒分が見えないよう上にスライド
+      $(".ytPlayerWrapper").css(
+        "height",
+        ($("iframe").width() * 9) / 16 +
+          (952 - ($("iframe").width() * 9) / 16) / 2
+      );
       $(".ytPlayerWrapper").css(
         "top",
         (($("iframe").height() - ($("iframe").width() * 9) / 16) / 2) * -1
