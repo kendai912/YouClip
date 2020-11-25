@@ -21,18 +21,18 @@
                         playlistName
                       }}</span>
                     </div>
-                    <div class="my-grey" style="line-height: 1.0;">
-                      <span style="font-size: 12px"
+                    <div class="my-grey" style="line-height: 1.0; font-size: 12pt;">
+                      <span
                         >{{
                           playlistViewCount ? playlistViewCount : 0
                         }}回視聴</span
                       >
-                      <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
-                      <span style="font-size: 12px"
+                      <span>&nbsp;&#8226;&nbsp;</span>
+                      <span
                         >合計{{ totalDuration }}</span
                       >
-                      <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
-                      <span style="font-size: 12px"
+                      <span>&nbsp;&#8226;&nbsp;</span>
+                      <span
                         >{{ playlistCreatedAt }}前</span
                       >
                     </div>
