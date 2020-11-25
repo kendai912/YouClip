@@ -37,7 +37,7 @@
                 label="プライバシー設定"
                 outlined
                 dense
-                style="font-size:80%;"
+                style="font-size:16px"
               ></v-select>
             </v-list-item>
           </v-list>
@@ -48,13 +48,9 @@
           <v-divider></v-divider>
         </v-col>
       </v-row>
-      <v-row class="ma-0 pa-2">
-        <v-col class="text-center ma-0 pa-0">
-          <v-btn v-on:click="closeAddPlaylistModal" width="90px" color="default">キャンセル</v-btn>
-        </v-col>
-        <v-col class="text-center ma-0 pa-0">
-          <v-btn v-on:click="addToPlaylist" width="90px" color="primary">完了</v-btn>
-        </v-col>
+      <v-row class="ma-0 pa-2 justify-end" style="backgroundColor: white;">
+        <v-btn v-on:click="closeAddPlaylistModal" width="90px" color="default" class="mr-1">キャンセル</v-btn>
+        <v-btn v-on:click="addToPlaylist" width="90px" color="primary">完了</v-btn>
       </v-row>
     </v-card>
   </v-dialog>

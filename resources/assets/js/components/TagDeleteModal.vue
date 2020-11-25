@@ -8,7 +8,7 @@
       <v-card-subtitle class="subtitle-1 py-3"
         >{{
           tagName
-        }}{{ sceneListofPlaylist[tagIndex].start }}{{ sceneListofPlaylist[tagIndex].end }}の場面を削除してもよろしいですか？<br />(削除すると元に戻すことはできません。)</v-card-subtitle
+        }} {{ sceneListofPlaylist[tagIndex].start }}-{{ sceneListofPlaylist[tagIndex].end }}の場面を削除してもよろしいですか？<br />(削除すると元に戻すことはできません。)</v-card-subtitle
       >
       <v-divider class="mx-6"></v-divider>
       <v-container class="ma-0 pa-0">
