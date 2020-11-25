@@ -4,38 +4,24 @@
       <div class="yt-container">
         <div id="player"></div>
       </div>
-      <div v-if="isPlayerReady">
+      <div v-if="isPlayerReady" class="pt-2">
         <v-sheet
           v-if="isPlaylist"
-          color="primary lighten-5"
+          color="lighten-5"
           class="mx-auto pt-1 pl-0 pr-1 pb-1"
           rounded
         >
           <v-container class="ma-0 pa-0" fluid>
             <v-row class="ma-0 pa-0" align="center">
               <v-col class="ma-0 pa-0">
-                <!-- <v-row v-if="playlistIdUrl" class="ma-0 pa-0"> -->
                 <v-row class="ma-0 pa-0">
-                  <v-col cols="auto" class="ma-0 pa-1" align="left">
-                    <v-img
-                      src="/storage/icons/clip.svg"
-                      width="28px"
-                      max-height="28px"
-                    />
-                  </v-col>
                   <v-col cols="auto" class="ma-0 pa-0">
                     <div>
-                      <span class="text-h6" style="line-height: 1.0;">{{
+                      <span style="line-height: 1.0; font-size: 16pt;">{{
                         playlistName
                       }}</span>
                     </div>
                     <div class="my-grey" style="line-height: 1.0;">
-                      <!-- <v-avatar size="16" v-on:click.stop="gotoFollow">
-                        <v-img
-                          src="/storage/logos/pph_son.png"
-                          class="float-left"
-                        />
-                      </v-avatar> -->
                       <span style="font-size: 12px"
                         >{{
                           playlistViewCount ? playlistViewCount : 0
@@ -52,7 +38,6 @@
                     </div>
                   </v-col>
                 </v-row>
-                <!-- <span v-else class="font-weight-bold">{{ playlistName }}</span> -->
               </v-col>
               <v-col cols="auto" class="ma-0 pa-0 text-right">
                 <v-bottom-navigation
@@ -61,23 +46,9 @@
                   background-color="transparent"
                   style="height: 48px; justify-content: flex-end"
                 >
-                  <v-btn
-                    v-on:click="sharePlaylist"
-                    class="ma-0 pa-0 narrow-btn"
-                  >
-                    <span>クリップ共有</span>
-                    <v-icon class="icon-large my-grey">mdi-share</v-icon>
-                  </v-btn>
-                  <v-btn
-                    v-on:click="toggleLikePlaylist"
-                    class="ma-0 pa-0 ex-narrow-btn"
-                  >
-                    <span>{{ likePlaylistCount }}</span>
-                    <i
-                      class="fas fa-heart fa-heart-font"
-                      v-bind:class="[isLikedPlaylist ? 'isLiked' : 'my-grey']"
-                    ></i>
-                  </v-btn>
+                  <span>
+                    <v-icon class="mdi mdi-chevron-down"></v-icon>
+                  </span>
                 </v-bottom-navigation>
               </v-col>
             </v-row>
@@ -86,102 +57,25 @@
 
         <v-sheet tile class="mx-auto px-1 py-2">
           <v-row class="ma-0 pa-0">
-            <v-col class="ma-0 pa-0">
-              <v-img
-                src="/storage/icons/yt_social_red.png"
-                width="28px"
-                max-height="28px"
-                class="float-left mr-2"
-              />
-              <div>
-                <span>{{ currentTitle }}</span>
-              </div>
-            </v-col>
-            <v-col cols="1" class="ma-0 pa-0 text-right">
-              <span v-on:click="openOtherActionModal">
-                <i class="fas fa-ellipsis-v my-grey"></i>
-              </span>
-            </v-col>
-          </v-row>
-        </v-sheet>
-
-        <v-sheet tile class="mx-auto pa-1">
-          <v-row class="ma-0 pa-0" align="center">
-            <v-col class="ma-0 pa-0">
-              <span>{{ startIs }}〜{{ endIs }}</span>
-            </v-col>
-            <v-col cols="9" class="ma-0 pa-0">
-              <div class="horizontal-list-wrap">
-                <ul class="horizontal-list">
-                  <li class="item">
-                    <v-chip
-                      v-for="(currentTagName, index) in currentTagNameArray"
-                      v-bind:key="index + '.' + currentTagName"
-                      class="ma-2"
-                      small
-                      color="blue lighten-2"
-                      text-color="white"
-                    >
-                      <v-avatar left>
-                        <i class="fas fa-tag my-grey"></i>
-                      </v-avatar>
-                      {{ currentTagName }}
-                    </v-chip>
-                  </li>
-                </ul>
-              </div>
-            </v-col>
-          </v-row>
-        </v-sheet>
-
-        <v-sheet tile class="mx-auto pa-1">
-          <v-row class="ma-0 pa-0" align="center" justify="space-between">
-            <v-col class="ma-0 pa-0">
+            <v-col class="ma-0 pa-0" style="position: relative;">
               <v-bottom-navigation
                 class="bottom_navigation_no_shadow"
                 elevation="0"
                 background-color="transparent"
-                style="height: 48px; justify-content: space-between"
+                style="height: 48px; justify-content: space-evenly; align-items: center;"
               >
-                <v-btn
-                  v-on:click="openPlaySpeedModal"
-                  class="ma-0 pa-0 narrow-btn"
-                >
-                  <span>倍速視聴</span>
-                  <v-img
-                    src="/storage/icons/play_speed.png"
-                    width="28px"
-                    max-height="28px"
-                  />
-                </v-btn>
-                <v-btn
-                  v-if="isMuted"
-                  v-on:click="unmute"
-                  class="ma-0 pa-0 narrow-btn"
-                >
-                  <span>消音解除</span>
-                  <v-icon class="icon-large">volume_off</v-icon>
-                </v-btn>
-                <v-btn v-else v-on:click="mute" class="ma-0 pa-0 narrow-btn">
-                  <span>消音</span>
-                  <v-icon class="icon-large">volume_up</v-icon>
-                </v-btn>
-                <v-btn v-on:click="addPlaylist" class="ma-0 pa-0 narrow-btn">
-                  <span>リスト登録</span>
-                  <v-icon class="icon-large">library_add</v-icon>
-                </v-btn>
                 <v-btn v-on:click="shareTag" class="ma-0 pa-0 narrow-btn">
                   <span>シーン共有</span>
                   <v-icon class="icon-large my-grey">mdi-share</v-icon>
                 </v-btn>
                 <v-btn v-on:click="toggleLike" class="ma-0 pa-0 narrow-btn">
                   <span>{{ likeCount }}</span>
-                  <i
-                    class="fas fa-heart fa-heart-font"
-                    v-bind:class="[isLiked ? 'isLiked' : 'my-grey']"
-                  ></i>
+                  <v-icon class="icon-large my-grey">mdi-heart-outline</v-icon>
                 </v-btn>
               </v-bottom-navigation>
+              <span v-on:click="openOtherActionModal" style="position: absolute; bottom: 15px; right: 10px; font-size: 22px;">
+                <i class="fas fa-ellipsis-v my-grey"></i>
+              </span>
             </v-col>
           </v-row>
         </v-sheet>
