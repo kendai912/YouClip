@@ -128,7 +128,7 @@
               <v-col cols="4">
                 <div
                   class="text-center cursor-pointer"
-                  v-on:click="plusItem(index)"
+                  v-on:click="plusItem(item.id)"
                 >
                   <v-icon class="outlined-icon">mdi-plus-circle</v-icon>
                   <div class="fz-12">他のまとめに追加</div>
@@ -163,6 +163,7 @@
       v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination"
     />
     <TagDeleteModal v-if="showTagDeleteModal" />
+    <AddToPlaylistModal v-if="showAddPlaylistModal" :currentTagId="currentTagId" />
   </v-container>
 </template>
 
@@ -170,6 +171,7 @@
 import { mapState, mapGetters, mapMutations } from "vuex";
 import LoadingItem from "../components/LoadingItem.vue";
 import TagDeleteModal from "../components/TagDeleteModal.vue";
+import AddToPlaylistModal from "../components/AddToPlaylistModal.vue";
 import draggable from "vuedraggable";
 import myMixin from "../util";
 
@@ -179,11 +181,13 @@ export default {
     dragging: false,
     isMobile: false,
     toggleItems: [],
+    currentTagId: 0,
   }),
   components: {
     LoadingItem,
     draggable,
-    TagDeleteModal
+    TagDeleteModal,
+    AddToPlaylistModal
   },
   props: {},
   mixins: [myMixin],
@@ -197,6 +201,7 @@ export default {
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
       playlistId: "watch/playlistId",
       showTagDeleteModal: "tagDeleteModal/showTagDeleteModal",
+      showAddPlaylistModal: "playlist/showAddPlaylistModal",
     }),
     draggablePlaylist: {
       get() {
@@ -250,8 +255,20 @@ export default {
     editItem(index) {
       // todo
     },
-    plusItem(index) {
-      // todo
+    async plusItem(id) {
+      //ログイン済の場合
+      //ユーザーが作成したプレイリスト一覧を取得
+      this.currentTagId = id;
+      this.$store.dispatch("playlist/getMyCreatedPlaylist");
+
+      //選択されたタグが追加済のユーザーのプレイリストIDを取得
+      await this.$store.dispatch(
+        "playlist/getPlaylistIdsOfTag",
+        id
+      );
+
+      //プレイリスト追加モーダルを表示
+      this.$store.commit("playlist/openAddPlaylistModal");
     },
   },
   created() {

@@ -4,7 +4,7 @@
       <v-btn icon dark small v-on:click="closeTagDeleteModal">
         <v-icon color="grey darken-1">mdi-close</v-icon>
       </v-btn>
-      <v-card-title class="title-2 py-2">プレイリストを削除</v-card-title>
+      <v-card-title class="title-2 py-2">場面start time-end timeの場面</v-card-title>
       <v-card-subtitle class="subtitle-1 py-3"
         >{{
           tagName
