@@ -27,7 +27,7 @@
                 label="新規プレイリスト名"
                 outlined
                 dense
-                style="font-size:12px;"
+                style="font-size:10px;"
               ></v-text-field>
             </v-list-item>
             <v-list-item>
