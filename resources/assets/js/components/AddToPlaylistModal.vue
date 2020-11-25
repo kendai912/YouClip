@@ -27,7 +27,7 @@
                 label="新規プレイリスト名"
                 outlined
                 dense
-                style="font-size:80%;"
+                style="font-size:12px;"
               ></v-text-field>
             </v-list-item>
             <v-list-item>
@@ -37,7 +37,7 @@
                 label="プライバシー設定"
                 outlined
                 dense
-                style="font-size:16px"
+                style="font-size:14px"
               ></v-select>
             </v-list-item>
           </v-list>
