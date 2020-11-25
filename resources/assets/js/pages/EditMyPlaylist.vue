@@ -31,6 +31,7 @@
               :readonly="!isEditPrivacy"
               @click:append="savePrivacy"
               hide-details
+              ref="playlistSettings"
               class="scenePrivacySettingBox inner-outlined-icon"
             ></v-select>
           </v-col>
@@ -184,8 +185,10 @@ export default {
     async saveTitle() {
       if (!this.isEditTitle) {
         this.isEditTitle = true;
+        this.$nextTick(() => this.$refs.playlistTitle.focus());
       } else {
         this.isEditTitle = false;
+        this.$nextTick(() => this.$refs.playlistTitle.blur());
         var playlist = {
           playlist_id: this.playlistAndTagVideoData.playlist_id,
           playlistName: this.playlistName,
@@ -196,8 +199,10 @@ export default {
     async savePrivacy() {
       if (!this.isEditPrivacy) {
         this.isEditPrivacy = true;
+        this.$nextTick(() => this.$refs.playlistSettings.focus());
       } else {
         this.isEditPrivacy = false;
+        this.$nextTick(() => this.$refs.playlistSettings.blur());
         var playlist = {
           playlist_id: this.playlistAndTagVideoData.playlist_id,
           privacySetting: this.privacySetting,
@@ -208,8 +213,10 @@ export default {
     async saveEditMode() {
       if (!this.isEditEditMode) {
         this.isEditEditMode = true;
+        this.$nextTick(() => this.$refs.playlistEditMode.focus());
       } else {
         this.isEditEditMode = false;
+        this.$nextTick(() => this.$refs.playlistEditMode.blur());
         // todo - save EditMode
       }
     },
