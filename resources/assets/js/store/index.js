@@ -20,6 +20,7 @@ import youtube from "./youtube";
 import tagging from "./tagging";
 import noLoginModal from "./noLoginModal";
 import playlistDeleteModal from "./playlistDeleteModal";
+import tagDeleteModal from "./tagDeleteModal";
 import otherActionModal from "./otherActionModal";
 import playSpeedModal from "./playSpeedModal";
 import commentReplyModal from "./commentReplyModal";
@@ -48,6 +49,7 @@ const store = new Vuex.Store({
     tagging,
     noLoginModal,
     playlistDeleteModal,
+    tagDeleteModal,
     otherActionModal,
     playSpeedModal,
     commentReplyModal,

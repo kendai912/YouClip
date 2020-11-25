@@ -96,7 +96,7 @@
                   <v-col cols="1" class="pa-1 py-0 text-center">
                     <div style="font-size: 20px" @click="toggleItem(index)">
                       <v-icon
-                        v-if="!toggleItems.includes(index)"
+                        v-if="!toggleItems.includes(index, item.title)"
                         color="my-grey"
                         >mdi-chevron-down</v-icon
                       >
@@ -110,7 +110,7 @@
               <v-col cols="4">
                 <div
                   class="text-center cursor-pointer"
-                  v-on:click="deleteItem(index)"
+                  v-on:click="deleteItem(item.id, item.title, index)"
                 >
                   <v-icon class="outlined-icon">mdi-delete</v-icon>
                   <div class="fz-12">削除</div>
@@ -162,12 +162,14 @@
       v-if="isLoading"
       v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination"
     />
+    <TagDeleteModal v-if="showTagDeleteModal" />
   </v-container>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
 import LoadingItem from "../components/LoadingItem.vue";
+import TagDeleteModal from "../components/TagDeleteModal.vue";
 import draggable from "vuedraggable";
 import myMixin from "../util";
 
@@ -181,6 +183,7 @@ export default {
   components: {
     LoadingItem,
     draggable,
+    TagDeleteModal
   },
   props: {},
   mixins: [myMixin],
@@ -193,6 +196,7 @@ export default {
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
       playlistId: "watch/playlistId",
+      showTagDeleteModal: "tagDeleteModal/showTagDeleteModal",
     }),
     draggablePlaylist: {
       get() {
@@ -237,8 +241,11 @@ export default {
         this.toggleItems.push(index);
       }
     },
-    deleteItem(index) {
-      // todo
+    deleteItem(tagId, tagName, index) {
+      this.$store.commit("tagDeleteModal/setTagId", tagId);
+      this.$store.commit("tagDeleteModal/setTagIndex", index);
+      this.$store.commit("tagDeleteModal/setTagName", tagName);
+      this.$store.commit("tagDeleteModal/openTagDeleteModal");
     },
     editItem(index) {
       // todo
