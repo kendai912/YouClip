@@ -64,16 +64,16 @@
                 background-color="transparent"
                 style="height: 48px; justify-content: space-evenly; align-items: center;"
               >
-                <v-btn v-on:click="shareTag" class="ma-0 pa-0 narrow-btn">
-                  <span>シーン共有</span>
+                <v-btn v-on:click="sharePlaylist" class="ma-0 pa-0 narrow-btn">
+                  <span>クリップ共有</span>
                   <v-icon class="icon-large my-grey">mdi-share</v-icon>
                 </v-btn>
-                <v-btn v-on:click="toggleLike" class="ma-0 pa-0 narrow-btn">
-                  <span>{{ likeCount }}</span>
-                  <v-icon class="icon-large my-grey">mdi-heart-outline</v-icon>
+                <v-btn v-on:click="toggleLikePlaylist" class="ma-0 pa-0 narrow-btn">
+                  <span>{{ likePlaylistCount }}</span>
+                  <v-icon class="icon-large my-grey" v-bind:class="[isLikedPlaylist ? 'isLiked' : '']">mdi-heart-outline</v-icon>
                 </v-btn>
               </v-bottom-navigation>
-              <span v-on:click="openOtherActionModal" style="position: absolute; bottom: 15px; right: 10px; font-size: 22px;">
+              <span v-on:click="openOtherActionModal" style="position: absolute; bottom: 15px; right: 7px; font-size: 22px;">
                 <i class="fas fa-ellipsis-v my-grey"></i>
               </span>
             </v-col>
