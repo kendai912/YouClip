@@ -17,11 +17,11 @@
                 <v-row class="ma-0 pa-0">
                   <v-col cols="auto" class="ma-0 pa-0" style="padding-left: 10px !important">
                     <div>
-                      <span style="line-height: 1.0; font-size: 16pt;">{{
+                      <span style="line-height: 1.0; font-size: 16pt; word-break: break-word;">{{
                         playlistName
                       }}</span>
                     </div>
-                    <div class="my-grey" style="line-height: 1.0; font-size: 12pt;">
+                    <div class="my-grey" style="line-height: 1.0; font-size: 12pt; word-break: break-word;">
                       <span
                         >{{
                           playlistViewCount ? playlistViewCount : 0
