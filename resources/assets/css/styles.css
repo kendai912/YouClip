@@ -93,7 +93,7 @@
 }
 
 .isLiked {
-  color: red;
+  color: red !important;
 }
 
 .tag-list-move {
@@ -148,7 +148,7 @@
 }
 
 .my-grey {
-  color: gray;
+  color: gray !important;
 }
 
 .commentListExpansionPanelCustomHeader {

@@ -278,10 +278,9 @@ export default {
     getMostLikesItem(commentList) {
       if(commentList.length > 0) {
         const maxLikesComment = commentList.reduce(
-          (max, comment) => (comment.likes_count > max ? comment : max),
-          commentList[0].likes_count
+          (max, comment) => (comment.likes_count > max.likes_count ? comment : max),
+          commentList[0]
         );
-
         this.mostLikesItem = maxLikesComment;
       }
     }
