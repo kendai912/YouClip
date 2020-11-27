@@ -28,6 +28,7 @@
 import { mapState, mapGetters, mapMutations } from "vuex";
 
 export default {
+  name: 'PlaylistDeleteModal',
   data() {
     return {
       beforeLoginUrl: "",
