@@ -17,6 +17,7 @@ import highlight from "./highlight";
 import highlightHeader from "./highlightHeader";
 import YTsearch from "./YTsearch";
 import youtube from "./youtube";
+import ytPlayerController from "./ytPlayerController";
 import tagging from "./tagging";
 import noLoginModal from "./noLoginModal";
 import playlistDeleteModal from "./playlistDeleteModal";
@@ -46,6 +47,7 @@ const store = new Vuex.Store({
     highlightHeader,
     YTsearch,
     youtube,
+    ytPlayerController,
     tagging,
     noLoginModal,
     playlistDeleteModal,

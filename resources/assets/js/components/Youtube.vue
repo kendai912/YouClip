@@ -4,6 +4,7 @@
     <div class="highlight-body">
       <div class="ytPlayerWrapper">
         <div id="player"></div>
+        <YTPlayerController ref="YTPlayerController" />
       </div>
       <v-sheet tile v-if="player != null" class="highlightControllerBody">
         <v-container class="ma-0 pa-0" fluid>
@@ -19,27 +20,6 @@
               <span v-else>{{ videoData.title }}</span></v-col
             >
           </v-row>
-          <v-row
-            class="ma-0 pt-2 text-center"
-            align="center"
-            justify="space-around"
-          >
-            <v-col v-on:click="backwardFiveSec">
-              <span>
-                5秒戻る
-                <i class="fas fa-step-backward fa-2x"></i>
-              </span>
-            </v-col>
-            <v-col>
-              <span>{{ currentTime }} / {{ duration }}</span>
-            </v-col>
-            <v-col v-on:click="forwardFiveSec">
-              <span>
-                <i class="fas fa-step-forward fa-2x"></i>
-                5秒進む
-              </span>
-            </v-col>
-          </v-row>
 
           <v-form ref="form">
             <v-row class="ma-0 pt-4" align="center">
@@ -52,8 +32,10 @@
                         elevation="0"
                         height="64"
                       >
-                        <v-btn v-on:click="tapStartBtn" class="ma-0 pa-0">
-                          <span class="green--text text--lighten-1">開始</span>
+                        <v-btn v-on:click.stop="tapStartBtn" class="ma-0 pa-0">
+                          <span class="green--text text--lighten-1"
+                            >開始時間を指定</span
+                          >
                           <v-icon color="green lighten-1" x-large
                             >alarm_on</v-icon
                           >
@@ -86,8 +68,10 @@
                         elevation="0"
                         height="64"
                       >
-                        <v-btn v-on:click="tapStopBtn" class="ma-0 pa-0">
-                          <span class="red--text text--darken-1">終了</span>
+                        <v-btn v-on:click.stop="tapStopBtn" class="ma-0 pa-0">
+                          <span class="red--text text--darken-1"
+                            >終了時間を指定</span
+                          >
                           <v-icon color="red darken-1" x-large
                             >alarm_off</v-icon
                           >
@@ -140,10 +124,11 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
 import HighlightHeader from "../components/HighlightHeader.vue";
 import TagItem from "../components/TagItem.vue";
 import TimeControl from "../components/TimeControl.vue";
+import YTPlayerController from "../components/YTPlayerController";
 import myMixin from "../util";
 
 export default {
@@ -151,6 +136,7 @@ export default {
     HighlightHeader,
     TagItem,
     TimeControl,
+    YTPlayerController,
   },
   data() {
     return {
@@ -208,22 +194,16 @@ export default {
       youtubeId: "youtube/youtubeId",
       tagDataArray: "youtube/tagDataArray",
       isNew: "youtube/isNew",
-      currentTime: "youtube/currentTime",
       isNew: "youtube/isNew",
-      videoData: "youtube/videoData",
       newVideoData: "youtube/newVideoData",
+      videoData: "youtube/videoData",
+      currentTime: "youtube/currentTime",
     }),
-    duration() {
-      if (this.isNew) {
-        return this.newVideoData ? this.newVideoData.duration : "0:00";
-      } else {
-        return this.videoData
-          ? this.formatToMinSec(this.videoData.duration)
-          : "0:00";
-      }
-    },
   },
   methods: {
+    ...mapMutations({
+      setPlayer: "ytPlayerController/setPlayer",
+    }),
     initialize() {
       //ナビバーを非表示
       this.$store.commit("navbar/setShowNavbar", false);
@@ -241,21 +221,22 @@ export default {
     taggingSucceed() {
       this.snackbar = true;
     },
-    //5秒戻る
-    backwardFiveSec() {
-      this.player.seekTo(this.convertToSec(this.currentTime) - 5);
-    },
-    //5秒進む
-    forwardFiveSec() {
-      this.player.seekTo(this.convertToSec(this.currentTime) + 5);
-    },
     tapStartBtn() {
       this.startTimeInput = this.currentTime;
+
+      // call child component's methods
+      this.$refs.YTPlayerController.setImmediateHide();
+      this.$refs.YTPlayerController.setIsPlaying();
+      this.$refs.YTPlayerController.toggleController();
+
       this.player.playVideo();
     },
     tapStopBtn() {
       this.endTimeInput = this.currentTime;
-      this.player.pauseVideo();
+
+      // call child component's methods
+      this.$refs.YTPlayerController.toggleController();
+      this.$refs.YTPlayerController.pauseVideo();
     },
     // タグ入力へ進む
     next() {
@@ -325,6 +306,9 @@ export default {
           onStateChange: onPlayerStateChange,
         },
       });
+
+      //playerインスタンスをytPlayerControllerストアに格納
+      self.setPlayer(self.player);
 
       //iframeの縦・横のサイズをセット(縦は952px、横は幅いっぱい)
       $("iframe").width($(".ytPlayerWrapper").width());
