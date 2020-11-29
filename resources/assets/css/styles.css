@@ -93,7 +93,7 @@
   height: 0;
   padding-bottom: 56.25%;
   position: absolute;
-  bottom: 0px;
+  bottom: 15px;
 }
 
 .button:hover {
@@ -113,9 +113,8 @@
   width: 100%;
   height: 100%;
   position: absolute;
-  /* opacity: 0.5; */
   background-color: rgb(32, 32, 32, 0.5) !important;
-   z-index: 1;
+  z-index: 1;
 }
 
 .overlayWrap {
@@ -126,41 +125,32 @@
   z-index: 0;
 }
 
-.nofade-enter {
-  opacity: 0;
+.ytseekbar-wrapper {
+  width: 100%;
+  height: 15px;
+  background: black;
+  position: absolute;
 }
 
-.nofade-leave {
-  opacity: 0.5;
+.ytseek-head {
+  background-color: #fff;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.6);
+  border-radius: 6px;
+  position: relative;
+  left: -4px;
+  top: 0px;
+  width: 10px;
+  height: 15px;
 }
 
-.nofade-enter-to {
-  opacity: 0.5;
-}
-
-.nofade-leave-to {
-  opacity: 0;
-}
-
-.nofade-enter {
-  opacity: 0;
-}
-
-.nofade-leave {
-  opacity: 0.5;
-}
-
-.overlayfade-enter-active,
-.overlayfade-leave-active {
-  transition: all 2s;
-}
-
-.overlayfade-enter-to {
-  opacity: 0.5;
-}
-
-.overlayfade-leave-to {
-  opacity: 0;
+.ytseek-innder {
+  background-color: #6a7bff;
+  border-radius: 4px;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 4px;
+  height: 8px;
 }
 
 .tag-list-move {
@@ -345,6 +335,7 @@
   top: 48px;
   left: 0px;
   width: 100%;
+  height: calc(100vh - 48px -  56px);
 }
 
 .search-box {

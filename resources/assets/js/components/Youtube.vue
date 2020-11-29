@@ -1,12 +1,13 @@
 <template>
   <div class="container--small">
     <HighlightHeader />
-    <div class="highlight-body">
-      <div class="ytPlayerWrapper">
+    <div class="highlight-body" ref="highlightBody">
+      <div class="ytPlayerWrapper" ref="ytPlayerWrapper">
         <div id="player"></div>
         <YTPlayerController ref="YTPlayerController" />
+        <YTSeekBar ref="YTSeekBar" v-bind:highlightBodyRef="highlightBodyRef" />
       </div>
-      <v-sheet tile v-if="player != null" class="highlightControllerBody">
+      <v-sheet v-if="player != null" class="highlightControllerBody">
         <v-container class="ma-0 pa-0" fluid>
           <v-row class="ma-0 pa-0 text-left" align="start">
             <v-col>
@@ -129,6 +130,7 @@ import HighlightHeader from "../components/HighlightHeader.vue";
 import TagItem from "../components/TagItem.vue";
 import TimeControl from "../components/TimeControl.vue";
 import YTPlayerController from "../components/YTPlayerController";
+import YTSeekBar from "../components/YTSeekBar";
 import myMixin from "../util";
 
 export default {
@@ -137,6 +139,7 @@ export default {
     TagItem,
     TimeControl,
     YTPlayerController,
+    YTSeekBar,
   },
   data() {
     return {
@@ -148,6 +151,8 @@ export default {
       timer: null,
       startTimeInput: null,
       endTimeInput: null,
+      highlightBodyRef: this.$refs.highlightBody,
+
       startRules: [
         (v) => !!v || "開始時間を入力して下さい",
         (v) => {
@@ -314,22 +319,23 @@ export default {
       $("iframe").width($(".ytPlayerWrapper").width());
       $("iframe").height(952);
 
-      //iframeが見える範囲の高さをセットし、iframe上部の黒分が見えないよう上にスライド
+      //iframeとseekbarが見える範囲の高さをセットし、iframe上部の黒分が見えないよう上にスライド
       $(".ytPlayerWrapper").css(
         "height",
         ($("iframe").width() * 9) / 16 +
-          (952 - ($("iframe").width() * 9) / 16) / 2
+          (952 - ($("iframe").width() * 9) / 16) / 2 +
+          15
       );
       $(".ytPlayerWrapper").css(
         "top",
         (($("iframe").height() - ($("iframe").width() * 9) / 16) / 2) * -1
       );
 
-      //開始・終了ボタンがiframeの下に来るようにtopを調整
+      //開始・終了ボタンがiframeとseekbarの下に来るようにtopを調整
       this.$nextTick(() => {
         $(".highlightControllerBody").css(
           "top",
-          ($("iframe").width() * 9) / 16
+          ($("iframe").width() * 9) / 16 + 15
         );
       });
     };
@@ -340,13 +346,13 @@ export default {
       event.target.playVideo();
       this.isPlayerReady = true;
 
-      //0.4秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
+      //1秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
       self.timer = setInterval(function() {
         //playerが取得した時間を「分:秒」に整形しcurrentTimeに格納
         let currentTime = self.formatTime(event.target.getCurrentTime());
         //currentTimeをyoutubeストアにセット
         self.$store.commit("youtube/setCurrentTime", currentTime);
-      }, 400);
+      }, 1000);
 
       //TagItemを表示に切り替え
       this.$store.commit("youtube/setIsReady", true);
@@ -362,6 +368,9 @@ export default {
         location.reload();
       }
     });
+
+    //YTSeekBarのクリックイベント用にボディのrefをセット
+    this.highlightBodyRef = this.$refs.highlightBody;
   },
   beforeDestroy() {
     // シーンタグ付けコンポーネントの現在再生時間をセットするインターバルを停止する

@@ -15,26 +15,30 @@
             <v-row class="ma-0 pa-0" align="center">
               <v-col class="ma-0 pa-0">
                 <v-row class="ma-0 pa-0">
-                  <v-col cols="auto" class="ma-0 pa-0" style="padding-left: 10px !important">
+                  <v-col
+                    cols="auto"
+                    class="ma-0 pa-0"
+                    style="padding-left: 10px !important"
+                  >
                     <div>
-                      <span style="line-height: 1.0; font-size: 16pt; word-break: break-word;">{{
-                        playlistName
-                      }}</span>
+                      <span
+                        style="line-height: 1.0; font-size: 16pt; word-break: break-word;"
+                        >{{ playlistName }}</span
+                      >
                     </div>
-                    <div class="my-grey" style="line-height: 1.0; font-size: 12pt; word-break: break-word;">
+                    <div
+                      class="my-grey"
+                      style="line-height: 1.0; font-size: 12pt; word-break: break-word;"
+                    >
                       <span
                         >{{
                           playlistViewCount ? playlistViewCount : 0
                         }}回視聴</span
                       >
                       <span>&nbsp;&#8226;&nbsp;</span>
-                      <span
-                        >合計{{ totalDuration }}</span
-                      >
+                      <span>合計{{ totalDuration }}</span>
                       <span>&nbsp;&#8226;&nbsp;</span>
-                      <span
-                        >{{ playlistCreatedAt }}前</span
-                      >
+                      <span>{{ playlistCreatedAt }}前</span>
                     </div>
                   </v-col>
                 </v-row>
@@ -73,13 +77,23 @@
                     class="icon-large"
                   />
                 </v-btn>
-                <v-btn v-on:click="toggleLikePlaylist" class="ma-0 pa-0 narrow-btn">
+                <v-btn
+                  v-on:click="toggleLikePlaylist"
+                  class="ma-0 pa-0 narrow-btn"
+                >
                   <span>{{ likePlaylistCount }}</span>
-                  <v-icon v-if="isLikedPlaylist" class="icon-large isLiked">mdi-heart</v-icon>
-                  <v-icon v-if="!isLikedPlaylist" class="icon-large my-grey">mdi-heart-outline</v-icon>
+                  <v-icon v-if="isLikedPlaylist" class="icon-large isLiked"
+                    >mdi-heart</v-icon
+                  >
+                  <v-icon v-if="!isLikedPlaylist" class="icon-large my-grey"
+                    >mdi-heart-outline</v-icon
+                  >
                 </v-btn>
               </v-bottom-navigation>
-              <span v-on:click="openOtherActionModal" style="position: absolute; bottom: 15px; right: 7px; font-size: 22px;">
+              <span
+                v-on:click="openOtherActionModal"
+                style="position: absolute; bottom: 15px; right: 7px; font-size: 22px;"
+              >
                 <i class="fas fa-ellipsis-v my-grey"></i>
               </span>
             </v-col>
@@ -181,7 +195,7 @@ export default {
           "youtube/setCurrentTime",
           self.formatTime(self.player.getCurrentTime())
         );
-      }, 400);
+      }, 1000);
     },
     playPlaylist(playlistId, index) {
       //最後のシーンでない場合は次のシーンのパラメータをセット
