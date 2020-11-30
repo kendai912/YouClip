@@ -109,7 +109,6 @@ export default {
           },
         })
         .catch((err) => {});
-      // location.reload();
     },
   },
   created() {},

@@ -130,6 +130,15 @@
   height: 15px;
   background: black;
   position: absolute;
+  z-index: 1;
+}
+
+.ytseekbar-mask {
+  width: 100%;
+  height: 15px;
+  background: transparent;
+  position: absolute;
+  z-index: 3;
 }
 
 .ytseek-head {
@@ -141,6 +150,7 @@
   top: 0px;
   width: 10px;
   height: 15px;
+  z-index: 4;
 }
 
 .ytseek-innder {
@@ -151,6 +161,35 @@
   left: 3px;
   width: 4px;
   height: 8px;
+  z-index: 5;
+}
+
+.highlight-content {
+  height: 15px;
+  background-color: #00d873;
+  position: absolute;
+  top: 0px;
+  z-index: 2;
+}
+
+.left-triangle {
+  position: absolute;
+  top: 0px;
+  height: 15px;
+  border-bottom: 7.5px solid transparent;
+  border-top: 7.5px solid transparent;
+  border-right: 3px solid #00d873;
+  z-index: 2;
+}
+
+.right-triangle {
+  position: absolute;
+  top: 0px;
+  height: 15px;
+  border-bottom: 7.5px solid transparent;
+  border-top: 7.5px solid transparent;
+  border-left: 3px solid #00d873;
+  z-index: 2;
 }
 
 .tag-list-move {
@@ -335,7 +374,7 @@
   top: 48px;
   left: 0px;
   width: 100%;
-  height: calc(100vh - 48px -  56px);
+  height: calc(100vh - 48px - 56px);
 }
 
 .search-box {

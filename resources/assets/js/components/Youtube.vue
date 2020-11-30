@@ -257,6 +257,12 @@ export default {
     $route() {
       this.initialize();
     },
+    startTimeInput() {
+      this.$store.commit("ytSeekBar/setStartTimeInput", this.startTimeInput);
+    },
+    endTimeInput() {
+      this.$store.commit("ytSeekBar/setEndTimeInput", this.endTimeInput);
+    },
   },
   async created() {
     this.initialize();
