@@ -3,58 +3,62 @@
     <HighlightHeader />
 
     <div class="highlight-body" ref="highlightBody" style="height: auto;">
-      <v-card class="pa-2 pb-0 ma-0" elevation="0">
-        <div>切り抜いた場面一覧</div>
-        <div>(以下がまとめとして連続再生されます)</div>
-      </v-card>
-      <SceneTagItem
-        v-bind:showAddNewSceneComponent="showAddNewSceneComponent"
-      />
+      <div class="highlight-body-upper">
+        <v-card class="pa-2 pb-0 ma-0" elevation="0">
+          <div>切り抜いた場面一覧</div>
+          <div>(以下がまとめとして連続再生されます)</div>
+        </v-card>
+        <SceneTagItem
+          v-bind:showAddNewSceneComponent="showAddNewSceneComponent"
+        />
+      </div>
 
-      <v-container class="ma-0 pa-2 pt-6">
-        <v-row class="ma-0 pa-0 justify-center">
-          <v-btn
-            width="100%"
-            height="45px"
-            color="red lighten-2"
-            class="white--text"
-            v-on:click="moveToYTvideoSelectPage"
-            style="font-size: 14px; "
-            >続けて他の動画の場面を追加</v-btn
+      <v-sheet tile class="ma-0 pa-0 " width="100%">
+        <v-container class="ma-0 pa-2 pt-6">
+          <v-row class="ma-0 pa-0 justify-center">
+            <v-btn
+              width="100%"
+              height="45px"
+              color="red lighten-2"
+              class="white--text"
+              v-on:click="moveToYTvideoSelectPage"
+              style="font-size: 14px; "
+              >続けて他の動画の場面を追加</v-btn
+            >
+          </v-row>
+          <v-row
+            class="ma-0 pa-0 justify-center"
+            align="center"
+            style="height: 40px;"
           >
-        </v-row>
-        <v-row
-          class="ma-0 pa-0 justify-center"
-          align="center"
-          style="height: 40px;"
-        >
-          <v-col class="ma-0 pa-0">
-            <div
-              style="height: 1px; background-color: rgba(var(--b38,219,219,219),1)"
-            ></div>
-          </v-col>
-          <v-col class="ma-0 pa-0 text-center" cols="4">
-            <span>または</span>
-          </v-col>
-          <v-col class="ma-0 pa-0">
-            <div
-              style="height: 1px; background-color: rgba(var(--b38,219,219,219),1)"
-            ></div>
-          </v-col>
-        </v-row>
-        <v-row class="ma-0 pa-0 justify-center">
-          <v-btn
-            width="100%"
-            height="45px"
-            outlined
-            color="red lighten-2"
-            class="white--text"
-            v-on:click="openTitleSettingPage"
-            style="font-size: 14px;"
-            >まとめのタイトル入力へ</v-btn
-          >
-        </v-row>
-      </v-container>
+            <v-col class="ma-0 pa-0">
+              <div
+                style="height: 1px; background-color: rgba(var(--b38,219,219,219),1)"
+              ></div>
+            </v-col>
+            <v-col class="ma-0 pa-0 text-center" cols="4">
+              <span>または</span>
+            </v-col>
+            <v-col class="ma-0 pa-0">
+              <div
+                style="height: 1px; background-color: rgba(var(--b38,219,219,219),1)"
+              ></div>
+            </v-col>
+          </v-row>
+          <v-row class="ma-0 pa-0 justify-center">
+            <v-btn
+              width="100%"
+              height="45px"
+              outlined
+              color="red lighten-2"
+              class="white--text"
+              v-on:click="openTitleSettingPage"
+              style="font-size: 14px;"
+              >まとめのタイトル入力へ</v-btn
+            >
+          </v-row>
+        </v-container>
+      </v-sheet>
     </div>
   </div>
 </template>

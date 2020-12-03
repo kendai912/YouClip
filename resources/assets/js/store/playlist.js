@@ -24,6 +24,8 @@ const state = {
   sceneListofPlaylist: null,
   commentListofPlaylist: null,
   newPlaylistId: null,
+  newPlaylistName: null,
+  newPreview: null,
   publicPlaylist: null,
   createdSceneList: null,
 };
@@ -70,6 +72,8 @@ const getters = {
   sceneListofPlaylist: (state) => state.sceneListofPlaylist,
   commentListofPlaylist: (state) => state.commentListofPlaylist,
   newPlaylistId: (state) => state.newPlaylistId,
+  newPlaylistName: (state) => state.newPlaylistName,
+  newPreview: (state) => state.newPreview,
 };
 
 const mutations = {
@@ -138,6 +142,12 @@ const mutations = {
   },
   setNewPlaylistId(state, data) {
     state.newPlaylistId = data;
+  },
+  setNewPlaylistName(state, data) {
+    state.newPlaylistName = data;
+  },
+  setNewPreview(state, data) {
+    state.newPreview = data;
   },
 };
 
@@ -352,6 +362,27 @@ const actions = {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
       toastr.error("プレイリストへの保存に失敗しました");
+    }
+  },
+  async updatePlaylist(context, params) {
+    this.errors = {};
+
+    //チェックの入ったプレイリストをパラメータとして格納
+    let playlistParams = {
+      newPlaylistId: params.newPlaylistId,
+      playlistName: params.playlistName,
+      privacySetting: params.privacySetting,
+      description: params.description,
+    };
+
+    const response = await axios.post("/api/playlist/update", playlistParams);
+    if (response.status == CREATED) {
+      context.commit("setNewPreview", response.data.preview);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
     }
   },
   async updatePlaylistTitle(context, playlist) {

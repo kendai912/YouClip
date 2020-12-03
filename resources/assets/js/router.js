@@ -89,6 +89,10 @@ const routes = [
     component: Highlight,
   },
   {
+    path: "/youtube/complete",
+    component: Highlight,
+  },
+  {
     path: "/watch",
     component: Watch,
   },

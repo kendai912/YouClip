@@ -14,6 +14,7 @@ import Youtube from "../components/Youtube.vue";
 import Confirm from "../components/Confirm.vue";
 import SceneList from "../components/SceneList.vue";
 import Title from "../components/Title.vue";
+import Complete from "../components/Complete.vue";
 
 export default {
   components: {
@@ -22,6 +23,7 @@ export default {
     Confirm,
     SceneList,
     Title,
+    Complete
   },
   data() {
     return {};
@@ -38,6 +40,8 @@ export default {
         this.$store.commit("highlight/setDisplayComponent", "SceneList");
       } else if (this.$route.path == "/youtube/title") {
         this.$store.commit("highlight/setDisplayComponent", "Title");
+      } else if (this.$route.path == "/youtube/complete") {
+        this.$store.commit("highlight/setDisplayComponent", "Complete");
       } else {
         this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
       }

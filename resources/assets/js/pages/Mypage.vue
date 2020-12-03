@@ -37,7 +37,7 @@
                 style="height: 1px; background-color: rgba(var(--b38,219,219,219),1)"
               ></div>
             </v-col>
-            <v-col class="ma-0 pa-0 text-center" cols="6">
+            <v-col class="ma-0 pa-0 text-center" cols="7">
               <v-card-text>はじめての方はこちら</v-card-text>
             </v-col>
             <v-col class="ma-0 pa-0">

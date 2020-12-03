@@ -107,24 +107,24 @@
         {{ text }}
         <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
       </v-snackbar>
-    </div>
 
-    <v-sheet
-      v-if="player != null"
-      tile
-      class="ma-0 pa-0 bottom-position"
-      width="100%"
-    >
-      <v-container class="ma-0 pa-0" fluid>
-        <v-row align="center" class="ma-0 pa-0">
-          <v-col class="text-right ma-0 pa-2">
-            <v-btn color="red lighten-2 white--text" v-on:click="next"
-              >確認</v-btn
-            >
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-sheet>
+      <v-sheet
+        v-if="player != null"
+        tile
+        class="ma-0 pa-0 bottom-position"
+        width="100%"
+      >
+        <v-container class="ma-0 pa-0" fluid>
+          <v-row align="center" class="ma-0 pa-0">
+            <v-col class="text-right ma-0 pa-2">
+              <v-btn color="red lighten-2 white--text" v-on:click="next"
+                >確認</v-btn
+              >
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-sheet>
+    </div>
   </div>
 </template>
 

@@ -520,18 +520,6 @@ class PlaylistController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
     public function delete(Request $request)
     {
         //削除するプレイリストを取得
@@ -600,6 +588,48 @@ class PlaylistController extends Controller
         }
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+        $playlist = Playlist::find($request->newPlaylistId);
+        $playlist->playlistName = $request->playlistName;
+        $playlist->privacySetting = $request->privacySetting;
+        $playlist->description = $request->description;
+
+        //Get preview name for complete page
+        $tagId = DB::table('playlist_tag')->where('playlist_id', $request->newPlaylistId)->select('tag_id')->orderBy('scene_order', 'ASC')->first();
+        $tag = Tag::find($tagId->tag_id);
+
+        try {
+            $playlist->save();
+            return response()->json(
+                [
+                    'result' => 'updated',
+                    'playlist' => $playlist,
+                    'preview' => $tag->preview,
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } catch (Exception $e) {
+            return response()->json(
+                [
+                    'result' => 'failed',
+                ],
+                500,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
+    }
+
     public function updateTitle(Request $request)
     {
         $playlist = Playlist::find($request->playlist_id);
@@ -609,7 +639,7 @@ class PlaylistController extends Controller
             return response()->json(
                 [
                     'result' => 'updated',
-                    'playlistAndTagVideoData' => $playlist,
+                    'playlist' => $playlist,
                 ],
                 200,
                 [],
@@ -635,7 +665,7 @@ class PlaylistController extends Controller
             return response()->json(
                 [
                     'result' => 'updated',
-                    'playlistAndTagVideoData' => $playlist,
+                    'playlist' => $playlist,
                 ],
                 200,
                 [],
@@ -656,11 +686,10 @@ class PlaylistController extends Controller
     public function updateSceneOrder(Request $request)
     {
         $playlist = Playlist::find($request->playlist_id);
-        // DB::table('playlist_tag')->where('playlist_id', $request->playlist_id)->delete();
         foreach ($request->tagVideoData as $key => $scene) {
             $playlist->tags()->detach($scene['id']);
         }
-        // print_r($playlist->tags()->count()); exit;
+
         $sceneOrder = 0;
         foreach ($request->tagVideoData as $key => $scene) {
             $sceneOrder ++;
@@ -673,7 +702,7 @@ class PlaylistController extends Controller
         }
         return response()->json(
             [
-                'playlistAndTagVideoData' => $playlist,
+                'playlist' => $playlist,
             ],
             200,
             [],
