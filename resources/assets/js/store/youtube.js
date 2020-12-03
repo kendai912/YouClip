@@ -130,7 +130,7 @@ const actions = {
       youtubeId: state.youtubeId,
     };
 
-    const response = await axios.get("api/youtube/getVideo", {
+    const response = await axios.get("/api/youtube/getVideo", {
       params: params,
     });
     if (response.status == OK) {
@@ -160,7 +160,7 @@ const actions = {
       videoId: state.videoData.id,
     };
 
-    const response = await axios.get("api/youtube/getTag", {
+    const response = await axios.get("/api/youtube/getTag", {
       params: params,
     });
     if (response.status == OK) {
@@ -200,7 +200,7 @@ const actions = {
     };
 
     // const response = await axios.get("https://cors-anywhere.herokuapp.com/"+api, { params: params });
-    const response = await axios.post("api/search/getYoutubeVideos", {
+    const response = await axios.post("/api/search/getYoutubeVideos", {
       params: params,
       apiUrl: api,
     });
@@ -239,6 +239,7 @@ const actions = {
       // API Keyの上限オーバーで失敗した時
       //次のAPI Keyにスイッチして再度検索実行
       context.commit("setKeyIndex", context.getters["keyIndex"] + 1);
+      console.log("switching API key...");
 
       //API Keyのストックを超えたら直接URLで検索するようにエラーページを表示
       context.getters["keyIndex"] >= context.getters["keyArray"].length
@@ -265,7 +266,7 @@ const actions = {
     };
 
     // const response = await axios.get("https://cors-anywhere.herokuapp.com/"+api, { params: params });
-    const response = await axios.post("api/search/getYoutubeVideoCategories", {
+    const response = await axios.post("/api/search/getYoutubeVideoCategories", {
       params: params,
       apiUrl: api,
     });

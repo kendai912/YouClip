@@ -13,7 +13,7 @@
       </div>
       <v-sheet v-if="player != null" class="highlightControllerBody">
         <v-container class="ma-0 pa-0" fluid>
-          <v-row class="ma-0 pa-0 text-left" align="start">
+          <v-row class="ma-0 pa-0 text-left" align="center">
             <v-col>
               <v-img
                 src="/storage/icons/yt_social_red.png"
@@ -26,81 +26,54 @@
             >
           </v-row>
 
-          <v-form ref="form">
-            <v-row class="ma-0 pt-4" align="center">
-              <v-col class="ma-0 pa-0">
-                <v-card class="ma-0" tile elevation="0">
-                  <v-row class="ma-0 pa-0">
-                    <v-col class="ma-0 pa-0" justify="center">
-                      <v-bottom-navigation
-                        class="bottom_navigation_no_shadow"
-                        elevation="0"
-                        height="64"
-                      >
-                        <v-btn v-on:click.stop="tapStartBtn" class="ma-0 pa-0">
-                          <span class="green--text text--lighten-1"
-                            >開始時間を指定</span
-                          >
-                          <v-icon color="green lighten-1" x-large
-                            >alarm_on</v-icon
-                          >
-                        </v-btn>
-                      </v-bottom-navigation>
-                    </v-col>
-                  </v-row>
-                  <v-row class="ma-0 pa-0" justify="center">
-                    <v-col class="ma-0 pa-0" cols="3">
-                      <v-text-field
-                        v-model="startTimeInput"
-                        v-bind:rules="startRules"
-                        required
-                        placeholder="0:00"
-                        validate-on-blur
-                        flat
-                        class="ma-0 pa-0 centered-input"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-card>
-              </v-col>
+          <v-row class="ma-0 pt-4">
+            <v-col class="text-center now-playing">
+              <img src="/storage/icons/now_playing.svg" />
+              <span>{{ start }}-{{ end }}の場面を再生中</span>
+            </v-col>
+          </v-row>
 
-              <v-col class="ma-0 pa-0">
-                <v-card class="ma-0" tile elevation="0">
-                  <v-row class="ma-0 pa-0">
-                    <v-col class="ma-0 pa-0" justify="center">
-                      <v-bottom-navigation
-                        class="bottom_navigation_no_shadow"
-                        elevation="0"
-                        height="64"
-                      >
-                        <v-btn v-on:click.stop="tapStopBtn" class="ma-0 pa-0">
-                          <span class="red--text text--darken-1"
-                            >終了時間を指定</span
-                          >
-                          <v-icon color="red darken-1" x-large
-                            >alarm_off</v-icon
-                          >
-                        </v-btn>
-                      </v-bottom-navigation>
-                    </v-col>
-                  </v-row>
-                  <v-row class="ma-0 pa-0" justify="center">
-                    <v-col class="ma-0 pa-0" cols="3">
-                      <v-text-field
-                        v-model="endTimeInput"
-                        v-bind:rules="endRules"
-                        required
-                        placeholder="0:00"
-                        validate-on-blur
-                        flat
-                        class="ma-0 pa-0 centered-input"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-form>
+          <v-row class="ma-0 pa-0" align="center">
+            <v-col>
+              <v-form ref="form" class="ma-0 pa-0">
+                <v-combobox
+                  v-model="tags"
+                  v-bind:items="tagItems"
+                  required
+                  validate-on-blur
+                  chips
+                  clearable
+                  label="(任意) タグを入力　例: 「◯◯の場面」"
+                  multiple
+                  flat
+                  dense
+                  small-chips
+                  class="sceneTagInputBox"
+                >
+                  <template
+                    v-slot:selection="{ attrs, item, select, selected }"
+                  >
+                    <v-chip
+                      v-bind="attrs"
+                      :input-value="selected"
+                      v-on:click="select"
+                      v-on:click:close="remove(item)"
+                      close
+                      class="ma-2"
+                      small
+                      color="blue lighten-2"
+                      text-color="white"
+                    >
+                      <v-avatar left>
+                        <i class="fas fa-tag my-grey"></i>
+                      </v-avatar>
+                      {{ item }}
+                    </v-chip>
+                  </template>
+                </v-combobox>
+              </v-form>
+            </v-col>
+          </v-row>
         </v-container>
       </v-sheet>
       <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
@@ -118,13 +91,18 @@
       <v-container class="ma-0 pa-0" fluid>
         <v-row align="center" class="ma-0 pa-0">
           <v-col class="text-right ma-0 pa-2">
-            <v-btn color="red lighten-2 white--text" v-on:click="next"
-              >確認</v-btn
+            <v-btn
+              color="red lighten-2 white--text"
+              v-bind:disabled="isDisabled"
+              v-on:click="confirm"
+              >OK</v-btn
             >
           </v-col>
         </v-row>
       </v-container>
     </v-sheet>
+    <NoLoginModal v-if="showLoginModal" />
+    <ConfirmationModal v-if="showConfirmationModal" />
   </div>
 </template>
 
@@ -135,6 +113,8 @@ import TagItem from "../components/TagItem.vue";
 import TimeControl from "../components/TimeControl.vue";
 import YTPlayerController from "../components/YTPlayerController";
 import YTSeekBar from "../components/YTSeekBar";
+import NoLoginModal from "../components/NoLoginModal.vue";
+import ConfirmationModal from "../components/ConfirmationModal.vue";
 import myMixin from "../util";
 
 export default {
@@ -144,6 +124,8 @@ export default {
     TimeControl,
     YTPlayerController,
     YTSeekBar,
+    NoLoginModal,
+    ConfirmationModal,
   },
   data() {
     return {
@@ -156,6 +138,10 @@ export default {
       endTimeInput: null,
       highlightBodyRef: this.$refs.highlightBody,
       isPlayerReady: false,
+      isPlaying: true,
+      isDisabled: false,
+      tags: [],
+      tagItems: [],
       startRules: [
         (v) => !!v || "開始時間を入力して下さい",
         (v) => {
@@ -205,7 +191,14 @@ export default {
       newVideoData: "youtube/newVideoData",
       videoData: "youtube/videoData",
       currentTime: "youtube/currentTime",
+      currentCategory: "youtube/currentCategory",
       player: "ytPlayerController/player",
+      start: "tagging/start",
+      end: "tagging/end",
+      showLoginModal: "noLoginModal/showLoginModal",
+      isEditting: "tagging/isEditting",
+      newPlaylistId: "playlist/newPlaylistId",
+      showConfirmationModal: "confirmationModal/showConfirmationModal",
     }),
   },
   methods: {
@@ -219,7 +212,7 @@ export default {
       //headerの文言をセット
       this.$store.commit(
         "highlightHeader/setHeaderMessage",
-        "切り抜く場面を指定"
+        "切り抜いた場面を確認"
       );
     },
     //シーンタグ完了のトーストを表示
@@ -243,14 +236,14 @@ export default {
       this.$refs.YTPlayerController.toggleController();
       this.$refs.YTPlayerController.pauseVideo();
     },
-    //youtubeIdおよび入力された開始・終了時間をセッションストレージに保存
-    saveTimeInput(youtubeId, startTimeInput, endTimeInput) {
-      let ytInputData = {
-        youtubeId: youtubeId,
-        startTimeInput: startTimeInput,
-        endTimeInput: endTimeInput,
-      };
-      window.sessionStorage.setItem("ytInputData", JSON.stringify(ytInputData));
+    checkRouting() {
+      if (this.start == null || this.end == null) {
+        this.$router
+          .push({
+            path: "/highlight",
+          })
+          .catch((err) => {});
+      }
     },
     //以前入力された開始・終了時間をセッションストレージからロード
     loadTimeInput() {
@@ -262,27 +255,78 @@ export default {
         this.$store.commit("ytSeekBar/setEndTimeInput", null);
         this.startTimeInput = ytInputData.startTimeInput;
         this.endTimeInput = ytInputData.endTimeInput;
+        this.$store.commit("tagging/setStart", ytInputData.startTimeInput);
+        this.$store.commit("tagging/setEnd", ytInputData.endTimeInput);
       }
+      this.checkRouting();
     },
-    // タグ入力へ進む
-    next() {
-      if (this.$refs.form.validate()) {
-        this.$store.commit("tagging/setStart", this.startTimeInput);
-        this.$store.commit("tagging/setEnd", this.endTimeInput);
-        this.saveTimeInput(
-          this.youtubeId,
-          this.startTimeInput,
-          this.endTimeInput
+    // 確認モーダル表示へ進む
+    confirm() {
+      if (!this.isLogin) {
+        //未ログインの場合
+        this.$store.commit("noLoginModal/openLoginModal");
+        this.$store.commit(
+          "noLoginModal/setMessageWhenNotLogined",
+          "切り抜いた場面を保存するには、ログインしてください。(入力データは保持されます)"
         );
+      } else {
+        let self = this;
+        setTimeout(async function() {
+          //ログイン済の場合
+          if (self.isEditting) {
+            //編集の場合
+            //入力済データ(除く、保存先プレイリスト)をセット
+            self.$store.commit("tagging/setTags", self.tags);
+            self.$store.commit("tagging/setPrivacySetting", "public");
 
-        this.$router
-          .push({
-            path: "/youtube/confirm",
-            query: {
-              v: this.youtubeId,
-            },
-          })
-          .catch((err) => {});
+            //データを更新
+            await self.$store.dispatch("tagging/updateSceneTags");
+          } else {
+            //新規の場合
+            //入力済データをセット
+            self.$store.commit("tagging/setTags", self.tags);
+            self.$store.commit("tagging/setPrivacySetting", "public");
+
+            //check if there is editing new playlist
+            await self.$store.dispatch("playlist/getNewPlaylistId");
+            if (!self.newPlaylistId) {
+              //プレイリストを新規作成しIDをplaylist storeのnewPlaylistIdに保存
+              await self.$store.dispatch("playlist/createPlaylist", {
+                privacySetting: this.privacySetting,
+                currentTagId: "",
+                currentCategory: this.currentCategory,
+              });
+            }
+
+            //新しく作成したplaylistIdをセット
+            self.$store.commit(
+              "tagging/setMyPlaylistToSave",
+              self.newPlaylistId
+            );
+
+            //ローディングを表示し、OKボタンを無効化
+            self.$store.commit("highlightHeader/setIsLoading");
+            self.isDisabled = true;
+
+            //場面のデータを登録
+            await self.$store.dispatch("tagging/storeSceneTags");
+
+            //ローディングを非表示
+            self.$store.commit("highlightHeader/setNotLoading");
+
+            //display scene tagging complete modal
+            self.$store.commit("confirmationModal/openConfirmationModal");
+          }
+
+          // 入力フォームをクリア(プライバシー設定と保存先プレイリストは初期値をセット)
+          self.$store.commit("tagging/setTags", "");
+          self.$store.commit("tagging/setStart", "");
+          self.$store.commit("tagging/setEnd", "");
+          self.$store.commit("tagging/setPrivacySetting", "public");
+
+          //セッションに保存してある開始・終了時間データを破棄
+          window.sessionStorage.removeItem("ytInputData");
+        });
       }
     },
   },
@@ -338,6 +382,8 @@ export default {
         height: "315",
         videoId: this.youtubeId,
         playerVars: {
+          start: this.start ? this.convertToSec(this.start) : "",
+          end: this.end ? this.convertToSec(this.end) : "",
           playsinline: 1,
           autoplay: 1,
           iv_load_policy: 3, //アノテーション非表示
@@ -404,13 +450,26 @@ export default {
       this.$store.commit("youtube/setIsReady", true);
     };
 
-    window.onPlayerStateChange = (event) => {};
+    window.onPlayerStateChange = (event) => {
+      if (event.data == YT.PlayerState.ENDED && this.isPlaying) {
+        //フラグを停止中に反転
+        this.isPlaying = !this.isPlaying;
+
+        //リピート再生(開始時間に戻る)
+        this.player.seekTo(this.convertToSec(this.start));
+      }
+
+      if (event.data == YT.PlayerState.PLAYING) {
+        //フラグを再生中にセット
+        this.isPlaying = true;
+      }
+    };
 
     //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
     let from = this.$route.path;
     window.addEventListener("popstate", function(e) {
       let to = self.$route.path;
-      if (from == "/youtube/highlight" && to == "/youtube/highlight") {
+      if (from == "/youtube/confirm" && to == "/youtube/confirm") {
         location.reload();
       }
     });

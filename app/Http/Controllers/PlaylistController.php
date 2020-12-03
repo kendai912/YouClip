@@ -413,7 +413,6 @@ class PlaylistController extends Controller
         //playlistテーブルに保存
         if (Auth::user()) {
             $playlist = new Playlist;
-            $playlist->playlistName = $request->newPlaylistName;
             $playlist->privacySetting = $request->privacySetting;
             $playlist->user_id = Auth::user()->id;
             $playlist->playlistCategory = $request->currentCategory;
@@ -434,6 +433,34 @@ class PlaylistController extends Controller
                 'newPlaylist' => $playlist
                 ],
                 201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
+    }
+    //Get newly created playlist
+    public function getNewPlaylist()
+    {
+        //playlistテーブルに保存
+        if (Auth::user()) {
+            //ユーザーの最新のplaylist IDを取得
+            $latestPlaylist = Playlist::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
+            $newPlaylist = Playlist::find($latestPlaylist->id)->where('playlistName', '')->first();
+
+            return response()->json(
+                [
+                'newPlaylist' => $newPlaylist
+                ],
+                200,
                 [],
                 JSON_UNESCAPED_UNICODE
             );

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DeleteSearchoptionUniqueConstraintsOfSearchqueriesTable extends Migration
+class ModifyTagsNullableToTagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class DeleteSearchoptionUniqueConstraintsOfSearchqueriesTable extends Migration
      */
     public function up()
     {
-        Schema::table('searchqueries', function (Blueprint $table) {
-            $table->dropUnique(['searchoption']);
+        Schema::table('tags', function (Blueprint $table) {
+            $table->string('tags')->nullable()->change();
         });
     }
 
@@ -25,8 +25,8 @@ class DeleteSearchoptionUniqueConstraintsOfSearchqueriesTable extends Migration
      */
     public function down()
     {
-        Schema::table('searchqueries', function (Blueprint $table) {
-            $table->unique(['searchoption']);
+        Schema::table('tags', function (Blueprint $table) {
+            $table->string('tags')->nullable(false)->change();
         });
     }
 }

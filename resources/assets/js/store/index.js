@@ -21,6 +21,7 @@ import ytPlayerController from "./ytPlayerController";
 import ytSeekBar from "./ytSeekBar";
 import tagging from "./tagging";
 import noLoginModal from "./noLoginModal";
+import confirmationModal from "./confirmationModal";
 import playlistDeleteModal from "./playlistDeleteModal";
 import tagDeleteModal from "./tagDeleteModal";
 import otherActionModal from "./otherActionModal";
@@ -52,6 +53,7 @@ const store = new Vuex.Store({
     ytSeekBar,
     tagging,
     noLoginModal,
+    confirmationModal,
     playlistDeleteModal,
     tagDeleteModal,
     otherActionModal,

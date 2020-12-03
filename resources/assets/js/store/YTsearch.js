@@ -322,7 +322,7 @@ const actions = {
   },
 
   async searchYTRecentVideos(context) {
-    const response = await axios.post("api/search/getRecentVideos");
+    const response = await axios.post("/api/search/getRecentVideos");
     if (response.status == OK) {
       context.commit("setYTRecentVideos", response.data.videoList);
     } else {
@@ -337,7 +337,7 @@ const actions = {
       searchOption: 1, //option 1 shows ytsearch query
     };
 
-    const response = await axios.post("api/store/searchrecord", params);
+    const response = await axios.post("/api/store/searchrecord", params);
     if (response.status == CREATED) {
       // 成功した時
     } else if (response.status == INTERNAL_SERVER_ERROR) {

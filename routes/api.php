@@ -93,6 +93,8 @@ Route::post('/tag/addToPlaylists/{tag}', 'TagController@addToPlaylists');
 Route::post('/tag/addComment', 'TagController@addTagComment');
 //新規プレイリストの作成とタグの追加
 Route::post('/playlist/create', 'PlaylistController@create');
+//Get newly created playlist
+Route::post('/playlist/getNewPlaylist', 'PlaylistController@getNewPlaylist');
 //プレイリストのタイトルの更新
 Route::post('/playlist/updateTitle', 'PlaylistController@updateTitle');
 //プレイリストのプライバシー設定の更新

@@ -6,11 +6,13 @@ import store from "../store";
 const state = {
   headerMessage: "",
   showBackIcon: false,
+  loading: false,
 };
 
 const getters = {
   headerMessage: (state) => state.headerMessage,
   showBackIcon: (state) => state.showBackIcon,
+  loading: (state) => state.loading,
 };
 
 const mutations = {
@@ -19,6 +21,12 @@ const mutations = {
   },
   setShowBackIcon(state, data) {
     state.showBackIcon = data;
+  },
+  setIsLoading(state) {
+    state.loading = true;
+  },
+  setNotLoading(state) {
+    state.loading = false;
   },
 };
 

@@ -192,6 +192,17 @@
   z-index: 2;
 }
 
+.now-playing img {
+  margin-right: 10px;
+  vertical-align: middle;
+  width: 32px;
+  max-height: 32px;
+}
+
+.now-playing span {
+  vertical-align: middle;
+}
+
 .tag-list-move {
   transition: all 1s;
 }

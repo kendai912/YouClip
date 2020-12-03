@@ -73,7 +73,19 @@ const routes = [
     component: YTresult,
   },
   {
-    path: "/youtube",
+    path: "/youtube/highlight",
+    component: Highlight,
+  },
+  {
+    path: "/youtube/confirm",
+    component: Highlight,
+  },
+  {
+    path: "/youtube/scenelist",
+    component: Highlight,
+  },
+  {
+    path: "/youtube/title",
     component: Highlight,
   },
   {

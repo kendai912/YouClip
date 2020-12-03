@@ -32,7 +32,7 @@ const mutations = {
 const actions = {
   //Likeまたは作成したシーンタグをロード
   async loadMyCreatedAndLikedTagVideo(context) {
-    const response = await axios.get("api/load/myCreatedAndLikedTagVideo");
+    const response = await axios.get("/api/load/myCreatedAndLikedTagVideo");
     if (response.status == OK) {
       // 成功した時
       context.commit(
@@ -50,7 +50,7 @@ const actions = {
   },
   async addTagComment(context, data) {
     const params = data;
-    const response = await axios.post("api/tag/addComment", params);
+    const response = await axios.post("/api/tag/addComment", params);
     if (response.status == CREATED) {
       // 成功した時
       //storeのタグデータを更新
@@ -94,7 +94,7 @@ const actions = {
       }
     }
     context.commit("setCommentListofTag", comments);
-    const response = await axios.post("api/playlist/likeComment", params);
+    const response = await axios.post("/api/playlist/likeComment", params);
     if (response.status == CREATED) {
       // 成功した時
       //storeのタグデータを更新

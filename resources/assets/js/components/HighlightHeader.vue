@@ -16,6 +16,13 @@
         <v-col v-if="showBackIcon" class="ma-0 pa-0"> </v-col>
       </v-row>
     </v-container>
+    <v-progress-linear
+      v-bind:active="loading"
+      indeterminate
+      absolute
+      bottom
+      color="primary accent-4"
+    ></v-progress-linear>
     <v-divider></v-divider>
   </v-sheet>
 </template>
@@ -37,6 +44,7 @@ export default {
     ...mapGetters({
       headerMessage: "highlightHeader/headerMessage",
       showBackIcon: "highlightHeader/showBackIcon",
+      loading: "highlightHeader/loading",
     }),
     ...mapState({}),
     ...mapGetters({}),

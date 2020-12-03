@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 pb-3 body-color">
+  <v-container class="pa-0 ma-0 body-color">
     <div>
       <draggable
         :move="checkMove"
@@ -67,19 +67,22 @@
                             >{{ item.title }}</span
                           >
                         </v-card-title>
+
                         <div
                           class="text--darken-3 pt-2"
                           style="font-size: 12px; padding-left: 0; font-weight: bold"
                         >
                           <span>{{ item.start }}</span>
-                          <span style="font-size:8px;">&nbsp;~&nbsp;</span>
+                          <span style="font-size:8px;">-</span>
                           <span>{{ item.end }}の場面</span>
                         </div>
+
                         <div
                           class="horizontal-list-wrap block-chip-lines3 color-black my-1"
                         >
                           <v-chip
                             v-for="(tag, tagIndex) in item.tagArray"
+                            v-show="tag"
                             v-bind:key="item.id + '-' + tagIndex"
                             class="my-tag-chip pr-2"
                             text-color="black"
@@ -139,7 +142,13 @@
           </v-card>
         </div>
       </draggable>
-      <v-card class="mx-auto my-1" max-width="420" elevation="0">
+
+      <v-card
+        v-if="showAddNewSceneComponent"
+        class="mx-auto my-1"
+        max-width="420"
+        elevation="0"
+      >
         <v-row dense class="pa-0 ma-0">
           <v-col cols="1" class="pa-0 ma-auto"> </v-col>
           <v-col cols="10" class="pa-0 ma-auto">
@@ -163,7 +172,10 @@
       v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination"
     />
     <TagDeleteModal v-if="showTagDeleteModal" />
-    <AddToPlaylistModal v-if="showAddPlaylistModal" :currentTagId="currentTagId" />
+    <AddToPlaylistModal
+      v-if="showAddPlaylistModal"
+      :currentTagId="currentTagId"
+    />
   </v-container>
 </template>
 
@@ -187,9 +199,11 @@ export default {
     LoadingItem,
     draggable,
     TagDeleteModal,
-    AddToPlaylistModal
+    AddToPlaylistModal,
   },
-  props: {},
+  props: {
+    showAddNewSceneComponent: Boolean,
+  },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
@@ -262,10 +276,7 @@ export default {
       this.$store.dispatch("playlist/getMyCreatedPlaylist");
 
       //選択されたタグが追加済のユーザーのプレイリストIDを取得
-      await this.$store.dispatch(
-        "playlist/getPlaylistIdsOfTag",
-        id
-      );
+      await this.$store.dispatch("playlist/getPlaylistIdsOfTag", id);
 
       //プレイリスト追加モーダルを表示
       this.$store.commit("playlist/openAddPlaylistModal");

@@ -11,13 +11,17 @@ import { mapState, mapGetters, mapMutations } from "vuex";
 import myMixin from "../util";
 import YTvideoSelectBox from "../components/YTvideoSelectBox.vue";
 import Youtube from "../components/Youtube.vue";
-import Scene from "../components/Scene.vue";
+import Confirm from "../components/Confirm.vue";
+import SceneList from "../components/SceneList.vue";
+import Title from "../components/Title.vue";
 
 export default {
   components: {
     YTvideoSelectBox,
     Youtube,
-    Scene
+    Confirm,
+    SceneList,
+    Title,
   },
   data() {
     return {};
@@ -26,11 +30,15 @@ export default {
   methods: {
     // コンポーネント遷移処理
     switchComponent() {
-      if (this.$route.query.v != null) {
-        // パラメーターがある場合は、Youtubeコンポーネントを表示
+      if (this.$route.path == "/youtube/highlight") {
         this.$store.commit("highlight/setDisplayComponent", "Youtube");
+      } else if (this.$route.path == "/youtube/confirm") {
+        this.$store.commit("highlight/setDisplayComponent", "Confirm");
+      } else if (this.$route.path == "/youtube/scenelist") {
+        this.$store.commit("highlight/setDisplayComponent", "SceneList");
+      } else if (this.$route.path == "/youtube/title") {
+        this.$store.commit("highlight/setDisplayComponent", "Title");
       } else {
-        // パラメーターがない場合は、YTvideoSelectBoxコンポーネントを表示
         this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
       }
     },
@@ -56,7 +64,13 @@ export default {
   async beforeRouteLeave(to, from, next) {
     let self = this;
     //戻るボタンが押された場合は左スライドにセット
-    if (from.path == "/youtube" && to.path == "/highlight") {
+    if (
+      (from.path == "/youtube/highlight" && to.path == "/highlight") ||
+      (from.path == "/youtube/confirm" && to.path == "/youtube/highlight") ||
+      (from.path == "/youtube/scenelist" && to.path == "/youtube/confirm") ||
+      (from.path == "/youtube/scenelist" && to.path == "/highlight") ||
+      (from.path == "/youtube/title" && to.path == "/youtube/scenelist")
+    ) {
       self.$store.commit("highlight/setHighlightTransitNext", false);
     }
     await next();

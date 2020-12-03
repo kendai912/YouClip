@@ -120,7 +120,7 @@ export default {
         //YoutubeのURLの場合、直接再生ページへ
         this.$router
           .push({
-            path: "/youtube",
+            path: "/youtube/highlight",
             query: { v: youtubeId[2] },
           })
           .catch((err) => {});

@@ -165,15 +165,16 @@ export default {
       );
       this.previousYtseekOffsetX = null;
     },
+    setYtSeekbarWrapperTop() {
+      //seekbarがiframeの下になるように高さを計算
+      $(".ytseekbar-wrapper").css(
+        "top",
+        ($(".ytseekbar-wrapper").width() * 9) / 16 +
+          (952 - ($(".ytseekbar-wrapper").width() * 9) / 16) / 2
+      );
+    },
   },
   mounted() {
-    //seekbarがiframeの下になるように高さを計算
-    $(".ytseekbar-wrapper").css(
-      "top",
-      ($(".ytseekbar-wrapper").width() * 9) / 16 +
-        (952 - ($(".ytseekbar-wrapper").width() * 9) / 16) / 2
-    );
-
     this.$refs.ytseekHead.addEventListener("mousedown", this.detectMouseDown);
     window.addEventListener("mouseup", this.detectMouseUp);
   },
