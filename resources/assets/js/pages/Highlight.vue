@@ -72,10 +72,21 @@ export default {
     this.switchComponent();
   },
   async beforeRouteLeave(to, from, next) {
+    if (
+      (to.path == "/") ||
+      (to.path == "/mypage") ||
+      (to.path == "/login") ||
+      (to.path == "/editmyplaylist")
+    ) {
+      //hide iframe player first because it remains when moving to another page
+      $("#player").hide();
+    }
+
     let self = this;
     //戻るボタンが押された場合は左スライドにセット
     if (
       (from.path == "/youtube/highlight" && to.path == "/highlight") ||
+      (from.path == "/youtube/highlight" && to.path == "/") ||
       (from.path == "/youtube/confirm" && to.path == "/youtube/highlight") ||
       (from.path == "/youtube/confirm" && to.path == "/highlight") ||
       (from.path == "/youtube/scenelist" && to.path == "/youtube/confirm") ||

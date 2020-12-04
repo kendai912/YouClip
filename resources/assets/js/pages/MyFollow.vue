@@ -12,7 +12,7 @@
         <v-icon class="pa-0 ma-0" size="100">video_library</v-icon>
       </v-card-title>
       <v-card-title class="pa-1 mt-2 mx-0 justify-center">ログインが必要です</v-card-title>
-      <v-card-subtitle class="pa-1 mt-0 mx-0 darkgrey--text">ログインすると、イイねや作成したプレイリスト・シーンにアクセス出来ます</v-card-subtitle>
+      <v-card-subtitle class="pa-1 mt-0 mx-0 darkgrey--text">ログインすると、まとめを作成したYouTube動画にアクセス出来ます</v-card-subtitle>
       <v-card-actions class="justify-center pa-1 mt-4 mx-2">
         <v-container class="ma-0 pa-0">
           <v-row class="ma-0 pa-0 justify-center">

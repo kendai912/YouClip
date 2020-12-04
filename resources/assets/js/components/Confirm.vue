@@ -253,14 +253,21 @@ export default {
           .catch((err) => {});
       }
     },
+    clearAllInput() {
+      this.$store.commit("ytSeekBar/setStartTimeInput", null);
+      this.$store.commit("ytSeekBar/setEndTimeInput", null);
+      this.$store.commit("tagging/setTags", "");
+      this.$store.commit("tagging/setStart", "");
+      this.$store.commit("tagging/setEnd", "");
+      this.$store.commit("tagging/setPrivacySetting", "public");
+    },
     //以前入力された開始・終了時間をセッションストレージからロード
     loadTimeInput() {
       let ytInputData = JSON.parse(
         window.sessionStorage.getItem("ytInputData")
       );
       if (ytInputData && ytInputData.youtubeId == this.youtubeId) {
-        this.$store.commit("ytSeekBar/setStartTimeInput", null);
-        this.$store.commit("ytSeekBar/setEndTimeInput", null);
+        this.clearAllInput();
         this.startTimeInput = ytInputData.startTimeInput;
         this.endTimeInput = ytInputData.endTimeInput;
         this.$store.commit("tagging/setStart", ytInputData.startTimeInput);
@@ -363,10 +370,7 @@ export default {
           }
 
           // 入力フォームをクリア(プライバシー設定と保存先プレイリストは初期値をセット)
-          self.$store.commit("tagging/setTags", "");
-          self.$store.commit("tagging/setStart", "");
-          self.$store.commit("tagging/setEnd", "");
-          self.$store.commit("tagging/setPrivacySetting", "public");
+          self.clearAllInput();
 
           //セッションに保存してある開始・終了時間データを破棄
           window.sessionStorage.removeItem("ytInputData");
