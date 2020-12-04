@@ -115,10 +115,13 @@ export default {
             path: "/highlight",
           })
           .catch((err) => {});
-      }
+      } else {
+        //set new creating playlist ID
+        this.$store.commit("tagging/setMyPlaylistToSave", this.newPlaylistId);
 
-      //set new creating playlist ID
-      this.$store.commit("tagging/setMyPlaylistToSave", this.newPlaylistId);
+        //load scenelist
+        await this.loadSceneList();
+      }
     },
     //切り抜いた場面一覧を取得
     async loadSceneList() {
@@ -164,8 +167,6 @@ export default {
 
     //headerの戻るアイコンを表示
     this.$store.commit("highlightHeader/setShowBackIcon", true);
-
-    await this.loadSceneList();
   },
   beforeDestroy() {
     //headerの戻るアイコンを非表示

@@ -73,7 +73,8 @@ export default {
       (from.path == "/youtube/confirm" && to.path == "/youtube/highlight") ||
       (from.path == "/youtube/scenelist" && to.path == "/youtube/confirm") ||
       (from.path == "/youtube/scenelist" && to.path == "/highlight") ||
-      (from.path == "/youtube/title" && to.path == "/youtube/scenelist")
+      (from.path == "/youtube/title" && to.path == "/youtube/scenelist") ||
+      (from.path == "/youtube/complete" && to.path == "/highlight")
     ) {
       self.$store.commit("highlight/setHighlightTransitNext", false);
     }

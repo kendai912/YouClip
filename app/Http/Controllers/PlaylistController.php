@@ -614,7 +614,7 @@ class PlaylistController extends Controller
                     'playlist' => $playlist,
                     'preview' => $tag->preview,
                 ],
-                200,
+                201,
                 [],
                 JSON_UNESCAPED_UNICODE
             );
@@ -641,7 +641,7 @@ class PlaylistController extends Controller
                     'result' => 'updated',
                     'playlist' => $playlist,
                 ],
-                200,
+                201,
                 [],
                 JSON_UNESCAPED_UNICODE
             );
@@ -667,7 +667,7 @@ class PlaylistController extends Controller
                     'result' => 'updated',
                     'playlist' => $playlist,
                 ],
-                200,
+                201,
                 [],
                 JSON_UNESCAPED_UNICODE
             );
@@ -704,7 +704,7 @@ class PlaylistController extends Controller
             [
                 'playlist' => $playlist,
             ],
-            200,
+            201,
             [],
             JSON_UNESCAPED_UNICODE
         );

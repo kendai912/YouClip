@@ -122,26 +122,18 @@ export default {
         "まとめのタイトルを入力"
       );
 
-      try {
-        //load new creating playlist ID
-        await this.$store.dispatch("playlist/getNewPlaylistId");
-        if (!this.newPlaylistId) {
-          this.$router
-            .push({
-              path: "/highlight",
-            })
-            .catch((err) => {});
-        }
-      } catch (e) {
+      //load new creating playlist ID
+      await this.$store.dispatch("playlist/getNewPlaylistId");
+      if (!this.newPlaylistId) {
         this.$router
           .push({
             path: "/highlight",
           })
           .catch((err) => {});
+      } else {
+        //set new creating playlist ID
+        this.$store.commit("tagging/setMyPlaylistToSave", this.newPlaylistId);
       }
-
-      //set new creating playlist ID
-      this.$store.commit("tagging/setMyPlaylistToSave", this.newPlaylistId);
     },
     moveToCompletePage() {
       this.$router
