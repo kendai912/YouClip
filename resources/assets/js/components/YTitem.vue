@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet class="pb-15">
     <transition-group name="fade-transition" mode="out-in">
       <v-card
         v-for="(item, index) in YTitems"
@@ -92,6 +92,12 @@ export default {
   props: {
     YTitems: Array,
   },
+  data() {
+    return {
+      isAdd: false,
+      playlistIdToAdd: null,
+    };
+  },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
@@ -104,16 +110,35 @@ export default {
       //以前のシーンタグ入力項目を初期化
       this.clearTaggingInput();
 
-      //シーンタグ付けページを表示
-      this.$router
-        .push({
-          path: "/youtube",
-          query: {
-            v: item.youtubeId,
-          },
-        })
-        .catch((err) => {});
+      if (this.isAdd) {
+        //プレイリストへの追加用のシーンタグ付けページを表示
+        this.$router
+          .push({
+            path: "/add/highlight",
+            query: {
+              playlist: this.playlistIdToAdd,
+              v: item.youtubeId,
+            },
+          })
+          .catch((err) => {});
+      } else {
+        //シーンタグ付けページを表示
+        this.$router
+          .push({
+            path: "/youtube",
+            query: {
+              v: item.youtubeId,
+            },
+          })
+          .catch((err) => {});
+      }
     },
+  },
+  created() {
+    if (this.$route.path == "/add") {
+      this.isAdd = true;
+      this.playlistIdToAdd = this.$route.query.playlist;
+    }
   },
 };
 </script>

@@ -156,6 +156,8 @@ export default {
       endTimeInput: null,
       highlightBodyRef: this.$refs.highlightBody,
       isPlayerReady: false,
+      isAdd: false,
+      playlistIdToAdd: null,
       startRules: [
         (v) => !!v || "開始時間を入力して下さい",
         (v) => {
@@ -221,6 +223,12 @@ export default {
         "highlightHeader/setHeaderMessage",
         "切り抜く場面を指定"
       );
+
+      //既存プレイリストへの追加かどうかを判別
+      if (this.$route.path == "/add/highlight") {
+        this.isAdd = true;
+        this.playlistIdToAdd = this.$route.query.playlist;
+      }
     },
     //シーンタグ完了のトーストを表示
     taggingSucceed() {
@@ -275,14 +283,28 @@ export default {
           this.endTimeInput
         );
 
-        this.$router
-          .push({
-            path: "/youtube/confirm",
-            query: {
-              v: this.youtubeId,
-            },
-          })
-          .catch((err) => {});
+        if (this.isAdd) {
+          //プレイリストへの追加用の確認ページを表示
+          this.$router
+            .push({
+              path: "/add/confirm",
+              query: {
+                playlist: this.playlistIdToAdd,
+                v: this.youtubeId,
+              },
+            })
+            .catch((err) => {});
+        } else {
+          //新規の確認ページを表示
+          this.$router
+            .push({
+              path: "/youtube/confirm",
+              query: {
+                v: this.youtubeId,
+              },
+            })
+            .catch((err) => {});
+        }
       }
     },
   },

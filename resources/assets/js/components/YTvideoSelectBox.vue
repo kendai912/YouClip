@@ -47,7 +47,6 @@ export default {
   },
   data() {
     return {
-      // pageNumber: 1,
     };
   },
   mixins: [myMixin],

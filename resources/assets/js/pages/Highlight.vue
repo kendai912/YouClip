@@ -23,7 +23,7 @@ export default {
     Confirm,
     SceneList,
     Title,
-    Complete
+    Complete,
   },
   data() {
     return {};
@@ -42,6 +42,12 @@ export default {
         this.$store.commit("highlight/setDisplayComponent", "Title");
       } else if (this.$route.path == "/youtube/complete") {
         this.$store.commit("highlight/setDisplayComponent", "Complete");
+      } else if (this.$route.path == "/add") {
+        this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
+      } else if (this.$route.path == "/add/highlight") {
+        this.$store.commit("highlight/setDisplayComponent", "Youtube");
+      } else if (this.$route.path == "/add/confirm") {
+        this.$store.commit("highlight/setDisplayComponent", "Confirm");
       } else {
         this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
       }
@@ -71,10 +77,24 @@ export default {
     if (
       (from.path == "/youtube/highlight" && to.path == "/highlight") ||
       (from.path == "/youtube/confirm" && to.path == "/youtube/highlight") ||
+      (from.path == "/youtube/confirm" && to.path == "/highlight") ||
       (from.path == "/youtube/scenelist" && to.path == "/youtube/confirm") ||
       (from.path == "/youtube/scenelist" && to.path == "/highlight") ||
       (from.path == "/youtube/title" && to.path == "/youtube/scenelist") ||
-      (from.path == "/youtube/complete" && to.path == "/highlight")
+      (from.path == "/youtube/title" && to.path == "/highlight") ||
+      (from.path == "/youtube/complete" && to.path == "/highlight") ||
+      (from.path == "/add" && to.path == "/highlight") ||
+      (from.path == "/add" && to.path == "/mypage") ||
+      (from.path == "/add" && to.path == "/") ||
+      (from.path == "/add/highlight" && to.path == "/add") ||
+      (from.path == "/add/highlight" && to.path == "/highlight") ||
+      (from.path == "/add/highlight" && to.path == "/mypage") ||
+      (from.path == "/add/highlight" && to.path == "/") ||
+      (from.path == "/add/confirm" && to.path == "/add/highlight") ||
+      (from.path == "/add/confirm" && to.path == "/highlight") ||
+      (from.path == "/add/confirm" && to.path == "/mypage") ||
+      (from.path == "/add/confirm" && to.path == "/") ||
+      (from.path == "/add/confirm" && to.path == "/editmyplaylist")
     ) {
       self.$store.commit("highlight/setHighlightTransitNext", false);
     }

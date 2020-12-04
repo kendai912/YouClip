@@ -99,7 +99,9 @@
           </v-col>
         </v-row>
       </v-card>
-      <SceneTagItem v-bind:mediaItems="sceneListofPlaylist" />
+      <SceneTagItem
+        v-bind:showAddNewSceneComponent="showAddNewSceneComponent"
+      />
       <PlaylistDeleteModal v-if="showPlaylistDeleteModal" />
     </div>
   </div>
@@ -123,6 +125,7 @@ export default {
       isEditPrivacy: false,
       isEditEditMode: false,
       isTitleFocused: false,
+      showAddNewSceneComponent: true,
       privacySettingList: [
         { text: "公開", value: "public" },
         {
@@ -257,7 +260,7 @@ export default {
         this.playlistId
       );
 
-      //プレイリストIDとプレイリスト名をwatchストアに格納
+      //プレイリストIDとプレイリスト名、プライバシー設定をwatchストアに格納
       this.$store.commit("watch/setPlaylistId", this.playlistId);
       this.$store.commit(
         "watch/setPlaylistName",
@@ -267,6 +270,8 @@ export default {
         "watch/setPrivacySetting",
         this.playlistAndTagVideoData.privacySetting
       );
+
+      //視聴回数・合計時間・最終更新日の情報を格納
       this.playCount = this.playlistAndTagVideoData.play_count;
       this.sceneCount = this.playlistAndTagVideoData.tagVideoData.length;
       //this.totalDuration = this.playlistAndTagVideoData.playlist_total_duration;

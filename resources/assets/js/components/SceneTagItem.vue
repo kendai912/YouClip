@@ -151,7 +151,7 @@
       >
         <v-row dense class="pa-0 ma-0">
           <v-col cols="1" class="pa-0 ma-auto"> </v-col>
-          <v-col cols="10" class="pa-0 ma-auto">
+          <v-col cols="10" class="pa-0 ma-auto" v-on:click="addNewScene">
             <v-row class="ma-0">
               <v-col cols="6" class="pa-1">
                 <div class="justify-center align-center add-play-screen">
@@ -210,7 +210,6 @@ export default {
       user_id: "auth/user_id",
       isLoading: "loadingItem/isLoading",
       numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination",
-      myPlaylist: "playlist/myPlaylist",
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
       playlistId: "watch/playlistId",
@@ -280,6 +279,16 @@ export default {
 
       //プレイリスト追加モーダルを表示
       this.$store.commit("playlist/openAddPlaylistModal");
+    },
+    addNewScene() {
+      this.$router
+        .push({
+          path: "/add",
+          query: {
+            playlist: this.playlistId,
+          },
+        })
+        .catch((err) => {});
     },
   },
   created() {

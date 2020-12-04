@@ -140,6 +140,8 @@ export default {
       isPlayerReady: false,
       isPlaying: true,
       isDisabled: false,
+      isAdd: false,
+      playlistIdToAdd: null,
       tags: [],
       tagItems: [],
       startRules: [
@@ -214,6 +216,12 @@ export default {
         "highlightHeader/setHeaderMessage",
         "切り抜いた場面を確認"
       );
+
+      //既存プレイリストへの追加かどうかを判別
+      if (this.$route.path == "/add/confirm") {
+        this.isAdd = true;
+        this.playlistIdToAdd = this.$route.query.playlist;
+      }
     },
     //シーンタグ完了のトーストを表示
     taggingSucceed() {
@@ -281,6 +289,42 @@ export default {
 
             //データを更新
             await self.$store.dispatch("tagging/updateSceneTags");
+          } else if (self.isAdd) {
+            //in case of adding to existing playlist
+            //入力済データをセット
+            self.$store.commit("tagging/setTags", self.tags);
+            self.$store.commit("tagging/setPrivacySetting", "public");
+
+            //新しく場面を追加する既存のplaylistIdをセット
+            self.$store.commit(
+              "tagging/setMyPlaylistToSave",
+              self.playlistIdToAdd
+            );
+
+            //ローディングを表示し、OKボタンを無効化
+            self.$store.commit("highlightHeader/setIsLoading");
+            self.isDisabled = true;
+
+            //場面のデータを登録
+            await self.$store.dispatch("tagging/storeSceneTags");
+
+            //ローディングを非表示
+            self.$store.commit("highlightHeader/setNotLoading");
+
+            //display adding a new scene to existing playlist completion snackbar
+            self.$store.commit("snackbar/setText", "新しい場面を追加しました");
+            self.$store.commit("snackbar/setSnackbar", true);
+            self.$store.commit("snackbar/setTimeout", 5000);
+
+            //return to the playlist edit page
+            self.$router
+              .push({
+                path: "/editmyplaylist",
+                query: {
+                  playlist: self.playlistIdToAdd,
+                },
+              })
+              .catch((err) => {});
           } else {
             //新規の場合
             //入力済データをセット
