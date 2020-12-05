@@ -58,8 +58,12 @@ class SearchController extends Controller
         //ページネーション設定
         $contentsPerPage = 5;
 
-        //検索ワードにプレイリスト・タグのデータを取得
-        $playlistTagResult = Playlist::with('tags')->where('privacySetting', 'public')->where('playlistName', 'LIKE', "%$searchQuery%")->paginate($contentsPerPage);
+        //検索ワードに紐付くプレイリスト・ビデオ・タグのデータを取得
+        $playlistTagResult = Playlist::whereHas('tags', function ($query) {
+            $query->where('privacySetting', 'public');
+        })->with(array('tags' => function ($query) {
+            $query->with('video')->select('*')->get();
+        }))->where('privacySetting', 'public')->where('playlistName', 'LIKE', "%$searchQuery%")->paginate($contentsPerPage);
 
         return response()->json(
             [
@@ -114,6 +118,25 @@ class SearchController extends Controller
         }
     }
 
+    // //検索ワードの履歴データを各テーブルに保存
+    // public function storeSearchRecord(Request $request)
+    // {
+    //     //検索クエリテーブルに保存
+    //     // $storedSearchquery = $this->storeSearchQuery($request->searchQuery, $request->searchOption);
+    //     // //検索クエリとユーザーの中間ログテーブルに保存
+    //     // $this->storeSearchLog($storedSearchquery);
+    //     // //人気の検索クエリランキングを更新
+    //     // $this->updateTopSearchqueries($request->searchOption);
+
+    //     return response()->json(
+    //         [
+    //             'storedSearchQuery' => '$storedSearchquery'
+    //         ],
+    //         201,
+    //         [],
+    //         JSON_UNESCAPED_UNICODE
+    //     );
+    // }
     //検索ワードの履歴データを各テーブルに保存
     public function storeSearchRecord(Request $request)
     {
@@ -265,6 +288,7 @@ class SearchController extends Controller
             JSON_UNESCAPED_UNICODE
         );
     }
+
     //get Youtube Search from google API
     public function getYTSearchList(Request $request)
     {
@@ -281,6 +305,7 @@ class SearchController extends Controller
         }
         return $res->getBody();
     }
+
     //get Youtube Search Results from scraping API
     public function getYTScrapingResultList(Request $request)
     {

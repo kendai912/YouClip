@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DeleteSearchoptionUniqueConstraintsOfSearchqueriesTable extends Migration
+class AddDescriptionToPlaylistsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class DeleteSearchoptionUniqueConstraintsOfSearchqueriesTable extends Migration
      */
     public function up()
     {
-        Schema::table('searchqueries', function (Blueprint $table) {
-            $table->dropUnique(['searchoption']);
+        Schema::table('playlists', function (Blueprint $table) {
+            $table->string('description')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class DeleteSearchoptionUniqueConstraintsOfSearchqueriesTable extends Migration
      */
     public function down()
     {
-        Schema::table('searchqueries', function (Blueprint $table) {
-            $table->unique(['searchoption']);
+        Schema::table('playlists', function (Blueprint $table) {
+            $table->dropColumn('description');
         });
     }
 }

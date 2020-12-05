@@ -27,8 +27,8 @@ import myMixin from "../util";
 export default {
   data: () => ({
     tiles: [
-      { img: "fas fa-trash", title: "再生中のシーンを削除", action: "delete", show: "check" },
-      { img: "fas fa-pen", title: "再生中のシーンを編集", action: "edit", show: "check" },
+      // { img: "fas fa-trash", title: "再生中のシーンを削除", action: "delete", show: "check" },
+      // { img: "fas fa-pen", title: "再生中のシーンを編集", action: "edit", show: "check" },
       // { img: "fas fa-flag", title: "報告", action: "report", show: "always" },
       {
         img: "fas fa-times",
@@ -94,7 +94,7 @@ export default {
         this.$store.commit("youtube/setIsReady", true);
 
         //編集モードフラグをセット
-        this.$store.commit("tagging/setIsEditting", true);
+        this.$store.commit("tagging/setIsEditing", true);
 
         //編集前のタグID・開始時間・終了時間・シーンタグをセット
         this.$store.commit("tagging/setTagId", this.currentTagId);

@@ -36,7 +36,7 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <v-card-text class="grey--text text--darken-3"
+                <v-card-text class="ma-0 pa-1 grey--text text--darken-3"
                   >Twitter</v-card-text
                 >
               </v-col>
@@ -62,7 +62,7 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <v-card-text class="grey--text text--darken-3"
+                <v-card-text class="ma-0 pa-1 grey--text text--darken-3"
                   >Facebook</v-card-text
                 >
               </v-col>
@@ -89,7 +89,7 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <v-card-text class="grey--text text--darken-3"
+                <v-card-text class="ma-0 pa-1 grey--text text--darken-3"
                   >LINE</v-card-text
                 >
               </v-col>
@@ -107,7 +107,7 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <v-card-text class="grey--text text--darken-3"
+                <v-card-text class="ma-0 pa-1 grey--text text--darken-3"
                   >URLをコピー</v-card-text
                 >
               </v-col>
@@ -135,29 +135,6 @@
       </v-container>
     </v-sheet>
   </v-bottom-sheet>
-  <!-- <div class="v-modal" v-on:click="closeShareModal">
-    <div class="text-dark shadow rounded mb-7 modal-in-box" v-on:click.stop>
-      <span v-on:click="copySelectedTagURL">コピーする</span>
-      <a
-        v-on:click="shareOnSNS"
-        v-bind:href="'https://social-plugins.line.me/lineit/share?url=' + encodedShareURI"
-      >
-        <img src="/img/wide-default.png" alt="LINEで送る" />
-      </a>
-      <a
-        v-on:click="shareOnSNS"
-        v-bind:href="'http://www.facebook.com/sharer.php?u=' + encodedShareURI"
-      >
-        <i class="fab fa-facebook-square fa-2x" style="color: #339af0;"></i>
-      </a>
-      <a
-        v-on:click="shareOnSNS"
-        v-bind:href="'https://twitter.com/intent/tweet?url=' + encodedShareURI + '&text=[YouClip] ' + shareText"
-      >
-        <i class="fab fa-twitter fa-2x" style="color: #339af0;"></i>
-      </a>
-    </div>
-  </div>-->
 </template>
 
 <script>
@@ -227,6 +204,9 @@ export default {
         sel.removeAllRanges();
         sel.addRange(range);
       } catch (e) {}
+
+      //execCommandを実施
+      document.execCommand("copy");
 
       //selectファンクション用(iOS以外向け)
       try {

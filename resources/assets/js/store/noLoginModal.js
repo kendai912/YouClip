@@ -1,11 +1,11 @@
 const state = {
   showLoginModal: false,
-  messageWhenNotLogined: ""
+  messageWhenNotLogined: "",
 };
 
 const getters = {
-  showLoginModal: state => state.showLoginModal,
-  messageWhenNotLogined: state => state.messageWhenNotLogined
+  showLoginModal: (state) => state.showLoginModal,
+  messageWhenNotLogined: (state) => state.messageWhenNotLogined,
 };
 
 const mutations = {
@@ -17,7 +17,7 @@ const mutations = {
   },
   setMessageWhenNotLogined(state, data) {
     state.messageWhenNotLogined = data;
-  }
+  },
 };
 
 const actions = {};
@@ -27,5 +27,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

@@ -1,36 +1,19 @@
 <template>
   <div class="container--small">
-    <SearchBox />
-
-    <v-tabs v-model="tab" background-color="transparent" grow hide-slider>
-      <v-tab v-for="(item, key) in items" :key="item" v-on:click="setActiveTab(key)">{{ item }}</v-tab>
-    </v-tabs>
-
-    <v-tabs-items v-model="tab">
-      <v-tab-item>
-        <v-card flat>
-          <PlaylistMediaItem v-bind:mediaItems="playlistMediaItems" />
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-card flat>
-          <SceneMediaItem v-bind:mediaItems="tagVideoMediaItems" />
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items>
+    <v-card flat class="mt-4">
+      <PlaylistMediaItem v-bind:mediaItems="playlistMediaItems" />
+    </v-card>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import SearchBox from "../components/SearchBox.vue";
 import PlaylistMediaItem from "../components/PlaylistMediaItem.vue";
 import SceneMediaItem from "../components/SceneMediaItem.vue";
 import myMixin from "../util";
 
 export default {
   components: {
-    SearchBox,
     PlaylistMediaItem,
     SceneMediaItem,
   },
@@ -39,9 +22,7 @@ export default {
       tab: null,
       items: ["プレイリスト", "シーン"],
       pageOfPlaylist: 1,
-      pageOfTagVideo: 1,
       playlistMediaItems: [],
-      tagVideoMediaItems: [],
     };
   },
   mixins: [myMixin],
@@ -68,15 +49,6 @@ export default {
       if (this.playlistMediaItems.length < 5 && this.playlistResultToLoad)
         this.infinateLoadPlaylistSearchResult();
 
-      //タグデータをメディアアイテムに格納
-      this.putTagVideoIntoMediaItems(
-        this.tagVideoMediaItems,
-        this.tagVideoResult
-      );
-      //有効アイテム数が5未満の場合、スクロールイベントが発生しないのでマニュアルで次ページを読み込み
-      if (this.tagVideoMediaItems.length < 5 && this.tagVideoResultToLoad)
-        this.infinateLoadTagVideSearchResult();
-
       //ローディングを非表示
       this.$store.commit("loadingItem/setIsLoading", false);
     },
@@ -102,27 +74,9 @@ export default {
       //ローディングを非表示
       this.$store.commit("loadingItem/setIsLoading", false);
     },
-    //シーンの検索結果の無限スクロール
-    async infinateLoadTagVideSearchResult() {
-      if (!this.tagVideoResultToLoad) return;
-
-      //ローディングを表示
-      this.$store.commit("loadingItem/setIsLoading", true);
-
-      //シーンの検索ページネーションを実行
-      await this.$store.dispatch(
-        "search/searchTagVideoResult",
-        this.pageOfTagVideo++
-      );
-
-      //タグデータをレコメンド画面に表示するメディアアイテムに格納
-      this.putTagVideoIntoMediaItems(
-        this.tagVideoMediaItems,
-        this.tagVideoResult
-      );
-
-      //ローディングを非表示
-      this.$store.commit("loadingItem/setIsLoading", false);
+    resetSearchResult() {
+      this.pageOfPlaylist = 1;
+      this.playlistMediaItems = [];
     },
     setActiveTab(key) {
       //開いたタブをセッションストレージに保存
@@ -131,7 +85,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      searchQuery: "search/searchQuery",
+      // searchQuery: "search/searchQuery",
       tagVideoResult: "search/tagVideoResult",
       playlistTagResult: "search/playlistTagResult",
       tagVideoResultToLoad: "search/tagVideoResultToLoad",
@@ -140,12 +94,19 @@ export default {
       isSearchingTagVideoResult: "search/isSearchingTagVideoResult",
     }),
   },
+  watch: {
+    $route() {
+      this.resetSearchResult();
+      this.initializeSearchResult();
+    },
+  },
   created() {
-    //以前に開いていたタブをセッションストレージからセット
-    this.tab = parseInt(window.sessionStorage.getItem("searchTabIndex"));
+    //ナビバーを表示
+    this.$store.commit("navbar/setShowNavbar", true);
 
-    //ナビバーを非表示
-    this.$store.commit("navbar/setShowNavbar", false);
+    //検索バーをactiveにし、検索ワードをセット
+    this.$store.commit("navbar/setIsActiveSearch", true);
+    this.$store.commit("navbar/setSearchquery", this.$route.query.search_query);
 
     //ローディング表示用の変数をセット
     this.$store.commit("loadingItem/setNumberOfItemsPerPagination", 5);
@@ -156,24 +117,20 @@ export default {
         document.documentElement.scrollTop + window.innerHeight >=
         document.documentElement.offsetHeight;
       if (bottomOfWindow) {
-        if (this.tab == 0 && !this.isSearchingPlaylistTagResult) {
-          this.infinateLoadPlaylistSearchResult();
-        } else if (this.tab == 1 && !this.isSearchingTagVideoResult) {
-          this.infinateLoadTagVideSearchResult();
-        }
+        this.infinateLoadPlaylistSearchResult();
       }
     };
     this.initializeSearchResult();
 
     //戻るor進むが押された場合は画面を再ロード
-    let self = this;
-    let from = this.$route.path;
-    window.addEventListener("popstate", function (e) {
-      let to = self.$route.path;
-      if (from == "/result" && to == "/result") {
-        location.reload();
-      }
-    });
+    // let self = this;
+    // let from = this.$route.path;
+    // window.addEventListener("popstate", function(e) {
+    //   let to = self.$route.path;
+    //   if (from == "/result" && to == "/result") {
+    //     location.reload();
+    //   }
+    // });
   },
 };
 </script>

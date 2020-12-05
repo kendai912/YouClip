@@ -51,17 +51,22 @@ class PlaylistController extends Controller
         $contentsPerPage = 5;
 
         $playlistAndTagPaginationOfRecommend = Playlist::whereHas('tags', function ($query) {
+            //privacySettingがpublicのtagを最低1つ持つPlaylistを取得
             $query->where('privacySetting', 'public');
         })->with(array('tags'=> function ($query) {
+            //tagおよびtagへのlike数を取得
             $likes_tags = Like::groupBy('tag_id')->select('tag_id', DB::raw('count(*) as likes_tag_count'))->orderBy('likes_tag_count', 'DESC');
             $likes_tags_sql = $likes_tags->toSql();
-            $query->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
+            //tagに紐づくvideoデータを取得
+            $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
         }))
+        //直近30日のプレイリストへのlike数を取得
         ->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'])
+        //プレイリストのプライバシー設定がpublicに限定し、like数の降順で取得
         ->where('privacySetting', 'public')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')
         ->paginate($contentsPerPage);
 
@@ -85,7 +90,7 @@ class PlaylistController extends Controller
         })->with(array('tags'=> function ($query) {
             $likes_tags = Like::groupBy('tag_id')->select('tag_id', DB::raw('count(*) as likes_tag_count'))->orderBy('likes_tag_count', 'DESC');
             $likes_tags_sql = $likes_tags->toSql();
-            $query->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
+            $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
         }))->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
@@ -113,7 +118,7 @@ class PlaylistController extends Controller
         })->with(array('tags'=> function ($query) {
             $likes_tags = Like::groupBy('tag_id')->select('tag_id', DB::raw('count(*) as likes_tag_count'))->orderBy('likes_tag_count', 'DESC');
             $likes_tags_sql = $likes_tags->toSql();
-            $query->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
+            $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
         }))->where('playlistCategory', 'Sports')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
@@ -141,7 +146,7 @@ class PlaylistController extends Controller
         })->with(array('tags'=> function ($query) {
             $likes_tags = Like::groupBy('tag_id')->select('tag_id', DB::raw('count(*) as likes_tag_count'))->orderBy('likes_tag_count', 'DESC');
             $likes_tags_sql = $likes_tags->toSql();
-            $query->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
+            $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
         }))->where('playlistCategory', 'Entertainment')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
@@ -166,11 +171,15 @@ class PlaylistController extends Controller
         $playlistAndTagData = Playlist::with('tags')->where('id', $playlistId)->withCount(['playlistlogs as play_count'])->first();
         //タグから動画データを取得
         $tagVideoDatas = [];
+        $total_duration = 0;
         foreach ($playlistAndTagData->tags as $tag) {
             $tagVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'channel_title', 'published_at', 'view_count', 'category', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at', 'privacySetting')->where('tags.id', $tag->id)->first();
             $sceneOrder = DB::table('playlist_tag')->where('playlist_id', $playlistId)->where('tag_id', $tag->id)->select('scene_order')->first();
             $tagVideoData->scene_order = $sceneOrder->scene_order;
 
+            sscanf($tagVideoData->duration, "%d:%d:%d", $hours, $minutes, $seconds);
+            $time_seconds = isset($hours) ? $hours * 3600 + $minutes * 60 + $seconds : $minutes * 60 + $seconds;
+            $total_duration += $time_seconds;
             // シーンが公開設定、限定公開、もしくは非公開設定だがユーザーが作成したものの場合のみ追加
             if ($tagVideoData->privacySetting == 'public' || $tagVideoData->privacySetting == 'limited') {
                 $tagVideoDatas[] = $tagVideoData;
@@ -181,7 +190,7 @@ class PlaylistController extends Controller
             }
         }
 
-        // usort($tagVideoDatas, fn($a, $b) => strcmp($a->scene_order, $b->scene_order));
+        // Sort by scene order
         usort($tagVideoDatas, function ($a, $b) {
             if ($a["scene_order"] == $b["scene_order"]) {
                 return (0);
@@ -242,6 +251,7 @@ class PlaylistController extends Controller
             'playlist_id' => $playlistAndTagData->id,
             'playlistName' => $playlistAndTagData->playlistName,
             'privacySetting' => $playlistAndTagData->privacySetting,
+            'playlist_total_duration' => $total_duration,
             'play_count' => $playlistAndTagData->play_count,
             'user_id' => $playlistAndTagData->user_id,
             'playlist_created_at' => (new Carbon($playlistAndTagData->created_at))->toDateTimeString(),
@@ -368,7 +378,9 @@ class PlaylistController extends Controller
                 $likesPlaylistIds[] = $likesPlaylist->playlist_id;
             }
 
-            $myLikedPlaylists = Playlist::with('tags')->withCount(['playlistlogs as play_count'])->find($likesPlaylistIds);
+            $myLikedPlaylists = Playlist::with(array('tags' => function ($query) {
+                $query->with('video')->select('*')->get();
+            }))->withCount(['playlistlogs as play_count'])->find($likesPlaylistIds);
 
             return $myLikedPlaylists;
         } else {
@@ -380,7 +392,9 @@ class PlaylistController extends Controller
     public function createdPlaylist()
     {
         if (Auth::user()) {
-            $createdPlaylist = Playlist::with('tags')->withCount(['playlistlogs as play_count'])->where('user_id', Auth::user()->id)->get();
+            $createdPlaylist = Playlist::with(array('tags' => function ($query) {
+                $query->with('video')->select('*')->get();
+            }))->withCount(['playlistlogs as play_count'])->where('user_id', Auth::user()->id)->get();
 
             return $createdPlaylist;
         } else {
@@ -399,7 +413,7 @@ class PlaylistController extends Controller
         //playlistテーブルに保存
         if (Auth::user()) {
             $playlist = new Playlist;
-            $playlist->playlistName = $request->newPlaylistName;
+            $playlist->playlistName = $request->playlistName;
             $playlist->privacySetting = $request->privacySetting;
             $playlist->user_id = Auth::user()->id;
             $playlist->playlistCategory = $request->currentCategory;
@@ -420,6 +434,34 @@ class PlaylistController extends Controller
                 'newPlaylist' => $playlist
                 ],
                 201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } else {
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
+    }
+    //Get newly created playlist
+    public function getNewPlaylist()
+    {
+        //playlistテーブルに保存
+        if (Auth::user()) {
+            //ユーザーの最新のplaylist IDを取得
+            $latestPlaylist = Playlist::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
+            $newPlaylist = Playlist::find($latestPlaylist->id)->where('playlistName', null)->first();
+
+            return response()->json(
+                [
+                'newPlaylist' => $newPlaylist
+                ],
+                200,
                 [],
                 JSON_UNESCAPED_UNICODE
             );
@@ -475,18 +517,6 @@ class PlaylistController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
     {
         //
     }
@@ -559,6 +589,48 @@ class PlaylistController extends Controller
         }
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+        $playlist = Playlist::find($request->newPlaylistId);
+        $playlist->playlistName = $request->playlistName;
+        $playlist->privacySetting = $request->privacySetting;
+        $playlist->description = $request->description;
+
+        //Get preview name for complete page
+        $tagId = DB::table('playlist_tag')->where('playlist_id', $request->newPlaylistId)->select('tag_id')->orderBy('scene_order', 'ASC')->first();
+        $tag = Tag::find($tagId->tag_id);
+
+        try {
+            $playlist->save();
+            return response()->json(
+                [
+                    'result' => 'updated',
+                    'playlist' => $playlist,
+                    'preview' => $tag->preview,
+                ],
+                201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } catch (Exception $e) {
+            return response()->json(
+                [
+                    'result' => 'failed',
+                ],
+                500,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
+    }
+
     public function updateTitle(Request $request)
     {
         $playlist = Playlist::find($request->playlist_id);
@@ -568,9 +640,9 @@ class PlaylistController extends Controller
             return response()->json(
                 [
                     'result' => 'updated',
-                    'playlistAndTagVideoData' => $playlist,
+                    'playlist' => $playlist,
                 ],
-                200,
+                201,
                 [],
                 JSON_UNESCAPED_UNICODE
             );
@@ -594,9 +666,9 @@ class PlaylistController extends Controller
             return response()->json(
                 [
                     'result' => 'updated',
-                    'playlistAndTagVideoData' => $playlist,
+                    'playlist' => $playlist,
                 ],
-                200,
+                201,
                 [],
                 JSON_UNESCAPED_UNICODE
             );
@@ -615,11 +687,10 @@ class PlaylistController extends Controller
     public function updateSceneOrder(Request $request)
     {
         $playlist = Playlist::find($request->playlist_id);
-        // DB::table('playlist_tag')->where('playlist_id', $request->playlist_id)->delete();
         foreach ($request->tagVideoData as $key => $scene) {
             $playlist->tags()->detach($scene['id']);
         }
-        // print_r($playlist->tags()->count()); exit;
+
         $sceneOrder = 0;
         foreach ($request->tagVideoData as $key => $scene) {
             $sceneOrder ++;
@@ -632,9 +703,9 @@ class PlaylistController extends Controller
         }
         return response()->json(
             [
-                'playlistAndTagVideoData' => $playlist,
+                'playlist' => $playlist,
             ],
-            200,
+            201,
             [],
             JSON_UNESCAPED_UNICODE
         );
@@ -653,7 +724,6 @@ class PlaylistController extends Controller
     public function createdTagListByUser($user)
     {
         if (Auth::user()) {
-            // $createdTagList = Playlist::with('tags')->where('privacySetting', 'public')->get();
             $createdTagList = Tag::Where('tags.user_id', $user)->where('privacySetting', 'public')->leftJoin('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'channel_title', 'published_at', 'view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at')->orderBy('tag_created_at', 'desc')->get();
             return $createdTagList;
         } else {

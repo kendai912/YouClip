@@ -229,7 +229,7 @@ export default {
       newVideoData: "youtube/newVideoData",
       isReady: "youtube/isReady",
       isNew: "youtube/isNew",
-      isEditting: "tagging/isEditting",
+      isEditing: "tagging/isEditing",
       showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
       isLogin: "auth/check",
     }),
@@ -289,12 +289,12 @@ export default {
       }
     },
     back() {
-      this.isEditting
+      this.isEditing
         ? this.$store.commit("tagging/setShowSceneTagControl", false)
         : this.$router.go(-1);
 
       //編集モードフラグを解除
-      this.$store.commit("tagging/setIsEditting", false);
+      this.$store.commit("tagging/setIsEditing", false);
     },
     unmute() {
       this.player.unMute();

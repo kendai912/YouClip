@@ -1,22 +1,23 @@
 <template>
   <div>
-    <v-tabs v-model="tab" background-color="transparent" grow hide-slider>
-      <v-tab v-for="(item, key) in items" :key="item" v-on:click="setActiveTab(key)">{{ item }}</v-tab>
-    </v-tabs>
+<!--    <v-tabs v-model="tab" background-color="transparent" grow hide-slider>-->
+<!--      <v-tab v-for="(item, key) in items" :key="item" v-on:click="setActiveTab(key)">{{ item }}</v-tab>-->
+<!--    </v-tabs>-->
 
-    <v-tabs-items v-model="tab" class="pb-14" style="background-color: transparent">
-      <v-tab-item>
-        <v-card flat>
-          <MyPlaylistItem v-bind:mediaItems="myCreatedAndLikedPlaylistMediaItems" />
-          <!-- <MyPlaylistItem v-bind:mediaItems="myPlaylist" /> -->
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-card flat>
-          <MyTagItem v-bind:mediaItems="myCreatedAndLikedTagVideoMediaItems" />
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items>
+<!--    <v-tabs-items v-model="tab" class="pb-14" style="background-color: transparent">-->
+<!--      <v-tab-item>-->
+<!--        <v-card flat>-->
+<!--          <MyPlaylistItem v-bind:mediaItems="myCreatedAndLikedPlaylistMediaItems" />-->
+<!--          &lt;!&ndash; <MyPlaylistItem v-bind:mediaItems="myPlaylist" /> &ndash;&gt;-->
+<!--        </v-card>-->
+<!--      </v-tab-item>-->
+<!--      <v-tab-item>-->
+<!--        <v-card flat>-->
+<!--          <MyTagItem v-bind:mediaItems="myCreatedAndLikedTagVideoMediaItems" />-->
+<!--        </v-card>-->
+<!--      </v-tab-item>-->
+<!--    </v-tabs-items>-->
+    <MyPlaylistItem v-bind:mediaItems="myCreatedAndLikedPlaylistMediaItems" />
   </div>
 </template>
 
@@ -59,7 +60,6 @@ export default {
         mediaItems,
         this.myCreatedAndLikedPlaylist
       );
-      
       return mediaItems;
     },
     myCreatedAndLikedTagVideoMediaItems() {
@@ -139,7 +139,6 @@ export default {
   //       mediaItems,
   //       this.myCreatedAndLikedPlaylist
   //     );
-  //     console.log("media items", mediaItems);
   //     setTimeout(this.$store.commit("playlist/setMyPlaylist", mediaItems), 10);
       
   //     return mediaItems;

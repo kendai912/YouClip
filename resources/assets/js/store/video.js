@@ -20,7 +20,7 @@ const actions = {
     let queries = {
       id: video_id
     };
-    const response = await axios.get("api/taglist/video", { params: queries });
+    const response = await axios.get("/api/taglist/video", { params: queries });
     context.commit("setTagListOfVideo", response.data.tagList);
   }
 };

@@ -77,8 +77,6 @@ const mutations = {
         query: { search_query: state.searchQuery },
       })
       .catch((err) => {});
-
-    location.reload();
   },
 };
 
@@ -96,7 +94,7 @@ const actions = {
       searchOption: 0,
     };
 
-    const response = await axios.post("api/search/getSearchCandidates", params);
+    const response = await axios.post("/api/search/getSearchCandidates", params);
     if (response.status == OK) {
       // 成功した時
       context.commit("setSearchCandidates", response.data.searchCandidates);
@@ -118,7 +116,7 @@ const actions = {
       page: page,
     };
 
-    const response = await axios.post("api/search/tag", params);
+    const response = await axios.post("/api/search/tag", params);
     if (response.status == OK) {
       // 成功した時
       if (response.data.tagVideoResult.last_page == page)
@@ -147,7 +145,7 @@ const actions = {
       page: page,
     };
 
-    const response = await axios.post("api/search/playlist", params);
+    const response = await axios.post("/api/search/playlist", params);
     if (response.status == OK) {
       // 成功した時
       if (response.data.playlistTagResult.last_page == page)
@@ -176,7 +174,7 @@ const actions = {
       searchOption: 0,
     };
 
-    const response = await axios.post("api/store/searchrecord", params);
+    const response = await axios.post("/api/store/searchrecord", params);
     if (response.status == CREATED) {
       // 成功した時
     } else if (response.status == INTERNAL_SERVER_ERROR) {
@@ -192,7 +190,7 @@ const actions = {
     const params = {
       searchOption: 0,
     };
-    const response = await axios.post("api/topSearchqueries", params);
+    const response = await axios.post("/api/topSearchqueries", params);
     if (response.status == OK) {
       // 成功した時
       // context.commit("setIsLoadingTopSearchqueries", false);
@@ -210,7 +208,7 @@ const actions = {
     const params = {
       searchOption: 0,
     };
-    const response = await axios.post("api/searchHistories", params);
+    const response = await axios.post("/api/searchHistories", params);
     if (response.status == OK) {
       // 成功した時
       // context.commit("setIsLoadingSearchHistories", false);

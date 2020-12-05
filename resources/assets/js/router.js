@@ -5,11 +5,10 @@ import VueRouter from "vue-router";
 import Home from "./pages/Home.vue";
 import Login from "./pages/Login.vue";
 import Register from "./pages/Register.vue";
-import Search from "./pages/Search.vue";
 import Result from "./pages/Result.vue";
+import Highlight from "./pages/Highlight.vue";
 import YTresult from "./pages/YTresult.vue";
 import Tagging from "./pages/Tagging.vue";
-import Youtube from "./pages/Youtube.vue";
 import Watch from "./pages/Watch.vue";
 import Mypage from "./pages/Mypage.vue";
 import MyFollow from "./pages/MyFollow.vue";
@@ -58,12 +57,12 @@ const routes = [
     redirect: "/",
   },
   {
-    path: "/search",
-    component: Search,
-  },
-  {
     path: "/result",
     component: Result,
+  },
+  {
+    path: "/highlight",
+    component: Highlight,
   },
   {
     path: "/tagging",
@@ -74,8 +73,44 @@ const routes = [
     component: YTresult,
   },
   {
-    path: "/youtube",
-    component: Youtube,
+    path: "/youtube/highlight",
+    component: Highlight,
+  },
+  {
+    path: "/youtube/confirm",
+    component: Highlight,
+  },
+  {
+    path: "/youtube/scenelist",
+    component: Highlight,
+  },
+  {
+    path: "/youtube/title",
+    component: Highlight,
+  },
+  {
+    path: "/youtube/complete",
+    component: Highlight,
+  },
+  {
+    path: "/add",
+    component: Highlight,
+  },
+  {
+    path: "/add/highlight",
+    component: Highlight,
+  },
+  {
+    path: "/add/confirm",
+    component: Highlight,
+  },
+  {
+    path: "/edit/highlight",
+    component: Highlight,
+  },
+  {
+    path: "/edit/confirm",
+    component: Highlight,
   },
   {
     path: "/watch",

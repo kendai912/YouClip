@@ -13,11 +13,17 @@ import navbar from "./navbar";
 import search from "./search";
 import shareModal from "./shareModal";
 import snackbar from "./snackbar";
+import highlight from "./highlight";
+import highlightHeader from "./highlightHeader";
 import YTsearch from "./YTsearch";
 import youtube from "./youtube";
+import ytPlayerController from "./ytPlayerController";
+import ytSeekBar from "./ytSeekBar";
 import tagging from "./tagging";
 import noLoginModal from "./noLoginModal";
+import confirmationModal from "./confirmationModal";
 import playlistDeleteModal from "./playlistDeleteModal";
+import tagDeleteModal from "./tagDeleteModal";
 import otherActionModal from "./otherActionModal";
 import playSpeedModal from "./playSpeedModal";
 import commentReplyModal from "./commentReplyModal";
@@ -39,11 +45,17 @@ const store = new Vuex.Store({
     search,
     shareModal,
     snackbar,
+    highlight,
+    highlightHeader,
     YTsearch,
     youtube,
+    ytPlayerController,
+    ytSeekBar,
     tagging,
     noLoginModal,
+    confirmationModal,
     playlistDeleteModal,
+    tagDeleteModal,
     otherActionModal,
     playSpeedModal,
     commentReplyModal,

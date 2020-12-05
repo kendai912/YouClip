@@ -103,12 +103,15 @@ const mutations = {
   setPlaySpeed(state, data) {
     state.playSpeed = data;
   },
+  setListIndex(state, data) {
+    state.listIndex = data;
+  },
 };
 
 const actions = {
   async getPlaylistAndTagVideoDataById(context, playlistId) {
     const response = await axios.get(
-      "api/get/playlistAndTagVideoData?id=" + playlistId
+      "/api/get/playlistAndTagVideoData?id=" + playlistId
     );
     if (response.status == OK) {
       // 成功した時
@@ -128,7 +131,7 @@ const actions = {
     }
   },
   async getTagAndVideoDataById(context, tagId) {
-    const response = await axios.get("api/get/tagAndVideoData?id=" + tagId);
+    const response = await axios.get("/api/get/tagAndVideoData?id=" + tagId);
     if (response.status == OK) {
       // 成功した時
       context.commit("setTagAndVideoData", response.data.tagAndVideoData);

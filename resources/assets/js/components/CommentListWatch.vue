@@ -1,11 +1,19 @@
 <template>
   <div>
-    <v-expansion-panels>
+    <v-expansion-panels v-model="panel">
       <v-expansion-panel>
-        <v-expansion-panel-header class="ma-0 py-0 pl-3 pr-1">
+        <v-expansion-panel-header v-bind:class="{ 'commentListExpansionPanelCustomHeader': panel !== 0 && mostLikesItem }" class="ma-0 pl-3 pr-1">
           <span class="ma-0 pa-0"
             >コメント&nbsp;&#8226;&nbsp;{{ getTotal(mediaItems) }}</span
           >
+          <div v-if="panel !== 0 && mostLikesItem" v-bind:class="{ 'commentListExpansionPanelCustomHeaderContent': panel !== 0 && mostLikesItem }">
+            <div class="placeholder-color">
+              {{ mostLikesItem.name }}
+            </div>
+            <div class="comment-body py-1">
+              {{mostLikesItem.content }}
+            </div>
+          </div>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <v-row class="ma-0 py-1 pl-3 pr-1">
@@ -155,6 +163,8 @@ export default {
       content: "",
       parentId: 0,
       commentRules: [(v) => !!v || "コメントを入力して下さい"],
+      mostLikesItem: null,
+      panel: null
     };
   },
   props: {
@@ -265,9 +275,21 @@ export default {
       this.parentId = parentId;
       this.$store.commit("commentReplyModal/openCommentReplyModal");
     },
+    getMostLikesItem(commentList) {
+      if(commentList.length > 0) {
+        const maxLikesComment = commentList.reduce(
+          (max, comment) => (comment.likes_count > max.likes_count ? comment : max),
+          commentList[0]
+        );
+        this.mostLikesItem = maxLikesComment;
+      }
+    }
   },
   created() {
     this.$store.commit("noLoginModal/closeLoginModal");
+  },
+  beforeMount(){
+    this.getMostLikesItem(this.mediaItems);
   },
 };
 </script>

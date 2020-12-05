@@ -158,7 +158,8 @@ export default {
       await this.$store.dispatch("auth/login", this.loginForm);
 
       if (this.apiStatus) {
-        //元いたページに移動する
+        //ログインモーダルを閉じて、元いたページに移動する
+        this.$store.commit("noLoginModal/closeLoginModal");
         this.$router.push(this.beforeLoginUrl);
       }
     },

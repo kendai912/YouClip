@@ -1,18 +1,30 @@
 <template>
-  <v-bottom-navigation fixed v-bind:value="activeBtn" grow color="primary">
+  <v-bottom-navigation
+    fixed
+    v-bind:value="activeBtn"
+    grow
+    color="primary"
+    class="my-footer-menu"
+  >
     <v-btn to="/home" v-on:click="saveFooterTabIndex(0)">
       <span>ホーム</span>
-      <v-icon>mdi-home</v-icon>
+      <v-icon large>mdi-home-outline</v-icon>
     </v-btn>
 
-    <v-btn to="/tagging" v-on:click="saveFooterTabIndex(1)">
-      <span>シーン登録</span>
-      <v-icon>mdi-plus-circle</v-icon>
+    <v-btn
+      class="my-footer-icon"
+      to="/tagging"
+      v-on:click="openHighlight(1)"
+    >
+      <span>まとめ作成</span>
+      <div>
+        <v-icon x-large>mdi-plus-circle-outline</v-icon>
+      </div>
     </v-btn>
 
     <v-btn to="/mypage" v-on:click="saveFooterTabIndex(2)">
       <span>マイページ</span>
-      <v-icon>mdi-account</v-icon>
+      <v-icon large>mdi-account-outline</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
@@ -23,7 +35,7 @@ import { mapState, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      activeBtn: 0
+      activeBtn: 0,
     };
   },
   methods: {
@@ -36,19 +48,28 @@ export default {
     //開いたタブをセッションストレージに保存
     saveFooterTabIndex(index) {
       window.sessionStorage.setItem("footerTabIndex", JSON.stringify(index));
-    }
+    },
+    openHighlight(index) {
+      this.saveFooterTabIndex(index);
+
+      // 表示するコンポーネントをYTvideoSelectBoxにセットし、まとめ作成ページに遷移
+      this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
+      this.$router.push({
+        path: "/highlight",
+      });
+    },
   },
   computed: {
     ...mapState({
-      apiStatus: state => state.auth.apiStatus
+      apiStatus: (state) => state.auth.apiStatus,
     }),
     ...mapGetters({
-      isLogin: "auth/check"
-    })
+      isLogin: "auth/check",
+    }),
   },
   mounted() {
     //以前に開いていたタブをセッションストレージからセット
     this.activeBtn = parseInt(window.sessionStorage.getItem("footerTabIndex"));
-  }
+  },
 };
 </script>

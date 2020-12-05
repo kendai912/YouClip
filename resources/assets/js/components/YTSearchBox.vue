@@ -1,18 +1,12 @@
 <template>
-  <v-sheet
-    color="grey lighten-3"
-    elevation="1"
-    class="search-box pr-2"
-    style="border-radius: 10px"
-  >
+  <v-sheet elevation="0" class="search-box">
     <v-container class="ma-0 pa-0 text-center">
-      <v-row class="ma-0 pa-0" align="center">
+      <v-row class="ma-0 pa-0 activeSearch" align="center">
         <v-col cols="1" class="ma-0 pa-0 text-center">
-          <!-- <v-icon v-on:click="back">mdi-arrow-left</v-icon> -->
           <v-icon v-on:click="YTsearch">search</v-icon>
         </v-col>
-        <v-col class="ma-0 pa-0">
-          <v-autocomplete
+        <v-col class="ma-0 pa-0 my-autocomplete" align="center">
+          <v-combobox
             v-model="model"
             v-bind:items="items"
             v-bind:search-input.sync="searchquery"
@@ -24,6 +18,8 @@
             hide-no-data
             clearable
             dense
+            class="ma-0 pa-0"
+            ref="YTsearchInputBox"
           >
             <template v-slot:item="data">
               <template v-if="typeof data.item !== 'object'">
@@ -47,7 +43,7 @@
                 </v-list-item-icon>
               </template>
             </template>
-          </v-autocomplete>
+          </v-combobox>
         </v-col>
       </v-row>
     </v-container>
@@ -111,28 +107,12 @@ export default {
     },
   },
   methods: {
-    // search(event) {
-    //   // 日本語入力中のEnterキー操作は無効にする
-    //   if (event.keyCode != undefined && event.keyCode !== 13) return;
-
-    //   //空欄だった場合は検索実行せずリターン
-    //   if (this.searchquery == "") return;
-
-    //   this.$store.commit("search/setSearchQuery", this.searchquery);
-    //   this.$store.commit("search/searchResultPageTransit");
-    // },
-    // back() {
-    //   this.$router.push('/home');
-    // },
     YTsearch(event) {
       // 日本語入力中のEnterキー操作は無効にする
       if (event.keyCode != undefined && event.keyCode !== 13) return;
 
       //空欄だった場合は検索実行せずリターン
-      if (this.searchquery == "") return;
-
-      //前回の検索結果を空にする
-      this.$store.commit("YTsearch/clearYTResult");
+      if (!this.searchquery || !this.searchquery.match(/\S/g)) return;
 
       //入力内容がYoutubeのURLかキーワードか判定
       let youtubeId = this.searchquery.match(/(\?v=|youtu.be\/)([^&]+)/);
@@ -140,7 +120,7 @@ export default {
         //YoutubeのURLの場合、直接再生ページへ
         this.$router
           .push({
-            path: "/youtube",
+            path: "/youtube/highlight",
             query: { v: youtubeId[2] },
           })
           .catch((err) => {});
@@ -149,7 +129,9 @@ export default {
         this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
         this.$store.commit("YTsearch/YTsearchResultPageTransit");
       }
-      // window.location.reload();
+
+      //インクリメンタルサーチの表示を消すためフォーカスを外す
+      this.$refs.YTsearchInputBox.blur();
     },
   },
   async created() {

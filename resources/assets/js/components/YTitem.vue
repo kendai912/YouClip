@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet class="pb-15">
     <transition-group name="fade-transition" mode="out-in">
       <v-card
         v-for="(item, index) in YTitems"
@@ -23,7 +23,7 @@
                     v-bind:alt="item.title + '-thumbnail'"
                     class="white--text align-end right"
                     width="100%"
-                    aspect-ratio="1.778"
+                    aspect-ratio="1.7777"
                   >
                     <!-- <v-container class="pa-0 ma-0">
                   <v-row class="pa-0 ma-1 d-flex justify-end">
@@ -92,6 +92,12 @@ export default {
   props: {
     YTitems: Array,
   },
+  data() {
+    return {
+      isAdding: false,
+      playlistIdToAdd: null,
+    };
+  },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
@@ -101,17 +107,38 @@ export default {
   },
   methods: {
     select(item) {
-      //シーンタグ付けページを表示
-      this.$router
-        .push({
-          path: "/youtube",
-          query: {
-            v: item.youtubeId,
-          },
-        })
-        .catch((err) => {});
-      // location.reload();
+      //以前のシーンタグ入力項目を初期化
+      this.clearTaggingInput();
+
+      if (this.isAdding) {
+        //プレイリストへの追加用のシーンタグ付けページを表示
+        this.$router
+          .push({
+            path: "/add/highlight",
+            query: {
+              playlist: this.playlistIdToAdd,
+              v: item.youtubeId,
+            },
+          })
+          .catch((err) => {});
+      } else {
+        //シーンタグ付けページを表示
+        this.$router
+          .push({
+            path: "/youtube/highlight",
+            query: {
+              v: item.youtubeId,
+            },
+          })
+          .catch((err) => {});
+      }
     },
+  },
+  created() {
+    if (this.$route.path == "/add") {
+      this.isAdding = true;
+      this.playlistIdToAdd = this.$route.query.playlist;
+    }
   },
 };
 </script>

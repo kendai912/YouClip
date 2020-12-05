@@ -69,7 +69,7 @@
           </v-col>
         </v-row>
 
-        <v-row v-if="!isEditting" class="ma-0 px-1">
+        <v-row v-if="!isEditing" class="ma-0 px-1">
           <v-col class="pa-0 pt-1 text-center">
             <v-select
               v-model="myPlaylistToSave"
@@ -156,7 +156,7 @@ export default {
       isLogin: "auth/check",
       showLoginModal: "noLoginModal/showLoginModal",
       tagHistories: "tagging/tagHistories",
-      isEditting: "tagging/isEditting",
+      isEditing: "tagging/isEditing",
       isKeep: "tagging/isKeep",
       showCreateNewPlaylistModal: "tagging/showCreateNewPlaylistModal",
     }),
@@ -242,7 +242,7 @@ export default {
         let self = this;
         setTimeout(async function() {
           if (self.$refs.form.validate()) {
-            if (self.isEditting) {
+            if (self.isEditing) {
               //編集の場合
               //入力済データ(除く、保存先プレイリスト)をセット
               self.$store.commit("tagging/setTags", self.tags);
