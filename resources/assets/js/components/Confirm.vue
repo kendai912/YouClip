@@ -392,7 +392,10 @@ export default {
     this.$store.commit("youtube/setYoutubeId", youtubeId);
     await this.$store.dispatch("youtube/getVideo");
     await this.$store.dispatch("youtube/getTag");
+    
+    console.log("isNew = " + this.isNew);
     if (this.isNew) {
+      console.log("getNewVideoData");
       //新規動画・タグの場合はData APIから取得
       await this.$store.dispatch("youtube/getNewVideoData");
     }
@@ -469,7 +472,8 @@ export default {
         // this.loadTimeInput();
       });
     };
-    setTimeout(onYouTubeIframeAPIReady, 10);
+    // setTimeout(onYouTubeIframeAPIReady, 10);
+    setTimeout(onYouTubeIframeAPIReady, 100);
 
     window.onPlayerReady = (event) => {
       event.target.mute();
