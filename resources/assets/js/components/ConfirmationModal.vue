@@ -86,10 +86,16 @@ export default {
       closeConfirmationModal: "confirmationModal/closeConfirmationModal",
     }),
     moveToYThighlightPage() {
+      //close scene tagging complete modal
+      this.$store.commit("confirmationModal/closeConfirmationModal");
+
       //一つ前のYouTube動画ハイライトページを表示
       this.$router.go(-1);
     },
     openSceneListPage() {
+      //close scene tagging complete modal
+      this.$store.commit("confirmationModal/closeConfirmationModal");
+
       //切り抜いた場面一覧ページを表示
       this.$router
         .push({

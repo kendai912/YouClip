@@ -413,6 +413,7 @@ class PlaylistController extends Controller
         //playlistテーブルに保存
         if (Auth::user()) {
             $playlist = new Playlist;
+            $playlist->playlistName = $request->playlistName;
             $playlist->privacySetting = $request->privacySetting;
             $playlist->user_id = Auth::user()->id;
             $playlist->playlistCategory = $request->currentCategory;
@@ -454,7 +455,7 @@ class PlaylistController extends Controller
         if (Auth::user()) {
             //ユーザーの最新のplaylist IDを取得
             $latestPlaylist = Playlist::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
-            $newPlaylist = Playlist::find($latestPlaylist->id)->where('playlistName', '')->first();
+            $newPlaylist = Playlist::find($latestPlaylist->id)->where('playlistName', null)->first();
 
             return response()->json(
                 [

@@ -337,6 +337,8 @@ export default {
           this.endTimeInput
         );
 
+        clearInterval(this.timer);
+
         if (this.isAdding) {
           //プレイリストへの追加用の確認ページを表示
           this.$router

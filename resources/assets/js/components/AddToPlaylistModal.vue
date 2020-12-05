@@ -4,15 +4,24 @@
       <v-row class="ma-0 pa-0" v-if="hasMyPlaylists">
         <v-col class="ma-0 pa-0">
           <v-list class="pb-0" dense>
-            <v-list-item-subtitle class="ma-0 pa-2 pb-0">既存プレイリストに登録(チェック外すと解除)</v-list-item-subtitle>
+            <v-list-item-subtitle class="ma-0 pa-2 pb-0"
+              >既存まとめに登録(チェック外すと解除)</v-list-item-subtitle
+            >
             <v-list-item
               v-for="myPlaylist in myCreatedPlaylist"
+              v-show="myPlaylist.playlistName"
               :key="myPlaylist.id"
               @click="sheet = false"
               style="height:30px;"
             >
-              <v-checkbox dense v-model="checkedPlaylistIds" v-bind:value="myPlaylist.id"></v-checkbox>
-              <v-list-item-title>{{ myPlaylist.playlistName }}</v-list-item-title>
+              <v-checkbox
+                dense
+                v-model="checkedPlaylistIds"
+                v-bind:value="myPlaylist.id"
+              ></v-checkbox>
+              <v-list-item-title>{{
+                myPlaylist.playlistName
+              }}</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-col>
@@ -20,11 +29,13 @@
       <v-row class="ma-0 pa-0">
         <v-col class="ma-0 pa-0">
           <v-list class="pb-0" dense>
-            <v-list-item-subtitle class="ma-0 pa-2 pb-3">新規プレイリストを作成</v-list-item-subtitle>
+            <v-list-item-subtitle class="ma-0 pa-2 pb-3"
+              >新規まとめを作成</v-list-item-subtitle
+            >
             <v-list-item>
               <v-text-field
                 v-model="newPlaylistName"
-                label="新規プレイリスト名"
+                label="新規まとめ名"
                 outlined
                 dense
                 style="font-size:10px;"
@@ -49,8 +60,16 @@
         </v-col>
       </v-row>
       <v-row class="ma-0 pa-2 justify-end" style="backgroundColor: white;">
-        <v-btn v-on:click="closeAddPlaylistModal" width="90px" color="default" class="mr-1">キャンセル</v-btn>
-        <v-btn v-on:click="addToPlaylist" width="90px" color="primary">完了</v-btn>
+        <v-btn
+          v-on:click="closeAddPlaylistModal"
+          width="90px"
+          color="default"
+          class="mr-1"
+          >キャンセル</v-btn
+        >
+        <v-btn v-on:click="addToPlaylist" width="90px" color="primary"
+          >完了</v-btn
+        >
       </v-row>
     </v-card>
   </v-dialog>
@@ -78,7 +97,7 @@ export default {
       ],
     };
   },
-  props: ['currentTagId'],
+  props: ["currentTagId"],
   computed: {
     ...mapGetters({
       user_id: "auth/user_id",

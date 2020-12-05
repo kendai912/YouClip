@@ -466,7 +466,8 @@ const actions = {
     const response = await axios.post("/api/playlist/getNewPlaylist");
     if (response.status == OK) {
       // 成功した時
-      context.commit("setNewPlaylistId", response.data.newPlaylist.id);
+      if (response.data.newPlaylist)
+        context.commit("setNewPlaylistId", response.data.newPlaylist.id);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });

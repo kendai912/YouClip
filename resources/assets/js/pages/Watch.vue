@@ -4,56 +4,31 @@
       <div class="yt-container">
         <div id="player"></div>
       </div>
-      <div v-if="isPlayerReady" class="pt-2">
-        <v-sheet
-          v-if="isPlaylist"
-          color="lighten-5"
-          class="mx-auto pt-1 pl-0 pr-1 pb-1"
-          rounded
-        >
-          <v-container class="ma-0 pa-0" fluid>
+      <div v-if="isPlayerReady">
+        <v-sheet v-if="isPlaylist" class="mx-auto pa-0">
+          <v-container class="ma-0 my-2 pa-0" fluid>
             <v-row class="ma-0 pa-0" align="center">
-              <v-col class="ma-0 pa-0">
-                <v-row class="ma-0 pa-0">
-                  <v-col
-                    cols="auto"
-                    class="ma-0 pa-0"
-                    style="padding-left: 10px !important"
-                  >
-                    <div>
-                      <span
-                        style="line-height: 1.0; font-size: 16pt; word-break: break-word;"
-                        >{{ playlistName }}</span
-                      >
-                    </div>
-                    <div
-                      class="my-grey"
-                      style="line-height: 1.0; font-size: 12pt; word-break: break-word;"
-                    >
-                      <span
-                        >{{
-                          playlistViewCount ? playlistViewCount : 0
-                        }}回視聴</span
-                      >
-                      <span>&nbsp;&#8226;&nbsp;</span>
-                      <span>合計{{ totalDuration }}</span>
-                      <span>&nbsp;&#8226;&nbsp;</span>
-                      <span>{{ playlistCreatedAt }}前</span>
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-col>
-              <v-col cols="auto" class="ma-0 pa-0 text-right">
-                <v-bottom-navigation
-                  class="bottom_navigation_no_shadow"
-                  elevation="0"
-                  background-color="transparent"
-                  style="height: 48px; justify-content: flex-end"
+              <v-col class="ma-2 my-0 pa-0">
+                <span
+                  class="home-and-search-result-title"
+                  style="font-weight: 400; !important"
+                  >{{ playlistName }}</span
                 >
-                  <span>
-                    <v-icon class="mdi mdi-chevron-down"></v-icon>
-                  </span>
-                </v-bottom-navigation>
+              </v-col>
+              <v-col cols="auto" class="ma-2 my-0 pa-0 text-right">
+                <v-icon class="mdi mdi-chevron-down"></v-icon>
+              </v-col>
+            </v-row>
+
+            <v-row class="ma-0 pa-0">
+              <v-col class="ma-2 my-0 pa-0 grey--text text--darken-3">
+                <span style="font-size:12px;"
+                  >{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span
+                >
+                <span style="font-size:8px;">&nbsp;&#8226;&nbsp;</span>
+                <span style="font-size:12px;">合計{{ totalDuration }}</span>
+                <span style="font-size:8px;">&nbsp;&#8226;&nbsp;</span>
+                <span style="font-size:12px;">{{ playlistCreatedAt }}前</span>
               </v-col>
             </v-row>
           </v-container>
@@ -69,7 +44,7 @@
                 style="height: 48px; justify-content: space-evenly; align-items: center;"
               >
                 <v-btn v-on:click="sharePlaylist" class="ma-0 pa-0 narrow-btn">
-                  <span>クリップ共有</span>
+                  <span>まとめ共有</span>
                   <v-img
                     src="/storage/icons/share.svg"
                     width="25px"

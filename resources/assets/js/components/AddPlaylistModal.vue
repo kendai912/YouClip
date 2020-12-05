@@ -6,15 +6,17 @@
           <v-col class="ma-0 pa-0">
             <v-list class="pb-0" dense>
               <v-list-item-subtitle class="ma-0 pa-2 pb-0"
-                >既存プレイリストに登録(チェック外すと解除)</v-list-item-subtitle
+                >既存まとめに登録(チェック外すと解除)</v-list-item-subtitle
               >
               <v-list-item
                 v-for="myPlaylist in myCreatedPlaylist"
+                v-show="myPlaylist.playlistName"
                 :key="myPlaylist.id"
                 @click="sheet = false"
                 style="height:30px;"
               >
                 <v-checkbox
+                  v-show="myPlaylist.playlistName.length"
                   dense
                   v-model="checkedPlaylistIds"
                   v-bind:value="myPlaylist.id"
@@ -30,12 +32,12 @@
           <v-col class="ma-0 pa-0">
             <v-list class="pb-0" dense>
               <v-list-item-subtitle class="ma-0 pa-2 pb-3"
-                >新規プレイリストを作成</v-list-item-subtitle
+                >新規まとめを作成</v-list-item-subtitle
               >
               <v-list-item>
                 <v-text-field
                   v-model="newPlaylistName"
-                  label="新規プレイリスト名"
+                  label="新規まとめ名"
                   outlined
                   dense
                   style="font-size:80%;"
@@ -134,13 +136,13 @@ export default {
     },
     //完了ボタン
     addToPlaylist() {
-      //既存プレイリストへの登録
+      //既存まとめへの登録
       this.$store.dispatch("playlist/addMyPlaylists", {
         checkedPlaylistIds: this.checkedPlaylistIds,
         currentTagId: this.currentTagId,
       });
 
-      //プレイリスト新規作成と選択中のタグの保存
+      //まとめ新規作成と選択中のタグの保存
       this.newPlaylistName
         ? this.$store.dispatch("playlist/createPlaylist", {
             newPlaylistName: this.newPlaylistName,

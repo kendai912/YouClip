@@ -50,14 +50,11 @@
                   small-chips
                   class="sceneTagInputBox"
                 >
-                  <template
-                    v-slot:selection="{ attrs, item, select, selected }"
-                  >
+                  <template v-slot:selection="{ attrs, item, selected }">
                     <v-chip
                       v-bind="attrs"
+                      v-show="item"
                       :input-value="selected"
-                      v-on:click="select"
-                      v-on:click:close="remove(item)"
                       class="my-tag-chip pr-2"
                       text-color="black"
                       style="font-weight: normal; border-color:#bdbdbd;"
@@ -131,8 +128,6 @@ export default {
       timeout: 5000,
       text: "シーンタグを登録しました",
       timer: null,
-      startTimeInput: null,
-      endTimeInput: null,
       highlightBodyRef: this.$refs.highlightBody,
       isPlayerReady: false,
       isPlaying: true,
@@ -144,43 +139,6 @@ export default {
       tagIdToEdit: null,
       tags: [],
       tagItems: [],
-      startRules: [
-        (v) => !!v || "開始時間を入力して下さい",
-        (v) => {
-          let regex = /^\d+:\d{1,2}$/;
-          if (!v || regex.test(v)) {
-            return true;
-          }
-
-          if (!regex.test(v)) {
-            return "分:秒の形式で入力して下さい";
-          }
-        },
-      ],
-      endRules: [
-        (v) => !!v || "終了時間を入力して下さい",
-        (v) => {
-          let regex = /^\d+:\d{1,2}$/;
-          if (!v || regex.test(v)) {
-            return true;
-          }
-
-          if (!regex.test(v)) {
-            return "分:秒の形式で入力して下さい";
-          }
-        },
-        (v) => {
-          if (this.startTimeInput) {
-            if (
-              parseInt(this.convertToSec(v)) <=
-              parseInt(this.convertToSec(this.startTimeInput))
-            ) {
-              return "開始時間より後ろの時間を入力下さい";
-            }
-          }
-          return true;
-        },
-      ],
     };
   },
   mixins: [myMixin],
@@ -197,6 +155,7 @@ export default {
       player: "ytPlayerController/player",
       start: "tagging/start",
       end: "tagging/end",
+      privacySetting: "tagging/privacySetting",
       showLoginModal: "noLoginModal/showLoginModal",
       newPlaylistId: "playlist/newPlaylistId",
       showConfirmationModal: "confirmationModal/showConfirmationModal",
@@ -249,23 +208,6 @@ export default {
     taggingSucceed() {
       this.snackbar = true;
     },
-    tapStartBtn() {
-      this.startTimeInput = this.currentTime;
-
-      // call child component's methods
-      this.$refs.YTPlayerController.setImmediateHide();
-      this.$refs.YTPlayerController.setIsPlaying();
-      this.$refs.YTPlayerController.toggleController();
-
-      this.player.playVideo();
-    },
-    tapStopBtn() {
-      this.endTimeInput = this.currentTime;
-
-      // call child component's methods
-      this.$refs.YTPlayerController.toggleController();
-      this.$refs.YTPlayerController.pauseVideo();
-    },
     checkRouting() {
       if (this.start == null || this.end == null) {
         this.$router
@@ -289,8 +231,6 @@ export default {
         window.sessionStorage.getItem("ytInputData")
       );
       if (ytInputData && ytInputData.youtubeId == this.youtubeId) {
-        this.startTimeInput = ytInputData.startTimeInput;
-        this.endTimeInput = ytInputData.endTimeInput;
         this.$store.commit("tagging/setStart", ytInputData.startTimeInput);
         this.$store.commit("tagging/setEnd", ytInputData.endTimeInput);
         this.$store.commit(
@@ -314,6 +254,8 @@ export default {
           "切り抜いた場面を保存するには、ログインしてください。(入力データは保持されます)"
         );
       } else {
+        clearInterval(this.timer);
+
         let self = this;
         setTimeout(async function() {
           //ログイン済の場合
@@ -395,9 +337,10 @@ export default {
             if (!self.newPlaylistId) {
               //プレイリストを新規作成しIDをplaylist storeのnewPlaylistIdに保存
               await self.$store.dispatch("playlist/createPlaylist", {
-                privacySetting: this.privacySetting,
+                playlistName: "",
+                privacySetting: self.privacySetting,
                 currentTagId: "",
-                currentCategory: this.currentCategory,
+                currentCategory: self.currentCategory,
               });
             }
 
@@ -421,9 +364,6 @@ export default {
             self.$store.commit("confirmationModal/openConfirmationModal");
           }
 
-          // 入力フォームをクリア(プライバシー設定と保存先プレイリストは初期値をセット)
-          self.clearAllInput();
-
           //セッションに保存してある開始・終了時間データを破棄
           window.sessionStorage.removeItem("ytInputData");
         });
@@ -434,12 +374,6 @@ export default {
     // 検索バーによるルート変更後の初期化処理
     $route() {
       this.initialize();
-    },
-    startTimeInput() {
-      this.$store.commit("ytSeekBar/setStartTimeInput", this.startTimeInput);
-    },
-    endTimeInput() {
-      this.$store.commit("ytSeekBar/setEndTimeInput", this.endTimeInput);
     },
     isPlayerReady() {
       this.isPlayerReady ? this.$refs.ytSeekBar.setYtSeekbarWrapperTop() : "";
