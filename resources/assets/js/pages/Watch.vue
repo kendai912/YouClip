@@ -35,23 +35,22 @@
         </v-sheet>
 
         <v-sheet tile class="mx-auto px-1 py-2">
-          <v-row class="ma-0 pa-0">
-            <v-col class="ma-0 pa-0" style="position: relative;">
-              <v-bottom-navigation
-                class="bottom_navigation_no_shadow"
-                elevation="0"
-                background-color="transparent"
-                style="height: 48px; justify-content: space-evenly; align-items: center;"
-              >
+          <v-row class="ma-0 pa-0" justify="space-between" style="position: relative;">
+            <v-col class="ma-0 pa-0 text-center">
+              <v-bottom-navigation class="bottom_navigation_no_shadow">
                 <v-btn v-on:click="sharePlaylist" class="ma-0 pa-0 narrow-btn">
                   <span>まとめ共有</span>
                   <v-img
                     src="/storage/icons/share.svg"
                     width="25px"
                     max-height="25px"
-                    class="icon-large"
+                    class="icon-large mb-1"
                   />
                 </v-btn>
+              </v-bottom-navigation>
+            </v-col>
+            <v-col class="ma-0 pa-0 text-center">
+              <v-bottom-navigation class="bottom_navigation_no_shadow">
                 <v-btn
                   v-on:click="toggleLikePlaylist"
                   class="ma-0 pa-0 narrow-btn"
@@ -65,13 +64,13 @@
                   >
                 </v-btn>
               </v-bottom-navigation>
-              <span
-                v-on:click="openOtherActionModal"
-                style="position: absolute; bottom: 15px; right: 7px; font-size: 22px;"
-              >
-                <i class="fas fa-ellipsis-v my-grey"></i>
-              </span>
             </v-col>
+            <span
+              v-on:click="openOtherActionModal"
+              style="position: absolute; bottom: 24px; right: 13px; font-size: 16px;"
+            >
+              <i class="fas fa-ellipsis-v my-grey"></i>
+            </span>
           </v-row>
         </v-sheet>
 

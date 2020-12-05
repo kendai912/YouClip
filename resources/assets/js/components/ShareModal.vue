@@ -36,7 +36,7 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <v-card-text class="grey--text text--darken-3"
+                <v-card-text class="ma-0 pa-1 grey--text text--darken-3"
                   >Twitter</v-card-text
                 >
               </v-col>
@@ -62,7 +62,7 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <v-card-text class="grey--text text--darken-3"
+                <v-card-text class="ma-0 pa-1 grey--text text--darken-3"
                   >Facebook</v-card-text
                 >
               </v-col>
@@ -89,7 +89,7 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <v-card-text class="grey--text text--darken-3"
+                <v-card-text class="ma-0 pa-1 grey--text text--darken-3"
                   >LINE</v-card-text
                 >
               </v-col>
@@ -107,7 +107,7 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <v-card-text class="grey--text text--darken-3"
+                <v-card-text class="ma-0 pa-1 grey--text text--darken-3"
                   >URLをコピー</v-card-text
                 >
               </v-col>

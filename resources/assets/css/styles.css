@@ -365,6 +365,10 @@
   box-shadow: none !important;
 }
 
+.v-expansion-panel::before {
+  box-shadow: none !important;
+}
+
 .bottom-position {
   position: absolute;
   bottom: 24px;

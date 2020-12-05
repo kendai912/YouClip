@@ -125,7 +125,7 @@ export default {
         //シーンタグ付けページを表示
         this.$router
           .push({
-            path: "/youtube",
+            path: "/youtube/highlight",
             query: {
               v: item.youtubeId,
             },
