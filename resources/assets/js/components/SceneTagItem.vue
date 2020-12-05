@@ -272,6 +272,7 @@ export default {
         .push({
           path: "/edit/highlight",
           query: {
+            playlist: this.playlistId,
             tag: tagId,
             v: youtubeId,
           },

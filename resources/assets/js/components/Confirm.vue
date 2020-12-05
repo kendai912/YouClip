@@ -140,6 +140,7 @@ export default {
       isAdding: false,
       isEditing: false,
       playlistIdToAdd: null,
+      playlistIdToEdit: null,
       tagIdToEdit: null,
       tags: [],
       tagItems: [],
@@ -199,13 +200,14 @@ export default {
       showLoginModal: "noLoginModal/showLoginModal",
       newPlaylistId: "playlist/newPlaylistId",
       showConfirmationModal: "confirmationModal/showConfirmationModal",
+      tagAndVideoData: "watch/tagAndVideoData",
     }),
   },
   methods: {
     ...mapMutations({
       setPlayer: "ytPlayerController/setPlayer",
     }),
-    initialize() {
+    async initialize() {
       //ナビバーを非表示
       this.$store.commit("navbar/setShowNavbar", false);
 
@@ -215,17 +217,33 @@ export default {
         "切り抜いた場面を確認"
       );
 
+      //clear all data before loading
+      this.clearAllInput();
+
       //既存プレイリストへの追加かシーンの編集か新規かを判別
       if (this.$route.path == "/add/confirm") {
         this.isAdding = true;
         this.playlistIdToAdd = this.$route.query.playlist;
       } else if (this.$route.path == "/edit/confirm") {
+        this.playlistIdToEdit = this.$route.query.playlist;
         this.isEditing = true;
         this.tagIdToEdit = this.$route.query.tag;
 
+        //動画・タグデータを取得
+        await this.$store.dispatch(
+          "watch/getTagAndVideoDataById",
+          this.tagIdToEdit
+        );
+
         //set tags data for editing
-        // this.setEditingData();
+        this.setEditingTagData();
       }
+    },
+    //set tags data for editing
+    setEditingTagData() {
+      let defaultTags = this.tagAndVideoData[0].tags.split(/::/);
+      this.$store.commit("tagging/setTags", defaultTags);
+      this.tags = defaultTags;
     },
     //シーンタグ完了のトーストを表示
     taggingSucceed() {
@@ -271,11 +289,18 @@ export default {
         window.sessionStorage.getItem("ytInputData")
       );
       if (ytInputData && ytInputData.youtubeId == this.youtubeId) {
-        this.clearAllInput();
         this.startTimeInput = ytInputData.startTimeInput;
         this.endTimeInput = ytInputData.endTimeInput;
         this.$store.commit("tagging/setStart", ytInputData.startTimeInput);
         this.$store.commit("tagging/setEnd", ytInputData.endTimeInput);
+        this.$store.commit(
+          "ytSeekBar/setStartTimeInput",
+          ytInputData.startTimeInput
+        );
+        this.$store.commit(
+          "ytSeekBar/setEndTimeInput",
+          ytInputData.endTimeInput
+        );
       }
       this.checkRouting();
     },
@@ -295,11 +320,34 @@ export default {
           if (self.isEditing) {
             //編集の場合
             //入力済データ(除く、保存先プレイリスト)をセット
+            self.$store.commit("tagging/setTagId", self.tagIdToEdit);
             self.$store.commit("tagging/setTags", self.tags);
             self.$store.commit("tagging/setPrivacySetting", "public");
 
-            //データを更新
+            //ローディングを表示し、OKボタンを無効化
+            self.$store.commit("highlightHeader/setIsLoading");
+            self.isDisabled = true;
+
+            //シーンを更新
             await self.$store.dispatch("tagging/updateSceneTags");
+
+            //ローディングを非表示
+            self.$store.commit("highlightHeader/setNotLoading");
+
+            //display editting a new scene completion snackbar
+            self.$store.commit("snackbar/setText", "場面を更新しました");
+            self.$store.commit("snackbar/setSnackbar", true);
+            self.$store.commit("snackbar/setTimeout", 5000);
+
+            //return to the playlist edit page
+            self.$router
+              .push({
+                path: "/editmyplaylist",
+                query: {
+                  playlist: self.playlistIdToEdit,
+                },
+              })
+              .catch((err) => {});
           } else if (self.isAdding) {
             //in case of adding to existing playlist
             //入力済データをセット
@@ -429,6 +477,9 @@ export default {
 
     //Youtube Playerの初期処理
     window.onYouTubeIframeAPIReady = () => {
+      //load start & end time
+      this.loadTimeInput();
+
       let player = new YT.Player("player", {
         width: "560",
         height: "315",
@@ -480,7 +531,7 @@ export default {
         );
 
         //load start & end time after the seekbar width is correctly set
-        this.loadTimeInput();
+        // this.loadTimeInput();
       });
     };
     setTimeout(onYouTubeIframeAPIReady, 10);
@@ -518,13 +569,13 @@ export default {
     };
 
     //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
-    let from = this.$route.path;
-    window.addEventListener("popstate", function(e) {
-      let to = self.$route.path;
-      if (from == "/youtube/confirm" && to == "/youtube/confirm") {
-        location.reload();
-      }
-    });
+    // let from = this.$route.path;
+    // window.addEventListener("popstate", function(e) {
+    //   let to = self.$route.path;
+    //   if (from == "/youtube/confirm" && to == "/youtube/confirm") {
+    //     location.reload();
+    //   }
+    // });
 
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.highlightBodyRef = this.$refs.highlightBody;

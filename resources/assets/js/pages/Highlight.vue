@@ -80,7 +80,8 @@ export default {
       to.path == "/" ||
       to.path == "/mypage" ||
       to.path == "/login" ||
-      to.path == "/editmyplaylist"
+      to.path == "/editmyplaylist" ||
+      to.path == "/tagging"
     ) {
       //hide iframe player first because it remains when moving to another page
       $("#player").hide();
