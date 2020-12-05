@@ -411,6 +411,7 @@ export default {
 
     //Youtube Playerの初期処理
     window.onYouTubeIframeAPIReady = () => {
+      console.log("onYouTubeIframeAPIReady");
       //load start & end time
       this.loadTimeInput();
 

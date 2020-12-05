@@ -106,8 +106,11 @@ const actions = {
       privacySetting: state.privacySetting,
       myPlaylistToSave: state.myPlaylistToSave, //playlist ID
     };
+    console.log("storeSceneTags");
+    console.log(params);
 
     const response = await axios.post("/api/tag/store", params);
+    console.log(response);
     if (response.status == CREATED) {
       // 成功した時
       //storeのTagデータを更新
