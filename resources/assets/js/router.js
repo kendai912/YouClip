@@ -105,6 +105,14 @@ const routes = [
     component: Highlight,
   },
   {
+    path: "/edit/highlight",
+    component: Highlight,
+  },
+  {
+    path: "/edit/confirm",
+    component: Highlight,
+  },
+  {
     path: "/watch",
     component: Watch,
   },

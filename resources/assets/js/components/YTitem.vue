@@ -94,7 +94,7 @@ export default {
   },
   data() {
     return {
-      isAdd: false,
+      isAdding: false,
       playlistIdToAdd: null,
     };
   },
@@ -110,7 +110,7 @@ export default {
       //以前のシーンタグ入力項目を初期化
       this.clearTaggingInput();
 
-      if (this.isAdd) {
+      if (this.isAdding) {
         //プレイリストへの追加用のシーンタグ付けページを表示
         this.$router
           .push({
@@ -136,7 +136,7 @@ export default {
   },
   created() {
     if (this.$route.path == "/add") {
-      this.isAdd = true;
+      this.isAdding = true;
       this.playlistIdToAdd = this.$route.query.playlist;
     }
   },

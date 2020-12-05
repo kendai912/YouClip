@@ -122,7 +122,7 @@
               <v-col cols="4">
                 <div
                   class="text-center cursor-pointer"
-                  v-on:click="editItem(index)"
+                  v-on:click="editItem(item.id)"
                 >
                   <v-icon class="outlined-icon">mdi-pencil</v-icon>
                   <div class="fz-12">編集</div>
@@ -265,8 +265,25 @@ export default {
       this.$store.commit("tagDeleteModal/setTagName", tagName);
       this.$store.commit("tagDeleteModal/openTagDeleteModal");
     },
-    editItem(index) {
-      // todo
+    editItem(tagId) {
+      let youtubeId = this.searchYtIdByTagId(tagId);
+
+      this.$router
+        .push({
+          path: "/edit/highlight",
+          query: {
+            tag: tagId,
+            v: youtubeId,
+          },
+        })
+        .catch((err) => {});
+    },
+    searchYtIdByTagId(tagId) {
+      let target = this.playlistAndTagVideoData.tagVideoData.find((item) => {
+        return item.tag_id == tagId;
+      });
+
+      return target.youtubeId;
     },
     async plusItem(id) {
       //ログイン済の場合

@@ -14,7 +14,7 @@ const state = {
   myPlaylistToSave: "none",
   controlTransitNext: true,
   tagHistories: [],
-  isEditting: false,
+  isEditing: false,
   isKeep: false,
   showCreateNewPlaylistModal: false,
 };
@@ -30,7 +30,7 @@ const getters = {
   myPlaylistToSave: (state) => state.myPlaylistToSave,
   controlTransitNext: (state) => state.controlTransitNext,
   tagHistories: (state) => state.tagHistories,
-  isEditting: (state) => state.isEditting,
+  isEditing: (state) => state.isEditing,
   isKeep: (state) => state.isKeep,
   showCreateNewPlaylistModal: (state) => state.showCreateNewPlaylistModal,
 };
@@ -66,8 +66,8 @@ const mutations = {
   setTagHistories(state, data) {
     state.tagHistories = data;
   },
-  setIsEditting(state, data) {
-    state.isEditting = data;
+  setIsEditing(state, data) {
+    state.isEditing = data;
   },
   setIsKeep(state, data) {
     state.isKeep = data;

@@ -58,15 +58,12 @@
                       :input-value="selected"
                       v-on:click="select"
                       v-on:click:close="remove(item)"
-                      close
-                      class="ma-2"
+                      class="my-tag-chip pr-2"
+                      text-color="black"
+                      style="font-weight: normal; border-color:#bdbdbd;"
+                      outlined
                       small
-                      color="blue lighten-2"
-                      text-color="white"
                     >
-                      <v-avatar left>
-                        <i class="fas fa-tag my-grey"></i>
-                      </v-avatar>
                       {{ item }}
                     </v-chip>
                   </template>
@@ -140,8 +137,10 @@ export default {
       isPlayerReady: false,
       isPlaying: true,
       isDisabled: false,
-      isAdd: false,
+      isAdding: false,
+      isEditing: false,
       playlistIdToAdd: null,
+      tagIdToEdit: null,
       tags: [],
       tagItems: [],
       startRules: [
@@ -198,7 +197,6 @@ export default {
       start: "tagging/start",
       end: "tagging/end",
       showLoginModal: "noLoginModal/showLoginModal",
-      isEditting: "tagging/isEditting",
       newPlaylistId: "playlist/newPlaylistId",
       showConfirmationModal: "confirmationModal/showConfirmationModal",
     }),
@@ -217,10 +215,16 @@ export default {
         "切り抜いた場面を確認"
       );
 
-      //既存プレイリストへの追加かどうかを判別
+      //既存プレイリストへの追加かシーンの編集か新規かを判別
       if (this.$route.path == "/add/confirm") {
-        this.isAdd = true;
+        this.isAdding = true;
         this.playlistIdToAdd = this.$route.query.playlist;
+      } else if (this.$route.path == "/edit/confirm") {
+        this.isEditing = true;
+        this.tagIdToEdit = this.$route.query.tag;
+
+        //set tags data for editing
+        // this.setEditingData();
       }
     },
     //シーンタグ完了のトーストを表示
@@ -288,7 +292,7 @@ export default {
         let self = this;
         setTimeout(async function() {
           //ログイン済の場合
-          if (self.isEditting) {
+          if (self.isEditing) {
             //編集の場合
             //入力済データ(除く、保存先プレイリスト)をセット
             self.$store.commit("tagging/setTags", self.tags);
@@ -296,7 +300,7 @@ export default {
 
             //データを更新
             await self.$store.dispatch("tagging/updateSceneTags");
-          } else if (self.isAdd) {
+          } else if (self.isAdding) {
             //in case of adding to existing playlist
             //入力済データをセット
             self.$store.commit("tagging/setTags", self.tags);

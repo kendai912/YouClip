@@ -48,6 +48,10 @@ export default {
         this.$store.commit("highlight/setDisplayComponent", "Youtube");
       } else if (this.$route.path == "/add/confirm") {
         this.$store.commit("highlight/setDisplayComponent", "Confirm");
+      } else if (this.$route.path == "/edit/highlight") {
+        this.$store.commit("highlight/setDisplayComponent", "Youtube");
+      } else if (this.$route.path == "/edit/confirm") {
+        this.$store.commit("highlight/setDisplayComponent", "Confirm");
       } else {
         this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
       }
@@ -73,10 +77,10 @@ export default {
   },
   async beforeRouteLeave(to, from, next) {
     if (
-      (to.path == "/") ||
-      (to.path == "/mypage") ||
-      (to.path == "/login") ||
-      (to.path == "/editmyplaylist")
+      to.path == "/" ||
+      to.path == "/mypage" ||
+      to.path == "/login" ||
+      to.path == "/editmyplaylist"
     ) {
       //hide iframe player first because it remains when moving to another page
       $("#player").hide();
@@ -105,7 +109,13 @@ export default {
       (from.path == "/add/confirm" && to.path == "/highlight") ||
       (from.path == "/add/confirm" && to.path == "/mypage") ||
       (from.path == "/add/confirm" && to.path == "/") ||
-      (from.path == "/add/confirm" && to.path == "/editmyplaylist")
+      (from.path == "/add/confirm" && to.path == "/editmyplaylist") ||
+      (from.path == "/edit/highlight" && to.path == "/editmyplaylist") ||
+      (from.path == "/edit/confirm" && to.path == "/edit/highlight") ||
+      (from.path == "/edit/confirm" && to.path == "/editmyplaylist") ||
+      (from.path == "/edit/confirm" && to.path == "/highlight") ||
+      (from.path == "/edit/confirm" && to.path == "/mypage") ||
+      (from.path == "/edit/confirm" && to.path == "/")
     ) {
       self.$store.commit("highlight/setHighlightTransitNext", false);
     }

@@ -405,7 +405,7 @@ export default {
       showOtherActionModal: "otherActionModal/showOtherActionModal",
       showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
       showSceneTagControl: "tagging/showSceneTagControl",
-      isEditting: "tagging/isEditting",
+      isEditing: "tagging/isEditing",
       playSpeed: "watch/playSpeed",
     }),
     isLiked() {
@@ -553,7 +553,7 @@ export default {
         //フラグを停止中に反転
         this.isPlaying = !this.isPlaying;
 
-        if (this.isEditting) {
+        if (this.isEditing) {
           //現在と同じシーンをリピート(開始時間に戻る)
           this.player.seekTo(this.convertToSec(this.startIs));
         } else if (this.$route.query.playlist) {

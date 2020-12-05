@@ -36,7 +36,7 @@
             ></v-select>
           </v-col>
         </v-row>
-        <v-row class="ma-0">
+        <!-- <v-row class="ma-0">
           <v-col class="pa-0 pt-2 text-center">
             <v-text-field
               v-model="playlistEditMode"
@@ -53,7 +53,7 @@
               class="playlistEditModeInputBox inner-outlined-icon"
             ></v-text-field>
           </v-col>
-        </v-row>
+        </v-row> -->
         <v-row class="ma-0">
           <v-col class="pa-0 pt-2 align-bottom" align-self="end">
             <v-card elevation="0">

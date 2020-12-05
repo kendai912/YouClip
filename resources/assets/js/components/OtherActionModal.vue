@@ -94,7 +94,7 @@ export default {
         this.$store.commit("youtube/setIsReady", true);
 
         //編集モードフラグをセット
-        this.$store.commit("tagging/setIsEditting", true);
+        this.$store.commit("tagging/setIsEditing", true);
 
         //編集前のタグID・開始時間・終了時間・シーンタグをセット
         this.$store.commit("tagging/setTagId", this.currentTagId);

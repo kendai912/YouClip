@@ -156,8 +156,10 @@ export default {
       endTimeInput: null,
       highlightBodyRef: this.$refs.highlightBody,
       isPlayerReady: false,
-      isAdd: false,
+      isAdding: false,
+      isEditing: false,
       playlistIdToAdd: null,
+      tagIdToEdit: null,
       startRules: [
         (v) => !!v || "開始時間を入力して下さい",
         (v) => {
@@ -208,13 +210,14 @@ export default {
       videoData: "youtube/videoData",
       currentTime: "youtube/currentTime",
       player: "ytPlayerController/player",
+      tagAndVideoData: "watch/tagAndVideoData",
     }),
   },
   methods: {
     ...mapMutations({
       setPlayer: "ytPlayerController/setPlayer",
     }),
-    initialize() {
+    async initialize() {
       //ナビバーを非表示
       this.$store.commit("navbar/setShowNavbar", false);
 
@@ -224,11 +227,43 @@ export default {
         "切り抜く場面を指定"
       );
 
-      //既存プレイリストへの追加かどうかを判別
+      //既存プレイリストへの追加かシーンの編集か新規かを判別
       if (this.$route.path == "/add/highlight") {
-        this.isAdd = true;
+        this.isAdding = true;
         this.playlistIdToAdd = this.$route.query.playlist;
+      } else if (this.$route.path == "/edit/highlight") {
+        this.isEditing = true;
+        this.tagIdToEdit = this.$route.query.tag;
+
+        //動画・タグデータを取得
+        await this.$store.dispatch(
+          "watch/getTagAndVideoDataById",
+          this.tagIdToEdit
+        );
+
+        //set default data for editing
+        this.setEditingData();
       }
+    },
+    setEditingData() {
+      this.$store.commit(
+        "ytSeekBar/setStartTimeInput",
+        this.formatToMinSec(this.tagAndVideoData[0].start)
+      );
+      this.$store.commit(
+        "ytSeekBar/setEndTimeInput",
+        this.formatToMinSec(this.tagAndVideoData[0].end)
+      );
+      this.$store.commit(
+        "tagging/setStart",
+        this.formatToMinSec(this.tagAndVideoData[0].start)
+      );
+      this.$store.commit(
+        "tagging/setEnd",
+        this.formatToMinSec(this.tagAndVideoData[0].end)
+      );
+      this.startTimeInput = this.formatToMinSec(this.tagAndVideoData[0].start);
+      this.endTimeInput = this.formatToMinSec(this.tagAndVideoData[0].end);
     },
     //シーンタグ完了のトーストを表示
     taggingSucceed() {
@@ -283,13 +318,24 @@ export default {
           this.endTimeInput
         );
 
-        if (this.isAdd) {
+        if (this.isAdding) {
           //プレイリストへの追加用の確認ページを表示
           this.$router
             .push({
               path: "/add/confirm",
               query: {
                 playlist: this.playlistIdToAdd,
+                v: this.youtubeId,
+              },
+            })
+            .catch((err) => {});
+        } else if (this.isEditing) {
+          //シーン編集用の確認ページを表示
+          this.$router
+            .push({
+              path: "/edit/confirm",
+              query: {
+                tag: this.tagIdToEdit,
                 v: this.youtubeId,
               },
             })
@@ -360,6 +406,9 @@ export default {
         height: "315",
         videoId: this.youtubeId,
         playerVars: {
+          start: this.startTimeInput
+            ? this.convertToSec(this.startTimeInput)
+            : "",
           playsinline: 1,
           autoplay: 1,
           iv_load_policy: 3, //アノテーション非表示
