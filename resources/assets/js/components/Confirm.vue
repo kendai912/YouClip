@@ -404,6 +404,7 @@ export default {
     }
 
     // This code loads the IFrame Player API code asynchronously.
+    console.log("loading iframe script");
     var tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName("script")[0];
@@ -433,7 +434,6 @@ export default {
           iv_load_policy: 3, //動画アノテーションを非表示
           modestbranding: 1, //YouTubeロゴ非表示
           enablejsapi: 1, //postMessageを有効にするのに必要
-          origin: "https://youclip.jp",
         },
         events: {
           onReady: onPlayerReady,
@@ -468,10 +468,7 @@ export default {
         );
       });
     };
-    this.$nextTick(() => {
-      setTimeout(onYouTubeIframeAPIReady, 10);
-      // setTimeout(onYouTubeIframeAPIReady, 40);
-    });
+    setTimeout(onYouTubeIframeAPIReady, 10);
 
     window.onPlayerReady = (event) => {
       event.target.mute();
