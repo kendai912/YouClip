@@ -466,13 +466,12 @@ export default {
           "top",
           ($("iframe").width() * 9) / 16 + 15
         );
-
-        //load start & end time after the seekbar width is correctly set
-        // this.loadTimeInput();
       });
     };
-    setTimeout(onYouTubeIframeAPIReady, 10);
-    // setTimeout(onYouTubeIframeAPIReady, 40);
+    this.$nextTick(() => {
+      setTimeout(onYouTubeIframeAPIReady, 10);
+      // setTimeout(onYouTubeIframeAPIReady, 40);
+    });
 
     window.onPlayerReady = (event) => {
       event.target.mute();
