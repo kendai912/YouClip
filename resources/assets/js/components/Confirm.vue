@@ -469,8 +469,8 @@ export default {
         // this.loadTimeInput();
       });
     };
-    // setTimeout(onYouTubeIframeAPIReady, 10);
-    setTimeout(onYouTubeIframeAPIReady, 40);
+    setTimeout(onYouTubeIframeAPIReady, 10);
+    // setTimeout(onYouTubeIframeAPIReady, 40);
 
     window.onPlayerReady = (event) => {
       event.target.mute();
