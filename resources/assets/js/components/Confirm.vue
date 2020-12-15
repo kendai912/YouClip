@@ -412,6 +412,7 @@ export default {
 
     //Youtube Playerの初期処理
     window.onYouTubeIframeAPIReady = () => {
+      console.log("onYouTubeIframeAPIReady");
       //load start & end time
       this.loadTimeInput();
 
@@ -432,6 +433,7 @@ export default {
           iv_load_policy: 3, //動画アノテーションを非表示
           modestbranding: 1, //YouTubeロゴ非表示
           enablejsapi: 1, //postMessageを有効にするのに必要
+          origin: "https://youclip.jp",
         },
         events: {
           onReady: onPlayerReady,
