@@ -133,8 +133,6 @@ const actions = {
     const response = await axios.get("/api/youtube/getVideo", {
       params: params,
     });
-    console.log("getVideo response");
-    console.log(response);
     if (response.status == OK) {
       // 成功した時
       if (!response.data.video[0]) {
