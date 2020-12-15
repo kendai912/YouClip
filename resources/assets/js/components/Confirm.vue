@@ -468,7 +468,8 @@ export default {
         );
       });
     };
-    setTimeout(onYouTubeIframeAPIReady, 10);
+    // setTimeout(onYouTubeIframeAPIReady, 10);
+    setTimeout(onYouTubeIframeAPIReady);
 
     window.onPlayerReady = (event) => {
       event.target.mute();
