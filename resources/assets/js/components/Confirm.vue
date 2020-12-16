@@ -416,6 +416,7 @@ export default {
       console.log("onYouTubeIframeAPIReady");
       //load start & end time
       this.loadTimeInput();
+      console.log("loaded time input");
 
       let player = new YT.Player("player", {
         width: "560",
@@ -469,8 +470,7 @@ export default {
         );
       });
     };
-    // setTimeout(onYouTubeIframeAPIReady, 10);
-    setTimeout(onYouTubeIframeAPIReady, 2000);
+    setTimeout(onYouTubeIframeAPIReady, 10);
 
     window.onPlayerReady = (event) => {
       event.target.mute();
