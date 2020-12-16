@@ -443,6 +443,7 @@ export default {
 
       //playerインスタンスをytPlayerControllerストアに格納
       self.setPlayer(player);
+      console.log(player);
 
       //iframeの縦・横のサイズをセット(縦は952px、横は幅いっぱい)
       $("iframe").width($(".ytPlayerWrapper").width());
@@ -469,7 +470,7 @@ export default {
       });
     };
     // setTimeout(onYouTubeIframeAPIReady, 10);
-    setTimeout(onYouTubeIframeAPIReady);
+    setTimeout(onYouTubeIframeAPIReady, 2000);
 
     window.onPlayerReady = (event) => {
       event.target.mute();
