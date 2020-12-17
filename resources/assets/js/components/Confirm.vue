@@ -3,7 +3,7 @@
     <HighlightHeader />
     <div class="highlight-body" ref="highlightBody">
       <div class="ytPlayerWrapper" ref="ytPlayerWrapper">
-        <div id="player"></div>
+        <div id="playerConfirm"></div>
         <YTPlayerController v-show="isPlayerReady" ref="YTPlayerController" />
         <YTSeekBar
           v-show="isPlayerReady"
@@ -57,7 +57,7 @@
                       :input-value="selected"
                       class="my-tag-chip pr-2"
                       text-color="black"
-                      style="font-weight: normal; border-color:#bdbdbd;"
+                      style="font-weight: normal; border-color: #bdbdbd"
                       outlined
                       small
                     >
@@ -257,7 +257,7 @@ export default {
         clearInterval(this.timer);
 
         let self = this;
-        setTimeout(async function() {
+        setTimeout(async function () {
           //ログイン済の場合
           if (self.isEditing) {
             //編集の場合
@@ -369,6 +369,29 @@ export default {
         });
       }
     },
+    setYtPlayerCSS() {
+      //iframeの縦・横のサイズをセット(縦は952px、横は幅いっぱい)
+      $("iframe").width($(".ytPlayerWrapper").width());
+      $("iframe").height(952);
+
+      //iframeとseekbarが見える範囲の高さをセットし、iframe上部の黒分が見えないよう上にスライド
+      $(".ytPlayerWrapper").css(
+        "height",
+        ($("iframe").width() * 9) / 16 +
+          (952 - ($("iframe").width() * 9) / 16) / 2 +
+          15
+      );
+      $(".ytPlayerWrapper").css(
+        "top",
+        (($("iframe").height() - ($("iframe").width() * 9) / 16) / 2) * -1
+      );
+
+      //開始・終了ボタンがiframeとseekbarの下に来るようにtopを調整
+      $(".highlightControllerBody").css(
+        "top",
+        ($("iframe").width() * 9) / 16 + 15
+      );
+    },
   },
   watch: {
     // 検索バーによるルート変更後の初期化処理
@@ -404,21 +427,19 @@ export default {
     }
 
     // This code loads the IFrame Player API code asynchronously.
-    console.log("loading iframe script");
     var tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
+    tag.src =
+      "https://www.youtube.com/iframe_api?" + +parseInt(new Date() / 1000);
     var firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     let self = this;
 
     //Youtube Playerの初期処理
     window.onYouTubeIframeAPIReady = () => {
-      console.log("onYouTubeIframeAPIReady");
       //load start & end time
       this.loadTimeInput();
-      console.log("loaded time input");
 
-      let player = new YT.Player("player", {
+      let player = new YT.Player("playerConfirm", {
         width: "560",
         height: "315",
         videoId: this.youtubeId,
@@ -444,41 +465,18 @@ export default {
 
       //playerインスタンスをytPlayerControllerストアに格納
       self.setPlayer(player);
-      console.log(player);
-
-      //iframeの縦・横のサイズをセット(縦は952px、横は幅いっぱい)
-      $("iframe").width($(".ytPlayerWrapper").width());
-      $("iframe").height(952);
-
-      //iframeとseekbarが見える範囲の高さをセットし、iframe上部の黒分が見えないよう上にスライド
-      $(".ytPlayerWrapper").css(
-        "height",
-        ($("iframe").width() * 9) / 16 +
-          (952 - ($("iframe").width() * 9) / 16) / 2 +
-          15
-      );
-      $(".ytPlayerWrapper").css(
-        "top",
-        (($("iframe").height() - ($("iframe").width() * 9) / 16) / 2) * -1
-      );
-
-      this.$nextTick(() => {
-        //開始・終了ボタンがiframeとseekbarの下に来るようにtopを調整
-        $(".highlightControllerBody").css(
-          "top",
-          ($("iframe").width() * 9) / 16 + 15
-        );
-      });
     };
     setTimeout(onYouTubeIframeAPIReady, 10);
 
     window.onPlayerReady = (event) => {
+      self.setYtPlayerCSS();
+
       event.target.mute();
       event.target.playVideo();
       this.isPlayerReady = true;
 
       //1秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
-      self.timer = setInterval(function() {
+      self.timer = setInterval(function () {
         //playerが取得した時間を「分:秒」に整形しcurrentTimeに格納
         let currentTime = self.formatTime(event.target.getCurrentTime());
         //currentTimeをyoutubeストアにセット
