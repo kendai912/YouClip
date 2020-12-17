@@ -53,6 +53,7 @@ export default {
     return {
       seekWidth: 0,
       previousYtseekOffsetX: 0,
+      isMobile: false,
     };
   },
   mixins: [myMixin],
@@ -152,17 +153,31 @@ export default {
       e.preventDefault(); // prevent browser from moving objects, following links etc
 
       // start listening to mouse movements
-      this.highlightBodyRef.addEventListener(
-        "mousemove",
-        this.getClickPosition
-      );
+      if (this.isMobile) {
+        this.highlightBodyRef.addEventListener(
+          "touchmove",
+          this.getClickPosition
+        );
+      } else {
+        this.highlightBodyRef.addEventListener(
+          "mousemove",
+          this.getClickPosition
+        );
+      }
     },
     detectMouseUp(e) {
       // stop listening to mouse movements
-      this.highlightBodyRef.removeEventListener(
-        "mousemove",
-        this.getClickPosition
-      );
+      if (this.isMobile) {
+        this.highlightBodyRef.removeEventListener(
+          "touchmove",
+          this.getClickPosition
+        );
+      } else {
+        this.highlightBodyRef.removeEventListener(
+          "mousemove",
+          this.getClickPosition
+        );
+      }
       this.previousYtseekOffsetX = null;
     },
     setYtSeekbarWrapperTop() {
@@ -174,9 +189,20 @@ export default {
       );
     },
   },
+  created() {
+    this.isMobile = this.mobileCheck();
+  },
   mounted() {
-    this.$refs.ytseekHead.addEventListener("mousedown", this.detectMouseDown);
-    window.addEventListener("mouseup", this.detectMouseUp);
+    if (this.isMobile) {
+      this.$refs.ytseekHead.addEventListener(
+        "touchstart",
+        this.detectMouseDown
+      );
+      window.addEventListener("touchend", this.detectMouseUp);
+    } else {
+      this.$refs.ytseekHead.addEventListener("mousedown", this.detectMouseDown);
+      window.addEventListener("mouseup", this.detectMouseUp);
+    }
   },
 };
 </script>

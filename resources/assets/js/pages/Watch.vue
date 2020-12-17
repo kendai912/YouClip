@@ -2,7 +2,7 @@
   <div style="height: 100vh; background-color: white">
     <div class="container--small">
       <div class="yt-container">
-        <div id="player"></div>
+        <div id="playerWatch"></div>
       </div>
       <div v-if="isPlayerReady">
         <v-sheet v-if="isPlaylist" class="mx-auto pa-0">
@@ -35,7 +35,11 @@
         </v-sheet>
 
         <v-sheet tile class="mx-auto px-1 py-2">
-          <v-row class="ma-0 pa-0" justify="space-between" style="position: relative;">
+          <v-row
+            class="ma-0 pa-0"
+            justify="space-between"
+            style="position: relative;"
+          >
             <v-col class="ma-0 pa-0 text-center">
               <v-bottom-navigation class="bottom_navigation_no_shadow">
                 <v-btn v-on:click="sharePlaylist" class="ma-0 pa-0 narrow-btn">
@@ -481,14 +485,15 @@ export default {
 
     // This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
+    tag.src =
+      "https://www.youtube.com/iframe_api?" + parseInt(new Date() / 1000);
     var firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     let self = this;
 
     //Youtube Playerの初期処理
     window.onYouTubeIframeAPIReady = () => {
-      self.player = new YT.Player("player", {
+      self.player = new YT.Player("playerWatch", {
         width: "56",
         height: "31",
         videoId: this.currentYoutubeId,
