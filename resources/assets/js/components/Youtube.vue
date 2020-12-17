@@ -478,7 +478,7 @@ export default {
       //playerインスタンスをytPlayerControllerストアに格納
       self.setPlayer(player);
     };
-    setTimeout(onYouTubeIframeAPIReady, 10);
+    setTimeout(onYouTubeIframeAPIReady, 100);
 
     window.onPlayerReady = (event) => {
       self.setYtPlayerCSS();
