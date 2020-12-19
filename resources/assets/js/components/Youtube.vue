@@ -161,6 +161,7 @@ export default {
       playlistIdToAdd: null,
       playlistIdToEdit: null,
       tagIdToEdit: null,
+      isIOS: false,
       startRules: [
         (v) => !!v || "開始時間を入力して下さい",
         (v) => {
@@ -501,21 +502,16 @@ export default {
 
     window.onPlayerStateChange = (event) => {};
 
-    //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
-    // let from = this.$route.path;
-    // window.addEventListener("popstate", function(e) {
-    //   let to = self.$route.path;
-    //   if (from == "/youtube/highlight" && to == "/youtube/highlight") {
-    //     // location.reload();
-    //   }
-    // });
-
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.highlightBodyRef = this.$refs.highlightBody;
   },
   mounted() {
     //headerの戻るアイコンを表示
     this.$store.commit("highlightHeader/setShowBackIcon", true);
+
+    //iOS端末か判定
+    this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
+    console.log(this.isIOS);
   },
   beforeDestroy() {
     // シーンタグ付けコンポーネントの現在再生時間をセットするインターバルを停止する
