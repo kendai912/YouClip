@@ -1,43 +1,45 @@
 <template>
-  <div v-if="isIOS" class="ios-wrapper">
-    <div class="ios-ytseekbar-wrapper">
-      <div class="ios-ytseekbar-mask"></div>
-      <div
-        class="ios-ytseek-head"
-        ref="ytseekHead"
-        v-bind:style="'transform: translateX(' + progress + 'px)'"
-      >
-        <div class="ytseek-innder"></div>
-      </div>
-      <div v-if="contentWidth >= 6">
+  <div v-if="isIOS" class="ios-wrapper-mask">
+    <div class="ios-wrapper">
+      <div class="ios-ytseekbar-wrapper">
+        <div class="ios-ytseekbar-mask"></div>
         <div
-          v-if="contentWidth"
-          class="ios-left-triangle"
-          v-bind:style="'left: ' + contentLeft + 'px;'"
-        ></div>
-        <div
-          class="ios-highlight-content"
-          v-bind:style="
-            'left: calc(' +
-              contentLeft +
-              'px + 3px ); width: calc(' +
-              contentWidth +
-              'px - 6px);'
-          "
-        ></div>
-        <div
-          v-if="contentWidth"
-          class="ios-right-triangle"
-          v-bind:style="'left: calc(' + contentRight + 'px - 3px);'"
-        ></div>
-      </div>
-      <div v-else>
-        <div
-          class="ios-highlight-content"
-          v-bind:style="
-            'left: ' + contentLeft + 'px; width: ' + contentWidth + 'px;'
-          "
-        ></div>
+          class="ios-ytseek-head"
+          ref="ytseekHead"
+          v-bind:style="'transform: translateX(' + progress + 'px)'"
+        >
+          <div class="ytseek-innder"></div>
+        </div>
+        <div v-if="contentWidth >= 6">
+          <div
+            v-if="contentWidth"
+            class="ios-left-triangle"
+            v-bind:style="'left: ' + contentLeft + 'px;'"
+          ></div>
+          <div
+            class="ios-highlight-content"
+            v-bind:style="
+              'left: calc(' +
+                contentLeft +
+                'px + 3px ); width: calc(' +
+                contentWidth +
+                'px - 6px);'
+            "
+          ></div>
+          <div
+            v-if="contentWidth"
+            class="ios-right-triangle"
+            v-bind:style="'left: calc(' + contentRight + 'px - 3px);'"
+          ></div>
+        </div>
+        <div v-else>
+          <div
+            class="ios-highlight-content"
+            v-bind:style="
+              'left: ' + contentLeft + 'px; width: ' + contentWidth + 'px;'
+            "
+          ></div>
+        </div>
       </div>
     </div>
   </div>
@@ -97,7 +99,7 @@ export default {
       seekWidth: 0,
       previousYtseekOffsetX: 0,
       isMobile: false,
-      isIOS: true,
+      isIOS: false,
     };
   },
   mixins: [myMixin],
@@ -273,10 +275,10 @@ export default {
     setYtSeekbarWrapperTop() {
       //seekbarがiframeの下になるように高さを計算
       if (this.isIOS) {
-        $(".ios-wrapper").css(
+        $(".ios-wrapper-mask").css(
           "top",
-          (($(".ios-wrapper").width() + 48) * 9) / 16 +
-            (952 - (($(".ios-wrapper").width() + 48) * 9) / 16) / 2
+          ($(".ios-wrapper-mask").width() * 9) / 16 +
+            (952 - ($(".ios-wrapper-mask").width() * 9) / 16) / 2
         );
       } else {
         $(".ytseekbar-wrapper").css(
