@@ -130,7 +130,7 @@
   height: 15px;
   background: white;
   position: absolute;
-  z-index: 0;
+  z-index: 1;
 }
 
 .ios-wrapper {
@@ -140,7 +140,7 @@
   position: absolute;
   border-radius: 8px;
   padding: 3px 24px;
-  z-index: 1;
+  z-index: 2;
 }
 
 .ios-ytseekbar-wrapper {
@@ -148,7 +148,7 @@
   height: 9px;
   background: black;
   position: relative;
-  z-index: 2;
+  z-index: 3;
 }
 
 .ytseekbar-wrapper {
@@ -156,7 +156,7 @@
   height: 15px;
   background: black;
   position: absolute;
-  z-index: 2;
+  z-index: 3;
 }
 
 .ios-ytseekbar-mask {
@@ -164,7 +164,7 @@
   height: 9px;
   background: transparent;
   position: absolute;
-  z-index: 4;
+  z-index: 5;
 }
 
 .ytseekbar-mask {
@@ -172,7 +172,7 @@
   height: 15px;
   background: transparent;
   position: absolute;
-  z-index: 4;
+  z-index: 5;
 }
 
 .ios-ytseek-head {
@@ -184,7 +184,7 @@
   top: -3px;
   width: 10px;
   height: 15px;
-  z-index: 5;
+  z-index: 6;
 }
 
 .ytseek-head {
@@ -196,7 +196,7 @@
   top: 0px;
   width: 10px;
   height: 15px;
-  z-index: 5;
+  z-index: 6;
 }
 
 .ytseek-innder {
@@ -207,7 +207,7 @@
   left: 3px;
   width: 4px;
   height: 8px;
-  z-index: 6;
+  z-index: 7;
 }
 
 .ios-highlight-content {
@@ -215,7 +215,7 @@
   background-color: #00d873;
   position: absolute;
   top: 0px;
-  z-index: 3;
+  z-index: 4;
 }
 
 .highlight-content {
@@ -223,7 +223,7 @@
   background-color: #00d873;
   position: absolute;
   top: 0px;
-  z-index: 3;
+  z-index: 4;
 }
 
 .ios-left-triangle {
@@ -233,7 +233,7 @@
   border-bottom: 4.5px solid transparent;
   border-top: 4.5px solid transparent;
   border-right: 3px solid #00d873;
-  z-index: 3;
+  z-index: 4;
 }
 
 .left-triangle {
@@ -243,7 +243,7 @@
   border-bottom: 7.5px solid transparent;
   border-top: 7.5px solid transparent;
   border-right: 3px solid #00d873;
-  z-index: 3;
+  z-index: 4;
 }
 
 .ios-right-triangle {
@@ -253,7 +253,7 @@
   border-bottom: 4.5px solid transparent;
   border-top: 4.5px solid transparent;
   border-left: 3px solid #00d873;
-  z-index: 3;
+  z-index: 4;
 }
 
 .right-triangle {
@@ -263,7 +263,7 @@
   border-bottom: 7.5px solid transparent;
   border-top: 7.5px solid transparent;
   border-left: 3px solid #00d873;
-  z-index: 3;
+  z-index: 4;
 }
 
 .now-playing img {

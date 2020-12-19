@@ -5,7 +5,7 @@
         <div class="ios-ytseekbar-mask"></div>
         <div
           class="ios-ytseek-head"
-          ref="ytseekHead"
+          ref="iosYtseekHead"
           v-bind:style="'transform: translateX(' + progress + 'px)'"
         >
           <div class="ytseek-innder"></div>
@@ -20,10 +20,10 @@
             class="ios-highlight-content"
             v-bind:style="
               'left: calc(' +
-                contentLeft +
-                'px + 3px ); width: calc(' +
-                contentWidth +
-                'px - 6px);'
+              contentLeft +
+              'px + 3px ); width: calc(' +
+              contentWidth +
+              'px - 6px);'
             "
           ></div>
           <div
@@ -63,10 +63,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-            contentLeft +
-            'px + 3px ); width: calc(' +
-            contentWidth +
-            'px - 6px);'
+          contentLeft +
+          'px + 3px ); width: calc(' +
+          contentWidth +
+          'px - 6px);'
         "
       ></div>
       <div
@@ -296,17 +296,27 @@ export default {
     //iOS端末か判定
     this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
 
-    //モバイルか判定
-    if (this.isMobile) {
-      this.$refs.ytseekHead.addEventListener(
-        "touchstart",
-        this.detectMouseDown
-      );
-      window.addEventListener("touchend", this.detectMouseUp);
-    } else {
-      this.$refs.ytseekHead.addEventListener("mousedown", this.detectMouseDown);
-      window.addEventListener("mouseup", this.detectMouseUp);
-    }
+    this.$nextTick(() => {
+      if (this.isIOS) {
+        this.$refs.iosYtseekHead.addEventListener(
+          "touchstart",
+          this.detectMouseDown
+        );
+        window.addEventListener("touchend", this.detectMouseUp);
+      } else if (this.isMobile) {
+        this.$refs.ytseekHead.addEventListener(
+          "touchstart",
+          this.detectMouseDown
+        );
+        window.addEventListener("touchend", this.detectMouseUp);
+      } else {
+        this.$refs.ytseekHead.addEventListener(
+          "mousedown",
+          this.detectMouseDown
+        );
+        window.addEventListener("mouseup", this.detectMouseUp);
+      }
+    });
   },
 };
 </script>
