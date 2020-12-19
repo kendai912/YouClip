@@ -1,5 +1,48 @@
 <template>
-  <div class="ytseekbar-wrapper" ref="ytseekbarWrapper">
+  <div v-if="isIOS" class="ios-wrapper">
+    <div class="ios-ytseekbar-wrapper">
+      <div class="ios-ytseekbar-mask"></div>
+      <div
+        class="ios-ytseek-head"
+        ref="ytseekHead"
+        v-bind:style="'transform: translateX(' + progress + 'px)'"
+      >
+        <div class="ytseek-innder"></div>
+      </div>
+      <div v-if="contentWidth >= 6">
+        <div
+          v-if="contentWidth"
+          class="ios-left-triangle"
+          v-bind:style="'left: ' + contentLeft + 'px;'"
+        ></div>
+        <div
+          class="ios-highlight-content"
+          v-bind:style="
+            'left: calc(' +
+              contentLeft +
+              'px + 3px ); width: calc(' +
+              contentWidth +
+              'px - 6px);'
+          "
+        ></div>
+        <div
+          v-if="contentWidth"
+          class="ios-right-triangle"
+          v-bind:style="'left: calc(' + contentRight + 'px - 3px);'"
+        ></div>
+      </div>
+      <div v-else>
+        <div
+          class="ios-highlight-content"
+          v-bind:style="
+            'left: ' + contentLeft + 'px; width: ' + contentWidth + 'px;'
+          "
+        ></div>
+      </div>
+    </div>
+  </div>
+
+  <div v-else class="ytseekbar-wrapper">
     <div class="ytseekbar-mask"></div>
     <div
       class="ytseek-head"
@@ -18,10 +61,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-          contentLeft +
-          'px + 3px ); width: calc(' +
-          contentWidth +
-          'px - 6px);'
+            contentLeft +
+            'px + 3px ); width: calc(' +
+            contentWidth +
+            'px - 6px);'
         "
       ></div>
       <div
@@ -54,6 +97,7 @@ export default {
       seekWidth: 0,
       previousYtseekOffsetX: 0,
       isMobile: false,
+      isIOS: true,
     };
   },
   mixins: [myMixin],
@@ -77,21 +121,38 @@ export default {
       }
     },
     progress() {
-      return (
-        $(".ytseekbar-wrapper").width() *
-        (this.convertToSec(this.currentTime) / this.convertToSec(this.duration))
-      );
+      if (this.isIOS) {
+        return (
+          $(".ios-ytseekbar-wrapper").width() *
+          (this.convertToSec(this.currentTime) /
+            this.convertToSec(this.duration))
+        );
+      } else {
+        return (
+          $(".ytseekbar-wrapper").width() *
+          (this.convertToSec(this.currentTime) /
+            this.convertToSec(this.duration))
+        );
+      }
     },
     contentLeft() {
       if (
         this.startTimeInput != null &&
         this.convertToSec(this.startTimeInput)
       ) {
-        return (
-          $(".ytseekbar-wrapper").width() *
-          (this.convertToSec(this.startTimeInput) /
-            this.convertToSec(this.duration))
-        );
+        if (this.isIOS) {
+          return (
+            $(".ios-ytseekbar-wrapper").width() *
+            (this.convertToSec(this.startTimeInput) /
+              this.convertToSec(this.duration))
+          );
+        } else {
+          return (
+            $(".ytseekbar-wrapper").width() *
+            (this.convertToSec(this.startTimeInput) /
+              this.convertToSec(this.duration))
+          );
+        }
       } else {
         return 0;
       }
@@ -108,12 +169,21 @@ export default {
           this.convertToSec(this.startTimeInput) <
             this.convertToSec(this.endTimeInput)
         ) {
-          return (
-            $(".ytseekbar-wrapper").width() *
-              (this.convertToSec(this.endTimeInput) /
-                this.convertToSec(this.duration)) -
-            this.contentLeft
-          );
+          if (this.isIOS) {
+            return (
+              $(".ios-ytseekbar-wrapper").width() *
+                (this.convertToSec(this.endTimeInput) /
+                  this.convertToSec(this.duration)) -
+              this.contentLeft
+            );
+          } else {
+            return (
+              $(".ytseekbar-wrapper").width() *
+                (this.convertToSec(this.endTimeInput) /
+                  this.convertToSec(this.duration)) -
+              this.contentLeft
+            );
+          }
         } else {
           return this.progress - this.contentLeft > 0
             ? this.progress - this.contentLeft
@@ -157,10 +227,17 @@ export default {
       }
 
       // change seek position
-      this.player.seekTo(
-        this.convertToSec(this.duration) *
-          (this.seekWidth / $(".ytseekbar-wrapper").width())
-      );
+      if (this.isIOS) {
+        this.player.seekTo(
+          this.convertToSec(this.duration) *
+            (this.seekWidth / $(".ios-ytseekbar-wrapper").width())
+        );
+      } else {
+        this.player.seekTo(
+          this.convertToSec(this.duration) *
+            (this.seekWidth / $(".ytseekbar-wrapper").width())
+        );
+      }
     },
     detectMouseDown(e) {
       e.preventDefault(); // prevent browser from moving objects, following links etc
@@ -195,17 +272,29 @@ export default {
     },
     setYtSeekbarWrapperTop() {
       //seekbarがiframeの下になるように高さを計算
-      $(".ytseekbar-wrapper").css(
-        "top",
-        ($(".ytseekbar-wrapper").width() * 9) / 16 +
-          (952 - ($(".ytseekbar-wrapper").width() * 9) / 16) / 2
-      );
+      if (this.isIOS) {
+        $(".ios-wrapper").css(
+          "top",
+          (($(".ios-wrapper").width() + 48) * 9) / 16 +
+            (952 - (($(".ios-wrapper").width() + 48) * 9) / 16) / 2
+        );
+      } else {
+        $(".ytseekbar-wrapper").css(
+          "top",
+          ($(".ytseekbar-wrapper").width() * 9) / 16 +
+            (952 - ($(".ytseekbar-wrapper").width() * 9) / 16) / 2
+        );
+      }
     },
   },
   created() {
     this.isMobile = this.mobileCheck();
   },
   mounted() {
+    //iOS端末か判定
+    this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
+
+    //モバイルか判定
     if (this.isMobile) {
       this.$refs.ytseekHead.addEventListener(
         "touchstart",

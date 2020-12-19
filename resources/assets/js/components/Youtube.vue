@@ -161,7 +161,6 @@ export default {
       playlistIdToAdd: null,
       playlistIdToEdit: null,
       tagIdToEdit: null,
-      isIOS: false,
       startRules: [
         (v) => !!v || "開始時間を入力して下さい",
         (v) => {
@@ -489,7 +488,7 @@ export default {
       this.isPlayerReady = true;
 
       //1秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
-      self.timer = setInterval(function () {
+      self.timer = setInterval(function() {
         //playerが取得した時間を「分:秒」に整形しcurrentTimeに格納
         let currentTime = self.formatTime(event.target.getCurrentTime());
         //currentTimeをyoutubeストアにセット
@@ -508,10 +507,6 @@ export default {
   mounted() {
     //headerの戻るアイコンを表示
     this.$store.commit("highlightHeader/setShowBackIcon", true);
-
-    //iOS端末か判定
-    this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
-    console.log(this.isIOS);
   },
   beforeDestroy() {
     // シーンタグ付けコンポーネントの現在再生時間をセットするインターバルを停止する
