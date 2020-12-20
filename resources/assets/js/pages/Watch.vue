@@ -173,7 +173,7 @@ export default {
           "youtube/setCurrentTime",
           self.formatTime(self.player.getCurrentTime())
         );
-      }, 1000);
+      }, 10);
     },
     playPlaylist(playlistId, index) {
       //最後のシーンでない場合は次のシーンのパラメータをセット

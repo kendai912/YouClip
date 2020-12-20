@@ -176,36 +176,37 @@
 }
 
 .ios-ytseek-head {
-  background-color: #fff;
+  background-color: #ff0000;
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.6);
-  border-radius: 6px;
+  border-radius: 50%;
   position: relative;
   left: -4px;
   top: -3px;
-  width: 10px;
+  width: 15px;
   height: 15px;
   z-index: 6;
 }
 
 .ytseek-head {
-  background-color: #fff;
+  background-color: #ff0000;
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.6);
-  border-radius: 6px;
+  border-radius: 50%;
   position: relative;
   left: -4px;
   top: 0px;
-  width: 10px;
+  width: 15px;
   height: 15px;
   z-index: 6;
 }
 
 .ytseek-innder {
-  background-color: #6a7bff;
-  border-radius: 4px;
+  /* background-color: #6a7bff; */
+  background-color: #ff0000;
+  border-radius: 50%;
   position: absolute;
   top: 3px;
   left: 3px;
-  width: 4px;
+  width: 8px;
   height: 8px;
   z-index: 7;
 }
