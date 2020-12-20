@@ -180,10 +180,10 @@
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.6);
   border-radius: 50%;
   position: relative;
-  left: -4px;
-  top: -3px;
-  width: 15px;
-  height: 15px;
+  left: -6.5px;
+  top: -2px;
+  width: 13px;
+  height: 13px;
   z-index: 6;
 }
 

@@ -7,9 +7,7 @@
           class="ios-ytseek-head"
           ref="iosYtseekHead"
           v-bind:style="'transform: translateX(' + progress + 'px)'"
-        >
-          <div class="ytseek-innder"></div>
-        </div>
+        ></div>
         <div v-if="contentWidth >= 6">
           <div
             v-if="contentWidth"
@@ -20,10 +18,10 @@
             class="ios-highlight-content"
             v-bind:style="
               'left: calc(' +
-              contentLeft +
-              'px + 3px ); width: calc(' +
-              contentWidth +
-              'px - 6px);'
+                contentLeft +
+                'px + 3px ); width: calc(' +
+                contentWidth +
+                'px - 6px);'
             "
           ></div>
           <div
@@ -50,9 +48,7 @@
       class="ytseek-head"
       ref="ytseekHead"
       v-bind:style="'transform: translateX(' + progress + 'px)'"
-    >
-      <div class="ytseek-innder"></div>
-    </div>
+    ></div>
     <div v-if="contentWidth >= 6">
       <div
         v-if="contentWidth"
@@ -63,10 +59,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-          contentLeft +
-          'px + 3px ); width: calc(' +
-          contentWidth +
-          'px - 6px);'
+            contentLeft +
+            'px + 3px ); width: calc(' +
+            contentWidth +
+            'px - 6px);'
         "
       ></div>
       <div
