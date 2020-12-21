@@ -256,7 +256,7 @@ const actions = {
       key: state.YTSearchKey,
       pageToken: state.YTSearchPageToken,
     };
-    const response = await axios.get("http://ytserver.net:3000/api/search", {
+    const response = await axios.get("https://ytserver.net:3000/api/search", {
       params: params,
     });
 
