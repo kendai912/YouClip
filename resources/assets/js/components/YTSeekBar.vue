@@ -18,10 +18,10 @@
             class="ios-highlight-content"
             v-bind:style="
               'left: calc(' +
-                contentLeft +
-                'px + 3px ); width: calc(' +
-                contentWidth +
-                'px - 6px);'
+              contentLeft +
+              'px + 3px ); width: calc(' +
+              contentWidth +
+              'px - 6px);'
             "
           ></div>
           <div
@@ -59,10 +59,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-            contentLeft +
-            'px + 3px ); width: calc(' +
-            contentWidth +
-            'px - 6px);'
+          contentLeft +
+          'px + 3px ); width: calc(' +
+          contentWidth +
+          'px - 6px);'
         "
       ></div>
       <div
@@ -198,30 +198,20 @@ export default {
   methods: {
     ...mapMutations({}),
     getClickPosition(e) {
-      if (e.srcElement.clientWidth > 300) {
-        //when the srcElement is not ytseek-head/ytseek-inner
-        if (this.isMobile) {
-          this.seekWidth = e.changedTouches[0].clientX;
-        } else {
-          this.seekWidth = e.offsetX;
-        }
-      } else if (e.srcElement.clientWidth <= 10 && e.target.tagName != "SPAN") {
-        //when the srcElement is ytseek-head/ytseek-inner
-        if (this.isMobile) {
-          if (this.previousYtseekOffsetX == null) {
-            this.previousYtseekOffsetX = e.changedTouches[0].clientX;
-          }
-          let moveX = e.changedTouches[0].clientX - this.previousYtseekOffsetX;
-          this.seekWidth = this.seekWidth + moveX;
+      if (this.isMobile) {
+        if (this.previousYtseekOffsetX == null) {
           this.previousYtseekOffsetX = e.changedTouches[0].clientX;
-        } else {
-          if (this.previousYtseekOffsetX == null) {
-            this.previousYtseekOffsetX = e.offsetX;
-          }
-          let moveX = e.offsetX - this.previousYtseekOffsetX;
-          this.seekWidth = this.seekWidth + moveX;
+        }
+        let moveX = e.changedTouches[0].clientX - this.previousYtseekOffsetX;
+        this.seekWidth = this.seekWidth + moveX;
+        this.previousYtseekOffsetX = e.changedTouches[0].clientX;
+      } else {
+        if (this.previousYtseekOffsetX == null) {
           this.previousYtseekOffsetX = e.offsetX;
         }
+        let moveX = e.offsetX - this.previousYtseekOffsetX;
+        this.seekWidth = this.seekWidth + moveX;
+        this.previousYtseekOffsetX = e.offsetX;
       }
 
       // change seek position
