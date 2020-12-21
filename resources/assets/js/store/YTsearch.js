@@ -284,20 +284,6 @@ const actions = {
 
       //連続リクエストを制御するフラグを解除
       context.commit("setIsYTSearching", false);
-    } else if (
-      response.status == FORBIDDEN ||
-      response.status == INTERNAL_SERVER_ERROR
-    ) {
-      // API Keyの上限オーバーで失敗した時
-      //次のAPI Keyにスイッチして再度検索実行
-      context.commit("setKeyIndex", context.getters["keyIndex"] + 1);
-
-      //API Keyのストックを超えたら直接URLで検索するようにエラーページを表示
-      context.getters["keyIndex"] >= context.getters["keyArray"].length
-        ? context.commit("error/setCode", response.status, {
-            root: true,
-          })
-        : await actions.searchYTResult(context);
     } else {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
