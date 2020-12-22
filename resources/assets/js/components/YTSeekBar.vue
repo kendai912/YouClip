@@ -18,10 +18,10 @@
             class="ios-highlight-content"
             v-bind:style="
               'left: calc(' +
-                contentLeft +
-                'px + 3px ); width: calc(' +
-                contentWidth +
-                'px - 6px);'
+              contentLeft +
+              'px + 3px ); width: calc(' +
+              contentWidth +
+              'px - 6px);'
             "
           ></div>
           <div
@@ -59,10 +59,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-            contentLeft +
-            'px + 3px ); width: calc(' +
-            contentWidth +
-            'px - 6px);'
+          contentLeft +
+          'px + 3px ); width: calc(' +
+          contentWidth +
+          'px - 6px);'
         "
       ></div>
       <div
@@ -200,21 +200,17 @@ export default {
   methods: {
     ...mapMutations({}),
     getClickPosition(e) {
-      // if (this.isMobile) {
-      //   if (this.previousYtseekPageX == null) {
-      //     this.previousYtseekPageX = e.changedTouches[0].clientX;
-      //   }
-      //   let moveX = e.changedTouches[0].clientX - this.previousYtseekPageX;
-      //   this.seekWidth = this.seekWidth + moveX;
-      //   this.previousYtseekPageX = e.changedTouches[0].clientX;
-      // } else {
-      if (!this.ytseekbarPageX) {
-        this.ytseekbarPageX =
-          $(".ytseekbar-mask").offset().left ||
-          $(".ios-ytseekbar-mask").offset().left;
+      if (this.isMobile) {
+        if (!this.ytseekbarPageX) {
+          this.ytseekbarPageX = $(".ios-ytseekbar-mask").offset().left;
+        }
+        this.seekWidth = e.changedTouches[0].pageX - this.ytseekbarPageX;
+      } else {
+        if (!this.ytseekbarPageX) {
+          this.ytseekbarPageX = $(".ytseekbar-mask").offset().left;
+        }
+        this.seekWidth = e.pageX - this.ytseekbarPageX;
       }
-      this.seekWidth = e.pageX - this.ytseekbarPageX;
-      // }
 
       // change seek position
       if (this.isIOS) {
