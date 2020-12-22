@@ -18,10 +18,10 @@
             class="ios-highlight-content"
             v-bind:style="
               'left: calc(' +
-              contentLeft +
-              'px + 3px ); width: calc(' +
-              contentWidth +
-              'px - 6px);'
+                contentLeft +
+                'px + 3px ); width: calc(' +
+                contentWidth +
+                'px - 6px);'
             "
           ></div>
           <div
@@ -59,10 +59,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-          contentLeft +
-          'px + 3px ); width: calc(' +
-          contentWidth +
-          'px - 6px);'
+            contentLeft +
+            'px + 3px ); width: calc(' +
+            contentWidth +
+            'px - 6px);'
         "
       ></div>
       <div
@@ -94,6 +94,8 @@ export default {
     return {
       seekWidth: 0,
       previousYtseekOffsetX: 0,
+      previousYtseekPageX: null,
+      ytseekbarPageX: null,
       isMobile: false,
       isIOS: false,
     };
@@ -198,21 +200,21 @@ export default {
   methods: {
     ...mapMutations({}),
     getClickPosition(e) {
-      if (this.isMobile) {
-        if (this.previousYtseekOffsetX == null) {
-          this.previousYtseekOffsetX = e.changedTouches[0].clientX;
-        }
-        let moveX = e.changedTouches[0].clientX - this.previousYtseekOffsetX;
-        this.seekWidth = this.seekWidth + moveX;
-        this.previousYtseekOffsetX = e.changedTouches[0].clientX;
-      } else {
-        if (this.previousYtseekOffsetX == null) {
-          this.previousYtseekOffsetX = e.offsetX;
-        }
-        let moveX = e.offsetX - this.previousYtseekOffsetX;
-        this.seekWidth = this.seekWidth + moveX;
-        this.previousYtseekOffsetX = e.offsetX;
+      // if (this.isMobile) {
+      //   if (this.previousYtseekPageX == null) {
+      //     this.previousYtseekPageX = e.changedTouches[0].clientX;
+      //   }
+      //   let moveX = e.changedTouches[0].clientX - this.previousYtseekPageX;
+      //   this.seekWidth = this.seekWidth + moveX;
+      //   this.previousYtseekPageX = e.changedTouches[0].clientX;
+      // } else {
+      if (!this.ytseekbarPageX) {
+        this.ytseekbarPageX =
+          $(".ytseekbar-mask").offset().left ||
+          $(".ios-ytseekbar-mask").offset().left;
       }
+      this.seekWidth = e.pageX - this.ytseekbarPageX;
+      // }
 
       // change seek position
       if (this.isIOS) {
@@ -256,7 +258,6 @@ export default {
           this.getClickPosition
         );
       }
-      this.previousYtseekOffsetX = null;
     },
     setYtSeekbarWrapperTop() {
       //seekbarがiframeの下になるように高さを計算

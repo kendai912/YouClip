@@ -257,7 +257,7 @@ export default {
         clearInterval(this.timer);
 
         let self = this;
-        setTimeout(async function () {
+        setTimeout(async function() {
           //ログイン済の場合
           if (self.isEditing) {
             //編集の場合
@@ -475,13 +475,13 @@ export default {
       event.target.playVideo();
       this.isPlayerReady = true;
 
-      //0.01秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
-      self.timer = setInterval(function () {
+      //現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
+      self.timer = setInterval(function() {
         //playerが取得した時間を「分:秒」に整形しcurrentTimeに格納
         let currentTime = self.formatTime(event.target.getCurrentTime());
         //currentTimeをyoutubeストアにセット
         self.$store.commit("youtube/setCurrentTime", currentTime);
-      }, 10);
+      });
 
       //TagItemを表示に切り替え
       this.$store.commit("youtube/setIsReady", true);
