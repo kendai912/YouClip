@@ -308,7 +308,7 @@ class TagController extends Controller
             $previews = $this->getPreviewFile($request);
             $previewThumbName = $previews['previewThumbName'];
             $previewGifName = $previews['previewGifName'];
-            // $previewGifFileName = "";
+            $previewOgpName = $previews['previewOgpName'];
 
             $start = $request->start;
 
@@ -322,6 +322,7 @@ class TagController extends Controller
             $tag->privacySetting = $request->privacySetting;
             $tag->preview = $previewThumbName;
             $tag->previewgif = $previewGifName;
+            $tag->previewogp = $previewOgpName;
             $tag->save();
 
             //保存先プレイリストが指定されている場合
@@ -376,19 +377,29 @@ class TagController extends Controller
         $endSec = $startSec + $duration;
 
         //サムネイル画像を取得しS3に保存
-        $previewThumbName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".png";
-        FFMpeg::openUrl($ytDirectUrl)->getFrameFromSeconds($startSec)->export()->toDisk('s3')->save('thumbs/'.$previewThumbName);
-        // $cmd_png = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 2 '.storage_path()."/app/public/img/".$previewThumbName.' 2>&1';
-        // system($cmd_png);
+        $previewThumbName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".webp";
+        // FFMpeg::openUrl($ytDirectUrl)->getFrameFromSeconds($startSec)->export()->toDisk('s3')->save('thumbs/'.$previewThumbName);
+        $cmd_png = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -qscale 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$previewThumbName.' 2>&1';
+        system($cmd_png);
+        Storage::disk('s3')->putFileAs('thumbs', new File(storage_path()."/app/public/imgs/".$previewThumbName), $previewThumbName, 'public');
         
-        //プレビュー動画を取得しS3に保存
-        $previewGifName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".gif";
-        $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
+        //mp4のプレビュー動画を取得しS3に保存
+        $previewGifName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".mp4";
+        $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -qscale 100 -vf "fps=24,scale=420:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
         system($cmd_gif);
         Storage::disk('s3')->putFileAs('gifs', new File(storage_path()."/app/public/gifs/".$previewGifName), $previewGifName, 'public');
 
-        //一時的にローカルに保存したgifを削除
+        //OGP用のwebpアニメーションを取得しS3に保存
+        $previewOgpName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".webp";
+        $cmd_ogp = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -qscale 80 -vf "fps=10,scale=420:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 '.storage_path()."/app/public/ogps/".$previewOgpName.' 2>&1';
+        system($cmd_ogp);
+        Storage::disk('s3')->putFileAs('ogps', new File(storage_path()."/app/public/ogps/".$previewOgpName), $previewOgpName, 'public');
+
+
+        //一時的にローカルに保存したファイルを削除
+        unlink(storage_path(). "/app/public/imgs/" . $previewThumbName);
         unlink(storage_path(). "/app/public/gifs/" . $previewGifName);
+        unlink(storage_path(). "/app/public/ogps/" . $previewOgpName);
 
         // プレビュー動画をWebm形式でS3に保存する場合
         // $startTimeCode = \FFMpeg\Coordinate\TimeCode::fromSeconds($startSec);
@@ -399,6 +410,8 @@ class TagController extends Controller
         $previews = [];
         $previews['previewThumbName'] = $previewThumbName;
         $previews['previewGifName'] = $previewGifName;
+        $previews['previewOgpName'] = $previewOgpName;
+
         return $previews;
     }
 
@@ -439,14 +452,17 @@ class TagController extends Controller
             //既存のS3に保存されているサムネイルとプレビューgifを削除
             Storage::disk('s3')->delete('thumbs/'.$tag->preview);
             Storage::disk('s3')->delete('gifs/'.$tag->previewgif);
+            Storage::disk('s3')->delete('ogps/'.$tag->previewogp);
 
             //更新したpreview用のgifを再取得
             $previews = $this->getPreviewFile($request);
             $previewThumbName = $previews['previewThumbName'];
             $previewGifName = $previews['previewGifName'];
-            // $previewGifFileName = $this->getPreviewFile($request);
+            $previewOgpName = $previews['previewOgpName'];
+
             $tag->preview = $previewThumbName;
             $tag->previewgif = $previewGifName;
+            $tag->previewogp = $previewOgpName;
         }
         $tag->tags = implode("::", $request->tags); //タグの配列を「::」で区切った文字列に変換
         $start = $request->start;
