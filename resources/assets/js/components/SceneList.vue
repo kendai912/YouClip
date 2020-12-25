@@ -10,6 +10,7 @@
         </v-card>
         <SceneTagItem
           v-bind:showAddNewSceneComponent="showAddNewSceneComponent"
+          v-bind:key="resetKey"
         />
       </div>
 
@@ -84,6 +85,7 @@ export default {
     ...mapGetters({
       newPlaylistId: "playlist/newPlaylistId",
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
+      resetKey: "playlist/resetKey",
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       youtubeId: "youtube/youtubeId",
       tagDataArray: "youtube/tagDataArray",
@@ -130,14 +132,14 @@ export default {
         this.myPlaylistToSave
       );
 
-      let mediaItems = [];
-      this.playlistAndTagVideoData
-        ? this.putTagVideoIntoMediaItems(
-            mediaItems,
-            this.playlistAndTagVideoData.tagVideoData
-          )
-        : "";
-      this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
+      // let mediaItems = [];
+      // this.playlistAndTagVideoData
+      //   ? this.putTagVideoIntoMediaItems(
+      //       mediaItems,
+      //       this.playlistAndTagVideoData.tagVideoData
+      //     )
+      //   : "";
+      // this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
     },
     //YouTube動画検索ページを表示
     moveToYTvideoSelectPage() {
@@ -160,6 +162,16 @@ export default {
     // 検索バーによるルート変更後の初期化処理
     $route() {
       this.initialize();
+    },
+    playlistAndTagVideoData() {
+      let mediaItems = [];
+      this.playlistAndTagVideoData
+        ? this.putTagVideoIntoMediaItems(
+            mediaItems,
+            this.playlistAndTagVideoData.tagVideoData
+          )
+        : "";
+      this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
     },
   },
   async mounted() {

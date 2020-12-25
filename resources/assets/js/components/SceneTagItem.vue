@@ -33,10 +33,23 @@
                                 ? gifStoragePath + item.previewgif
                                 : thumbStoragePath + item.preview
                             "
+                            lazy-src="/storage/imgs/dummy-image.jpg"
                             v-bind:alt="item.title"
                             aspect-ratio="1.7777"
                             height="94"
                           >
+                            <template v-slot:placeholder>
+                              <v-row
+                                class="fill-height ma-0"
+                                align="center"
+                                justify="center"
+                              >
+                                <v-progress-circular
+                                  indeterminate
+                                  color="grey lighten-5"
+                                ></v-progress-circular>
+                              </v-row>
+                            </template>
                           </v-img>
                         </v-hover>
                         <v-img
@@ -44,10 +57,23 @@
                           v-on:click.stop="select(index)"
                           class="white--text align-end"
                           v-bind:src="gifStoragePath + item.previewgif"
+                          lazy-src="/storage/imgs/dummy-image.jpg"
                           v-bind:alt="item.title"
                           aspect-ratio="1.7777"
                           height="94"
                         >
+                          <template v-slot:placeholder>
+                            <v-row
+                              class="fill-height ma-0"
+                              align="center"
+                              justify="center"
+                            >
+                              <v-progress-circular
+                                indeterminate
+                                color="grey lighten-5"
+                              ></v-progress-circular>
+                            </v-row>
+                          </template>
                         </v-img>
                       </v-col>
                       <v-col cols="6" class="pa-1 py-0">

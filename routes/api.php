@@ -117,7 +117,11 @@ Route::get('/youtube/getTag', 'TagController@getTagByVideoId');
 //シーンタグの履歴取得
 Route::get('/tag/histories', 'TagController@getTagHistories');
 //シーン登録における動画・タグの保存
-Route::post('/tag/store', 'TagController@store');
+Route::post('/tag/storeSceneTags', 'TagController@storeSceneTags');
+//シーン登録におけるサムネイルの取得とS3への保存
+Route::post('/tag/storeTagThumbnail', 'TagController@storeTagThumbnail');
+//シーン登録におけるプレビュー動画の取得とS3への保存
+Route::post('/tag/storeTagPreview', 'TagController@storeTagPreview');
 //シーンタグの編集
 Route::post('/tag/update', 'TagController@update');
 //シーンタグの削除

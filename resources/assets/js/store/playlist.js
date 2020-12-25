@@ -28,6 +28,7 @@ const state = {
   newPreview: null,
   publicPlaylist: null,
   createdSceneList: null,
+  resetKey: 0,
 };
 
 const getters = {
@@ -42,6 +43,7 @@ const getters = {
   myCreatedAndLikedPlaylist: (state) => state.myCreatedAndLikedPlaylist,
   publicPlaylist: (state) => state.publicPlaylist,
   createdSceneList: (state) => state.createdSceneList,
+  resetKey: (state) => state.resetKey,
   showAddPlaylistModal: (state) => state.showAddPlaylistModal,
   playlistIdsOfTag: (state) => state.playlistIdsOfTag,
   toLoadRecommend: (state) => state.toLoadRecommend,
@@ -100,6 +102,9 @@ const mutations = {
   },
   setCreatedSceneList(state, data) {
     state.createdSceneList = data;
+  },
+  setResetKey(state, data) {
+    state.resetKey = data;
   },
   openAddPlaylistModal(state) {
     state.showAddPlaylistModal = true;
