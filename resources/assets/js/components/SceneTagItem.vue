@@ -24,19 +24,23 @@
                   <v-col cols="10" class="pa-0">
                     <v-row class="ma-0">
                       <v-col cols="6" class="pa-1">
-                        <v-hover v-if="!isMobile" v-slot:default="{ hover }">
+                        <v-card
+                          class="ma-0 pa-0"
+                          aspect-ratio="1.7777"
+                          height="94"
+                          elevation="0"
+                          v-on:mouseover="setShowPreviewIndex(index)"
+                          v-on:touchstart="setShowPreviewIndex(index)"
+                        >
                           <v-img
                             v-on:click.stop="select(index)"
                             class="white--text align-end"
-                            v-bind:src="
-                              hover
-                                ? gifStoragePath + item.previewgif
-                                : thumbStoragePath + item.preview
-                            "
+                            v-bind:src="thumbStoragePath + item.preview"
                             lazy-src="/storage/imgs/dummy-image.jpg"
                             v-bind:alt="item.title"
                             aspect-ratio="1.7777"
                             height="94"
+                            style="z-index: 1; border-radius: 4px;"
                           >
                             <template v-slot:placeholder>
                               <v-row
@@ -51,30 +55,20 @@
                               </v-row>
                             </template>
                           </v-img>
-                        </v-hover>
-                        <v-img
-                          v-else
-                          v-on:click.stop="select(index)"
-                          class="white--text align-end"
-                          v-bind:src="gifStoragePath + item.previewgif"
-                          lazy-src="/storage/imgs/dummy-image.jpg"
-                          v-bind:alt="item.title"
-                          aspect-ratio="1.7777"
-                          height="94"
-                        >
-                          <template v-slot:placeholder>
-                            <v-row
-                              class="fill-height ma-0"
-                              align="center"
-                              justify="center"
-                            >
-                              <v-progress-circular
-                                indeterminate
-                                color="grey lighten-5"
-                              ></v-progress-circular>
-                            </v-row>
-                          </template>
-                        </v-img>
+                          <video
+                            v-if="showPreviewIndex == index"
+                            v-bind:src="gifStoragePath + item.previewgif"
+                            autoplay
+                            playsinline
+                            muted
+                            loop
+                            disablePictureInPicture
+                            disableRemotePlayback
+                            height="93.94"
+                            width="167"
+                            style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px;"
+                          ></video>
+                        </v-card>
                       </v-col>
                       <v-col cols="6" class="pa-1 py-0">
                         <v-card-title
@@ -220,6 +214,7 @@ export default {
     isMobile: false,
     toggleItems: [],
     currentTagId: 0,
+    showPreviewIndex: null,
   }),
   components: {
     LoadingItem,
@@ -255,6 +250,9 @@ export default {
     ...mapMutations({
       setSceneListofPlaylist: "playlist/setSceneListofPlaylist",
     }),
+    setShowPreviewIndex(index) {
+      this.showPreviewIndex = index;
+    },
     checkMove(e) {},
     select(index) {
       //再生ページを表示
