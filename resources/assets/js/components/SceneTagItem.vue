@@ -7,6 +7,9 @@
         :disabled="!enabled"
         @start="dragging = true"
         @end="endDragging"
+        v-bind="{
+          handle: '.item-handle',
+        }"
       >
         <div
           v-for="(item, index) in sceneListofPlaylist"
@@ -16,10 +19,19 @@
             <v-row dense class="pa-0 ma-0">
               <v-col class="px-0">
                 <v-row class="ma-0">
-                  <v-col cols="1" class="pa-1 ma-auto">
-                    <div class="text-center">
-                      {{ index + 1 }}
-                    </div>
+                  <v-col cols="1" class="pa-1 ma-auto item-handle">
+                    <v-row class="ma-0 pa-0 text-center" justify="center">
+                      <v-col class="ma-0 pa-0">
+                        {{ index + 1 }}
+                      </v-col>
+                    </v-row>
+                    <v-row class="ma-0 pa-0 text-center" justify="center">
+                      <v-col class="ma-0 pa-0">
+                        <v-icon class="pa-0 ma-0" size="16"
+                          >drag_indicator</v-icon
+                        >
+                      </v-col>
+                    </v-row>
                   </v-col>
                   <v-col cols="10" class="pa-0">
                     <v-row class="ma-0">
@@ -33,7 +45,6 @@
                           v-on:touchstart="setShowPreviewIndex(index)"
                         >
                           <v-img
-                            v-on:click.stop="select(index)"
                             class="white--text align-end"
                             v-bind:src="thumbStoragePath + item.preview"
                             lazy-src="/storage/imgs/dummy-image.jpg"
@@ -72,7 +83,6 @@
                       </v-col>
                       <v-col cols="6" class="pa-1 py-0">
                         <v-card-title
-                          v-on:click.stop="select(index)"
                           class="px-0 py-0"
                           style="flex-wrap: nowrap; align-items: baseline;"
                         >
@@ -251,21 +261,10 @@ export default {
       setSceneListofPlaylist: "playlist/setSceneListofPlaylist",
     }),
     setShowPreviewIndex(index) {
+      console.log("setShowPreviewIndex");
       this.showPreviewIndex = index;
     },
     checkMove(e) {},
-    select(index) {
-      //再生ページを表示
-      this.$router
-        .push({
-          path: "/watch",
-          query: {
-            playlist: this.playlistId,
-            index: index,
-          },
-        })
-        .catch((err) => {});
-    },
     async endDragging() {
       this.dragging = false;
       let playlist = {
