@@ -2,7 +2,7 @@
   <v-container class="pa-0 pb-3 mt-2 body-color">
     <div>
       <v-row
-        v-for="item in mediaItems"
+        v-for="(item, index) in mediaItems"
         v-bind:key="item.category + '-' + item.id"
         dense
         class="pa-0 ma-0"
@@ -13,31 +13,51 @@
               <v-col class="pa-0">
                 <v-row class="ma-0">
                   <v-col cols="6" class="pa-2">
-                    <v-hover v-if="!isMobile" v-slot:default="{ hover }">
-                      <v-img
-                        v-on:click.stop="select(item)"
-                        class="white--text align-end"
-                        v-bind:src="
-                          hover
-                            ? gifStoragePath + item.previewgif
-                            : thumbStoragePath + item.preview
-                        "
-                        v-bind:alt="item.title"
-                        aspect-ratio="1.7777"
-                        height="100"
-                      >
-                      </v-img>
-                    </v-hover>
-                    <v-img
-                      v-else
-                      v-on:click.stop="select(item)"
-                      class="white--text align-end"
-                      v-bind:src="gifStoragePath + item.previewgif"
-                      v-bind:alt="item.title"
-                      aspect-ratio="1.7777"
-                      height="100"
+                    <v-card
+                      class="ma-0 pa-0"
+                      aspect-ratio="calc(16 / 9)"
+                      max-height="94"
+                      max-width="167"
+                      elevation="0"
+                      v-on:mouseover="setShowPreviewIndex(index)"
+                      v-on:touchstart="setShowPreviewIndex(index)"
+                      style="overflow: hidden;"
                     >
-                    </v-img>
+                      <v-img
+                        class="white--text align-end rounded"
+                        v-bind:src="thumbStoragePath + item.preview"
+                        lazy-src="/storage/imgs/dummy-image.jpg"
+                        v-on:click.stop="select(item)"
+                        v-bind:alt="item.title"
+                        height="100%"
+                        style="z-index: 1;"
+                      >
+                        <template v-slot:placeholder>
+                          <v-row
+                            class="fill-height ma-0"
+                            align="center"
+                            justify="center"
+                          >
+                            <v-progress-circular
+                              indeterminate
+                              color="grey lighten-5"
+                            ></v-progress-circular>
+                          </v-row>
+                        </template>
+                      </v-img>
+                      <video
+                        v-if="showPreviewIndex == index"
+                        v-bind:src="gifStoragePath + item.previewgif"
+                        autoplay
+                        playsinline
+                        muted
+                        loop
+                        disablePictureInPicture
+                        disableRemotePlayback
+                        height="100%"
+                        style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px; object-fit: cover;"
+                      ></video>
+                    </v-card>
                   </v-col>
                   <v-col cols="6" class="pa-2">
                     <v-row class="ma-0 pa-0">
@@ -119,7 +139,7 @@ export default {
   data: () => ({
     enabled: true,
     dragging: false,
-    isMobile: false,
+    showPreviewIndex: null,
   }),
   components: {
     LoadingItem,
@@ -137,6 +157,9 @@ export default {
     }),
   },
   methods: {
+    setShowPreviewIndex(index) {
+      this.showPreviewIndex = index;
+    },
     checkMove(e) {},
     async select(mediaItem) {
       //プレイリストの場合
@@ -183,8 +206,6 @@ export default {
     endDragging() {},
   },
   mounted() {},
-  created() {
-    this.isMobile = this.mobileCheck();
-  },
+  created() {},
 };
 </script>
