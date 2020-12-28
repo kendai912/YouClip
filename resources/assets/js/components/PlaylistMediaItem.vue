@@ -23,6 +23,7 @@
               v-bind:src="thumbStoragePath + item.preview"
               v-bind:alt="item.title"
               width="100%"
+              min-height="170"
               style="z-index: 1;"
             >
             </v-img>

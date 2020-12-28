@@ -47,7 +47,8 @@
   z-index: 100;
 }
 
-.highlight-body .ytPlayerWrapper iframe {
+.highlight-body .ytPlayerWrapper iframe,
+.watch-body .ytPlayerWrapper iframe {
   position: absolute;
   top: 0px;
 }
@@ -465,6 +466,14 @@
   left: 0px;
   width: 100%;
   min-height: calc(100vh - 48px - 56px);
+}
+
+.watch-body {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  min-height: calc(100vh - 56px);
 }
 
 .highlight-body-upper {
