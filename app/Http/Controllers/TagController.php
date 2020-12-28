@@ -421,13 +421,13 @@ class TagController extends Controller
 
         //mp4のプレビュー動画を取得しS3に保存
         $previewGifName = $request->previewGifName;
-        $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -b 120k -qscale 100 -an -vf "fps=19,scale=420:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
+        $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -r 24 -qscale 100 -an -vf "scale=420:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
         system($cmd_gif);
         Storage::disk('s3')->putFileAs('gifs', new File(storage_path()."/app/public/gifs/".$previewGifName), $previewGifName, 'public');
 
         //OGP用のwebpアニメーションを取得しS3に保存
         $previewOgpName = $request->previewOgpName;
-        $cmd_ogp = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -b 120k -qscale 80 -an -vf "fps=19,scale=420:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 '.storage_path()."/app/public/ogps/".$previewOgpName.' 2>&1';
+        $cmd_ogp = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -r 24 -qscale 80 -an -vf "scale=420:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/ogps/".$previewOgpName.' 2>&1';
         system($cmd_ogp);
         Storage::disk('s3')->putFileAs('ogps', new File(storage_path()."/app/public/ogps/".$previewOgpName), $previewOgpName, 'public');
 
