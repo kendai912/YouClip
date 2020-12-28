@@ -39,7 +39,7 @@
                         <v-card
                           class="ma-0 pa-0"
                           aspect-ratio="1.7777"
-                          height="94"
+                          max-height="94"
                           elevation="0"
                           v-on:mouseover="setShowPreviewIndex(index)"
                           v-on:touchstart="setShowPreviewIndex(index)"
@@ -50,7 +50,7 @@
                             lazy-src="/storage/imgs/dummy-image.jpg"
                             v-bind:alt="item.title"
                             aspect-ratio="1.7777"
-                            height="94"
+                            max-height="94"
                             style="z-index: 1; border-radius: 4px;"
                           >
                             <template v-slot:placeholder>
@@ -75,9 +75,8 @@
                             loop
                             disablePictureInPicture
                             disableRemotePlayback
-                            height="93.94"
-                            width="167"
-                            style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px;"
+                            height="100%"
+                            style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px; object-fit: cover;"
                           ></video>
                         </v-card>
                       </v-col>
@@ -261,7 +260,6 @@ export default {
       setSceneListofPlaylist: "playlist/setSceneListofPlaylist",
     }),
     setShowPreviewIndex(index) {
-      console.log("setShowPreviewIndex");
       this.showPreviewIndex = index;
     },
     checkMove(e) {},
