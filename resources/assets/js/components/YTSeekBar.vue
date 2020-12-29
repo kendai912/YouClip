@@ -18,10 +18,10 @@
             class="ios-highlight-content"
             v-bind:style="
               'left: calc(' +
-              contentLeft +
-              'px + 3px ); width: calc(' +
-              contentWidth +
-              'px - 6px);'
+                contentLeft +
+                'px + 3px ); width: calc(' +
+                contentWidth +
+                'px - 6px);'
             "
           ></div>
           <div
@@ -59,10 +59,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-          contentLeft +
-          'px + 3px ); width: calc(' +
-          contentWidth +
-          'px - 6px);'
+            contentLeft +
+            'px + 3px ); width: calc(' +
+            contentWidth +
+            'px - 6px);'
         "
       ></div>
       <div
@@ -88,7 +88,7 @@ import myMixin from "../util";
 
 export default {
   props: {
-    highlightBodyRef: HTMLDivElement,
+    bodyRef: HTMLDivElement,
   },
   data() {
     return {
@@ -230,29 +230,17 @@ export default {
 
       // start listening to mouse movements
       if (this.isMobile) {
-        this.highlightBodyRef.addEventListener(
-          "touchmove",
-          this.getClickPosition
-        );
+        this.bodyRef.addEventListener("touchmove", this.getClickPosition);
       } else {
-        this.highlightBodyRef.addEventListener(
-          "mousemove",
-          this.getClickPosition
-        );
+        this.bodyRef.addEventListener("mousemove", this.getClickPosition);
       }
     },
     detectMouseUp(e) {
       // stop listening to mouse movements
       if (this.isMobile) {
-        this.highlightBodyRef.removeEventListener(
-          "touchmove",
-          this.getClickPosition
-        );
+        this.bodyRef.removeEventListener("touchmove", this.getClickPosition);
       } else {
-        this.highlightBodyRef.removeEventListener(
-          "mousemove",
-          this.getClickPosition
-        );
+        this.bodyRef.removeEventListener("mousemove", this.getClickPosition);
       }
     },
     setYtSeekbarWrapperTop() {

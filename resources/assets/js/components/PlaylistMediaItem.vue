@@ -1,43 +1,45 @@
 <template>
   <v-container class="pa-0 pb-3">
     <v-row
-      v-for="item in mediaItems"
+      v-for="(item, index) in mediaItems"
       v-bind:key="item.category + '-' + item.id"
       dense
       class="pa-0 ma-0 mb-1"
     >
       <v-col class="px-0" style="padding-top: 2px; paddint-bottom: 2px;">
         <v-card class="mx-auto" max-width="420" elevation="0">
-          <v-hover v-if="!isMobile" v-slot:default="{ hover }">
+          <v-card
+            class="ma-0 pa-0"
+            aspect-ratio="calc(16 / 9)"
+            width="100%"
+            elevation="0"
+            v-on:mouseover="setShowPreviewIndex(index)"
+            v-on:touchstart="setShowPreviewIndex(index)"
+            style="overflow: hidden;"
+            v-on:click.stop="select(item)"
+          >
             <v-img
-              v-on:click.stop="select(item)"
               class="white--text align-end rounded"
-              max-height="266.66px"
-              v-bind:src="
-                hover
-                  ? gifStoragePath + item.previewgif
-                  : thumbStoragePath + item.preview
-              "
+              v-bind:src="thumbStoragePath + item.preview"
               v-bind:alt="item.title"
-              aspect-ratio="1.7777"
+              width="100%"
+              min-height="170"
+              style="z-index: 1;"
             >
             </v-img>
-          </v-hover>
-          <v-img
-            v-else
-            v-on:click.stop="select(item)"
-            class="white--text align-end rounded"
-            max-height="266.66px"
-            pressingItemId
-            v-bind:src="
-              pressingItemId === item.id
-                ? gifStoragePath + item.previewgif
-                : thumbStoragePath + item.preview
-            "
-            v-bind:alt="item.title"
-            aspect-ratio="1.7777"
-          >
-          </v-img>
+            <video
+              v-if="showPreviewIndex == index"
+              v-bind:src="gifStoragePath + item.previewgif"
+              autoplay
+              playsinline
+              muted
+              loop
+              disablePictureInPicture
+              disableRemotePlayback
+              width="100%"
+              style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px; object-fit: cover;"
+            ></video>
+          </v-card>
 
           <v-card-title
             v-on:click.stop="select(item)"
@@ -92,8 +94,7 @@ import myMixin from "../util";
 
 export default {
   data: () => ({
-    isMobile: false,
-    pressingItemId: -1,
+    showPreviewIndex: null,
   }),
   components: {
     LoadingItem,
@@ -109,11 +110,8 @@ export default {
     }),
   },
   methods: {
-    longtapHandler(item) {
-      this.pressingItemId = item.id;
-    },
-    upHandler(item) {
-      if (this.pressingItemId != item.id) this.pressingItemId = -1;
+    setShowPreviewIndex(index) {
+      this.showPreviewIndex = index;
     },
     async select(mediaItem) {
       //プレイリストの場合
@@ -148,8 +146,6 @@ export default {
       }
     },
   },
-  created() {
-    this.isMobile = this.mobileCheck();
-  },
+  created() {},
 };
 </script>

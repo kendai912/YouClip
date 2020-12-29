@@ -47,7 +47,8 @@
   z-index: 100;
 }
 
-.highlight-body .ytPlayerWrapper iframe {
+.highlight-body .ytPlayerWrapper iframe,
+.watch-body .ytPlayerWrapper iframe {
   position: absolute;
   top: 0px;
 }
@@ -335,26 +336,31 @@
 
 .commentListExpansionPanelCustomHeader {
   align-items: start !important;
-  height: 70px;
-  padding-top: 15px !important;
+  height: 80px;
+  padding-top: 16px !important;
 }
 
 .commentListExpansionPanelCustomHeaderContent {
   position: absolute;
-  left: 15px;
+  left: 16px;
   bottom: 0;
 }
 
 .sceneListExpansionPanelCustomHeader {
   align-items: start !important;
-  height: 170px;
-  padding-top: 15px !important;
+  height: 184px;
+  padding-top: 16px !important;
 }
 
 .sceneListExpansionPanelCustomHeaderContent {
   position: absolute;
-  left: 15px;
-  bottom: 0;
+  top: 48px;
+  left: 0px;
+  width: 100%;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 0px;
+  padding-bottom: 16px;
 }
 
 .outlined-icon {
@@ -383,13 +389,8 @@
 .horizontal-list {
   margin: 0;
   padding: 0;
-  /* height: calc(100% + 17px); */
-  /* width: 350px; */
-  /* padding-bottom: 17px; */
-  /* overflow-x: scroll; */
   white-space: nowrap;
 }
-/* https://qiita.com/naru0504/items/ff0c77775223dc5a9148 */
 
 .v-application ul {
   padding: 0px 8px 4px;
@@ -467,6 +468,14 @@
   min-height: calc(100vh - 48px - 56px);
 }
 
+.watch-body {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  min-height: calc(100vh - 56px);
+}
+
 .highlight-body-upper {
   position: relative;
   width: 100%;
@@ -524,11 +533,11 @@
 }
 
 .icon-large {
-  font-size: 28px !important;
+  font-size: 24px !important;
 }
 
 .fa-heart-font {
-  font-size: 23px !important;
+  font-size: 24px !important;
 }
 
 .share-font {

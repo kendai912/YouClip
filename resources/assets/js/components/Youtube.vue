@@ -8,7 +8,7 @@
         <YTSeekBar
           v-show="isPlayerReady"
           ref="ytSeekBar"
-          v-bind:highlightBodyRef="highlightBodyRef"
+          v-bind:bodyRef="highlightBodyRef"
         />
       </div>
       <v-sheet v-if="player != null" class="highlightControllerBody">

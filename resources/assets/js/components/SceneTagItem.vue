@@ -38,20 +38,20 @@
                       <v-col cols="6" class="pa-1">
                         <v-card
                           class="ma-0 pa-0"
-                          aspect-ratio="1.7777"
+                          aspect-ratio="calc(16 / 9)"
                           max-height="94"
                           elevation="0"
                           v-on:mouseover="setShowPreviewIndex(index)"
                           v-on:touchstart="setShowPreviewIndex(index)"
+                          style="overflow: hidden;"
                         >
                           <v-img
-                            class="white--text align-end"
+                            class="white--text align-end rounded"
                             v-bind:src="thumbStoragePath + item.preview"
                             lazy-src="/storage/imgs/dummy-image.jpg"
                             v-bind:alt="item.title"
-                            aspect-ratio="1.7777"
-                            max-height="94"
-                            style="z-index: 1; border-radius: 4px;"
+                            height="100%"
+                            style="z-index: 1;"
                           >
                             <template v-slot:placeholder>
                               <v-row
