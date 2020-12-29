@@ -2,7 +2,7 @@
   <div>
     <v-expansion-panels v-model="panel">
       <v-expansion-panel>
-        <v-expansion-panel-header v-bind:class="{ 'commentListExpansionPanelCustomHeader': panel !== 0 && mostLikesItem }" class="ma-0 pl-3 pr-1">
+        <v-expansion-panel-header v-bind:class="{ 'commentListExpansionPanelCustomHeader': panel !== 0 && mostLikesItem }" class="ma-0 pl-3 pr-2">
           <span class="ma-0 pa-0 pt-1"
             >コメント&nbsp;&#8226;&nbsp;{{ getTotal(mediaItems) }}</span
           >

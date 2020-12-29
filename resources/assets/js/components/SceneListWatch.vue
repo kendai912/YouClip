@@ -5,7 +5,7 @@
       <v-expansion-panel class="ma-0 pa-0">
         <v-expansion-panel-header
           v-bind:class="{ sceneListExpansionPanelCustomHeader: panel !== 0 }"
-          class="ma-0 pl-3 pr-1"
+          class="ma-0 pl-3 pr-2"
         >
           <span class="ma-0 pa-0 pt-1">
             再生中の場面
@@ -203,6 +203,7 @@
                               <div
                                 class="text--darken-3 pt-2"
                                 style="font-size: 12px; padding-left: 0; font-weight: bold"
+                                v-on:click.stop="select(index)"
                               >
                                 <span>{{ item.start }}</span>
                                 <span style="font-size:8px;">-</span>
@@ -211,6 +212,7 @@
 
                               <div
                                 class="horizontal-list-wrap block-chip-lines3 color-black my-1"
+                                v-on:click.stop="select(index)"
                               >
                                 <v-chip
                                   v-for="(tag, tagIndex) in readMore(
@@ -263,10 +265,14 @@ export default {
   computed: {
     ...mapGetters({
       listIndex: "watch/listIndex",
+      playlistId: "watch/playlistId",
     }),
   },
   methods: {
-    select(item) {},
+    select(index) {
+      //選択した場面を再生
+      this.$emit("playPlaylist", index);
+    },
     readMore(arrayData) {
       let newArray = [];
       if (arrayData.length > 2) {

@@ -13,7 +13,7 @@
         </div>
         <div v-if="isPlayerReady" class="highlightControllerBody">
           <v-sheet v-if="isPlaylist" class="mx-auto pa-0">
-            <v-container class="ma-0 pa-0 py-2" fluid>
+            <v-container class="ma-0 pa-0 pt-2" fluid>
               <v-row class="ma-0 pa-0" align="center">
                 <v-col class="ma-2 my-0 pa-0">
                   <span
@@ -41,7 +41,7 @@
             </v-container>
           </v-sheet>
 
-          <v-sheet tile class="mx-auto px-1 py-2">
+          <v-sheet tile class="mx-auto pa-0 px-1">
             <v-row
               class="ma-0 pa-0"
               justify="space-between"
@@ -54,12 +54,7 @@
                     class="ma-0 pa-0 narrow-btn"
                   >
                     <span>まとめ共有</span>
-                    <v-img
-                      src="/storage/icons/share.svg"
-                      width="25px"
-                      max-height="25px"
-                      class="icon-large mb-1"
-                    />
+                    <i class="fas fa-share outlined-icon icon-large"></i>
                   </v-btn>
                 </v-bottom-navigation>
               </v-col>
@@ -70,20 +65,22 @@
                     class="ma-0 pa-0 narrow-btn"
                   >
                     <span>{{ likePlaylistCount }}</span>
-                    <v-icon v-if="isLikedPlaylist" class="icon-large isLiked"
-                      >mdi-heart</v-icon
-                    >
-                    <v-icon v-if="!isLikedPlaylist" class="icon-large my-grey"
-                      >mdi-heart-outline</v-icon
-                    >
+                    <i
+                      v-if="isLikedPlaylist"
+                      class="fas fa-heart isLiked icon-large"
+                    ></i>
+                    <i
+                      v-if="!isLikedPlaylist"
+                      class="fas fa-heart outlined-icon icon-large"
+                    ></i>
                   </v-btn>
                 </v-bottom-navigation>
               </v-col>
               <span
                 v-on:click="openOtherActionModal"
-                style="position: absolute; bottom: 24px; right: 13px; font-size: 16px;"
+                style="position: absolute; top: 10px; right: 14px; font-size: 16px;"
               >
-                <i class="fas fa-ellipsis-v my-grey"></i>
+                <i class="fas fa-ellipsis-v my-grey-heart"></i>
               </span>
             </v-row>
           </v-sheet>
@@ -91,6 +88,7 @@
           <SceneListWatch
             v-if="playlistIdUrl"
             v-bind:mediaItems="sceneListofPlaylist"
+            v-on:playPlaylist="playPlaylist"
           />
           <CommentListWatch
             v-if="playlistIdUrl"
@@ -194,7 +192,7 @@ export default {
         );
       });
     },
-    playPlaylist(playlistId, index) {
+    playPlaylist(index) {
       //最後のシーンでない場合は次のシーンのパラメータをセット
       this.$store.commit("watch/setYTPlaylistParameters", index);
 
@@ -207,7 +205,7 @@ export default {
         .push({
           path: "/watch",
           query: {
-            playlist: playlistId,
+            playlist: this.playlistIdUrl,
             index: index,
           },
         })
@@ -329,7 +327,7 @@ export default {
         ) {
           //  削除後も他のシーンがあり、かつ一番最後の場合、先頭に戻る
           this.indexUrl = 0;
-          this.playPlaylist(this.playlistIdUrl, this.indexUrl);
+          this.playPlaylist(this.indexUrl);
         } else if (this.watchList.length < 2) {
           // 削除後に他のシーンがない場合、トップページに遷移
           this.$router
@@ -601,11 +599,11 @@ export default {
           //プレイリスト再生の場合
           if (this.indexUrl < this.watchList.length - 1) {
             // //最後のシーンでない場合は次のシーンのパラメータをセット
-            this.playPlaylist(this.playlistIdUrl, ++this.indexUrl);
+            this.playPlaylist(++this.indexUrl);
           } else if (this.indexUrl >= this.watchList.length - 1) {
             //最後のシーンの場合は先頭に戻る
             this.indexUrl = 0;
-            this.playPlaylist(this.playlistIdUrl, this.indexUrl);
+            this.playPlaylist(this.indexUrl);
           }
         }
 
