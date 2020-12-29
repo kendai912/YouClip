@@ -4,7 +4,11 @@
     <v-expansion-panels v-model="panel" class="ma-0 pa-0">
       <v-expansion-panel class="ma-0 pa-0">
         <v-expansion-panel-header
-          v-bind:class="{ sceneListExpansionPanelCustomHeader: panel !== 0 }"
+          v-bind:class="{
+            sceneListExpansionPanelCustomHeader: panel !== 0,
+            sceneListExpansionPanelCustomHeadermobileHight:
+              panel !== 0 && isMobile,
+          }"
           class="ma-0 pl-3 pr-2"
         >
           <span class="ma-0 pa-0 pt-1">
@@ -43,7 +47,6 @@
                                   style="overflow: hidden;"
                                 >
                                   <v-img
-                                    v-on:click.stop="select(listIndex)"
                                     class="white--text align-end rounded"
                                     v-bind:src="
                                       thumbStoragePath +
@@ -70,7 +73,6 @@
 
                               <v-col cols="6" class="pa-1 py-0">
                                 <v-card-title
-                                  v-on:click.stop="select(listIndex)"
                                   class="px-0 py-0"
                                   style="flex-wrap: nowrap; align-items: baseline;"
                                 >
@@ -244,7 +246,6 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
-    <v-divider></v-divider>
   </div>
 </template>
 
@@ -256,6 +257,7 @@ export default {
   data() {
     return {
       panel: null,
+      isMobile: false,
     };
   },
   props: {
@@ -290,6 +292,8 @@ export default {
       return moment(date).format("MMMM Do YYYY, h:mm:ss a");
     },
   },
-  created() {},
+  created() {
+    this.isMobile = this.mobileCheck();
+  },
 };
 </script>

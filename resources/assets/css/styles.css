@@ -352,6 +352,10 @@
   padding-top: 16px !important;
 }
 
+.sceneListExpansionPanelCustomHeadermobileHight {
+  height: 160px !important;
+}
+
 .sceneListExpansionPanelCustomHeaderContent {
   position: absolute;
   top: 48px;
