@@ -13,7 +13,7 @@
         </div>
         <div v-if="isPlayerReady" class="highlightControllerBody">
           <v-sheet v-if="isPlaylist" class="mx-auto pa-0">
-            <v-container class="ma-0 my-2 pa-0" fluid>
+            <v-container class="ma-0 pa-0 py-2" fluid>
               <v-row class="ma-0 pa-0" align="center">
                 <v-col class="ma-2 my-0 pa-0">
                   <span
@@ -388,11 +388,13 @@ export default {
         (($("iframe").height() - ($("iframe").width() * 9) / 16) / 2) * -1
       );
 
-      //開始・終了ボタンがiframeとseekbarの下に来るようにtopを調整
-      $(".highlightControllerBody").css(
-        "top",
-        ($("iframe").width() * 9) / 16 + 15
-      );
+      this.$nextTick(() => {
+        //開始・終了ボタンがiframeとseekbarの下に来るようにtopを調整
+        $(".highlightControllerBody").css(
+          "top",
+          ($("iframe").width() * 9) / 16 + 15
+        );
+      });
     },
   },
   watch: {
@@ -577,11 +579,11 @@ export default {
     setTimeout(onYouTubeIframeAPIReady, 10);
 
     window.onPlayerReady = (event) => {
-      self.setYtPlayerCSS();
-
       event.target.mute();
       event.target.playVideo();
       this.isPlayerReady = true;
+
+      self.setYtPlayerCSS();
 
       //0.4秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
       this.startTimer();
