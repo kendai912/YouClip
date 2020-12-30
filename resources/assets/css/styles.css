@@ -824,6 +824,9 @@ div.v-snack:not(.v-snack--absolute) {
 .activeSearch .v-text-field__details {
   display: none;
 }
+.my-full-bar .row {
+  flex-wrap: nowrap !important;
+}
 #searchDropdown {
   position: relative;
 }
