@@ -15,7 +15,7 @@
               v-bind:items="items"
               v-bind:search-input.sync="searchquery"
               v-on:keydown.enter="search"
-              placeholder="YouTube動画のまとめを検索"
+              placeholder="YouTubeまとめを検索"
               item-text="value"
               item-value="value"
               cache-items
