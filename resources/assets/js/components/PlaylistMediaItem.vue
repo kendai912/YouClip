@@ -57,8 +57,13 @@
               <v-row class="pa-0 ma-0" align-content="center">
                 <v-col class="pa-0 ma-0 d-flex align-center">
                   <span style="font-size:12px;">
+                    <v-icon small style="vertical-align: top;"
+                      >mdi-timer-outline</v-icon
+                    >
                     まとめ:&nbsp;{{ item.totalDuration }}&nbsp;
-                    <v-icon small>mdi-arrow-left</v-icon>
+                    <v-icon small style="vertical-align: top;"
+                      >mdi-arrow-left</v-icon
+                    >
                     &nbsp;元のYouTube動画:&nbsp;{{
                       item.numberOfYTvideos
                     }}本の合計{{ item.totalYTDuration }}</span
