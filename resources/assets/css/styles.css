@@ -483,7 +483,7 @@
 .highlight-body-upper {
   position: relative;
   width: 100%;
-  min-height: calc(100vh - 48px - 56px - 24px - 162px);
+  min-height: calc(100vh - 48px - 56px - 128px - 162px);
 }
 
 .search-box {
