@@ -451,8 +451,7 @@
 
 .bottom-position {
   position: absolute;
-  bottom: 176px;
-  /* bottom: 176px; */
+  bottom: 128px;
   right: 0;
 }
 
