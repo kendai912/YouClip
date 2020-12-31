@@ -138,7 +138,7 @@
             class="pa-0 ma-0"
           >
             <v-col class="pa-0 ma-0">
-              <div v-bind:class="listIndex == index ? `yellow lighten-5` : ``">
+              <div v-bind:class="listIndex == index ? `green lighten-5` : ``">
                 <v-card
                   class="mx-auto my-1"
                   max-width="420"

@@ -48,6 +48,9 @@
             {{ currentTime }} / {{ duration }}
           </v-col>
           <v-col align-self="end" class="text-right">
+            <v-icon large v-on:click="openPlaySpeedModal" color="white"
+              >mdi-speedometer</v-icon
+            >
             <v-icon large v-if="isMuted" v-on:click.stop="unmute" color="white"
               >volume_off</v-icon
             >
@@ -59,20 +62,24 @@
       </v-container>
     </v-sheet>
     <v-sheet class="overlayWrap" v-on:click="toggleController"></v-sheet>
+    <PlaySpeedModal v-if="showPlaySpeedModal" v-bind:player="player" />
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
+import PlaySpeedModal from "../components/PlaySpeedModal.vue";
 import myMixin from "../util";
 
 export default {
+  components: {
+    PlaySpeedModal,
+  },
   props: {},
   data() {
     return {
       ytPlayerControllerTransition: "overlayfade",
       isMuted: true,
-      isPlaying: true,
       timer: null,
       immediateHideFlag: false,
     };
@@ -85,6 +92,8 @@ export default {
       isNew: "youtube/isNew",
       newVideoData: "youtube/newVideoData",
       videoData: "youtube/videoData",
+      showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
+      isPlaying: "watch/isPlaying",
     }),
     duration() {
       if (this.isNew) {
@@ -97,12 +106,12 @@ export default {
     },
   },
   methods: {
-    ...mapMutations({}),
+    ...mapMutations({
+      openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal",
+      setIsPlaying: "watch/setIsPlaying",
+    }),
     setImmediateHide() {
       this.immediateHideFlag = true;
-    },
-    setIsPlaying() {
-      this.isPlaying = true;
     },
     toggleController() {
       if (!this.immediateHideFlag) {
@@ -133,7 +142,7 @@ export default {
     playVideo() {
       this.fadeOutController();
 
-      this.isPlaying = true;
+      this.$store.commit("watch/setIsPlaying", true);
       this.player.playVideo();
     },
     //一時停止
@@ -145,7 +154,7 @@ export default {
         clearTimeout(this.timer);
       }, 10);
 
-      this.isPlaying = false;
+      this.$store.commit("watch/setIsPlaying", false);
       this.player.pauseVideo();
     },
     //5秒戻る
