@@ -80,7 +80,6 @@ export default {
     return {
       ytPlayerControllerTransition: "overlayfade",
       isMuted: true,
-      isPlaying: true,
       timer: null,
       immediateHideFlag: false,
     };
@@ -94,6 +93,7 @@ export default {
       newVideoData: "youtube/newVideoData",
       videoData: "youtube/videoData",
       showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
+      isPlaying: "watch/isPlaying",
     }),
     duration() {
       if (this.isNew) {
@@ -108,12 +108,10 @@ export default {
   methods: {
     ...mapMutations({
       openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal",
+      setIsPlaying: "watch/setIsPlaying",
     }),
     setImmediateHide() {
       this.immediateHideFlag = true;
-    },
-    setIsPlaying() {
-      this.isPlaying = true;
     },
     toggleController() {
       if (!this.immediateHideFlag) {
@@ -144,7 +142,7 @@ export default {
     playVideo() {
       this.fadeOutController();
 
-      this.isPlaying = true;
+      this.$store.commit("watch/setIsPlaying", true);
       this.player.playVideo();
     },
     //一時停止
@@ -156,7 +154,7 @@ export default {
         clearTimeout(this.timer);
       }, 10);
 
-      this.isPlaying = false;
+      this.$store.commit("watch/setIsPlaying", false);
       this.player.pauseVideo();
     },
     //5秒戻る

@@ -159,7 +159,6 @@ export default {
       playlistIdUrl: "",
       indexUrl: 0,
       tagIdUrl: "",
-      isPlaying: true,
       isPlayerReady: false,
       timer: null,
       isMuted: true,
@@ -179,6 +178,7 @@ export default {
       openOtherActionModal: "otherActionModal/openOtherActionModal",
       openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal",
       setListIndex: "watch/setListIndex",
+      setIsPlaying: "watch/setIsPlaying",
       setPlayer: "ytPlayerController/setPlayer",
     }),
     startTimer() {
@@ -434,6 +434,7 @@ export default {
       showSceneTagControl: "tagging/showSceneTagControl",
       isEditing: "tagging/isEditing",
       playSpeed: "watch/playSpeed",
+      isPlaying: "watch/isPlaying",
       player: "ytPlayerController/player",
     }),
     isLiked() {
@@ -593,7 +594,7 @@ export default {
     window.onPlayerStateChange = (event) => {
       if (event.data == YT.PlayerState.ENDED && this.isPlaying) {
         //フラグを停止中に反転
-        this.isPlaying = !this.isPlaying;
+        this.$store.commit("watch/setIsPlaying", false);
 
         if (this.isEditing) {
           //現在と同じシーンをリピート(開始時間に戻る)
@@ -619,7 +620,12 @@ export default {
 
       if (event.data == YT.PlayerState.PLAYING) {
         //フラグを再生中にセット
-        this.isPlaying = true;
+        this.$store.commit("watch/setIsPlaying", true);
+      }
+
+      if (event.data == YT.PlayerState.ENDED) {
+        //フラグを再生中にセット
+        this.$store.commit("watch/setIsPlaying", false);
       }
     };
 
