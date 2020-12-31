@@ -249,6 +249,9 @@ export default {
         //set default data for editing
         this.setEditingTimeData();
       }
+
+      //倍速視聴を1倍のリセット
+      this.$store.commit("watch/setPlaySpeed", 1);
     },
     setEditingTimeData() {
       this.$store.commit(

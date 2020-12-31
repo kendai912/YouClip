@@ -197,6 +197,9 @@ export default {
         //set tags data for editing
         this.setEditingTagData();
       }
+
+      //倍速視聴を1倍のリセット
+      this.$store.commit("watch/setPlaySpeed", 1);
     },
     //set tags data for editing
     setEditingTagData() {

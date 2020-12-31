@@ -469,6 +469,9 @@ export default {
     this.$store.dispatch("like/loadTagLike");
     this.$store.dispatch("likePlaylist/loadPlaylistLike");
 
+    //倍速視聴を1倍のリセット
+    this.$store.commit("watch/setPlaySpeed", 1);
+
     if (this.$route.query.playlist) {
       //特定シーン再生の場合
       //URLのクエリパラメータからプレイリストIDとインデックスを取得

@@ -48,6 +48,9 @@
             {{ currentTime }} / {{ duration }}
           </v-col>
           <v-col align-self="end" class="text-right">
+            <v-icon large v-on:click="openPlaySpeedModal" color="white"
+              >mdi-speedometer</v-icon
+            >
             <v-icon large v-if="isMuted" v-on:click.stop="unmute" color="white"
               >volume_off</v-icon
             >
@@ -59,14 +62,19 @@
       </v-container>
     </v-sheet>
     <v-sheet class="overlayWrap" v-on:click="toggleController"></v-sheet>
+    <PlaySpeedModal v-if="showPlaySpeedModal" v-bind:player="player" />
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
+import PlaySpeedModal from "../components/PlaySpeedModal.vue";
 import myMixin from "../util";
 
 export default {
+  components: {
+    PlaySpeedModal,
+  },
   props: {},
   data() {
     return {
@@ -85,6 +93,7 @@ export default {
       isNew: "youtube/isNew",
       newVideoData: "youtube/newVideoData",
       videoData: "youtube/videoData",
+      showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
     }),
     duration() {
       if (this.isNew) {
@@ -97,7 +106,9 @@ export default {
     },
   },
   methods: {
-    ...mapMutations({}),
+    ...mapMutations({
+      openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal",
+    }),
     setImmediateHide() {
       this.immediateHideFlag = true;
     },
