@@ -2,7 +2,7 @@
   <div v-if="isIOS" class="ios-wrapper-mask">
     <div class="ios-wrapper">
       <div class="ios-ytseekbar-wrapper">
-        <div class="ios-ytseekbar-mask"></div>
+        <div class="ios-ytseekbar-mask" ref="iosYtseekbarMask"></div>
         <div
           class="ios-ytseek-head"
           ref="iosYtseekHead"
@@ -276,6 +276,10 @@ export default {
         this.$refs.iosYtseekHead.addEventListener(
           "touchstart",
           this.detectMouseDown
+        );
+        this.$refs.iosYtseekbarMask.addEventListener(
+          "touchstart",
+          this.detectMouseDownOfYtseekbarMask
         );
         window.addEventListener("touchend", this.detectMouseUp);
       } else if (this.isMobile) {
