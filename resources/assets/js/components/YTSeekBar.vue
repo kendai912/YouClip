@@ -43,7 +43,7 @@
   </div>
 
   <div v-else class="ytseekbar-wrapper">
-    <div class="ytseekbar-mask"></div>
+    <div class="ytseekbar-mask" ref="ytseekbarMask"></div>
     <div
       class="ytseek-head"
       ref="ytseekHead"
@@ -243,6 +243,10 @@ export default {
         this.bodyRef.removeEventListener("mousemove", this.getClickPosition);
       }
     },
+    detectMouseDownOfYtseekbarMask(e) {
+      e.preventDefault(); // prevent browser from moving objects, following links etc
+      this.getClickPosition(e);
+    },
     setYtSeekbarWrapperTop() {
       //seekbarがiframeの下になるように高さを計算
       if (this.isIOS) {
@@ -279,11 +283,19 @@ export default {
           "touchstart",
           this.detectMouseDown
         );
+        this.$refs.ytseekbarMask.addEventListener(
+          "touchstart",
+          this.detectMouseDownOfYtseekbarMask
+        );
         window.addEventListener("touchend", this.detectMouseUp);
       } else {
         this.$refs.ytseekHead.addEventListener(
           "mousedown",
           this.detectMouseDown
+        );
+        this.$refs.ytseekbarMask.addEventListener(
+          "mousedown",
+          this.detectMouseDownOfYtseekbarMask
         );
         window.addEventListener("mouseup", this.detectMouseUp);
       }
