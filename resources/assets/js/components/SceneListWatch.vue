@@ -33,12 +33,12 @@
                     <v-row dense class="pa-0 ma-0">
                       <v-col class="px-0">
                         <v-row class="ma-0">
-                          <v-col cols="1" class="pa-1 ma-auto text-center">
+                          <v-col cols="1" class="pa-0 ma-auto text-center">
                             {{ parseInt(listIndex) + 1 }} {{ panel }}
                           </v-col>
                           <v-col cols="11" class="pa-0">
                             <v-row class="ma-0">
-                              <v-col cols="6" class="pa-1">
+                              <v-col cols="6" class="pa-1 pl-0 pr-2">
                                 <v-card
                                   class="ma-0 pa-0"
                                   aspect-ratio="calc(16 / 9)"
@@ -71,7 +71,7 @@
                                 </v-card>
                               </v-col>
 
-                              <v-col cols="6" class="pa-1 py-0">
+                              <v-col cols="6" class="pa-1 pl-0 pr-2 py-0">
                                 <v-card-title
                                   class="px-0 py-0"
                                   style="flex-wrap: nowrap; align-items: baseline;"
@@ -148,12 +148,12 @@
                   <v-row dense class="pa-0 ma-0">
                     <v-col class="px-0">
                       <v-row class="ma-0">
-                        <v-col cols="1" class="pa-1 ma-auto text-center">
+                        <v-col cols="1" class="pa-0 ma-auto text-center">
                           {{ index + 1 }}
                         </v-col>
                         <v-col cols="11" class="pa-0">
                           <v-row class="ma-0">
-                            <v-col cols="6" class="pa-1">
+                            <v-col cols="6" class="pa-1 pl-0 pr-2">
                               <v-card
                                 class="ma-0 pa-0"
                                 aspect-ratio="calc(16 / 9)"
@@ -184,7 +184,7 @@
                                 </v-img>
                               </v-card>
                             </v-col>
-                            <v-col cols="6" class="pa-1 py-0">
+                            <v-col cols="6" class="pa-1 pl-0 pr-2 py-0">
                               <v-card-title
                                 v-on:click.stop="select(index)"
                                 class="px-0 py-0"
@@ -213,7 +213,7 @@
                               </div>
 
                               <div
-                                class="horizontal-list-wrap block-chip-lines3 color-black my-1"
+                                class="horizontal-list-wrap block-chip-lines3 color-black mt-1 mb-0"
                                 v-on:click.stop="select(index)"
                               >
                                 <v-chip
