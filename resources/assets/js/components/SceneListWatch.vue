@@ -53,7 +53,8 @@
                                         mediaItems[listIndex].preview
                                     "
                                     lazy-src="/storage/imgs/dummy-image.jpg"
-                                    width="100%"
+                                    height="100%"
+                                    v-on:load="loaded"
                                   >
                                     <template v-slot:placeholder>
                                       <v-row
@@ -72,21 +73,24 @@
                               </v-col>
 
                               <v-col cols="6" class="pa-1 pl-0 pr-2 py-0">
-                                <v-card-title
-                                  class="px-0 py-0"
-                                  style="flex-wrap: nowrap; align-items: baseline;"
+                                <div
+                                  class="px-0 py-0 pt-1"
+                                  style="display: flex; flex-wrap: nowrap; align-items: flex-start;"
                                 >
                                   <div
-                                    style="width:16px; max-height:16px; color:red; margin-right:8px"
+                                    style="font-size: 20px; color:red; max-height: 18px;"
                                   >
-                                    <i class="fab fa-youtube"></i>
+                                    <i
+                                      class="fab fa-youtube"
+                                      style="vertical-align: top;"
+                                    ></i>
                                   </div>
-                                  <span
-                                    class="block-playlist-title"
-                                    style="font-size: 14px"
-                                    >{{ mediaItems[listIndex].title }}</span
-                                  >
-                                </v-card-title>
+                                  <div class="block-playlist-title">
+                                    <span style="vertical-align: middle;">{{
+                                      mediaItems[listIndex].title
+                                    }}</span>
+                                  </div>
+                                </div>
 
                                 <div
                                   class="text--darken-3 pt-2"
@@ -138,7 +142,11 @@
             class="pa-0 ma-0"
           >
             <v-col class="pa-0 ma-0">
-              <div v-bind:class="listIndex == index ? `green lighten-5` : ``">
+              <div
+                v-bind:class="
+                  listIndex == index && opened ? `green lighten-5` : ``
+                "
+              >
                 <v-card
                   class="mx-auto my-1"
                   max-width="420"
@@ -149,7 +157,7 @@
                     <v-col class="px-0">
                       <v-row class="ma-0">
                         <v-col cols="1" class="pa-0 ma-auto text-center">
-                          {{ index + 1 }}
+                          <span v-show="opened">{{ index + 1 }}</span>
                         </v-col>
                         <v-col cols="11" class="pa-0">
                           <v-row class="ma-0">
@@ -185,31 +193,40 @@
                               </v-card>
                             </v-col>
                             <v-col cols="6" class="pa-1 pl-0 pr-2 py-0">
-                              <v-card-title
+                              <div
                                 v-on:click.stop="select(index)"
-                                class="px-0 py-0"
-                                style="flex-wrap: nowrap; align-items: baseline;"
+                                class="px-0 py-0 pt-1"
+                                style="display: flex; flex-wrap: nowrap; align-items: flex-start;"
                               >
                                 <div
-                                  style="width:16px; max-height:16px; color:red; margin-right:8px"
+                                  style="font-size: 20px; color:red; max-height: 18px;"
                                 >
-                                  <i class="fab fa-youtube"></i>
+                                  <i
+                                    class="fab fa-youtube"
+                                    style="vertical-align: top;"
+                                  ></i>
                                 </div>
-                                <span
-                                  class="block-playlist-title"
-                                  style="font-size: 14px"
-                                  >{{ item.title }}</span
-                                >
-                              </v-card-title>
+                                <div class="block-playlist-title">
+                                  <span
+                                    v-show="opened"
+                                    style="vertical-align: middle;"
+                                    >{{ item.title }}</span
+                                  >
+                                </div>
+                              </div>
 
                               <div
                                 class="text--darken-3 pt-2"
                                 style="font-size: 12px; padding-left: 0; font-weight: bold"
                                 v-on:click.stop="select(index)"
                               >
-                                <span>{{ item.start }}</span>
-                                <span style="font-size:8px;">-</span>
-                                <span>{{ item.end }}の場面</span>
+                                <span v-show="opened">{{ item.start }}</span>
+                                <span v-show="opened" style="font-size:8px;"
+                                  >-</span
+                                >
+                                <span v-show="opened"
+                                  >{{ item.end }}の場面</span
+                                >
                               </div>
 
                               <div
@@ -258,6 +275,7 @@ export default {
     return {
       panel: null,
       isMobile: false,
+      opened: false,
     };
   },
   props: {
@@ -269,6 +287,15 @@ export default {
       listIndex: "watch/listIndex",
       playlistId: "watch/playlistId",
     }),
+  },
+  watch: {
+    panel() {
+      if (this.panel !== 0) {
+        this.loaded();
+      } else {
+        $(".sceneListExpansionPanelCustomHeader").height("auto");
+      }
+    },
   },
   methods: {
     select(index) {
@@ -286,6 +313,29 @@ export default {
         return arrayData;
       }
     },
+    loaded() {
+      let self = this;
+      setTimeout(function() {
+        let outterHeight = $(".sceneListExpansionPanelCustomHeader").height();
+        let innerHeight = $(
+          ".sceneListExpansionPanelCustomHeaderContent"
+        ).height();
+
+        if (outterHeight + 32 < innerHeight + 48) {
+          if (self.isMobile) {
+            $(".sceneListExpansionPanelCustomHeadermobileHight").height(144);
+          } else {
+            $(".sceneListExpansionPanelCustomHeader").height(176);
+          }
+        } else {
+          if (self.isMobile) {
+            $(".sceneListExpansionPanelCustomHeadermobileHight").height(128);
+          } else {
+            $(".sceneListExpansionPanelCustomHeader").height(152);
+          }
+        }
+      }, 100);
+    },
   },
   filters: {
     formatTime: function(date) {
@@ -294,6 +344,13 @@ export default {
   },
   created() {
     this.isMobile = this.mobileCheck();
+
+    let self = this;
+    this.$nextTick(() => {
+      $(".v-expansion-panel-header").on("click", function(e) {
+        self.opened = !self.opened;
+      });
+    });
   },
 };
 </script>

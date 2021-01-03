@@ -511,15 +511,6 @@ export default {
       }
     };
 
-    //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
-    // let from = this.$route.path;
-    // window.addEventListener("popstate", function(e) {
-    //   let to = self.$route.path;
-    //   if (from == "/youtube/confirm" && to == "/youtube/confirm") {
-    //     location.reload();
-    //   }
-    // });
-
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.highlightBodyRef = this.$refs.highlightBody;
   },

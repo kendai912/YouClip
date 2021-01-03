@@ -394,6 +394,30 @@ export default {
         );
       });
     },
+    initialize() {
+      //ナビバーを非表示
+      this.$store.commit("navbar/setShowNavbar", false);
+      this.playlistIdUrl = "";
+      this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
+
+      //タグおよびプレイリストのLikeデータをロード
+      this.$store.dispatch("like/loadTagLike");
+      this.$store.dispatch("likePlaylist/loadPlaylistLike");
+
+      //clear all data before loading
+      this.clearAllInput();
+
+      //倍速視聴を1倍のリセット
+      this.$store.commit("watch/setPlaySpeed", 1);
+    },
+    clearAllInput() {
+      this.$store.commit("ytSeekBar/setStartTimeInput", null);
+      this.$store.commit("ytSeekBar/setEndTimeInput", null);
+      this.$store.commit("tagging/setTags", "");
+      this.$store.commit("tagging/setStart", "");
+      this.$store.commit("tagging/setEnd", "");
+      this.$store.commit("tagging/setPrivacySetting", "public");
+    },
   },
   watch: {
     //シーン切替時のlistIndexセット
@@ -461,17 +485,7 @@ export default {
     },
   },
   async mounted() {
-    //ナビバーを非表示
-    this.$store.commit("navbar/setShowNavbar", false);
-    this.playlistIdUrl = "";
-    this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
-
-    //タグおよびプレイリストのLikeデータをロード
-    this.$store.dispatch("like/loadTagLike");
-    this.$store.dispatch("likePlaylist/loadPlaylistLike");
-
-    //倍速視聴を1倍のリセット
-    this.$store.commit("watch/setPlaySpeed", 1);
+    this.initialize();
 
     if (this.$route.query.playlist) {
       //特定シーン再生の場合
