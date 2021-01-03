@@ -18,10 +18,10 @@
             class="ios-highlight-content"
             v-bind:style="
               'left: calc(' +
-                contentLeft +
-                'px + 3px ); width: calc(' +
-                contentWidth +
-                'px - 6px);'
+              contentLeft +
+              'px + 3px ); width: calc(' +
+              contentWidth +
+              'px - 6px);'
             "
           ></div>
           <div
@@ -59,10 +59,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-            contentLeft +
-            'px + 3px ); width: calc(' +
-            contentWidth +
-            'px - 6px);'
+          contentLeft +
+          'px + 3px ); width: calc(' +
+          contentWidth +
+          'px - 6px);'
         "
       ></div>
       <div
@@ -200,11 +200,20 @@ export default {
   methods: {
     ...mapMutations({}),
     getClickPosition(e) {
-      if (this.isMobile) {
+      if (this.isIOS) {
         if (!this.ytseekbarPageX) {
           this.ytseekbarPageX = $(".ios-ytseekbar-mask").offset().left;
         }
         this.seekWidth = e.changedTouches[0].pageX - this.ytseekbarPageX;
+      } else if (this.isMobile) {
+        if (!this.ytseekbarPageX) {
+          this.ytseekbarPageX = $(".ytseekbar-mask").offset().left;
+        }
+        if (e.changedTouches) {
+          this.seekWidth = e.changedTouches[0].pageX - this.ytseekbarPageX;
+        } else {
+          this.seekWidth = e.pageX - this.ytseekbarPageX;
+        }
       } else {
         if (!this.ytseekbarPageX) {
           this.ytseekbarPageX = $(".ytseekbar-mask").offset().left;
@@ -288,7 +297,7 @@ export default {
           this.detectMouseDown
         );
         this.$refs.ytseekbarMask.addEventListener(
-          "touchstart",
+          "click",
           this.detectMouseDownOfYtseekbarMask
         );
         window.addEventListener("touchend", this.detectMouseUp);
@@ -298,7 +307,7 @@ export default {
           this.detectMouseDown
         );
         this.$refs.ytseekbarMask.addEventListener(
-          "mousedown",
+          "click",
           this.detectMouseDownOfYtseekbarMask
         );
         window.addEventListener("mouseup", this.detectMouseUp);

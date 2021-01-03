@@ -29,13 +29,13 @@
 
               <v-row class="ma-0 pa-0">
                 <v-col class="ma-2 my-0 pa-0 grey--text text--darken-3">
-                  <span style="font-size:12px;"
+                  <span style="font-size: 12px"
                     >{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span
                   >
-                  <span style="font-size:8px;">&nbsp;&#8226;&nbsp;</span>
-                  <span style="font-size:12px;">合計{{ totalDuration }}</span>
-                  <span style="font-size:8px;">&nbsp;&#8226;&nbsp;</span>
-                  <span style="font-size:12px;">{{ playlistCreatedAt }}前</span>
+                  <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
+                  <span style="font-size: 12px">合計{{ totalDuration }}</span>
+                  <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
+                  <span style="font-size: 12px">{{ playlistCreatedAt }}前</span>
                 </v-col>
               </v-row>
             </v-container>
@@ -45,7 +45,7 @@
             <v-row
               class="ma-0 pa-0"
               justify="space-between"
-              style="position: relative;"
+              style="position: relative"
             >
               <v-col class="ma-0 pa-0 text-center">
                 <v-bottom-navigation class="bottom_navigation_no_shadow">
@@ -78,7 +78,12 @@
               </v-col>
               <span
                 v-on:click="openOtherActionModal"
-                style="position: absolute; top: 10px; right: 14px; font-size: 16px;"
+                style="
+                  position: absolute;
+                  top: 10px;
+                  right: 14px;
+                  font-size: 16px;
+                "
               >
                 <i class="fas fa-ellipsis-v my-grey-heart"></i>
               </span>
@@ -184,7 +189,7 @@ export default {
     startTimer() {
       let self = this;
 
-      this.timer = setInterval(function() {
+      this.timer = setInterval(function () {
         //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
         self.$store.commit(
           "youtube/setCurrentTime",
