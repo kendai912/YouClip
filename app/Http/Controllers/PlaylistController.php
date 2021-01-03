@@ -67,7 +67,7 @@ class PlaylistController extends Controller
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'])
         //プレイリストのプライバシー設定がpublicに限定し、like数の降順で取得
-        ->where('privacySetting', 'public')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')
+        ->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')
         ->paginate($contentsPerPage);
 
         return response()->json(
@@ -96,7 +96,7 @@ class PlaylistController extends Controller
         }))->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'
-        ])->where('privacySetting', 'public')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        ])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
         return response()->json(
             [
@@ -124,7 +124,7 @@ class PlaylistController extends Controller
         }))->where('playlistCategory', 'Sports')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'
-        ])->where('privacySetting', 'public')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        ])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
         return response()->json(
             [
@@ -151,7 +151,7 @@ class PlaylistController extends Controller
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
         }))->where('playlistCategory', 'Entertainment')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
-        }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
         return response()->json(
             [

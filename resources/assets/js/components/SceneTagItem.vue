@@ -50,6 +50,7 @@
                             v-bind:src="thumbStoragePath + item.preview"
                             lazy-src="/storage/imgs/dummy-image.jpg"
                             v-bind:alt="item.title"
+                            min-height="93.5px"
                             height="100%"
                             style="z-index: 1;"
                           >
@@ -81,21 +82,24 @@
                         </v-card>
                       </v-col>
                       <v-col cols="6" class="pa-1 py-0">
-                        <v-card-title
-                          class="px-0 py-0"
-                          style="flex-wrap: nowrap; align-items: baseline;"
+                        <div
+                          class="px-0 py-0 pt-1"
+                          style="display: flex; flex-wrap: nowrap; align-items: flex-start;"
                         >
                           <div
-                            style="width:16px; max-height:16px; color:red; margin-right:8px"
+                            style="font-size: 20px; color:red; max-height: 18px;"
                           >
-                            <i class="fab fa-youtube"></i>
+                            <i
+                              class="fab fa-youtube"
+                              style="vertical-align: top;"
+                            ></i>
                           </div>
-                          <span
-                            class="block-playlist-title"
-                            style="font-size: 14px"
-                            >{{ item.title }}</span
-                          >
-                        </v-card-title>
+                          <div class="block-playlist-title">
+                            <span style="vertical-align: middle;">{{
+                              item.title
+                            }}</span>
+                          </div>
+                        </div>
 
                         <div
                           class="text--darken-3 pt-2"
@@ -130,9 +134,15 @@
                       <v-icon
                         v-if="!toggleItems.includes(index, item.title)"
                         color="my-grey"
+                        style="vertical-align: inherit;"
                         >mdi-chevron-down</v-icon
                       >
-                      <v-icon v-else color="my-grey">mdi-chevron-up</v-icon>
+                      <v-icon
+                        v-else
+                        color="my-grey"
+                        style="vertical-align: inherit;"
+                        >mdi-chevron-up</v-icon
+                      >
                     </div>
                   </v-col>
                 </v-row>
@@ -196,10 +206,6 @@
         </v-row>
       </v-card>
     </div>
-    <LoadingItem
-      v-if="isLoading"
-      v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination"
-    />
     <TagDeleteModal v-if="showTagDeleteModal" />
     <AddToPlaylistModal
       v-if="showAddPlaylistModal"
@@ -210,7 +216,6 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
-import LoadingItem from "../components/LoadingItem.vue";
 import TagDeleteModal from "../components/TagDeleteModal.vue";
 import AddToPlaylistModal from "../components/AddToPlaylistModal.vue";
 import draggable from "vuedraggable";
@@ -226,7 +231,6 @@ export default {
     showPreviewIndex: null,
   }),
   components: {
-    LoadingItem,
     draggable,
     TagDeleteModal,
     AddToPlaylistModal,
@@ -238,8 +242,6 @@ export default {
   computed: {
     ...mapGetters({
       user_id: "auth/user_id",
-      isLoading: "loadingItem/isLoading",
-      numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination",
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
       playlistId: "watch/playlistId",

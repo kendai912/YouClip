@@ -121,18 +121,12 @@
         </v-col>
       </v-row>
     </div>
-    <LoadingItem
-      v-if="isLoading"
-      v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination"
-    />
   </v-container>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
-import LoadingItem from "../components/LoadingItem.vue";
 import draggable from "vuedraggable";
-// import draggable from "@/vuedraggable";
 import myMixin from "../util";
 
 export default {
@@ -142,7 +136,6 @@ export default {
     showPreviewIndex: null,
   }),
   components: {
-    LoadingItem,
     draggable,
   },
   props: {
@@ -152,7 +145,6 @@ export default {
   computed: {
     ...mapGetters({
       user_id: "auth/user_id",
-      isLoading: "loadingItem/isLoading",
       numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination",
     }),
   },
