@@ -50,6 +50,7 @@
                             v-bind:src="thumbStoragePath + item.preview"
                             lazy-src="/storage/imgs/dummy-image.jpg"
                             v-bind:alt="item.title"
+                            min-height="93.5px"
                             height="100%"
                             style="z-index: 1;"
                           >
@@ -205,10 +206,6 @@
         </v-row>
       </v-card>
     </div>
-    <LoadingItem
-      v-if="isLoading"
-      v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination"
-    />
     <TagDeleteModal v-if="showTagDeleteModal" />
     <AddToPlaylistModal
       v-if="showAddPlaylistModal"
@@ -245,7 +242,6 @@ export default {
   computed: {
     ...mapGetters({
       user_id: "auth/user_id",
-      numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination",
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
       playlistId: "watch/playlistId",

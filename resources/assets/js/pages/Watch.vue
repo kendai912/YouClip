@@ -422,6 +422,7 @@ export default {
   watch: {
     //シーン切替時のlistIndexセット
     $route() {
+      this.indexUrl = this.$route.query.index;
       this.setListIndex(this.$route.query.index);
     },
     isPlayerReady() {
@@ -485,6 +486,7 @@ export default {
     },
   },
   async mounted() {
+    console.log("mounted");
     this.initialize();
 
     if (this.$route.query.playlist) {
@@ -617,6 +619,7 @@ export default {
           //プレイリスト再生の場合
           if (this.indexUrl < this.watchList.length - 1) {
             // //最後のシーンでない場合は次のシーンのパラメータをセット
+            console.log(this.indexUrl);
             this.playPlaylist(++this.indexUrl);
           } else if (this.indexUrl >= this.watchList.length - 1) {
             //最後のシーンの場合は先頭に戻る
