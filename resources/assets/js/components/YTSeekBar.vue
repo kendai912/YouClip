@@ -18,10 +18,10 @@
             class="ios-highlight-content"
             v-bind:style="
               'left: calc(' +
-                contentLeft +
-                'px + 3px ); width: calc(' +
-                contentWidth +
-                'px - 6px);'
+              contentLeft +
+              'px + 3px ); width: calc(' +
+              contentWidth +
+              'px - 6px);'
             "
           ></div>
           <div
@@ -59,10 +59,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-            contentLeft +
-            'px + 3px ); width: calc(' +
-            contentWidth +
-            'px - 6px);'
+          contentLeft +
+          'px + 3px ); width: calc(' +
+          contentWidth +
+          'px - 6px);'
         "
       ></div>
       <div
@@ -204,6 +204,8 @@ export default {
   methods: {
     ...mapMutations({}),
     getClickPosition(e) {
+      e.preventDefault(); // prevent browser from moving objects, following links etc
+
       if (this.isIOS) {
         if (!this.ytseekbarPageX) {
           this.ytseekbarPageX = $(".ios-ytseekbar-mask").offset().left;
@@ -242,8 +244,17 @@ export default {
       e.preventDefault(); // prevent browser from moving objects, following links etc
 
       // start listening to mouse movements
-      if (this.isMobile) {
+      if (this.isIOS) {
         this.bodyRef.addEventListener("touchmove", this.getClickPosition);
+      } else if (this.isMobile) {
+        this.bodyRef.addEventListener(
+          "touchmove",
+          function (e) {
+            e.preventDefault();
+            this.getClickPosition;
+          },
+          { passive: false }
+        );
       } else {
         this.bodyRef.addEventListener("mousemove", this.getClickPosition);
       }
@@ -296,7 +307,11 @@ export default {
       } else if (this.isMobile) {
         this.$refs.iosYtseekHead.addEventListener(
           "touchstart",
-          this.detectMouseDown
+          function (e) {
+            e.preventDefault();
+            this.detectMouseDown;
+          },
+          { passive: false }
         );
         this.$refs.iosYtseekbarMask.addEventListener(
           "click",
