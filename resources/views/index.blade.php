@@ -3,6 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="YouClip" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://youclip.jp" />
+  <meta property="og:image" content="https://youclip-storage.s3-ap-northeast-1.amazonaws.com/ogps/77lMCiiMilo-2-581190459.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
   <title>{{ config('app.name') }}</title>
 
   <!-- Scripts -->
