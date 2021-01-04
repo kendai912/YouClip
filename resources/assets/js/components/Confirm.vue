@@ -131,7 +131,6 @@ export default {
       timer: null,
       highlightBodyRef: this.$refs.highlightBody,
       isPlayerReady: false,
-      isPlaying: true,
       isDisabled: false,
       isAdding: false,
       isEditing: false,
@@ -162,11 +161,13 @@ export default {
       newPlaylistId: "playlist/newPlaylistId",
       showConfirmationModal: "confirmationModal/showConfirmationModal",
       tagAndVideoData: "watch/tagAndVideoData",
+      isPlaying: "watch/isPlaying",
     }),
   },
   methods: {
     ...mapMutations({
       setPlayer: "ytPlayerController/setPlayer",
+      setIsPlaying: "watch/setIsPlaying",
     }),
     async initialize() {
       //ナビバーを非表示
@@ -198,12 +199,12 @@ export default {
 
         //set tags data for editing
         this.setEditingTagData();
-
-        this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
       }
 
       //倍速視聴を1倍のリセット
       this.$store.commit("watch/setPlaySpeed", 1);
+
+      this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
     },
     //set tags data for editing
     setEditingTagData() {
@@ -503,7 +504,7 @@ export default {
     window.onPlayerStateChange = (event) => {
       if (event.data == YT.PlayerState.ENDED && this.isPlaying) {
         //フラグを停止中に反転
-        this.isPlaying = !this.isPlaying;
+        this.$store.commit("watch/setIsPlaying", false);
 
         //リピート再生(開始時間に戻る)
         this.player.seekTo(this.convertToSec(this.start));
@@ -511,7 +512,12 @@ export default {
 
       if (event.data == YT.PlayerState.PLAYING) {
         //フラグを再生中にセット
-        this.isPlaying = true;
+        this.$store.commit("watch/setIsPlaying", true);
+      }
+
+      if (event.data == YT.PlayerState.ENDED) {
+        //フラグを再生中にセット
+        this.$store.commit("watch/setIsPlaying", false);
       }
     };
 

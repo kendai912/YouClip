@@ -108,6 +108,7 @@ export default {
       isNew: "youtube/isNew",
       newVideoData: "youtube/newVideoData",
       videoData: "youtube/videoData",
+      isReady: "youtube/isReady",
       startTimeInput: "ytSeekBar/startTimeInput",
       endTimeInput: "ytSeekBar/endTimeInput",
     }),
@@ -138,9 +139,11 @@ export default {
     contentLeft() {
       if (
         this.startTimeInput != null &&
-        this.convertToSec(this.startTimeInput)
+        this.convertToSec(this.startTimeInput) &&
+        this.isReady
       ) {
         if (this.isMobile) {
+          console.log($(".ios-ytseekbar-wrapper").width());
           return (
             $(".ios-ytseekbar-wrapper").width() *
             (this.convertToSec(this.startTimeInput) /
@@ -161,7 +164,8 @@ export default {
       if (
         this.startTimeInput != null &&
         (this.convertToSec(this.startTimeInput) ||
-          this.convertToSec(this.startTimeInput) === 0)
+          this.convertToSec(this.startTimeInput) === 0) &&
+        this.isReady
       ) {
         if (
           this.endTimeInput != null &&
@@ -273,6 +277,7 @@ export default {
       }
     },
   },
+  created() {},
   mounted() {
     this.isMobile = this.mobileCheck();
     this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
