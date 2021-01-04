@@ -118,7 +118,7 @@
       </v-container>
     </v-form>
 
-    <v-sheet tile class="ma-0 pa-0 bottom-position" width="100%">
+    <v-sheet tile class="ma-0 pa-0 iosBottomPosition" width="100%">
       <v-container class="ma-0 pa-0" fluid>
         <v-row align="center" class="ma-0 pa-0">
           <v-col class="text-left ma-0 pa-1">

@@ -448,7 +448,13 @@
   box-shadow: none !important;
 }
 
-.bottom-position {
+.bottomPosition {
+  position: absolute;
+  bottom: 24px;
+  right: 0;
+}
+
+.iosBottomPosition {
   position: absolute;
   bottom: 128px;
   right: 0;
@@ -479,7 +485,13 @@
   min-height: calc(100vh - 56px);
 }
 
-.highlight-body-upper {
+.highlightBodyUpper {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 48px - 56px - 24px - 162px);
+}
+
+.iosHighlightBodyUpper {
   position: relative;
   width: 100%;
   min-height: calc(100vh - 48px - 56px - 128px - 162px);

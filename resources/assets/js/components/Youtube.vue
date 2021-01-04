@@ -111,7 +111,8 @@
       <v-sheet
         v-if="player != null"
         tile
-        class="ma-0 pa-0 bottom-position"
+        class="ma-0 pa-0"
+        v-bind:class="isIOS ? 'iosBottomPosition' : 'bottomPosition'"
         width="100%"
       >
         <v-container class="ma-0 pa-0" fluid>
@@ -161,6 +162,7 @@ export default {
       playlistIdToAdd: null,
       playlistIdToEdit: null,
       tagIdToEdit: null,
+      isIOS: false,
       startRules: [
         (v) => !!v || "開始時間を入力して下さい",
         (v) => {
@@ -252,6 +254,8 @@ export default {
 
       //倍速視聴を1倍のリセット
       this.$store.commit("watch/setPlaySpeed", 1);
+
+      this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
     },
     setEditingTimeData() {
       this.$store.commit(

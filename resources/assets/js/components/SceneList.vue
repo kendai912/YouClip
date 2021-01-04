@@ -3,7 +3,9 @@
     <HighlightHeader />
 
     <div class="highlight-body" ref="highlightBody" style="height: auto;">
-      <div class="highlight-body-upper">
+      <div
+        v-bind:class="isIOS ? 'iosHighlightBodyUpper' : 'highlightBodyUpper'"
+      >
         <v-card class="pa-2 pb-0 ma-0" elevation="0">
           <div>切り抜いた場面一覧</div>
           <div>(以下がまとめとして連続再生されます)</div>
@@ -78,6 +80,7 @@ export default {
   data() {
     return {
       showAddNewSceneComponent: false,
+      isIOS: false,
     };
   },
   mixins: [myMixin],
@@ -124,6 +127,8 @@ export default {
         //load scenelist
         await this.loadSceneList();
       }
+
+      this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
     },
     //切り抜いた場面一覧を取得
     async loadSceneList() {

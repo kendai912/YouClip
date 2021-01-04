@@ -78,8 +78,9 @@
       <v-sheet
         v-if="player != null"
         tile
-        class="ma-0 pa-0 bottom-position"
+        class="ma-0 pa-0"
         width="100%"
+        v-bind:class="isIOS ? 'iosBottomPosition' : 'bottomPosition'"
       >
         <v-container class="ma-0 pa-0" fluid>
           <v-row align="center" class="ma-0 pa-0">
@@ -139,6 +140,7 @@ export default {
       tagIdToEdit: null,
       tags: [],
       tagItems: [],
+      isIOS: false,
     };
   },
   mixins: [myMixin],
@@ -196,6 +198,8 @@ export default {
 
         //set tags data for editing
         this.setEditingTagData();
+
+        this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
       }
 
       //倍速視聴を1倍のリセット

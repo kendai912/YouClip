@@ -45,7 +45,7 @@
         </v-container>
       </v-card>
 
-      <v-sheet tile class="ma-0 pa-0 bottom-position" width="100%">
+      <v-sheet tile class="ma-0 pa-0 iosBottomPosition" width="100%">
         <v-container class="ma-0 pa-0" fluid>
           <v-row class="ma-0 pa-2 justify-center">
             <v-btn
