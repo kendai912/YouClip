@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isIOS" class="ios-wrapper-mask">
+  <div v-if="isMobile" class="ios-wrapper-mask">
     <div class="ios-wrapper">
       <div class="ios-ytseekbar-wrapper">
         <div class="ios-ytseekbar-mask" ref="iosYtseekbarMask"></div>
@@ -18,10 +18,10 @@
             class="ios-highlight-content"
             v-bind:style="
               'left: calc(' +
-              contentLeft +
-              'px + 3px ); width: calc(' +
-              contentWidth +
-              'px - 6px);'
+                contentLeft +
+                'px + 3px ); width: calc(' +
+                contentWidth +
+                'px - 6px);'
             "
           ></div>
           <div
@@ -59,10 +59,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-          contentLeft +
-          'px + 3px ); width: calc(' +
-          contentWidth +
-          'px - 6px);'
+            contentLeft +
+            'px + 3px ); width: calc(' +
+            contentWidth +
+            'px - 6px);'
         "
       ></div>
       <div
@@ -121,7 +121,7 @@ export default {
       }
     },
     progress() {
-      if (this.isIOS) {
+      if (this.isMobile) {
         return (
           $(".ios-ytseekbar-wrapper").width() *
           (this.convertToSec(this.currentTime) /
@@ -140,7 +140,7 @@ export default {
         this.startTimeInput != null &&
         this.convertToSec(this.startTimeInput)
       ) {
-        if (this.isIOS) {
+        if (this.isMobile) {
           return (
             $(".ios-ytseekbar-wrapper").width() *
             (this.convertToSec(this.startTimeInput) /
@@ -169,7 +169,7 @@ export default {
           this.convertToSec(this.startTimeInput) <
             this.convertToSec(this.endTimeInput)
         ) {
-          if (this.isIOS) {
+          if (this.isMobile) {
             return (
               $(".ios-ytseekbar-wrapper").width() *
                 (this.convertToSec(this.endTimeInput) /
@@ -207,7 +207,7 @@ export default {
         this.seekWidth = e.changedTouches[0].pageX - this.ytseekbarPageX;
       } else if (this.isMobile) {
         if (!this.ytseekbarPageX) {
-          this.ytseekbarPageX = $(".ytseekbar-mask").offset().left;
+          this.ytseekbarPageX = $(".ios-ytseekbar-mask").offset().left;
         }
         if (e.changedTouches) {
           this.seekWidth = e.changedTouches[0].pageX - this.ytseekbarPageX;
@@ -222,7 +222,7 @@ export default {
       }
 
       // change seek position
-      if (this.isIOS) {
+      if (this.isMobile) {
         this.player.seekTo(
           this.convertToSec(this.duration) *
             (this.seekWidth / $(".ios-ytseekbar-wrapper").width())
@@ -258,7 +258,7 @@ export default {
     },
     setYtSeekbarWrapperTop() {
       //seekbarがiframeの下になるように高さを計算
-      if (this.isIOS) {
+      if (this.isMobile) {
         $(".ios-wrapper-mask").css(
           "top",
           ($(".ios-wrapper-mask").width() * 9) / 16 +
@@ -273,11 +273,8 @@ export default {
       }
     },
   },
-  created() {
-    this.isMobile = this.mobileCheck();
-  },
   mounted() {
-    //iOS端末か判定
+    this.isMobile = this.mobileCheck();
     this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
 
     this.$nextTick(() => {
@@ -292,11 +289,11 @@ export default {
         );
         window.addEventListener("touchend", this.detectMouseUp);
       } else if (this.isMobile) {
-        this.$refs.ytseekHead.addEventListener(
+        this.$refs.iosYtseekHead.addEventListener(
           "touchstart",
           this.detectMouseDown
         );
-        this.$refs.ytseekbarMask.addEventListener(
+        this.$refs.iosYtseekbarMask.addEventListener(
           "click",
           this.detectMouseDownOfYtseekbarMask
         );
