@@ -11,14 +11,10 @@
       <v-icon large>mdi-home-outline</v-icon>
     </v-btn>
 
-    <v-btn
-      class="my-footer-icon"
-      to="/tagging"
-      v-on:click="openHighlight(1)"
-    >
+    <v-btn to="/tagging" v-on:click="openHighlight(1)">
       <span>まとめ作成</span>
       <div>
-        <v-icon x-large>mdi-plus-circle-outline</v-icon>
+        <v-icon large>mdi-plus-box</v-icon>
       </div>
     </v-btn>
 

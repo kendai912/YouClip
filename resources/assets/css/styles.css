@@ -796,7 +796,7 @@ div.v-snack:not(.v-snack--absolute) {
   max-width: 1600px !important;
 }
 
-.my-footer-menu:before {
+/* .my-footer-menu:before {
   position: absolute;
   top: 20px;
   left: 50%;
@@ -810,7 +810,7 @@ div.v-snack:not(.v-snack--absolute) {
     0 1px 10px 0 rgba(0, 0, 0, 0.12);
   transform: translate(-50%, -50%);
   z-index: -1;
-}
+} */
 
 .my-footer-icon {
   background-color: white !important;
@@ -821,6 +821,7 @@ div.v-snack:not(.v-snack--absolute) {
 .my-footer-icon span {
   margin-top: -2px;
 }
+
 
 .activeSearch {
   background-color: #dddddd;
