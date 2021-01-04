@@ -143,7 +143,6 @@ export default {
         this.isReady
       ) {
         if (this.isMobile) {
-          console.log($(".ios-ytseekbar-wrapper").width());
           return (
             $(".ios-ytseekbar-wrapper").width() *
             (this.convertToSec(this.startTimeInput) /
