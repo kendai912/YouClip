@@ -14,7 +14,7 @@
   <meta property="fb:app_id" content="{{$fb_app_id}}">
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@Kendai">
+  <meta name="twitter:site" content="@YouClip2">
   <meta name="twitter:url" content="{{$url}}">
   <meta name="twitter:title" content="{{$title}}">
   <meta name="twitter:description" content="{{$description}}">

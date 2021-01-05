@@ -23,7 +23,7 @@ class IndexController extends Controller
 
     public function __construct()
     {
-        $this->facebookBot = 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)';
+        $this->facebookBot = 'facebookexternalhit';
         $this->twitterBot = 'Twitterbot/1.0';
     }
 
@@ -31,7 +31,10 @@ class IndexController extends Controller
     {
         if (isset($_SERVER["HTTP_USER_AGENT"])) {
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
-            if ($user_agent == $this->twitterBot || $user_agent == $this->facebookBot) {
+            preg_match('/Twitterbot/', $user_agent, $twitterMatch);
+            preg_match('/facebookexternalhit/', $user_agent, $fbLineMatch);
+
+            if ($twitterMatch || $fbLineMatch) {
                 // 正規表現でurlを判定判定
                 preg_match('/^\/watch\?playlist=(?<playlistId>\d+)/', $_SERVER["REQUEST_URI"], $match);
                 if ($match) {
@@ -40,11 +43,11 @@ class IndexController extends Controller
                     
                     // get parameter contents by playlistId
                     $site_name = "YouClip";
-                    $url = "https://youclip.jp";
+                    $url = "https://youclip.jp" . $_SERVER["REQUEST_URI"];
                     $title = Playlist::find($playlistId)->playlistName;
                     $description = Playlist::find($playlistId)->description;
                     if ($description == "" || $description == null) {
-                        $description = "YouTube動画のまとめ";
+                        $description = "YouTube動画をまとめてみました";
                     }
                     $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . Tag::find($tagId)->preview;
                     
