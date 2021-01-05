@@ -11,10 +11,10 @@
 |
 */
 
-Route::get('/{any?}', function () {
-    return view('index');
-})->where('any', '.+');
-
+Route::get('/{any?}', 'IndexController@index')->where('any', '^(?!api\/)[\/\w\.-]*')->name('index');
+// Route::get('/{any?}', function () {
+//     return view('index');
+// })->where('any', '.+');
 
 // Route::get('/', function () {
 //     return redirect('home');

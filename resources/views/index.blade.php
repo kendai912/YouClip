@@ -3,22 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <meta property="og:title" content="YouClip" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://youclip.jp" />
-
-    <meta name="twitter:card" content="player">
-    <meta name="twitter:site" content="@Kendai">
-    <meta name="twitter:title" content="YouClip">
-    <meta name="twitter:description" content="テストです。">
-    <meta name="twitter:image" content="">
-    <meta name="twitter:player" content="https://youclip.jp">
-    <meta name="twitter:player:width" content="640">
-    <meta name="twitter:player:height" content="360">
-    <meta name="twitter:player:stream" content="https://youclip-storage.s3-ap-northeast-1.amazonaws.com/gifs/2TuvMZqNA2U-9-1508506549.mp4">
-    <meta name="twitter:player:stream:content_type" content="video/mp4;">
-  
   <title>{{ config('app.name') }}</title>
 
   <!-- Scripts -->
