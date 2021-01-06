@@ -14,6 +14,7 @@ const state = {
   myPlaylistToSave: "none",
   controlTransitNext: true,
   tagHistories: [],
+  isAdding: false,
   isEditing: false,
   isKeep: false,
   showCreateNewPlaylistModal: false,
@@ -33,6 +34,7 @@ const getters = {
   myPlaylistToSave: (state) => state.myPlaylistToSave,
   controlTransitNext: (state) => state.controlTransitNext,
   tagHistories: (state) => state.tagHistories,
+  isAdding: (state) => state.isAdding,
   isEditing: (state) => state.isEditing,
   isKeep: (state) => state.isKeep,
   showCreateNewPlaylistModal: (state) => state.showCreateNewPlaylistModal,
@@ -71,6 +73,9 @@ const mutations = {
   },
   setTagHistories(state, data) {
     state.tagHistories = data;
+  },
+  setIsAdding(state, data) {
+    state.isAdding = data;
   },
   setIsEditing(state, data) {
     state.isEditing = data;
@@ -216,7 +221,14 @@ const actions = {
     if (response.status == CREATED) {
       // 成功した時
       //storeのタグデータを更新
-      context.dispatch("youtube/getTag", "", { root: true });
+      context.dispatch("youtube/getTag", "", {
+        root: true,
+      });
+
+      //サムネイル・プレビュー動画・OGPファイル名を格納
+      context.commit("setPreviewThumbName", response.data.tag.preview);
+      context.commit("setPreviewGifName", response.data.tag.previewgif);
+      context.commit("setPreviewOgpName", response.data.tag.previewogp);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });

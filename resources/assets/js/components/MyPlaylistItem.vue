@@ -16,8 +16,8 @@
                     <v-card
                       class="ma-0 pa-0"
                       aspect-ratio="calc(16 / 9)"
-                      max-height="94"
                       max-width="167"
+                      width="100%"
                       elevation="0"
                       v-on:mouseover="setShowPreviewIndex(index)"
                       v-on:touchstart="setShowPreviewIndex(index)"

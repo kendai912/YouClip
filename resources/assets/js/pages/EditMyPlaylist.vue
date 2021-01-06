@@ -101,6 +101,7 @@
       </v-card>
       <SceneTagItem
         v-bind:showAddNewSceneComponent="showAddNewSceneComponent"
+        v-bind:key="resetKey"
       />
       <PlaylistDeleteModal v-if="showPlaylistDeleteModal" />
     </div>
@@ -153,6 +154,7 @@ export default {
     ...mapGetters({
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
+      resetKey: "playlist/resetKey",
       playlistName: "watch/playlistName",
       privacySetting: "watch/privacySetting",
       showPlaylistDeleteModal: "playlistDeleteModal/showPlaylistDeleteModal",
