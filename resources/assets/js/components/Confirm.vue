@@ -337,6 +337,12 @@ export default {
             //場面のデータを登録
             await self.$store.dispatch("tagging/storeSceneTags");
 
+            //場面のサムネイルを取得しS3に保存(非同期)
+            self.$store.dispatch("tagging/storeTagThumbnail");
+
+            //場面のプレビュー動画を取得しS3に保存(非同期)
+            self.$store.dispatch("tagging/storeTagPreview");
+
             //ローディングを非表示
             self.$store.commit("highlightHeader/setNotLoading");
 
