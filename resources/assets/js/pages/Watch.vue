@@ -53,7 +53,7 @@
                     v-on:click="sharePlaylist"
                     class="ma-0 pa-0 narrow-btn"
                   >
-                    <span>まとめ共有</span>
+                    <span>まとめをシェア</span>
                     <i class="fas fa-share outlined-icon icon-large"></i>
                   </v-btn>
                 </v-bottom-navigation>

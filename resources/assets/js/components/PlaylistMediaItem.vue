@@ -60,11 +60,7 @@
                     <v-icon small style="vertical-align: top;"
                       >mdi-timer-outline</v-icon
                     >
-                    まとめ:&nbsp;{{ item.totalDuration }}&nbsp;
-                    <v-icon small style="vertical-align: top;"
-                      >mdi-arrow-left</v-icon
-                    >
-                    &nbsp;元のYouTube動画:&nbsp;{{
+                    まとめ:&nbsp;⬅&nbsp;元のYouTube動画:&nbsp;{{
                       item.numberOfYTvideos
                     }}本の合計{{ item.totalYTDuration }}</span
                   >

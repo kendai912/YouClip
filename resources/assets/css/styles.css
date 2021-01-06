@@ -822,7 +822,6 @@ div.v-snack:not(.v-snack--absolute) {
   margin-top: -2px;
 }
 
-
 .activeSearch {
   background-color: #dddddd;
   border-radius: 25px;
@@ -859,4 +858,22 @@ div.v-snack:not(.v-snack--absolute) {
 
 .fz-12 {
   font-size: 12px !important;
+}
+
+.text-gray-600 {
+  --text-opacity: 1;
+  color: #807d79;
+  color: rgba(128, 125, 121, var(--text-opacity));
+}
+
+.text-s {
+  font-size: 12px;
+}
+
+.leading-none {
+  line-height: 1;
+  position: absolute;
+  top: 37.5%;
+  left: 100px;
+  object-fit: contain;
 }
