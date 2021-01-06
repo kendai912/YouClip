@@ -307,6 +307,7 @@ const actions = {
     };
 
     const response = await axios.post("/api/store/searchrecord", params);
+    console.log(response);
     if (response.status == CREATED) {
       // 成功した時
     } else if (response.status == INTERNAL_SERVER_ERROR) {
