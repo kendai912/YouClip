@@ -310,8 +310,6 @@ class TagController extends Controller
             $previewGifName = $previewFileNames['previewGifName'];
             $previewOgpName = $previewFileNames['previewOgpName'];
 
-            $start = $request->start;
-
             //タグをDBに保存
             $tag = new Tag;
             $tag->video_id = $video->id;
@@ -522,25 +520,22 @@ class TagController extends Controller
     {
         //DBを更新
         $tag = Tag::find($request->tagId);
-        // 開始or終了時間が更新された場合はpreview用のgifを再取得
-        if ($this->convertToSec($tag->start) != $this->convertToSec("00:".$request->start) || $this->convertToSec($tag->end) != $this->convertToSec("00:".$request->end)) {
-            //既存のS3に保存されているサムネイルとプレビューgifを削除
-            Storage::disk('s3')->delete('thumbs/'.$tag->preview);
-            Storage::disk('s3')->delete('gifs/'.$tag->previewgif);
-            Storage::disk('s3')->delete('ogps/'.$tag->previewogp);
+ 
+        //既存のS3に保存されているサムネイルとプレビューgifを削除
+        Storage::disk('s3')->delete('thumbs/'.$tag->preview);
+        Storage::disk('s3')->delete('gifs/'.$tag->previewgif);
+        Storage::disk('s3')->delete('ogps/'.$tag->previewogp);
 
-            //更新したpreview用のgifを再取得
-            $previews = $this->getPreviewFile($request);
-            $previewThumbName = $previews['previewThumbName'];
-            $previewGifName = $previews['previewGifName'];
-            $previewOgpName = $previews['previewOgpName'];
+        //更新したpreview用のgifを再取得
+        $previewFileNames = $this->getPreviewFileNames($request);
+        $previewThumbName = $previewFileNames['previewThumbName'];
+        $previewGifName = $previewFileNames['previewGifName'];
+        $previewOgpName = $previewFileNames['previewOgpName'];
 
-            $tag->preview = $previewThumbName;
-            $tag->previewgif = $previewGifName;
-            $tag->previewogp = $previewOgpName;
-        }
+        $tag->preview = $previewThumbName;
+        $tag->previewgif = $previewGifName;
+        $tag->previewogp = $previewOgpName;
         $tag->tags = implode("::", $request->tags); //タグの配列を「::」で区切った文字列に変換
-        $start = $request->start;
         $tag->start = "00:".$request->start;
         $tag->end = "00:".$request->end;
         $tag->privacySetting = $request->privacySetting;

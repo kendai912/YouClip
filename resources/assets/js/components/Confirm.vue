@@ -132,8 +132,8 @@ export default {
       highlightBodyRef: this.$refs.highlightBody,
       isPlayerReady: false,
       isDisabled: false,
-      isAdding: false,
-      isEditing: false,
+      // isAdding: false,
+      // isEditing: false,
       playlistIdToAdd: null,
       playlistIdToEdit: null,
       tagIdToEdit: null,
@@ -157,6 +157,8 @@ export default {
       start: "tagging/start",
       end: "tagging/end",
       privacySetting: "tagging/privacySetting",
+      isAdding: "tagging/isAdding",
+      isEditing: "tagging/isEditing",
       showLoginModal: "noLoginModal/showLoginModal",
       newPlaylistId: "playlist/newPlaylistId",
       showConfirmationModal: "confirmationModal/showConfirmationModal",
@@ -168,6 +170,8 @@ export default {
     ...mapMutations({
       setPlayer: "ytPlayerController/setPlayer",
       setIsPlaying: "watch/setIsPlaying",
+      setIsAdding: "tagging/setIsAdding",
+      setIsEditing: "tagging/setIsEditing",
     }),
     async initialize() {
       //ナビバーを非表示
@@ -184,11 +188,13 @@ export default {
 
       //既存プレイリストへの追加かシーンの編集か新規かを判別
       if (this.$route.path == "/add/confirm") {
-        this.isAdding = true;
+        // this.isAdding = true;
+        this.setIsAdding(true);
         this.playlistIdToAdd = this.$route.query.playlist;
       } else if (this.$route.path == "/edit/confirm") {
         this.playlistIdToEdit = this.$route.query.playlist;
-        this.isEditing = true;
+        // this.isEditing = true;
+        this.setIsEditing(true);
         this.tagIdToEdit = this.$route.query.tag;
 
         //動画・タグデータを取得
@@ -232,6 +238,8 @@ export default {
       this.$store.commit("tagging/setStart", "");
       this.$store.commit("tagging/setEnd", "");
       this.$store.commit("tagging/setPrivacySetting", "public");
+      this.setIsAdding(false);
+      this.setIsEditing(false);
     },
     //以前入力された開始・終了時間をセッションストレージからロード
     loadTimeInput() {
@@ -274,12 +282,24 @@ export default {
             self.$store.commit("tagging/setTags", self.tags);
             self.$store.commit("tagging/setPrivacySetting", "public");
 
+            //新しく作成したplaylistIdをセット
+            self.$store.commit(
+              "tagging/setMyPlaylistToSave",
+              self.playlistIdToEdit
+            );
+
             //ローディングを表示し、OKボタンを無効化
             self.$store.commit("highlightHeader/setIsLoading");
             self.isDisabled = true;
 
-            //シーンを更新
+            //場面のデータをDBで更新
             await self.$store.dispatch("tagging/updateSceneTags");
+
+            //場面のサムネイルを取得しS3に保存(非同期)
+            self.$store.dispatch("tagging/storeTagThumbnail");
+
+            //場面のプレビュー動画を取得しS3に保存(非同期)
+            self.$store.dispatch("tagging/storeTagPreview");
 
             //ローディングを非表示
             self.$store.commit("highlightHeader/setNotLoading");
@@ -316,6 +336,12 @@ export default {
 
             //場面のデータを登録
             await self.$store.dispatch("tagging/storeSceneTags");
+
+            //場面のサムネイルを取得しS3に保存(非同期)
+            self.$store.dispatch("tagging/storeTagThumbnail");
+
+            //場面のプレビュー動画を取得しS3に保存(非同期)
+            self.$store.dispatch("tagging/storeTagPreview");
 
             //ローディングを非表示
             self.$store.commit("highlightHeader/setNotLoading");

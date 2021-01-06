@@ -39,7 +39,7 @@
                         <v-card
                           class="ma-0 pa-0"
                           aspect-ratio="calc(16 / 9)"
-                          max-height="94"
+                          width="100%"
                           elevation="0"
                           v-on:mouseover="setShowPreviewIndex(index)"
                           v-on:touchstart="setShowPreviewIndex(index)"
@@ -50,7 +50,6 @@
                             v-bind:src="thumbStoragePath + item.preview"
                             lazy-src="/storage/imgs/dummy-image.jpg"
                             v-bind:alt="item.title"
-                            min-height="93.5px"
                             height="100%"
                             style="z-index: 1;"
                           >

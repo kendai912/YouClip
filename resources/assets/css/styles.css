@@ -877,3 +877,7 @@ div.v-snack:not(.v-snack--absolute) {
   left: 100px;
   object-fit: contain;
 }
+
+.activeSearch .v-input__icon {
+  width: 32px;
+}

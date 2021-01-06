@@ -136,15 +136,6 @@ export default {
         "watch/getPlaylistAndTagVideoDataById",
         this.myPlaylistToSave
       );
-
-      // let mediaItems = [];
-      // this.playlistAndTagVideoData
-      //   ? this.putTagVideoIntoMediaItems(
-      //       mediaItems,
-      //       this.playlistAndTagVideoData.tagVideoData
-      //     )
-      //   : "";
-      // this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
     },
     //YouTube動画検索ページを表示
     moveToYTvideoSelectPage() {

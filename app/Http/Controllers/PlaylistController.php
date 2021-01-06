@@ -455,7 +455,7 @@ class PlaylistController extends Controller
         if (Auth::user()) {
             //ユーザーの最新のplaylist IDを取得
             $latestPlaylist = Playlist::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
-            $newPlaylist = Playlist::find($latestPlaylist->id)->where('playlistName', null)->first();
+            $newPlaylist = Playlist::where('id', $latestPlaylist->id)->where('playlistName', null)->first();
 
             return response()->json(
                 [
