@@ -15,6 +15,7 @@ class DeleteSearchqueryUniqueConstraintsOfSearchqueriesTable extends Migration
     {
         Schema::table('searchqueries', function (Blueprint $table) {
             $table->dropUnique(['searchQuery']);
+            $table->dropUnique(['searchOption']);
         });
     }
 
@@ -27,6 +28,7 @@ class DeleteSearchqueryUniqueConstraintsOfSearchqueriesTable extends Migration
     {
         Schema::table('searchqueries', function (Blueprint $table) {
             $table->unique(['searchQuery']);
+            $table->unique(['searchOption']);
         });
     }
 }

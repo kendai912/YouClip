@@ -453,18 +453,29 @@ class PlaylistController extends Controller
     {
         //playlistテーブルに保存
         if (Auth::user()) {
-            //ユーザーの最新のplaylist IDを取得
-            $latestPlaylist = Playlist::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
-            $newPlaylist = Playlist::where('id', $latestPlaylist->id)->where('playlistName', null)->first();
+            try {
+                //ユーザーの最新のplaylist IDを取得
+                $latestPlaylist = Playlist::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
+                $newPlaylist = Playlist::where('id', $latestPlaylist->id)->where('playlistName', null)->first();
 
-            return response()->json(
-                [
-                'newPlaylist' => $newPlaylist
-                ],
-                200,
-                [],
-                JSON_UNESCAPED_UNICODE
-            );
+                return response()->json(
+                    [
+                    'newPlaylist' => $newPlaylist
+                    ],
+                    200,
+                    [],
+                    JSON_UNESCAPED_UNICODE
+                );
+            } catch (\Exception $e) {
+                return response()->json(
+                    [
+                    'newPlaylist' => null
+                    ],
+                    200,
+                    [],
+                    JSON_UNESCAPED_UNICODE
+                );
+            }
         } else {
             return response()->json(
                 [
@@ -584,7 +595,7 @@ class PlaylistController extends Controller
         try {
             $playlist->playlistlogs()->save($playlistlog);
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -619,7 +630,7 @@ class PlaylistController extends Controller
                 [],
                 JSON_UNESCAPED_UNICODE
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(
                 [
                     'result' => 'failed',
@@ -646,7 +657,7 @@ class PlaylistController extends Controller
                 [],
                 JSON_UNESCAPED_UNICODE
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(
                 [
                     'result' => 'failed',
@@ -672,7 +683,7 @@ class PlaylistController extends Controller
                 [],
                 JSON_UNESCAPED_UNICODE
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(
                 [
                     'result'=>'failed',

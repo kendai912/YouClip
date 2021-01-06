@@ -155,7 +155,7 @@ class VideoController extends Controller
                 'query' => $params
             ]);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             throw new Exception($e->getResponse()->getBody());
         }
         return $res->getBody();
@@ -172,7 +172,7 @@ class VideoController extends Controller
                 'query' => $params
             ]);
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             throw new Exception($e->getResponse()->getBody());
         }
         return $res->getBody();
