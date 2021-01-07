@@ -49,6 +49,7 @@ export default {
     ...mapState({}),
     ...mapGetters({}),
   },
+  watch: {},
   created() {},
 };
 </script>

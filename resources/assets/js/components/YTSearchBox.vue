@@ -165,13 +165,23 @@ export default {
             .catch((err) => {});
         } else {
           //in case of adding to new playlist
-          this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
-          this.$router
-            .push({
-              path: "/highlight",
-              query: { search_query: this.searchquery },
-            })
-            .catch((err) => {});
+          if (this.$route.query.return == "true") {
+            this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
+            this.$router
+              .push({
+                path: "/highlight",
+                query: { search_query: this.searchquery, return: true },
+              })
+              .catch((err) => {});
+          } else {
+            this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
+            this.$router
+              .push({
+                path: "/highlight",
+                query: { search_query: this.searchquery },
+              })
+              .catch((err) => {});
+          }
         }
       }
 

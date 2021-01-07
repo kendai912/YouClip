@@ -105,7 +105,6 @@ export default {
 
       if (this.isAdding) {
         //プレイリストへの追加用のシーンタグ付けページを表示
-        console.log("myPlaylistToSave = ".this.myPlaylistToSave);
         this.$router
           .push({
             path: "/add/highlight",

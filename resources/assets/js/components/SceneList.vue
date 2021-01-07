@@ -142,6 +142,7 @@ export default {
       this.$router
         .push({
           path: "/highlight",
+          query: { return: true },
         })
         .catch((err) => {});
     },
