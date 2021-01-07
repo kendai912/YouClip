@@ -46,7 +46,10 @@ export default {
     YTSearchBox,
   },
   data() {
-    return {};
+    return {
+      headerWord: "まとめを作成",
+      from: null,
+    };
   },
   ...mapGetters({
     isAdding: "tagging/isAdding",
@@ -58,7 +61,36 @@ export default {
       setIsAdding: "tagging/setIsAdding",
       setMyPlaylistToSave: "tagging/setMyPlaylistToSave",
     }),
+    setHeaderBackIcon() {
+      this.$nextTick(() => {
+        if (
+          this.$route.path == "/add" ||
+          this.$route.path == "/add/search" ||
+          this.$route.query.return == "true"
+        ) {
+          //追加の場合、もしくはreturnフラグがtrueの場合は、headerの戻るアイコンを表示
+          this.$store.commit("highlightHeader/setShowBackIcon", true);
+        } else {
+          //デフォルトではheaderの戻るアイコンを非表示
+          this.$store.commit("highlightHeader/setShowBackIcon", false);
+        }
+      });
+    },
     initialize() {
+      this.setHeaderBackIcon();
+
+      //既存のプレイリストへの追加か判別
+      if (this.$route.path == "/add" || this.$route.path == "/add/search") {
+        this.setIsAdding(true);
+        this.setMyPlaylistToSave(this.$route.query.playlist);
+
+        //headerの文言を追加用に修正
+        this.headerWord = "まとめに追加";
+      } else {
+        this.setIsAdding(false);
+        this.setMyPlaylistToSave("none");
+      }
+
       //URLのsearch_queryを検索ワードにセット
       this.$store.commit(
         "YTsearch/setYTsearchQuery",
@@ -75,22 +107,16 @@ export default {
         //検索ワードがセットされていない場合、最近まとめたYouTube動画を表示
         this.$store.commit(
           "highlightHeader/setHeaderMessage",
-          "まとめを作成する動画を検索"
+          this.headerWord + "する動画を検索"
         );
         this.getYTRecentVideos();
       } else {
         //検索ワードがセットされている場合、YouTube検索結果を表示
         this.$store.commit(
           "highlightHeader/setHeaderMessage",
-          "まとめを作成する動画を選択"
+          this.headerWord + "する動画を選択"
         );
         this.showYTresult();
-      }
-
-      //既存のプレイリストへの追加か判別
-      if (this.$route.path == "/add" || this.$route.path == "/add/search") {
-        this.setIsAdding(true);
-        this.setMyPlaylistToSave(this.$route.query.playlist);
       }
     },
     async getYTRecentVideos() {
@@ -147,11 +173,13 @@ export default {
       isYTSearching: "YTsearch/isYTSearching",
       isYTLoading: "YTsearch/isYTLoading",
       pageNumber: "YTsearch/YTResultPageNumber",
+      showBackIcon: "highlightHeader/showBackIcon",
     }),
   },
   watch: {
     // 検索バーによるルート変更後の初期化処理
     $route() {
+      // this.setHeaderBackIcon();
       this.initialize();
     },
   },

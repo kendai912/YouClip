@@ -64,10 +64,10 @@ const routes = [
     path: "/highlight",
     component: Highlight,
   },
-  {
-    path: "/tagging",
-    component: Tagging,
-  },
+  // {
+  //   path: "/tagging",
+  //   component: Tagging,
+  // },
   {
     path: "/YTresult",
     component: YTresult,
@@ -148,6 +148,7 @@ const routes = [
     path: "/403",
     component: ForbiddenError,
   },
+  { path: "*", component: ForbiddenError },
 ];
 
 // VueRouterインスタンスを作成する
