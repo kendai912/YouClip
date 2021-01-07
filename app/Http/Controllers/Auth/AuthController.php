@@ -21,7 +21,7 @@ class AuthController extends Controller
         $user = Socialite::driver($provider)->user();
         $authUser = $this->findOrCreateUser($user, $provider);
         Auth::login($authUser, true);   //Auth にソーシャル情報を預けてログイン
-        return redirect('/home');   //認証後に表示したいページを指定
+        return redirect()->intended('/home');   //認証後に表示したいページを指定
     }
 
     //ユーザー追加&ユーザーデータ取得

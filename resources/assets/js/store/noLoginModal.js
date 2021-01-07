@@ -20,7 +20,20 @@ const mutations = {
   },
 };
 
-const actions = {};
+const actions = {
+  async saveUrlIntended(context) {
+    const response = await axios.get("/api/save/urlintended");
+    if (response.status == OK) {
+      // 成功した時
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+};
 
 export default {
   namespaced: true,

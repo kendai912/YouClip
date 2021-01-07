@@ -22,6 +22,7 @@ Route::get('/auth/{provider}/callback', 'Auth\AuthController@handleProviderCallb
 Route::post('/register', 'Auth\RegisterController@register')->name('register');
 
 // ログイン
+Route::post('/save/urlintended', 'Auth\LoginController@saveUrlIntended');
 Route::post('/login', 'Auth\LoginController@login')->name('login');
 
 //ログインユーザー
