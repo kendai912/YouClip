@@ -88,16 +88,14 @@ export default {
     YTRecentItems: Array,
   },
   data() {
-    return {
-      isAdding: false,
-      playlistIdToAdd: null,
-    };
+    return {};
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
       isYTLoading: "YTsearch/isYTLoading",
-      // numberOfYTItemsPerPagination: "YTsearch/numberOfYTItemsPerPagination"
+      isAdding: "tagging/isAdding",
+      myPlaylistToSave: "tagging/myPlaylistToSave",
     }),
   },
   methods: {
@@ -107,11 +105,12 @@ export default {
 
       if (this.isAdding) {
         //プレイリストへの追加用のシーンタグ付けページを表示
+        console.log("myPlaylistToSave = ".this.myPlaylistToSave);
         this.$router
           .push({
             path: "/add/highlight",
             query: {
-              playlist: this.playlistIdToAdd,
+              playlist: this.myPlaylistToSave,
               v: item.youtubeId,
             },
           })
@@ -129,11 +128,6 @@ export default {
       }
     },
   },
-  created() {
-    if (this.$route.path == "/add") {
-      this.isAdding = true;
-      this.playlistIdToAdd = this.$route.query.playlist;
-    }
-  },
+  created() {},
 };
 </script>

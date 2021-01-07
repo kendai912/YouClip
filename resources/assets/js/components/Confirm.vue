@@ -132,8 +132,6 @@ export default {
       highlightBodyRef: this.$refs.highlightBody,
       isPlayerReady: false,
       isDisabled: false,
-      // isAdding: false,
-      // isEditing: false,
       playlistIdToAdd: null,
       playlistIdToEdit: null,
       tagIdToEdit: null,
@@ -188,12 +186,11 @@ export default {
 
       //既存プレイリストへの追加かシーンの編集か新規かを判別
       if (this.$route.path == "/add/confirm") {
-        // this.isAdding = true;
         this.setIsAdding(true);
+        console.log(this.$route.query.playlist);
         this.playlistIdToAdd = this.$route.query.playlist;
       } else if (this.$route.path == "/edit/confirm") {
         this.playlistIdToEdit = this.$route.query.playlist;
-        // this.isEditing = true;
         this.setIsEditing(true);
         this.tagIdToEdit = this.$route.query.tag;
 
@@ -273,6 +270,7 @@ export default {
         clearInterval(this.timer);
 
         let self = this;
+        console.log("confirmed");
         setTimeout(async function() {
           //ログイン済の場合
           if (self.isEditing) {
@@ -319,6 +317,8 @@ export default {
               })
               .catch((err) => {});
           } else if (self.isAdding) {
+            console.log("adding");
+            console.log("playlist = " + self.playlistIdToAdd);
             //in case of adding to existing playlist
             //入力済データをセット
             self.$store.commit("tagging/setTags", self.tags);

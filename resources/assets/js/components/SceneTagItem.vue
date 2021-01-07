@@ -259,6 +259,7 @@ export default {
   methods: {
     ...mapMutations({
       setSceneListofPlaylist: "playlist/setSceneListofPlaylist",
+      setIsAdding: "tagging/setIsAdding",
     }),
     setShowPreviewIndex(index) {
       this.showPreviewIndex = index;
@@ -320,7 +321,9 @@ export default {
       //プレイリスト追加モーダルを表示
       this.$store.commit("playlist/openAddPlaylistModal");
     },
+    // add new scene to existing playlist
     addNewScene() {
+      this.setIsAdding(true);
       this.$router
         .push({
           path: "/add",

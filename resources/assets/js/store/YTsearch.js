@@ -147,15 +147,6 @@ const mutations = {
   setIsYTSearching(state, data) {
     state.isYTSearching = data;
   },
-  //検索結果表示ページに遷移
-  YTsearchResultPageTransit() {
-    router
-      .push({
-        path: "/highlight",
-        query: { search_query: state.YTsearchQuery },
-      })
-      .catch((err) => {});
-  },
   setYTResultPageNumber(state, data) {
     state.YTResultPageNumber = data;
   },
@@ -185,7 +176,7 @@ const actions = {
   //   context.commit("setKeyOfSearch", context.getters["keyIndex"]);
   //   context.commit("setKeyOfVideos", context.getters["keyIndex"]);
 
-  //   const response = await axios.post("api/search/getYoutubeSearch", {
+  //   const response = await axios.post("/api/search/getYoutubeSearch", {
   //     params: state.paramsOfSearch,
   //     apiUrl: state.apiOfSearch,
   //   });
@@ -324,7 +315,10 @@ const actions = {
       searchOption: 1,
     };
 
-    const response = await axios.post("api/search/getSearchCandidates", params);
+    const response = await axios.post(
+      "/api/search/getSearchCandidates",
+      params
+    );
     if (response.status == OK) {
       // 成功した時
       context.commit("setCandidates", response.data.searchCandidates);
@@ -341,7 +335,7 @@ const actions = {
     //paramsのidにリクエストするyoutubeIdをセット
     context.commit("setYoutubeIdsOfParamsOfVideos", youtubeIds);
 
-    const response = await axios.post("api/search/getYoutubeVideos", {
+    const response = await axios.post("/api/search/getYoutubeVideos", {
       params: state.paramsOfVideos,
       apiUrl: state.apiOfVideos,
     });

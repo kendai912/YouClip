@@ -287,10 +287,15 @@ const actions = {
         : await actions.getVideoCategoryTitleById(context);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
-      context.commit("error/setCode", response.status, { root: true });
+      //以下応急処置(Packageを使う方式に変える)
+      context.commit("setNewVideoCategory", "NULL");
+      // context.commit("error/setCode", response.status, { root: true });
     } else {
       // 上記以外で失敗した時
-      context.commit("error/setCode", response.status, { root: true });
+      //以下応急処置(Packageを使う方式に変える)
+      context.commit("setNewVideoCategory", "NULL");
+
+      // context.commit("error/setCode", response.status, { root: true });
     }
   },
 };

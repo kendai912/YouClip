@@ -51,7 +51,8 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
+import myMixin from "../util";
 
 export default {
   data() {
@@ -60,10 +61,13 @@ export default {
       searchquery: null,
     };
   },
+  mixins: [myMixin],
   computed: {
     //検索候補
     ...mapGetters({
       searchCandidates: "YTsearch/candidates",
+      isAdding: "tagging/isAdding",
+      myPlaylistToSave: "tagging/myPlaylistToSave",
     }),
     //過去の検索履歴と人気の検索履歴を履歴優先で合計7件までサジェストに表示
     items() {
@@ -107,6 +111,9 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      setIsAdding: "tagging/setIsAdding",
+    }),
     YTsearch(event) {
       // 日本語入力中のEnterキー操作は無効にする
       if (event.keyCode != undefined && event.keyCode !== 13) return;
@@ -116,18 +123,56 @@ export default {
 
       //入力内容がYoutubeのURLかキーワードか判定
       let youtubeId = this.searchquery.match(/(\?v=|youtu.be\/)([^&]+)/);
+
       if (youtubeId) {
+        //以前のシーンタグ入力項目を初期化
+        this.clearTaggingInput();
+
         //YoutubeのURLの場合、直接再生ページへ
-        this.$router
-          .push({
-            path: "/youtube/highlight",
-            query: { v: youtubeId[2] },
-          })
-          .catch((err) => {});
+        if (this.isAdding) {
+          //in case of adding to existing playlist
+          this.$router
+            .push({
+              path: "/add/highlight",
+              query: {
+                playlist: this.myPlaylistToSave,
+                v: youtubeId[2],
+              },
+            })
+            .catch((err) => {});
+        } else {
+          //in case of adding to new playlist
+          this.$router
+            .push({
+              path: "/youtube/highlight",
+              query: { v: youtubeId[2] },
+            })
+            .catch((err) => {});
+        }
       } else {
         //キーワードの場合、検索結果表示へ
-        this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
-        this.$store.commit("YTsearch/YTsearchResultPageTransit");
+        if (this.isAdding) {
+          //in case of adding to existing playlist
+          this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
+          this.$router
+            .push({
+              path: "/add/search",
+              query: {
+                playlist: this.myPlaylistToSave,
+                search_query: this.searchquery,
+              },
+            })
+            .catch((err) => {});
+        } else {
+          //in case of adding to new playlist
+          this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
+          this.$router
+            .push({
+              path: "/highlight",
+              query: { search_query: this.searchquery },
+            })
+            .catch((err) => {});
+        }
       }
 
       //インクリメンタルサーチの表示を消すためフォーカスを外す
