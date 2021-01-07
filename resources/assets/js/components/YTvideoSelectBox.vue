@@ -46,23 +46,30 @@ export default {
     YTSearchBox,
   },
   data() {
-    return {
-    };
+    return {};
   },
+  ...mapGetters({
+    isAdding: "tagging/isAdding",
+    myPlaylistToSave: "tagging/myPlaylistToSave",
+  }),
   mixins: [myMixin],
   methods: {
+    ...mapMutations({
+      setIsAdding: "tagging/setIsAdding",
+      setMyPlaylistToSave: "tagging/setMyPlaylistToSave",
+    }),
     initialize() {
       //URLのsearch_queryを検索ワードにセット
       this.$store.commit(
         "YTsearch/setYTsearchQuery",
         this.$route.query.search_query
       );
+
       //前回の検索結果を空にする
       this.$store.commit("YTsearch/clearYTResult");
       this.$store.commit("YTsearch/setYTResultPageNumber", 1);
       this.$store.commit("YTsearch/setYTSearchKey", "");
       this.$store.commit("YTsearch/setYTSearchPageToken", "");
-      // this.pageNumber = 1;
 
       if (this.YTsearchQuery == null) {
         //検索ワードがセットされていない場合、最近まとめたYouTube動画を表示
@@ -78,6 +85,12 @@ export default {
           "まとめを作成する動画を選択"
         );
         this.showYTresult();
+      }
+
+      //既存のプレイリストへの追加か判別
+      if (this.$route.path == "/add" || this.$route.path == "/add/search") {
+        this.setIsAdding(true);
+        this.setMyPlaylistToSave(this.$route.query.playlist);
       }
     },
     async getYTRecentVideos() {

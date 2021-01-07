@@ -97,6 +97,10 @@ const routes = [
     component: Highlight,
   },
   {
+    path: "/add/search",
+    component: Highlight,
+  },
+  {
     path: "/add/highlight",
     component: Highlight,
   },

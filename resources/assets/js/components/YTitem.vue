@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
 import YTLoadingItem from "../components/YTLoadingItem.vue";
 import myMixin from "../util";
 
@@ -94,7 +94,6 @@ export default {
   },
   data() {
     return {
-      isAdding: false,
       playlistIdToAdd: null,
     };
   },
@@ -103,6 +102,8 @@ export default {
     ...mapGetters({
       isYTLoading: "YTsearch/isYTLoading",
       numberOfYTItemsPerPagination: "YTsearch/numberOfYTItemsPerPagination",
+      isAdding: "tagging/isAdding",
+      myPlaylistToSave: "tagging/myPlaylistToSave",
     }),
   },
   methods: {
@@ -116,7 +117,7 @@ export default {
           .push({
             path: "/add/highlight",
             query: {
-              playlist: this.playlistIdToAdd,
+              playlist: this.myPlaylistToSave,
               v: item.youtubeId,
             },
           })
@@ -134,11 +135,6 @@ export default {
       }
     },
   },
-  created() {
-    if (this.$route.path == "/add") {
-      this.isAdding = true;
-      this.playlistIdToAdd = this.$route.query.playlist;
-    }
-  },
+  created() {},
 };
 </script>

@@ -504,7 +504,7 @@ const actions = {
   },
   async addPlaylistComment(context, data) {
     const params = data;
-    const response = await axios.post("api/playlist/addComment", params);
+    const response = await axios.post("/api/playlist/addComment", params);
     if (response.status == CREATED) {
       // 成功した時
       //storeのタグデータを更新
