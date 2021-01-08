@@ -16,6 +16,7 @@ import SystemError from "./pages/errors/System.vue";
 import ForbiddenError from "./pages/errors/ForbiddenError.vue";
 import PrivacyPolicy from "./pages/PrivacyPolicy.vue";
 import TermsOfService from "./pages/TermsOfService.vue";
+import DeleteAccount from "./pages/DeleteAccount.vue";
 import EditMyPlaylist from "./pages/EditMyPlaylist.vue";
 
 import store from "./store";
@@ -139,6 +140,10 @@ const routes = [
   {
     path: "/TermsOfService",
     component: TermsOfService,
+  },
+  {
+    path: "/DeleteAccount",
+    component: DeleteAccount,
   },
   {
     path: "/500",
