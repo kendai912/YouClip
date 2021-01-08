@@ -17,6 +17,10 @@ yarn-error.log
 /storage/debugbar
 public/js/app.js.LICENSE.txt
 .eslintrc.js
+storage/app/public/imgs
+storage/app/public/gifs
+storage/app/public/ogps
+storage/app/public/.DS_Store
 storage/.DS_Store
 .package-lock.json
 composer.lock

@@ -16,6 +16,7 @@ import SystemError from "./pages/errors/System.vue";
 import ForbiddenError from "./pages/errors/ForbiddenError.vue";
 import PrivacyPolicy from "./pages/PrivacyPolicy.vue";
 import TermsOfService from "./pages/TermsOfService.vue";
+import DeleteAccount from "./pages/DeleteAccount.vue";
 import EditMyPlaylist from "./pages/EditMyPlaylist.vue";
 
 import store from "./store";
@@ -64,10 +65,10 @@ const routes = [
     path: "/highlight",
     component: Highlight,
   },
-  {
-    path: "/tagging",
-    component: Tagging,
-  },
+  // {
+  //   path: "/tagging",
+  //   component: Tagging,
+  // },
   {
     path: "/YTresult",
     component: YTresult,
@@ -94,6 +95,10 @@ const routes = [
   },
   {
     path: "/add",
+    component: Highlight,
+  },
+  {
+    path: "/add/search",
     component: Highlight,
   },
   {
@@ -137,6 +142,10 @@ const routes = [
     component: TermsOfService,
   },
   {
+    path: "/DeleteAccount",
+    component: DeleteAccount,
+  },
+  {
     path: "/500",
     component: SystemError,
   },
@@ -144,12 +153,24 @@ const routes = [
     path: "/403",
     component: ForbiddenError,
   },
+  { path: "*", component: ForbiddenError },
 ];
 
 // VueRouterインスタンスを作成する
 const router = new VueRouter({
   mode: "history",
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return new Promise((resolve, reject) => {
+        setTimeOut(() => {
+          resolve(savedPosition);
+        });
+      });
+    } else {
+      return { x: 0, y: 0 };
+    }
+  },
 });
 
 // VueRouterインスタンスをエクスポートする

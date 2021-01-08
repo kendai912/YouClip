@@ -77,6 +77,8 @@ export default {
         .catch((err) => {});
     },
   },
-  created() {},
+  async created() {
+    await this.$store.dispatch("noLoginModal/saveUrlIntended");
+  },
 };
 </script>

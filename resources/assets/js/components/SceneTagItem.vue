@@ -7,6 +7,9 @@
         :disabled="!enabled"
         @start="dragging = true"
         @end="endDragging"
+        v-bind="{
+          handle: '.item-handle',
+        }"
       >
         <div
           v-for="(item, index) in sceneListofPlaylist"
@@ -16,57 +19,86 @@
             <v-row dense class="pa-0 ma-0">
               <v-col class="px-0">
                 <v-row class="ma-0">
-                  <v-col cols="1" class="pa-1 ma-auto">
-                    <div class="text-center">
-                      {{ index + 1 }}
-                    </div>
+                  <v-col cols="1" class="pa-1 ma-auto item-handle">
+                    <v-row class="ma-0 pa-0 text-center" justify="center">
+                      <v-col class="ma-0 pa-0">
+                        {{ index + 1 }}
+                      </v-col>
+                    </v-row>
+                    <v-row class="ma-0 pa-0 text-center" justify="center">
+                      <v-col class="ma-0 pa-0">
+                        <v-icon class="pa-0 ma-0" size="16"
+                          >drag_indicator</v-icon
+                        >
+                      </v-col>
+                    </v-row>
                   </v-col>
                   <v-col cols="10" class="pa-0">
                     <v-row class="ma-0">
                       <v-col cols="6" class="pa-1">
-                        <v-hover v-if="!isMobile" v-slot:default="{ hover }">
-                          <v-img
-                            v-on:click.stop="select(index)"
-                            class="white--text align-end"
-                            v-bind:src="
-                              hover
-                                ? gifStoragePath + item.previewgif
-                                : thumbStoragePath + item.preview
-                            "
-                            v-bind:alt="item.title"
-                            aspect-ratio="1.7777"
-                            height="94"
-                          >
-                          </v-img>
-                        </v-hover>
-                        <v-img
-                          v-else
-                          v-on:click.stop="select(index)"
-                          class="white--text align-end"
-                          v-bind:src="gifStoragePath + item.previewgif"
-                          v-bind:alt="item.title"
-                          aspect-ratio="1.7777"
-                          height="94"
+                        <v-card
+                          class="ma-0 pa-0"
+                          aspect-ratio="calc(16 / 9)"
+                          width="100%"
+                          elevation="0"
+                          v-on:mouseover="setShowPreviewIndex(index)"
+                          v-on:touchstart="setShowPreviewIndex(index)"
+                          style="overflow: hidden;"
                         >
-                        </v-img>
+                          <v-img
+                            class="white--text align-end rounded"
+                            v-bind:src="thumbStoragePath + item.preview"
+                            lazy-src="/storage/imgs/dummy-image.jpg"
+                            v-bind:alt="item.title"
+                            height="100%"
+                            style="z-index: 1;"
+                          >
+                            <template v-slot:placeholder>
+                              <v-row
+                                class="fill-height ma-0"
+                                align="center"
+                                justify="center"
+                              >
+                                <v-progress-circular
+                                  indeterminate
+                                  color="grey lighten-5"
+                                ></v-progress-circular>
+                              </v-row>
+                            </template>
+                          </v-img>
+                          <video
+                            v-if="showPreviewIndex == index"
+                            v-bind:src="gifStoragePath + item.previewgif"
+                            autoplay
+                            playsinline
+                            muted
+                            loop
+                            disablePictureInPicture
+                            disableRemotePlayback
+                            height="100%"
+                            style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px; object-fit: cover;"
+                          ></video>
+                        </v-card>
                       </v-col>
                       <v-col cols="6" class="pa-1 py-0">
-                        <v-card-title
-                          v-on:click.stop="select(index)"
-                          class="px-0 py-0"
-                          style="flex-wrap: nowrap; align-items: baseline;"
+                        <div
+                          class="px-0 py-0 pt-1"
+                          style="display: flex; flex-wrap: nowrap; align-items: flex-start;"
                         >
                           <div
-                            style="width:16px; max-height:16px; color:red; margin-right:8px"
+                            style="font-size: 20px; color:red; max-height: 18px;"
                           >
-                            <i class="fab fa-youtube"></i>
+                            <i
+                              class="fab fa-youtube"
+                              style="vertical-align: top;"
+                            ></i>
                           </div>
-                          <span
-                            class="block-playlist-title"
-                            style="font-size: 14px"
-                            >{{ item.title }}</span
-                          >
-                        </v-card-title>
+                          <div class="block-playlist-title">
+                            <span style="vertical-align: middle;">{{
+                              item.title
+                            }}</span>
+                          </div>
+                        </div>
 
                         <div
                           class="text--darken-3 pt-2"
@@ -101,9 +133,15 @@
                       <v-icon
                         v-if="!toggleItems.includes(index, item.title)"
                         color="my-grey"
+                        style="vertical-align: inherit;"
                         >mdi-chevron-down</v-icon
                       >
-                      <v-icon v-else color="my-grey">mdi-chevron-up</v-icon>
+                      <v-icon
+                        v-else
+                        color="my-grey"
+                        style="vertical-align: inherit;"
+                        >mdi-chevron-up</v-icon
+                      >
                     </div>
                   </v-col>
                 </v-row>
@@ -167,10 +205,6 @@
         </v-row>
       </v-card>
     </div>
-    <LoadingItem
-      v-if="isLoading"
-      v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination"
-    />
     <TagDeleteModal v-if="showTagDeleteModal" />
     <AddToPlaylistModal
       v-if="showAddPlaylistModal"
@@ -181,7 +215,6 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
-import LoadingItem from "../components/LoadingItem.vue";
 import TagDeleteModal from "../components/TagDeleteModal.vue";
 import AddToPlaylistModal from "../components/AddToPlaylistModal.vue";
 import draggable from "vuedraggable";
@@ -194,9 +227,9 @@ export default {
     isMobile: false,
     toggleItems: [],
     currentTagId: 0,
+    showPreviewIndex: null,
   }),
   components: {
-    LoadingItem,
     draggable,
     TagDeleteModal,
     AddToPlaylistModal,
@@ -208,8 +241,6 @@ export default {
   computed: {
     ...mapGetters({
       user_id: "auth/user_id",
-      isLoading: "loadingItem/isLoading",
-      numberOfItemsPerPagination: "loadingItem/numberOfItemsPerPagination",
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
       playlistId: "watch/playlistId",
@@ -228,20 +259,12 @@ export default {
   methods: {
     ...mapMutations({
       setSceneListofPlaylist: "playlist/setSceneListofPlaylist",
+      setIsAdding: "tagging/setIsAdding",
     }),
-    checkMove(e) {},
-    select(index) {
-      //再生ページを表示
-      this.$router
-        .push({
-          path: "/watch",
-          query: {
-            playlist: this.playlistId,
-            index: index,
-          },
-        })
-        .catch((err) => {});
+    setShowPreviewIndex(index) {
+      this.showPreviewIndex = index;
     },
+    checkMove(e) {},
     async endDragging() {
       this.dragging = false;
       let playlist = {
@@ -298,7 +321,9 @@ export default {
       //プレイリスト追加モーダルを表示
       this.$store.commit("playlist/openAddPlaylistModal");
     },
+    // add new scene to existing playlist
     addNewScene() {
+      this.setIsAdding(true);
       this.$router
         .push({
           path: "/add",

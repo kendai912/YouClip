@@ -1,111 +1,132 @@
 <template>
   <div style="height: 100vh; background-color: white">
     <div class="container--small">
-      <div class="yt-container">
-        <div id="player"></div>
-      </div>
-      <div v-if="isPlayerReady">
-        <v-sheet v-if="isPlaylist" class="mx-auto pa-0">
-          <v-container class="ma-0 my-2 pa-0" fluid>
-            <v-row class="ma-0 pa-0" align="center">
-              <v-col class="ma-2 my-0 pa-0">
-                <span
-                  class="home-and-search-result-title"
-                  style="font-weight: 400; !important"
-                  >{{ playlistName }}</span
-                >
-              </v-col>
-              <v-col cols="auto" class="ma-2 my-0 pa-0 text-right">
-                <v-icon class="mdi mdi-chevron-down"></v-icon>
-              </v-col>
-            </v-row>
-
-            <v-row class="ma-0 pa-0">
-              <v-col class="ma-2 my-0 pa-0 grey--text text--darken-3">
-                <span style="font-size:12px;"
-                  >{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span
-                >
-                <span style="font-size:8px;">&nbsp;&#8226;&nbsp;</span>
-                <span style="font-size:12px;">合計{{ totalDuration }}</span>
-                <span style="font-size:8px;">&nbsp;&#8226;&nbsp;</span>
-                <span style="font-size:12px;">{{ playlistCreatedAt }}前</span>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-sheet>
-
-        <v-sheet tile class="mx-auto px-1 py-2">
-          <v-row class="ma-0 pa-0" justify="space-between" style="position: relative;">
-            <v-col class="ma-0 pa-0 text-center">
-              <v-bottom-navigation class="bottom_navigation_no_shadow">
-                <v-btn v-on:click="sharePlaylist" class="ma-0 pa-0 narrow-btn">
-                  <span>まとめ共有</span>
-                  <v-img
-                    src="/storage/icons/share.svg"
-                    width="25px"
-                    max-height="25px"
-                    class="icon-large mb-1"
-                  />
-                </v-btn>
-              </v-bottom-navigation>
-            </v-col>
-            <v-col class="ma-0 pa-0 text-center">
-              <v-bottom-navigation class="bottom_navigation_no_shadow">
-                <v-btn
-                  v-on:click="toggleLikePlaylist"
-                  class="ma-0 pa-0 narrow-btn"
-                >
-                  <span>{{ likePlaylistCount }}</span>
-                  <v-icon v-if="isLikedPlaylist" class="icon-large isLiked"
-                    >mdi-heart</v-icon
+      <div class="watch-body" ref="watchBody">
+        <div class="ytPlayerWrapper" ref="ytPlayerWrapper">
+          <div id="playerWatch"></div>
+          <YTPlayerController v-show="isPlayerReady" ref="YTPlayerController" />
+          <YTSeekBar
+            v-show="isPlayerReady"
+            ref="ytSeekBar"
+            v-bind:bodyRef="watchBodyRef"
+          />
+        </div>
+        <div v-if="isPlayerReady" class="highlightControllerBody">
+          <v-sheet v-if="isPlaylist" class="mx-auto pa-0">
+            <v-container class="ma-0 pa-0 pt-2" fluid>
+              <v-row class="ma-0 pa-0" align="center">
+                <v-col class="ma-2 my-0 pa-0">
+                  <span
+                    class="home-and-search-result-title"
+                    style="font-weight: 400; !important"
+                    >{{ playlistName }}</span
                   >
-                  <v-icon v-if="!isLikedPlaylist" class="icon-large my-grey"
-                    >mdi-heart-outline</v-icon
+                </v-col>
+                <v-col cols="auto" class="ma-2 my-0 pa-0 text-right">
+                  <v-icon class="mdi mdi-chevron-down"></v-icon>
+                </v-col>
+              </v-row>
+
+              <v-row class="ma-0 pa-0">
+                <v-col class="ma-2 my-0 pa-0 grey--text text--darken-3">
+                  <span style="font-size: 12px"
+                    >{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span
                   >
-                </v-btn>
-              </v-bottom-navigation>
-            </v-col>
-            <span
-              v-on:click="openOtherActionModal"
-              style="position: absolute; bottom: 24px; right: 13px; font-size: 16px;"
+                  <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
+                  <span style="font-size: 12px">合計{{ totalDuration }}</span>
+                  <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
+                  <span style="font-size: 12px">{{ playlistCreatedAt }}前</span>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-sheet>
+
+          <v-sheet tile class="mx-auto pa-0 px-1">
+            <v-row
+              class="ma-0 pa-0"
+              justify="space-between"
+              style="position: relative"
             >
-              <i class="fas fa-ellipsis-v my-grey"></i>
-            </span>
-          </v-row>
-        </v-sheet>
+              <v-col class="ma-0 pa-0 text-center">
+                <v-bottom-navigation class="bottom_navigation_no_shadow">
+                  <v-btn
+                    v-on:click="sharePlaylist"
+                    class="ma-0 pa-0 narrow-btn"
+                  >
+                    <span>まとめをシェア</span>
+                    <i class="fas fa-share outlined-icon icon-large"></i>
+                  </v-btn>
+                </v-bottom-navigation>
+              </v-col>
+              <v-col class="ma-0 pa-0 text-center">
+                <v-bottom-navigation class="bottom_navigation_no_shadow">
+                  <v-btn
+                    v-on:click="toggleLikePlaylist"
+                    class="ma-0 pa-0 narrow-btn"
+                  >
+                    <span>{{ likePlaylistCount }}</span>
+                    <i
+                      v-if="isLikedPlaylist"
+                      class="fas fa-heart isLiked icon-large"
+                    ></i>
+                    <i
+                      v-if="!isLikedPlaylist"
+                      class="fas fa-heart outlined-icon icon-large"
+                    ></i>
+                  </v-btn>
+                </v-bottom-navigation>
+              </v-col>
+              <span
+                v-on:click="openOtherActionModal"
+                style="
+                  position: absolute;
+                  top: 10px;
+                  right: 14px;
+                  font-size: 16px;
+                "
+              >
+                <i class="fas fa-ellipsis-v my-grey-heart"></i>
+              </span>
+            </v-row>
+          </v-sheet>
 
-        <SceneListWatch
-          v-if="playlistIdUrl"
-          v-bind:mediaItems="sceneListofPlaylist"
-        />
-        <CommentListWatch
-          v-if="playlistIdUrl"
-          v-bind:mediaItems="commentListofPlaylist"
-        />
-        <CommentListWatch v-else v-bind:mediaItems="commentListofTag" />
-        <NoLoginModal v-if="showLoginModal" />
-        <ShareModal v-if="showShareModal" v-bind:player="player" />
-        <AddPlaylistModal v-if="showAddPlaylistModal" v-bind:player="player" />
-        <OtherActionModal
-          v-if="showOtherActionModal"
-          v-bind:player="player"
-          v-bind:created_user_id="
-            playlistIdUrl
-              ? playlistAndTagVideoData.user_id
-              : tagAndVideoData[0].tag_user_id
-          "
-          v-on:deleteSucceed="deleteSucceed"
-        />
-        <PlaySpeedModal v-if="showPlaySpeedModal" v-bind:player="player" />
-        <SceneTagControl
-          v-if="showSceneTagControl"
-          v-bind:player="player"
-          v-on:updateSucceed="updateSucceed"
-        />
-        <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
-          {{ text }}
-          <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
-        </v-snackbar>
+          <SceneListWatch
+            v-if="playlistIdUrl"
+            v-bind:mediaItems="sceneListofPlaylist"
+            v-on:playPlaylist="playPlaylist"
+          />
+          <CommentListWatch
+            v-if="playlistIdUrl"
+            v-bind:mediaItems="commentListofPlaylist"
+          />
+          <CommentListWatch v-else v-bind:mediaItems="commentListofTag" />
+          <NoLoginModal v-if="showLoginModal" />
+          <ShareModal v-if="showShareModal" v-bind:player="player" />
+          <AddPlaylistModal
+            v-if="showAddPlaylistModal"
+            v-bind:player="player"
+          />
+          <OtherActionModal
+            v-if="showOtherActionModal"
+            v-bind:player="player"
+            v-bind:created_user_id="
+              playlistIdUrl
+                ? playlistAndTagVideoData.user_id
+                : tagAndVideoData[0].tag_user_id
+            "
+            v-on:deleteSucceed="deleteSucceed"
+          />
+          <PlaySpeedModal v-if="showPlaySpeedModal" v-bind:player="player" />
+          <SceneTagControl
+            v-if="showSceneTagControl"
+            v-bind:player="player"
+            v-on:updateSucceed="updateSucceed"
+          />
+          <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
+            {{ text }}
+            <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
+          </v-snackbar>
+        </div>
       </div>
     </div>
   </div>
@@ -121,6 +142,8 @@ import PlaySpeedModal from "../components/PlaySpeedModal.vue";
 import SceneTagControl from "../components/SceneTagControl.vue";
 import SceneListWatch from "../components/SceneListWatch.vue";
 import CommentListWatch from "../components/CommentListWatch.vue";
+import YTPlayerController from "../components/YTPlayerController";
+import YTSeekBar from "../components/YTSeekBar";
 import myMixin from "../util";
 
 export default {
@@ -133,15 +156,15 @@ export default {
     SceneTagControl,
     SceneListWatch,
     CommentListWatch,
+    YTPlayerController,
+    YTSeekBar,
   },
   data() {
     return {
       playlistIdUrl: "",
       indexUrl: 0,
       tagIdUrl: "",
-      isPlaying: true,
       isPlayerReady: false,
-      player: null,
       timer: null,
       isMuted: true,
       mediaItems: [],
@@ -150,6 +173,7 @@ export default {
       snackbar: false,
       timeout: 5000,
       text: "",
+      watchBodyRef: this.$refs.watchBody,
     };
   },
   mixins: [myMixin],
@@ -159,28 +183,34 @@ export default {
       openOtherActionModal: "otherActionModal/openOtherActionModal",
       openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal",
       setListIndex: "watch/setListIndex",
+      setIsPlaying: "watch/setIsPlaying",
+      setPlayer: "ytPlayerController/setPlayer",
     }),
     startTimer() {
       let self = this;
 
-      this.timer = setInterval(function() {
+      this.timer = setInterval(function () {
         //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
         self.$store.commit(
           "youtube/setCurrentTime",
           self.formatTime(self.player.getCurrentTime())
         );
-      }, 1000);
+      });
     },
-    playPlaylist(playlistId, index) {
+    playPlaylist(index) {
       //最後のシーンでない場合は次のシーンのパラメータをセット
       this.$store.commit("watch/setYTPlaylistParameters", index);
+
+      //Durationデータの取得のための処理
+      this.$store.commit("youtube/setYoutubeId", this.currentYoutubeId);
+      this.$store.dispatch("youtube/getVideo");
 
       //URLを更新
       this.$router
         .push({
           path: "/watch",
           query: {
-            playlist: playlistId,
+            playlist: this.playlistIdUrl,
             index: index,
           },
         })
@@ -302,7 +332,7 @@ export default {
         ) {
           //  削除後も他のシーンがあり、かつ一番最後の場合、先頭に戻る
           this.indexUrl = 0;
-          this.playPlaylist(this.playlistIdUrl, this.indexUrl);
+          this.playPlaylist(this.indexUrl);
         } else if (this.watchList.length < 2) {
           // 削除後に他のシーンがない場合、トップページに遷移
           this.$router
@@ -344,11 +374,64 @@ export default {
         })
         .catch((err) => {});
     },
+    setYtPlayerCSS() {
+      //iframeの縦・横のサイズをセット(縦は952px、横は幅いっぱい)
+      $("iframe").width($(".ytPlayerWrapper").width());
+      $("iframe").height(952);
+
+      //iframeとseekbarが見える範囲の高さをセットし、iframe上部の黒分が見えないよう上にスライド
+      $(".ytPlayerWrapper").css(
+        "height",
+        ($("iframe").width() * 9) / 16 +
+          (952 - ($("iframe").width() * 9) / 16) / 2 +
+          15
+      );
+      $(".ytPlayerWrapper").css(
+        "top",
+        (($("iframe").height() - ($("iframe").width() * 9) / 16) / 2) * -1
+      );
+
+      this.$nextTick(() => {
+        //開始・終了ボタンがiframeとseekbarの下に来るようにtopを調整
+        $(".highlightControllerBody").css(
+          "top",
+          ($("iframe").width() * 9) / 16 + 15
+        );
+      });
+    },
+    initialize() {
+      //ナビバーを非表示
+      this.$store.commit("navbar/setShowNavbar", false);
+      this.playlistIdUrl = "";
+      this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
+
+      //タグおよびプレイリストのLikeデータをロード
+      this.$store.dispatch("like/loadTagLike");
+      this.$store.dispatch("likePlaylist/loadPlaylistLike");
+
+      //clear all data before loading
+      this.clearAllInput();
+
+      //倍速視聴を1倍のリセット
+      this.$store.commit("watch/setPlaySpeed", 1);
+    },
+    clearAllInput() {
+      this.$store.commit("ytSeekBar/setStartTimeInput", null);
+      this.$store.commit("ytSeekBar/setEndTimeInput", null);
+      this.$store.commit("tagging/setTags", "");
+      this.$store.commit("tagging/setStart", "");
+      this.$store.commit("tagging/setEnd", "");
+      this.$store.commit("tagging/setPrivacySetting", "public");
+    },
   },
   watch: {
     //シーン切替時のlistIndexセット
     $route() {
+      this.indexUrl = this.$route.query.index;
       this.setListIndex(this.$route.query.index);
+    },
+    isPlayerReady() {
+      this.isPlayerReady ? this.$refs.ytSeekBar.setYtSeekbarWrapperTop() : "";
     },
   },
   computed: {
@@ -381,6 +464,8 @@ export default {
       showSceneTagControl: "tagging/showSceneTagControl",
       isEditing: "tagging/isEditing",
       playSpeed: "watch/playSpeed",
+      isPlaying: "watch/isPlaying",
+      player: "ytPlayerController/player",
     }),
     isLiked() {
       return this.$store.getters["like/isLiked"](this.currentTagId);
@@ -405,15 +490,8 @@ export default {
       return this.formatToMinSec(this.endHis);
     },
   },
-  mounted: async function() {
-    //ナビバーを非表示
-    this.$store.commit("navbar/setShowNavbar", false);
-    this.playlistIdUrl = "";
-    this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
-
-    //タグおよびプレイリストのLikeデータをロード
-    this.$store.dispatch("like/loadTagLike");
-    this.$store.dispatch("likePlaylist/loadPlaylistLike");
+  async mounted() {
+    this.initialize();
 
     if (this.$route.query.playlist) {
       //特定シーン再生の場合
@@ -479,18 +557,23 @@ export default {
       this.$store.commit("watch/setYTIndivisualParameters");
     }
 
+    //Durationデータの取得のための処理
+    this.$store.commit("youtube/setYoutubeId", this.currentYoutubeId);
+    await this.$store.dispatch("youtube/getVideo");
+
     // This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
+    tag.src =
+      "https://www.youtube.com/iframe_api?" + parseInt(new Date() / 1000);
     var firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     let self = this;
 
     //Youtube Playerの初期処理
     window.onYouTubeIframeAPIReady = () => {
-      self.player = new YT.Player("player", {
-        width: "56",
-        height: "31",
+      let player = new YT.Player("playerWatch", {
+        width: "560",
+        height: "315",
         videoId: this.currentYoutubeId,
         playerVars: {
           start: this.convertToSec(this.formatToMinSec(this.startHis)),
@@ -500,7 +583,11 @@ export default {
           iv_load_policy: 3, //アノテーション非表示
           modestbranding: 1, //YouTubeロゴ非表示
           rel: 0, //関連動画非表示
-          showinfo: 0, //タイトルやアップロードしたユーザーなどの情報は非表示
+          controls: 0, //プレイーコントロールを非表示
+          fs: 0, //全画面表示ボタンを非表示
+          iv_load_policy: 3, //動画アノテーションを非表示
+          modestbranding: 1, //YouTubeロゴ非表示
+          enablejsapi: 1, //postMessageを有効にするのに必要
         },
         events: {
           onReady: onPlayerReady,
@@ -508,16 +595,18 @@ export default {
         },
       });
 
-      //縦・横のサイズをセット
-      $("iframe").width($(".yt-container").width());
-      $("iframe").height($(".container--small").height());
+      //playerインスタンスをytPlayerControllerストアに格納
+      self.setPlayer(player);
     };
-    setTimeout(onYouTubeIframeAPIReady, 10);
+    setTimeout(onYouTubeIframeAPIReady, 100);
 
     window.onPlayerReady = (event) => {
       event.target.mute();
       event.target.playVideo();
       this.isPlayerReady = true;
+
+      self.setYtPlayerCSS();
+
       //0.4秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
       this.startTimer();
     };
@@ -525,7 +614,7 @@ export default {
     window.onPlayerStateChange = (event) => {
       if (event.data == YT.PlayerState.ENDED && this.isPlaying) {
         //フラグを停止中に反転
-        this.isPlaying = !this.isPlaying;
+        this.$store.commit("watch/setIsPlaying", false);
 
         if (this.isEditing) {
           //現在と同じシーンをリピート(開始時間に戻る)
@@ -534,11 +623,11 @@ export default {
           //プレイリスト再生の場合
           if (this.indexUrl < this.watchList.length - 1) {
             // //最後のシーンでない場合は次のシーンのパラメータをセット
-            this.playPlaylist(this.playlistIdUrl, ++this.indexUrl);
+            this.playPlaylist(++this.indexUrl);
           } else if (this.indexUrl >= this.watchList.length - 1) {
             //最後のシーンの場合は先頭に戻る
             this.indexUrl = 0;
-            this.playPlaylist(this.playlistIdUrl, this.indexUrl);
+            this.playPlaylist(this.indexUrl);
           }
         }
 
@@ -551,18 +640,17 @@ export default {
 
       if (event.data == YT.PlayerState.PLAYING) {
         //フラグを再生中にセット
-        this.isPlaying = true;
+        this.$store.commit("watch/setIsPlaying", true);
+      }
+
+      if (event.data == YT.PlayerState.ENDED) {
+        //フラグを再生中にセット
+        this.$store.commit("watch/setIsPlaying", false);
       }
     };
 
-    //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
-    let from = this.$route.path;
-    window.addEventListener("popstate", function(e) {
-      let to = self.$route.path;
-      if (from == "/watch" && to == "/watch") {
-        location.reload();
-      }
-    });
+    //YTSeekBarのクリックイベント用にボディのrefをセット
+    this.watchBodyRef = this.$refs.watchBody;
   },
   beforeDestroy() {
     // シーンタグ付けコンポーネントの現在再生時間をセットするインターバルを停止する

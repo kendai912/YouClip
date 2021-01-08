@@ -67,7 +67,7 @@ class PlaylistController extends Controller
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'])
         //プレイリストのプライバシー設定がpublicに限定し、like数の降順で取得
-        ->where('privacySetting', 'public')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')
+        ->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')
         ->paginate($contentsPerPage);
 
         return response()->json(
@@ -96,7 +96,7 @@ class PlaylistController extends Controller
         }))->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'
-        ])->where('privacySetting', 'public')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        ])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
         return response()->json(
             [
@@ -124,7 +124,7 @@ class PlaylistController extends Controller
         }))->where('playlistCategory', 'Sports')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'
-        ])->where('privacySetting', 'public')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        ])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
         return response()->json(
             [
@@ -151,7 +151,7 @@ class PlaylistController extends Controller
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
         }))->where('playlistCategory', 'Entertainment')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
-        }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
 
         return response()->json(
             [
@@ -453,18 +453,29 @@ class PlaylistController extends Controller
     {
         //playlistテーブルに保存
         if (Auth::user()) {
-            //ユーザーの最新のplaylist IDを取得
-            $latestPlaylist = Playlist::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
-            $newPlaylist = Playlist::find($latestPlaylist->id)->where('playlistName', null)->first();
+            try {
+                //ユーザーの最新のplaylist IDを取得
+                $latestPlaylist = Playlist::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
+                $newPlaylist = Playlist::where('id', $latestPlaylist->id)->where('playlistName', null)->first();
 
-            return response()->json(
-                [
-                'newPlaylist' => $newPlaylist
-                ],
-                200,
-                [],
-                JSON_UNESCAPED_UNICODE
-            );
+                return response()->json(
+                    [
+                    'newPlaylist' => $newPlaylist
+                    ],
+                    200,
+                    [],
+                    JSON_UNESCAPED_UNICODE
+                );
+            } catch (\Exception $e) {
+                return response()->json(
+                    [
+                    'newPlaylist' => null
+                    ],
+                    200,
+                    [],
+                    JSON_UNESCAPED_UNICODE
+                );
+            }
         } else {
             return response()->json(
                 [
@@ -584,7 +595,7 @@ class PlaylistController extends Controller
         try {
             $playlist->playlistlogs()->save($playlistlog);
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -619,7 +630,7 @@ class PlaylistController extends Controller
                 [],
                 JSON_UNESCAPED_UNICODE
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(
                 [
                     'result' => 'failed',
@@ -646,7 +657,7 @@ class PlaylistController extends Controller
                 [],
                 JSON_UNESCAPED_UNICODE
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(
                 [
                     'result' => 'failed',
@@ -672,7 +683,7 @@ class PlaylistController extends Controller
                 [],
                 JSON_UNESCAPED_UNICODE
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(
                 [
                     'result'=>'failed',

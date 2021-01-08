@@ -28,6 +28,7 @@ const state = {
   newPreview: null,
   publicPlaylist: null,
   createdSceneList: null,
+  resetKey: 0,
 };
 
 const getters = {
@@ -42,6 +43,7 @@ const getters = {
   myCreatedAndLikedPlaylist: (state) => state.myCreatedAndLikedPlaylist,
   publicPlaylist: (state) => state.publicPlaylist,
   createdSceneList: (state) => state.createdSceneList,
+  resetKey: (state) => state.resetKey,
   showAddPlaylistModal: (state) => state.showAddPlaylistModal,
   playlistIdsOfTag: (state) => state.playlistIdsOfTag,
   toLoadRecommend: (state) => state.toLoadRecommend,
@@ -100,6 +102,9 @@ const mutations = {
   },
   setCreatedSceneList(state, data) {
     state.createdSceneList = data;
+  },
+  setResetKey(state, data) {
+    state.resetKey = data;
   },
   openAddPlaylistModal(state) {
     state.showAddPlaylistModal = true;
@@ -466,8 +471,11 @@ const actions = {
     const response = await axios.post("/api/playlist/getNewPlaylist");
     if (response.status == OK) {
       // 成功した時
-      if (response.data.newPlaylist)
+      if (response.data.newPlaylist) {
         context.commit("setNewPlaylistId", response.data.newPlaylist.id);
+      } else {
+        context.commit("setNewPlaylistId", "");
+      }
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
@@ -496,7 +504,7 @@ const actions = {
   },
   async addPlaylistComment(context, data) {
     const params = data;
-    const response = await axios.post("api/playlist/addComment", params);
+    const response = await axios.post("/api/playlist/addComment", params);
     if (response.status == CREATED) {
       // 成功した時
       //storeのタグデータを更新

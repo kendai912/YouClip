@@ -300,7 +300,7 @@ class SearchController extends Controller
                 'verify' => false,
                 'query' => $params
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new Exception($e->getResponse()->getBody());
         }
         return $res->getBody();
@@ -317,7 +317,7 @@ class SearchController extends Controller
                 'verify' => false,
                 'query' => $params
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new Exception($e->getResponse()->getBody());
         }
         return $res->getBody();

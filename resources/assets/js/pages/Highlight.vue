@@ -44,6 +44,8 @@ export default {
         this.$store.commit("highlight/setDisplayComponent", "Complete");
       } else if (this.$route.path == "/add") {
         this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
+      } else if (this.$route.path == "/add/search") {
+        this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
       } else if (this.$route.path == "/add/highlight") {
         this.$store.commit("highlight/setDisplayComponent", "Youtube");
       } else if (this.$route.path == "/add/confirm") {

@@ -3,12 +3,12 @@
     <HighlightHeader />
     <div class="highlight-body" ref="highlightBody">
       <div class="ytPlayerWrapper" ref="ytPlayerWrapper">
-        <div id="player"></div>
+        <div id="playerConfirm"></div>
         <YTPlayerController v-show="isPlayerReady" ref="YTPlayerController" />
         <YTSeekBar
           v-show="isPlayerReady"
           ref="ytSeekBar"
-          v-bind:highlightBodyRef="highlightBodyRef"
+          v-bind:bodyRef="highlightBodyRef"
         />
       </div>
       <v-sheet v-if="player != null" class="highlightControllerBody">
@@ -57,7 +57,7 @@
                       :input-value="selected"
                       class="my-tag-chip pr-2"
                       text-color="black"
-                      style="font-weight: normal; border-color:#bdbdbd;"
+                      style="font-weight: normal; border-color: #bdbdbd"
                       outlined
                       small
                     >
@@ -78,8 +78,9 @@
       <v-sheet
         v-if="player != null"
         tile
-        class="ma-0 pa-0 bottom-position"
+        class="ma-0 pa-0"
         width="100%"
+        v-bind:class="isIOS ? 'iosBottomPosition' : 'bottomPosition'"
       >
         <v-container class="ma-0 pa-0" fluid>
           <v-row align="center" class="ma-0 pa-0">
@@ -130,15 +131,13 @@ export default {
       timer: null,
       highlightBodyRef: this.$refs.highlightBody,
       isPlayerReady: false,
-      isPlaying: true,
       isDisabled: false,
-      isAdding: false,
-      isEditing: false,
       playlistIdToAdd: null,
       playlistIdToEdit: null,
       tagIdToEdit: null,
       tags: [],
       tagItems: [],
+      isIOS: false,
     };
   },
   mixins: [myMixin],
@@ -156,15 +155,21 @@ export default {
       start: "tagging/start",
       end: "tagging/end",
       privacySetting: "tagging/privacySetting",
+      isAdding: "tagging/isAdding",
+      isEditing: "tagging/isEditing",
       showLoginModal: "noLoginModal/showLoginModal",
       newPlaylistId: "playlist/newPlaylistId",
       showConfirmationModal: "confirmationModal/showConfirmationModal",
       tagAndVideoData: "watch/tagAndVideoData",
+      isPlaying: "watch/isPlaying",
     }),
   },
   methods: {
     ...mapMutations({
       setPlayer: "ytPlayerController/setPlayer",
+      setIsPlaying: "watch/setIsPlaying",
+      setIsAdding: "tagging/setIsAdding",
+      setIsEditing: "tagging/setIsEditing",
     }),
     async initialize() {
       //ナビバーを非表示
@@ -181,11 +186,11 @@ export default {
 
       //既存プレイリストへの追加かシーンの編集か新規かを判別
       if (this.$route.path == "/add/confirm") {
-        this.isAdding = true;
+        this.setIsAdding(true);
         this.playlistIdToAdd = this.$route.query.playlist;
       } else if (this.$route.path == "/edit/confirm") {
         this.playlistIdToEdit = this.$route.query.playlist;
-        this.isEditing = true;
+        this.setIsEditing(true);
         this.tagIdToEdit = this.$route.query.tag;
 
         //動画・タグデータを取得
@@ -197,6 +202,11 @@ export default {
         //set tags data for editing
         this.setEditingTagData();
       }
+
+      //倍速視聴を1倍のリセット
+      this.$store.commit("watch/setPlaySpeed", 1);
+
+      this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
     },
     //set tags data for editing
     setEditingTagData() {
@@ -224,6 +234,8 @@ export default {
       this.$store.commit("tagging/setStart", "");
       this.$store.commit("tagging/setEnd", "");
       this.$store.commit("tagging/setPrivacySetting", "public");
+      this.setIsAdding(false);
+      this.setIsEditing(false);
     },
     //以前入力された開始・終了時間をセッションストレージからロード
     loadTimeInput() {
@@ -266,12 +278,24 @@ export default {
             self.$store.commit("tagging/setTags", self.tags);
             self.$store.commit("tagging/setPrivacySetting", "public");
 
+            //新しく作成したplaylistIdをセット
+            self.$store.commit(
+              "tagging/setMyPlaylistToSave",
+              self.playlistIdToEdit
+            );
+
             //ローディングを表示し、OKボタンを無効化
             self.$store.commit("highlightHeader/setIsLoading");
             self.isDisabled = true;
 
-            //シーンを更新
+            //場面のデータをDBで更新
             await self.$store.dispatch("tagging/updateSceneTags");
+
+            //場面のサムネイルを取得しS3に保存(非同期)
+            self.$store.dispatch("tagging/storeTagThumbnail");
+
+            //場面のプレビュー動画を取得しS3に保存(非同期)
+            self.$store.dispatch("tagging/storeTagPreview");
 
             //ローディングを非表示
             self.$store.commit("highlightHeader/setNotLoading");
@@ -308,6 +332,12 @@ export default {
 
             //場面のデータを登録
             await self.$store.dispatch("tagging/storeSceneTags");
+
+            //場面のサムネイルを取得しS3に保存(非同期)
+            self.$store.dispatch("tagging/storeTagThumbnail");
+
+            //場面のプレビュー動画を取得しS3に保存(非同期)
+            self.$store.dispatch("tagging/storeTagPreview");
 
             //ローディングを非表示
             self.$store.commit("highlightHeader/setNotLoading");
@@ -354,8 +384,14 @@ export default {
             self.$store.commit("highlightHeader/setIsLoading");
             self.isDisabled = true;
 
-            //場面のデータを登録
+            //場面のデータをDBに登録
             await self.$store.dispatch("tagging/storeSceneTags");
+
+            //場面のサムネイルを取得しS3に保存(非同期)
+            self.$store.dispatch("tagging/storeTagThumbnail");
+
+            //場面のプレビュー動画を取得しS3に保存(非同期)
+            self.$store.dispatch("tagging/storeTagPreview");
 
             //ローディングを非表示
             self.$store.commit("highlightHeader/setNotLoading");
@@ -368,6 +404,29 @@ export default {
           window.sessionStorage.removeItem("ytInputData");
         });
       }
+    },
+    setYtPlayerCSS() {
+      //iframeの縦・横のサイズをセット(縦は952px、横は幅いっぱい)
+      $("iframe").width($(".ytPlayerWrapper").width());
+      $("iframe").height(952);
+
+      //iframeとseekbarが見える範囲の高さをセットし、iframe上部の黒分が見えないよう上にスライド
+      $(".ytPlayerWrapper").css(
+        "height",
+        ($("iframe").width() * 9) / 16 +
+          (952 - ($("iframe").width() * 9) / 16) / 2 +
+          15
+      );
+      $(".ytPlayerWrapper").css(
+        "top",
+        (($("iframe").height() - ($("iframe").width() * 9) / 16) / 2) * -1
+      );
+
+      //開始・終了ボタンがiframeとseekbarの下に来るようにtopを調整
+      $(".highlightControllerBody").css(
+        "top",
+        ($("iframe").width() * 9) / 16 + 15
+      );
     },
   },
   watch: {
@@ -392,6 +451,7 @@ export default {
     this.$store.commit("youtube/setYoutubeId", youtubeId);
     await this.$store.dispatch("youtube/getVideo");
     await this.$store.dispatch("youtube/getTag");
+
     if (this.isNew) {
       //新規動画・タグの場合はData APIから取得
       await this.$store.dispatch("youtube/getNewVideoData");
@@ -404,7 +464,8 @@ export default {
 
     // This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
+    tag.src =
+      "https://www.youtube.com/iframe_api?" + +parseInt(new Date() / 1000);
     var firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     let self = this;
@@ -414,7 +475,7 @@ export default {
       //load start & end time
       this.loadTimeInput();
 
-      let player = new YT.Player("player", {
+      let player = new YT.Player("playerConfirm", {
         width: "560",
         height: "315",
         videoId: this.youtubeId,
@@ -440,48 +501,23 @@ export default {
 
       //playerインスタンスをytPlayerControllerストアに格納
       self.setPlayer(player);
-
-      //iframeの縦・横のサイズをセット(縦は952px、横は幅いっぱい)
-      $("iframe").width($(".ytPlayerWrapper").width());
-      $("iframe").height(952);
-
-      //iframeとseekbarが見える範囲の高さをセットし、iframe上部の黒分が見えないよう上にスライド
-      $(".ytPlayerWrapper").css(
-        "height",
-        ($("iframe").width() * 9) / 16 +
-          (952 - ($("iframe").width() * 9) / 16) / 2 +
-          15
-      );
-      $(".ytPlayerWrapper").css(
-        "top",
-        (($("iframe").height() - ($("iframe").width() * 9) / 16) / 2) * -1
-      );
-
-      this.$nextTick(() => {
-        //開始・終了ボタンがiframeとseekbarの下に来るようにtopを調整
-        $(".highlightControllerBody").css(
-          "top",
-          ($("iframe").width() * 9) / 16 + 15
-        );
-
-        //load start & end time after the seekbar width is correctly set
-        // this.loadTimeInput();
-      });
     };
-    setTimeout(onYouTubeIframeAPIReady, 10);
+    setTimeout(onYouTubeIframeAPIReady, 100);
 
     window.onPlayerReady = (event) => {
+      self.setYtPlayerCSS();
+
       event.target.mute();
       event.target.playVideo();
       this.isPlayerReady = true;
 
-      //1秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
+      //現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
       self.timer = setInterval(function() {
         //playerが取得した時間を「分:秒」に整形しcurrentTimeに格納
         let currentTime = self.formatTime(event.target.getCurrentTime());
         //currentTimeをyoutubeストアにセット
         self.$store.commit("youtube/setCurrentTime", currentTime);
-      }, 1000);
+      });
 
       //TagItemを表示に切り替え
       this.$store.commit("youtube/setIsReady", true);
@@ -490,7 +526,7 @@ export default {
     window.onPlayerStateChange = (event) => {
       if (event.data == YT.PlayerState.ENDED && this.isPlaying) {
         //フラグを停止中に反転
-        this.isPlaying = !this.isPlaying;
+        this.$store.commit("watch/setIsPlaying", false);
 
         //リピート再生(開始時間に戻る)
         this.player.seekTo(this.convertToSec(this.start));
@@ -498,18 +534,14 @@ export default {
 
       if (event.data == YT.PlayerState.PLAYING) {
         //フラグを再生中にセット
-        this.isPlaying = true;
+        this.$store.commit("watch/setIsPlaying", true);
+      }
+
+      if (event.data == YT.PlayerState.ENDED) {
+        //フラグを再生中にセット
+        this.$store.commit("watch/setIsPlaying", false);
       }
     };
-
-    //プレイリスト再生で戻るor進むが押された場合は画面を再ロード
-    // let from = this.$route.path;
-    // window.addEventListener("popstate", function(e) {
-    //   let to = self.$route.path;
-    //   if (from == "/youtube/confirm" && to == "/youtube/confirm") {
-    //     location.reload();
-    //   }
-    // });
 
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.highlightBodyRef = this.$refs.highlightBody;

@@ -3,7 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ config('app.name') }}</title>
+  <meta name="description" content="YouClip(ユークリップ)はYouTube動画のまとめ作成ツールです。音楽PVのサビや、スポーツの試合ハイライトなど、もう一度見たいお気に入りのシーンを、まとめて残すことが出来ます。みんなのまとめを見ることも可能です。みんなで面白い/役に立つまとめ動画を作りましょう！">
+
+  <meta property="og:site_name" content="YouClip">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://youclip.jp">
+  <meta property="og:title" content="YouClip - YouTube動画のまとめ作成ツール">
+  <meta property="og:description" content="YouClipはYouTube動画のまとめ作成ツールです。お気に入りのシーンをまとめて残すことが出来ます。みんなのまとめを見ることも可能です">
+  <meta property="og:image" content="https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/facebook-youclip-logo.png">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@YouClip2">
+  <meta name="twitter:url" content="https://youclip.jp">
+  <meta name="twitter:title" content="YouClip - YouTube動画のまとめ作成ツール">
+  <meta name="twitter:description" content="YouClipはYouTube動画のまとめ作成ツールです。お気に入りのシーンをまとめて残すことが出来ます。みんなのまとめを見ることも可能です">
+  <meta name="twitter:image" content="https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/twitter-youclip-logo.png">
+
+  <title>{{ config('app.name') }} - YouTube動画のまとめ作成ツール</title>
 
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

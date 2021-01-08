@@ -24,22 +24,34 @@
     <v-tabs-items v-model="tab">
       <v-tab-item>
         <v-card flat>
-          <PlaylistMediaItem v-bind:mediaItems="recommendMediaItems" />
+          <PlaylistMediaItem
+            v-bind:mediaItems="recommendMediaItems"
+            v-bind:key="resetKey"
+          />
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <PlaylistMediaItem v-bind:mediaItems="newMediaItems" />
+          <PlaylistMediaItem
+            v-bind:mediaItems="newMediaItems"
+            v-bind:key="resetKey"
+          />
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <PlaylistMediaItem v-bind:mediaItems="sportsMediaItems" />
+          <PlaylistMediaItem
+            v-bind:mediaItems="sportsMediaItems"
+            v-bind:key="resetKey"
+          />
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <PlaylistMediaItem v-bind:mediaItems="entertainmentMediaItems" />
+          <PlaylistMediaItem
+            v-bind:mediaItems="entertainmentMediaItems"
+            v-bind:key="resetKey"
+          />
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -205,6 +217,7 @@ export default {
         "playlist/isIndexSportsPlaylistAndTagPaginating",
       isIndexEntertainmentPlaylistAndTagPaginating:
         "playlist/isIndexEntertainmentPlaylistAndTagPaginating",
+      resetKey: "playlist/resetKey",
     }),
   },
   mounted() {

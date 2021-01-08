@@ -3,13 +3,16 @@
     <HighlightHeader />
 
     <div class="highlight-body" ref="highlightBody" style="height: auto;">
-      <div class="highlight-body-upper">
+      <div
+        v-bind:class="isIOS ? 'iosHighlightBodyUpper' : 'highlightBodyUpper'"
+      >
         <v-card class="pa-2 pb-0 ma-0" elevation="0">
           <div>切り抜いた場面一覧</div>
           <div>(以下がまとめとして連続再生されます)</div>
         </v-card>
         <SceneTagItem
           v-bind:showAddNewSceneComponent="showAddNewSceneComponent"
+          v-bind:key="resetKey"
         />
       </div>
 
@@ -77,6 +80,7 @@ export default {
   data() {
     return {
       showAddNewSceneComponent: false,
+      isIOS: false,
     };
   },
   mixins: [myMixin],
@@ -84,6 +88,7 @@ export default {
     ...mapGetters({
       newPlaylistId: "playlist/newPlaylistId",
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
+      resetKey: "playlist/resetKey",
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       youtubeId: "youtube/youtubeId",
       tagDataArray: "youtube/tagDataArray",
@@ -122,6 +127,8 @@ export default {
         //load scenelist
         await this.loadSceneList();
       }
+
+      this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
     },
     //切り抜いた場面一覧を取得
     async loadSceneList() {
@@ -129,21 +136,13 @@ export default {
         "watch/getPlaylistAndTagVideoDataById",
         this.myPlaylistToSave
       );
-
-      let mediaItems = [];
-      this.playlistAndTagVideoData
-        ? this.putTagVideoIntoMediaItems(
-            mediaItems,
-            this.playlistAndTagVideoData.tagVideoData
-          )
-        : "";
-      this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
     },
     //YouTube動画検索ページを表示
     moveToYTvideoSelectPage() {
       this.$router
         .push({
           path: "/highlight",
+          query: { return: true },
         })
         .catch((err) => {});
     },
@@ -160,6 +159,16 @@ export default {
     // 検索バーによるルート変更後の初期化処理
     $route() {
       this.initialize();
+    },
+    playlistAndTagVideoData() {
+      let mediaItems = [];
+      this.playlistAndTagVideoData
+        ? this.putTagVideoIntoMediaItems(
+            mediaItems,
+            this.playlistAndTagVideoData.tagVideoData
+          )
+        : "";
+      this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
     },
   },
   async mounted() {

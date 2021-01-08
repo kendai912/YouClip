@@ -16,6 +16,7 @@ const state = {
   start: "",
   end: "",
   playSpeed: 1,
+  isPlaying: true,
 };
 
 const getters = {
@@ -43,6 +44,7 @@ const getters = {
   end: (state) => state.end,
   isPlaylist: (state) => (state.playlistId ? true : false),
   playSpeed: (state) => state.playSpeed,
+  isPlaying: (state) => state.isPlaying,
 };
 
 const mutations = {
@@ -102,6 +104,9 @@ const mutations = {
   },
   setPlaySpeed(state, data) {
     state.playSpeed = data;
+  },
+  setIsPlaying(state, data) {
+    state.isPlaying = data;
   },
   setListIndex(state, data) {
     state.listIndex = data;
