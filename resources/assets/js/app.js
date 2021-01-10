@@ -63,8 +63,8 @@ const createApp = async () => {
     template: "<App />", // ルートコンポーネントを描画する
     watch: {
       $route: () => {
-        window.Appcues.page();
-        Appcues.anonymous();
+        // window.Appcues.page();
+        // Appcues.anonymous();
       },
     },
   });
