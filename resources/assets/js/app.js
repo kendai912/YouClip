@@ -64,7 +64,6 @@ const createApp = async () => {
     watch: {
       $route: () => {
         window.Appcues.page();
-        Appcues.anonymous();
       },
     },
     mounted() {
