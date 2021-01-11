@@ -32,13 +32,11 @@
     },
     "dependencies": {
         "ajv": "^6.12.6",
+        "helphero": "^3.5.3",
         "toastr": "^2.1.4",
         "vue-gtag": "^1.9.1",
         "vue-lodash": "^2.1.2",
         "vue-template-compiler": "^2.6.12",
-        "vue-youtube": "^1.4.0",
-        "vue-youtube-embed": "^2.2.2",
-        "vue2-touch-events": "^2.3.2",
         "vuedraggable": "^2.24.0",
         "vuetify": "^2.3.21"
     },

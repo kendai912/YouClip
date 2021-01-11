@@ -22,7 +22,6 @@
   <title>{{ config('app.name') }} - YouTube動画のまとめ作成ツール</title>
 
   <!-- Scripts -->
-  <script src="//fast.appcues.com/86366.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="{{ asset('/js/app.js') }}" defer></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>

@@ -16,16 +16,9 @@ import "material-design-icons-iconfont/dist/material-design-icons.css";
 import colors from "vuetify/lib/util/colors";
 import lodash from "lodash";
 import VueGtag from "vue-gtag";
-import Vue2TouchEvents from "vue2-touch-events";
+import initHelpHero from "helphero";
 
 Vue.use(Vuetify);
-
-Vue.use(Vue2TouchEvents, {
-  disableClick: false,
-  touchClass: "tapAction",
-  tapTolerance: 8,
-  touchHoldTolerance: 10,
-});
 
 Vue.use(
   VueGtag,
@@ -36,6 +29,8 @@ Vue.use(
 );
 
 Vue.prototype._ = lodash;
+
+var hlp = initHelpHero("UwlQWGOMy3G");
 
 const createApp = async () => {
   await store.dispatch("auth/currentUser");
@@ -61,13 +56,8 @@ const createApp = async () => {
     },
     components: { App }, // ルートコンポーネントの使用を宣言する
     template: "<App />", // ルートコンポーネントを描画する
-    watch: {
-      $route: () => {
-        window.Appcues.page();
-      },
-    },
     mounted() {
-      Appcues.anonymous();
+      hlp.anonymous();
     },
   });
 };
