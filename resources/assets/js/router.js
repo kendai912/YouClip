@@ -12,6 +12,7 @@ import Tagging from "./pages/Tagging.vue";
 import Watch from "./pages/Watch.vue";
 import Mypage from "./pages/Mypage.vue";
 import MyFollow from "./pages/MyFollow.vue";
+import UserGuide from "./pages/UserGuide.vue";
 import SystemError from "./pages/errors/System.vue";
 import ForbiddenError from "./pages/errors/ForbiddenError.vue";
 import PrivacyPolicy from "./pages/PrivacyPolicy.vue";
@@ -132,6 +133,10 @@ const routes = [
   {
     path: "/editmyplaylist",
     component: EditMyPlaylist,
+  },
+  {
+    path: "/userguide",
+    component: UserGuide,
   },
   {
     path: "/PrivacyPolicy",

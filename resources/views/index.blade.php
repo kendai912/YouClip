@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="YouClip(ユークリップ)はYouTube動画のまとめ作成ツールです。音楽PVのサビや、スポーツの試合ハイライトなど、もう一度見たいお気に入りのシーンを、まとめて残すことが出来ます。みんなのまとめを見ることも可能です。みんなで面白い/役に立つまとめ動画を作りましょう！">
+  <meta name="description" content="YouClip(ユークリップ)はYouTube動画のまとめ作成ツールです。もう一度見たいお気に入りのシーンを、まとめて残すことが出来ます。みんなのまとめを見ることも可能です。みんなで面白い・役に立つまとめ動画を作りましょう！">
 
   <meta property="og:site_name" content="YouClip">
   <meta property="og:type" content="website">

@@ -11,8 +11,8 @@
       <v-card-title class="pa-1 mt-2 mx-0 justify-center"
         >ログインが必要です</v-card-title
       >
-      <v-card-subtitle class="pa-1 mt-0 mx-0 darkgrey--text"
-        >ログインすると、まとめを作成したYouTube動画にアクセス出来ます</v-card-subtitle
+      <v-card-subtitle class="subtitle-1 pa-1 mt-0 mx-0 black--text"
+        >ログインすると、自分の作成した＆いいねしたまとめにアクセス出来ます</v-card-subtitle
       >
       <v-card-actions class="justify-center pa-1 mt-4 mx-2">
         <v-container class="ma-0 pa-0">
@@ -38,7 +38,7 @@
               ></div>
             </v-col>
             <v-col class="ma-0 pa-0 text-center" cols="7">
-              <v-card-text>はじめての方はこちら</v-card-text>
+              <v-card-text style="font-size: 12px !important;">はじめての方はこちら</v-card-text>
             </v-col>
             <v-col class="ma-0 pa-0">
               <div

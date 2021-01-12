@@ -66,7 +66,9 @@
               object-fit: contain;
             "
           />
-          <p class="leading-none text-gray-600 text-s">| YouTube動画のまとめ作成ツール</p>
+          <p class="leading-none text-gray-600 text-s">
+            | YouTube動画のまとめ作成ツール
+          </p>
         </router-link>
       </v-toolbar-items>
       <v-spacer></v-spacer>
@@ -91,28 +93,14 @@
 
         <v-menu v-else offset-y>
           <template v-slot:activator="{ on }">
-            <i
-              v-on="on"
-              class="fas fa-user-circle fa-2x"
-              style="color: grey"
-            ></i>
+            <router-link to="/userguide">
+              <i
+                v-on="on"
+                class="fas fa-info-circle fa-2x"
+                style="color: grey"
+              ></i>
+            </router-link>
           </template>
-          <v-list>
-            <v-list-item>
-              <v-list-item-title>
-                <router-link class="button button--link" to="/login"
-                  >ログイン</router-link
-                >
-              </v-list-item-title>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-title>
-                <router-link class="button button--link" to="/register"
-                  >新規登録</router-link
-                >
-              </v-list-item-title>
-            </v-list-item>
-          </v-list>
         </v-menu>
       </div>
     </template>

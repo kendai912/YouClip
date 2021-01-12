@@ -881,3 +881,56 @@ div.v-snack:not(.v-snack--absolute) {
 .activeSearch .v-input__icon {
   width: 32px;
 }
+
+.bzagnP {
+  height: 565px;
+  width: 279px;
+  min-width: 279px;
+  position: relative;
+  border-width: 4px;
+  border-style: solid;
+  border-color: rgb(35, 35, 35);
+  border-radius: 32px;
+  overflow: hidden;
+  background: rgb(1, 1, 1);
+  box-shadow: rgba(22, 22, 22, 0.2) 0px 4px 32px;
+}
+
+.bzagnP::before {
+  width: 180px;
+  height: 20px;
+  background: rgb(17, 17, 17);
+  border-radius: 0px 0px 16px 16px;
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+}
+
+.bzagnP::after {
+  width: 50px;
+  height: 4px;
+  background: rgb(34, 34, 34);
+  margin: 0px auto;
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 20px;
+  display: block;
+  content: "";
+  box-sizing: border-box;
+}
+
+.gNIwkZ > div {
+  display: inline-block;
+}
+
+.userguideSectionTitle {
+  font-size: 36px;
+  letter-spacing: 3.2px;
+  line-height: 1.5;
+}
