@@ -17,9 +17,44 @@
     <!--        </v-card>-->
     <!--      </v-tab-item>-->
     <!--    </v-tabs-items>-->
-    <div class="px-3 pt-3">
-      <v-icon size="30" color="my-grey">mdi-play-box-multiple-outline</v-icon>
-      <span>自分のまとめ・いいねしたまとめ</span>
+    <div class="pa-0 ma-0" style="position: relative; height: 40px;">
+      <div
+        style="
+              position: absolute;
+              height: 100%;
+              top: 12px;
+              left: 8px;
+            "
+      >
+        <v-icon size="30" color="my-grey">mdi-play-box-multiple-outline</v-icon>
+        <span>自分のまとめ・いいねしたまとめ</span>
+      </div>
+      <v-spacer></v-spacer>
+      <div
+        style="
+              position: absolute;
+              height: 100%;
+              top: 12px;
+              right: 8px;
+            "
+      >
+        <v-menu offset-y>
+          <template v-slot:activator="{ on }">
+            <i
+              v-on="on"
+              class="fas fa-bars"
+              style="color: rgb(158, 158, 158); text-align: right; font-size: 20px;"
+            ></i>
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-list-item-title class="button button--link" v-on:click="logout"
+                >ログアウト</v-list-item-title
+              >
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
     </div>
     <MyPlaylistItem v-bind:mediaItems="myCreatedAndLikedPlaylistMediaItems" />
   </div>
@@ -31,7 +66,6 @@ import MyPlaylist from "../components/MyPlaylist.vue";
 import MyScene from "../components/MyScene.vue";
 import MyPlaylistItem from "../components/MyPlaylistItem.vue";
 import MyTagItem from "../components/MyTagItem.vue";
-// import PlaylistMediaItem from "../components/PlaylistMediaItem.vue";
 import myMixin from "../util";
 
 export default {
@@ -50,6 +84,9 @@ export default {
     };
   },
   mixins: [myMixin],
+  ...mapState({
+    apiStatus: (state) => state.auth.apiStatus,
+  }),
   computed: {
     ...mapGetters({
       myCreatedAndLikedPlaylist: "playlist/myCreatedAndLikedPlaylist",
@@ -155,6 +192,12 @@ export default {
 
     //     return mediaItems;
     //   },
+    async logout() {
+      await this.$store.dispatch("auth/logout");
+      if (this.apiStatus) {
+        this.$router.push("/login");
+      }
+    },
     setActiveTab(key) {
       //開いたタブをセッションストレージに保存
       window.sessionStorage.setItem("myPageTabIndex", JSON.stringify(key));

@@ -8,7 +8,12 @@
         class="pa-0 ma-0"
       >
         <v-col class="px-0">
-          <v-card class="mx-auto d-flex" max-width="420" elevation="0">
+          <v-card
+            class="mx-auto d-flex"
+            max-width="420"
+            elevation="0"
+            v-if="item"
+          >
             <v-row class="ma-0" align="center">
               <v-col class="pa-0">
                 <v-row class="ma-0">
@@ -120,6 +125,22 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-card
+        v-if="!mediaItems[0]"
+        class="text-center pa-3 ma-3 body-color"
+        elevation="0"
+      >
+        <v-card-title class="pa-0 ma-0 justify-center">
+          <v-img
+            max-width="160"
+            aspect-ratio="1"
+            src="/storage/imgs/noPost.svg"
+          ></v-img>
+        </v-card-title>
+        <v-card-title class="pa-1 mt-2 mx-0 justify-center"
+          >まだ作成した・いいねしたまとめはありません</v-card-title
+        >
+      </v-card>
     </div>
   </v-container>
 </template>
