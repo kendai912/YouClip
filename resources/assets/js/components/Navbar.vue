@@ -74,24 +74,7 @@
       <v-spacer></v-spacer>
       <v-icon v-on:click="search" size="37">search</v-icon>
       <div>
-        <v-menu v-if="isLogin" offset-y>
-          <template v-slot:activator="{ on }">
-            <i
-              v-on="on"
-              class="fas fa-user-circle fa-2x"
-              style="color: darkgreen"
-            ></i>
-          </template>
-          <v-list>
-            <v-list-item>
-              <v-list-item-title class="button button--link" v-on:click="logout"
-                >ログアウト</v-list-item-title
-              >
-            </v-list-item>
-          </v-list>
-        </v-menu>
-
-        <v-menu v-else offset-y>
+        <v-menu offset-y>
           <template v-slot:activator="{ on }">
             <router-link to="/userguide">
               <i

@@ -2,7 +2,7 @@
   <div>
     <v-divider></v-divider>
     <v-expansion-panels v-model="panel" class="ma-0 pa-0">
-      <v-expansion-panel class="ma-0 pa-0">
+      <v-expansion-panel class="ma-0 pa-0" key="panelScene">
         <v-expansion-panel-header
           v-bind:class="{
             sceneListExpansionPanelCustomHeader: panel !== 0,
@@ -10,10 +10,16 @@
               panel !== 0 && isMobile,
           }"
           class="ma-0 pl-3 pr-2"
+          id="panelScene"
         >
-          <span class="ma-0 pa-0 pt-1">
-            再生中の場面
-          </span>
+          <v-fade-transition leave-absolute>
+            <span v-if="opened" key="0">
+              まとめの場面一覧
+            </span>
+            <span v-else key="1">
+              再生中の場面
+            </span>
+          </v-fade-transition>
 
           <div
             v-if="panel !== 0"
@@ -93,7 +99,7 @@
                                 </div>
 
                                 <div
-                                  class="text--darken-3 pt-2"
+                                  class="green--text text--darken-2 pt-1"
                                   style="font-size: 12px; padding-left: 0; font-weight: bold"
                                 >
                                   <span>{{ mediaItems[listIndex].start }}</span>
@@ -104,7 +110,7 @@
                                 </div>
 
                                 <div
-                                  class="horizontal-list-wrap block-chip-lines3 color-black my-1"
+                                  class="horizontal-list-wrap block-chip-lines3 color-black mt-2 mb-0"
                                 >
                                   <v-chip
                                     v-for="(tag, tagIndex) in readMore(
@@ -216,7 +222,7 @@
                               </div>
 
                               <div
-                                class="text--darken-3 pt-2"
+                                class="green--text text--darken-2 pt-1"
                                 style="font-size: 12px; padding-left: 0; font-weight: bold"
                                 v-on:click.stop="select(index)"
                               >
@@ -230,7 +236,7 @@
                               </div>
 
                               <div
-                                class="horizontal-list-wrap block-chip-lines3 color-black mt-1 mb-0"
+                                class="horizontal-list-wrap block-chip-lines3 color-black mt-2 mb-0"
                                 v-on:click.stop="select(index)"
                               >
                                 <v-chip
@@ -241,7 +247,7 @@
                                   v-bind:key="
                                     mediaItems[listIndex].id + '-' + tagIndex
                                   "
-                                  class="my-tag-chip pr-2"
+                                  class="my-tag-chip pr-2 py-0"
                                   text-color="black"
                                   style="font-weight: normal; border-color:#bdbdbd;"
                                   outlined
@@ -273,9 +279,9 @@ import myMixin from "../util";
 export default {
   data() {
     return {
-      panel: null,
+      panel: 0,
       isMobile: false,
-      opened: false,
+      opened: true,
     };
   },
   props: {
@@ -347,7 +353,7 @@ export default {
 
     let self = this;
     this.$nextTick(() => {
-      $(".v-expansion-panel-header").on("click", function(e) {
+      $("#panelScene").on("click", function(e) {
         self.opened = !self.opened;
       });
     });

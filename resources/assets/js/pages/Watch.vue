@@ -23,7 +23,7 @@
                   >
                 </v-col>
                 <v-col cols="auto" class="ma-2 my-0 pa-0 text-right">
-                  <v-icon class="mdi mdi-chevron-down"></v-icon>
+                  <!-- <v-icon class="mdi mdi-chevron-down"></v-icon> -->
                 </v-col>
               </v-row>
 

@@ -141,7 +141,7 @@ export default {
         },
         {
           img: "/storage/imgs/userguide-share.png",
-          title: "みんなに動画の中のある場面を共有したい",
+          title: "みんなに動画のある場面を共有したい",
         },
         {
           img: "/storage/imgs/userguide-collect.png",

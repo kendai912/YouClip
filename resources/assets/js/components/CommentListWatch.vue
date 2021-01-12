@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div style="padding-bottom: 72px">
     <v-divider></v-divider>
-    <v-expansion-panels v-model="panel">
-      <v-expansion-panel>
+    <v-expansion-panels v-model="panelComment">
+      <v-expansion-panel key="panelComment">
         <v-expansion-panel-header
           v-bind:class="{
-            commentListExpansionPanelCustomHeader: panel !== 0 && mostLikesItem,
+            commentListExpansionPanelCustomHeader: panelComment !== 0 && mostLikesItem,
           }"
           class="ma-0 pl-3 pr-2"
         >
@@ -13,10 +13,10 @@
             >コメント&nbsp;&#8226;&nbsp;{{ getTotal(mediaItems) }}</span
           >
           <div
-            v-if="panel !== 0 && mostLikesItem"
+            v-if="panelComment !== 0 && mostLikesItem"
             v-bind:class="{
               commentListExpansionPanelCustomHeaderContent:
-                panel !== 0 && mostLikesItem,
+                panelComment !== 0 && mostLikesItem,
             }"
           >
             <div class="placeholder-color">
@@ -176,7 +176,7 @@ export default {
       parentId: 0,
       commentRules: [(v) => !!v || "コメントを入力して下さい"],
       mostLikesItem: null,
-      panel: null,
+      panelComment: null,
     };
   },
   props: {
