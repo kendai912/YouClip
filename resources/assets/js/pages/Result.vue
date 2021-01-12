@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       tab: null,
-      items: ["プレイリスト", "シーン"],
+      items: ["まとめ", "場面"],
       pageOfPlaylist: 1,
       playlistMediaItems: [],
     };

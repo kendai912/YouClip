@@ -74,7 +74,7 @@
             <v-select
               v-model="myPlaylistToSave"
               :items="myPlaylistItems"
-              label="保存先プレイリスト"
+              label="保存先まとめ"
               hide-details
               dense
               class="sceneMyPlaylistToSaveBox"
@@ -180,7 +180,7 @@ export default {
       let items = [{ text: "選択なし", value: "none" }];
 
       if (this.isLogin) {
-        //ユーザーがログイン済の場合、自分のプレイリストをセレクトボックスの項目に追加
+        //ユーザーがログイン済の場合、自分のまとめをセレクトボックスの項目に追加
         this.$store.getters["playlist/myCreatedPlaylist"].forEach(
           (playlist) => {
             items.push({
@@ -192,7 +192,7 @@ export default {
       }
 
       items.push({
-        text: "＋ プレイリスト新規作成",
+        text: "＋ まとめ新規作成",
         value: "new",
       });
 
@@ -201,7 +201,7 @@ export default {
   },
   watch: {
     myPlaylistToSave: function(newPlaylist, oldPlaylist) {
-      // プレイリスト新規作成の場合は、プレイリスト作成モーダルを表示
+      // まとめ新規作成の場合は、まとめ作成モーダルを表示
       if (newPlaylist == "new") {
         if (this.isLogin) {
           this.$store.commit("tagging/openCreateNewPlaylistModal");
@@ -215,7 +215,7 @@ export default {
           this.$store.commit("noLoginModal/openLoginModal");
           this.$store.commit(
             "noLoginModal/setMessageWhenNotLogined",
-            "プレイリストを作成するには、ログインしてください。(入力データは保持されます)"
+            "まとめを作成するには、ログインしてください。(入力データは保持されます)"
           );
         }
       }
@@ -244,7 +244,7 @@ export default {
           if (self.$refs.form.validate()) {
             if (self.isEditing) {
               //編集の場合
-              //入力済データ(除く、保存先プレイリスト)をセット
+              //入力済データ(除く、保存先まとめ)をセット
               self.$store.commit("tagging/setTags", self.tags);
               self.$store.commit(
                 "tagging/setPrivacySetting",
@@ -282,7 +282,7 @@ export default {
               self.$store.dispatch("tagging/storeSceneTags");
             }
 
-            // 入力フォームをクリア(プライバシー設定と保存先プレイリストは初期値をセット)
+            // 入力フォームをクリア(プライバシー設定と保存先まとめは初期値をセット)
             self.$store.commit("tagging/setTags", "");
             self.$store.commit("tagging/setStart", "");
             self.$store.commit("tagging/setEnd", "");

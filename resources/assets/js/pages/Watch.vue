@@ -189,7 +189,7 @@ export default {
     startTimer() {
       let self = this;
 
-      this.timer = setInterval(function () {
+      this.timer = setInterval(function() {
         //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
         self.$store.commit(
           "youtube/setCurrentTime",
@@ -242,7 +242,7 @@ export default {
         this.$store.commit("noLoginModal/openLoginModal");
         this.$store.commit(
           "noLoginModal/setMessageWhenNotLogined",
-          "プレイリストを評価するには、ログインしてください。"
+          "まとめを評価するには、ログインしてください。"
         );
       } else {
         //ログイン済の場合
@@ -290,14 +290,14 @@ export default {
         this.$store.commit("noLoginModal/openLoginModal");
         this.$store.commit(
           "noLoginModal/setMessageWhenNotLogined",
-          "このシーンをプレイリストに追加するには、ログインしてください。"
+          "このシーンをまとめに追加するには、ログインしてください。"
         );
       } else {
         //ログイン済の場合
-        //ユーザーが作成したプレイリスト一覧を取得
+        //ユーザーが作成したまとめ一覧を取得
         this.$store.dispatch("playlist/getMyCreatedPlaylist");
 
-        //選択されたタグが追加済のユーザーのプレイリストIDを取得
+        //選択されたタグが追加済のユーザーのまとめIDを取得
         await this.$store.dispatch(
           "playlist/getPlaylistIdsOfTag",
           this.currentTagId
@@ -306,7 +306,7 @@ export default {
         //プレイヤーを一時停止
         this.player.pauseVideo();
 
-        //プレイリスト追加モーダルを表示
+        //まとめ追加モーダルを表示
         this.$store.commit("playlist/openAddPlaylistModal");
       }
     },
@@ -325,7 +325,7 @@ export default {
     //シーンタグ削除後のページ遷移
     transitAndReloadAfterDelete() {
       if (this.$route.query.playlist) {
-        //プレイリスト再生の場合
+        //まとめ再生の場合
         if (
           this.watchList.length >= 2 &&
           this.indexUrl == this.watchList.length - 1
@@ -405,7 +405,7 @@ export default {
       this.playlistIdUrl = "";
       this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
 
-      //タグおよびプレイリストのLikeデータをロード
+      //タグおよびまとめのLikeデータをロード
       this.$store.dispatch("like/loadTagLike");
       this.$store.dispatch("likePlaylist/loadPlaylistLike");
 
@@ -495,17 +495,17 @@ export default {
 
     if (this.$route.query.playlist) {
       //特定シーン再生の場合
-      //URLのクエリパラメータからプレイリストIDとインデックスを取得
+      //URLのクエリパラメータからまとめIDとインデックスを取得
       this.playlistIdUrl = this.$route.query.playlist;
       this.indexUrl = this.$route.query.index;
 
-      //プレイリストおよび動画・タグデータを取得
+      //まとめおよび動画・タグデータを取得
       await this.$store.dispatch(
         "watch/getPlaylistAndTagVideoDataById",
         this.playlistIdUrl
       );
 
-      //プレイリストIDとプレイリスト名、視聴回数をwatchストアに格納
+      //まとめIDとまとめ名、視聴回数をwatchストアに格納
       this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
       this.$store.commit(
         "watch/setPlaylistName",
@@ -516,7 +516,7 @@ export default {
         this.playlistAndTagVideoData.play_count
       );
 
-      //Player直下のプレイリスト情報欄に表示する作成日・合計時間の情報を取得
+      //Player直下のまとめ情報欄に表示する作成日・合計時間の情報を取得
       this.playlistCreatedAt = this.timeSince(
         this.playlistAndTagVideoData.playlist_created_at
       );
@@ -540,11 +540,11 @@ export default {
         "playlist/setCommentListofPlaylist",
         this.playlistAndTagVideoData.comments
       );
-      //YTPlayerのプレイリストの再生に必要なパラメータをセット
+      //YTPlayerのまとめの再生に必要なパラメータをセット
       this.$store.commit("watch/setYTPlaylistParameters", this.indexUrl);
     } else if (this.$route.query.tag) {
-      //プレイリスト再生の場合
-      //URLのクエリパラメータからプレイリストIDとインデックスを取得
+      //まとめ再生の場合
+      //URLのクエリパラメータからまとめIDとインデックスを取得
       this.tagIdUrl = this.$route.query.tag;
 
       //動画・タグデータを取得
@@ -620,7 +620,7 @@ export default {
           //現在と同じシーンをリピート(開始時間に戻る)
           this.player.seekTo(this.convertToSec(this.startIs));
         } else if (this.$route.query.playlist) {
-          //プレイリスト再生の場合
+          //まとめ再生の場合
           if (this.indexUrl < this.watchList.length - 1) {
             // //最後のシーンでない場合は次のシーンのパラメータをセット
             this.playPlaylist(++this.indexUrl);

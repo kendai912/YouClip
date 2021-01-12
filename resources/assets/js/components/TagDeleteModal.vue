@@ -73,7 +73,7 @@ export default {
       await this.$store.dispatch("tagDeleteModal/deleteTag").then((res) => {
         if (res) {
           //プレイリスト削除完了のトーストを表示
-          this.$store.commit("snackbar/setText", "プレイリストを削除しました");
+          this.$store.commit("snackbar/setText", "まとめを削除しました");
           this.$store.commit("snackbar/setSnackbar", true);
           this.$store.commit("snackbar/setTimeout", 5000);
 

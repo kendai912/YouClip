@@ -6,12 +6,12 @@
           <v-col class="ma-0 pa-0">
             <v-list class="pb-0" dense>
               <v-list-item-subtitle class="ma-0 pa-2 pb-3"
-                >新規プレイリストを作成</v-list-item-subtitle
+                >新規まとめを作成</v-list-item-subtitle
               >
               <v-list-item>
                 <v-text-field
                   v-model="newPlaylistName"
-                  label="新規プレイリスト名"
+                  label="新規まとめ名"
                   outlined
                   dense
                   style="font-size:80%;"
@@ -21,7 +21,7 @@
                 <v-select
                   v-model="privacySetting"
                   v-bind:items="privacySettingItems"
-                  label="プレイリストのプライバシー設定"
+                  label="まとめのプライバシー設定"
                   outlined
                   dense
                   style="font-size:80%;"
@@ -101,7 +101,7 @@ export default {
     },
     //完了ボタン
     async submitNewPlaylist() {
-      //プレイリストを新規作成しIDをstoreのnewPlaylistIdに保存
+      //まとめを新規作成しIDをstoreのnewPlaylistIdに保存
       this.newPlaylistName
         ? await this.$store.dispatch("playlist/createPlaylist", {
             newPlaylistName: this.newPlaylistName,
@@ -111,10 +111,10 @@ export default {
           })
         : "";
 
-      //新規作成したプレイリストを含むユーザーが作成したプレイリスト一覧を再度取得
+      //新規作成したまとめを含むユーザーが作成したまとめ一覧を再度取得
       this.$store.dispatch("playlist/getMyCreatedPlaylist");
 
-      //新規作成したプレイリストを「保存先プレイリスト」欄に入力
+      //新規作成したまとめを「保存先まとめ」欄に入力
       this.$store.commit(
         "tagging/setMyPlaylistToSave",
         this.$store.getters["playlist/newPlaylistId"]
