@@ -79,7 +79,6 @@ export default {
   data() {
     return {
       ytPlayerControllerTransition: "overlayfade",
-      isMuted: true,
       timer: null,
       immediateHideFlag: false,
     };
@@ -88,6 +87,7 @@ export default {
   computed: {
     ...mapGetters({
       player: "ytPlayerController/player",
+      isMuted: "ytPlayerController/isMuted",
       currentTime: "youtube/currentTime",
       isNew: "youtube/isNew",
       newVideoData: "youtube/newVideoData",
@@ -109,6 +109,7 @@ export default {
     ...mapMutations({
       openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal",
       setIsPlaying: "watch/setIsPlaying",
+      setIsMuted: "ytPlayerController/setIsMuted",
     }),
     setImmediateHide() {
       this.immediateHideFlag = true;
@@ -170,12 +171,12 @@ export default {
     unmute() {
       this.fadeOutController();
       this.player.unMute();
-      this.isMuted = false;
+      this.setIsMuted(false);
     },
     mute() {
       this.fadeOutController();
       this.player.mute();
-      this.isMuted = true;
+      this.setIsMuted(true);
     },
   },
   mounted() {

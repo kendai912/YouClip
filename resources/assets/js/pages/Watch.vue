@@ -166,7 +166,6 @@ export default {
       tagIdUrl: "",
       isPlayerReady: false,
       timer: null,
-      isMuted: true,
       mediaItems: [],
       playlistCreatedAt: "",
       totalDuration: "00:00:00",
@@ -185,6 +184,7 @@ export default {
       setListIndex: "watch/setListIndex",
       setIsPlaying: "watch/setIsPlaying",
       setPlayer: "ytPlayerController/setPlayer",
+      setIsMuted: "ytPlayerController/setIsMuted",
     }),
     startTimer() {
       let self = this;
@@ -355,11 +355,11 @@ export default {
     },
     unmute() {
       this.player.unMute();
-      this.isMuted = false;
+      this.setIsMuted(false);
     },
     mute() {
       this.player.mute();
-      this.isMuted = true;
+      this.setIsMuted(true);
     },
     gotoFollow() {
       let user_id = this.playlistIdUrl
@@ -466,6 +466,7 @@ export default {
       playSpeed: "watch/playSpeed",
       isPlaying: "watch/isPlaying",
       player: "ytPlayerController/player",
+      isMuted: "ytPlayerController/isMuted",
     }),
     isLiked() {
       return this.$store.getters["like/isLiked"](this.currentTagId);
@@ -601,7 +602,7 @@ export default {
     setTimeout(onYouTubeIframeAPIReady, 100);
 
     window.onPlayerReady = (event) => {
-      event.target.mute();
+      self.mute();
       event.target.playVideo();
       this.isPlayerReady = true;
 
@@ -612,6 +613,7 @@ export default {
     };
 
     window.onPlayerStateChange = (event) => {
+      console.log(event);
       if (event.data == YT.PlayerState.ENDED && this.isPlaying) {
         //フラグを停止中に反転
         this.$store.commit("watch/setIsPlaying", false);
@@ -641,6 +643,8 @@ export default {
       if (event.data == YT.PlayerState.PLAYING) {
         //フラグを再生中にセット
         this.$store.commit("watch/setIsPlaying", true);
+
+        if (!self.isMuted) self.unmute();
       }
 
       if (event.data == YT.PlayerState.ENDED) {
