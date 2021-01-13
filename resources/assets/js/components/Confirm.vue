@@ -131,6 +131,7 @@ export default {
       timer: null,
       highlightBodyRef: this.$refs.highlightBody,
       isPlayerReady: false,
+      isAPIReady: false,
       isDisabled: false,
       playlistIdToAdd: null,
       playlistIdToEdit: null,
@@ -151,7 +152,6 @@ export default {
       videoData: "youtube/videoData",
       currentTime: "youtube/currentTime",
       currentCategory: "youtube/currentCategory",
-      player: "ytPlayerController/player",
       start: "tagging/start",
       end: "tagging/end",
       privacySetting: "tagging/privacySetting",
@@ -160,6 +160,8 @@ export default {
       showLoginModal: "noLoginModal/showLoginModal",
       newPlaylistId: "playlist/newPlaylistId",
       showConfirmationModal: "confirmationModal/showConfirmationModal",
+      player: "ytPlayerController/player",
+      isMuted: "ytPlayerController/isMuted",
       tagAndVideoData: "watch/tagAndVideoData",
       isPlaying: "watch/isPlaying",
     }),
@@ -167,6 +169,7 @@ export default {
   methods: {
     ...mapMutations({
       setPlayer: "ytPlayerController/setPlayer",
+      setIsMuted: "ytPlayerController/setIsMuted",
       setIsPlaying: "watch/setIsPlaying",
       setIsAdding: "tagging/setIsAdding",
       setIsEditing: "tagging/setIsEditing",
@@ -428,6 +431,14 @@ export default {
         ($("iframe").width() * 9) / 16 + 15
       );
     },
+    unmute() {
+      this.player.unMute();
+      this.setIsMuted(false);
+    },
+    mute() {
+      this.player.mute();
+      this.setIsMuted(true);
+    },
   },
   watch: {
     // 検索バーによるルート変更後の初期化処理
@@ -472,44 +483,48 @@ export default {
 
     //Youtube Playerの初期処理
     window.onYouTubeIframeAPIReady = () => {
-      //load start & end time
-      this.loadTimeInput();
+      if (!self.isAPIReady) {
+        //load start & end time
+        this.loadTimeInput();
 
-      let player = new YT.Player("playerConfirm", {
-        width: "560",
-        height: "315",
-        videoId: this.youtubeId,
-        playerVars: {
-          start: this.start ? this.convertToSec(this.start) : "",
-          end: this.end ? this.convertToSec(this.end) : "",
-          playsinline: 1,
-          autoplay: 1,
-          iv_load_policy: 3, //アノテーション非表示
-          modestbranding: 1, //YouTubeロゴ非表示
-          rel: 0, //関連動画非表示
-          controls: 0, //プレイーコントロールを非表示
-          fs: 0, //全画面表示ボタンを非表示
-          iv_load_policy: 3, //動画アノテーションを非表示
-          modestbranding: 1, //YouTubeロゴ非表示
-          enablejsapi: 1, //postMessageを有効にするのに必要
-        },
-        events: {
-          onReady: onPlayerReady,
-          onStateChange: onPlayerStateChange,
-        },
-      });
+        let player = new YT.Player("playerConfirm", {
+          width: "560",
+          height: "315",
+          videoId: this.youtubeId,
+          playerVars: {
+            start: this.start ? this.convertToSec(this.start) : "",
+            end: this.end ? this.convertToSec(this.end) : "",
+            playsinline: 1,
+            autoplay: 1,
+            iv_load_policy: 3, //アノテーション非表示
+            modestbranding: 1, //YouTubeロゴ非表示
+            rel: 0, //関連動画非表示
+            controls: 0, //プレイーコントロールを非表示
+            fs: 0, //全画面表示ボタンを非表示
+            iv_load_policy: 3, //動画アノテーションを非表示
+            modestbranding: 1, //YouTubeロゴ非表示
+            enablejsapi: 1, //postMessageを有効にするのに必要
+          },
+          events: {
+            onReady: onPlayerReady,
+            onStateChange: onPlayerStateChange,
+          },
+        });
 
-      //playerインスタンスをytPlayerControllerストアに格納
-      self.setPlayer(player);
+        //playerインスタンスをytPlayerControllerストアに格納
+        self.setPlayer(player);
+        self.isAPIReady = true;
+      }
     };
     setTimeout(onYouTubeIframeAPIReady, 100);
 
     window.onPlayerReady = (event) => {
       self.setYtPlayerCSS();
 
+      self.setIsMuted(true);
       event.target.mute();
       event.target.playVideo();
-      this.isPlayerReady = true;
+      self.isPlayerReady = true;
 
       //現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
       self.timer = setInterval(function() {
@@ -535,6 +550,11 @@ export default {
       if (event.data == YT.PlayerState.PLAYING) {
         //フラグを再生中にセット
         this.$store.commit("watch/setIsPlaying", true);
+
+        if (!self.isMuted) {
+          self.mute();
+          self.unmute();
+        }
       }
 
       if (event.data == YT.PlayerState.ENDED) {

@@ -192,8 +192,6 @@ export default {
 
       this.timer = setInterval(function () {
         //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
-        // console.log(event.target.getCurrentTime());
-        // console.log(self.player.getCurrentTime());
         self.$store.commit(
           "youtube/setCurrentTime",
           self.formatTime(self.player.getCurrentTime())
@@ -576,7 +574,6 @@ export default {
     //Youtube Playerの初期処理
     window.onYouTubeIframeAPIReady = () => {
       if (!self.isAPIReady) {
-        console.log("onYouTubeIframeAPIReady");
         let player = new YT.Player("playerWatch", {
           width: "560",
           height: "315",
@@ -609,7 +606,6 @@ export default {
     setTimeout(onYouTubeIframeAPIReady, 100);
 
     window.onPlayerReady = (event) => {
-      console.log("onPlayerReady");
       self.setIsMuted(true);
       event.target.mute();
       event.target.playVideo();
@@ -618,7 +614,6 @@ export default {
       self.setYtPlayerCSS();
 
       //0.4秒毎に現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
-      console.log("startTimer");
       self.startTimer();
     };
 
@@ -653,12 +648,9 @@ export default {
         //フラグを再生中にセット
         this.$store.commit("watch/setIsPlaying", true);
 
-        console.log("-----playing------");
-        console.log("isMuted = " + self.isMuted);
         if (!self.isMuted) {
           self.mute();
           self.unmute();
-          console.log("unmute");
         }
       }
 
