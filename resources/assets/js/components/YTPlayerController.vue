@@ -1,18 +1,18 @@
 <template>
   <div class="iframeHeight">
-    <v-sheet class="overlay" v-on:click="toggleController">
+    <v-sheet class="overlay" v-on:click.prevent="toggleController">
       <v-container class="ma-0 pa-0" fluid fill-height>
         <v-row
           class="ma-0 pa-0 text-center"
           align="center"
-          style="height: 33.333%;"
+          style="height: 33.333%"
         >
         </v-row>
         <v-row
           class="ma-0 pa-0 text-center"
           align="center"
           justify="space-around"
-          style="height: 33.333%;"
+          style="height: 33.333%"
         >
           <v-col>
             <v-icon x-large v-on:click.stop="backwardFiveSec" color="white"
@@ -24,13 +24,13 @@
               v-if="isPlaying"
               v-on:click.stop="pauseVideo"
               class="fas fa-pause fa-2x"
-              style="color: white;"
+              style="color: white"
             ></i>
             <i
               v-else
               v-on:click.stop="playVideo"
               class="fas fa-play fa-2x"
-              style="color: white;"
+              style="color: white"
             ></i>
           </v-col>
           <v-col>
@@ -42,9 +42,9 @@
         <v-row
           class="ma-0 pa-0 text-center"
           align="end"
-          style="height: 33.333%;"
+          style="height: 33.333%"
         >
-          <v-col align-self="end" class="text-left" style="color: white;">
+          <v-col align-self="end" class="text-left" style="color: white">
             {{ currentTime }} / {{ duration }}
           </v-col>
           <v-col align-self="end" class="text-right">
@@ -126,7 +126,7 @@ export default {
         clearTimeout(this.timer);
 
         //set timer and fadeout in 2.5sec
-        this.timer = setTimeout(function() {
+        this.timer = setTimeout(function () {
           this.immediateHideFlag = false;
           $(".overlay").fadeOut(500);
         }, 2500);
@@ -181,7 +181,7 @@ export default {
   },
   mounted() {
     //iframeプレイヤーの表示から4秒後にプレイヤーコントロールボタンを非表示
-    setTimeout(function() {
+    setTimeout(function () {
       $(".overlay").fadeOut(1000);
     }, 4000);
   },
