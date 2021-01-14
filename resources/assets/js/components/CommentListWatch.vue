@@ -22,7 +22,7 @@
             <div class="placeholder-color">
               {{ mostLikesItem.name }}
             </div>
-            <div class="comment-body py-1">
+            <div class="mostLikedComment-body py-1">
               {{ mostLikesItem.content }}
             </div>
           </div>
@@ -176,7 +176,7 @@ export default {
       parentId: 0,
       commentRules: [(v) => !!v || "コメントを入力して下さい"],
       mostLikesItem: null,
-      panelComment: null,
+      panelComment: 0,
     };
   },
   props: {
