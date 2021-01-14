@@ -27,9 +27,13 @@
               </template>
               <template v-else>
                 <v-list-item-icon class="mr-4">
-                  <v-icon>{{ data.item.icon }}</v-icon>
+                  <v-icon v-on:click="YTsearchByItem(data.item.value)">{{
+                    data.item.icon
+                  }}</v-icon>
                 </v-list-item-icon>
-                <v-list-item-content>
+                <v-list-item-content
+                  v-on:click="YTsearchByItem(data.item.value)"
+                >
                   <v-list-item-title
                     v-html="data.item.value"
                   ></v-list-item-title>
@@ -39,6 +43,7 @@
                     src="/storage/icons/north_west.svg"
                     width="16px"
                     max-height="16px"
+                    v-on:click="YTsearchByItem(data.item.value)"
                   ></v-img>
                 </v-list-item-icon>
               </template>
@@ -187,6 +192,42 @@ export default {
 
       //インクリメンタルサーチの表示を消すためフォーカスを外す
       this.$refs.YTsearchInputBox.blur();
+    },
+    //インクリメンタルサーチをクリックし検索
+    YTsearchByItem(item) {
+      //検索結果を表示
+      if (this.isAdding) {
+        //in case of adding to existing playlist
+        this.$store.commit("YTsearch/setYTsearchQuery", item);
+        this.$router
+          .push({
+            path: "/add/search",
+            query: {
+              playlist: this.myPlaylistToSave,
+              search_query: item,
+            },
+          })
+          .catch((err) => {});
+      } else {
+        //in case of adding to new playlist
+        if (this.$route.query.return == "true") {
+          this.$store.commit("YTsearch/setYTsearchQuery", item);
+          this.$router
+            .push({
+              path: "/highlight",
+              query: { search_query: item, return: true },
+            })
+            .catch((err) => {});
+        } else {
+          this.$store.commit("YTsearch/setYTsearchQuery", item);
+          this.$router
+            .push({
+              path: "/highlight",
+              query: { search_query: item },
+            })
+            .catch((err) => {});
+        }
+      }
     },
   },
   async created() {
