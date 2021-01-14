@@ -123,6 +123,7 @@ export default {
       } else {
         //set new creating playlist ID
         this.$store.commit("tagging/setMyPlaylistToSave", this.newPlaylistId);
+        this.$store.commit("watch/setPlaylistId", this.newPlaylistId); // for scene order change by dragging
 
         //load scenelist
         await this.loadSceneList();
