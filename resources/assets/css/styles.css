@@ -776,7 +776,6 @@
   overflow: hidden;
 }
 .comment-body {
-  display: -webkit-box;
   line-height: 1;
   overflow: hidden;
 }

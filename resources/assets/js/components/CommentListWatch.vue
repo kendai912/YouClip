@@ -5,7 +5,8 @@
       <v-expansion-panel key="panelComment">
         <v-expansion-panel-header
           v-bind:class="{
-            commentListExpansionPanelCustomHeader: panelComment !== 0 && mostLikesItem,
+            commentListExpansionPanelCustomHeader:
+              panelComment !== 0 && mostLikesItem,
           }"
           class="ma-0 pl-3 pr-2"
         >
@@ -76,7 +77,7 @@
                 <i class="fas fa-user-circle fa-2x" style="color:grey;"></i>
               </v-avatar>
             </v-col>
-            <v-col cols="auto" class="ma-0 pa-2">
+            <v-col class="ma-0 pa-2">
               <div class="placeholder-color">
                 {{ item.name }}
               </div>
@@ -121,7 +122,7 @@
                     <i class="fas fa-user-circle fa-2x" style="color:grey;"></i>
                   </v-avatar>
                 </v-col>
-                <v-col cols="auto" class="ma-0 pa-2">
+                <v-col class="ma-0 pa-2">
                   <div class="placeholder-color">
                     {{ replyItem.name }}
                   </div>
