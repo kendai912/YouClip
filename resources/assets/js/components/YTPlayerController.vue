@@ -15,26 +15,26 @@
           style="height: 33.333%"
         >
           <v-col>
-            <v-icon x-large v-on:click.stop="backwardFiveSec" color="white"
+            <v-icon x-large v-on:click.stop.prevent="backwardFiveSec" color="white"
               >replay_5</v-icon
             >
           </v-col>
           <v-col>
             <i
               v-if="isPlaying"
-              v-on:click.stop="pauseVideo"
+              v-on:click.stop.prevent="pauseVideo"
               class="fas fa-pause fa-2x"
               style="color: white"
             ></i>
             <i
               v-else
-              v-on:click.stop="playVideo"
+              v-on:click.stop.prevent="playVideo"
               class="fas fa-play fa-2x"
               style="color: white"
             ></i>
           </v-col>
           <v-col>
-            <v-icon x-large v-on:click.stop="forwardFiveSec" color="white"
+            <v-icon x-large v-on:click.stop.prevent="forwardFiveSec" color="white"
               >forward_5</v-icon
             >
           </v-col>
@@ -48,20 +48,20 @@
             {{ currentTime }} / {{ duration }}
           </v-col>
           <v-col align-self="end" class="text-right">
-            <v-icon large v-on:click="openPlaySpeedModal" color="white"
+            <v-icon large v-on:click.stop.prevent="openPlaySpeedModal" color="white"
               >mdi-speedometer</v-icon
             >
-            <v-icon large v-if="isMuted" v-on:click.stop="unmute" color="white"
+            <v-icon large v-if="isMuted" v-on:click.stop.prevent="unmute" color="white"
               >volume_off</v-icon
             >
-            <v-icon large v-else v-on:click.stop="mute" color="white"
+            <v-icon large v-else v-on:click.stop.prevent="mute" color="white"
               >volume_up</v-icon
             >
           </v-col>
         </v-row>
       </v-container>
     </v-sheet>
-    <v-sheet class="overlayWrap" v-on:click="toggleController"></v-sheet>
+    <v-sheet class="overlayWrap" v-on:click.prevent="toggleController"></v-sheet>
     <PlaySpeedModal v-if="showPlaySpeedModal" v-bind:player="player" />
   </div>
 </template>
