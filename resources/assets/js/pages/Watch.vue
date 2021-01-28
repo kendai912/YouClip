@@ -3,7 +3,7 @@
     <div class="container--small">
       <div class="watch-body" ref="watchBody">
         <div class="ytPlayerWrapper" ref="ytPlayerWrapper">
-          <div id="playerWatch"></div>
+          <div class="video-placeholder" id="playerWatch"></div>
           <YTPlayerController v-show="isPlayerReady" ref="YTPlayerController" />
           <YTSeekBar
             v-show="isPlayerReady"
@@ -174,6 +174,15 @@ export default {
       timeout: 5000,
       text: "",
       watchBodyRef: this.$refs.watchBody,
+      isAndroid: false,
+      reloadedFlag: "",
+      reloaded: false,
+      playerDiv: "",
+      newId: "",
+      videoId: "79XQBAouHjU",
+      youtubeCallbackName: "onYouTubeIframeAPIReady",
+      youtubeExistsFlag: "$isYoutubeFrameAPIReady",
+      hasYTFrame: false,
     };
   },
   mixins: [myMixin],
@@ -189,6 +198,7 @@ export default {
     }),
     startTimer() {
       let self = this;
+      if (this.timer) clearInterval(this.timer);
 
       this.timer = setInterval(function () {
         //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
@@ -424,6 +434,53 @@ export default {
       this.$store.commit("tagging/setEnd", "");
       this.$store.commit("tagging/setPrivacySetting", "public");
     },
+    hasYoutubeFrameAPI() {
+      if (!this.hasYTFrame) {
+        this.hasYTFrame = !!document.getElementsByClassName(".yt-frame-api")
+          .length;
+      }
+      return this.hasYTFrame;
+    },
+    injectYoutubeFrameAPI() {
+      const youtubeExistsFlag = this.youtubeExistsFlag;
+      const youtubeCallbackName = this.youtubeCallbackName;
+
+      window[this.youtubeCallbackName] =
+        window[this.youtubeCallbackName] ||
+        function () {
+          window[youtubeExistsFlag] = true;
+          window[youtubeCallbackName] = null;
+          delete window[youtubeCallbackName];
+        };
+
+      var tag = document.createElement("script");
+      var first = document.getElementsByTagName("script")[0];
+      tag.src = "https://www.youtube.com/iframe_api";
+      tag.className = "yt-frame-api";
+      first.parentNode.insertBefore(tag, first);
+    },
+    whenYoutubeAPIReady() {
+      const existsFlag = this.youtubeExistsFlag;
+      return new Promise(function (resolve, reject) {
+        let elapsed = 0;
+        let intervalHandle;
+        let checker = function () {
+          elapsed += 48;
+          if (!!window[existsFlag]) {
+            clearTimeout(intervalHandle);
+            resolve();
+          } else {
+            if (elapsed <= 15000) {
+              intervalHandle = setTimeout(checker, 48);
+            } else {
+              reject("timeout");
+            }
+          }
+        };
+
+        setTimeout(checker, 48);
+      });
+    },
   },
   watch: {
     //シーン切替時のlistIndexセット
@@ -433,6 +490,16 @@ export default {
     },
     isPlayerReady() {
       this.isPlayerReady ? this.$refs.ytSeekBar.setYtSeekbarWrapperTop() : "";
+    },
+    //再生出来ないAndroidの場合は3.5秒後にリロード
+    isAPIReady() {
+      if (this.isAPIReady) {
+        setTimeout(() => {
+          if (!this.isPlayerReady && this.isAndroid) {
+            // window.location.reload();
+          }
+        }, 3500);
+      }
     },
   },
   computed: {
@@ -490,6 +557,17 @@ export default {
     },
     endIs() {
       return this.formatToMinSec(this.endHis);
+    },
+    youtubeVideoID() {
+      if (this.videoId.indexOf(":/") !== -1) {
+        const catcher = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
+        const res = catcher.exec(this.videoId);
+        if (res && res[1]) {
+          return res[1];
+        }
+      }
+
+      return this.videoId;
     },
   },
   async mounted() {
@@ -563,18 +641,13 @@ export default {
     this.$store.commit("youtube/setYoutubeId", this.currentYoutubeId);
     await this.$store.dispatch("youtube/getVideo");
 
-    // This code loads the IFrame Player API code asynchronously.
-    var tag = document.createElement("script");
-    tag.src =
-      "https://www.youtube.com/iframe_api?" + parseInt(new Date() / 1000);
-    var firstScriptTag = document.getElementsByTagName("script")[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     let self = this;
-
-    //Youtube Playerの初期処理
-    window.onYouTubeIframeAPIReady = () => {
-      if (!self.isAPIReady) {
-        let player = new YT.Player("playerWatch", {
+    if (!this.hasYoutubeFrameAPI()) {
+      this.injectYoutubeFrameAPI();
+    }
+    this.whenYoutubeAPIReady().then(
+      () => {
+        let YTPLayer = new YT.Player("playerWatch", {
           width: "560",
           height: "315",
           videoId: this.currentYoutubeId,
@@ -591,6 +664,7 @@ export default {
             iv_load_policy: 3, //動画アノテーションを非表示
             modestbranding: 1, //YouTubeロゴ非表示
             enablejsapi: 1, //postMessageを有効にするのに必要
+            html5: 1,
           },
           events: {
             onReady: onPlayerReady,
@@ -599,11 +673,11 @@ export default {
         });
 
         //playerインスタンスをytPlayerControllerストアに格納
-        self.setPlayer(player);
+        self.setPlayer(YTPLayer);
         self.isAPIReady = true;
-      }
-    };
-    setTimeout(onYouTubeIframeAPIReady, 100);
+      },
+      (error) => console.error(error)
+    );
 
     window.onPlayerReady = (event) => {
       self.setIsMuted(true);
@@ -660,12 +734,16 @@ export default {
       }
     };
 
+    this.setYtPlayerCSS();
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.watchBodyRef = this.$refs.watchBody;
   },
   beforeDestroy() {
     // シーンタグ付けコンポーネントの現在再生時間をセットするインターバルを停止する
     clearInterval(this.timer);
+
+    //ページ起動時にリロードが必要なAndroid用にフラグをリセット
+    window.sessionStorage.removeItem("reloadedFlag");
   },
 };
 </script>
