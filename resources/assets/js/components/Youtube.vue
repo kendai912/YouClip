@@ -133,7 +133,6 @@
 import { mapState, mapGetters, mapMutations } from "vuex";
 import HighlightHeader from "../components/HighlightHeader.vue";
 import TagItem from "../components/TagItem.vue";
-import TimeControl from "../components/TimeControl.vue";
 import YTPlayerController from "../components/YTPlayerController";
 import YTSeekBar from "../components/YTSeekBar";
 import myMixin from "../util";
@@ -142,7 +141,6 @@ export default {
   components: {
     HighlightHeader,
     TagItem,
-    TimeControl,
     YTPlayerController,
     YTSeekBar,
   },
@@ -213,15 +211,15 @@ export default {
       newVideoData: "youtube/newVideoData",
       videoData: "youtube/videoData",
       currentTime: "youtube/currentTime",
-      player: "ytPlayerController/player",
-      isMuted: "ytPlayerController/isMuted",
+      player: "ytPlayer/player",
+      isMuted: "ytPlayer/isMuted",
       tagAndVideoData: "watch/tagAndVideoData",
     }),
   },
   methods: {
     ...mapMutations({
-      setPlayer: "ytPlayerController/setPlayer",
-      setIsMuted: "ytPlayerController/setIsMuted",
+      setPlayer: "ytPlayer/setPlayer",
+      setIsMuted: "ytPlayer/setIsMuted",
     }),
     async initialize() {
       //ナビバーを非表示

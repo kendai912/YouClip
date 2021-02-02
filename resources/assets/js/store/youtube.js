@@ -125,9 +125,9 @@ const mutations = {
 
 const actions = {
   //youtubeIdからDBに既に登録済の動画IDを取得
-  async getVideo(context) {
+  async getVideo(context, youtubeId) {
     let params = {
-      youtubeId: state.youtubeId,
+      youtubeId: youtubeId,
     };
 
     const response = await axios.get("/api/youtube/getVideo", {

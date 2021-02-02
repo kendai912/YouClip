@@ -103,7 +103,7 @@ export default {
   mixins: [myMixin],
   computed: {
     ...mapGetters({
-      player: "ytPlayerController/player",
+      player: "ytPlayer/player",
       currentTime: "youtube/currentTime",
       isNew: "youtube/isNew",
       newVideoData: "youtube/newVideoData",

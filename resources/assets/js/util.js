@@ -211,6 +211,23 @@ export default {
         });
       }
     },
+    //YTPlayerのまとめの再生に必要なパラメータをセット
+    putTagVideoIntolistOfYoutubeIdStartEndTime: function(
+      listOfYoutubeIdStartEndTimeArray,
+      tagVideo
+    ) {
+      if (tagVideo) {
+        tagVideo.forEach((value, index) => {
+          let listOfYoutubeIdStartEndTime = {
+            youtubeId: value.youtubeId,
+            start: value.start,
+            end: value.end,
+            scene_order: value.scene_order,
+          };
+          listOfYoutubeIdStartEndTimeArray.push(listOfYoutubeIdStartEndTime);
+        });
+      }
+    },
     //ss表記から「◯時間」か「◯分」か「◯秒」に変換
     convertToKanjiTime(s) {
       let units = ["秒", "分", "時間"];

@@ -4,8 +4,6 @@ import router from "../router";
 import store from "../store";
 
 const state = {
-  showSceneTagControl: false,
-  showTaggingControl: "TimeControl",
   tagId: null,
   tags: null,
   start: null,
@@ -24,8 +22,6 @@ const state = {
 };
 
 const getters = {
-  showSceneTagControl: (state) => state.showSceneTagControl,
-  showTaggingControl: (state) => state.showTaggingControl,
   tagId: (state) => state.tagId,
   tags: (state) => state.tags,
   start: (state) => state.start,
@@ -44,12 +40,6 @@ const getters = {
 };
 
 const mutations = {
-  setShowSceneTagControl(state, data) {
-    state.showSceneTagControl = data;
-  },
-  setShowTaggingControl(state, data) {
-    state.showTaggingControl = data;
-  },
   setTagId(state, data) {
     state.tagId = data;
   },

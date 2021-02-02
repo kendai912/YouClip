@@ -290,8 +290,7 @@ export default {
   mixins: [myMixin],
   computed: {
     ...mapGetters({
-      listIndex: "watch/listIndex",
-      playlistId: "watch/playlistId",
+      listIndex: "ytPlayer/listIndex",
     }),
   },
   watch: {
@@ -306,7 +305,7 @@ export default {
   methods: {
     select(index) {
       //選択した場面を再生
-      this.$emit("playPlaylist", index);
+      this.$emit("switchToPlayListIndexOf", index);
     },
     readMore(arrayData) {
       let newArray = [];

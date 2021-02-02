@@ -15,7 +15,10 @@
           style="height: 33.333%"
         >
           <v-col>
-            <v-icon x-large v-on:click.stop.prevent="backwardFiveSec" color="white"
+            <v-icon
+              x-large
+              v-on:click.stop.prevent="backwardFiveSec"
+              color="white"
               >replay_5</v-icon
             >
           </v-col>
@@ -34,7 +37,10 @@
             ></i>
           </v-col>
           <v-col>
-            <v-icon x-large v-on:click.stop.prevent="forwardFiveSec" color="white"
+            <v-icon
+              x-large
+              v-on:click.stop.prevent="forwardFiveSec"
+              color="white"
               >forward_5</v-icon
             >
           </v-col>
@@ -48,10 +54,17 @@
             {{ currentTime }} / {{ duration }}
           </v-col>
           <v-col align-self="end" class="text-right">
-            <v-icon large v-on:click.stop.prevent="openPlaySpeedModal" color="white"
+            <v-icon
+              large
+              v-on:click.stop.prevent="openPlaySpeedModal"
+              color="white"
               >mdi-speedometer</v-icon
             >
-            <v-icon large v-if="isMuted" v-on:click.stop.prevent="unmute" color="white"
+            <v-icon
+              large
+              v-if="isMuted"
+              v-on:click.stop.prevent="unmute"
+              color="white"
               >volume_off</v-icon
             >
             <v-icon large v-else v-on:click.stop.prevent="mute" color="white"
@@ -61,7 +74,10 @@
         </v-row>
       </v-container>
     </v-sheet>
-    <v-sheet class="overlayWrap" v-on:click.prevent="toggleController"></v-sheet>
+    <v-sheet
+      class="overlayWrap"
+      v-on:click.prevent="toggleController"
+    ></v-sheet>
     <PlaySpeedModal v-if="showPlaySpeedModal" v-bind:player="player" />
   </div>
 </template>
@@ -86,14 +102,14 @@ export default {
   mixins: [myMixin],
   computed: {
     ...mapGetters({
-      player: "ytPlayerController/player",
-      isMuted: "ytPlayerController/isMuted",
+      player: "ytPlayer/player",
+      isMuted: "ytPlayer/isMuted",
       currentTime: "youtube/currentTime",
       isNew: "youtube/isNew",
       newVideoData: "youtube/newVideoData",
       videoData: "youtube/videoData",
       showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
-      isPlaying: "watch/isPlaying",
+      isPlaying: "ytPlayer/isPlaying",
     }),
     duration() {
       if (this.isNew) {
@@ -108,8 +124,8 @@ export default {
   methods: {
     ...mapMutations({
       openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal",
-      setIsPlaying: "watch/setIsPlaying",
-      setIsMuted: "ytPlayerController/setIsMuted",
+      setIsPlaying: "ytPlayer/setIsPlaying",
+      setIsMuted: "ytPlayer/setIsMuted",
     }),
     setImmediateHide() {
       this.immediateHideFlag = true;
@@ -126,7 +142,7 @@ export default {
         clearTimeout(this.timer);
 
         //set timer and fadeout in 2.5sec
-        this.timer = setTimeout(function () {
+        this.timer = setTimeout(function() {
           this.immediateHideFlag = false;
           $(".overlay").fadeOut(500);
         }, 2500);
@@ -143,7 +159,7 @@ export default {
     playVideo() {
       this.fadeOutController();
 
-      this.$store.commit("watch/setIsPlaying", true);
+      this.$store.commit("ytPlayer/setIsPlaying", true);
       this.player.playVideo();
     },
     //一時停止
@@ -155,7 +171,7 @@ export default {
         clearTimeout(this.timer);
       }, 10);
 
-      this.$store.commit("watch/setIsPlaying", false);
+      this.$store.commit("ytPlayer/setIsPlaying", false);
       this.player.pauseVideo();
     },
     //5秒戻る
@@ -181,7 +197,7 @@ export default {
   },
   mounted() {
     //iframeプレイヤーの表示から4秒後にプレイヤーコントロールボタンを非表示
-    setTimeout(function () {
+    setTimeout(function() {
       $(".overlay").fadeOut(1000);
     }, 4000);
   },
