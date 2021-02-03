@@ -14,7 +14,7 @@
           v-bind:bodyRef="highlightBodyRef"
         />
       </div>
-      <v-sheet v-if="player != null" class="highlightControllerBody">
+      <v-sheet v-if="isPlayerReady" class="highlightControllerBody">
         <v-container class="ma-0 pa-0" fluid>
           <v-row class="ma-0 pa-0 text-left" align="center">
             <v-col>
@@ -403,29 +403,6 @@ export default {
           window.sessionStorage.removeItem("ytInputData");
         });
       }
-    },
-    setYtPlayerCSS() {
-      //iframeの縦・横のサイズをセット(縦は952px、横は幅いっぱい)
-      $("iframe").width($(".ytPlayerWrapper").width());
-      $("iframe").height(952);
-
-      //iframeとseekbarが見える範囲の高さをセットし、iframe上部の黒分が見えないよう上にスライド
-      $(".ytPlayerWrapper").css(
-        "height",
-        ($("iframe").width() * 9) / 16 +
-          (952 - ($("iframe").width() * 9) / 16) / 2 +
-          15
-      );
-      $(".ytPlayerWrapper").css(
-        "top",
-        (($("iframe").height() - ($("iframe").width() * 9) / 16) / 2) * -1
-      );
-
-      //開始・終了ボタンがiframeとseekbarの下に来るようにtopを調整
-      $(".highlightControllerBody").css(
-        "top",
-        ($("iframe").width() * 9) / 16 + 15
-      );
     },
     unmute() {
       this.player.unMute();

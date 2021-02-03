@@ -4,7 +4,7 @@
       <div class="watch-body" ref="watchBody">
         <div class="ytPlayerWrapper" ref="ytPlayerWrapper">
           <YTIframe
-            v-if="this.youtubeId"
+            v-if="ytIframeParameterReady"
             v-on:switchToPlayListIndexOf="switchToPlayListIndexOf"
           />
           <YTPlayerController v-show="isPlayerReady" ref="YTPlayerController" />
@@ -155,6 +155,7 @@ export default {
   },
   data() {
     return {
+      ytIframeParameterReady: false,
       playlistIdUrl: "",
       indexUrl: 0,
       mediaItems: [],
@@ -283,32 +284,6 @@ export default {
     //     })
     //     .catch((err) => {});
     // },
-    setYtPlayerCSS() {
-      //iframeの縦・横のサイズをセット(縦は952px、横は幅いっぱい)
-      $("iframe").width($(".ytPlayerWrapper").width());
-      $("iframe").css({ position: "absolute", top: "0px" });
-      $("iframe").height(952);
-
-      //iframeとseekbarが見える範囲の高さをセットし、iframe上部の黒分が見えないよう上にスライド
-      $(".ytPlayerWrapper").css(
-        "height",
-        ($("iframe").width() * 9) / 16 +
-          (952 - ($("iframe").width() * 9) / 16) / 2 +
-          15
-      );
-      $(".ytPlayerWrapper").css(
-        "top",
-        (($("iframe").height() - ($("iframe").width() * 9) / 16) / 2) * -1
-      );
-
-      this.$nextTick(() => {
-        //開始・終了ボタンがiframeとseekbarの下に来るようにtopを調整
-        $(".highlightControllerBody").css(
-          "top",
-          ($("iframe").width() * 9) / 16 + 15
-        );
-      });
-    },
     initialize() {
       //ナビバーを非表示
       this.$store.commit("navbar/setShowNavbar", false);
@@ -347,7 +322,7 @@ export default {
 
       window[this.youtubeCallbackName] =
         window[this.youtubeCallbackName] ||
-        function () {
+        function() {
           window[youtubeExistsFlag] = true;
           window[youtubeCallbackName] = null;
           delete window[youtubeCallbackName];
@@ -361,10 +336,10 @@ export default {
     },
     whenYoutubeAPIReady() {
       const existsFlag = this.youtubeExistsFlag;
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
         let elapsed = 0;
         let intervalHandle;
-        let checker = function () {
+        let checker = function() {
           elapsed += 48;
           if (!!window[existsFlag]) {
             clearTimeout(intervalHandle);
@@ -453,6 +428,7 @@ export default {
       listOfYoutubeIdStartEndTime
     );
     this.$store.commit("ytPlayer/setListIndex", this.indexUrl);
+    this.ytIframeParameterReady = true;
 
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.watchBodyRef = this.$refs.watchBody;
