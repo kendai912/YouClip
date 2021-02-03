@@ -18,10 +18,10 @@
             class="ios-highlight-content"
             v-bind:style="
               'left: calc(' +
-              contentLeft +
-              'px + 3px ); width: calc(' +
-              contentWidth +
-              'px - 6px);'
+                contentLeft +
+                'px + 3px ); width: calc(' +
+                contentWidth +
+                'px - 6px);'
             "
           ></div>
           <div
@@ -59,10 +59,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-          contentLeft +
-          'px + 3px ); width: calc(' +
-          contentWidth +
-          'px - 6px);'
+            contentLeft +
+            'px + 3px ); width: calc(' +
+            contentWidth +
+            'px - 6px);'
         "
       ></div>
       <div
@@ -108,7 +108,7 @@ export default {
       isNew: "youtube/isNew",
       newVideoData: "youtube/newVideoData",
       videoData: "youtube/videoData",
-      isReady: "youtube/isReady",
+      isPlayerReady: "ytPlayer/isPlayerReady",
       startTimeInput: "ytSeekBar/startTimeInput",
       endTimeInput: "ytSeekBar/endTimeInput",
     }),
@@ -140,7 +140,7 @@ export default {
       if (
         this.startTimeInput != null &&
         this.convertToSec(this.startTimeInput) &&
-        this.isReady
+        this.isPlayerReady
       ) {
         if (this.isMobile) {
           return (
@@ -164,7 +164,7 @@ export default {
         this.startTimeInput != null &&
         (this.convertToSec(this.startTimeInput) ||
           this.convertToSec(this.startTimeInput) === 0) &&
-        this.isReady
+        this.isPlayerReady
       ) {
         if (
           this.endTimeInput != null &&
@@ -248,7 +248,7 @@ export default {
       } else if (this.isMobile) {
         this.bodyRef.addEventListener(
           "touchmove",
-          function (e) {
+          function(e) {
             e.preventDefault();
             this.getClickPosition;
           },
@@ -306,7 +306,7 @@ export default {
       } else if (this.isMobile) {
         this.$refs.iosYtseekHead.addEventListener(
           "touchstart",
-          function (e) {
+          function(e) {
             e.preventDefault();
             this.detectMouseDown;
           },

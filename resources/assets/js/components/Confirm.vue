@@ -3,7 +3,10 @@
     <HighlightHeader />
     <div class="highlight-body" ref="highlightBody">
       <div class="ytPlayerWrapper" ref="ytPlayerWrapper">
-        <div id="playerConfirm"></div>
+        <YTIframe
+          v-if="ytIframeParameterReady"
+          v-on:switchToPlayListIndexOf="switchToPlayListIndexOf"
+        />
         <YTPlayerController v-show="isPlayerReady" ref="YTPlayerController" />
         <YTSeekBar
           v-show="isPlayerReady"
@@ -104,7 +107,7 @@
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
 import HighlightHeader from "../components/HighlightHeader.vue";
-import TagItem from "../components/TagItem.vue";
+import YTIframe from "../components/YTIframe";
 import YTPlayerController from "../components/YTPlayerController";
 import YTSeekBar from "../components/YTSeekBar";
 import NoLoginModal from "../components/NoLoginModal.vue";
@@ -114,7 +117,7 @@ import myMixin from "../util";
 export default {
   components: {
     HighlightHeader,
-    TagItem,
+    YTIframe,
     YTPlayerController,
     YTSeekBar,
     NoLoginModal,
@@ -122,14 +125,12 @@ export default {
   },
   data() {
     return {
-      show: true,
       snackbar: false,
       timeout: 5000,
       text: "シーンタグを登録しました",
+      ytIframeParameterReady: false,
       timer: null,
       highlightBodyRef: this.$refs.highlightBody,
-      isPlayerReady: false,
-      isAPIReady: false,
       isDisabled: false,
       playlistIdToAdd: null,
       playlistIdToEdit: null,
@@ -143,7 +144,6 @@ export default {
   computed: {
     ...mapGetters({
       isLogin: "auth/check",
-      youtubeId: "youtube/youtubeId",
       tagDataArray: "youtube/tagDataArray",
       isNew: "youtube/isNew",
       newVideoData: "youtube/newVideoData",
@@ -158,7 +158,9 @@ export default {
       showLoginModal: "noLoginModal/showLoginModal",
       newPlaylistId: "playlist/newPlaylistId",
       showConfirmationModal: "confirmationModal/showConfirmationModal",
+      youtubeId: "ytPlayer/youtubeId",
       player: "ytPlayer/player",
+      isPlayerReady: "ytPlayer/isPlayerReady",
       isMuted: "ytPlayer/isMuted",
       isPlaying: "ytPlayer/isPlaying",
       tagAndVideoData: "watch/tagAndVideoData",
@@ -168,7 +170,7 @@ export default {
     ...mapMutations({
       setPlayer: "ytPlayer/setPlayer",
       setIsMuted: "ytPlayer/setIsMuted",
-      setIsPlaying: "watch/setIsPlaying",
+      setIsPlaying: "ytPlayer/setIsPlaying",
       setIsAdding: "tagging/setIsAdding",
       setIsEditing: "tagging/setIsEditing",
     }),
@@ -205,7 +207,7 @@ export default {
       }
 
       //倍速視聴を1倍のリセット
-      this.$store.commit("watch/setPlaySpeed", 1);
+      this.$store.commit("ytPlayer/setPlaySpeed", 1);
 
       this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
     },
@@ -214,10 +216,6 @@ export default {
       let defaultTags = this.tagAndVideoData[0].tags.split(/::/);
       this.$store.commit("tagging/setTags", defaultTags);
       this.tags = defaultTags;
-    },
-    //シーンタグ完了のトーストを表示
-    taggingSucceed() {
-      this.snackbar = true;
     },
     checkRouting() {
       if (this.start == null || this.end == null) {
@@ -239,11 +237,11 @@ export default {
       this.setIsEditing(false);
     },
     //以前入力された開始・終了時間をセッションストレージからロード
-    loadTimeInput() {
+    loadTimeInput(youtubeId) {
       let ytInputData = JSON.parse(
         window.sessionStorage.getItem("ytInputData")
       );
-      if (ytInputData && ytInputData.youtubeId == this.youtubeId) {
+      if (ytInputData && ytInputData.youtubeId == youtubeId) {
         this.$store.commit("tagging/setStart", ytInputData.startTimeInput);
         this.$store.commit("tagging/setEnd", ytInputData.endTimeInput);
         this.$store.commit(
@@ -437,6 +435,20 @@ export default {
       this.player.mute();
       this.setIsMuted(true);
     },
+    switchToPlayListIndexOf(index) {
+      //URLを更新
+      this.$router
+        .push({
+          path: "/youtube/confirm",
+          query: {
+            v: this.youtubeId,
+          },
+        })
+        .catch((err) => {});
+
+      //次のシーンをロードし再生
+      this.$store.dispatch("ytPlayer/playListIndexOf", index);
+    },
   },
   watch: {
     // 検索バーによるルート変更後の初期化処理
@@ -444,7 +456,10 @@ export default {
       this.initialize();
     },
     isPlayerReady() {
-      this.isPlayerReady ? this.$refs.ytSeekBar.setYtSeekbarWrapperTop() : "";
+      if (this.isPlayerReady) {
+        this.setYtPlayerCSS();
+        this.$refs.ytSeekBar.setYtSeekbarWrapperTop();
+      }
     },
   },
   async created() {
@@ -466,100 +481,32 @@ export default {
       await this.$store.dispatch("youtube/getNewVideoData");
     }
 
-    //ログイン済の場合ユーザーが作成したプレイリスト一覧を取得
-    if (this.isLogin) {
-      this.$store.dispatch("playlist/getMyCreatedPlaylist");
-    }
+    //load start & end time
+    this.loadTimeInput(youtubeId);
 
-    // This code loads the IFrame Player API code asynchronously.
-    var tag = document.createElement("script");
-    tag.src =
-      "https://www.youtube.com/iframe_api?" + +parseInt(new Date() / 1000);
-    var firstScriptTag = document.getElementsByTagName("script")[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    let self = this;
+    //YTPlayerのまとめの再生に必要なパラメータをセット
+    let listOfYoutubeIdStartEndTime = [];
+    let dataOfYoutubeIdStartEndTime = [];
+    dataOfYoutubeIdStartEndTime[0] = [];
+    dataOfYoutubeIdStartEndTime[0].youtubeId = youtubeId;
+    this.start
+      ? (dataOfYoutubeIdStartEndTime[0].start = "00:" + this.start)
+      : (dataOfYoutubeIdStartEndTime[0].start = "");
+    this.end
+      ? (dataOfYoutubeIdStartEndTime[0].end = "00:" + this.end)
+      : (dataOfYoutubeIdStartEndTime[0].end = "");
+    dataOfYoutubeIdStartEndTime[0].scene_order = 1;
 
-    //Youtube Playerの初期処理
-    window.onYouTubeIframeAPIReady = () => {
-      if (!self.isAPIReady) {
-        //load start & end time
-        this.loadTimeInput();
-
-        let player = new YT.Player("playerConfirm", {
-          width: "560",
-          height: "315",
-          videoId: this.youtubeId,
-          playerVars: {
-            start: this.start ? this.convertToSec(this.start) : "",
-            end: this.end ? this.convertToSec(this.end) : "",
-            playsinline: 1,
-            autoplay: 1,
-            iv_load_policy: 3, //アノテーション非表示
-            modestbranding: 1, //YouTubeロゴ非表示
-            rel: 0, //関連動画非表示
-            controls: 0, //プレイーコントロールを非表示
-            fs: 0, //全画面表示ボタンを非表示
-            iv_load_policy: 3, //動画アノテーションを非表示
-            modestbranding: 1, //YouTubeロゴ非表示
-            enablejsapi: 1, //postMessageを有効にするのに必要
-          },
-          events: {
-            onReady: onPlayerReady,
-            onStateChange: onPlayerStateChange,
-          },
-        });
-
-        //playerインスタンスをytPlayerControllerストアに格納
-        self.setPlayer(player);
-        self.isAPIReady = true;
-      }
-    };
-    setTimeout(onYouTubeIframeAPIReady, 100);
-
-    window.onPlayerReady = (event) => {
-      self.setYtPlayerCSS();
-
-      self.setIsMuted(true);
-      event.target.mute();
-      event.target.playVideo();
-      self.isPlayerReady = true;
-
-      //現在の再生時間を取得しyoutubeストアのcurrentTimeにセット
-      self.timer = setInterval(function() {
-        //playerが取得した時間を「分:秒」に整形しcurrentTimeに格納
-        let currentTime = self.formatTime(event.target.getCurrentTime());
-        //currentTimeをyoutubeストアにセット
-        self.$store.commit("youtube/setCurrentTime", currentTime);
-      });
-
-      //TagItemを表示に切り替え
-      this.$store.commit("youtube/setIsReady", true);
-    };
-
-    window.onPlayerStateChange = (event) => {
-      if (event.data == YT.PlayerState.ENDED && this.isPlaying) {
-        //フラグを停止中に反転
-        this.$store.commit("watch/setIsPlaying", false);
-
-        //リピート再生(開始時間に戻る)
-        this.player.seekTo(this.convertToSec(this.start));
-      }
-
-      if (event.data == YT.PlayerState.PLAYING) {
-        //フラグを再生中にセット
-        this.$store.commit("watch/setIsPlaying", true);
-
-        if (!self.isMuted) {
-          self.mute();
-          self.unmute();
-        }
-      }
-
-      if (event.data == YT.PlayerState.ENDED) {
-        //フラグを再生中にセット
-        this.$store.commit("watch/setIsPlaying", false);
-      }
-    };
+    this.putTagVideoIntolistOfYoutubeIdStartEndTime(
+      listOfYoutubeIdStartEndTime,
+      dataOfYoutubeIdStartEndTime
+    );
+    this.$store.commit(
+      "ytPlayer/setListOfYoutubeIdStartEndTime",
+      listOfYoutubeIdStartEndTime
+    );
+    this.$store.commit("ytPlayer/setListIndex", 0);
+    this.ytIframeParameterReady = true;
 
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.highlightBodyRef = this.$refs.highlightBody;

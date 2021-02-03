@@ -138,8 +138,12 @@ export default {
           height: "315",
           videoId: this.youtubeId,
           playerVars: {
-            start: this.startHis ? this.convertToSec(this.formatToMinSec(this.startHis)) : "",
-            end: this.endHis ? this.convertToSec(this.formatToMinSec(this.endHis)) : "",
+            start: this.startHis
+              ? this.convertToSec(this.formatToMinSec(this.startHis))
+              : "",
+            end: this.endHis
+              ? this.convertToSec(this.formatToMinSec(this.endHis))
+              : "",
             playsinline: 1,
             autoplay: 1,
             iv_load_policy: 3, //アノテーション非表示
@@ -176,7 +180,7 @@ export default {
         //フラグを停止中に反転
         this.$store.commit("ytPlayer/setIsPlaying", false);
 
-        if (this.isEditing) {
+        if (this.isEditing || this.listOfYoutubeIdStartEndTime.length == 1) {
           //現在と同じシーンをリピート(開始時間に戻る)
           this.player.seekTo(this.convertToSec(this.startIs));
         } else if (this.listOfYoutubeIdStartEndTime.length > 1) {

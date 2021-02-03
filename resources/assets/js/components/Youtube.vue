@@ -131,7 +131,6 @@
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
 import HighlightHeader from "../components/HighlightHeader.vue";
-import TagItem from "../components/TagItem.vue";
 import YTIframe from "../components/YTIframe";
 import YTPlayerController from "../components/YTPlayerController";
 import YTSeekBar from "../components/YTSeekBar";
@@ -140,7 +139,6 @@ import myMixin from "../util";
 export default {
   components: {
     HighlightHeader,
-    TagItem,
     YTIframe,
     YTPlayerController,
     YTSeekBar,
