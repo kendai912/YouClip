@@ -10,6 +10,7 @@ const state = {
   playSpeed: 1,
   listOfYoutubeIdStartEndTime: "",
   listIndex: 0,
+  youtubeId: null,
   start: "",
   end: "",
 };

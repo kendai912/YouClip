@@ -217,7 +217,7 @@ export default {
       tagVideo
     ) {
       if (tagVideo) {
-        tagVideo.forEach((value, index) => {
+        tagVideo.forEach((value) => {
           let listOfYoutubeIdStartEndTime = {
             youtubeId: value.youtubeId,
             start: value.start,

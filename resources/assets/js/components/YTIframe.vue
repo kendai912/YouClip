@@ -138,8 +138,8 @@ export default {
           height: "315",
           videoId: this.youtubeId,
           playerVars: {
-            start: this.convertToSec(this.formatToMinSec(this.startHis)),
-            end: this.convertToSec(this.formatToMinSec(this.endHis)),
+            start: this.startHis ? this.convertToSec(this.formatToMinSec(this.startHis)) : "",
+            end: this.endHis ? this.convertToSec(this.formatToMinSec(this.endHis)) : "",
             playsinline: 1,
             autoplay: 1,
             iv_load_policy: 3, //アノテーション非表示
