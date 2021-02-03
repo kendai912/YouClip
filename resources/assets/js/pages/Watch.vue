@@ -286,6 +286,7 @@ export default {
     setYtPlayerCSS() {
       //iframeの縦・横のサイズをセット(縦は952px、横は幅いっぱい)
       $("iframe").width($(".ytPlayerWrapper").width());
+      $("iframe").css({ position: "absolute", top: "0px" });
       $("iframe").height(952);
 
       //iframeとseekbarが見える範囲の高さをセットし、iframe上部の黒分が見えないよう上にスライド
@@ -346,7 +347,7 @@ export default {
 
       window[this.youtubeCallbackName] =
         window[this.youtubeCallbackName] ||
-        function() {
+        function () {
           window[youtubeExistsFlag] = true;
           window[youtubeCallbackName] = null;
           delete window[youtubeCallbackName];
@@ -360,10 +361,10 @@ export default {
     },
     whenYoutubeAPIReady() {
       const existsFlag = this.youtubeExistsFlag;
-      return new Promise(function(resolve, reject) {
+      return new Promise(function (resolve, reject) {
         let elapsed = 0;
         let intervalHandle;
-        let checker = function() {
+        let checker = function () {
           elapsed += 48;
           if (!!window[existsFlag]) {
             clearTimeout(intervalHandle);

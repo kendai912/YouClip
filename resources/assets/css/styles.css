@@ -51,11 +51,11 @@
   z-index: 100;
 }
 
-.highlight-body .ytPlayerWrapper iframe,
+/* .highlight-body .ytPlayerWrapper iframe,
 .watch-body .ytPlayerWrapper iframe {
   position: absolute;
   top: 0px;
-}
+} */
 
 .ytPlayerWrapper {
   width: 100%;
