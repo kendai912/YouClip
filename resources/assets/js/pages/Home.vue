@@ -15,7 +15,7 @@
           setActiveTab(key);
           initialPaginate(key);
         "
-        ><span style="font-size: 1.214285rem!important; ">{{
+        ><span style="font-size: 1.214285rem !important">{{
           item
         }}</span></v-tab
       >
@@ -240,9 +240,9 @@ export default {
     this.$store.commit("playlist/setToLoadEntertainment", true);
 
     window.onscroll = () => {
-      //ウィンドウの下から100pxに達したら次のプレイリストアイテムを読み込み
+      //ウィンドウの下から50pxに達したら次のプレイリストアイテムを読み込み
       let bottomOfWindow =
-        document.documentElement.scrollTop + window.innerHeight >=
+        document.documentElement.scrollTop + window.innerHeight + 50 >=
         document.documentElement.offsetHeight;
       if (bottomOfWindow) {
         if (this.tab == 0 && !this.isIndexRecommendPlaylistAndTagPaginating)
