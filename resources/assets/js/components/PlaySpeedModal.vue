@@ -4,7 +4,7 @@
       <v-card>
         <v-card-title>速度を選択</v-card-title>
         <v-divider></v-divider>
-        <v-card-text style="height: 350px;">
+        <v-card-text style="height: 350px">
           <v-checkbox
             v-model="model"
             v-for="(playSpeed, i) in playSpeedValues"
@@ -30,7 +30,7 @@
 import { mapState, mapGetters, mapMutations } from "vuex";
 
 export default {
-  data () {
+  data() {
     return {
       model: 1,
       playSpeedValues: [
@@ -41,16 +41,16 @@ export default {
         { label: "1.25倍速", value: 1.25 },
         { label: "1.5倍速", value: 1.5 },
         { label: "1.75倍速", value: 1.75 },
-        { label: "2倍速", value: 2 }
-      ]
-    }
+        { label: "2倍速", value: 2 },
+      ],
+    };
   },
   props: {
     player: Object,
   },
   computed: {
     ...mapGetters({
-      playSpeed: "watch/playSpeed"
+      playSpeed: "ytPlayer/playSpeed",
     }),
     showPlaySpeedModal: {
       get() {
@@ -61,17 +61,17 @@ export default {
         this.player.setPlaybackRate(parseFloat(this.playSpeed));
         this.player.playVideo();
         return this.$store.commit("playSpeedModal/closePlaySpeedModal");
-      }
-    }
+      },
+    },
   },
   methods: {
     async setPlaySpeed(value) {
-      this.$store.commit("watch/setPlaySpeed", parseFloat(value));
+      this.$store.commit("ytPlayer/setPlaySpeed", parseFloat(value));
       this.showPlaySpeedModal = false;
-    }
+    },
   },
-  created () {
+  created() {
     this.model = this.playSpeed;
-  }
-}
+  },
+};
 </script>
