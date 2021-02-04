@@ -18,10 +18,10 @@
             class="ios-highlight-content"
             v-bind:style="
               'left: calc(' +
-                contentLeft +
-                'px + 3px ); width: calc(' +
-                contentWidth +
-                'px - 6px);'
+              contentLeft +
+              'px + 3px ); width: calc(' +
+              contentWidth +
+              'px - 6px);'
             "
           ></div>
           <div
@@ -59,10 +59,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-            contentLeft +
-            'px + 3px ); width: calc(' +
-            contentWidth +
-            'px - 6px);'
+          contentLeft +
+          'px + 3px ); width: calc(' +
+          contentWidth +
+          'px - 6px);'
         "
       ></div>
       <div
@@ -98,6 +98,7 @@ export default {
       ytseekbarPageX: null,
       isMobile: false,
       isIOS: false,
+      canUseOntouch: false,
     };
   },
   mixins: [myMixin],
@@ -246,14 +247,18 @@ export default {
       if (this.isIOS) {
         this.bodyRef.addEventListener("touchmove", this.getClickPosition);
       } else if (this.isMobile) {
-        this.bodyRef.addEventListener(
-          "touchmove",
-          function(e) {
-            e.preventDefault();
-            this.getClickPosition;
-          },
-          { passive: false }
-        );
+        if (this.canUseOntouch) {
+          this.bodyRef.ontouchmove = this.getClickPosition;
+        } else {
+          this.bodyRef.addEventListener(
+            "touchmove",
+            function (e) {
+              e.preventDefault();
+              this.getClickPosition;
+            },
+            { passive: false }
+          );
+        }
       } else {
         this.bodyRef.addEventListener("mousemove", this.getClickPosition);
       }
@@ -261,7 +266,12 @@ export default {
     detectMouseUp(e) {
       // stop listening to mouse movements
       if (this.isMobile) {
+        // if (this.canUseOntouch) {
+        this.bodyRef.ontouchmove = null;
         this.bodyRef.removeEventListener("touchmove", this.getClickPosition);
+        // } else {
+        //   this.bodyRef.removeEventListener("touchmove", this.getClickPosition);
+        // }
       } else {
         this.bodyRef.removeEventListener("mousemove", this.getClickPosition);
       }
@@ -292,6 +302,13 @@ export default {
     this.isMobile = this.mobileCheck();
     this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
 
+    var touch_event = window.ontouchstart;
+    var touch_points = navigator.maxTouchPoints;
+    if (touch_event !== undefined && 0 < touch_points) {
+      // ontouchstartに対応
+      this.canUseOntouch = true;
+    }
+
     this.$nextTick(() => {
       if (this.isIOS) {
         this.$refs.iosYtseekHead.addEventListener(
@@ -304,19 +321,25 @@ export default {
         );
         window.addEventListener("touchend", this.detectMouseUp);
       } else if (this.isMobile) {
-        this.$refs.iosYtseekHead.addEventListener(
-          "touchstart",
-          function(e) {
-            e.preventDefault();
-            this.detectMouseDown;
-          },
-          { passive: false }
-        );
+        if (this.canUseOntouch) {
+          this.$refs.iosYtseekHead.ontouchstart = this.detectMouseDown;
+          this.$refs.iosYtseekHead.ontouchend = this.detectMouseUp;
+        } else {
+          this.$refs.iosYtseekHead.addEventListener(
+            "touchstart",
+            function (e) {
+              e.preventDefault();
+              this.detectMouseDown;
+            },
+            { passive: false }
+          );
+          window.addEventListener("touchend", this.detectMouseUp);
+        }
+
         this.$refs.iosYtseekbarMask.addEventListener(
           "click",
           this.detectMouseDownOfYtseekbarMask
         );
-        window.addEventListener("touchend", this.detectMouseUp);
       } else {
         this.$refs.ytseekHead.addEventListener(
           "mousedown",
