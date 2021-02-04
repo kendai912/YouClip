@@ -252,6 +252,9 @@ export default {
       this.$store.commit("ytPlayer/setPlaySpeed", 1);
 
       this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
+
+      //headerの戻るアイコンを表示
+      this.$store.commit("highlightHeader/setShowBackIcon", true);
     },
     setEditingTimeData() {
       this.$store.commit(
@@ -415,7 +418,7 @@ export default {
       }
     },
   },
-  async created() {
+  async mounted() {
     this.initialize();
 
     //必要データを取得するまでTagItemは非表示
@@ -460,10 +463,6 @@ export default {
 
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.highlightBodyRef = this.$refs.highlightBody;
-  },
-  mounted() {
-    //headerの戻るアイコンを表示
-    this.$store.commit("highlightHeader/setShowBackIcon", true);
   },
   beforeDestroy() {
     //headerの戻るアイコンを非表示

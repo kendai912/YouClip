@@ -210,6 +210,9 @@ export default {
       this.$store.commit("ytPlayer/setPlaySpeed", 1);
 
       this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
+
+      //headerの戻るアイコンを表示
+      this.$store.commit("highlightHeader/setShowBackIcon", true);
     },
     //set tags data for editing
     setEditingTagData() {
@@ -268,7 +271,7 @@ export default {
         clearInterval(this.timer);
 
         let self = this;
-        setTimeout(async function() {
+        setTimeout(async function () {
           //ログイン済の場合
           if (self.isEditing) {
             //編集の場合
@@ -434,12 +437,13 @@ export default {
     },
     isPlayerReady() {
       if (this.isPlayerReady) {
+        console.log("setYtPlayerCSS");
         this.setYtPlayerCSS();
         this.$refs.ytSeekBar.setYtSeekbarWrapperTop();
       }
     },
   },
-  async created() {
+  async mounted() {
     this.initialize();
 
     //必要データを取得するまでTagItemは非表示
@@ -487,10 +491,6 @@ export default {
 
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.highlightBodyRef = this.$refs.highlightBody;
-  },
-  mounted() {
-    //headerの戻るアイコンを表示
-    this.$store.commit("highlightHeader/setShowBackIcon", true);
   },
   beforeDestroy() {
     // シーンタグ付けコンポーネントの現在再生時間をセットするインターバルを停止する

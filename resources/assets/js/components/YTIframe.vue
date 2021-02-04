@@ -1,5 +1,5 @@
 <template>
-  <div id="player"></div>
+  <div class="video-placeholder"></div>
 </template>
 
 <script>
@@ -51,7 +51,7 @@ export default {
       let self = this;
       if (this.timer) clearInterval(this.timer);
 
-      this.timer = setInterval(function() {
+      this.timer = setInterval(function () {
         //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
         self.$store.commit(
           "youtube/setCurrentTime",
@@ -80,7 +80,7 @@ export default {
 
       window[this.youtubeCallbackName] =
         window[this.youtubeCallbackName] ||
-        function() {
+        function () {
           window[youtubeExistsFlag] = true;
           window[youtubeCallbackName] = null;
           delete window[youtubeCallbackName];
@@ -88,16 +88,17 @@ export default {
 
       var tag = document.createElement("script");
       var first = document.getElementsByTagName("script")[0];
-      tag.src = "https://www.youtube.com/iframe_api";
+      tag.src =
+        "https://www.youtube.com/iframe_api?" + parseInt(new Date() / 1000);
       tag.className = "yt-frame-api";
       first.parentNode.insertBefore(tag, first);
     },
     whenYoutubeAPIReady() {
       const existsFlag = this.youtubeExistsFlag;
-      return new Promise(function(resolve, reject) {
+      return new Promise(function (resolve, reject) {
         let elapsed = 0;
         let intervalHandle;
-        let checker = function() {
+        let checker = function () {
           elapsed += 48;
           if (!!window[existsFlag]) {
             clearTimeout(intervalHandle);
@@ -133,7 +134,14 @@ export default {
     }
     this.whenYoutubeAPIReady().then(
       () => {
-        let YTPLayer = new YT.Player("player", {
+        let playerId =
+          "player-" +
+          Math.floor(Math.random() * 1024) +
+          Date.now() +
+          Math.floor(Math.random() * 1024);
+        $("div.video-placeholder").attr("id", playerId);
+
+        let YTPLayer = new YT.Player(playerId, {
           width: "560",
           height: "315",
           videoId: this.youtubeId,
