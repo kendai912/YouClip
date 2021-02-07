@@ -38,7 +38,9 @@
               ></div>
             </v-col>
             <v-col class="ma-0 pa-0 text-center" cols="7">
-              <v-card-text style="font-size: 12px !important;">はじめての方はこちら</v-card-text>
+              <v-card-text style="font-size: 12px !important;"
+                >はじめての方はこちら</v-card-text
+              >
             </v-col>
             <v-col class="ma-0 pa-0">
               <div
@@ -71,6 +73,44 @@ import MyProfile from "../components/MyProfile.vue";
 import myMixin from "../util";
 
 export default {
+  metaInfo() {
+    return {
+      title: "マイページ - YouTube動画のまとめ作成ツール",
+      meta: [
+        {
+          name: "description",
+          content:
+            "YouTube動画のまとめ作成ツール、YouClipのマイページです。YouTube動画からお気に入りの場面を切り抜いて作ったまとめを確認・編集出来ます。また、いいねしたみんなのまとめも見ることが出来ます。",
+        },
+        {
+          property: "og:site_name",
+          content: "YouClip",
+        },
+        {
+          property: "og:type",
+          content: "website",
+        },
+        {
+          property: "og:url",
+          content: "https://youclip.jp" + this.$route.fullPath,
+        },
+        {
+          property: "og:title",
+          content: "マイページ - YouTube動画のまとめ作成ツール",
+        },
+        {
+          property: "og:description",
+          content:
+            "YouTube動画のまとめ作成ツール、YouClipのマイページです。YouTube動画からお気に入りの場面を切り抜いて作ったまとめを確認・編集出来ます。また、いいねしたみんなのまとめも見ることが出来ます。",
+        },
+        {
+          property: "og:image",
+          content:
+            "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/facebook-youclip-logo.png",
+        },
+      ],
+    };
+  },
   components: {
     MyList,
     MyProfile,

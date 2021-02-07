@@ -105,12 +105,7 @@
           YouTubeの動画を検索して、切り抜く時間とタイトルを入力
         </v-responsive>
 
-        <v-carousel
-          cycle
-          interval="5000"
-          height="400"
-          hide-delimiters
-        >
+        <v-carousel cycle interval="5000" height="400" hide-delimiters>
           <v-carousel-item v-for="(img, i) in howToImgs" :key="i">
             <v-sheet color="white" height="100%">
               <v-row class="fill-height" align="center" justify="center">
@@ -131,6 +126,44 @@ import { mapState, mapGetters } from "vuex";
 import myMixin from "../util";
 
 export default {
+  metaInfo() {
+    return {
+      title: "使い方 - YouTube動画のまとめ作成ツール",
+      meta: [
+        {
+          name: "description",
+          content:
+            "YouTube動画のまとめ作成ツール、YouClipの使い方紹介です。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。また、みんなが作った人気のまとめを見ることも可能です。",
+        },
+        {
+          property: "og:site_name",
+          content: "YouClip",
+        },
+        {
+          property: "og:type",
+          content: "website",
+        },
+        {
+          property: "og:url",
+          content: "https://youclip.jp" + this.$route.fullPath,
+        },
+        {
+          property: "og:title",
+          content: "使い方 - YouTube動画のまとめ作成ツール",
+        },
+        {
+          property: "og:description",
+          content:
+            "YouTube動画のまとめ作成ツール、YouClipの使い方紹介です。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。また、みんなが作った人気のまとめを見ることも可能です。",
+        },
+        {
+          property: "og:image",
+          content:
+            "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/facebook-youclip-logo.png",
+        },
+      ],
+    };
+  },
   components: {},
   data() {
     return {

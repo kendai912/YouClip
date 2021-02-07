@@ -115,6 +115,44 @@ import SceneTagItem from "../components/SceneTagItem.vue";
 import PlaylistDeleteModal from "../components/PlaylistDeleteModal.vue";
 
 export default {
+  metaInfo() {
+    return {
+      title: "作成したまとめの編集 - YouTube動画のまとめ作成ツール",
+      meta: [
+        {
+          name: "description",
+          content:
+            "YouTube動画のまとめ作成ツール、YouClipの作成したまとめ編集ページです。作成したまとめの開始・終了時間やタグを変更・修正出来ます。新たな場面も切り抜いて追加可能です。",
+        },
+        {
+          property: "og:site_name",
+          content: "YouClip",
+        },
+        {
+          property: "og:type",
+          content: "website",
+        },
+        {
+          property: "og:url",
+          content: "https://youclip.jp" + this.$route.fullPath,
+        },
+        {
+          property: "og:title",
+          content: "作成したまとめの編集 - YouTube動画のまとめ作成ツール",
+        },
+        {
+          property: "og:description",
+          content:
+            "YouTube動画のまとめ作成ツール、YouClipの作成したまとめ編集ページです。作成したまとめの開始・終了時間やタグを変更・修正出来ます。新たな場面も切り抜いて追加可能です。",
+        },
+        {
+          property: "og:image",
+          content:
+            "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/facebook-youclip-logo.png",
+        },
+      ],
+    };
+  },
   components: {
     SceneTagItem,
     PlaylistDeleteModal,

@@ -180,6 +180,44 @@
 import { mapState } from "vuex";
 
 export default {
+  metaInfo() {
+    return {
+      title: "新規登録 - YouTube動画のまとめ作成ツール",
+      meta: [
+        {
+          name: "description",
+          content:
+            "YouTube動画のまとめ作成ツール、YouClipの新規登録ページです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。また、みんなが作った人気のまとめを見ることも可能です。",
+        },
+        {
+          property: "og:site_name",
+          content: "YouClip",
+        },
+        {
+          property: "og:type",
+          content: "website",
+        },
+        {
+          property: "og:url",
+          content: "https://youclip.jp" + this.$route.fullPath,
+        },
+        {
+          property: "og:title",
+          content: "新規登録 - YouTube動画のまとめ作成ツール",
+        },
+        {
+          property: "og:description",
+          content:
+            "YouTube動画のまとめ作成ツール、YouClipの新規登録ページです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。",
+        },
+        {
+          property: "og:image",
+          content:
+            "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/facebook-youclip-logo.png",
+        },
+      ],
+    };
+  },
   data() {
     return {
       nameRules: [

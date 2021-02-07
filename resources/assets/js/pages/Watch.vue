@@ -141,6 +141,49 @@ import YTSeekBar from "../components/YTSeekBar";
 import myMixin from "../util";
 
 export default {
+  metaInfo() {
+    return {
+      title: this.playlistName + " - YouClip",
+      meta: [
+        {
+          name: "description",
+          content:
+            "YouTube動画のまとめ作成ツール、YouClipの「" +
+            this.playlistName +
+            "」です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。また、みんなが作った人気のまとめを見ることも可能です。",
+        },
+        {
+          property: "og:site_name",
+          content: "YouClip",
+        },
+        {
+          property: "og:type",
+          content: "website",
+        },
+        {
+          property: "og:url",
+          content: "https://youclip.jp" + this.$route.fullPath,
+        },
+        {
+          property: "og:title",
+          content: this.playlistName + " - YouClip",
+        },
+        {
+          property: "og:description",
+          content:
+            "YouTube動画のまとめ作成ツール、YouClipの「" +
+            this.playlistName +
+            "」です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。",
+        },
+        {
+          property: "og:image",
+          content:
+            "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" +
+            this.sceneListofPlaylist[0].preview,
+        },
+      ],
+    };
+  },
   components: {
     NoLoginModal,
     ShareModal,
@@ -413,6 +456,7 @@ export default {
       "playlist/setCommentListofPlaylist",
       this.playlistAndTagVideoData.comments
     );
+    console.log(this.sceneListofPlaylist);
 
     //YTPlayerのまとめの再生に必要なパラメータをセット
     let listOfYoutubeIdStartEndTime = [];
