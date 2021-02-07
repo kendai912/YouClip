@@ -38,6 +38,7 @@ class IndexController extends Controller
                 // 正規表現でurlを判定判定
                 preg_match('/^\/watch\?playlist=(?<playlistId>\d+)/', $_SERVER["REQUEST_URI"], $match);
                 if ($match) {
+                    // watchページの場合
                     $playlistId = $match['playlistId'];
                     $tagId = DB::table('playlist_tag')->where('playlist_id', $playlistId)->select('tag_id')->orderBy('scene_order', 'ASC')->first()->tag_id;
                     
@@ -52,9 +53,19 @@ class IndexController extends Controller
                     $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . Tag::find($tagId)->preview;
                     
                     return view('ogp')->with('site_name', $site_name)->with('url', $url)->with('title', $title)->with('description', $description)->with('image_url', $image_url)->with('fb_app_id', env('FACEBOOK_ID'));
+                } else {
+                    // watchページ以外の場合
+                    $site_name = "YouClip";
+                    $url = "https://youclip.jp" . $_SERVER["REQUEST_URI"];
+                    $title = "YouClip - YouTube動画のまとめ作成ツール";
+                    $description = "YouClipはYouTube動画のまとめ作成ツールです。お気に入りの場面をまとめて残すことが出来ます。みんなのまとめを見ることも可能です";
+                    $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/twitter-youclip-logo.png";
+                    
+                    return view('ogp')->with('site_name', $site_name)->with('url', $url)->with('title', $title)->with('description', $description)->with('image_url', $image_url)->with('fb_app_id', env('FACEBOOK_ID'));
                 }
             }
         }
+        // twitter・facebook以外
         return view('index');
     }
 }

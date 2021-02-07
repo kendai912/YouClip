@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-  <title>{{ config('app.name') }}</title>
+  <title>{{$title}} - {{ config('app.name') }}</title>
 
   <meta property="og:site_name" content="{{$site_name}}">
   <meta property="og:type" content="website">

@@ -16,10 +16,10 @@ import "material-design-icons-iconfont/dist/material-design-icons.css";
 import colors from "vuetify/lib/util/colors";
 import lodash from "lodash";
 import VueGtag from "vue-gtag";
+import VueMeta from "vue-meta";
 import initHelpHero from "helphero";
 
 Vue.use(Vuetify);
-
 Vue.use(
   VueGtag,
   {
@@ -27,6 +27,7 @@ Vue.use(
   },
   router
 );
+Vue.use(VueMeta);
 
 Vue.prototype._ = lodash;
 

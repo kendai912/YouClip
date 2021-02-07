@@ -131,6 +131,15 @@
 import { mapState } from "vuex";
 
 export default {
+  metaInfo: {
+    title: "Login - YouClip",
+    meta: [
+      {
+        name: 'description',
+        content: "YouClipのログインページです"
+      }
+    ]
+  },
   data() {
     return {
       emailRules: [
