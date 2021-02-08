@@ -231,10 +231,10 @@ export default {
       this.clearAllInput();
 
       //既存プレイリストへの追加かシーンの編集か新規かを判別
-      if (this.$route.path == "/add/highlight") {
+      if (this.$route.path == "/add/scene") {
         this.isAdding = true;
         this.playlistIdToAdd = this.$route.query.playlist;
-      } else if (this.$route.path == "/edit/highlight") {
+      } else if (this.$route.path == "/edit/scene") {
         this.isEditing = true;
         this.playlistIdToEdit = this.$route.query.playlist;
         this.tagIdToEdit = this.$route.query.tag;
@@ -390,7 +390,7 @@ export default {
       //URLを更新
       this.$router
         .push({
-          path: "/youtube/highlight",
+          path: "/youtube/scene",
           query: {
             v: this.youtubeId,
           },

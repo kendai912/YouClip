@@ -116,7 +116,7 @@ export default {
         //プレイリストへの追加用のシーンタグ付けページを表示
         this.$router
           .push({
-            path: "/add/highlight",
+            path: "/add/scene",
             query: {
               playlist: this.myPlaylistToSave,
               v: item.youtubeId,
@@ -127,7 +127,7 @@ export default {
         //シーンタグ付けページを表示
         this.$router
           .push({
-            path: "/youtube/highlight",
+            path: "/youtube/scene",
             query: {
               v: item.youtubeId,
             },

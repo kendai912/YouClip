@@ -139,7 +139,7 @@ export default {
           //in case of adding to existing playlist
           this.$router
             .push({
-              path: "/add/highlight",
+              path: "/add/scene",
               query: {
                 playlist: this.myPlaylistToSave,
                 v: youtubeId[2],
@@ -150,7 +150,7 @@ export default {
           //in case of adding to new playlist
           this.$router
             .push({
-              path: "/youtube/highlight",
+              path: "/youtube/scene",
               query: { v: youtubeId[2] },
             })
             .catch((err) => {});
@@ -175,7 +175,7 @@ export default {
             this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
             this.$router
               .push({
-                path: "/highlight",
+                path: "/youtube",
                 query: { search_query: this.searchquery, return: true },
               })
               .catch((err) => {});
@@ -183,7 +183,7 @@ export default {
             this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
             this.$router
               .push({
-                path: "/highlight",
+                path: "/youtube",
                 query: { search_query: this.searchquery },
               })
               .catch((err) => {});
@@ -215,7 +215,7 @@ export default {
           this.$store.commit("YTsearch/setYTsearchQuery", item);
           this.$router
             .push({
-              path: "/highlight",
+              path: "/youtube",
               query: { search_query: item, return: true },
             })
             .catch((err) => {});
@@ -223,7 +223,7 @@ export default {
           this.$store.commit("YTsearch/setYTsearchQuery", item);
           this.$router
             .push({
-              path: "/highlight",
+              path: "/youtube",
               query: { search_query: item },
             })
             .catch((err) => {});

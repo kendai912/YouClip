@@ -25,7 +25,7 @@
               color="red lighten-2"
               class="white--text"
               v-bind:to="{
-                path: '/highlight',
+                path: '/youtube',
                 query: { return: true },
               }"
               style="font-size: 14px; "
@@ -58,7 +58,7 @@
               outlined
               color="red lighten-2"
               class="white--text"
-              to="/youtube/title"
+              to="/highlight/title"
               style="font-size: 14px;"
               >まとめのタイトル入力へ</v-btn
             >
@@ -120,7 +120,7 @@ export default {
       if (!this.newPlaylistId) {
         this.$router
           .push({
-            path: "/highlight",
+            path: "/youtube",
           })
           .catch((err) => {});
       } else {

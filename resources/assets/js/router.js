@@ -8,7 +8,6 @@ import Register from "./pages/Register.vue";
 import Result from "./pages/Result.vue";
 import Highlight from "./pages/Highlight.vue";
 import YTresult from "./pages/YTresult.vue";
-import Tagging from "./pages/Tagging.vue";
 import Watch from "./pages/Watch.vue";
 import Mypage from "./pages/Mypage.vue";
 import MyFollow from "./pages/MyFollow.vue";
@@ -63,19 +62,15 @@ const routes = [
     component: Result,
   },
   {
-    path: "/highlight",
+    path: "/youtube",
     component: Highlight,
   },
-  // {
-  //   path: "/tagging",
-  //   component: Tagging,
-  // },
   {
     path: "/YTresult",
     component: YTresult,
   },
   {
-    path: "/youtube/highlight",
+    path: "/youtube/scene",
     component: Highlight,
   },
   {
@@ -83,15 +78,15 @@ const routes = [
     component: Highlight,
   },
   {
-    path: "/youtube/scenelist",
+    path: "/highlight/scenelist",
     component: Highlight,
   },
   {
-    path: "/youtube/title",
+    path: "/highlight/title",
     component: Highlight,
   },
   {
-    path: "/youtube/complete",
+    path: "/highlight/complete",
     component: Highlight,
   },
   {
@@ -103,7 +98,7 @@ const routes = [
     component: Highlight,
   },
   {
-    path: "/add/highlight",
+    path: "/add/scene",
     component: Highlight,
   },
   {
@@ -111,7 +106,7 @@ const routes = [
     component: Highlight,
   },
   {
-    path: "/edit/highlight",
+    path: "/edit/scene",
     component: Highlight,
   },
   {

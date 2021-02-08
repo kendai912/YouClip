@@ -199,7 +199,7 @@ export default {
       if (!this.newPlaylistId) {
         this.$router
           .push({
-            path: "/highlight",
+            path: "/youtube",
           })
           .catch((err) => {});
       } else {

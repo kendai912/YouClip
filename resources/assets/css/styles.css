@@ -865,6 +865,11 @@ div.v-snack:not(.v-snack--absolute) {
   border-radius: 4px;
 }
 
+.fz-14 {
+  font-size: calc(1rem * (14 / 14));
+  font-weight: normal;
+}
+
 .fz-12 {
   font-size: calc(1rem * (12 / 14));
   font-weight: normal;

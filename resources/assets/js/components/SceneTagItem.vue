@@ -293,7 +293,7 @@ export default {
 
       this.$router
         .push({
-          path: "/edit/highlight",
+          path: "/edit/scene",
           query: {
             playlist: this.playlistId,
             tag: tagId,

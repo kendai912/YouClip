@@ -14,7 +14,10 @@
           v-bind:bodyRef="highlightBodyRef"
         />
       </div>
-      <v-sheet v-if="isPlayerReady" class="highlightControllerBody">
+      <v-sheet
+        v-if="isPlayerReady && isNew !== 'undefined'"
+        class="highlightControllerBody"
+      >
         <v-container class="ma-0 pa-0" fluid>
           <v-row class="ma-0 pa-0 text-left" align="center">
             <v-col>
@@ -225,7 +228,7 @@ export default {
       if (this.start == null || this.end == null) {
         this.$router
           .push({
-            path: "/highlight",
+            path: "/youtube",
           })
           .catch((err) => {});
       }
@@ -272,7 +275,7 @@ export default {
         clearInterval(this.timer);
 
         let self = this;
-        setTimeout(async function () {
+        setTimeout(async function() {
           //ログイン済の場合
           if (self.isEditing) {
             //編集の場合

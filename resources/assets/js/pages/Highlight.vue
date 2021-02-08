@@ -71,25 +71,25 @@ export default {
   methods: {
     // コンポーネント遷移処理
     switchComponent() {
-      if (this.$route.path == "/youtube/highlight") {
+      if (this.$route.path == "/youtube/scene") {
         this.$store.commit("highlight/setDisplayComponent", "Youtube");
       } else if (this.$route.path == "/youtube/confirm") {
         this.$store.commit("highlight/setDisplayComponent", "Confirm");
-      } else if (this.$route.path == "/youtube/scenelist") {
+      } else if (this.$route.path == "/highlight/scenelist") {
         this.$store.commit("highlight/setDisplayComponent", "SceneList");
-      } else if (this.$route.path == "/youtube/title") {
+      } else if (this.$route.path == "/highlight/title") {
         this.$store.commit("highlight/setDisplayComponent", "Title");
-      } else if (this.$route.path == "/youtube/complete") {
+      } else if (this.$route.path == "/highlight/complete") {
         this.$store.commit("highlight/setDisplayComponent", "Complete");
       } else if (this.$route.path == "/add") {
         this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
       } else if (this.$route.path == "/add/search") {
         this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
-      } else if (this.$route.path == "/add/highlight") {
+      } else if (this.$route.path == "/add/scene") {
         this.$store.commit("highlight/setDisplayComponent", "Youtube");
       } else if (this.$route.path == "/add/confirm") {
         this.$store.commit("highlight/setDisplayComponent", "Confirm");
-      } else if (this.$route.path == "/edit/highlight") {
+      } else if (this.$route.path == "/edit/scene") {
         this.$store.commit("highlight/setDisplayComponent", "Youtube");
       } else if (this.$route.path == "/edit/confirm") {
         this.$store.commit("highlight/setDisplayComponent", "Confirm");
@@ -131,31 +131,31 @@ export default {
     let self = this;
     //戻るボタンが押された場合は左スライドにセット
     if (
-      (from.path == "/youtube/highlight" && to.path == "/highlight") ||
-      (from.path == "/youtube/highlight" && to.path == "/") ||
-      (from.path == "/youtube/confirm" && to.path == "/youtube/highlight") ||
-      (from.path == "/youtube/confirm" && to.path == "/highlight") ||
-      (from.path == "/youtube/scenelist" && to.path == "/youtube/confirm") ||
-      (from.path == "/youtube/scenelist" && to.path == "/highlight") ||
-      (from.path == "/youtube/title" && to.path == "/youtube/scenelist") ||
-      (from.path == "/youtube/title" && to.path == "/highlight") ||
-      (from.path == "/youtube/complete" && to.path == "/highlight") ||
-      (from.path == "/add" && to.path == "/highlight") ||
+      (from.path == "/youtube/scene" && to.path == "/youtube") ||
+      (from.path == "/youtube/scene" && to.path == "/") ||
+      (from.path == "/youtube/confirm" && to.path == "/youtube/scene") ||
+      (from.path == "/youtube/confirm" && to.path == "/youtube") ||
+      (from.path == "/highlight/scenelist" && to.path == "/youtube/confirm") ||
+      (from.path == "/highlight/scenelist" && to.path == "/youtube") ||
+      (from.path == "/highlight/title" && to.path == "/highlight/scenelist") ||
+      (from.path == "/highlight/title" && to.path == "/youtube") ||
+      (from.path == "/highlight/complete" && to.path == "/youtube") ||
+      (from.path == "/add" && to.path == "/youtube") ||
       (from.path == "/add" && to.path == "/mypage") ||
       (from.path == "/add" && to.path == "/") ||
-      (from.path == "/add/highlight" && to.path == "/add") ||
-      (from.path == "/add/highlight" && to.path == "/highlight") ||
-      (from.path == "/add/highlight" && to.path == "/mypage") ||
-      (from.path == "/add/highlight" && to.path == "/") ||
-      (from.path == "/add/confirm" && to.path == "/add/highlight") ||
-      (from.path == "/add/confirm" && to.path == "/highlight") ||
+      (from.path == "/add/scene" && to.path == "/add") ||
+      (from.path == "/add/scene" && to.path == "/youtube") ||
+      (from.path == "/add/scene" && to.path == "/mypage") ||
+      (from.path == "/add/scene" && to.path == "/") ||
+      (from.path == "/add/confirm" && to.path == "/add/scene") ||
+      (from.path == "/add/confirm" && to.path == "/youtube") ||
       (from.path == "/add/confirm" && to.path == "/mypage") ||
       (from.path == "/add/confirm" && to.path == "/") ||
       (from.path == "/add/confirm" && to.path == "/editmyplaylist") ||
-      (from.path == "/edit/highlight" && to.path == "/editmyplaylist") ||
-      (from.path == "/edit/confirm" && to.path == "/edit/highlight") ||
+      (from.path == "/edit/scene" && to.path == "/editmyplaylist") ||
+      (from.path == "/edit/confirm" && to.path == "/edit/scene") ||
       (from.path == "/edit/confirm" && to.path == "/editmyplaylist") ||
-      (from.path == "/edit/confirm" && to.path == "/highlight") ||
+      (from.path == "/edit/confirm" && to.path == "/youtube") ||
       (from.path == "/edit/confirm" && to.path == "/mypage") ||
       (from.path == "/edit/confirm" && to.path == "/")
     ) {

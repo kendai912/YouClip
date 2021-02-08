@@ -45,7 +45,7 @@ export default {
       // 表示するコンポーネントをYTvideoSelectBoxにセットし、まとめ作成ページに遷移
       this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
       this.$router.push({
-        path: "/highlight",
+        path: "/youtube",
       });
     },
   },

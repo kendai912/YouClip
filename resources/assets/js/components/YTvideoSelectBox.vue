@@ -11,7 +11,7 @@
           alt="YouTube logo"
           class="float-left mr-2"
         />
-        <span>YouTube検索結果</span>
+        <h2 class="fz-14">YouTube検索結果</h2>
       </div>
       <YTitem v-bind:YTitems="YTresult" />
     </div>
@@ -25,7 +25,7 @@
           alt="YouTube logo"
           class="float-left mr-2"
         />
-        <span>最近まとめたYouTube動画</span>
+        <h2 class="fz-14">最近まとめたYouTube動画</h2>
       </div>
       <YTRecentItem v-bind:YTRecentItems="YTRecentVideos" />
     </div>

@@ -99,7 +99,7 @@ export default {
       //切り抜いた場面一覧ページを表示
       this.$router
         .push({
-          path: "/youtube/scenelist",
+          path: "/highlight/scenelist",
         })
         .catch((err) => {});
     },

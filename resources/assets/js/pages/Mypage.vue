@@ -55,7 +55,6 @@
               outlined
               color="green lighten-1"
               class="white--text"
-              v-on:click="openRegisterPage"
               to="/register"
               style="font-size: 14px;"
               >新規登録</v-btn

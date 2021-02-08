@@ -127,7 +127,7 @@ export default {
       if (!this.newPlaylistId) {
         this.$router
           .push({
-            path: "/highlight",
+            path: "/youtube",
           })
           .catch((err) => {});
       } else {
@@ -138,7 +138,7 @@ export default {
     moveToCompletePage() {
       this.$router
         .push({
-          path: "/youtube/complete",
+          path: "/highlight/complete",
         })
         .catch((err) => {});
     },
@@ -160,7 +160,7 @@ export default {
             //redirect to YouTube video select page if illegal accesss
             this.$router
               .push({
-                path: "/highlight",
+                path: "/youtube",
               })
               .catch((err) => {});
           }
