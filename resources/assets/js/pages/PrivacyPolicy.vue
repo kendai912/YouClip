@@ -1,7 +1,14 @@
 <template>
   <div class="container--small">
-    <v-card class="text-center pa-3 mt-3 my-3" title elevation="0" style="margin-bottom: 70px !important;">
-      <v-card-title class="pa-1 mt-2 mx-0 text-left justify-center">プライバシーポリシー</v-card-title>
+    <v-card
+      class="text-center pa-3 mt-3 my-3"
+      title
+      elevation="0"
+      style="margin-bottom: 70px !important;"
+    >
+      <v-card-title class="pa-1 mt-2 mx-0 text-left justify-center"
+        >プライバシーポリシー</v-card-title
+      >
       <v-card-text class="pa-1 mt-2 mx-0 text-left">
         YouClipは，本ウェブサイト上で提供するサービス（以下,「本サービス」といいます。）における，ユーザーの個人情報の取扱いについて，以下のとおりプライバシーポリシー（以下，「本ポリシー」といいます。）を定めます。
         第1条（個人情報）
@@ -35,8 +42,7 @@
         公衆衛生の向上または児童の健全な育成の推進のために特に必要がある場合であって，本人の同意を得ることが困難であるとき
         国の機関もしくは地方公共団体またはその委託を受けた者が法令の定める事務を遂行することに対して協力する必要がある場合であって，本人の同意を得ることにより当該事務の遂行に支障を及ぼすおそれがあるとき
         予め次の事項を告知あるいは公表し，かつ当社が個人情報保護委員会に届出をしたとき
-        利用目的に第三者への提供を含むこと
-        第三者に提供されるデータの項目
+        利用目的に第三者への提供を含むこと 第三者に提供されるデータの項目
         第三者への提供の手段または方法
         本人の求めに応じて個人情報の第三者への提供を停止すること
         本人の求めを受け付ける方法
@@ -72,9 +78,23 @@
         当社が別途定める場合を除いて，変更後のプライバシーポリシーは，本ウェブサイトに掲載したときから効力を生じるものとします。
         第10条（お問い合わせ窓口）
         本ポリシーに関するお問い合わせは，下記の窓口までお願いいたします。
-        社名：YouClip
-        Eメールアドレス： kendai912@gmail.com
+        社名：YouClip Eメールアドレス： kendai912@gmail.com
       </v-card-text>
     </v-card>
   </div>
 </template>
+
+<script>
+export default {
+  metaInfo() {
+    return {
+      meta: [
+        {
+          name: "robots",
+          content: "noindex",
+        },
+      ],
+    };
+  },
+};
+</script>

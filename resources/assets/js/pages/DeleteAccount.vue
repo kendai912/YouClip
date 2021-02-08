@@ -18,3 +18,18 @@
     </v-card>
   </div>
 </template>
+
+<script>
+export default {
+  metaInfo() {
+    return {
+      meta: [
+        {
+          name: "robots",
+          content: "noindex",
+        },
+      ],
+    };
+  },
+};
+</script>

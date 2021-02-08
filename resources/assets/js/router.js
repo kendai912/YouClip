@@ -11,7 +11,7 @@ import Watch from "./pages/Watch.vue";
 import Mypage from "./pages/Mypage.vue";
 import MyFollow from "./pages/MyFollow.vue";
 import UserGuide from "./pages/UserGuide.vue";
-import SystemError from "./pages/errors/System.vue";
+import SystemError from "./pages/errors/SystemError.vue";
 import ForbiddenError from "./pages/errors/ForbiddenError.vue";
 import PrivacyPolicy from "./pages/PrivacyPolicy.vue";
 import TermsOfService from "./pages/TermsOfService.vue";

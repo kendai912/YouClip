@@ -6,10 +6,12 @@
       elevation="0"
       style="margin-bottom: 70px !important;"
     >
-      <v-card-title class="pa-1 mt-2 mx-0 text-left justify-center">利用規約</v-card-title>
-      <v-card-text
-        class="pa-1 mt-2 mx-0 text-left"
-      >この利用規約（以下，「本規約」といいます。）は，YouClip（以下，「当社」といいます。）がこのウェブサイト上で提供するサービス（以下，「本サービス」といいます。）の利用条件を定めるものです。登録ユーザーの皆さま（以下，「ユーザー」といいます。）には，本規約に従って，本サービスをご利用いただきます。</v-card-text>
+      <v-card-title class="pa-1 mt-2 mx-0 text-left justify-center"
+        >利用規約</v-card-title
+      >
+      <v-card-text class="pa-1 mt-2 mx-0 text-left"
+        >この利用規約（以下，「本規約」といいます。）は，YouClip（以下，「当社」といいます。）がこのウェブサイト上で提供するサービス（以下，「本サービス」といいます。）の利用条件を定めるものです。登録ユーザーの皆さま（以下，「ユーザー」といいます。）には，本規約に従って，本サービスをご利用いただきます。</v-card-text
+      >
       <v-card-text class="pa-1 mt-2 mx-0 text-left">
         第1条（適用）
         本規約は，ユーザーと当社との間の本サービスの利用に関わる一切の関係に適用されるものとします。
@@ -38,8 +40,7 @@
       <v-card-text class="pa-1 mt-2 mx-0 text-left">
         第5条（禁止事項）
         ユーザーは，本サービスの利用にあたり，以下の行為をしてはなりません。
-        法令または公序良俗に違反する行為
-        犯罪行為に関連する行為
+        法令または公序良俗に違反する行為 犯罪行為に関連する行為
         本サービスの内容等，本サービスに含まれる著作権，商標権ほか知的財産権を侵害する行為
         当社，ほかのユーザー，またはその他第三者のサーバーまたはネットワークの機能を破壊したり，妨害したりする行為
         本サービスによって得られた情報を商業的に利用する行為
@@ -113,3 +114,18 @@
     </v-card>
   </div>
 </template>
+
+<script>
+export default {
+  metaInfo() {
+    return {
+      meta: [
+        {
+          name: "robots",
+          content: "noindex",
+        },
+      ],
+    };
+  },
+};
+</script>
