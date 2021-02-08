@@ -11,20 +11,20 @@
       <span>最近シーン登録したYouTube動画</span>
     </div>
     <YTSearchBox />
-    <YTRecentItem v-bind:YTRecentItems="YTRecentVideos" />
+    <YTitem v-bind:YTitems="YTRecentVideos" />
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import YTRecentItem from "../components/YTRecentItem.vue";
+import YTitem from "../components/YTitem.vue";
 import YTSearchBox from "../components/YTSearchBox.vue";
 import myMixin from "../util";
 
 export default {
   components: {
     YTSearchBox,
-    YTRecentItem,
+    YTitem,
   },
   data() {
     return {};

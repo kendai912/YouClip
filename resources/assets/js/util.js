@@ -256,11 +256,18 @@ export default {
     },
     //H:i:sをi:s表記にフォーマット
     formatToMinSec(His) {
-      let min =
-        parseInt(His.split(":")[0], 10) * 60 + parseInt(His.split(":")[1], 10);
-      let sec = parseInt(His.split(":")[2], 10);
-      sec = sec < 10 ? "0" + sec : sec;
-      return min + ":" + sec;
+      if (His.split(":").length == 2) {
+        return His;
+      } else if (His.split(":").length == 3) {
+        let min =
+          parseInt(His.split(":")[0], 10) * 60 +
+          parseInt(His.split(":")[1], 10);
+        let sec = parseInt(His.split(":")[2], 10);
+        sec = sec < 10 ? "0" + sec : sec;
+        return min + ":" + sec;
+      } else {
+        return false;
+      }
     },
 
     //playerが取得した時間を「分:秒」に整形
@@ -298,9 +305,11 @@ export default {
     },
 
     //数値の桁変換を行う関数
-    convertNumDigit(num) {
+    convertNumDigit(numTxt) {
       let units = ["", "万", "億"];
       var ext = units[0];
+      let num = numTxt.replace(/[^0-9]/g, "");
+
       for (var i = 1; i < units.length; i += 1) {
         if (parseInt(num) >= 10000) {
           num = parseInt(num) / 10000;

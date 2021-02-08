@@ -262,12 +262,13 @@ const actions = {
       for (let i = 0; i < res.length; i++) {
         YTresult[i] = {
           youtubeId: res[i].video.id,
-          thumbnails: res[i].video.thumbnail_src,
+          thumbnail: res[i].video.thumbnail_src,
           title: res[i].video.title,
-          channelTitle: res[i].video.channel,
-          publishedAt: res[i].video.release_date,
+          channel_title: res[i].video.channel,
+          published_at: res[i].video.release_date,
           duration: res[i].video.duration,
-          viewCount: res[i].video.num_views,
+          view_count: res[i].video.views,
+          num_views: res[i].video.num_views,
         };
       }
 

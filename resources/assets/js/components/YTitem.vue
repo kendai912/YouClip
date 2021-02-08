@@ -19,37 +19,41 @@
               <v-row class="pa-0 ma-0">
                 <v-col cols="6" class="pa-0 ma-0">
                   <v-img
-                    v-bind:src="item.thumbnails"
+                    v-bind:src="item.thumbnail"
                     v-bind:alt="item.title + '-thumbnail'"
-                    class="white--text align-end right"
+                    class="white--text align-end right rounded"
                     width="100%"
                     aspect-ratio="1.7777"
                   >
-                    <!-- <v-container class="pa-0 ma-0">
-                  <v-row class="pa-0 ma-1 d-flex justify-end">
-                    <v-col
-                      cols="auto"
-                      class="pa-1 ma-0 text-center black lighten-2 font-weight-bold opacity-background corner-radius"
-                    >{{ item.duration }}</v-col>
-                  </v-row>
-                </v-container> -->
+                    <v-container v-if="item.duration" class="pa-0 ma-0">
+                      <v-row class="pa-0 ma-1 d-flex justify-end">
+                        <v-col
+                          cols="auto"
+                          class="pa-1 ma-0 text-center black lighten-2 font-weight-bold opacity-background corner-radius"
+                          >{{ formatToMinSec(item.duration) }}</v-col
+                        >
+                      </v-row>
+                    </v-container>
                   </v-img>
                 </v-col>
 
                 <v-col cols="6" class="pa-0 ma-0">
                   <v-list-item class="px-2 ma-0">
                     <v-list-item-content>
-                      <v-list-item-title class="wrap-text">{{
-                        item.title
-                      }}</v-list-item-title>
-                      <v-list-item-subtitle>{{
-                        item.channelTitle
-                      }}</v-list-item-subtitle>
+                      <div class="wrap-text">{{ item.title }}</div>
                       <v-list-item-subtitle>
-                        <!-- <span>{{ convertNumDigit(item.viewCount) }}回視聴</span>
-                    <span>{{ timeSince(item.publishedAt) }}前</span> -->
-                        <span>{{ item.viewCount }}</span>
-                        <span>{{ item.publishedAt }}</span>
+                        <span class="wrap-text"
+                          >{{ item.channel_title }}
+                        </span></v-list-item-subtitle
+                      >
+                      <v-list-item-subtitle>
+                        <span v-if="item.view_count"
+                          >{{ convertNumDigit(item.view_count) }}回視聴</span
+                        >
+                        <span v-if="item.num_views"
+                          >{{ item.published_at }}前</span
+                        >
+                        <span v-else>{{ timeSince(item.published_at) }}前</span>
                       </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
@@ -59,7 +63,6 @@
             <v-col cols="1" class="pa-0 ma-auto text-center">
               <div class="ma-auto" style="width: 20px; height: 20px;">
                 <span>
-                  <!-- <i class="fas fa-keyboard_arrow_right my-grey"></i> -->
                   <v-img
                     src="/storage/icons/keyboard_arrow_right.svg"
                     width="28px"
@@ -94,13 +97,12 @@ export default {
     YTitems: Array,
   },
   data() {
-    return {
-      playlistIdToAdd: null,
-    };
+    return {};
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
+      isYTLoading: "YTsearch/isYTLoading",
       isYTLoading: "YTsearch/isYTLoading",
       numberOfYTItemsPerPagination: "YTsearch/numberOfYTItemsPerPagination",
       isAdding: "tagging/isAdding",

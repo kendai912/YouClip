@@ -27,7 +27,7 @@
         />
         <h2 class="fz-14">最近まとめたYouTube動画</h2>
       </div>
-      <YTRecentItem v-bind:YTRecentItems="YTRecentVideos" />
+      <YTitem v-bind:YTitems="YTRecentVideos" />
     </div>
   </div>
 </template>
@@ -37,14 +37,12 @@ import { mapState, mapGetters, mapMutations } from "vuex";
 import myMixin from "../util";
 import HighlightHeader from "../components/HighlightHeader.vue";
 import YTitem from "../components/YTitem.vue";
-import YTRecentItem from "../components/YTRecentItem.vue";
 import YTSearchBox from "../components/YTSearchBox.vue";
 
 export default {
   components: {
     HighlightHeader,
     YTitem,
-    YTRecentItem,
     YTSearchBox,
   },
   data() {
@@ -142,7 +140,6 @@ export default {
       //無限スクロールに合わせてYoutubeの検索結果を取得
       await this.$store.dispatch("YTsearch/YTsearch", this.pageNumber);
       this.$store.commit("YTsearch/setYTResultPageNumber", this.pageNumber + 1);
-      // this.pageNumber++;
 
       //ローディングを非表示
       this.$store.commit("YTsearch/setIsYTLoading", false);

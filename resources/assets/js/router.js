@@ -7,7 +7,6 @@ import Login from "./pages/Login.vue";
 import Register from "./pages/Register.vue";
 import Result from "./pages/Result.vue";
 import Highlight from "./pages/Highlight.vue";
-import YTresult from "./pages/YTresult.vue";
 import Watch from "./pages/Watch.vue";
 import Mypage from "./pages/Mypage.vue";
 import MyFollow from "./pages/MyFollow.vue";
@@ -64,10 +63,6 @@ const routes = [
   {
     path: "/youtube",
     component: Highlight,
-  },
-  {
-    path: "/YTresult",
-    component: YTresult,
   },
   {
     path: "/youtube/scene",
@@ -153,7 +148,7 @@ const routes = [
     path: "/403",
     component: ForbiddenError,
   },
-  { path: "*", component: ForbiddenError },
+  { path: "*", redirect: "/" },
 ];
 
 // VueRouterインスタンスを作成する
