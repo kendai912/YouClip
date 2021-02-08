@@ -133,7 +133,7 @@ import { mapState } from "vuex";
 export default {
   metaInfo() {
     return {
-      title: "ログイン - YouTube動画のまとめ作成ツール",
+      title: "ログイン - YouClip",
       meta: [
         {
           name: "description",
@@ -154,7 +154,7 @@ export default {
         },
         {
           property: "og:title",
-          content: "ログイン - YouTube動画のまとめ作成ツール",
+          content: "ログイン - YouClip",
         },
         {
           property: "og:description",

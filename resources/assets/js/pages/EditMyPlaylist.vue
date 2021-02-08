@@ -117,7 +117,7 @@ import PlaylistDeleteModal from "../components/PlaylistDeleteModal.vue";
 export default {
   metaInfo() {
     return {
-      title: "作成したまとめの編集 - YouTube動画のまとめ作成ツール",
+      title: "作成したまとめの編集 - YouClip",
       meta: [
         {
           name: "description",
@@ -138,7 +138,7 @@ export default {
         },
         {
           property: "og:title",
-          content: "作成したまとめの編集 - YouTube動画のまとめ作成ツール",
+          content: "作成したまとめの編集 - YouClip",
         },
         {
           property: "og:description",

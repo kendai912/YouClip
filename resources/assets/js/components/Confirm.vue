@@ -437,7 +437,6 @@ export default {
     },
     isPlayerReady() {
       if (this.isPlayerReady) {
-        console.log("setYtPlayerCSS");
         this.setYtPlayerCSS();
         this.$refs.ytSeekBar.setYtSeekbarWrapperTop();
       }

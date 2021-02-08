@@ -19,7 +19,7 @@ import Complete from "../components/Complete.vue";
 export default {
   metaInfo() {
     return {
-      title: "まとめ作成 - YouTube動画のまとめ作成ツール",
+      title: "まとめ作成 - YouClip",
       meta: [
         {
           name: "description",
@@ -40,7 +40,7 @@ export default {
         },
         {
           property: "og:title",
-          content: "まとめ作成 - YouTube動画のまとめ作成ツール",
+          content: "まとめ作成 - YouClip",
         },
         {
           property: "og:description",

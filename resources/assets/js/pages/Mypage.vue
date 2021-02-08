@@ -75,7 +75,7 @@ import myMixin from "../util";
 export default {
   metaInfo() {
     return {
-      title: "マイページ - YouTube動画のまとめ作成ツール",
+      title: "マイページ - YouClip",
       meta: [
         {
           name: "description",
@@ -96,7 +96,7 @@ export default {
         },
         {
           property: "og:title",
-          content: "マイページ - YouTube動画のまとめ作成ツール",
+          content: "マイページ - YouClip",
         },
         {
           property: "og:description",

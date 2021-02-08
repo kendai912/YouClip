@@ -56,7 +56,10 @@
         </v-menu>
       </div>
     </div>
-    <MyPlaylistItem v-bind:mediaItems="myCreatedAndLikedPlaylistMediaItems" />
+    <MyPlaylistItem
+      v-if="myCreatedAndLikedPlaylist"
+      v-bind:mediaItems="myCreatedAndLikedPlaylistMediaItems"
+    />
   </div>
 </template>
 
@@ -79,8 +82,8 @@ export default {
   props: {},
   data() {
     return {
-      tab: 1, //デフォルトはシーンタブを表示
-      items: ["プレイリスト", "シーン"],
+      tab: 1, //デフォルトは場面タブを表示
+      items: ["まとめ", "場面"],
     };
   },
   mixins: [myMixin],
@@ -179,19 +182,6 @@ export default {
     },
   },
   methods: {
-    //   myCreatedAndLikedPlaylistMediaItems() {
-    //     if (!this.myCreatedAndLikedPlaylist) return;
-
-    //     // プレイリストのデータをmyCreatedAndLikedPlaylistMediaItemsに格納
-    //     let mediaItems = [];
-    //     this.putPlaylistTagIntoMediaItems(
-    //       mediaItems,
-    //       this.myCreatedAndLikedPlaylist
-    //     );
-    //     setTimeout(this.$store.commit("playlist/setMyPlaylist", mediaItems), 10);
-
-    //     return mediaItems;
-    //   },
     async logout() {
       await this.$store.dispatch("auth/logout");
       if (this.apiStatus) {
@@ -210,9 +200,6 @@ export default {
       : "";
     //Likeまたは作成したプレイリストをロード
     await this.$store.dispatch("playlist/loadMyCreatedAndLikedPlaylist");
-    // this.myCreatedAndLikedPlaylistMediaItems();
-    //Likeまたは作成したタグをロード
-    await this.$store.dispatch("tag/loadMyCreatedAndLikedTagVideo");
   },
 };
 </script>

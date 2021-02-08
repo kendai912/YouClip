@@ -177,9 +177,10 @@ export default {
         },
         {
           property: "og:image",
-          content:
-            "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" +
-            this.sceneListofPlaylist[0].preview,
+          content: this.sceneListofPlaylist
+            ? "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" +
+              this.sceneListofPlaylist[0].preview
+            : "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/facebook-youclip-logo.png",
         },
       ],
     };
@@ -456,7 +457,6 @@ export default {
       "playlist/setCommentListofPlaylist",
       this.playlistAndTagVideoData.comments
     );
-    console.log(this.sceneListofPlaylist);
 
     //YTPlayerのまとめの再生に必要なパラメータをセット
     let listOfYoutubeIdStartEndTime = [];
