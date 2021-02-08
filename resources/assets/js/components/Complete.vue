@@ -16,29 +16,36 @@
     </v-sheet>
 
     <v-sheet class="mx-auto" max-width="420" elevation="0">
-      <v-img
-        v-on:click.stop="play"
-        class="align-end rounded"
-        max-height="266.66px"
-        v-bind:src="thumbStoragePath + newPreview"
-        v-bind:alt="newPlaylistName"
-        aspect-ratio="1.7777"
+      <router-link
+        v-bind:to="{
+          path: '/watch',
+          query: { playlist: myPlaylistToSave, index: 0 },
+        }"
+        class="no-text-decoration"
       >
-        <v-container
-          class="ma-0 pa-2"
-          fluid
-          fill-height
-          style="position: absolute; top: 0px;"
+        <v-img
+          class="align-end rounded"
+          max-height="266.66px"
+          v-bind:src="thumbStoragePath + newPreview"
+          v-bind:alt="newPlaylistName"
+          aspect-ratio="1.7777"
         >
-          <v-row class="ma-0 pa-0" align="center" justify="center">
-            <v-col class="ma-0 pa-0 text-center" cols="auto">
-              <v-icon class="pa-0 ma-0" color="white" size="70"
-                >play_circle_outline</v-icon
-              >
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-img>
+          <v-container
+            class="ma-0 pa-2"
+            fluid
+            fill-height
+            style="position: absolute; top: 0px;"
+          >
+            <v-row class="ma-0 pa-0" align="center" justify="center">
+              <v-col class="ma-0 pa-0 text-center" cols="auto">
+                <v-icon class="pa-0 ma-0" color="white" size="70"
+                  >play_circle_outline</v-icon
+                >
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-img>
+      </router-link>
     </v-sheet>
 
     <v-sheet class="mx-auto">
@@ -208,18 +215,6 @@ export default {
         );
         this.$store.commit("shareModal/setShareText", this.newPlaylistName);
       }
-    },
-    play() {
-      //再生ページを表示
-      this.$router
-        .push({
-          path: "/watch",
-          query: {
-            playlist: this.myPlaylistToSave,
-            index: "0",
-          },
-        })
-        .catch((err) => {});
     },
     shareOnSNS(e) {
       e.preventDefault();

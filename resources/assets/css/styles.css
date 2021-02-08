@@ -949,3 +949,8 @@ div.v-snack:not(.v-snack--absolute) {
   font-size: calc(1rem * (17 / 14));
   font-weight: normal;
 }
+
+.no-text-decoration {
+  text-decoration: none;
+  color: inherit !important;
+}

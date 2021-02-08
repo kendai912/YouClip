@@ -24,7 +24,10 @@
               height="45px"
               color="red lighten-2"
               class="white--text"
-              v-on:click="moveToYTvideoSelectPage"
+              v-bind:to="{
+                path: '/highlight',
+                query: { return: true },
+              }"
               style="font-size: 14px; "
               >続けて他の動画の場面を追加</v-btn
             >
@@ -55,7 +58,7 @@
               outlined
               color="red lighten-2"
               class="white--text"
-              v-on:click="openTitleSettingPage"
+              to="/youtube/title"
               style="font-size: 14px;"
               >まとめのタイトル入力へ</v-btn
             >
@@ -137,23 +140,6 @@ export default {
         "watch/getPlaylistAndTagVideoDataById",
         this.myPlaylistToSave
       );
-    },
-    //YouTube動画検索ページを表示
-    moveToYTvideoSelectPage() {
-      this.$router
-        .push({
-          path: "/highlight",
-          query: { return: true },
-        })
-        .catch((err) => {});
-    },
-    //まとめのタイトル入力画面を表示
-    openTitleSettingPage() {
-      this.$router
-        .push({
-          path: "/youtube/title",
-        })
-        .catch((err) => {});
     },
   },
   watch: {

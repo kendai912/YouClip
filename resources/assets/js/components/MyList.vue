@@ -65,16 +65,12 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
-import MyPlaylist from "../components/MyPlaylist.vue";
-import MyScene from "../components/MyScene.vue";
 import MyPlaylistItem from "../components/MyPlaylistItem.vue";
 import MyTagItem from "../components/MyTagItem.vue";
 import myMixin from "../util";
 
 export default {
   components: {
-    MyPlaylist,
-    MyScene,
     MyPlaylistItem,
     MyTagItem,
     // PlaylistMediaItem

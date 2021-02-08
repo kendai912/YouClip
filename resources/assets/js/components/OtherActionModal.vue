@@ -89,7 +89,7 @@ export default {
 
         //「編集」に必要なyoutubeデータをロード
         this.$store.commit("youtube/setYoutubeId", this.currentYoutubeId);
-        await this.$store.dispatch("youtube/getVideo");
+        await this.$store.dispatch("youtube/getVideo", this.currentYoutubeId);
         await this.$store.dispatch("youtube/getTag");
         this.$store.commit("youtube/setIsReady", true);
 

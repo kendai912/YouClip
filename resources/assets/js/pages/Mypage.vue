@@ -22,7 +22,7 @@
               height="45px"
               color="green lighten-1"
               class="white--text"
-              v-on:click="openLoginPage"
+              to="/login"
               style="font-size: 14px; "
               >ログイン</v-btn
             >
@@ -56,6 +56,7 @@
               color="green lighten-1"
               class="white--text"
               v-on:click="openRegisterPage"
+              to="/register"
               style="font-size: 14px;"
               >新規登録</v-btn
             >
@@ -122,22 +123,6 @@ export default {
   mixins: [myMixin],
   methods: {
     ...mapMutations({}),
-    openLoginPage() {
-      //ログインページを表示
-      this.$router
-        .push({
-          path: "/login",
-        })
-        .catch((err) => {});
-    },
-    openRegisterPage() {
-      //新規登録ページを表示
-      this.$router
-        .push({
-          path: "/register",
-        })
-        .catch((err) => {});
-    },
   },
   computed: {
     ...mapGetters({

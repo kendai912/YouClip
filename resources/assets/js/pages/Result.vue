@@ -9,7 +9,6 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import PlaylistMediaItem from "../components/PlaylistMediaItem.vue";
-import SceneMediaItem from "../components/SceneMediaItem.vue";
 import myMixin from "../util";
 
 export default {
@@ -66,7 +65,6 @@ export default {
   },
   components: {
     PlaylistMediaItem,
-    SceneMediaItem,
   },
   data() {
     return {

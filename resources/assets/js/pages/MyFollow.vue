@@ -11,8 +11,12 @@
       <v-card-title class="pa-0 ma-0 justify-center">
         <v-icon class="pa-0 ma-0" size="100">video_library</v-icon>
       </v-card-title>
-      <v-card-title class="pa-1 mt-2 mx-0 justify-center">ログインが必要です</v-card-title>
-      <v-card-subtitle class="pa-1 mt-0 mx-0 darkgrey--text">ログインすると、まとめを作成したYouTube動画にアクセス出来ます</v-card-subtitle>
+      <v-card-title class="pa-1 mt-2 mx-0 justify-center"
+        >ログインが必要です</v-card-title
+      >
+      <v-card-subtitle class="pa-1 mt-0 mx-0 darkgrey--text"
+        >ログインすると、まとめを作成したYouTube動画にアクセス出来ます</v-card-subtitle
+      >
       <v-card-actions class="justify-center pa-1 mt-4 mx-2">
         <v-container class="ma-0 pa-0">
           <v-row class="ma-0 pa-0 justify-center">
@@ -21,19 +25,28 @@
               height="45px"
               color="green lighten-1"
               class="white--text"
-              v-on:click="openLoginPage"
+              to="/login"
               style="font-size: 14px; "
-            >ログイン</v-btn>
+              >ログイン</v-btn
+            >
           </v-row>
-          <v-row class="ma-0 pa-0 justify-center" align="center" style="height: 70px;">
+          <v-row
+            class="ma-0 pa-0 justify-center"
+            align="center"
+            style="height: 70px;"
+          >
             <v-col class="ma-0 pa-0">
-              <div style="height: 1px; background-color: rgba(var(--b38,219,219,219),1)"></div>
+              <div
+                style="height: 1px; background-color: rgba(var(--b38,219,219,219),1)"
+              ></div>
             </v-col>
             <v-col class="ma-0 pa-0" cols="6">
               <v-card-text>はじめての方はこちら</v-card-text>
             </v-col>
             <v-col class="ma-0 pa-0">
-              <div style="height: 1px; background-color: rgba(var(--b38,219,219,219),1)"></div>
+              <div
+                style="height: 1px; background-color: rgba(var(--b38,219,219,219),1)"
+              ></div>
             </v-col>
           </v-row>
           <v-row class="ma-0 pa-0 justify-center">
@@ -43,9 +56,10 @@
               outlined
               color="green lighten-1"
               class="white--text"
-              v-on:click="openRegisterPage"
+              to="/register"
               style="font-size: 14px;"
-            >新規登録</v-btn>
+              >新規登録</v-btn
+            >
           </v-row>
         </v-container>
       </v-card-actions>
@@ -62,28 +76,12 @@ import myMixin from "../util";
 export default {
   components: {
     MyFollowProfile,
-    FollowList
+    FollowList,
   },
   props: {},
   mixins: [myMixin],
   methods: {
     ...mapMutations({}),
-    openLoginPage() {
-      //ログインページを表示
-      this.$router
-        .push({
-          path: "/login",
-        })
-        .catch((err) => {});
-    },
-    openRegisterPage() {
-      //新規登録ページを表示
-      this.$router
-        .push({
-          path: "/register",
-        })
-        .catch((err) => {});
-    },
   },
   computed: {
     ...mapGetters({

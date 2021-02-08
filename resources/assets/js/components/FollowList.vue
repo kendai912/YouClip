@@ -1,10 +1,19 @@
 <template>
   <div>
     <v-tabs v-model="tab" background-color="transparent" grow hide-slider>
-      <v-tab v-for="(item, key) in items" :key="item" v-on:click="setActiveTab(key)">{{ item }}</v-tab>
+      <v-tab
+        v-for="(item, key) in items"
+        :key="item"
+        v-on:click="setActiveTab(key)"
+        >{{ item }}</v-tab
+      >
     </v-tabs>
 
-    <v-tabs-items v-model="tab" class="pb-14" style="background-color: transparent">
+    <v-tabs-items
+      v-model="tab"
+      class="pb-14"
+      style="background-color: transparent"
+    >
       <v-tab-item>
         <v-card flat>
           <MyPlaylistItem v-bind:mediaItems="publicPlaylistMediaItems" />
@@ -22,8 +31,6 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
-import MyPlaylist from "../components/MyPlaylist.vue";
-import MyScene from "../components/MyScene.vue";
 import MyPlaylistItem from "../components/MyPlaylistItem.vue";
 import MyTagItem from "../components/MyTagItem.vue";
 // import PlaylistMediaItem from "../components/PlaylistMediaItem.vue";
@@ -31,8 +38,6 @@ import myMixin from "../util";
 
 export default {
   components: {
-    MyPlaylist,
-    MyScene,
     MyPlaylistItem,
     MyTagItem,
     // PlaylistMediaItem
@@ -50,17 +55,14 @@ export default {
       myCreatedAndLikedPlaylist: "playlist/myCreatedAndLikedPlaylist",
       myCreatedAndLikedTagVideo: "tag/myCreatedAndLikedTagVideo",
       publicPlaylist: "playlist/publicPlaylist",
-      createdSceneList: "playlist/createdSceneList"
+      createdSceneList: "playlist/createdSceneList",
     }),
     publicPlaylistMediaItems() {
       if (!this.publicPlaylist) return;
 
       // プレイリストのデータをmyCreatedAndLikedPlaylistMediaItemsに格納
       let mediaItems = [];
-      this.putPlaylistTagIntoMediaItems(
-        mediaItems,
-        this.publicPlaylist
-      );
+      this.putPlaylistTagIntoMediaItems(mediaItems, this.publicPlaylist);
       return mediaItems;
     },
     createdTagListMediaItems() {
@@ -68,64 +70,69 @@ export default {
 
       // プレイリストのデータをmyCreatedAndLikedPlaylistMediaItemsに格納
       let mediaItems = [];
-      this.putTagVideoIntoMediaItems(
-        mediaItems,
-        this.createdSceneList
+      this.putTagVideoIntoMediaItems(mediaItems, this.createdSceneList);
+      var groupedData = Object.values(
+        mediaItems.reduce(
+          (
+            result,
+            {
+              video_id,
+              category,
+              id,
+              title,
+              thumbnail,
+              created_at,
+              timeSince,
+              tagsList,
+              tags,
+              tagArray,
+              totalDuration,
+              start,
+              end,
+              preview,
+              previewgif,
+              sceneCount,
+              likeCount,
+              user_id,
+            }
+          ) => {
+            // Create new group
+            if (!result[video_id]) {
+              result[video_id] = {
+                video_id,
+                title,
+                tagVideoData: [],
+              };
+            }
+            // if (!result[title]) {
+            //   result[title]
+            // }
+            // Append to group
+            result[video_id].tagVideoData.push({
+              category,
+              id,
+              title,
+              thumbnail,
+              created_at,
+              timeSince,
+              tagsList,
+              tags,
+              tagArray,
+              totalDuration,
+              start,
+              end,
+              preview,
+              previewgif,
+              sceneCount,
+              likeCount,
+              user_id,
+            });
+            return result;
+          },
+          {}
+        )
       );
-      var groupedData = Object.values(mediaItems.reduce((result, {
-        video_id,
-        category,
-        id,
-        title,
-        thumbnail,
-        created_at,
-        timeSince,
-        tagsList,
-        tags,
-        tagArray,
-        totalDuration,
-        start,
-        end,
-        preview,
-        previewgif,
-        sceneCount,
-        likeCount,
-        user_id,
-      }) => {
-        // Create new group
-        if (!result[video_id]) { 
-          result[video_id] = {
-            video_id,
-            title,
-            tagVideoData: []
-          };
-        }
-        // if (!result[title]) {
-        //   result[title]
-        // }
-        // Append to group
-        result[video_id].tagVideoData.push({
-          category,
-          id,
-          title,
-          thumbnail,
-          created_at,
-          timeSince,
-          tagsList,
-          tags,
-          tagArray,
-          totalDuration,
-          start,
-          end,
-          preview,
-          previewgif,
-          sceneCount,
-          likeCount,
-          user_id,
-        });
-        return result;
-      }, {}));
-      groupedData.sort((a, b) => (a.video_id < b.video_id) ? 1 : -1);
+      groupedData.sort((a, b) => (a.video_id < b.video_id ? 1 : -1));
       return groupedData;
     },
     myCreatedAndLikedPlaylistMediaItems() {
@@ -137,7 +144,7 @@ export default {
         mediaItems,
         this.myCreatedAndLikedPlaylist
       );
-      
+
       return mediaItems;
     },
     myCreatedAndLikedTagVideoMediaItems() {
@@ -150,60 +157,68 @@ export default {
         this.myCreatedAndLikedTagVideo
       );
 
-      var groupedData = Object.values(mediaItems.reduce((result, {
-        video_id,
-        category,
-        id,
-        title,
-        thumbnail,
-        created_at,
-        timeSince,
-        tagsList,
-        tags,
-        tagArray,
-        totalDuration,
-        start,
-        end,
-        preview,
-        previewgif,
-        sceneCount,
-        likeCount,
-        user_id,
-      }) => {
-        // Create new group
-        if (!result[video_id]) { 
-          result[video_id] = {
-            video_id,
-            title,
-            tagVideoData: []
-          };
-        }
-        // if (!result[title]) {
-        //   result[title]
-        // }
-        // Append to group
-        result[video_id].tagVideoData.push({
-          category,
-          id,
-          title,
-          thumbnail,
-          created_at,
-          timeSince,
-          tagsList,
-          tags,
-          tagArray,
-          totalDuration,
-          start,
-          end,
-          preview,
-          previewgif,
-          sceneCount,
-          likeCount,
-          user_id,
-        });
-        return result;
-      }, {}));
-      groupedData.sort((a, b) => (a.video_id < b.video_id) ? 1 : -1);
+      var groupedData = Object.values(
+        mediaItems.reduce(
+          (
+            result,
+            {
+              video_id,
+              category,
+              id,
+              title,
+              thumbnail,
+              created_at,
+              timeSince,
+              tagsList,
+              tags,
+              tagArray,
+              totalDuration,
+              start,
+              end,
+              preview,
+              previewgif,
+              sceneCount,
+              likeCount,
+              user_id,
+            }
+          ) => {
+            // Create new group
+            if (!result[video_id]) {
+              result[video_id] = {
+                video_id,
+                title,
+                tagVideoData: [],
+              };
+            }
+            // if (!result[title]) {
+            //   result[title]
+            // }
+            // Append to group
+            result[video_id].tagVideoData.push({
+              category,
+              id,
+              title,
+              thumbnail,
+              created_at,
+              timeSince,
+              tagsList,
+              tags,
+              tagArray,
+              totalDuration,
+              start,
+              end,
+              preview,
+              previewgif,
+              sceneCount,
+              likeCount,
+              user_id,
+            });
+            return result;
+          },
+          {}
+        )
+      );
+      groupedData.sort((a, b) => (a.video_id < b.video_id ? 1 : -1));
       return groupedData;
     },
   },
@@ -224,7 +239,10 @@ export default {
     //Likeまたは作成したタグをロード
     await this.$store.dispatch("tag/loadMyCreatedAndLikedTagVideo");
     let created_user = this.$route.query.user_id;
-    await this.$store.dispatch("playlist/loadPublicPlaylistAndScenelist", created_user);
+    await this.$store.dispatch(
+      "playlist/loadPublicPlaylistAndScenelist",
+      created_user
+    );
   },
 };
 </script>

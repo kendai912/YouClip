@@ -28,49 +28,66 @@
                       v-on:touchstart="setShowPreviewIndex(index)"
                       style="overflow: hidden;"
                     >
-                      <v-img
-                        class="white--text align-end rounded"
-                        v-bind:src="thumbStoragePath + item.preview"
-                        lazy-src="/storage/imgs/dummy-image.jpg"
-                        v-on:click.stop="select(item)"
-                        v-bind:alt="item.title"
-                        height="100%"
-                        style="z-index: 1;"
+                      <router-link
+                        v-bind:to="{
+                          path: '/watch',
+                          query: { playlist: item.id, index: 0 },
+                        }"
+                        class="no-text-decoration"
+                        v-on:click.native="select(item)"
                       >
-                        <template v-slot:placeholder>
-                          <v-row
-                            class="fill-height ma-0"
-                            align="center"
-                            justify="center"
-                          >
-                            <v-progress-circular
-                              indeterminate
-                              color="grey lighten-5"
-                            ></v-progress-circular>
-                          </v-row>
-                        </template>
-                      </v-img>
-                      <video
-                        v-if="showPreviewIndex == index"
-                        v-bind:src="gifStoragePath + item.previewgif"
-                        autoplay
-                        playsinline
-                        muted
-                        loop
-                        disablePictureInPicture
-                        disableRemotePlayback
-                        height="100%"
-                        style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px; object-fit: cover;"
-                      ></video>
+                        <v-img
+                          class="white--text align-end rounded"
+                          v-bind:src="thumbStoragePath + item.preview"
+                          lazy-src="/storage/imgs/dummy-image.jpg"
+                          v-bind:alt="item.title"
+                          height="100%"
+                          style="z-index: 1;"
+                        >
+                          <template v-slot:placeholder>
+                            <v-row
+                              class="fill-height ma-0"
+                              align="center"
+                              justify="center"
+                            >
+                              <v-progress-circular
+                                indeterminate
+                                color="grey lighten-5"
+                              ></v-progress-circular>
+                            </v-row>
+                          </template>
+                        </v-img>
+                        <video
+                          v-if="showPreviewIndex == index"
+                          v-bind:src="gifStoragePath + item.previewgif"
+                          autoplay
+                          playsinline
+                          muted
+                          loop
+                          disablePictureInPicture
+                          disableRemotePlayback
+                          height="100%"
+                          style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px; object-fit: cover;"
+                        ></video>
+                      </router-link>
                     </v-card>
                   </v-col>
                   <v-col cols="6" class="pa-2">
                     <v-row class="ma-0 pa-0">
                       <v-col cols="10" class="ma-0 pa-0">
-                        <div v-on:click.stop="select(item)" class="py-1">
-                          <span class="block-playlist-title">{{
-                            item.title
-                          }}</span>
+                        <div class="py-1">
+                          <router-link
+                            v-bind:to="{
+                              path: '/watch',
+                              query: { playlist: item.id, index: 0 },
+                            }"
+                            class="no-text-decoration"
+                            v-on:click.native="select(item)"
+                          >
+                            <span class="block-playlist-title">{{
+                              item.title
+                            }}</span>
+                          </router-link>
                         </div>
                       </v-col>
                       <v-col cols="2" class="ma-0 pa-0 text-center">
@@ -78,43 +95,58 @@
                           class="ma-0 pa-0"
                           style="width: 20px; height: 20px;"
                           v-if="user_id === item.user_id"
-                          v-on:click="editPlaylist(item)"
                         >
-                          <span>
-                            <v-icon class="my-grey outlined-icon"
-                              >mdi-pencil</v-icon
-                            >
-                          </span>
+                          <router-link
+                            v-bind:to="{
+                              path: '/editmyplaylist',
+                              query: { playlist: item.id },
+                            }"
+                            class="no-text-decoration"
+                          >
+                            <span>
+                              <v-icon class="my-grey outlined-icon"
+                                >mdi-pencil</v-icon
+                              >
+                            </span>
+                          </router-link>
                         </div>
                       </v-col>
                     </v-row>
                     <v-row class="ma-0 pa-0">
                       <v-col class="ma-0 pa-0">
                         <div
-                          v-on:click.stop="select(item)"
                           class="grey--text text--darken-3 py-1"
                           style="font-size: 12px; padding-left: 0;"
                         >
-                          <span
-                            >{{
-                              item.visitCount ? item.visitCount : 0
-                            }}回視聴</span
+                          <router-link
+                            v-bind:to="{
+                              path: '/watch',
+                              query: { playlist: item.id, index: 0 },
+                            }"
+                            class="no-text-decoration"
+                            v-on:click.native="select(item)"
                           >
-                          <span style="font-size:8px;"
-                            >&nbsp;&#8226;&nbsp;</span
-                          >
-                          <span>合計{{ item.totalDuration }}</span>
-                          <span style="font-size:8px;"
-                            >&nbsp;&#8226;&nbsp;</span
-                          >
-                          <span>{{ item.timeSince }}前</span>
-                          <span v-if="item.likeCount" style="font-size:8px;"
-                            >&nbsp;&#8226;&nbsp;</span
-                          >
-                          <span v-if="item.likeCount">
-                            <i class="fas fa-heart my-grey-heart"></i>
-                            {{ item.likeCount }}
-                          </span>
+                            <span
+                              >{{
+                                item.visitCount ? item.visitCount : 0
+                              }}回視聴</span
+                            >
+                            <span style="font-size:8px;"
+                              >&nbsp;&#8226;&nbsp;</span
+                            >
+                            <span>合計{{ item.totalDuration }}</span>
+                            <span style="font-size:8px;"
+                              >&nbsp;&#8226;&nbsp;</span
+                            >
+                            <span>{{ item.timeSince }}前</span>
+                            <span v-if="item.likeCount" style="font-size:8px;"
+                              >&nbsp;&#8226;&nbsp;</span
+                            >
+                            <span v-if="item.likeCount">
+                              <i class="fas fa-heart my-grey-heart"></i>
+                              {{ item.likeCount }}
+                            </span>
+                          </router-link>
                         </div>
                       </v-col>
                     </v-row>
@@ -175,47 +207,9 @@ export default {
       this.showPreviewIndex = index;
     },
     checkMove(e) {},
-    async select(mediaItem) {
+    select(mediaItem) {
       //プレイリストの場合
-      if (mediaItem.category == "playlist") {
-        await this.$store.dispatch(
-          "playlist/addPlaylistVisitCount",
-          mediaItem.id
-        );
-        //再生ページを表示
-        this.$router
-          .push({
-            path: "/watch",
-            query: {
-              playlist: mediaItem.id,
-              index: "0",
-            },
-          })
-          .catch((err) => {});
-      }
-
-      //タグの場合
-      if (mediaItem.category == "tag") {
-        //再生ページを表示
-        this.$router
-          .push({
-            path: "/watch",
-            query: {
-              tag: mediaItem.id,
-            },
-          })
-          .catch((err) => {});
-      }
-    },
-    async editPlaylist(mediaItem) {
-      this.$router
-        .push({
-          path: "/editmyplaylist",
-          query: {
-            playlist: mediaItem.id,
-          },
-        })
-        .catch((err) => {});
+      this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
     },
     endDragging() {},
   },

@@ -177,9 +177,6 @@ export default {
       //インクリメンタルサーチの表示を消すためフォーカスを外す
       this.$refs.searchInputBox.blur();
     },
-    back() {
-      this.$router.push("/home");
-    },
     cancelSearch() {
       this.$store.commit("navbar/setIsActiveSearch", false);
     },

@@ -430,7 +430,7 @@ export default {
 
     //必要データを取得
     this.$store.commit("youtube/setYoutubeId", youtubeId);
-    await this.$store.dispatch("youtube/getVideo");
+    await this.$store.dispatch("youtube/getVideo", youtubeId);
     await this.$store.dispatch("youtube/getTag");
     if (this.isNew) {
       //新規動画・タグの場合はData APIから取得
