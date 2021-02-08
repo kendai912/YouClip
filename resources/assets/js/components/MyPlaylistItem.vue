@@ -134,6 +134,7 @@
           <v-img
             max-width="160"
             aspect-ratio="1"
+            alt="no post"
             src="/storage/imgs/noPost.svg"
           ></v-img>
         </v-card-title>

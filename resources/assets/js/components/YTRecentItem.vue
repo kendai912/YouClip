@@ -64,6 +64,7 @@
                     src="/storage/icons/keyboard_arrow_right.svg"
                     width="28px"
                     max-height="28px"
+                    alt="Open YouTube item"
                   />
                 </span>
               </div>

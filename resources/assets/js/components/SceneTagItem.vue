@@ -101,7 +101,7 @@
                         </div>
 
                         <div
-                          class="text--darken-3 pt-2"
+                          class="green--text text--darken-2 pt-2"
                           style="font-size: 12px; padding-left: 0; font-weight: bold"
                         >
                           <span>{{ item.start }}</span>
@@ -154,7 +154,7 @@
                   v-on:click="deleteItem(item.id, item.title, index)"
                 >
                   <v-icon class="outlined-icon">mdi-delete</v-icon>
-                  <div class="fz-12">削除</div>
+                  <h2 class="fz-12">削除</h2>
                 </div>
               </v-col>
               <v-col cols="4">
@@ -163,7 +163,7 @@
                   v-on:click="editItem(item.id)"
                 >
                   <v-icon class="outlined-icon">mdi-pencil</v-icon>
-                  <div class="fz-12">編集</div>
+                  <h2 class="fz-12">編集</h2>
                 </div>
               </v-col>
               <v-col cols="4">
@@ -172,7 +172,7 @@
                   v-on:click="plusItem(item.id)"
                 >
                   <v-icon class="outlined-icon">mdi-plus-circle</v-icon>
-                  <div class="fz-12">他のまとめに追加</div>
+                  <h2 class="fz-12">他のまとめに追加</h2>
                 </div>
               </v-col>
             </v-row>

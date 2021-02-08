@@ -44,9 +44,9 @@
           <v-card-title
             v-on:click.stop="select(item)"
             class="pt-2 px-2 pb-1 ma-0"
-            ><span class="home-and-search-result-title">{{
+            ><h3 class="home-and-search-result-title">{{
               item.title
-            }}</span></v-card-title
+            }}</h3></v-card-title
           >
           <v-card-text class="pl-2 ma-0 text--primary">
             <v-container

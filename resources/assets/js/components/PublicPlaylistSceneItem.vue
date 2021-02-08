@@ -27,6 +27,7 @@
                             src="/storage/icons/playlist_icon.png"
                             width="16px"
                             max-height="16px"
+                            alt="playlist icon"
                           />
                           <span class="caption">&nbsp;{{item.sceneCount}}&nbsp;シーン</span>
                         </v-chip>
@@ -49,6 +50,7 @@
                           src="/storage/icons/playlist_icon.png"
                           width="16px"
                           max-height="16px"
+                          alt="playlist icon"
                         />
                         <span class="caption">&nbsp;{{item.sceneCount}}&nbsp;シーン</span>
                       </v-chip>
@@ -134,6 +136,7 @@
                             src="/storage/icons/playlist_icon.png"
                             width="16px"
                             max-height="16px"
+                            alt="playlist icon"
                           />
                           <span class="caption">&nbsp;{{item.sceneCount}}&nbsp;シーン</span>
                         </v-chip>
@@ -153,6 +156,7 @@
                           src="/storage/icons/playlist_icon.png"
                           width="16px"
                           max-height="16px"
+                          alt="playlist icon"
                         />
                         <span class="caption">&nbsp;{{item.sceneCount}}&nbsp;シーン</span>
                       </v-chip>

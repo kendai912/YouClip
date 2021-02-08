@@ -13,6 +13,7 @@
             width="28px"
             max-height="28px"
             class="float-left mr-2"
+            alt="return"
             v-on:click.stop="goback"
           />
           <span class="h5 font-weight-black">
@@ -27,7 +28,7 @@
               class="profile"
               size="100"
             >
-              <v-img src="/storage/logos/pph_son.png"></v-img>
+              <v-img src="/storage/logos/pph_son.png" alt="profile pic"></v-img>
             </v-avatar>
           </div>
         </v-col>

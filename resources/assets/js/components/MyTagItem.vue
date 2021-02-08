@@ -13,6 +13,7 @@
           width="28px"
           max-height="28px"
           class="float-left mr-2"
+          alt="YouTube logo"
         />
         <div class="video-title">
           {{ videoItem.title }}

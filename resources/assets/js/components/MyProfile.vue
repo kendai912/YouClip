@@ -20,7 +20,7 @@
               class="profile"
               size="100"
             >
-              <v-img src="/storage/logos/pph_son.png"></v-img>
+              <v-img src="/storage/logos/pph_son.png" alt="profile pic"></v-img>
             </v-avatar>
           </div>
         </v-col>

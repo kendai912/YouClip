@@ -66,6 +66,7 @@
                   class="mx-auto"
                   width="44px"
                   aspect-ratio="1"
+                  alt="Twitter logo"
                   src="/storage/logos/twitter_square.png"
                   style="border-radius: 8px;"
                 ></v-img>
@@ -92,6 +93,7 @@
                   class="mx-auto"
                   width="44px"
                   aspect-ratio="1"
+                  alt="Facebook logo"
                   src="/storage/logos/facebook_square.png"
                   style="border-radius: 8px;"
                 ></v-img>
@@ -119,6 +121,7 @@
                   class="mx-auto"
                   width="44px"
                   aspect-ratio="1"
+                  alt="LINE log"
                   src="/storage/logos/line_square.png"
                   style="border-radius: 8px;"
                 ></v-img>

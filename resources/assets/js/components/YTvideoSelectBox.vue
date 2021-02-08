@@ -8,6 +8,7 @@
           src="/storage/icons/yt_social_red.png"
           width="28px"
           max-height="28px"
+          alt="YouTube logo"
           class="float-left mr-2"
         />
         <span>YouTube検索結果</span>
@@ -21,6 +22,7 @@
           src="/storage/icons/yt_social_red.png"
           width="28px"
           max-height="28px"
+          alt="YouTube logo"
           class="float-left mr-2"
         />
         <span>最近まとめたYouTube動画</span>

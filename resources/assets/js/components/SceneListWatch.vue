@@ -60,6 +60,7 @@
                                     "
                                     lazy-src="/storage/imgs/dummy-image.jpg"
                                     height="100%"
+                                    v-bind:alt="mediaItems[listIndex].title"
                                     v-on:load="loaded"
                                   >
                                     <template v-slot:placeholder>

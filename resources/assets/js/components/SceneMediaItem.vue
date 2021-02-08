@@ -2,23 +2,37 @@
   <v-container class="pa-0 pb-3">
     <v-row
       v-for="item in mediaItems"
-      v-bind:key="item.category+'-'+item.id"
+      v-bind:key="item.category + '-' + item.id"
       dense
       class="pa-0 ma-0"
     >
       <v-col class="px-0" style="padding-top: 2px; paddint-bottom: 2px;">
-        <v-card class="mx-auto" max-width="420" elevation="0" style="border-radius: 2px;">
+        <v-card
+          class="mx-auto"
+          max-width="420"
+          elevation="0"
+          style="border-radius: 2px;"
+        >
           <v-hover v-if="!isMobile" v-slot:default="{ hover }">
             <v-img
               v-on:click.stop="select(item)"
               class="white--text align-end"
               max-height="266.66px"
-              v-bind:src="hover ? gifStoragePath + item.previewgif: thumbStoragePath + item.preview"
+              v-bind:src="
+                hover
+                  ? gifStoragePath + item.previewgif
+                  : thumbStoragePath + item.preview
+              "
               v-bind:alt="item.title"
               aspect-ratio="1.7777"
             >
-              <v-chip label color="#27252582" text-color="white" class="scene-chip">
-                {{item.start+'&nbsp;~&nbsp;'+item.end}}
+              <v-chip
+                label
+                color="#27252582"
+                text-color="white"
+                class="scene-chip"
+              >
+                {{ item.start + "&nbsp;~&nbsp;" + item.end }}
               </v-chip>
 
               <v-card-text class="pa-2">
@@ -53,8 +67,13 @@
             v-bind:alt="item.title"
             aspect-ratio="1.7777"
           >
-            <v-chip label color="#27252582" text-color="white" class="scene-chip">
-              {{item.start+'&nbsp;~&nbsp;'+item.end}}
+            <v-chip
+              label
+              color="#27252582"
+              text-color="white"
+              class="scene-chip"
+            >
+              {{ item.start + "&nbsp;~&nbsp;" + item.end }}
             </v-chip>
 
             <v-card-text class="pa-2">
@@ -78,11 +97,13 @@
           </v-img>
           <v-list-item class="px-2 pt-0 pb-2 mb-2">
             <v-list width="55px" class="py-1 pl-1 pr-3">
-              <v-img src="/storage/icons/yt_social_red.png" />
+              <v-img src="/storage/icons/yt_social_red.png" alt="YouTube log" />
             </v-list>
             <v-list-item-content>
               <v-card-title class="pa-0" v-on:click.stop="select(item)">
-                <span class="home-and-search-result-title">{{ item.title }}</span>
+                <span class="home-and-search-result-title">{{
+                  item.title
+                }}</span>
               </v-card-title>
               <!-- <v-card-text class="text--primary">
                 <div v-on:click.stop="select(item)" class="grey--text text--darken-3">
@@ -125,7 +146,10 @@
         </v-card>
       </v-col>
     </v-row>
-    <LoadingItem v-if="isLoading" v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination" />
+    <LoadingItem
+      v-if="isLoading"
+      v-bind:numberOfItemsPerPagination="numberOfItemsPerPagination"
+    />
   </v-container>
 </template>
 
@@ -191,6 +215,6 @@ export default {
   mounted() {},
   created() {
     this.isMobile = this.mobileCheck();
-  }
+  },
 };
 </script>

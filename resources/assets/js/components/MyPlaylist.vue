@@ -4,6 +4,7 @@
       <img
         v-bind:src="thumbStoragePath + myPlaylist.tags[0].preview"
         style="width: 300px; height:auto"
+        alt="thumbnail"
       />
     </div>
     <div>{{ myPlaylist.playlistName }}</div>

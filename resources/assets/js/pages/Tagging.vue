@@ -5,6 +5,7 @@
         src="/storage/icons/yt_social_red.png"
         width="28px"
         max-height="28px"
+        alt="YouTube logo"
         class="float-left mr-2"
       />
       <span>最近シーン登録したYouTube動画</span>

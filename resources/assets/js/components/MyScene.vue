@@ -3,6 +3,7 @@
     <div class="thumbnail">
       <img
         v-bind:src="thumbStoragePath + myTagVideo.preview"
+        alt="thumbnail"
         style="width: 300px; height:auto"
       />
     </div>

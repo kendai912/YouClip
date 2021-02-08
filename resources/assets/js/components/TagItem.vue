@@ -7,6 +7,7 @@
           width="28px"
           max-height="28px"
           class="float-left mr-2"
+          alt="YouTube logo"
         />
         <span v-if="isNew">{{ newVideoData.title }}</span>
         <span v-else>{{ videoData.title }}</span>

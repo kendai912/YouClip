@@ -19,10 +19,10 @@
             <v-container class="ma-0 pa-0 pt-2" fluid>
               <v-row class="ma-0 pa-0" align="center">
                 <v-col class="ma-2 my-0 pa-0">
-                  <span
+                  <h1
                     class="home-and-search-result-title"
                     style="font-weight: 400; !important"
-                    >{{ playlistName }}</span
+                    >{{ playlistName }}</h1
                   >
                 </v-col>
                 <v-col cols="auto" class="ma-2 my-0 pa-0 text-right">

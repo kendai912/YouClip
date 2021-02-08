@@ -43,6 +43,7 @@
                     src="/storage/icons/north_west.svg"
                     width="16px"
                     max-height="16px"
+                    alt="search YouTube"
                     v-on:click="YTsearchByItem(data.item.value)"
                   ></v-img>
                 </v-list-item-icon>

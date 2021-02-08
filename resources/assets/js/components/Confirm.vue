@@ -22,6 +22,7 @@
                 src="/storage/icons/yt_social_red.png"
                 width="28px"
                 max-height="28px"
+                alt="YouTube logo"
                 class="float-left mr-2"
               />
               <span v-if="isNew">{{ newVideoData.title }}</span>
@@ -31,7 +32,7 @@
 
           <v-row class="ma-0 pt-4">
             <v-col class="text-center now-playing">
-              <img src="/storage/icons/now_playing.svg" />
+              <img src="/storage/icons/now_playing.svg" alt="now playing" />
               <span>{{ start }}-{{ end }}の場面を再生中</span>
             </v-col>
           </v-row>

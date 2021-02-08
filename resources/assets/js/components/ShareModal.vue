@@ -31,6 +31,7 @@
                   aspect-ratio="1"
                   src="/storage/logos/twitter_square.png"
                   style="border-radius: 8px;"
+                  alt="Twitter logo"
                 ></v-img>
               </v-col>
             </v-row>
@@ -57,6 +58,7 @@
                   aspect-ratio="1"
                   src="/storage/logos/facebook_square.png"
                   style="border-radius: 8px;"
+                  alt="Facebook logo"
                 ></v-img>
               </v-col>
             </v-row>
@@ -84,6 +86,7 @@
                   aspect-ratio="1"
                   src="/storage/logos/line_square.png"
                   style="border-radius: 8px;"
+                  alt="LINE logo"
                 ></v-img>
               </v-col>
             </v-row>

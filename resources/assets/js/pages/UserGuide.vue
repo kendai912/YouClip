@@ -11,6 +11,7 @@
               left: 8px;
               object-fit: contain;
             "
+            alt="YouClip logo"
         />
       </div>
       <v-row no-gutters>
@@ -69,7 +70,7 @@
             <v-card class="py-12 px-1" flat>
               <v-theme-provider dark>
                 <div>
-                  <img v-bind:src="img" style="width:100%" class="pa-0 ma-0" />
+                  <img v-bind:src="img" style="width:100%" class="pa-0 ma-0" v-bind:alt="title" />
                 </div>
               </v-theme-provider>
 
@@ -109,7 +110,7 @@
           <v-carousel-item v-for="(img, i) in howToImgs" :key="i">
             <v-sheet color="white" height="100%">
               <v-row class="fill-height" align="center" justify="center">
-                <img v-bind:src="img" style="height: 100%; " />
+                <img v-bind:src="img" style="height: 100%; " alt="How-to image" />
               </v-row>
             </v-sheet>
           </v-carousel-item>

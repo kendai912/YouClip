@@ -40,6 +40,7 @@
                     src="/storage/icons/north_west.svg"
                     width="16px"
                     max-height="16px"
+                    alt="search"
                   ></v-img>
                 </v-list-item-icon>
               </template>
@@ -66,6 +67,7 @@
               left: 8px;
               object-fit: contain;
             "
+            alt="YouClip logo"
           />
           <p class="leading-none text-gray-600 text-s">
             | YouTube動画のまとめ作成ツール

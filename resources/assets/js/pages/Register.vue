@@ -15,9 +15,11 @@
           style="height: 40px;"
         >
           <v-col class="ma-0 pa-0">
-            <v-card-text class="text-center"
-              >連携済みアカウントで新規登録</v-card-text
+            <h2
+              style="font-size: 1rem !important; font-weight: normal !important;"
             >
+              連携済みアカウントで新規登録
+            </h2>
           </v-col>
         </v-row>
         <v-row class="mb-4 pa-0" align="center">
@@ -26,6 +28,7 @@
               <v-img
                 width="44px"
                 aspect-ratio="1"
+                alt="Google login"
                 src="/storage/logos/google.png"
               ></v-img>
             </a>
@@ -35,6 +38,7 @@
               <v-img
                 width="44px"
                 aspect-ratio="1"
+                alt="Facebook login"
                 src="/storage/logos/icon_facebook.svg"
               ></v-img>
             </a>
@@ -44,6 +48,7 @@
               <v-img
                 width="44px"
                 aspect-ratio="1"
+                alt="Twitter login"
                 src="/storage/logos/icon_twitter.svg"
               ></v-img>
             </a>
@@ -56,9 +61,11 @@
         </v-row>
         <v-row class="my-2 pa-0" align="center" style="height: 40px;">
           <v-col class="ma-0 pa-0">
-            <v-card-text class="ma-0 pa-0"
-              >名前・メールアドレス・パスワードで新規登録</v-card-text
+            <h2
+              style="font-size: 1rem !important; font-weight: normal !important;"
             >
+              名前・メールアドレス・パスワードで新規登録
+            </h2>
           </v-col>
         </v-row>
         <v-row class="ma-0 pa-0" align="center">

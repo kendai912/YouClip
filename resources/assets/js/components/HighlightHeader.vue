@@ -11,7 +11,9 @@
           <v-icon v-on:click="back" color="my-grey">mdi-chevron-left</v-icon>
         </v-col>
         <v-col class="ma-0 pa-0 text-center" cols="auto">
-          <span>{{ headerMessage }}</span>
+          <h1 style="font-size: 1rem; font-weight: normal;">
+            {{ headerMessage }}
+          </h1>
         </v-col>
         <v-col v-if="showBackIcon" class="ma-0 pa-0"> </v-col>
       </v-row>
