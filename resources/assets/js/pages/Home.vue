@@ -227,6 +227,9 @@ export default {
         document.documentElement.scrollTop + window.innerHeight / 2;
       let page = 1;
 
+      this.setTopPositionOfItems();
+      this.setItemHeight();
+
       while (
         windowMiddlePosition >
         this.topPositionOfItems + this.itemHeight * this.contentsPerPage * page
@@ -323,10 +326,6 @@ export default {
     this.$store.commit("playlist/setToLoadSports", true);
     this.$store.commit("playlist/setToLoadEntertainment", true);
 
-    let startPage = this.$route.query.page ? this.$route.query.page : 1;
-    this.setTopPositionOfItems();
-    this.setItemHeight();
-
     window.onscroll = () => {
       this.page = this.getCurrentPagePosition();
       this.updatePageQueryParameter(this.page);
@@ -347,6 +346,7 @@ export default {
       }
     };
 
+    let startPage = this.$route.query.page ? this.$route.query.page : 1;
     for (let i = 0; i < startPage; i++) {
       if (this.tab == 0) await this.infinateLoadPlaylistOfRecommend();
       if (this.tab == 1) await this.infinateLoadPlaylistOfNew();
@@ -354,6 +354,8 @@ export default {
       if (this.tab == 3) await this.infinateLoadPlaylistOfEntertainment();
     }
 
+    this.setTopPositionOfItems();
+    this.setItemHeight();
     let topPositionY =
       this.topPositionOfItems +
       this.contentsPerPage * this.itemHeight * (startPage - 1);
