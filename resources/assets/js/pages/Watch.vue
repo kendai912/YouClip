@@ -22,8 +22,9 @@
                   <h1
                     class="home-and-search-result-title"
                     style="font-weight: 400; !important"
-                    >{{ playlistName }}</h1
                   >
+                    {{ playlistName }}
+                  </h1>
                 </v-col>
                 <v-col cols="auto" class="ma-2 my-0 pa-0 text-right">
                   <!-- <v-icon class="mdi mdi-chevron-down"></v-icon> -->
@@ -123,6 +124,9 @@
         </div>
       </div>
     </div>
+    <template>
+      <script v-html="jsonld" type="application/ld+json"></script>
+    </template>
   </div>
 </template>
 
@@ -256,6 +260,22 @@ export default {
     },
     endIs() {
       return this.formatToMinSec(this.endHis);
+    },
+    jsonld() {
+      return {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        name: this.playlistName,
+        description: "YouTube動画をまとめてみました",
+        thumbnailUrl:
+          "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" +
+          this.sceneListofPlaylist[0].preview,
+        uploadDate: this.convertToISOString(
+          this.playlistAndTagVideoData.playlist_created_at
+        ),
+        contentUrl: "https://youclip.jp" + this.$route.fullPath,
+        interactionCount: this.playlistViewCount,
+      };
     },
   },
   mixins: [myMixin],
@@ -402,6 +422,15 @@ export default {
 
         setTimeout(checker, 48);
       });
+    },
+    convertToISOString(uploadedAt) {
+      let date = new Date(
+        uploadedAt.substring(0, 4),
+        uploadedAt.substring(5, 7) - 1,
+        uploadedAt.substring(8, 10)
+      );
+
+      return date.toISOString();
     },
   },
   watch: {
