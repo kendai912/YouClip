@@ -15,7 +15,7 @@
         />
       </div>
       <v-sheet
-        v-if="isPlayerReady && isNew !== 'undefined'"
+        v-if="isPlayerReady && isVideoDataReady"
         class="highlightControllerBody"
       >
         <v-container class="ma-0 pa-0" fluid>
@@ -142,6 +142,7 @@ export default {
       tags: [],
       tagItems: [],
       isIOS: false,
+      isVideoDataReady: false,
     };
   },
   mixins: [myMixin],
@@ -175,6 +176,7 @@ export default {
       setPlayer: "ytPlayer/setPlayer",
       setIsMuted: "ytPlayer/setIsMuted",
       setIsPlaying: "ytPlayer/setIsPlaying",
+      setIsNew: "youtube/setIsNew",
       setIsAdding: "tagging/setIsAdding",
       setIsEditing: "tagging/setIsEditing",
     }),
@@ -464,6 +466,7 @@ export default {
       //新規動画・タグの場合はData APIから取得
       await this.$store.dispatch("youtube/getNewVideoData");
     }
+    this.isVideoDataReady = true;
 
     //load start & end time
     this.loadTimeInput(youtubeId);

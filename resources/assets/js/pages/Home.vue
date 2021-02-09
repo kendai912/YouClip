@@ -27,6 +27,7 @@
           <PlaylistMediaItem
             v-bind:mediaItems="recommendMediaItems"
             v-bind:key="resetKey"
+            ref="recommendMediaItems"
           />
         </v-card>
       </v-tab-item>
@@ -35,22 +36,7 @@
           <PlaylistMediaItem
             v-bind:mediaItems="newMediaItems"
             v-bind:key="resetKey"
-          />
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-card flat>
-          <PlaylistMediaItem
-            v-bind:mediaItems="sportsMediaItems"
-            v-bind:key="resetKey"
-          />
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-card flat>
-          <PlaylistMediaItem
-            v-bind:mediaItems="entertainmentMediaItems"
-            v-bind:key="resetKey"
+            ref="newMediaItems"
           />
         </v-card>
       </v-tab-item>
@@ -111,6 +97,7 @@ export default {
       tab: 0,
       // items: ["おすすめ", "新着", "スポーツ", "エンターテイメント"],
       items: ["おすすめ", "新着"],
+      page: 1,
       recommendPage: 1,
       newPage: 1,
       sportsPage: 1,
@@ -119,6 +106,9 @@ export default {
       newMediaItems: [],
       sportsMediaItems: [],
       entertainmentMediaItems: [],
+      topPositionOfItems: "",
+      itemHeight: "",
+      contentsPerPage: 5,
     };
   },
   mixins: [myMixin],
@@ -156,12 +146,7 @@ export default {
         "playlist/indexPlaylistAndTagPaginationOfRecommend",
         this.recommendPage++
       );
-      // // ページネーションのデータをrecommendMediaItemsに格納
-      // this.playlistAndTagPaginationOfRecommend &&
-      //   this.putPlaylistTagIntoMediaItems(
-      //     this.recommendMediaItems,
-      //     this.playlistAndTagPaginationOfRecommend.data
-      //   );
+
       // ページネーションのデータをrecommendMediaItemsに格納
       this.putPlaylistTagIntoMediaItems(
         this.recommendMediaItems,
@@ -183,6 +168,7 @@ export default {
         "playlist/indexPlaylistAndTagPaginationOfNew",
         this.newPage++
       );
+
       //ページネーションのデータをNewMediaItemsに格納
       this.putPlaylistTagIntoMediaItems(
         this.newMediaItems,
@@ -204,6 +190,7 @@ export default {
         "playlist/indexPlaylistAndTagPaginationOfSports",
         this.sportsPage++
       );
+
       //ページネーションのデータをSportsMediaItemsに格納
       this.putPlaylistTagIntoMediaItems(
         this.sportsMediaItems,
@@ -225,6 +212,7 @@ export default {
         "playlist/indexPlaylistAndTagPaginationOfEntertainment",
         this.entertainmentPage++
       );
+
       //ページネーションのデータをEntertainmentMediaItemsに格納
       this.putPlaylistTagIntoMediaItems(
         this.entertainmentMediaItems,
@@ -233,6 +221,63 @@ export default {
 
       //ローディングを非表示
       this.$store.commit("loadingItem/setIsLoading", false);
+    },
+    getCurrentPagePosition() {
+      let windowMiddlePosition =
+        document.documentElement.scrollTop + window.innerHeight / 2;
+      let page = 1;
+
+      while (
+        windowMiddlePosition >
+        this.topPositionOfItems + this.itemHeight * this.contentsPerPage * page
+      ) {
+        page++;
+      }
+
+      return page;
+    },
+    getOffsetTop(element) {
+      var top = 0;
+      while (element) {
+        top += element.offsetTop || 0;
+        element = element.offsetParent;
+      }
+
+      return top;
+    },
+    updatePageQueryParameter(page) {
+      if (page == 1) {
+        this.$router
+          .replace({
+            path: "/",
+          })
+          .catch((err) => {});
+      } else {
+        window.history.replaceState(null, null, "/?page=" + page);
+      }
+    },
+    setTopPositionOfItems() {
+      if (this.tab == 0) {
+        this.topPositionOfItems = this.getOffsetTop(
+          this.$refs.recommendMediaItems.$refs.playlistMediaItemBox
+        );
+      } else if (this.tab == 1) {
+        this.topPositionOfItems = this.getOffsetTop(
+          this.$refs.newMediaItems.$refs.playlistMediaItemBox
+        );
+      }
+    },
+    setItemHeight() {
+      if (this.tab == 0) {
+        this.itemHeight = this.$refs.recommendMediaItems.$refs.playlistMediaItem
+          ? this.$refs.recommendMediaItems.$refs.playlistMediaItem[0]
+              .clientHeight
+          : 329;
+      } else if (this.tab == 1) {
+        this.itemHeight = this.$refs.newMediaItems.$refs.playlistMediaItem
+          ? this.$refs.newMediaItems.$refs.playlistMediaItem[0].clientHeight
+          : 329;
+      }
     },
   },
   computed: {
@@ -259,7 +304,7 @@ export default {
       resetKey: "playlist/resetKey",
     }),
   },
-  mounted() {
+  async mounted() {
     //ナビバーのデータをリセットし表示
     this.$store.commit("navbar/resetNavbar");
     this.$store.commit("navbar/setShowNavbar", true);
@@ -278,7 +323,14 @@ export default {
     this.$store.commit("playlist/setToLoadSports", true);
     this.$store.commit("playlist/setToLoadEntertainment", true);
 
+    let startPage = this.$route.query.page ? this.$route.query.page : 1;
+    this.setTopPositionOfItems();
+    this.setItemHeight();
+
     window.onscroll = () => {
+      this.page = this.getCurrentPagePosition();
+      this.updatePageQueryParameter(this.page);
+
       //ウィンドウの下から50pxに達したら次のプレイリストアイテムを読み込み
       let bottomOfWindow =
         document.documentElement.scrollTop + window.innerHeight + 50 >=
@@ -294,11 +346,22 @@ export default {
           this.infinateLoadPlaylistOfEntertainment();
       }
     };
-    if (this.tab == 0) this.infinateLoadPlaylistOfRecommend();
-    if (this.tab == 1) this.infinateLoadPlaylistOfNew();
-    if (this.tab == 2) this.infinateLoadPlaylistOfSports();
-    if (this.tab == 3) this.infinateLoadPlaylistOfEntertainment();
+
+    for (let i = 0; i < startPage; i++) {
+      if (this.tab == 0) await this.infinateLoadPlaylistOfRecommend();
+      if (this.tab == 1) await this.infinateLoadPlaylistOfNew();
+      if (this.tab == 2) await this.infinateLoadPlaylistOfSports();
+      if (this.tab == 3) await this.infinateLoadPlaylistOfEntertainment();
+    }
+
+    let topPositionY =
+      this.topPositionOfItems +
+      this.contentsPerPage * this.itemHeight * (startPage - 1);
+    if (startPage > 1) window.scrollTo(0, topPositionY);
   },
   created() {},
+  beforeDestroy() {
+    window.onscroll = null;
+  },
 };
 </script>

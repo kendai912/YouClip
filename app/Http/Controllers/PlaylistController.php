@@ -20,30 +20,6 @@ use DB;
 
 class PlaylistController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function index()
-    // {
-    //     //ログインユーザーを取得
-    //     $user = Auth::user();
-
-    //     //ユーザーが保存したプレイリストのリストを取得
-    //     $playlists = $user->playlists;
-
-    //     //保存したタグデータをリターン
-    //     return response()->json(
-    //         [
-    //             'playlists' => $playlists
-    //         ],
-    //         200,
-    //         [],
-    //         JSON_UNESCAPED_UNICODE
-    //     );
-    // }
-
     //【レコメンド】プレイリスト一覧の取得
     public function indexPlaylistAndTagPaginationOfRecommend()
     {

@@ -54,7 +54,7 @@
         </div>
       </v-row>
     </v-container>
-    
+
     <template v-if="!isActiveSearch">
       <v-toolbar-items>
         <router-link to="/">

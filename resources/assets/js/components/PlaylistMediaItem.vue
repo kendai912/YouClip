@@ -1,10 +1,11 @@
 <template>
-  <v-container class="pa-0 pb-3">
+  <v-container class="pa-0 pb-3" ref="playlistMediaItemBox">
     <v-row
       v-for="(item, index) in mediaItems"
       v-bind:key="item.category + '-' + item.id"
       dense
       class="pa-0 ma-0 mb-1"
+      ref="playlistMediaItem"
     >
       <v-col class="px-0" style="padding-top: 2px; paddint-bottom: 2px;">
         <v-card class="mx-auto" max-width="420" elevation="0">

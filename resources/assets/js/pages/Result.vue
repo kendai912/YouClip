@@ -170,16 +170,6 @@ export default {
       }
     };
     this.initializeSearchResult();
-
-    //戻るor進むが押された場合は画面を再ロード
-    // let self = this;
-    // let from = this.$route.path;
-    // window.addEventListener("popstate", function(e) {
-    //   let to = self.$route.path;
-    //   if (from == "/result" && to == "/result") {
-    //     location.reload();
-    //   }
-    // });
   },
 };
 </script>
