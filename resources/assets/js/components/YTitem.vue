@@ -39,7 +39,7 @@
 
                 <v-col cols="6" class="pa-0 ma-0">
                   <v-list-item class="px-2 ma-0">
-                    <v-list-item-content>
+                    <v-list-item-content class="pa-0 ma-0">
                       <div class="wrap-text">{{ item.title }}</div>
                       <v-list-item-subtitle>
                         <span class="wrap-text"
