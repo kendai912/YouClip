@@ -387,6 +387,32 @@ export default {
         );
       });
     },
+    secondsToDuration(seconds) {
+      let duration = "P";
+      let remainder = seconds;
+      let designations = [
+        ["D", 24 * 60 * 60],
+        ["H", 60 * 60],
+        ["M", 60],
+        ["S", 1],
+      ];
+
+      designations.forEach(([sign, seconds]) => {
+        const value = Math.floor(remainder / seconds);
+
+        remainder = remainder % seconds;
+
+        if (value) {
+          duration += `${value}${sign}`;
+        }
+      });
+
+      if (duration == "P") {
+        duration = "P0S";
+      }
+
+      return duration;
+    },
   },
 
   data() {

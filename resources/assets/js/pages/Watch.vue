@@ -37,7 +37,9 @@
                     >{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span
                   >
                   <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
-                  <span style="font-size: 12px">合計{{ totalDuration }}</span>
+                  <span style="font-size: 12px"
+                    >合計{{ totalDurationKanji }}</span
+                  >
                   <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
                   <span style="font-size: 12px">{{ playlistCreatedAt }}前</span>
                 </v-col>
@@ -212,6 +214,7 @@ export default {
       mediaItems: [],
       playlistCreatedAt: "",
       totalDuration: "00:00:00",
+      totalDurationKanji: "",
       snackbar: false,
       timeout: 5000,
       text: "",
@@ -267,12 +270,16 @@ export default {
         "@type": "VideoObject",
         name: this.playlistName,
         description: "YouTube動画をまとめてみました",
-        thumbnailUrl:
-          "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" +
-          this.sceneListofPlaylist[0].preview,
-        uploadDate: this.convertToISOString(
-          this.playlistAndTagVideoData.playlist_created_at
-        ),
+        thumbnailUrl: this.sceneListofPlaylist
+          ? "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" +
+            this.sceneListofPlaylist[0].preview
+          : "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/facebook-youclip-logo.png",
+        uploadDate: this.playlistAndTagVideoData
+          ? this.convertToISOString(
+              this.playlistAndTagVideoData.playlist_created_at
+            )
+          : "",
+        duration: this.secondsToDuration(this.totalDuration),
         contentUrl: "https://youclip.jp" + this.$route.fullPath,
         interactionCount: this.playlistViewCount,
       };
@@ -473,7 +480,7 @@ export default {
       let duration = this.timeMath.sub(tag.end, tag.start);
       this.totalDuration = this.timeMath.sum(this.totalDuration, duration);
     });
-    this.totalDuration = this.convertToKanjiTime(
+    this.totalDurationKanji = this.convertToKanjiTime(
       this.convertToSec(this.totalDuration)
     );
 
