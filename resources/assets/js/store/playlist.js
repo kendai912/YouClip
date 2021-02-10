@@ -12,6 +12,7 @@ const state = {
   myCreatedPlaylist: null,
   myCreatedAndLikedPlaylist: null,
   showAddPlaylistModal: false,
+  currentCategory: null,
   playlistIdsOfTag: null,
   toLoadRecommend: true,
   toLoadNew: true,
@@ -45,6 +46,7 @@ const getters = {
   createdSceneList: (state) => state.createdSceneList,
   resetKey: (state) => state.resetKey,
   showAddPlaylistModal: (state) => state.showAddPlaylistModal,
+  currentCategory: (state) => state.currentCategory,
   playlistIdsOfTag: (state) => state.playlistIdsOfTag,
   toLoadRecommend: (state) => state.toLoadRecommend,
   toLoadNew: (state) => state.toLoadNew,
@@ -111,6 +113,9 @@ const mutations = {
   },
   closeAddPlaylistModal(state) {
     state.showAddPlaylistModal = false;
+  },
+  setCurrentCategory(state, data) {
+    state.currentCategory = data;
   },
   setPlaylistIdsOfTag(state, data) {
     state.playlistIdsOfTag = data;
@@ -185,7 +190,6 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
-
   async addPlaylistVisitCount(context, playlist_id) {
     const response = await axios.post(
       "/api/addPlaylistVisitCount/" + playlist_id
@@ -282,6 +286,24 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+  async getCurrentCategory(context, playlistId) {
+    let queries = {
+      playlistId: playlistId,
+    };
+    const response = await axios.get("/api/get/currentCategory", {
+      params: queries,
+    });
+    if (response.status == OK) {
+      // 成功した時
+      context.commit("setCurrentCategory", response.data.currentCategory);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
   async getMyCreatedPlaylist(context) {
     const response = await axios.get("/api/get/myCreatedPlaylist");
     if (response.status == OK) {
@@ -338,12 +360,6 @@ const actions = {
   async addMyPlaylists(context, input) {
     this.errors = {};
 
-    // Toastrオプション変更
-    toastr.options = {
-      positionClass: "toast-bottom-left",
-      timeOut: "5000",
-    };
-
     //チェックの入ったプレイリストをパラメータとして格納
     var params = {
       checkedPlaylistIds: input.checkedPlaylistIds,
@@ -356,17 +372,12 @@ const actions = {
     if (response.status == CREATED) {
       // 成功した時
       context.commit("closeAddPlaylistModal");
-
-      //ポップアップでプレイリストの作成完了を通知
-      toastr.success("プレイリストに保存しました");
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
-      toastr.error("プレイリストへの保存に失敗しました");
     } else {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
-      toastr.error("プレイリストへの保存に失敗しました");
     }
   },
   async updatePlaylist(context, params) {
@@ -448,6 +459,7 @@ const actions = {
 
     //チェックの入ったプレイリストをパラメータとして格納
     var params = {
+      playlistName: input.newPlaylistName,
       privacySetting: input.privacySetting,
       currentTagId: input.currentTagId,
       currentCategory: input.currentCategory,
@@ -460,7 +472,6 @@ const actions = {
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
-      // toastr.error("プレイリストへの追加に失敗しました");
     } else {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });

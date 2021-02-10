@@ -101,8 +101,7 @@ export default {
   computed: {
     ...mapGetters({
       user_id: "auth/user_id",
-      // currentTagId: "watch/currentTagId",
-      currentCategory: "watch/currentCategory",
+      currentCategory: "playlist/currentCategory",
       playlistIdsOfTag: "playlist/playlistIdsOfTag",
       hasMyPlaylists: "playlist/hasMyPlaylists",
       myCreatedPlaylist: "playlist/myCreatedPlaylist",
@@ -138,6 +137,11 @@ export default {
             currentCategory: this.currentCategory,
           })
         : "";
+
+      //プレイリスト削除完了のトーストを表示
+      this.$store.commit("snackbar/setText", "プレイリストに保存しました");
+      this.$store.commit("snackbar/setSnackbar", true);
+      this.$store.commit("snackbar/setTimeout", 5000);
     },
   },
   created() {

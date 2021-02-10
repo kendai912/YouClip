@@ -40,36 +40,6 @@ const getters = {
 };
 
 const mutations = {
-  //プレイリストの再生に必要なパラメータをセット
-  setYTPlaylistParameters(state, index) {
-    //watchlistにコンテンツをセット
-    state.watchList = state.playlistAndTagVideoData.tagVideoData;
-
-    //watchlistの中のindexをセット
-    state.listIndex = index;
-
-    //watchlistのlistIndexのデータを再生関連パラメーターにセット
-    mutations.setYTPlayerParameters(state);
-  },
-  //シーンタグの再生に必要なパラメータをセット
-  setYTIndivisualParameters(state) {
-    //watchlistにコンテンツをセット
-    state.watchList = state.tagAndVideoData;
-
-    //シーンタグの場合はindexはデフォルトで0
-    state.listIndex = 0;
-
-    //watchlistのlistIndexのデータを再生関連パラメーターにセット
-    mutations.setYTPlayerParameters(state);
-  },
-  setYTPlayerParameters(state) {
-    //YTPlayerに必要なYoutubeIDをセット
-    state.currentYoutubeId = state.watchList[state.listIndex].youtubeId;
-    //YTPlayerに必要なstartをセット
-    state.start = state.watchList[state.listIndex].start;
-    //YTPlayerに必要なendをセット
-    state.end = state.watchList[state.listIndex].end;
-  },
   setPlaylistAndTagVideoData(state, data) {
     state.playlistAndTagVideoData = data;
   },

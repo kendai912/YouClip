@@ -17,7 +17,6 @@ import colors from "vuetify/lib/util/colors";
 import lodash from "lodash";
 import VueGtag from "vue-gtag";
 import VueMeta from "vue-meta";
-import initHelpHero from "helphero";
 
 Vue.use(Vuetify);
 Vue.use(
@@ -30,8 +29,6 @@ Vue.use(
 Vue.use(VueMeta);
 
 Vue.prototype._ = lodash;
-
-var hlp = initHelpHero("UwlQWGOMy3G");
 
 const createApp = async () => {
   await store.dispatch("auth/currentUser");
@@ -57,9 +54,6 @@ const createApp = async () => {
     },
     components: { App }, // ルートコンポーネントの使用を宣言する
     template: "<App />", // ルートコンポーネントを描画する
-    mounted() {
-      hlp.anonymous();
-    },
   });
 };
 createApp();

@@ -11,7 +11,7 @@
               left: 8px;
               object-fit: contain;
             "
-            alt="YouClip logo"
+          alt="YouClip logo"
         />
       </div>
       <v-row no-gutters>
@@ -31,13 +31,22 @@
 
               <section class="gNIwkZ">
                 <div style="position:relative;z-index:2" class="bzagnP">
-                  <div>
-                    <img
-                      src="/storage/imgs/onboarding1.JPG"
-                      alt="thumbnail"
-                      style="position: relative; width: 122%; left: -32px; top: 30px;"
-                    />
-                  </div>
+                  <v-lazy
+                    v-model="isActive"
+                    :options="{
+                      threshold: 0.5,
+                    }"
+                    class="fill-height"
+                  >
+                    <div>
+                      <img
+                        src="/storage/imgs/onboarding1.JPG"
+                        alt="thumbnail"
+                        loading="lazy"
+                        style="position: relative; width: 122%; left: -32px; top: 30px;"
+                      />
+                    </div>
+                  </v-lazy>
                 </div>
               </section>
             </v-col>
@@ -70,7 +79,21 @@
             <v-card class="py-12 px-1" flat>
               <v-theme-provider dark>
                 <div>
-                  <img v-bind:src="img" style="width:100%" class="pa-0 ma-0" v-bind:alt="title" />
+                  <v-lazy
+                    v-model="isActive"
+                    :options="{
+                      threshold: 0.5,
+                    }"
+                    class="fill-height"
+                  >
+                    <img
+                      v-bind:src="img"
+                      style="width:100%"
+                      class="pa-0 ma-0"
+                      loading="lazy"
+                      v-bind:alt="title"
+                    />
+                  </v-lazy>
                 </div>
               </v-theme-provider>
 
@@ -110,7 +133,20 @@
           <v-carousel-item v-for="(img, i) in howToImgs" :key="i">
             <v-sheet color="white" height="100%">
               <v-row class="fill-height" align="center" justify="center">
-                <img v-bind:src="img" style="height: 100%; " alt="How-to image" />
+                <v-lazy
+                  v-model="isActive"
+                  :options="{
+                    threshold: 0.5,
+                  }"
+                  class="fill-height"
+                >
+                  <img
+                    v-bind:src="img"
+                    style="height: 100%; "
+                    alt="How-to image"
+                    loading="lazy"
+                  />
+                </v-lazy>
               </v-row>
             </v-sheet>
           </v-carousel-item>
@@ -171,6 +207,7 @@ export default {
   components: {},
   data() {
     return {
+      isActive: false,
       features: [
         {
           img: "/storage/imgs/onboarding2.png",

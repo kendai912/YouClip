@@ -313,7 +313,9 @@ export default {
       //ログイン済の場合
       //ユーザーが作成したプレイリスト一覧を取得
       this.currentTagId = id;
-      this.$store.dispatch("playlist/getMyCreatedPlaylist");
+      await this.$store.dispatch("playlist/getMyCreatedPlaylist");
+      //プレイリストのカテゴリーを取得しセット
+      await this.$store.dispatch("playlist/getCurrentCategory", this.playlistId);
 
       //選択されたタグが追加済のユーザーのプレイリストIDを取得
       await this.$store.dispatch("playlist/getPlaylistIdsOfTag", id);

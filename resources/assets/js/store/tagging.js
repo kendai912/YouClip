@@ -15,7 +15,6 @@ const state = {
   isAdding: false,
   isEditing: false,
   isKeep: false,
-  showCreateNewPlaylistModal: false,
   previewThumbName: null,
   previewGifName: null,
   previewOgpName: null,
@@ -33,7 +32,6 @@ const getters = {
   isAdding: (state) => state.isAdding,
   isEditing: (state) => state.isEditing,
   isKeep: (state) => state.isKeep,
-  showCreateNewPlaylistModal: (state) => state.showCreateNewPlaylistModal,
   previewThumbName: (state) => state.previewThumbName,
   previewGifName: (state) => state.previewGifName,
   previewOgpName: (state) => state.previewOgpName,
@@ -91,12 +89,6 @@ const mutations = {
         i--;
       }
     }
-  },
-  openCreateNewPlaylistModal(state) {
-    state.showCreateNewPlaylistModal = true;
-  },
-  closeCreateNewPlaylistModal(state) {
-    state.showCreateNewPlaylistModal = false;
   },
 };
 

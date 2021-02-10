@@ -279,6 +279,21 @@ class PlaylistController extends Controller
         );
     }
 
+    //プレイリストのカテゴリーを取得
+    public function getCurrentCategory(Request $request)
+    {
+        $playlist = Playlist::find($request->playlistId);
+
+        return response()->json(
+            [
+            'currentCategory' => $playlist->playlistCategory
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
     //作成したプレイリスト一覧を取得
     public function getMyCreatedPlaylist()
     {

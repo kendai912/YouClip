@@ -35,7 +35,11 @@
 
           <v-row class="ma-0 pt-4">
             <v-col class="text-center now-playing">
-              <img src="/storage/icons/now_playing.svg" alt="now playing" />
+              <img
+                src="/storage/icons/now_playing.svg"
+                alt="now playing"
+                loading="lazy"
+              />
               <span>{{ start }}-{{ end }}の場面を再生中</span>
             </v-col>
           </v-row>

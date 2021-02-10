@@ -104,10 +104,6 @@
           <CommentListWatch v-bind:mediaItems="commentListofPlaylist" />
           <NoLoginModal v-if="showLoginModal" />
           <ShareModal v-if="showShareModal" v-bind:player="player" />
-          <AddPlaylistModal
-            v-if="showAddPlaylistModal"
-            v-bind:player="player"
-          />
           <OtherActionModal
             v-if="showOtherActionModal"
             v-bind:player="player"
@@ -136,7 +132,6 @@
 import { mapState, mapGetters, mapMutations } from "vuex";
 import NoLoginModal from "../components/NoLoginModal.vue";
 import ShareModal from "../components/ShareModal.vue";
-import AddPlaylistModal from "../components/AddPlaylistModal.vue";
 import OtherActionModal from "../components/OtherActionModal.vue";
 import PlaySpeedModal from "../components/PlaySpeedModal.vue";
 import SceneListWatch from "../components/SceneListWatch.vue";
@@ -197,7 +192,6 @@ export default {
   components: {
     NoLoginModal,
     ShareModal,
-    AddPlaylistModal,
     OtherActionModal,
     PlaySpeedModal,
     SceneListWatch,

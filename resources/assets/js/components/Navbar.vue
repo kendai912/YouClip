@@ -68,6 +68,7 @@
               object-fit: contain;
             "
             alt="YouClip logo"
+            loading="lazy"
           />
           <p class="leading-none text-gray-600 text-s">
             | YouTube動画のまとめ作成ツール

@@ -52,7 +52,8 @@ Route::get('/get/playlistAndTagVideoData', 'PlaylistController@getPlaylistAndTag
 Route::get('/get/myCreatedPlaylist', 'PlaylistController@getMyCreatedPlaylist');
 //Likeまたは作成したプレイリスト一覧をロード
 Route::get('/load/myCreatedAndLikedPlaylist', 'PlaylistController@loadMyCreatedAndLikedPlaylist');
-Route::post('/load/publicPlaylistAndScenelist', 'PlaylistController@loadPublicPlaylistAndScenelist');
+//playlistのcategoryを取得
+Route::get('/get/currentCategory', 'PlaylistController@getCurrentCategory');
 
 
 //タグへのLikeデータのロード
@@ -110,6 +111,9 @@ Route::post('/playlist/addComment', 'PlaylistController@addPlaylistComment');
 Route::post('/playlist/likeComment', 'PlaylistController@likeComment');
 //プレイリストの削除
 Route::post('/playlist/delete', 'PlaylistController@delete');
+//Add Playlist Visit Count
+Route::post("/addPlaylistVisitCount/{playlist_id}", 'PlaylistController@addVisitCount');
+Route::post('/load/publicPlaylistAndScenelist', 'PlaylistController@loadPublicPlaylistAndScenelist');
 
 //シーン登録におけるyoutubeIdから既存のvideoIdの取得
 Route::get('/youtube/getVideo', 'VideoController@getVideoByYoutubeId');
@@ -128,8 +132,7 @@ Route::post('/tag/update', 'TagController@update');
 //シーンタグの削除
 Route::post('/tag/delete', 'TagController@delete');
 
-//Add Playlist Visit Count
-Route::post("/addPlaylistVisitCount/{playlist_id}", 'PlaylistController@addVisitCount');
+
 //YT Search API
 Route::post('/search/getYoutubeScrapingResults', 'SearchController@getYTScrapingResultList');
 Route::post('/search/getYoutubeSearch', 'SearchController@getYTSearchList');
