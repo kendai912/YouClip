@@ -51,7 +51,7 @@ export default {
       let self = this;
       if (this.timer) clearInterval(this.timer);
 
-      this.timer = setInterval(function () {
+      this.timer = setInterval(function() {
         //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
         self.$store.commit(
           "youtube/setCurrentTime",
@@ -80,7 +80,7 @@ export default {
 
       window[this.youtubeCallbackName] =
         window[this.youtubeCallbackName] ||
-        function () {
+        function() {
           window[youtubeExistsFlag] = true;
           window[youtubeCallbackName] = null;
           delete window[youtubeCallbackName];
@@ -90,15 +90,16 @@ export default {
       var first = document.getElementsByTagName("script")[0];
       tag.src =
         "https://www.youtube.com/iframe_api?" + parseInt(new Date() / 1000);
+      tag.defer = true;
       tag.className = "yt-frame-api";
       first.parentNode.insertBefore(tag, first);
     },
     whenYoutubeAPIReady() {
       const existsFlag = this.youtubeExistsFlag;
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
         let elapsed = 0;
         let intervalHandle;
-        let checker = function () {
+        let checker = function() {
           elapsed += 48;
           if (!!window[existsFlag]) {
             clearTimeout(intervalHandle);
