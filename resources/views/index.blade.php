@@ -3,11 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="{{ asset('/favicon_clip.ico') }}"  type='image/x-icon'>
 
-  <!-- Scripts -->
-  <script src="{{ asset('/js/app.js') }}" async></script>
-
-  <script type="application/ld+json">
+</head>
+<body>
+  <div id="app"></div>
+  <script src="{{ asset('/js/app.js') }}" defer></script>
+  <script type="application/ld+json" defer>
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -75,13 +77,5 @@
     ]
   }
 </script>
-
-
-  <!-- favicon -->
-  <link rel="shortcut icon" href="{{ asset('/favicon_clip.ico') }}"  type='image/x-icon'>
-
-</head>
-<body>
-  <div id="app"></div>
 </body>
 </html>
