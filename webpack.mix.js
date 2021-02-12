@@ -15,19 +15,20 @@ const CompressionPlugin = require("compression-webpack-plugin");
 mix
   .js("resources/assets/js/app.js", "public/js")
   .vue()
-  .sass("resources/assets/sass/app.scss", "public/css",{
-    sassOptions: {
-      outputStyle: 'compressed'
-    }
-  })
-  .webpackConfig({
-    plugins: [
-      new CompressionPlugin({
-        algorithm: "gzip",
-        test: /\.js$|\.css$|\.html$|\.svg$/,
-        threshold: 10240,
-        minRatio: 0.8,
-      }),
-    ],
-  })
+  .sass("resources/assets/sass/app.scss", "public/css")
+  // .sass("resources/assets/sass/app.scss", "public/css",{
+  //   sassOptions: {
+  //     outputStyle: 'compressed'
+  //   }
+  // })
+  // .webpackConfig({
+  //   plugins: [
+  //     new CompressionPlugin({
+  //       algorithm: "gzip",
+  //       test: /\.js$|\.css$|\.html$|\.svg$/,
+  //       threshold: 10240,
+  //       minRatio: 0.8,
+  //     }),
+  //   ],
+  // })
   .version();
