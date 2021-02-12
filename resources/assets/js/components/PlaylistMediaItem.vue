@@ -33,6 +33,7 @@
                 width="100%"
                 min-height="170"
                 style="z-index: 1;"
+                eager
               >
               </v-img>
               <video
