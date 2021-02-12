@@ -15,11 +15,14 @@ const CompressionPlugin = require("compression-webpack-plugin");
 mix
   .js("resources/assets/js/app.js", "public/js")
   .vue()
-  .sass("resources/assets/sass/app.scss", "public/css")
+  .sass("resources/assets/sass/app.scss", "public/css",{
+    sassOptions: {
+      outputStyle: 'compressed'
+    }
+  })
   .webpackConfig({
     plugins: [
       new CompressionPlugin({
-        filename: "[path].gz[query]",
         algorithm: "gzip",
         test: /\.js$|\.css$|\.html$|\.svg$/,
         threshold: 10240,
