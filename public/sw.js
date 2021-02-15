@@ -43,13 +43,17 @@ self.addEventListener("fetch", function(event) {
         // 重要：リクエストを clone する。リクエストは Stream なので
         // 一度しか処理できない。ここではキャッシュ用、fetch 用と2回
         // 必要なので、リクエストは clone しないといけない
-        console.log("Network:" + url);
         let fetchRequest = event.request.clone();
+
+        if (
+          fetchRequest.cache === "only-if-cached" &&
+          fetchRequest.mode !== "same-origin"
+        )
+          return;
 
         return fetch(fetchRequest).then((response) => {
           // Check if we received a valid response
           if (!response) {
-            console.log("Not a valid response: " + url);
             return response;
           }
 
@@ -60,10 +64,7 @@ self.addEventListener("fetch", function(event) {
 
           caches.open(CACHE).then((cache) => {
             if (isImage(url)) {
-              console.log("Add to cache: " + url);
               cache.put(event.request, responseToCache);
-            } else {
-              console.log("No cache: " + url);
             }
           });
 
@@ -84,7 +85,6 @@ function isImage(url) {
 // ActivatedEvent
 //************************************************
 self.addEventListener("activate", (event) => {
-  console.log("service worker: activate");
   event.waitUntil(
     caches
       .keys()
