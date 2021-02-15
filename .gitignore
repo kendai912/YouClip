@@ -5,6 +5,7 @@
 public/js/vendor.js
 public/js/manifest.js
 public/js/vendor.js.LICENSE.txt
+public/js/.DS_Store
 /public/css/app.css
 /public/mix-manifest.json
 /public/fonts/vendor

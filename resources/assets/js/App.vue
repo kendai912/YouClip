@@ -64,6 +64,18 @@ export default {
       window.sessionStorage.removeItem("deleteSuccess");
     }
   },
+  mounted() {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then(function(registration) {
+          console.log("SW registration successful: ", registration.scope);
+        })
+        .catch(function(err) {
+          console.log("SW registration failed: ", err);
+        });
+    }
+  },
 };
 </script>
 

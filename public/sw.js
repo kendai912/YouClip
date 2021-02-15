@@ -1,0 +1,100 @@
+// configuration
+`use strict`;
+
+const version = "1.0.0",
+  CACHE = version + "::youclip",
+  urlsToCache = ["/storage/logos/youclip_logo.png"];
+
+//************************************************
+//InstallEvent
+//************************************************
+self.addEventListener("install", function(event) {
+  // インストール処理
+  event.waitUntil(
+    caches
+      .open(CACHE)
+      .then((cache) => {
+        return cache.addAll(urlsToCache);
+      })
+      .then(() => self.skipWaiting())
+  );
+});
+
+//************************************************
+//FetchEvent
+//************************************************
+self.addEventListener("fetch", function(event) {
+  event.respondWith(
+    // ページにレスポンスを返す（キャッシュがあれば）
+    //cacheStrageを参照
+    caches.open(CACHE).then((cache) => {
+      let url = event.request.url;
+
+      //キャッシュファイルがあるかの確認
+      return caches.match(event.request).then((response) => {
+        // キャッシュがあったのでそのレスポンスを返す
+        if (response) {
+          //Cache
+          console.log("Cache:" + url);
+          return response;
+        }
+
+        //Network
+        // 重要：リクエストを clone する。リクエストは Stream なので
+        // 一度しか処理できない。ここではキャッシュ用、fetch 用と2回
+        // 必要なので、リクエストは clone しないといけない
+        console.log("Network:" + url);
+        let fetchRequest = event.request.clone();
+
+        return fetch(fetchRequest).then((response) => {
+          // Check if we received a valid response
+          if (!response) {
+            console.log("Not a valid response: " + url);
+            return response;
+          }
+
+          // 重要：レスポンスを clone する。レスポンスは Stream で
+          // ブラウザ用とキャッシュ用の2回必要。なので clone して
+          // 2つの Stream があるようにする
+          let responseToCache = response.clone();
+
+          caches.open(CACHE).then((cache) => {
+            if (isImage(url)) {
+              console.log("Add to cache: " + url);
+              cache.put(event.request, responseToCache);
+            } else {
+              console.log("No cache: " + url);
+            }
+          });
+
+          return response;
+        });
+      });
+    })
+  );
+});
+
+// is image URL?
+let iExt = ["png", "jpg", "jpeg", "gif", "webp", "bmp"].map((f) => "." + f);
+function isImage(url) {
+  return iExt.reduce((ret, ext) => ret || url.endsWith(ext), false);
+}
+
+//************************************************
+// ActivatedEvent
+//************************************************
+self.addEventListener("activate", (event) => {
+  console.log("service worker: activate");
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keylist) => {
+        return Promise.all(
+          keylist
+            .filter((key) => key !== CACHE)
+            .map((key) => caches.delete(key))
+        );
+      })
+      .then(() => self.clients.claim())
+  );
+});
