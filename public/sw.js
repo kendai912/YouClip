@@ -35,7 +35,6 @@ self.addEventListener("fetch", function(event) {
         // キャッシュがあったのでそのレスポンスを返す
         if (response) {
           //Cache
-          console.log("Cache:" + url);
           return response;
         }
 
