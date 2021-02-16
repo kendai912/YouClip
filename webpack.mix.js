@@ -19,6 +19,6 @@ mix
   .sass("resources/assets/sass/app.scss", "public/css")
   .version();
 
-if (!mix.inProduction()) {
-  mix.bundleAnalyzer();
-}
+// if (!mix.inProduction()) {
+//   mix.bundleAnalyzer();
+// }

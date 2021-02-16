@@ -47,6 +47,7 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import PlaylistMediaItem from "../components/PlaylistMediaItem.vue";
+// const PlaylistMediaItem = () => import("../components/PlaylistMediaItem.vue");
 import myMixin from "../util";
 
 export default {
@@ -354,12 +355,14 @@ export default {
       if (this.tab == 3) await this.infinateLoadPlaylistOfEntertainment();
     }
 
-    this.setTopPositionOfItems();
-    this.setItemHeight();
-    let topPositionY =
-      this.topPositionOfItems +
-      this.contentsPerPage * this.itemHeight * (startPage - 1);
-    if (startPage > 1) window.scrollTo(0, topPositionY);
+    this.$nextTick(function() {
+      this.setTopPositionOfItems();
+      this.setItemHeight();
+      let topPositionY =
+        this.topPositionOfItems +
+        this.contentsPerPage * this.itemHeight * (startPage - 1);
+      if (startPage > 1) window.scrollTo(0, topPositionY);
+    });
   },
   created() {},
   beforeDestroy() {
