@@ -10,12 +10,12 @@ import Register from "./pages/Register.vue";
 // import Watch from "./pages/Watch.vue";
 // import Mypage from "./pages/Mypage.vue";
 // import MyFollow from "./pages/MyFollow.vue";
-import UserGuide from "./pages/UserGuide.vue";
-import SystemError from "./pages/errors/SystemError.vue";
-import ForbiddenError from "./pages/errors/ForbiddenError.vue";
-import PrivacyPolicy from "./pages/PrivacyPolicy.vue";
-import TermsOfService from "./pages/TermsOfService.vue";
-import DeleteAccount from "./pages/DeleteAccount.vue";
+// import UserGuide from "./pages/UserGuide.vue";
+// import SystemError from "./pages/errors/SystemError.vue";
+// import ForbiddenError from "./pages/errors/ForbiddenError.vue";
+// import PrivacyPolicy from "./pages/PrivacyPolicy.vue";
+// import TermsOfService from "./pages/TermsOfService.vue";
+// import DeleteAccount from "./pages/DeleteAccount.vue";
 // import EditMyPlaylist from "./pages/EditMyPlaylist.vue";
 
 import store from "./store";
@@ -332,29 +332,107 @@ const routes = [
       );
     },
   },
+  // {
+  //   path: "/userguide",
+  //   component: UserGuide,
+  // },
   {
     path: "/userguide",
-    component: UserGuide,
+    name: "userguide",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/UserGuide.vue"],
+        () => {
+          resolve(require("./pages/UserGuide.vue"));
+        },
+        "js/userguide"
+      );
+    },
   },
+  // {
+  //   path: "/PrivacyPolicy",
+  //   component: PrivacyPolicy,
+  // },
   {
     path: "/PrivacyPolicy",
-    component: PrivacyPolicy,
+    name: "PrivacyPolicy",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/PrivacyPolicy.vue"],
+        () => {
+          resolve(require("./pages/PrivacyPolicy.vue"));
+        },
+        "js/PrivacyPolicy"
+      );
+    },
   },
+  // {
+  //   path: "/TermsOfService",
+  //   component: TermsOfService,
+  // },
   {
     path: "/TermsOfService",
-    component: TermsOfService,
+    name: "TermsOfService",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/TermsOfService.vue"],
+        () => {
+          resolve(require("./pages/TermsOfService.vue"));
+        },
+        "js/TermsOfService"
+      );
+    },
   },
+  // {
+  //   path: "/DeleteAccount",
+  //   component: DeleteAccount,
+  // },
   {
     path: "/DeleteAccount",
-    component: DeleteAccount,
+    name: "DeleteAccount",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/DeleteAccount.vue"],
+        () => {
+          resolve(require("./pages/DeleteAccount.vue"));
+        },
+        "js/DeleteAccount"
+      );
+    },
   },
+  // {
+  //   path: "/500",
+  //   component: SystemError,
+  // },
   {
     path: "/500",
-    component: SystemError,
+    name: "SystemError",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/errors/SystemError.vue"],
+        () => {
+          resolve(require("./pages/errors/SystemError.vue"));
+        },
+        "js/SystemError"
+      );
+    },
   },
+  // {
+  //   path: "/403",
+  //   component: ForbiddenError,
+  // },
   {
     path: "/403",
-    component: ForbiddenError,
+    name: "ForbiddenError",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/errors/ForbiddenError.vue"],
+        () => {
+          resolve(require("./pages/errors/ForbiddenError.vue"));
+        },
+        "js/ForbiddenError"
+      );
+    },
   },
   { path: "*", redirect: "/" },
 ];
