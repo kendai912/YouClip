@@ -12,12 +12,9 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
-// import Navbar from "./components/Navbar.vue";
-const Navbar = () => import("./components/Navbar.vue");
-// import Snackbar from "./components/Snackbar.vue";
-const Snackbar = () => import("./components/Snackbar.vue");
-// import Footer from "./components/Footer.vue";
-const Footer = () => import("./components/Footer.vue");
+import Navbar from "./components/Navbar.vue";
+import Snackbar from "./components/Snackbar.vue";
+import Footer from "./components/Footer.vue";
 import { INTERNAL_SERVER_ERROR, FORBIDDEN, UNAUTHORIZED } from "./util";
 import myMixin from "./util";
 

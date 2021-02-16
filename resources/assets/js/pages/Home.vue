@@ -47,7 +47,6 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import PlaylistMediaItem from "../components/PlaylistMediaItem.vue";
-// const PlaylistMediaItem = () => import("../components/PlaylistMediaItem.vue");
 import myMixin from "../util";
 
 export default {
