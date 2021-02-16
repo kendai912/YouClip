@@ -40,7 +40,8 @@
     "vue-meta": "^2.4.0",
     "vue-template-compiler": "^2.6.12",
     "vuedraggable": "^2.24.0",
-    "vuetify": "^2.3.21"
+    "vuetify": "^2.3.21",
+    "vuetify-loader": "^1.7.2"
   },
   "name": "Src"
 }
