@@ -1,5 +1,6 @@
 const mix = require("laravel-mix");
 const CompressionPlugin = require("compression-webpack-plugin");
+const VuetifyLoaderPlugin = require("vuetify-loader/lib/plugin");
 require("laravel-mix-bundle-analyzer");
 
 /*
@@ -22,6 +23,7 @@ mix
       chunkFilename: "[name].chunk.js",
       publicPath: "/",
     },
+    plugins: [new VuetifyLoaderPlugin()],
   })
   .version();
 
