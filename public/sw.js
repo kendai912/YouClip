@@ -3,12 +3,12 @@
 
 const version = "1.0.0",
   CACHE = version + "::youclip",
-  urlsToCache = ["/storage/logos/youclip_logo.png"];
+  urlsToCache = ["/storage/logos/youclip_logo.png", "js/app.js"];
 
 //************************************************
 //InstallEvent
 //************************************************
-self.addEventListener("install", function(event) {
+self.addEventListener("install", function (event) {
   // インストール処理
   event.waitUntil(
     caches
@@ -23,7 +23,7 @@ self.addEventListener("install", function(event) {
 //************************************************
 //FetchEvent
 //************************************************
-self.addEventListener("fetch", function(event) {
+self.addEventListener("fetch", function (event) {
   event.respondWith(
     // ページにレスポンスを返す（キャッシュがあれば）
     //cacheStrageを参照
@@ -62,7 +62,7 @@ self.addEventListener("fetch", function(event) {
           let responseToCache = response.clone();
 
           caches.open(CACHE).then((cache) => {
-            if (isImage(url)) {
+            if (isImage(url) || isJs(url)) {
               cache.put(event.request, responseToCache);
             }
           });
@@ -78,6 +78,12 @@ self.addEventListener("fetch", function(event) {
 let iExt = ["png", "jpg", "jpeg", "gif", "webp", "bmp"].map((f) => "." + f);
 function isImage(url) {
   return iExt.reduce((ret, ext) => ret || url.endsWith(ext), false);
+}
+
+// is js URL?
+let jExt = ["js"].map((f) => "." + f);
+function isJs(url) {
+  return jExt.reduce((ret, ext) => ret || url.endsWith(ext), false);
 }
 
 //************************************************
