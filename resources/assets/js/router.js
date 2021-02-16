@@ -5,18 +5,18 @@ import VueRouter from "vue-router";
 import Home from "./pages/Home.vue";
 import Login from "./pages/Login.vue";
 import Register from "./pages/Register.vue";
-import Result from "./pages/Result.vue";
+// import Result from "./pages/Result.vue";
 import Highlight from "./pages/Highlight.vue";
-import Watch from "./pages/Watch.vue";
-import Mypage from "./pages/Mypage.vue";
-import MyFollow from "./pages/MyFollow.vue";
+// import Watch from "./pages/Watch.vue";
+// import Mypage from "./pages/Mypage.vue";
+// import MyFollow from "./pages/MyFollow.vue";
 import UserGuide from "./pages/UserGuide.vue";
 import SystemError from "./pages/errors/SystemError.vue";
 import ForbiddenError from "./pages/errors/ForbiddenError.vue";
 import PrivacyPolicy from "./pages/PrivacyPolicy.vue";
 import TermsOfService from "./pages/TermsOfService.vue";
 import DeleteAccount from "./pages/DeleteAccount.vue";
-import EditMyPlaylist from "./pages/EditMyPlaylist.vue";
+// import EditMyPlaylist from "./pages/EditMyPlaylist.vue";
 
 import store from "./store";
 
@@ -56,9 +56,22 @@ const routes = [
     path: "/home",
     redirect: "/",
   },
+  // {
+  //   path: "/result",
+  //   component: Result,
+  // },
   {
     path: "/result",
-    component: Result,
+    name: "result",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Result.vue"],
+        () => {
+          resolve(require("./pages/Result.vue"));
+        },
+        "js/result"
+      );
+    },
   },
   {
     path: "/youtube",
@@ -108,21 +121,60 @@ const routes = [
     path: "/edit/confirm",
     component: Highlight,
   },
+  // {
+  //   path: "/watch",
+  //   component: Watch,
+  // },
   {
     path: "/watch",
-    component: Watch,
+    name: "watch",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Watch.vue"],
+        () => {
+          resolve(require("./pages/Watch.vue"));
+        },
+        "js/watch"
+      );
+    },
   },
+  // {
+  //   path: "/mypage",
+  //   component: Mypage,
+  // },
   {
     path: "/mypage",
-    component: Mypage,
+    name: "mypage",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Mypage.vue"],
+        () => {
+          resolve(require("./pages/Mypage.vue"));
+        },
+        "js/mypage"
+      );
+    },
   },
-  {
-    path: "/myfollow",
-    component: MyFollow,
-  },
+  // {
+  //   path: "/myfollow",
+  //   component: MyFollow,
+  // },
+  // {
+  //   path: "/editmyplaylist",
+  //   component: EditMyPlaylist,
+  // },
   {
     path: "/editmyplaylist",
-    component: EditMyPlaylist,
+    name: "editmyplaylist",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/EditMyPlaylist.vue"],
+        () => {
+          resolve(require("./pages/EditMyPlaylist.vue"));
+        },
+        "js/editmyplaylist"
+      );
+    },
   },
   {
     path: "/userguide",
