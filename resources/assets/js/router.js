@@ -6,7 +6,7 @@ import Home from "./pages/Home.vue";
 import Login from "./pages/Login.vue";
 import Register from "./pages/Register.vue";
 // import Result from "./pages/Result.vue";
-import Highlight from "./pages/Highlight.vue";
+// import Highlight from "./pages/Highlight.vue";
 // import Watch from "./pages/Watch.vue";
 // import Mypage from "./pages/Mypage.vue";
 // import MyFollow from "./pages/MyFollow.vue";
@@ -73,53 +73,209 @@ const routes = [
       );
     },
   },
+  // {
+  //   path: "/youtube",
+  //   component: Highlight,
+  // },
   {
     path: "/youtube",
-    component: Highlight,
+    name: "youtube",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Highlight.vue"],
+        () => {
+          resolve(require("./pages/Highlight.vue"));
+        },
+        "js/youtube"
+      );
+    },
   },
+  // {
+  //   path: "/youtube/scene",
+  //   component: Highlight,
+  // },
   {
     path: "/youtube/scene",
-    component: Highlight,
+    name: "youtube_scene",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Highlight.vue"],
+        () => {
+          resolve(require("./pages/Highlight.vue"));
+        },
+        "js/youtube_scene"
+      );
+    },
   },
+  // {
+  //   path: "/youtube/confirm",
+  //   component: Highlight,
+  // },
   {
     path: "/youtube/confirm",
-    component: Highlight,
+    name: "youtube_confirm",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Highlight.vue"],
+        () => {
+          resolve(require("./pages/Highlight.vue"));
+        },
+        "js/youtube_confirm"
+      );
+    },
   },
+  // {
+  //   path: "/highlight/scenelist",
+  //   component: Highlight,
+  // },
   {
     path: "/highlight/scenelist",
-    component: Highlight,
+    name: "highlight_scenelist",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Highlight.vue"],
+        () => {
+          resolve(require("./pages/Highlight.vue"));
+        },
+        "js/highlight_scenelist"
+      );
+    },
   },
+  // {
+  //   path: "/highlight/title",
+  //   component: Highlight,
+  // },
   {
     path: "/highlight/title",
-    component: Highlight,
+    name: "highlight_title",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Highlight.vue"],
+        () => {
+          resolve(require("./pages/Highlight.vue"));
+        },
+        "js/highlight_title"
+      );
+    },
   },
+  // {
+  //   path: "/highlight/complete",
+  //   component: Highlight,
+  // },
   {
     path: "/highlight/complete",
-    component: Highlight,
+    name: "highlight_complete",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Highlight.vue"],
+        () => {
+          resolve(require("./pages/Highlight.vue"));
+        },
+        "js/highlight_complete"
+      );
+    },
   },
+  // {
+  //   path: "/add",
+  //   component: Highlight,
+  // },
   {
     path: "/add",
-    component: Highlight,
+    name: "add",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Highlight.vue"],
+        () => {
+          resolve(require("./pages/Highlight.vue"));
+        },
+        "js/add"
+      );
+    },
   },
+  // {
+  //   path: "/add/search",
+  //   component: Highlight,
+  // },
   {
     path: "/add/search",
-    component: Highlight,
+    name: "add_search",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Highlight.vue"],
+        () => {
+          resolve(require("./pages/Highlight.vue"));
+        },
+        "js/add_search"
+      );
+    },
   },
+  // {
+  //   path: "/add/scene",
+  //   component: Highlight,
+  // },
   {
     path: "/add/scene",
-    component: Highlight,
+    name: "add_scene",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Highlight.vue"],
+        () => {
+          resolve(require("./pages/Highlight.vue"));
+        },
+        "js/add_scene"
+      );
+    },
   },
+  // {
+  //   path: "/add/confirm",
+  //   component: Highlight,
+  // },
   {
     path: "/add/confirm",
-    component: Highlight,
+    name: "add_confirm",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Highlight.vue"],
+        () => {
+          resolve(require("./pages/Highlight.vue"));
+        },
+        "js/add_confirm"
+      );
+    },
   },
+  // {
+  //   path: "/edit/scene",
+  //   component: Highlight,
+  // },
   {
     path: "/edit/scene",
-    component: Highlight,
+    name: "edit_scene",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Highlight.vue"],
+        () => {
+          resolve(require("./pages/Highlight.vue"));
+        },
+        "js/edit_scene"
+      );
+    },
   },
+  // {
+  //   path: "/edit/confirm",
+  //   component: Highlight,
+  // },
   {
     path: "/edit/confirm",
-    component: Highlight,
+    name: "edit_confirm",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Highlight.vue"],
+        () => {
+          resolve(require("./pages/Highlight.vue"));
+        },
+        "js/edit_confirm"
+      );
+    },
   },
   // {
   //   path: "/watch",
