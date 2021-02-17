@@ -68,8 +68,7 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
-// import MyList from "../components/MyList.vue";
-const MyList = () => import("../components/MyList.vue");
+import MyList from "../components/MyList.vue";
 // import MyProfile from "../components/MyProfile.vue";
 import myMixin from "../util";
 

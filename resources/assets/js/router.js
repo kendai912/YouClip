@@ -1,24 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "./store";
 
 // ページコンポーネントをインポートする
-import Home from "./pages/Home.vue";
 import Login from "./pages/Login.vue";
 import Register from "./pages/Register.vue";
-// import Result from "./pages/Result.vue";
-// import Highlight from "./pages/Highlight.vue";
-// import Watch from "./pages/Watch.vue";
-// import Mypage from "./pages/Mypage.vue";
-// import MyFollow from "./pages/MyFollow.vue";
-// import UserGuide from "./pages/UserGuide.vue";
-// import SystemError from "./pages/errors/SystemError.vue";
-// import ForbiddenError from "./pages/errors/ForbiddenError.vue";
-// import PrivacyPolicy from "./pages/PrivacyPolicy.vue";
-// import TermsOfService from "./pages/TermsOfService.vue";
-// import DeleteAccount from "./pages/DeleteAccount.vue";
-// import EditMyPlaylist from "./pages/EditMyPlaylist.vue";
-
-import store from "./store";
+import Home from "./pages/Home.vue";
 
 // VueRouterプラグインを使用する
 // これによって<RouterView />コンポーネントなどを使うことができる
@@ -54,12 +41,17 @@ const routes = [
   },
   {
     path: "/home",
-    redirect: "/",
+    name: "home",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Home.vue"],
+        () => {
+          resolve(require("./pages/Home.vue"));
+        },
+        "js/home"
+      );
+    },
   },
-  // {
-  //   path: "/result",
-  //   component: Result,
-  // },
   {
     path: "/result",
     name: "result",
@@ -73,10 +65,6 @@ const routes = [
       );
     },
   },
-  // {
-  //   path: "/youtube",
-  //   component: Highlight,
-  // },
   {
     path: "/youtube",
     name: "youtube",
@@ -86,14 +74,10 @@ const routes = [
         () => {
           resolve(require("./pages/Highlight.vue"));
         },
-        "js/youtube"
+        "js/highlight"
       );
     },
   },
-  // {
-  //   path: "/youtube/scene",
-  //   component: Highlight,
-  // },
   {
     path: "/youtube/scene",
     name: "youtube_scene",
@@ -103,14 +87,10 @@ const routes = [
         () => {
           resolve(require("./pages/Highlight.vue"));
         },
-        "js/youtube_scene"
+        "js/highlight"
       );
     },
   },
-  // {
-  //   path: "/youtube/confirm",
-  //   component: Highlight,
-  // },
   {
     path: "/youtube/confirm",
     name: "youtube_confirm",
@@ -120,14 +100,10 @@ const routes = [
         () => {
           resolve(require("./pages/Highlight.vue"));
         },
-        "js/youtube_confirm"
+        "js/highlight"
       );
     },
   },
-  // {
-  //   path: "/highlight/scenelist",
-  //   component: Highlight,
-  // },
   {
     path: "/highlight/scenelist",
     name: "highlight_scenelist",
@@ -137,14 +113,10 @@ const routes = [
         () => {
           resolve(require("./pages/Highlight.vue"));
         },
-        "js/highlight_scenelist"
+        "js/highlight"
       );
     },
   },
-  // {
-  //   path: "/highlight/title",
-  //   component: Highlight,
-  // },
   {
     path: "/highlight/title",
     name: "highlight_title",
@@ -154,14 +126,10 @@ const routes = [
         () => {
           resolve(require("./pages/Highlight.vue"));
         },
-        "js/highlight_title"
+        "js/highlight"
       );
     },
   },
-  // {
-  //   path: "/highlight/complete",
-  //   component: Highlight,
-  // },
   {
     path: "/highlight/complete",
     name: "highlight_complete",
@@ -171,14 +139,10 @@ const routes = [
         () => {
           resolve(require("./pages/Highlight.vue"));
         },
-        "js/highlight_complete"
+        "js/highlight"
       );
     },
   },
-  // {
-  //   path: "/add",
-  //   component: Highlight,
-  // },
   {
     path: "/add",
     name: "add",
@@ -188,14 +152,10 @@ const routes = [
         () => {
           resolve(require("./pages/Highlight.vue"));
         },
-        "js/add"
+        "js/highlight"
       );
     },
   },
-  // {
-  //   path: "/add/search",
-  //   component: Highlight,
-  // },
   {
     path: "/add/search",
     name: "add_search",
@@ -205,14 +165,10 @@ const routes = [
         () => {
           resolve(require("./pages/Highlight.vue"));
         },
-        "js/add_search"
+        "js/highlight"
       );
     },
   },
-  // {
-  //   path: "/add/scene",
-  //   component: Highlight,
-  // },
   {
     path: "/add/scene",
     name: "add_scene",
@@ -222,14 +178,10 @@ const routes = [
         () => {
           resolve(require("./pages/Highlight.vue"));
         },
-        "js/add_scene"
+        "js/highlight"
       );
     },
   },
-  // {
-  //   path: "/add/confirm",
-  //   component: Highlight,
-  // },
   {
     path: "/add/confirm",
     name: "add_confirm",
@@ -239,14 +191,10 @@ const routes = [
         () => {
           resolve(require("./pages/Highlight.vue"));
         },
-        "js/add_confirm"
+        "js/highlight"
       );
     },
   },
-  // {
-  //   path: "/edit/scene",
-  //   component: Highlight,
-  // },
   {
     path: "/edit/scene",
     name: "edit_scene",
@@ -256,14 +204,10 @@ const routes = [
         () => {
           resolve(require("./pages/Highlight.vue"));
         },
-        "js/edit_scene"
+        "js/highlight"
       );
     },
   },
-  // {
-  //   path: "/edit/confirm",
-  //   component: Highlight,
-  // },
   {
     path: "/edit/confirm",
     name: "edit_confirm",
@@ -273,14 +217,10 @@ const routes = [
         () => {
           resolve(require("./pages/Highlight.vue"));
         },
-        "js/edit_confirm"
+        "js/highlight"
       );
     },
   },
-  // {
-  //   path: "/watch",
-  //   component: Watch,
-  // },
   {
     path: "/watch",
     name: "watch",
@@ -294,10 +234,6 @@ const routes = [
       );
     },
   },
-  // {
-  //   path: "/mypage",
-  //   component: Mypage,
-  // },
   {
     path: "/mypage",
     name: "mypage",
@@ -315,10 +251,6 @@ const routes = [
   //   path: "/myfollow",
   //   component: MyFollow,
   // },
-  // {
-  //   path: "/editmyplaylist",
-  //   component: EditMyPlaylist,
-  // },
   {
     path: "/editmyplaylist",
     name: "editmyplaylist",
@@ -332,10 +264,6 @@ const routes = [
       );
     },
   },
-  // {
-  //   path: "/userguide",
-  //   component: UserGuide,
-  // },
   {
     path: "/userguide",
     name: "userguide",
@@ -349,88 +277,68 @@ const routes = [
       );
     },
   },
-  // {
-  //   path: "/PrivacyPolicy",
-  //   component: PrivacyPolicy,
-  // },
   {
-    path: "/PrivacyPolicy",
-    name: "PrivacyPolicy",
+    path: "/privacyPolicy",
+    name: "privacyPolicy",
     component: (resolve) => {
       require.ensure(
         ["./pages/PrivacyPolicy.vue"],
         () => {
           resolve(require("./pages/PrivacyPolicy.vue"));
         },
-        "js/PrivacyPolicy"
+        "js/privacyPolicy"
       );
     },
   },
-  // {
-  //   path: "/TermsOfService",
-  //   component: TermsOfService,
-  // },
   {
-    path: "/TermsOfService",
-    name: "TermsOfService",
+    path: "/termsOfService",
+    name: "termsOfService",
     component: (resolve) => {
       require.ensure(
         ["./pages/TermsOfService.vue"],
         () => {
           resolve(require("./pages/TermsOfService.vue"));
         },
-        "js/TermsOfService"
+        "js/termsOfService"
       );
     },
   },
-  // {
-  //   path: "/DeleteAccount",
-  //   component: DeleteAccount,
-  // },
   {
-    path: "/DeleteAccount",
-    name: "DeleteAccount",
+    path: "/deleteAccount",
+    name: "deleteAccount",
     component: (resolve) => {
       require.ensure(
         ["./pages/DeleteAccount.vue"],
         () => {
           resolve(require("./pages/DeleteAccount.vue"));
         },
-        "js/DeleteAccount"
+        "js/deleteAccount"
       );
     },
   },
-  // {
-  //   path: "/500",
-  //   component: SystemError,
-  // },
   {
     path: "/500",
-    name: "SystemError",
+    name: "systemError",
     component: (resolve) => {
       require.ensure(
         ["./pages/errors/SystemError.vue"],
         () => {
           resolve(require("./pages/errors/SystemError.vue"));
         },
-        "js/SystemError"
+        "js/systemError"
       );
     },
   },
-  // {
-  //   path: "/403",
-  //   component: ForbiddenError,
-  // },
   {
     path: "/403",
-    name: "ForbiddenError",
+    name: "forbiddenError",
     component: (resolve) => {
       require.ensure(
         ["./pages/errors/ForbiddenError.vue"],
         () => {
           resolve(require("./pages/errors/ForbiddenError.vue"));
         },
-        "js/ForbiddenError"
+        "js/forbiddenError"
       );
     },
   },

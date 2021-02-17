@@ -11,7 +11,7 @@
       <v-icon large>mdi-home-outline</v-icon>
     </v-btn>
 
-    <v-btn to="/tagging" v-on:click="openHighlight(1)">
+    <v-btn to="/youtube" v-on:click="setHighlight(1)">
       <span>まとめ作成</span>
       <div>
         <v-icon large>mdi-plus-box</v-icon>
@@ -39,14 +39,14 @@ export default {
     saveFooterTabIndex(index) {
       window.sessionStorage.setItem("footerTabIndex", JSON.stringify(index));
     },
-    openHighlight(index) {
+    setHighlight(index) {
       this.saveFooterTabIndex(index);
 
       // 表示するコンポーネントをYTvideoSelectBoxにセットし、まとめ作成ページに遷移
       this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
-      this.$router.push({
-        path: "/youtube",
-      });
+      // this.$router.push({
+      //   path: "/youtube",
+      // });
     },
   },
   computed: {

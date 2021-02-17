@@ -1,5 +1,4 @@
 const mix = require("laravel-mix");
-const CompressionPlugin = require("compression-webpack-plugin");
 const VuetifyLoaderPlugin = require("vuetify-loader/lib/plugin");
 require("laravel-mix-bundle-analyzer");
 
@@ -24,6 +23,16 @@ mix
       publicPath: "/",
     },
     plugins: [new VuetifyLoaderPlugin()],
+  })
+  .options({
+    terser: {
+      extractComments: false,
+      terserOptions: {
+        output: {
+          comments: false,
+        },
+      },
+    },
   })
   .version();
 

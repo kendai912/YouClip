@@ -106,7 +106,7 @@ export default {
       newMediaItems: [],
       sportsMediaItems: [],
       entertainmentMediaItems: [],
-      topPositionOfItems: "",
+      topPositionOfItems: 0,
       itemHeight: "",
       contentsPerPage: 5,
     };
@@ -354,14 +354,12 @@ export default {
       if (this.tab == 3) await this.infinateLoadPlaylistOfEntertainment();
     }
 
-    this.$nextTick(function() {
-      this.setTopPositionOfItems();
-      this.setItemHeight();
-      let topPositionY =
-        this.topPositionOfItems +
-        this.contentsPerPage * this.itemHeight * (startPage - 1);
-      if (startPage > 1) window.scrollTo(0, topPositionY);
-    });
+    this.setTopPositionOfItems();
+    this.setItemHeight();
+    let topPositionY =
+      this.topPositionOfItems +
+      this.contentsPerPage * this.itemHeight * (startPage - 1);
+    if (startPage > 1) window.scrollTo(0, topPositionY);
   },
   created() {},
   beforeDestroy() {

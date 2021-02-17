@@ -12,7 +12,7 @@ const version = "1.0.0",
 //************************************************
 //InstallEvent
 //************************************************
-self.addEventListener("install", function (event) {
+self.addEventListener("install", function(event) {
   // インストール処理
   event.waitUntil(
     caches
@@ -27,7 +27,7 @@ self.addEventListener("install", function (event) {
 //************************************************
 //FetchEvent
 //************************************************
-self.addEventListener("fetch", function (event) {
+self.addEventListener("fetch", function(event) {
   event.respondWith(
     // ページにレスポンスを返す（キャッシュがあれば）
     //cacheStrageを参照
@@ -46,7 +46,6 @@ self.addEventListener("fetch", function (event) {
         // 重要：リクエストを clone する。リクエストは Stream なので
         // 一度しか処理できない。ここではキャッシュ用、fetch 用と2回
         // 必要なので、リクエストは clone しないといけない
-        console.log("Network: " + url);
         let fetchRequest = event.request.clone();
 
         if (
@@ -67,7 +66,7 @@ self.addEventListener("fetch", function (event) {
           let responseToCache = response.clone();
 
           caches.open(CACHE).then((cache) => {
-            if (isImage(url) || isJs(url) || isFont(url)) {
+            if (isImage(url) || isFont(url)) {
               cache.put(event.request, responseToCache);
             }
           });
