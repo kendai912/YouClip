@@ -3,7 +3,11 @@
 
 const version = "1.0.0",
   CACHE = version + "::youclip",
-  urlsToCache = ["/storage/logos/youclip_logo.png", "js/app.js"];
+  urlsToCache = [
+    "/storage/logos/youclip_logo.png",
+    "js/app.js",
+    "/manifest.json",
+  ];
 
 //************************************************
 //InstallEvent
@@ -42,6 +46,7 @@ self.addEventListener("fetch", function (event) {
         // 重要：リクエストを clone する。リクエストは Stream なので
         // 一度しか処理できない。ここではキャッシュ用、fetch 用と2回
         // 必要なので、リクエストは clone しないといけない
+        console.log("Network: " + url);
         let fetchRequest = event.request.clone();
 
         if (
@@ -62,7 +67,7 @@ self.addEventListener("fetch", function (event) {
           let responseToCache = response.clone();
 
           caches.open(CACHE).then((cache) => {
-            if (isImage(url) || isJs(url)) {
+            if (isImage(url) || isJs(url) || isFont(url)) {
               cache.put(event.request, responseToCache);
             }
           });
@@ -75,7 +80,9 @@ self.addEventListener("fetch", function (event) {
 });
 
 // is image URL?
-let iExt = ["png", "jpg", "jpeg", "gif", "webp", "bmp"].map((f) => "." + f);
+let iExt = ["png", "jpg", "jpeg", "gif", "webp", "bmp", "ico"].map(
+  (f) => "." + f
+);
 function isImage(url) {
   return iExt.reduce((ret, ext) => ret || url.endsWith(ext), false);
 }
@@ -84,6 +91,12 @@ function isImage(url) {
 let jExt = ["js"].map((f) => "." + f);
 function isJs(url) {
   return jExt.reduce((ret, ext) => ret || url.endsWith(ext), false);
+}
+
+// is font URL?
+let fExt = ["woff2"].map((f) => "." + f);
+function isFont(url) {
+  return fExt.reduce((ret, ext) => ret || url.includes(ext), false);
 }
 
 //************************************************
