@@ -577,12 +577,17 @@ class PlaylistController extends Controller
     //Add Playlist Visit Count
     public function addVisitCount(Request $request, $playlist_id)
     {
-        // $user = Auth::user();
         $playlist = Playlist::find($playlist_id);
         $playlistlog = new Playlistlog();
-        $playlistlog->playlist_id = $playlist_id;
-        // print_r($playlist); exit;
-        // $playlistlog->user_id = $user->id;
+
+        if (Auth::check()) {
+            $playlistlog->playlist_id = $playlist_id;
+            $playlistlog->user_id = Auth::user()->id;
+        } else {
+            $playlistlog->playlist_id = $playlist_id;
+            $playlistlog->user_id = null;
+        }
+
         try {
             $playlist->playlistlogs()->save($playlistlog);
             return true;
