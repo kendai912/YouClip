@@ -13,6 +13,7 @@
               name="playlistTitle"
               label="タイトル"
               v-on:keydown.enter="saveTitle"
+              @click="toggleIsEditTitle"
               @click:append="saveTitle"
               hide-details
               ref="playlistTitle"
@@ -28,10 +29,10 @@
               label="プライバシー設定"
               prepend-icon="mdi-earth"
               :append-icon="isEditPrivacy ? 'fas fa-save' : 'mdi-pencil'"
-              :readonly="!isEditPrivacy"
+              @click="toggleIsEditPrivacy"
               @click:append="savePrivacy"
               hide-details
-              ref="playlistSettings"
+              ref="playlistPrivacy"
               class="scenePrivacySettingBox inner-outlined-icon"
             ></v-select>
           </v-col>
@@ -228,6 +229,12 @@ export default {
     },
   },
   methods: {
+    toggleIsEditTitle() {
+      this.isEditTitle = true;
+    },
+    toggleIsEditPrivacy() {
+      this.isEditPrivacy = true;
+    },
     async saveTitle() {
       if (!this.isEditTitle) {
         this.isEditTitle = true;
@@ -245,10 +252,10 @@ export default {
     async savePrivacy() {
       if (!this.isEditPrivacy) {
         this.isEditPrivacy = true;
-        this.$nextTick(() => this.$refs.playlistSettings.focus());
+        this.$nextTick(() => this.$refs.playlistPrivacy.focus());
       } else {
         this.isEditPrivacy = false;
-        this.$nextTick(() => this.$refs.playlistSettings.blur());
+        this.$nextTick(() => this.$refs.playlistPrivacy.blur());
         var playlist = {
           playlist_id: this.playlistAndTagVideoData.playlist_id,
           privacySetting: this.privacySetting,
