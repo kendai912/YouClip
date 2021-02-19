@@ -65,7 +65,8 @@ class IndexController extends Controller
                 }
             }
         }
-        // twitter・facebook以外
+
+        // twitter・facebook以外のgoogle botなど
         preg_match('/^\/watch\?playlist=(?<playlistId>\d+)/', $_SERVER["REQUEST_URI"], $match);
         if ($match) {
             // watchページの場合
@@ -81,13 +82,14 @@ class IndexController extends Controller
                 $description = "YouTube動画をまとめてみました";
             }
             $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . Tag::find($tagId)->preview;
-            
+
             $upload_date = new \DateTime(Playlist::find($playlistId)->created_at, new \DateTimeZone('Asia/Tokyo'));
             $upload_date->setTimezone(new \DateTimeZone('UTC'));
             $upload_date = $upload_date->format('Y-m-d\TH:i:s') . '+00:00';
 
             return view('index')->with('site_name', $site_name)->with('url', $url)->with('title', $title)->with('description', $description)->with('image_url', $image_url)->with('upload_date', $upload_date)->with('watch_page', true);
         } else {
+            //watchページ以外の場合
             return view('index');
         }
     }

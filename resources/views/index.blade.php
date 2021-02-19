@@ -86,7 +86,7 @@
       "name": "{{$title}}",
       "description": "{{$description}}"",
       "thumbnailUrl": "{{$image_url}}",
-      "uploadDate": ({{$upload_date}}),
+      "uploadDate": "({{$upload_date}})",
       "contentUrl": "{{$url}}",
     }
     </script>
