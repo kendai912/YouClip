@@ -78,5 +78,18 @@
     ]
   }
 </script>
+@isset ($watch_page)
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      "name": "{{$title}}",
+      "description": "{{$description}}"",
+      "thumbnailUrl": "{{$image_url}}",
+      "uploadDate": this.convertToISOString({{$upload_date}}),
+      "contentUrl": "{{$url}}",
+    }
+    </script>
+@endisset
 </body>
 </html>

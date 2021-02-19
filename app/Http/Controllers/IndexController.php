@@ -66,6 +66,26 @@ class IndexController extends Controller
             }
         }
         // twitter・facebook以外
-        return view('index');
+        preg_match('/^\/watch\?playlist=(?<playlistId>\d+)/', $_SERVER["REQUEST_URI"], $match);
+        if ($match) {
+            // watchページの場合
+            $playlistId = $match['playlistId'];
+            $tagId = DB::table('playlist_tag')->where('playlist_id', $playlistId)->select('tag_id')->orderBy('scene_order', 'ASC')->first()->tag_id;
+                    
+            // get parameter contents by playlistId
+            $site_name = "YouClip";
+            $url = "https://youclip.jp" . $_SERVER["REQUEST_URI"];
+            $title = Playlist::find($playlistId)->playlistName;
+            $description = Playlist::find($playlistId)->description;
+            if ($description == "" || $description == null) {
+                $description = "YouTube動画をまとめてみました";
+            }
+            $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . Tag::find($tagId)->preview;
+            $upload_date = Playlist::find($playlistId)->created_at;
+
+            return view('index')->with('site_name', $site_name)->with('url', $url)->with('title', $title)->with('description', $description)->with('image_url', $image_url)->with('watch_page', true);
+        } else {
+            return view('index');
+        }
     }
 }
