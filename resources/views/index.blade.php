@@ -86,7 +86,7 @@
       "name": "{{$title}}",
       "description": "{{$description}}"",
       "thumbnailUrl": "{{$image_url}}",
-      "uploadDate": this.convertToISOString({{$upload_date}}),
+      "uploadDate": ({{$upload_date}}),
       "contentUrl": "{{$url}}",
     }
     </script>
