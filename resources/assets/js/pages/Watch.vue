@@ -123,7 +123,7 @@
       </div>
     </div>
     <template>
-      <script v-html="jsonld" type="application/ld+json"></script>
+      <!-- <script v-html="jsonld" type="application/ld+json"></script> -->
     </template>
   </div>
 </template>
@@ -186,6 +186,30 @@ export default {
       ],
       link: [
         { rel: "canonical", href: "https://youclip.jp" + this.$route.fullPath },
+      ],
+      script: [
+        {
+          type: "application/ld+json",
+          json: {
+            "@context": "http://schema.org",
+            "@type": "VideoObject",
+            description: "YouTube動画をまとめてみました",
+            thumbnailUrl: this.sceneListofPlaylist
+              ? "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" +
+                this.sceneListofPlaylist[0].preview
+              : "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/facebook-youclip-logo.png",
+            uploadDate: this.playlistAndTagVideoData
+              ? this.convertToISOString(
+                  this.playlistAndTagVideoData.playlist_created_at
+                )
+              : "",
+            duration: this.secondsToDuration(
+              this.convertToSec(this.totalDuration)
+            ),
+            contentUrl: "https://youclip.jp" + this.$route.fullPath,
+            interactionCount: this.playlistViewCount,
+          },
+        },
       ],
     };
   },
@@ -258,26 +282,26 @@ export default {
     endIs() {
       return this.formatToMinSec(this.endHis);
     },
-    jsonld() {
-      return {
-        "@context": "https://schema.org",
-        "@type": "VideoObject",
-        name: this.playlistName,
-        description: "YouTube動画をまとめてみました",
-        thumbnailUrl: this.sceneListofPlaylist
-          ? "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" +
-            this.sceneListofPlaylist[0].preview
-          : "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/facebook-youclip-logo.png",
-        uploadDate: this.playlistAndTagVideoData
-          ? this.convertToISOString(
-              this.playlistAndTagVideoData.playlist_created_at
-            )
-          : "",
-        duration: this.secondsToDuration(this.totalDuration),
-        contentUrl: "https://youclip.jp" + this.$route.fullPath,
-        interactionCount: this.playlistViewCount,
-      };
-    },
+    // jsonld() {
+    //   return {
+    //     "@context": "https://schema.org",
+    //     "@type": "VideoObject",
+    //     name: this.playlistName,
+    //     description: "YouTube動画をまとめてみました",
+    //     thumbnailUrl: this.sceneListofPlaylist
+    //       ? "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" +
+    //         this.sceneListofPlaylist[0].preview
+    //       : "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/facebook-youclip-logo.png",
+    //     uploadDate: this.playlistAndTagVideoData
+    //       ? this.convertToISOString(
+    //           this.playlistAndTagVideoData.playlist_created_at
+    //         )
+    //       : "",
+    //     duration: this.secondsToDuration(this.totalDuration),
+    //     contentUrl: "https://youclip.jp" + this.$route.fullPath,
+    //     interactionCount: this.playlistViewCount,
+    //   };
+    // },
   },
   mixins: [myMixin],
   methods: {

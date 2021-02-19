@@ -387,9 +387,9 @@ export default {
         );
       });
     },
-    secondsToDuration(seconds) {
+    secondsToDuration(secondsVal) {
       let duration = "P";
-      let remainder = seconds;
+      let remainder = secondsVal;
       let designations = [
         ["D", 24 * 60 * 60],
         ["H", 60 * 60],
