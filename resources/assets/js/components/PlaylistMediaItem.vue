@@ -78,12 +78,13 @@
                 <v-row class="pa-0 ma-0" align-content="center">
                   <v-col class="pa-0 ma-0 d-flex align-center">
                     <span style="font-size:12px;">
-                      <v-icon small style="vertical-align: top;"
+                      <v-icon small style="vertical-align: top; padding-top: 2px;"
                         >mdi-timer-outline</v-icon
                       >
-                      まとめ:&nbsp;{{
+                      &nbsp;<span style="font-weight: bold">{{
                         item.totalDuration
-                      }}&nbsp;⬅&nbsp;元のYouTube動画:&nbsp;{{
+                      }}</span
+                      >&nbsp;⬅&nbsp;元のYouTube動画:&nbsp;{{
                         item.numberOfYTvideos
                       }}本の合計{{ item.totalYTDuration }}</span
                     >
@@ -91,12 +92,15 @@
                 </v-row>
                 <v-row class="pa-0 ma-0" align-content="center">
                   <v-col class="pa-0 ma-0 d-flex align-center">
-                    <span style="font-size:12px;"
-                      >{{ item.visitCount ? item.visitCount : 0 }}回視聴</span
-                    ><span style="font-size:8px;"
-                      >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
+                    <span style="font-size:12px;">
+                      <v-icon small style="vertical-align: top; padding-top: 1px;"
+                        >far fa-eye</v-icon
+                      ><span style="font-size: 6px">&nbsp;&nbsp;</span
+                      ><span style="font-weight: bold"
+                        >{{ item.visitCount ? item.visitCount : 0 }}回</span
+                      ><span>&nbsp;&#8226;&nbsp;</span
+                      >{{ item.timeSince }}前</span
                     >
-                    <span style="font-size:12px;">{{ item.timeSince }}前</span>
                   </v-col>
                 </v-row>
               </router-link>
