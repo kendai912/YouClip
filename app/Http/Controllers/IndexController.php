@@ -83,7 +83,7 @@ class IndexController extends Controller
             $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . Tag::find($tagId)->preview;
             $upload_date = Playlist::find($playlistId)->created_at;
 
-            return view('index')->with('site_name', $site_name)->with('url', $url)->with('title', $title)->with('description', $description)->with('image_url', $image_url)->with('watch_page', true);
+            return view('index')->with('site_name', $site_name)->with('url', $url)->with('title', $title)->with('description', $description)->with('image_url', $image_url)->with('upload_date', $upload_date)->with('watch_page', true);
         } else {
             return view('index');
         }
