@@ -44,7 +44,7 @@ class IndexController extends Controller
                     
                     // get parameter contents by playlistId
                     $site_name = "YouClip";
-                    $url = "https://youclip.jp" . $_SERVER["REQUEST_URI"];
+                    $url = "https://youclip.jp" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
                     $title = Playlist::find($playlistId)->playlistName;
                     $description = Playlist::find($playlistId)->description;
                     if ($description == "" || $description == null) {
@@ -56,7 +56,7 @@ class IndexController extends Controller
                 } else {
                     // watchページ以外の場合
                     $site_name = "YouClip";
-                    $url = "https://youclip.jp" . $_SERVER["REQUEST_URI"];
+                    $url = "https://youclip.jp" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
                     $title = "YouClip - YouTube動画のまとめ作成ツール";
                     $description = "YouClipはYouTube動画のまとめ作成ツールです。お気に入りの場面をまとめて残すことが出来ます。みんなのまとめを見ることも可能です";
                     $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/twitter-youclip-logo.png";
@@ -75,7 +75,7 @@ class IndexController extends Controller
                     
             // get parameter contents by playlistId
             $site_name = "YouClip";
-            $url = "https://youclip.jp" . $_SERVER["REQUEST_URI"];
+            $url = "https://youclip.jp" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
             $title = Playlist::find($playlistId)->playlistName;
             $description = Playlist::find($playlistId)->description;
             if ($description == "" || $description == null) {
