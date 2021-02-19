@@ -85,9 +85,9 @@
       "@type": "VideoObject",
       "name": "{{$title}}",
       "description": "{{$description}}"",
-      "thumbnailUrl": "{{!!$image_url!!}}",
+      "thumbnailUrl": "{!!$image_url!!}",
       "uploadDate": "{{$upload_date}}",
-      "contentUrl": "{{!!$url!!}}",
+      "contentUrl": "{!!$url!!}",
     }
     </script>
 @endisset
