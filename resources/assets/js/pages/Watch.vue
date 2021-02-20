@@ -12,6 +12,9 @@
             v-show="isPlayerReady"
             ref="ytSeekBar"
             v-bind:bodyRef="watchBodyRef"
+            v-on:fadeInOutController="fadeInOutController"
+            v-on:showOnYTSeekBarTouchMove="showOnYTSeekBarTouchMove"
+            v-on:hideOnYTSeekBarTouchEnd="hideOnYTSeekBarTouchEnd"
           />
         </div>
         <div v-if="isPlayerReady" class="highlightControllerBody">
@@ -409,6 +412,15 @@ export default {
       );
 
       return date.toISOString();
+    },
+    fadeInOutController() {
+      this.$refs.YTPlayerController.fadeInOutController();
+    },
+    showOnYTSeekBarTouchMove() {
+      this.$refs.YTPlayerController.showOnYTSeekBarTouchMove();
+    },
+    hideOnYTSeekBarTouchEnd() {
+      this.$refs.YTPlayerController.hideOnYTSeekBarTouchEnd();
     },
   },
   watch: {

@@ -97,6 +97,7 @@ export default {
       ytPlayerControllerTransition: "overlayfade",
       timer: null,
       immediateHideFlag: false,
+      isYTSeekBarTouchMoving: false,
     };
   },
   mixins: [myMixin],
@@ -141,9 +142,10 @@ export default {
         //clear previous timer
         clearTimeout(this.timer);
 
+        let self = this;
         //set timer and fadeout in 2.5sec
         this.timer = setTimeout(function() {
-          this.immediateHideFlag = false;
+          self.immediateHideFlag = false;
           $(".overlay").fadeOut(500);
         }, 2500);
       } else {
@@ -151,20 +153,20 @@ export default {
         this.immediateHideFlag = false;
       }
     },
-    fadeOutController() {
+    fadeInOutController() {
       this.immediateHideFlag = false;
       this.toggleController();
     },
     //再生
     playVideo() {
-      this.fadeOutController();
+      this.fadeInOutController();
 
       this.$store.commit("ytPlayer/setIsPlaying", true);
       this.player.playVideo();
     },
     //一時停止
     pauseVideo() {
-      this.fadeOutController();
+      this.fadeInOutController();
 
       //keep showing ytPlayerController when pausing
       setTimeout(() => {
@@ -174,23 +176,37 @@ export default {
       this.$store.commit("ytPlayer/setIsPlaying", false);
       this.player.pauseVideo();
     },
+    //YTseekBar touchmove
+    showOnYTSeekBarTouchMove() {
+      $(".overlay").fadeIn(10);
+      clearTimeout(this.timer);
+      this.immediateHideFlag = true;
+      this.isYTSeekBarTouchMoving = true;
+    },
+    //YTseekBar touchend
+    hideOnYTSeekBarTouchEnd() {
+      if (this.isPlaying && this.isYTSeekBarTouchMoving) {
+        this.fadeInOutController();
+        this.isYTSeekBarTouchMoving = false;
+      }
+    },
     //5秒戻る
     backwardFiveSec() {
-      this.fadeOutController();
+      this.fadeInOutController();
       this.player.seekTo(this.convertToSec(this.currentTime) - 5);
     },
     //5秒進む
     forwardFiveSec() {
-      this.fadeOutController();
+      this.fadeInOutController();
       this.player.seekTo(this.convertToSec(this.currentTime) + 5);
     },
     unmute() {
-      this.fadeOutController();
+      this.fadeInOutController();
       this.player.unMute();
       this.setIsMuted(false);
     },
     mute() {
-      this.fadeOutController();
+      this.fadeInOutController();
       this.player.mute();
       this.setIsMuted(true);
     },
