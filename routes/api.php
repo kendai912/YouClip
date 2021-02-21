@@ -113,7 +113,7 @@ Route::post('/playlist/likeComment', 'PlaylistController@likeComment');
 Route::post('/playlist/delete', 'PlaylistController@delete');
 //Add Playlist Visit Count
 Route::post("/addPlaylistVisitCount/{playlist_id}", 'PlaylistController@addVisitCount');
-//load public playlist and its scenelist 
+//load public playlist and its scenelist
 Route::post('/load/publicPlaylistAndScenelist', 'PlaylistController@loadPublicPlaylistAndScenelist');
 
 //シーン登録におけるyoutubeIdから既存のvideoIdの取得

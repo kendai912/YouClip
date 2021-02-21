@@ -334,6 +334,7 @@ export default {
     window.sessionStorage.getItem("topTabIndex")
       ? (this.tab = parseInt(window.sessionStorage.getItem("topTabIndex")))
       : "";
+    this.setActiveTabIndex(this.tab);
 
     this.$store.commit("playlist/setToLoadRecommend", true);
     this.$store.commit("playlist/setToLoadNew", true);
