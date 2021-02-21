@@ -2,12 +2,14 @@ const state = {
   showNavbar: false,
   isActiveSearch: false,
   searchquery: null,
+  activeTabIndex: 0,
 };
 
 const getters = {
   showNavbar: (state) => state.showNavbar,
   isActiveSearch: (state) => state.isActiveSearch,
   searchquery: (state) => state.searchquery,
+  activeTabIndex: (state) => state.activeTabIndex,
 };
 
 const mutations = {
@@ -24,6 +26,9 @@ const mutations = {
     state.showNavbar = false;
     state.isActiveSearch = false;
     state.searchquery = null;
+  },
+  setActiveTabIndex(state, data) {
+    state.activeTabIndex = data;
   },
 };
 

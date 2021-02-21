@@ -599,7 +599,7 @@
   position: relative;
 }
 
-.homepage-tabs .activated-tab::after {
+/* .homepage-tabs .activated-tab::after {
   position: absolute;
   content: " ";
   width: 10px;
@@ -608,7 +608,7 @@
   background-color: #db8f01d0;
   top: 12px;
   right: 52px;
-}
+} */
 
 .scene-chip {
   position: absolute;
@@ -872,6 +872,11 @@ div.v-snack:not(.v-snack--absolute) {
   border-radius: 4px;
 }
 
+.fz-17 {
+  font-size: calc(1rem * (17 / 14));
+  font-weight: normal;
+}
+
 .fz-14 {
   font-size: calc(1rem * (14 / 14));
   font-weight: normal;
@@ -957,12 +962,53 @@ div.v-snack:not(.v-snack--absolute) {
   line-height: 1.5;
 }
 
-.font17pt {
-  font-size: calc(1rem * (17 / 14));
-  font-weight: normal;
-}
-
 .no-text-decoration {
   text-decoration: none;
   color: inherit !important;
+}
+
+.v-tab {
+  min-width: 64px !important;
+  padding: 0 !important;
+}
+
+.tabItemWrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.customVIcon {
+  width: 40px !important;
+  height: 40px;
+  text-align: center;
+}
+
+.tabItem {
+  background: grey;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.tabName {
+  text-transform: none;
+  width: 60px;
+}
+
+.vtuberIcon {
+  font-size: 24px;
+  color: white;
+  line-height: 40px;
+  font-weight: bold;
+  padding-left: 3px;
+}
+
+.fontColorPrimary {
+  color: #a5d6a7;
+}
+
+.fontColorWhite {
+  color: white;
 }

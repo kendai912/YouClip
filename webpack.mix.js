@@ -16,7 +16,7 @@ require("laravel-mix-bundle-analyzer");
 mix
   .js("resources/assets/js/app.js", "public/js")
   .vue()
-  .sass("resources/assets/sass/app.scss", "public/css")
+  // .sass("resources/assets/sass/app.scss", "public/css")
   .webpackConfig({
     output: {
       chunkFilename: "[name].chunk.js",

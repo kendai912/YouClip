@@ -9,7 +9,7 @@
         <v-icon class="pa-0 ma-0" size="100">video_library</v-icon>
       </v-card-title>
       <v-card-title class="pa-1 mt-2 mx-0 justify-center"
-        ><h1 class="font17pt">ログインが必要です</h1></v-card-title
+        ><h1 class="fz-17">ログインが必要です</h1></v-card-title
       >
       <v-card-subtitle class="subtitle-1 pa-1 mt-0 mx-0 black--text"
         >ログインすると、自分の作成した＆いいねしたまとめにアクセス出来ます</v-card-subtitle

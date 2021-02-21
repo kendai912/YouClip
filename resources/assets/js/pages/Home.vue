@@ -6,19 +6,22 @@
       class="mx-auto homepage-tabs"
       grow
       hide-slider
+      height="80"
     >
       <v-tab
         active-class="activated-tab"
         v-for="(item, key) in items"
-        :key="item"
+        :key="item.tabName"
         v-on:click="
           setActiveTab(key);
           initialPaginate(key);
         "
-        ><span style="font-size: 1.214285rem !important">{{
-          item
-        }}</span></v-tab
       >
+        <TabItem v-bind:selfTabIndex="key"
+          ><template v-slot:tabIcon>{{ item.tabIcon }}</template
+          ><template v-slot:tabName>{{ item.tabName }}</template>
+        </TabItem>
+      </v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab">
@@ -45,8 +48,9 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
 import PlaylistMediaItem from "../components/PlaylistMediaItem.vue";
+import TabItem from "../components/TabItem.vue";
 import myMixin from "../util";
 
 export default {
@@ -91,12 +95,18 @@ export default {
   },
   components: {
     PlaylistMediaItem,
+    TabItem,
   },
   data() {
     return {
       tab: 0,
-      // items: ["おすすめ", "新着", "スポーツ", "エンターテイメント"],
-      items: ["おすすめ", "新着"],
+      items: [
+        { tabIcon: "fiber_new", tabName: "新着" },
+        { tabIcon: "fas fa-gamepad", tabName: "VTuber" },
+        { tabIcon: "fas fa-gamepad", tabName: "ゲーム" },
+        { tabIcon: "fas fa-music", tabName: "音楽" },
+        { tabIcon: "fas fa-language", tabName: "語学" },
+      ],
       page: 1,
       recommendPage: 1,
       newPage: 1,
@@ -113,9 +123,13 @@ export default {
   },
   mixins: [myMixin],
   methods: {
+    ...mapMutations({
+      setActiveTabIndex: "navbar/setActiveTabIndex",
+    }),
     setActiveTab(key) {
       //開いたタブをセッションストレージに保存
       window.sessionStorage.setItem("topTabIndex", JSON.stringify(key));
+      this.setActiveTabIndex(key);
     },
     //初回読み込み処理
     initialPaginate(key) {
