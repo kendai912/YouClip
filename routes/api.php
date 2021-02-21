@@ -39,13 +39,17 @@ Route::get('/get/tagAndVideoData', 'TagController@getTagAndVideoDataById');
 Route::get('/load/myCreatedAndLikedTagVideo', 'TagController@loadMyCreatedAndLikedTagVideo');
 
 //【レコメンド】プレイリスト一覧のロード
-Route::get('/index/playlistAndTagOfRecommend', 'PlaylistController@indexPlaylistAndTagPaginationOfRecommend');
+// Route::get('/index/playlistAndTagOfRecommend', 'PlaylistController@indexPlaylistAndTagPaginationOfRecommend');
 //【新着】プレイリスト一覧のロード
 Route::get('/index/playlistAndTagOfNew', 'PlaylistController@indexPlaylistAndTagPaginationOfNew');
-//【スポーツ】プレイリスト一覧のロード
-Route::get('/index/playlistAndTagOfSports', 'PlaylistController@indexPlaylistAndTagPaginationOfSports');
-//【エンターテイメント】プレイリスト一覧のロード
-Route::get('/index/playlistAndTagOfEntertainment', 'PlaylistController@indexPlaylistAndTagPaginationOfEntertainment');
+//【VTuber】プレイリスト一覧のロード
+Route::get('/index/playlistAndTagOfVTuber', 'PlaylistController@indexPlaylistAndTagPaginationOfVTuber');
+//【Game】プレイリスト一覧のロード
+Route::get('/index/playlistAndTagOfGame', 'PlaylistController@indexPlaylistAndTagPaginationOfGame');
+//【Music】プレイリスト一覧のロード
+Route::get('/index/playlistAndTagOfMusic', 'PlaylistController@indexPlaylistAndTagPaginationOfMusic');
+//【Language】プレイリスト一覧のロード
+Route::get('/index/playlistAndTagOfLanguage', 'PlaylistController@indexPlaylistAndTagPaginationOfLanguage');
 // ID指定でのプレイリストおよびタグ・動画データの取得
 Route::get('/get/playlistAndTagVideoData', 'PlaylistController@getPlaylistAndTagVideoDataById');
 //作成したプレイリスト一覧を取得

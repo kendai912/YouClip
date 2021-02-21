@@ -25,7 +25,7 @@
     </v-tabs>
 
     <v-tabs-items v-model="tab">
-      <v-tab-item>
+      <!-- <v-tab-item>
         <v-card flat>
           <PlaylistMediaItem
             v-bind:mediaItems="recommendMediaItems"
@@ -33,13 +33,49 @@
             ref="recommendMediaItems"
           />
         </v-card>
-      </v-tab-item>
+      </v-tab-item> -->
       <v-tab-item>
         <v-card flat>
           <PlaylistMediaItem
             v-bind:mediaItems="newMediaItems"
             v-bind:key="resetKey"
             ref="newMediaItems"
+          />
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <PlaylistMediaItem
+            v-bind:mediaItems="vtuberMediaItems"
+            v-bind:key="resetKey"
+            ref="vtuberMediaItems"
+          />
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <PlaylistMediaItem
+            v-bind:mediaItems="gameMediaItems"
+            v-bind:key="resetKey"
+            ref="gameMediaItems"
+          />
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <PlaylistMediaItem
+            v-bind:mediaItems="musicMediaItems"
+            v-bind:key="resetKey"
+            ref="musicMediaItems"
+          />
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <PlaylistMediaItem
+            v-bind:mediaItems="languageMediaItems"
+            v-bind:key="resetKey"
+            ref="languageMediaItems"
           />
         </v-card>
       </v-tab-item>
@@ -108,14 +144,18 @@ export default {
         { tabIcon: "fas fa-language", tabName: "語学" },
       ],
       page: 1,
-      recommendPage: 1,
+      // recommendPage: 1,
       newPage: 1,
-      sportsPage: 1,
-      entertainmentPage: 1,
-      recommendMediaItems: [],
+      vtuberPage: 1,
+      gamePage: 1,
+      musicPage: 1,
+      languagePage: 1,
+      // recommendMediaItems: [],
       newMediaItems: [],
-      sportsMediaItems: [],
-      entertainmentMediaItems: [],
+      vtuberMediaItems: [],
+      gameMediaItems: [],
+      musicMediaItems: [],
+      languageMediaItems: [],
       topPositionOfItems: 0,
       itemHeight: "",
       contentsPerPage: 5,
@@ -133,12 +173,14 @@ export default {
     },
     //初回読み込み処理
     initialPaginate(key) {
-      if (key == 0 && this.recommendPage == 1)
-        this.infinateLoadPlaylistOfRecommend();
-      if (key == 1 && this.newPage == 1) this.infinateLoadPlaylistOfNew();
-      if (key == 2 && this.sportsPage == 1) this.infinateLoadPlaylistOfSports();
-      if (key == 3 && this.entertainmentPage == 1) {
-        this.infinateLoadPlaylistOfEntertainment();
+      if (key == 0 && this.newPage == 1) this.infinateLoadPlaylistOfNew();
+      if (key == 1 && this.vtuberPage == 1) this.infinateLoadPlaylistOfVTuber();
+      if (key == 2 && this.gamePage == 1) this.infinateLoadPlaylistOfGame();
+      if (key == 3 && this.musicPage == 1) {
+        this.infinateLoadPlaylistOfMusic();
+      }
+      if (key == 4 && this.languagePage == 1) {
+        this.infinateLoadPlaylistOfLanguage();
       }
     },
     //i:s形式に変換
@@ -149,27 +191,27 @@ export default {
       return min + ":" + sec;
     },
     //【レコメンド】表示するプレイリストの無限スクロール
-    async infinateLoadPlaylistOfRecommend() {
-      if (!this.toLoadRecommend) return;
+    // async infinateLoadPlaylistOfRecommend() {
+    //   if (!this.toLoadRecommend) return;
 
-      //ローディングを表示
-      this.$store.commit("loadingItem/setIsLoading", true);
+    //   //ローディングを表示
+    //   this.$store.commit("loadingItem/setIsLoading", true);
 
-      //無限スクロールに合わせてプレイリストのページネイションを取得
-      await this.$store.dispatch(
-        "playlist/indexPlaylistAndTagPaginationOfRecommend",
-        this.recommendPage++
-      );
+    //   //無限スクロールに合わせてプレイリストのページネイションを取得
+    //   await this.$store.dispatch(
+    //     "playlist/indexPlaylistAndTagPaginationOfRecommend",
+    //     this.recommendPage++
+    //   );
 
-      // ページネーションのデータをrecommendMediaItemsに格納
-      this.putPlaylistTagIntoMediaItems(
-        this.recommendMediaItems,
-        this.playlistAndTagPaginationOfRecommend.data
-      );
+    //   // ページネーションのデータをrecommendMediaItemsに格納
+    //   this.putPlaylistTagIntoMediaItems(
+    //     this.recommendMediaItems,
+    //     this.playlistAndTagPaginationOfRecommend.data
+    //   );
 
-      //ローディングを非表示
-      this.$store.commit("loadingItem/setIsLoading", false);
-    },
+    //   //ローディングを非表示
+    //   this.$store.commit("loadingItem/setIsLoading", false);
+    // },
     //【新着】表示するプレイリストの無限スクロール
     async infinateLoadPlaylistOfNew() {
       if (!this.toLoadNew) return;
@@ -214,23 +256,89 @@ export default {
       //ローディングを非表示
       this.$store.commit("loadingItem/setIsLoading", false);
     },
-    //【エンターテイメント】表示するプレイリストの無限スクロール
-    async infinateLoadPlaylistOfEntertainment() {
-      if (!this.toLoadEntertainment) return;
+    //【VTuber】表示するプレイリストの無限スクロール
+    async infinateLoadPlaylistOfVTuber() {
+      if (!this.toLoadVTuber) return;
 
       //ローディングを表示
       this.$store.commit("loadingItem/setIsLoading", true);
 
       //無限スクロールに合わせてプレイリストのページネイションを取得
       await this.$store.dispatch(
-        "playlist/indexPlaylistAndTagPaginationOfEntertainment",
-        this.entertainmentPage++
+        "playlist/indexPlaylistAndTagPaginationOfVTuber",
+        this.vtuberPage++
       );
 
-      //ページネーションのデータをEntertainmentMediaItemsに格納
+      //ページネーションのデータをvtuberMediaItemsに格納
       this.putPlaylistTagIntoMediaItems(
-        this.entertainmentMediaItems,
-        this.playlistAndTagPaginationOfEntertainment.data
+        this.vtuberMediaItems,
+        this.playlistAndTagPaginationOfVTuber.data
+      );
+
+      //ローディングを非表示
+      this.$store.commit("loadingItem/setIsLoading", false);
+    },
+    //【Game】表示するプレイリストの無限スクロール
+    async infinateLoadPlaylistOfGame() {
+      if (!this.toLoadGame) return;
+
+      //ローディングを表示
+      this.$store.commit("loadingItem/setIsLoading", true);
+
+      //無限スクロールに合わせてプレイリストのページネイションを取得
+      await this.$store.dispatch(
+        "playlist/indexPlaylistAndTagPaginationOfGame",
+        this.gamePage++
+      );
+
+      //ページネーションのデータをgameMediaItemsに格納
+      this.putPlaylistTagIntoMediaItems(
+        this.gameMediaItems,
+        this.playlistAndTagPaginationOfGame.data
+      );
+
+      //ローディングを非表示
+      this.$store.commit("loadingItem/setIsLoading", false);
+    },
+    //【Music】表示するプレイリストの無限スクロール
+    async infinateLoadPlaylistOfMusic() {
+      if (!this.toLoadMusic) return;
+
+      //ローディングを表示
+      this.$store.commit("loadingItem/setIsLoading", true);
+
+      //無限スクロールに合わせてプレイリストのページネイションを取得
+      await this.$store.dispatch(
+        "playlist/indexPlaylistAndTagPaginationOfMusic",
+        this.musicPage++
+      );
+
+      //ページネーションのデータをmusicMediaItemsに格納
+      this.putPlaylistTagIntoMediaItems(
+        this.musicMediaItems,
+        this.playlistAndTagPaginationOfMusic.data
+      );
+
+      //ローディングを非表示
+      this.$store.commit("loadingItem/setIsLoading", false);
+    },
+    //【Language】表示するプレイリストの無限スクロール
+    async infinateLoadPlaylistOfLanguage() {
+      if (!this.toLoadLanguage) return;
+
+      //ローディングを表示
+      this.$store.commit("loadingItem/setIsLoading", true);
+
+      //無限スクロールに合わせてプレイリストのページネイションを取得
+      await this.$store.dispatch(
+        "playlist/indexPlaylistAndTagPaginationOfLanguage",
+        this.languagePage++
+      );
+
+      //ページネーションのデータをlanguageMediaItemsに格納
+      this.putPlaylistTagIntoMediaItems(
+        this.languageMediaItems,
+        this.playlistAndTagPaginationOfLanguage.data
       );
 
       //ローディングを非表示
@@ -276,48 +384,81 @@ export default {
     setTopPositionOfItems() {
       if (this.tab == 0) {
         this.topPositionOfItems = this.getOffsetTop(
-          this.$refs.recommendMediaItems.$refs.playlistMediaItemBox
+          this.$refs.newMediaItems.$refs.playlistMediaItemBox
         );
       } else if (this.tab == 1) {
         this.topPositionOfItems = this.getOffsetTop(
-          this.$refs.newMediaItems.$refs.playlistMediaItemBox
+          this.$refs.vtuberMediaItems.$refs.playlistMediaItemBox
+        );
+      } else if (this.tab == 2) {
+        this.topPositionOfItems = this.getOffsetTop(
+          this.$refs.gameMediaItems.$refs.playlistMediaItemBox
+        );
+      } else if (this.tab == 3) {
+        this.topPositionOfItems = this.getOffsetTop(
+          this.$refs.musicMediaItems.$refs.playlistMediaItemBox
+        );
+      } else if (this.tab == 4) {
+        this.topPositionOfItems = this.getOffsetTop(
+          this.$refs.languageMediaItems.$refs.playlistMediaItemBox
         );
       }
     },
     setItemHeight() {
       if (this.tab == 0) {
-        this.itemHeight = this.$refs.recommendMediaItems.$refs.playlistMediaItem
-          ? this.$refs.recommendMediaItems.$refs.playlistMediaItem[0]
-              .clientHeight
-          : 329;
-      } else if (this.tab == 1) {
         this.itemHeight = this.$refs.newMediaItems.$refs.playlistMediaItem
           ? this.$refs.newMediaItems.$refs.playlistMediaItem[0].clientHeight
+          : 329;
+      } else if (this.tab == 1) {
+        this.itemHeight = this.$refs.vtuberMediaItems.$refs.playlistMediaItem
+          ? this.$refs.vtuberMediaItems.$refs.playlistMediaItem[0].clientHeight
+          : 329;
+      } else if (this.tab == 2) {
+        this.itemHeight = this.$refs.gameMediaItems.$refs.playlistMediaItem
+          ? this.$refs.gameMediaItems.$refs.playlistMediaItem[0].clientHeight
+          : 329;
+      } else if (this.tab == 3) {
+        this.itemHeight = this.$refs.musicMediaItems.$refs.playlistMediaItem
+          ? this.$refs.musicMediaItems.$refs.playlistMediaItem[0].clientHeight
+          : 329;
+      } else if (this.tab == 4) {
+        this.itemHeight = this.$refs.languageMediaItems.$refs.playlistMediaItem
+          ? this.$refs.languageMediaItems.$refs.playlistMediaItem[0]
+              .clientHeight
           : 329;
       }
     },
   },
   computed: {
     ...mapGetters({
-      playlistAndTagPaginationOfRecommend:
-        "playlist/playlistAndTagPaginationOfRecommend",
+      // playlistAndTagPaginationOfRecommend:
+      //   "playlist/playlistAndTagPaginationOfRecommend",
       playlistAndTagPaginationOfNew: "playlist/playlistAndTagPaginationOfNew",
-      playlistAndTagPaginationOfSports:
-        "playlist/playlistAndTagPaginationOfSports",
-      playlistAndTagPaginationOfEntertainment:
-        "playlist/playlistAndTagPaginationOfEntertainment",
-      toLoadRecommend: "playlist/toLoadRecommend",
+      playlistAndTagPaginationOfVTuber:
+        "playlist/playlistAndTagPaginationOfVTuber",
+      playlistAndTagPaginationOfGame: "playlist/playlistAndTagPaginationOfGame",
+      playlistAndTagPaginationOfMusic:
+        "playlist/playlistAndTagPaginationOfMusic",
+      playlistAndTagPaginationOfLanguage:
+        "playlist/playlistAndTagPaginationOfLanguage",
+      // toLoadRecommend: "playlist/toLoadRecommend",
       toLoadNew: "playlist/toLoadNew",
-      toLoadSports: "playlist/toLoadSports",
-      toLoadEntertainment: "playlist/toLoadEntertainment",
-      isIndexRecommendPlaylistAndTagPaginating:
-        "playlist/isIndexRecommendPlaylistAndTagPaginating",
+      toLoadVTuber: "playlist/toLoadVTuber",
+      toLoadGame: "playlist/toLoadGame",
+      toLoadMusic: "playlist/toLoadMusic",
+      toLoadLanguage: "playlist/toLoadLanguage",
+      // isIndexRecommendPlaylistAndTagPaginating:
+      //   "playlist/isIndexRecommendPlaylistAndTagPaginating",
       isIndexNewPlaylistAndTagPaginating:
         "playlist/isIndexNewPlaylistAndTagPaginating",
-      isIndexSportsPlaylistAndTagPaginating:
-        "playlist/isIndexSportsPlaylistAndTagPaginating",
-      isIndexEntertainmentPlaylistAndTagPaginating:
-        "playlist/isIndexEntertainmentPlaylistAndTagPaginating",
+      isIndexVTuberPlaylistAndTagPaginating:
+        "playlist/isIndexVTuberPlaylistAndTagPaginating",
+      isIndexGamePlaylistAndTagPaginating:
+        "playlist/isIndexGamePlaylistAndTagPaginating",
+      isIndexMusicPlaylistAndTagPaginating:
+        "playlist/isIndexMusicPlaylistAndTagPaginating",
+      isIndexLanguagePlaylistAndTagPaginating:
+        "playlist/isIndexLanguagePlaylistAndTagPaginating",
       resetKey: "playlist/resetKey",
     }),
   },
@@ -336,10 +477,12 @@ export default {
       : "";
     this.setActiveTabIndex(this.tab);
 
-    this.$store.commit("playlist/setToLoadRecommend", true);
+    // this.$store.commit("playlist/setToLoadRecommend", true);
     this.$store.commit("playlist/setToLoadNew", true);
-    this.$store.commit("playlist/setToLoadSports", true);
-    this.$store.commit("playlist/setToLoadEntertainment", true);
+    this.$store.commit("playlist/setToLoadVTuber", true);
+    this.$store.commit("playlist/setToLoadGame", true);
+    this.$store.commit("playlist/setToLoadMusic", true);
+    this.$store.commit("playlist/setToLoadLanguage", true);
 
     window.onscroll = () => {
       this.page = this.getCurrentPagePosition();
@@ -350,23 +493,26 @@ export default {
         document.documentElement.scrollTop + window.innerHeight + 50 >=
         document.documentElement.offsetHeight;
       if (bottomOfWindow) {
-        if (this.tab == 0 && !this.isIndexRecommendPlaylistAndTagPaginating)
-          this.infinateLoadPlaylistOfRecommend();
-        if (this.tab == 1 && !this.isIndexNewPlaylistAndTagPaginating)
+        if (this.tab == 0 && !this.isIndexNewPlaylistAndTagPaginating)
           this.infinateLoadPlaylistOfNew();
-        if (this.tab == 2 && !this.isIndexSportsPlaylistAndTagPaginating)
-          this.infinateLoadPlaylistOfSports();
-        if (this.tab == 3 && !this.isIndexEntertainmentPlaylistAndTagPaginating)
-          this.infinateLoadPlaylistOfEntertainment();
+        if (this.tab == 1 && !this.isIndexVTuberPlaylistAndTagPaginating)
+          this.infinateLoadPlaylistOfVTuber();
+        if (this.tab == 2 && !this.isIndexGamePlaylistAndTagPaginating)
+          this.infinateLoadPlaylistOfGame();
+        if (this.tab == 3 && !this.isIndexMusicPlaylistAndTagPaginating)
+          this.infinateLoadPlaylistOfMusic();
+        if (this.tab == 4 && !this.isIndexLanguagePlaylistAndTagPaginating)
+          this.infinateLoadPlaylistOfLanguage();
       }
     };
 
     let startPage = this.$route.query.page ? this.$route.query.page : 1;
     for (let i = 0; i < startPage; i++) {
-      if (this.tab == 0) await this.infinateLoadPlaylistOfRecommend();
-      if (this.tab == 1) await this.infinateLoadPlaylistOfNew();
-      if (this.tab == 2) await this.infinateLoadPlaylistOfSports();
-      if (this.tab == 3) await this.infinateLoadPlaylistOfEntertainment();
+      if (this.tab == 0) await this.infinateLoadPlaylistOfNew();
+      if (this.tab == 1) await this.infinateLoadPlaylistOfVTuber();
+      if (this.tab == 2) await this.infinateLoadPlaylistOfGame();
+      if (this.tab == 3) await this.infinateLoadPlaylistOfMusic();
+      if (this.tab == 4) await this.infinateLoadPlaylistOfLanguage();
     }
 
     this.setTopPositionOfItems();
