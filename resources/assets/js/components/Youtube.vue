@@ -12,6 +12,9 @@
           v-show="isPlayerReady"
           ref="ytSeekBar"
           v-bind:bodyRef="highlightBodyRef"
+          v-on:fadeInOutController="fadeInOutController"
+          v-on:showOnYTSeekBarTouchMove="showOnYTSeekBarTouchMove"
+          v-on:hideOnYTSeekBarTouchEnd="hideOnYTSeekBarTouchEnd"
         />
       </div>
       <v-sheet v-if="isPlayerReady" class="highlightControllerBody">
@@ -399,6 +402,15 @@ export default {
 
       //次のシーンをロードし再生
       this.$store.dispatch("ytPlayer/playListIndexOf", index);
+    },
+    fadeInOutController() {
+      this.$refs.YTPlayerController.fadeInOutController();
+    },
+    showOnYTSeekBarTouchMove() {
+      this.$refs.YTPlayerController.showOnYTSeekBarTouchMove();
+    },
+    hideOnYTSeekBarTouchEnd() {
+      this.$refs.YTPlayerController.hideOnYTSeekBarTouchEnd();
     },
   },
   watch: {
