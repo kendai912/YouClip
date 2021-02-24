@@ -40,6 +40,7 @@
                           class="ma-0 pa-0"
                           aspect-ratio="calc(16 / 9)"
                           width="100%"
+                          height="100%"
                           elevation="0"
                           v-on:mouseover="setShowPreviewIndex(index)"
                           v-on:touchstart="setShowPreviewIndex(index)"
@@ -51,6 +52,7 @@
                             lazy-src="/storage/imgs/dummy-image.jpg"
                             v-bind:alt="item.title"
                             height="100%"
+                            width="100%"
                             style="z-index: 1;"
                           >
                             <template v-slot:placeholder>
@@ -76,6 +78,7 @@
                             disablePictureInPicture
                             disableRemotePlayback
                             height="100%"
+                            width="100%"
                             style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px; object-fit: cover;"
                           ></video>
                         </v-card>
@@ -315,7 +318,10 @@ export default {
       this.currentTagId = id;
       await this.$store.dispatch("playlist/getMyCreatedPlaylist");
       //プレイリストのカテゴリーを取得しセット
-      await this.$store.dispatch("playlist/getCurrentCategory", this.playlistId);
+      await this.$store.dispatch(
+        "playlist/getCurrentCategory",
+        this.playlistId
+      );
 
       //選択されたタグが追加済のユーザーのプレイリストIDを取得
       await this.$store.dispatch("playlist/getPlaylistIdsOfTag", id);

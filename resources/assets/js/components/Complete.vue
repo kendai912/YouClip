@@ -185,6 +185,7 @@ export default {
       myPlaylistToSave: "tagging/myPlaylistToSave",
       shareUrl: "shareModal/shareUrl",
       shareText: "shareModal/shareText",
+      resetKey: "playlist/resetKey",
     }),
     encodedShareURI: function() {
       return encodeURIComponent(this.shareUrl);
@@ -275,6 +276,9 @@ export default {
     // 検索バーによるルート変更後の初期化処理
     $route() {
       this.initialize();
+    },
+    resetKey() {
+      this.$store.dispatch("playlist/refreshNewPreview", this.newPlaylistId);
     },
   },
   mounted() {

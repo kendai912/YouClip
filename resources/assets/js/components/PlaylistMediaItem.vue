@@ -78,7 +78,9 @@
                 <v-row class="pa-0 ma-0" align-content="center">
                   <v-col class="pa-0 ma-0 d-flex align-center">
                     <span style="font-size:12px;">
-                      <v-icon small style="vertical-align: top; padding-top: 2px;"
+                      <v-icon
+                        small
+                        style="vertical-align: top; padding-top: 2px;"
                         >mdi-timer-outline</v-icon
                       >
                       &nbsp;<span style="font-weight: bold">{{
@@ -93,7 +95,9 @@
                 <v-row class="pa-0 ma-0" align-content="center">
                   <v-col class="pa-0 ma-0 d-flex align-center">
                     <span style="font-size:12px;">
-                      <v-icon small style="vertical-align: top; padding-top: 1px;"
+                      <v-icon
+                        small
+                        style="vertical-align: top; padding-top: 1px;"
                         >far fa-eye</v-icon
                       ><span style="font-size: 6px">&nbsp;&nbsp;</span
                       ><span style="font-weight: bold"

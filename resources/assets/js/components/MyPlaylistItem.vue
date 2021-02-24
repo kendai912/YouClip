@@ -22,7 +22,7 @@
                       class="ma-0 pa-0"
                       aspect-ratio="calc(16 / 9)"
                       max-width="167"
-                      width="100%"
+                      height="94"
                       elevation="0"
                       v-on:mouseover="setShowPreviewIndex(index)"
                       v-on:touchstart="setShowPreviewIndex(index)"
@@ -42,6 +42,7 @@
                           lazy-src="/storage/imgs/dummy-image.jpg"
                           v-bind:alt="item.title"
                           height="100%"
+                          width="100%"
                           style="z-index: 1;"
                         >
                           <template v-slot:placeholder>

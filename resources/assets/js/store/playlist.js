@@ -475,6 +475,7 @@ const actions = {
       newPlaylistId: params.newPlaylistId,
       playlistName: params.playlistName,
       privacySetting: params.privacySetting,
+      playlistCategory: params.playlistCategory,
       description: params.description,
     };
 
@@ -662,6 +663,24 @@ const actions = {
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  async refreshNewPreview(context, newPlaylistId) {
+    var params = {
+      newPlaylistId: newPlaylistId,
+    };
+
+    const response = await axios.post(
+      "/api/playlist/refreshNewPreview",
+      params
+    );
+    if (response.status == CREATED) {
+      context.commit("setNewPreview", response.data.preview);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
     } else {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });

@@ -119,6 +119,8 @@ Route::post('/playlist/delete', 'PlaylistController@delete');
 Route::post("/addPlaylistVisitCount/{playlist_id}", 'PlaylistController@addVisitCount');
 //load public playlist and its scenelist
 Route::post('/load/publicPlaylistAndScenelist', 'PlaylistController@loadPublicPlaylistAndScenelist');
+//refresh new playlist's preview
+Route::post('/playlist/refreshNewPreview', 'PlaylistController@refreshNewPreview');
 
 //シーン登録におけるyoutubeIdから既存のvideoIdの取得
 Route::get('/youtube/getVideo', 'VideoController@getVideoByYoutubeId');
@@ -128,10 +130,8 @@ Route::get('/youtube/getTag', 'TagController@getTagByVideoId');
 Route::get('/tag/histories', 'TagController@getTagHistories');
 //シーン登録における動画・タグの保存
 Route::post('/tag/storeSceneTags', 'TagController@storeSceneTags');
-//シーン登録におけるサムネイルの取得とS3への保存
-Route::post('/tag/storeTagThumbnail', 'TagController@storeTagThumbnail');
-//シーン登録におけるプレビュー動画の取得とS3への保存
-Route::post('/tag/storeTagPreview', 'TagController@storeTagPreview');
+//シーン登録におけるサムネイルとプレビューの取得とS3への保存
+Route::post('/tag/storeTagThumbAndPreview', 'TagController@storeTagThumbAndPreview');
 //シーンタグの編集
 Route::post('/tag/update', 'TagController@update');
 //シーンタグの削除

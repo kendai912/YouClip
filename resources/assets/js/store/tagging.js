@@ -112,8 +112,12 @@ const actions = {
     const response = await axios.post("/api/tag/storeSceneTags", params);
     if (response.status == CREATED) {
       //成功した時
+      //storeTagThumbnailとstoreTagPreview用にtagIdを格納
+      context.commit("setTagId", response.data.tag.id);
+
       //storeのTagデータを更新
       await context.dispatch("youtube/getTag", "", { root: true });
+
       //動画をDBに保存したのでisNewフラグをfalseにセット
       if (params.isNew) {
         //storeのVideoデータを更新
@@ -133,17 +137,23 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   //場面のサムネイルを取得しS3に保存
-  async storeTagThumbnail(context) {
+  async storeTagThumbAndPreview(context) {
     let params = {
+      tagId: state.tagId,
       youtubeId: store.getters["youtube/youtubeId"],
-      previewThumbName: state.previewThumbName,
       start: state.start,
+      end: state.end,
     };
 
-    const response = await axios.post("/api/tag/storeTagThumbnail", params);
+    const response = await axios.post(
+      "/api/tag/storeTagThumbAndPreview",
+      params
+    );
     if (response.status == CREATED) {
       // 成功した時
+
       //scenelistページの切り抜いた画面一覧を再ロード
       await context.dispatch(
         "watch/getPlaylistAndTagVideoDataById",
@@ -151,7 +161,7 @@ const actions = {
         { root: true }
       );
 
-      //keyを更新して再描画
+      //keyを更新して各ページでサムネイルを含むデータを再ロード
       context.commit(
         "playlist/setResetKey",
         !store.getters["playlist/resetKey"],
@@ -165,27 +175,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
-  //場面のプレビュー動画を取得しS3に保存
-  async storeTagPreview(context) {
-    let params = {
-      youtubeId: store.getters["youtube/youtubeId"],
-      previewGifName: state.previewGifName,
-      previewOgpName: state.previewOgpName,
-      start: state.start,
-      end: state.end,
-    };
 
-    const response = await axios.post("/api/tag/storeTagPreview", params);
-    if (response.status == CREATED) {
-      // 成功した時
-    } else if (response.status == INTERNAL_SERVER_ERROR) {
-      // 失敗した時
-      context.commit("error/setCode", response.status, { root: true });
-    } else {
-      // 上記以外で失敗した時
-      context.commit("error/setCode", response.status, { root: true });
-    }
-  },
   //シーンタグの更新
   async updateSceneTags(context) {
     // //シーンタグの余計なスペースを除去し整形
@@ -211,6 +201,13 @@ const actions = {
       context.commit("setPreviewThumbName", response.data.tag.preview);
       context.commit("setPreviewGifName", response.data.tag.previewgif);
       context.commit("setPreviewOgpName", response.data.tag.previewogp);
+
+      //keyを更新して各ページでサムネイルを含むデータを再ロード
+      context.commit(
+        "playlist/setResetKey",
+        !store.getters["playlist/resetKey"],
+        { root: true }
+      );
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });

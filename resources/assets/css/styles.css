@@ -540,6 +540,7 @@
 
 .playlistTitleInputBox .v-label,
 .scenePrivacySettingBox .v-label,
+.playlistCategoryBox .v-label,
 .playlistEditModeInputBox .v-label,
 .sceneMyPlaylistToSaveBox .v-label,
 .sceneTagInputBox .v-label {
@@ -556,6 +557,20 @@
 
 .sceneTagInputBox .v-input__append-inner {
   margin-top: 13px !important;
+}
+
+.playlistCategoryBox .v-select__selections {
+  margin: 0 !important;
+  padding: 0px !important;
+}
+
+.playlistCategoryBox .v-input__control .v-input__slot .v-select__slot input {
+  margin: 0 !important;
+  padding: 8px !important;
+}
+
+.v-select.v-input--dense .v-select__selection--comma {
+  margin: 5px 4px 8px 0 !important;
 }
 
 .icon-large {

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 use Auth;
+use FFMpeg;
 use App\Video;
 use App\Tag;
 use App\Like;
@@ -12,8 +14,6 @@ use App\Playlist;
 use App\TagComment;
 use App\LikesComment;
 use Carbon\Carbon;
-use DB;
-use FFMpeg;
 use FFMpeg\Filters\Video\VideoFilters;
 use FFMpeg\Media\Gif;
 use FFMpeg\Format\ProgressListener\AbstractProgressListener;
@@ -263,16 +263,6 @@ class TagController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -304,12 +294,6 @@ class TagController extends Controller
             //タグの配列を「::」で区切った文字列に変換
             $tags = implode("::", $request->tags);
 
-            //サムネイル・プレビュー動画・OGP用のファイル名を取得
-            $previewFileNames = $this->getPreviewFileNames($request);
-            $previewThumbName = $previewFileNames['previewThumbName'];
-            $previewGifName = $previewFileNames['previewGifName'];
-            $previewOgpName = $previewFileNames['previewOgpName'];
-
             //タグをDBに保存
             $tag = new Tag;
             $tag->video_id = $video->id;
@@ -318,9 +302,9 @@ class TagController extends Controller
             $tag->start = "00:".$request->start;
             $tag->end = "00:".$request->end;
             $tag->privacySetting = $request->privacySetting;
-            $tag->preview = $previewThumbName;
-            $tag->previewgif = $previewGifName;
-            $tag->previewogp = $previewOgpName;
+            $tag->preview = "";
+            $tag->previewgif = "";
+            $tag->previewogp = "";
             $tag->save();
 
             //保存先プレイリストが指定されている場合
@@ -367,147 +351,121 @@ class TagController extends Controller
         return $yturl;
     }
 
-    public function getPreviewFileNames($request)
+    public function getPreviewThumbFileName($request)
     {
         $startSec = $this->convertToSec("00:".$request->start);
-        $duration = 3;
-        $endSec = $startSec + $duration;
-
         $previewThumbName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".webp";
+
+        return $previewThumbName;
+    }
+
+    public function getPreviewGifFileName($request)
+    {
+        $startSec = $this->convertToSec("00:".$request->start);
         $previewGifName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".mp4";
+
+        return $previewGifName;
+    }
+
+    public function getPreviewOgpFileName($request)
+    {
+        $startSec = $this->convertToSec("00:".$request->start);
         $previewOgpName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".webp";
 
-        $previewFileNames = [];
-        $previewFileNames['previewThumbName'] = $previewThumbName;
-        $previewFileNames['previewGifName'] = $previewGifName;
-        $previewFileNames['previewOgpName'] = $previewOgpName;
+        return $previewOgpName;
+    }
 
-        return $previewFileNames;
+    //サムネイル画像とプレビューを取得しS3に保存
+    public function storeTagThumbAndPreview(Request $request)
+    {
+        $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
+
+        //サムネイル・プレビュー・OGP画像を取得し保存
+        $previewThumbName = $this->storeTagThumbnail($request, $ytDirectUrl);
+        $previewGifName = $this->storeTagPreview($request, $ytDirectUrl);
+        $previewOgpName = $this->storeTagOgp($request, $ytDirectUrl);
+
+        //Tagテーブルの各画像名を更新
+        $tag = Tag::find($request->tagId);
+        $tag->preview = $previewThumbName;
+        $tag->previewgif = $previewGifName;
+        $tag->previewogp = $previewOgpName;
+        $tag->save();
+
+        //更新したタグデータをリターン
+        return response()->json(
+            [
+                'tag' => $tag
+            ],
+            201,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
     
     //サムネイル画像を取得しS3に保存
-    public function storeTagThumbnail(Request $request)
+    public function storeTagThumbnail(Request $request, $ytDirectUrl)
     {
-        $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
         $startSec = $this->convertToSec("00:".$request->start);
 
-        $previewThumbName = $request->previewThumbName;
+        //サムネイル用のファイル名を取得
+        $previewThumbName = $this->getPreviewThumbFileName($request);
+
+        //サムネイル用の画像を取得しS3に保存
         // FFMpeg::openUrl($ytDirectUrl)->getFrameFromSeconds($startSec)->export()->toDisk('s3')->save('thumbs/'.$previewThumbName);
         $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -qscale 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$previewThumbName.' 2>&1';
-        system($cmd_webp);
+        exec($cmd_webp);
         Storage::disk('s3')->putFileAs('thumbs', new File(storage_path()."/app/public/imgs/".$previewThumbName), $previewThumbName, 'public');
 
         //一時的にローカルに保存したファイルを削除
         unlink(storage_path(). "/app/public/imgs/" . $previewThumbName);
 
-        //保存したタグデータをリターン
-        return response()->json(
-            [],
-            201,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+        //保存したサムネイル名をリターン
+        return $previewThumbName;
     }
     
     //プレビュー動画を取得しS3に保存
-    public function storeTagPreview(Request $request)
+    public function storeTagPreview(Request $request, $ytDirectUrl)
     {
-        $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
         $startSec = $this->convertToSec("00:".$request->start);
         $duration = 3;
         $endSec = $startSec + $duration;
 
-        //mp4のプレビュー動画を取得しS3に保存
-        $previewGifName = $request->previewGifName;
-        $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -qscale 100 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
-        system($cmd_gif);
-        Storage::disk('s3')->putFileAs('gifs', new File(storage_path()."/app/public/gifs/".$previewGifName), $previewGifName, 'public');
+        //プレビュー動画用のファイル名を取得
+        $previewGifName =  $this->getPreviewGifFileName($request);
 
-        //OGP用のwebpアニメーションを取得しS3に保存
-        $previewOgpName = $request->previewOgpName;
-        $cmd_ogp = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -qscale 80 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/ogps/".$previewOgpName.' 2>&1';
-        system($cmd_ogp);
-        Storage::disk('s3')->putFileAs('ogps', new File(storage_path()."/app/public/ogps/".$previewOgpName), $previewOgpName, 'public');
+        //プレビュー用のmp4を取得しS3に保存
+        $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -qscale 100 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
+        exec($cmd_gif);
+        Storage::disk('s3')->putFileAs('gifs', new File(storage_path()."/app/public/gifs/".$previewGifName), $previewGifName, 'public');
 
         //一時的にローカルに保存したファイルを削除
         unlink(storage_path(). "/app/public/gifs/" . $previewGifName);
+
+        //保存したプレビュー名をリターン
+        return $previewGifName;
+    }
+    
+    //OGP画像を取得しS3に保存
+    public function storeTagOgp(Request $request, $ytDirectUrl)
+    {
+        $startSec = $this->convertToSec("00:".$request->start);
+        $duration = 3;
+        $endSec = $startSec + $duration;
+
+        //サムネイル・プレビュー動画・OGP用のファイル名を取得
+        $previewOgpName =  $this->getPreviewOgpFileName($request);
+
+        //OGP用の画像を取得しS3に保存
+        $cmd_ogp = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -qscale 80 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/ogps/".$previewOgpName.' 2>&1';
+        exec($cmd_ogp);
+        Storage::disk('s3')->putFileAs('ogps', new File(storage_path()."/app/public/ogps/".$previewOgpName), $previewOgpName, 'public');
+
+        //一時的にローカルに保存したファイルを削除
         unlink(storage_path(). "/app/public/ogps/" . $previewOgpName);
 
-        //保存したタグデータをリターン
-        return response()->json(
-            [],
-            201,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
-    }
-
-    // public function getPreviewFile($request)
-    // {
-    //     $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
-    //     $startSec = $this->convertToSec("00:".$request->start);
-    //     $duration = 3;
-    //     $endSec = $startSec + $duration;
-
-    //     //サムネイル画像を取得しS3に保存
-    //     $previewThumbName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".webp";
-    //     // FFMpeg::openUrl($ytDirectUrl)->getFrameFromSeconds($startSec)->export()->toDisk('s3')->save('thumbs/'.$previewThumbName);
-    //     $cmd_png = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -qscale 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$previewThumbName.' 2>&1';
-    //     system($cmd_png);
-    //     Storage::disk('s3')->putFileAs('thumbs', new File(storage_path()."/app/public/imgs/".$previewThumbName), $previewThumbName, 'public');
-        
-    //     //mp4のプレビュー動画を取得しS3に保存
-    //     $previewGifName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".mp4";
-    //     $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -qscale 100 -vf "fps=24,scale=420:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
-    //     system($cmd_gif);
-    //     Storage::disk('s3')->putFileAs('gifs', new File(storage_path()."/app/public/gifs/".$previewGifName), $previewGifName, 'public');
-
-    //     //OGP用のwebpアニメーションを取得しS3に保存
-    //     $previewOgpName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".webp";
-    //     $cmd_ogp = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -qscale 80 -vf "fps=10,scale=420:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 '.storage_path()."/app/public/ogps/".$previewOgpName.' 2>&1';
-    //     system($cmd_ogp);
-    //     Storage::disk('s3')->putFileAs('ogps', new File(storage_path()."/app/public/ogps/".$previewOgpName), $previewOgpName, 'public');
-
-
-    //     //一時的にローカルに保存したファイルを削除
-    //     unlink(storage_path(). "/app/public/imgs/" . $previewThumbName);
-    //     unlink(storage_path(). "/app/public/gifs/" . $previewGifName);
-    //     unlink(storage_path(). "/app/public/ogps/" . $previewOgpName);
-
-    //     // プレビュー動画をWebm形式でS3に保存する場合
-    //     // $startTimeCode = \FFMpeg\Coordinate\TimeCode::fromSeconds($startSec);
-    //     // $durationTimeCode = \FFMpeg\Coordinate\TimeCode::fromSeconds($duration);
-    //     // $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($startTimeCode, $durationTimeCode);
-    //     // FFMpeg::openUrl($ytDirectUrl)->addFilter($clipFilter)->export()->toDisk('s3')->inFormat(new \FFMpeg\Format\Video\WebM)->save('test.webm');
-
-    //     $previews = [];
-    //     $previews['previewThumbName'] = $previewThumbName;
-    //     $previews['previewGifName'] = $previewGifName;
-    //     $previews['previewOgpName'] = $previewOgpName;
-
-    //     return $previews;
-    // }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        //保存したプレビュー名をリターン
+        return $previewOgpName;
     }
 
     /**
@@ -526,11 +484,10 @@ class TagController extends Controller
         Storage::disk('s3')->delete('gifs/'.$tag->previewgif);
         Storage::disk('s3')->delete('ogps/'.$tag->previewogp);
 
-        //更新したpreview用のgifを再取得
-        $previewFileNames = $this->getPreviewFileNames($request);
-        $previewThumbName = $previewFileNames['previewThumbName'];
-        $previewGifName = $previewFileNames['previewGifName'];
-        $previewOgpName = $previewFileNames['previewOgpName'];
+        //Cacheに保存されないようにstoreTagThumbAndPreviewが実行されるまでファイル名は空白にする
+        $previewThumbName = "";
+        $previewGifName =  "";
+        $previewOgpName =  "";
 
         $tag->preview = $previewThumbName;
         $tag->previewgif = $previewGifName;

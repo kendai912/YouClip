@@ -38,7 +38,6 @@
         <v-card flat>
           <PlaylistMediaItem
             v-bind:mediaItems="newMediaItems"
-            v-bind:key="resetKey"
             ref="newMediaItems"
           />
         </v-card>
@@ -47,7 +46,6 @@
         <v-card flat>
           <PlaylistMediaItem
             v-bind:mediaItems="vtuberMediaItems"
-            v-bind:key="resetKey"
             ref="vtuberMediaItems"
           />
         </v-card>
@@ -56,7 +54,6 @@
         <v-card flat>
           <PlaylistMediaItem
             v-bind:mediaItems="gameMediaItems"
-            v-bind:key="resetKey"
             ref="gameMediaItems"
           />
         </v-card>
@@ -65,7 +62,6 @@
         <v-card flat>
           <PlaylistMediaItem
             v-bind:mediaItems="musicMediaItems"
-            v-bind:key="resetKey"
             ref="musicMediaItems"
           />
         </v-card>
@@ -74,7 +70,6 @@
         <v-card flat>
           <PlaylistMediaItem
             v-bind:mediaItems="languageMediaItems"
-            v-bind:key="resetKey"
             ref="languageMediaItems"
           />
         </v-card>
@@ -160,6 +155,56 @@ export default {
       itemHeight: "",
       contentsPerPage: 5,
     };
+  },
+  computed: {
+    ...mapGetters({
+      // playlistAndTagPaginationOfRecommend:
+      //   "playlist/playlistAndTagPaginationOfRecommend",
+      playlistAndTagPaginationOfNew: "playlist/playlistAndTagPaginationOfNew",
+      playlistAndTagPaginationOfVTuber:
+        "playlist/playlistAndTagPaginationOfVTuber",
+      playlistAndTagPaginationOfGame: "playlist/playlistAndTagPaginationOfGame",
+      playlistAndTagPaginationOfMusic:
+        "playlist/playlistAndTagPaginationOfMusic",
+      playlistAndTagPaginationOfLanguage:
+        "playlist/playlistAndTagPaginationOfLanguage",
+      // toLoadRecommend: "playlist/toLoadRecommend",
+      toLoadNew: "playlist/toLoadNew",
+      toLoadVTuber: "playlist/toLoadVTuber",
+      toLoadGame: "playlist/toLoadGame",
+      toLoadMusic: "playlist/toLoadMusic",
+      toLoadLanguage: "playlist/toLoadLanguage",
+      // isIndexRecommendPlaylistAndTagPaginating:
+      //   "playlist/isIndexRecommendPlaylistAndTagPaginating",
+      isIndexNewPlaylistAndTagPaginating:
+        "playlist/isIndexNewPlaylistAndTagPaginating",
+      isIndexVTuberPlaylistAndTagPaginating:
+        "playlist/isIndexVTuberPlaylistAndTagPaginating",
+      isIndexGamePlaylistAndTagPaginating:
+        "playlist/isIndexGamePlaylistAndTagPaginating",
+      isIndexMusicPlaylistAndTagPaginating:
+        "playlist/isIndexMusicPlaylistAndTagPaginating",
+      isIndexLanguagePlaylistAndTagPaginating:
+        "playlist/isIndexLanguagePlaylistAndTagPaginating",
+      resetKey: "playlist/resetKey",
+    }),
+  },
+  watch: {
+    async resetKey() {
+
+      this.resetTabPagination();
+      this.resetMediaItems();
+
+      let startPage = this.$route.query.page ? this.$route.query.page : 1;
+      await this.initialLoad(startPage);
+
+      this.setTopPositionOfItems();
+      this.setItemHeight();
+      let topPositionY =
+        this.topPositionOfItems +
+        this.contentsPerPage * this.itemHeight * (startPage - 1);
+      if (startPage > 1) window.scrollTo(0, topPositionY);
+    },
   },
   mixins: [myMixin],
   methods: {
@@ -428,39 +473,29 @@ export default {
           : 329;
       }
     },
-  },
-  computed: {
-    ...mapGetters({
-      // playlistAndTagPaginationOfRecommend:
-      //   "playlist/playlistAndTagPaginationOfRecommend",
-      playlistAndTagPaginationOfNew: "playlist/playlistAndTagPaginationOfNew",
-      playlistAndTagPaginationOfVTuber:
-        "playlist/playlistAndTagPaginationOfVTuber",
-      playlistAndTagPaginationOfGame: "playlist/playlistAndTagPaginationOfGame",
-      playlistAndTagPaginationOfMusic:
-        "playlist/playlistAndTagPaginationOfMusic",
-      playlistAndTagPaginationOfLanguage:
-        "playlist/playlistAndTagPaginationOfLanguage",
-      // toLoadRecommend: "playlist/toLoadRecommend",
-      toLoadNew: "playlist/toLoadNew",
-      toLoadVTuber: "playlist/toLoadVTuber",
-      toLoadGame: "playlist/toLoadGame",
-      toLoadMusic: "playlist/toLoadMusic",
-      toLoadLanguage: "playlist/toLoadLanguage",
-      // isIndexRecommendPlaylistAndTagPaginating:
-      //   "playlist/isIndexRecommendPlaylistAndTagPaginating",
-      isIndexNewPlaylistAndTagPaginating:
-        "playlist/isIndexNewPlaylistAndTagPaginating",
-      isIndexVTuberPlaylistAndTagPaginating:
-        "playlist/isIndexVTuberPlaylistAndTagPaginating",
-      isIndexGamePlaylistAndTagPaginating:
-        "playlist/isIndexGamePlaylistAndTagPaginating",
-      isIndexMusicPlaylistAndTagPaginating:
-        "playlist/isIndexMusicPlaylistAndTagPaginating",
-      isIndexLanguagePlaylistAndTagPaginating:
-        "playlist/isIndexLanguagePlaylistAndTagPaginating",
-      resetKey: "playlist/resetKey",
-    }),
+    async initialLoad(startPage) {
+      for (let i = 0; i < startPage; i++) {
+        if (this.tab == 0) await this.infinateLoadPlaylistOfNew();
+        if (this.tab == 1) await this.infinateLoadPlaylistOfVTuber();
+        if (this.tab == 2) await this.infinateLoadPlaylistOfGame();
+        if (this.tab == 3) await this.infinateLoadPlaylistOfMusic();
+        if (this.tab == 4) await this.infinateLoadPlaylistOfLanguage();
+      }
+    },
+    resetTabPagination() {
+      this.newPage = 1;
+      this.vtuberPage = 1;
+      this.gamePage = 1;
+      this.musicPage = 1;
+      this.languagePage = 1;
+    },
+    resetMediaItems() {
+      this.newMediaItems = [];
+      this.vtuberMediaItems = [];
+      this.gameMediaItems = [];
+      this.musicMediaItems = [];
+      this.languageMediaItems = [];
+    },
   },
   async mounted() {
     //ナビバーのデータをリセットし表示
@@ -506,14 +541,9 @@ export default {
       }
     };
 
+    //initial load of each tab by page num
     let startPage = this.$route.query.page ? this.$route.query.page : 1;
-    for (let i = 0; i < startPage; i++) {
-      if (this.tab == 0) await this.infinateLoadPlaylistOfNew();
-      if (this.tab == 1) await this.infinateLoadPlaylistOfVTuber();
-      if (this.tab == 2) await this.infinateLoadPlaylistOfGame();
-      if (this.tab == 3) await this.infinateLoadPlaylistOfMusic();
-      if (this.tab == 4) await this.infinateLoadPlaylistOfLanguage();
-    }
+    await this.initialLoad(startPage);
 
     this.setTopPositionOfItems();
     this.setItemHeight();

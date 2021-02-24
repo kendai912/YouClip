@@ -97,6 +97,7 @@
           <v-row align="center" class="ma-0 pa-0">
             <v-col class="text-right ma-0 pa-2">
               <v-btn
+                v-if="isVideoDataReady"
                 color="red lighten-2 white--text"
                 v-bind:disabled="isDisabled"
                 v-on:click="confirm"
@@ -269,7 +270,7 @@ export default {
       this.checkRouting();
     },
     // 確認モーダル表示へ進む
-    confirm() {
+    async confirm() {
       if (!this.isLogin) {
         //未ログインの場合
         this.$store.commit("noLoginModal/openLoginModal");
@@ -281,140 +282,128 @@ export default {
         clearInterval(this.timer);
 
         let self = this;
-        setTimeout(async function() {
-          //ログイン済の場合
-          if (self.isEditing) {
-            //編集の場合
-            //入力済データ(除く、保存先プレイリスト)をセット
-            self.$store.commit("tagging/setTagId", self.tagIdToEdit);
-            self.$store.commit("tagging/setTags", self.tags);
-            self.$store.commit("tagging/setPrivacySetting", "public");
+        // setTimeout(async function() {
+        //ログイン済の場合
+        if (self.isEditing) {
+          //編集の場合
+          //入力済データ(除く、保存先プレイリスト)をセット
+          self.$store.commit("tagging/setTagId", self.tagIdToEdit);
+          self.$store.commit("tagging/setTags", self.tags);
+          self.$store.commit("tagging/setPrivacySetting", "public");
 
-            //新しく作成したplaylistIdをセット
-            self.$store.commit(
-              "tagging/setMyPlaylistToSave",
-              self.playlistIdToEdit
-            );
+          //新しく作成したplaylistIdをセット
+          self.$store.commit(
+            "tagging/setMyPlaylistToSave",
+            self.playlistIdToEdit
+          );
 
-            //ローディングを表示し、OKボタンを無効化
-            self.$store.commit("highlightHeader/setIsLoading");
-            self.isDisabled = true;
+          //ローディングを表示し、OKボタンを無効化
+          self.$store.commit("highlightHeader/setIsLoading");
+          self.isDisabled = true;
 
-            //場面のデータをDBで更新
-            await self.$store.dispatch("tagging/updateSceneTags");
+          //場面のデータをDBで更新
+          await self.$store.dispatch("tagging/updateSceneTags");
 
-            //場面のサムネイルを取得しS3に保存(非同期)
-            self.$store.dispatch("tagging/storeTagThumbnail");
+          //場面のサムネイルとプレビューを取得しS3に保存(非同期)
+          self.$store.dispatch("tagging/storeTagThumbAndPreview");
 
-            //場面のプレビュー動画を取得しS3に保存(非同期)
-            self.$store.dispatch("tagging/storeTagPreview");
+          //ローディングを非表示
+          self.$store.commit("highlightHeader/setNotLoading");
 
-            //ローディングを非表示
-            self.$store.commit("highlightHeader/setNotLoading");
+          //display editting a new scene completion snackbar
+          self.$store.commit("snackbar/setText", "場面を更新しました");
+          self.$store.commit("snackbar/setSnackbar", true);
+          self.$store.commit("snackbar/setTimeout", 5000);
 
-            //display editting a new scene completion snackbar
-            self.$store.commit("snackbar/setText", "場面を更新しました");
-            self.$store.commit("snackbar/setSnackbar", true);
-            self.$store.commit("snackbar/setTimeout", 5000);
+          //return to the playlist edit page
+          self.$router
+            .push({
+              path: "/editmyplaylist",
+              query: {
+                playlist: self.playlistIdToEdit,
+              },
+            })
+            .catch((err) => {});
+        } else if (self.isAdding) {
+          //in case of adding to existing playlist
+          //入力済データをセット
+          self.$store.commit("tagging/setTags", self.tags);
+          self.$store.commit("tagging/setPrivacySetting", "public");
 
-            //return to the playlist edit page
-            self.$router
-              .push({
-                path: "/editmyplaylist",
-                query: {
-                  playlist: self.playlistIdToEdit,
-                },
-              })
-              .catch((err) => {});
-          } else if (self.isAdding) {
-            //in case of adding to existing playlist
-            //入力済データをセット
-            self.$store.commit("tagging/setTags", self.tags);
-            self.$store.commit("tagging/setPrivacySetting", "public");
+          //新しく場面を追加する既存のplaylistIdをセット
+          self.$store.commit(
+            "tagging/setMyPlaylistToSave",
+            self.playlistIdToAdd
+          );
 
-            //新しく場面を追加する既存のplaylistIdをセット
-            self.$store.commit(
-              "tagging/setMyPlaylistToSave",
-              self.playlistIdToAdd
-            );
+          //ローディングを表示し、OKボタンを無効化
+          self.$store.commit("highlightHeader/setIsLoading");
+          self.isDisabled = true;
 
-            //ローディングを表示し、OKボタンを無効化
-            self.$store.commit("highlightHeader/setIsLoading");
-            self.isDisabled = true;
+          //場面のデータを登録
+          await self.$store.dispatch("tagging/storeSceneTags");
 
-            //場面のデータを登録
-            await self.$store.dispatch("tagging/storeSceneTags");
+          //場面のサムネイルとプレビューを取得しS3に保存(非同期)
+          self.$store.dispatch("tagging/storeTagThumbAndPreview");
 
-            //場面のサムネイルを取得しS3に保存(非同期)
-            self.$store.dispatch("tagging/storeTagThumbnail");
+          //ローディングを非表示
+          self.$store.commit("highlightHeader/setNotLoading");
 
-            //場面のプレビュー動画を取得しS3に保存(非同期)
-            self.$store.dispatch("tagging/storeTagPreview");
+          //display adding a new scene to existing playlist completion snackbar
+          self.$store.commit("snackbar/setText", "新しい場面を追加しました");
+          self.$store.commit("snackbar/setSnackbar", true);
+          self.$store.commit("snackbar/setTimeout", 5000);
 
-            //ローディングを非表示
-            self.$store.commit("highlightHeader/setNotLoading");
+          //return to the playlist edit page
+          self.$router
+            .push({
+              path: "/editmyplaylist",
+              query: {
+                playlist: self.playlistIdToAdd,
+              },
+            })
+            .catch((err) => {});
+        } else {
+          //新規の場合
+          //入力済データをセット
+          self.$store.commit("tagging/setTags", self.tags);
+          self.$store.commit("tagging/setPrivacySetting", "public");
 
-            //display adding a new scene to existing playlist completion snackbar
-            self.$store.commit("snackbar/setText", "新しい場面を追加しました");
-            self.$store.commit("snackbar/setSnackbar", true);
-            self.$store.commit("snackbar/setTimeout", 5000);
-
-            //return to the playlist edit page
-            self.$router
-              .push({
-                path: "/editmyplaylist",
-                query: {
-                  playlist: self.playlistIdToAdd,
-                },
-              })
-              .catch((err) => {});
-          } else {
-            //新規の場合
-            //入力済データをセット
-            self.$store.commit("tagging/setTags", self.tags);
-            self.$store.commit("tagging/setPrivacySetting", "public");
-
-            //check if there is editing new playlist
-            await self.$store.dispatch("playlist/getNewPlaylistId");
-            if (!self.newPlaylistId) {
-              //プレイリストを新規作成しIDをplaylist storeのnewPlaylistIdに保存
-              await self.$store.dispatch("playlist/createPlaylist", {
-                playlistName: "",
-                privacySetting: self.privacySetting,
-                currentTagId: "",
-                currentCategory: self.currentCategory,
-              });
-            }
-
-            //新しく作成したplaylistIdをセット
-            self.$store.commit(
-              "tagging/setMyPlaylistToSave",
-              self.newPlaylistId
-            );
-
-            //ローディングを表示し、OKボタンを無効化
-            self.$store.commit("highlightHeader/setIsLoading");
-            self.isDisabled = true;
-
-            //場面のデータをDBに登録
-            await self.$store.dispatch("tagging/storeSceneTags");
-
-            //場面のサムネイルを取得しS3に保存(非同期)
-            self.$store.dispatch("tagging/storeTagThumbnail");
-
-            //場面のプレビュー動画を取得しS3に保存(非同期)
-            self.$store.dispatch("tagging/storeTagPreview");
-
-            //ローディングを非表示
-            self.$store.commit("highlightHeader/setNotLoading");
-
-            //display scene tagging complete modal
-            self.$store.commit("confirmationModal/openConfirmationModal");
+          //check if there is editing new playlist
+          await self.$store.dispatch("playlist/getNewPlaylistId");
+          if (!self.newPlaylistId) {
+            //プレイリストを新規作成しIDをplaylist storeのnewPlaylistIdに保存
+            await self.$store.dispatch("playlist/createPlaylist", {
+              newPlaylistName: "",
+              privacySetting: self.privacySetting,
+              currentTagId: "",
+              currentCategory: self.currentCategory,
+            });
           }
 
-          //セッションに保存してある開始・終了時間データを破棄
-          window.sessionStorage.removeItem("ytInputData");
-        });
+          //新しく作成したplaylistIdをセット
+          self.$store.commit("tagging/setMyPlaylistToSave", self.newPlaylistId);
+
+          //ローディングを表示し、OKボタンを無効化
+          self.$store.commit("highlightHeader/setIsLoading");
+          self.isDisabled = true;
+
+          //場面のデータをDBに登録
+          await self.$store.dispatch("tagging/storeSceneTags");
+
+          //場面のサムネイルとプレビューを取得しS3に保存(非同期)
+          self.$store.dispatch("tagging/storeTagThumbAndPreview");
+
+          //ローディングを非表示
+          self.$store.commit("highlightHeader/setNotLoading");
+
+          //display scene tagging complete modal
+          self.$store.commit("confirmationModal/openConfirmationModal");
+        }
+
+        //セッションに保存してある開始・終了時間データを破棄
+        window.sessionStorage.removeItem("ytInputData");
+        // });
       }
     },
     unmute() {
@@ -452,7 +441,7 @@ export default {
       }
     },
   },
-  async mounted() {
+  async created() {
     this.initialize();
 
     //必要データを取得するまでTagItemは非表示
@@ -460,6 +449,9 @@ export default {
 
     //URLからyoutubeIdを格納
     let youtubeId = this.$route.query.v;
+
+    //load start & end time
+    this.loadTimeInput(youtubeId);
 
     //必要データを取得
     this.$store.commit("youtube/setYoutubeId", youtubeId);
@@ -471,9 +463,6 @@ export default {
       await this.$store.dispatch("youtube/getNewVideoData");
     }
     this.isVideoDataReady = true;
-
-    //load start & end time
-    this.loadTimeInput(youtubeId);
 
     //YTPlayerのまとめの再生に必要なパラメータをセット
     let listOfYoutubeIdStartEndTime = [];

@@ -1,6 +1,6 @@
 <template>
   <div class="container--small">
-    <div>
+    <div v-if="sceneListofPlaylistIsReady">
       <v-card class="mx-auto pa-2 align-center" max-width="420" tile flat>
         <v-row class="ma-0">
           <v-col class="pa-0 pt-2 text-center">
@@ -102,7 +102,6 @@
       </v-card>
       <SceneTagItem
         v-bind:showAddNewSceneComponent="showAddNewSceneComponent"
-        v-bind:key="resetKey"
       />
       <PlaylistDeleteModal v-if="showPlaylistDeleteModal" />
     </div>
@@ -188,6 +187,7 @@ export default {
       sceneCount: 0,
       totalDuration: "",
       lastUpdatedAt: "",
+      sceneListofPlaylistIsReady: false,
     };
   },
   props: {},
@@ -226,6 +226,16 @@ export default {
       set(val) {
         //this.$store.commit("watch/setEditMode", val);
       },
+    },
+  },
+  watch: {
+    resetKey() {
+      let mediaItems = [];
+      this.putTagVideoIntoMediaItems(
+        mediaItems,
+        this.playlistAndTagVideoData.tagVideoData
+      );
+      this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
     },
   },
   methods: {
@@ -338,6 +348,7 @@ export default {
         this.playlistAndTagVideoData.tagVideoData
       );
       this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
+      this.sceneListofPlaylistIsReady = true;
     }
   },
 };

@@ -301,6 +301,8 @@ class SearchController extends Controller
                 'query' => $params
             ]);
         } catch (\Exception $e) {
+            echo $e->getMessage();   // insert query
+
             throw new Exception($e->getResponse()->getBody());
         }
         return $res->getBody();
@@ -318,6 +320,8 @@ class SearchController extends Controller
                 'query' => $params
             ]);
         } catch (\Exception $e) {
+            echo $e->getMessage();   // insert query
+
             throw new Exception($e->getResponse()->getBody());
         }
         return $res->getBody();

@@ -512,6 +512,8 @@ class PlaylistController extends Controller
                     JSON_UNESCAPED_UNICODE
                 );
             } catch (\Exception $e) {
+                echo $e->getMessage();   // insert query
+
                 return response()->json(
                     [
                     'newPlaylist' => null
@@ -531,17 +533,6 @@ class PlaylistController extends Controller
                 JSON_UNESCAPED_UNICODE
             );
         }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     public function show()
@@ -566,16 +557,6 @@ class PlaylistController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     public function delete(Request $request)
     {
@@ -646,6 +627,8 @@ class PlaylistController extends Controller
             $playlist->playlistlogs()->save($playlistlog);
             return true;
         } catch (\Exception $e) {
+            echo $e->getMessage();   // insert query
+
             return false;
         }
     }
@@ -662,6 +645,7 @@ class PlaylistController extends Controller
         $playlist = Playlist::find($request->newPlaylistId);
         $playlist->playlistName = $request->playlistName;
         $playlist->privacySetting = $request->privacySetting;
+        $playlist->playlistCategory = $request->playlistCategory;
         $playlist->description = $request->description;
 
         //Get preview name for complete page
@@ -681,6 +665,8 @@ class PlaylistController extends Controller
                 JSON_UNESCAPED_UNICODE
             );
         } catch (\Exception $e) {
+            echo $e->getMessage();   // insert query
+
             return response()->json(
                 [
                     'result' => 'failed',
@@ -708,6 +694,8 @@ class PlaylistController extends Controller
                 JSON_UNESCAPED_UNICODE
             );
         } catch (\Exception $e) {
+            echo $e->getMessage();   // insert query
+
             return response()->json(
                 [
                     'result' => 'failed',
@@ -734,6 +722,8 @@ class PlaylistController extends Controller
                 JSON_UNESCAPED_UNICODE
             );
         } catch (\Exception $e) {
+            echo $e->getMessage();   // insert query
+
             return response()->json(
                 [
                     'result'=>'failed',
@@ -892,5 +882,21 @@ class PlaylistController extends Controller
                 JSON_UNESCAPED_UNICODE
             );
         }
+    }
+
+    public function refreshNewPreview(Request $request)
+    {
+        //Get preview name for complete page
+        $tagId = DB::table('playlist_tag')->where('playlist_id', $request->newPlaylistId)->select('tag_id')->orderBy('scene_order', 'ASC')->first();
+        $tag = Tag::find($tagId->tag_id);
+
+        return response()->json(
+            [
+                'preview' => $tag->preview
+            ],
+            201,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 }

@@ -90,6 +90,7 @@ export default {
     ...mapGetters({
       myCreatedAndLikedPlaylist: "playlist/myCreatedAndLikedPlaylist",
       myCreatedAndLikedTagVideo: "tag/myCreatedAndLikedTagVideo",
+      resetKey: "playlist/resetKey",
     }),
     myCreatedAndLikedPlaylistMediaItems() {
       if (!this.myCreatedAndLikedPlaylist) return;
@@ -175,6 +176,11 @@ export default {
       );
       groupedData.sort((a, b) => (a.video_id < b.video_id ? 1 : -1));
       return groupedData;
+    },
+  },
+  watch: {
+    resetKey() {
+      this.$store.dispatch("playlist/loadMyCreatedAndLikedPlaylist");
     },
   },
   methods: {
