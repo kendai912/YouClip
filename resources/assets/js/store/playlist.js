@@ -224,12 +224,6 @@ const actions = {
   //     context.commit("error/setCode", response.status, { root: true });
   //   }
   // },
-  // async addPlaylistVisitCount(context, playlist_id) {
-  //   const response = await axios.post(
-  //     "/api/addPlaylistVisitCount/" + playlist_id
-  //   );
-  //   // context.commit("setPlaylistVisitCount", playlist_id);
-  // },
   // 【新着】プレイリスト一覧を取得
   async indexPlaylistAndTagPaginationOfNew(context, page) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
@@ -373,6 +367,14 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
+  async addPlaylistVisitCount(context, playlist_id) {
+    const response = await axios.post(
+      "/api/addPlaylistVisitCount/" + playlist_id
+    );
+    // context.commit("setPlaylistVisitCount", playlist_id);
+  },
+
   async getCurrentCategory(context, playlistId) {
     let queries = {
       playlistId: playlistId,
