@@ -299,8 +299,10 @@ class TagController extends Controller
             $tag->video_id = $video->id;
             $tag->user_id = Auth::user()->id;
             $tag->tags = $tags;
-            $tag->start = "00:".$request->start;
-            $tag->end = "00:".$request->end;
+            $tag->start = $this->convertIStoHIS($request->start);
+            $tag->end = $this->convertIStoHIS($request->end);
+            // $tag->start = "00:".$request->start;
+            // $tag->end = "00:".$request->end;
             $tag->privacySetting = $request->privacySetting;
             $tag->preview = "";
             $tag->previewgif = "";
@@ -564,6 +566,21 @@ class TagController extends Controller
     public static function convertToSec($time)
     {
         return 3600 * intval(date("H", strtotime($time))) + 60 * intval(date("i", strtotime($time))) + intval(date("s", strtotime($time)));
+    }
+
+    public static function convertIStoHIS($is)
+    {
+        $isArray = explode(':', $is);
+        $i = $isArray[0];
+        $s = $isArray[1];
+
+        if ($i > 60) {
+            $H = floor($i / 60);
+        }
+        $i = $i % 60;
+        $His = date("H:i:s", strtotime($H.':'.$i.':'.$s));
+
+        return $His;
     }
 
     public function addTagComment(Request $request)

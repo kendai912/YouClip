@@ -353,7 +353,6 @@ export default {
         "watch/setPrivacySetting",
         this.playlistAndTagVideoData.privacySetting
       );
-      console.log(this.playlistAndTagVideoData);
       this.$store.commit(
         "watch/setPlaylistCategory",
         this.playlistAndTagVideoData.playlistCategory
