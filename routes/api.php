@@ -107,6 +107,8 @@ Route::post('/playlist/update', 'PlaylistController@update');
 Route::post('/playlist/updateTitle', 'PlaylistController@updateTitle');
 //プレイリストのプライバシー設定の更新
 Route::post('/playlist/updatePrivacy', 'PlaylistController@updatePrivacy');
+//プレイリストのカテゴリーの更新
+Route::post('/playlist/updateCategory', 'PlaylistController@updateCategory');
 //プレイリストのシーン順序の更新
 Route::post('/playlist/updateSceneOrder', 'PlaylistController@updateSceneOrder');
 //プレイリストへのコメント追加

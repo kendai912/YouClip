@@ -10,6 +10,7 @@ const state = {
   playlistName: "",
   playlistViewCount: "",
   privacySetting: "",
+  playlistCategory: "",
   tagPrivacySetting: "",
   currentYoutubeId: "",
   currentTagId: "",
@@ -24,6 +25,7 @@ const getters = {
   playlistName: (state) => state.playlistName,
   playlistViewCount: (state) => state.playlistViewCount,
   privacySetting: (state) => state.privacySetting,
+  playlistCategory: (state) => state.playlistCategory,
   currentYoutubeId: (state) => state.currentYoutubeId,
   currentTagId: (state) => state.watchList[state.listIndex].tag_id,
   currentTagName: (state) =>
@@ -58,6 +60,9 @@ const mutations = {
   setPrivacySetting(state, data) {
     state.privacySetting = data;
   },
+  setPlaylistCategory(state, data) {
+    state.playlistCategory = data;
+  },
   setCurrentYoutubeId(state, data) {
     state.currentYoutubeId = data;
   },
@@ -91,6 +96,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+  
   async getTagAndVideoDataById(context, tagId) {
     const response = await axios.get("/api/get/tagAndVideoData?id=" + tagId);
     if (response.status == OK) {

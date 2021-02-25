@@ -281,6 +281,7 @@ class PlaylistController extends Controller
             'playlist_id' => $playlistAndTagData->id,
             'playlistName' => $playlistAndTagData->playlistName,
             'privacySetting' => $playlistAndTagData->privacySetting,
+            'playlistCategory' => $playlistAndTagData->playlistCategory,
             'playlist_total_duration' => $total_duration,
             'play_count' => $playlistAndTagData->play_count,
             'user_id' => $playlistAndTagData->user_id,
@@ -706,10 +707,40 @@ class PlaylistController extends Controller
             );
         }
     }
+
     public function updatePrivacy(Request $request)
     {
         $playlist = Playlist::find($request->playlist_id);
         $playlist->privacySetting = $request->privacySetting;
+        try {
+            $playlist->save();
+            return response()->json(
+                [
+                    'result' => 'updated',
+                    'playlist' => $playlist,
+                ],
+                201,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        } catch (\Exception $e) {
+            echo $e->getMessage();   // insert query
+
+            return response()->json(
+                [
+                    'result'=>'failed',
+                ],
+                500,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
+        }
+    }
+    
+    public function updateCategory(Request $request)
+    {
+        $playlist = Playlist::find($request->playlist_id);
+        $playlist->playlistCategory = $request->playlistCategory;
         try {
             $playlist->save();
             return response()->json(

@@ -15,7 +15,6 @@
                   name="playlistName"
                   label="まとめのタイトルを入力"
                   hide-details
-                  ref="playlistName"
                   class="playlistNameInputBox"
                 ></v-text-field>
               </v-col>
@@ -41,7 +40,6 @@
                   v-model="playlistCategory"
                   v-bind:items="playlistCategoryList"
                   v-bind:rules="rules"
-                  ref="playlistCategoryBox"
                   label="カテゴリー"
                   hide-details
                   dense

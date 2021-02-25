@@ -528,6 +528,25 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+  async updatePlaylistCategory(context, playlist) {
+    this.errors = {};
+
+    //チェックの入ったプレイリストをパラメータとして格納
+    var params = {
+      playlistCategory: playlist.playlistCategory,
+      playlist_id: playlist.playlist_id,
+    };
+
+    const response = await axios.post("/api/playlist/updateCategory", params);
+    if (response.status == CREATED) {
+      //ポップアップでプレイリストの作成完了を通知
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
   async updatePlaylistSceneOrder(context, playlist) {
     this.errors = {};
 

@@ -21,6 +21,7 @@
             ></v-text-field>
           </v-col>
         </v-row>
+
         <v-row class="ma-0">
           <v-col class="pa-0 pt-2 text-center">
             <v-select
@@ -37,24 +38,23 @@
             ></v-select>
           </v-col>
         </v-row>
-        <!-- <v-row class="ma-0">
+
+        <v-row class="ma-0">
           <v-col class="pa-0 pt-2 text-center">
-            <v-text-field
-              v-model="playlistEditMode"
-              :append-icon="isEditEditMode ? 'fas fa-save' : 'mdi-pencil'"
-              :rules="[rules.required]"
-              :readonly="!isEditEditMode"
-              type="text"
-              name="playlistEditMode"
-              label="編集設定"
-              v-on:keydown.enter="saveEditMode"
-              @click:append="saveEditMode"
+            <v-select
+              v-model="playlistCategory"
+              :items="playlistCategoryList"
+              label="カテゴリー"
+              :append-icon="isEditCategory ? 'fas fa-save' : 'mdi-pencil'"
+              @click="toggleIsEditCategory"
+              @click:append="saveCategory"
               hide-details
-              ref="playlistEditMode"
-              class="playlistEditModeInputBox inner-outlined-icon"
-            ></v-text-field>
+              ref="playlistCategory"
+              class="playlistCategoryBox inner-outlined-icon"
+            ></v-select>
           </v-col>
-        </v-row> -->
+        </v-row>
+
         <v-row class="ma-0">
           <v-col class="pa-0 pt-2 align-bottom" align-self="end">
             <v-card elevation="0">
@@ -165,8 +165,7 @@ export default {
       playlistId: "",
       isEditTitle: false,
       isEditPrivacy: false,
-      isEditEditMode: false,
-      isTitleFocused: false,
+      isEditCategory: false,
       showAddNewSceneComponent: true,
       privacySettingList: [
         { text: "公開", value: "public" },
@@ -177,6 +176,25 @@ export default {
         {
           text: "非公開",
           value: "private",
+        },
+      ],
+      playlistCategoryList: [
+        { text: "VTuber", value: "VTuber" },
+        {
+          text: "ゲーム",
+          value: "Game",
+        },
+        {
+          text: "音楽",
+          value: "Music",
+        },
+        {
+          text: "語学",
+          value: "Language",
+        },
+        {
+          text: "その他",
+          value: "Other",
         },
       ],
       rules: {
@@ -217,14 +235,12 @@ export default {
         this.$store.commit("watch/setPrivacySetting", val);
       },
     },
-    playlistEditMode: {
-      // todo get/set EditMode
+    playlistCategory: {
       get() {
-        //return this.$store.state.watch.privacySetting;
-        return "誰でも編集可能";
+        return this.$store.state.watch.playlistCategory;
       },
       set(val) {
-        //this.$store.commit("watch/setEditMode", val);
+        this.$store.commit("watch/setPlaylistCategory", val);
       },
     },
   },
@@ -244,6 +260,9 @@ export default {
     },
     toggleIsEditPrivacy() {
       this.isEditPrivacy = true;
+    },
+    toggleIsEditCategory() {
+      this.isEditCategory = true;
     },
     async saveTitle() {
       if (!this.isEditTitle) {
@@ -273,14 +292,18 @@ export default {
         await this.$store.dispatch("playlist/updatePlaylistPrivacy", playlist);
       }
     },
-    async saveEditMode() {
-      if (!this.isEditEditMode) {
-        this.isEditEditMode = true;
-        this.$nextTick(() => this.$refs.playlistEditMode.focus());
+    async saveCategory() {
+      if (!this.isEditCategory) {
+        this.isEditCategory = true;
+        this.$nextTick(() => this.$refs.playlistCategory.focus());
       } else {
-        this.isEditEditMode = false;
-        this.$nextTick(() => this.$refs.playlistEditMode.blur());
-        // todo - save EditMode
+        this.isEditCategory = false;
+        this.$nextTick(() => this.$refs.playlistCategory.blur());
+        var playlist = {
+          playlist_id: this.playlistAndTagVideoData.playlist_id,
+          playlistCategory: this.playlistCategory,
+        };
+        await this.$store.dispatch("playlist/updatePlaylistCategory", playlist);
       }
     },
     openPlaylistDeleteModal(playlistId, playlistName) {
@@ -329,6 +352,11 @@ export default {
       this.$store.commit(
         "watch/setPrivacySetting",
         this.playlistAndTagVideoData.privacySetting
+      );
+      console.log(this.playlistAndTagVideoData);
+      this.$store.commit(
+        "watch/setPlaylistCategory",
+        this.playlistAndTagVideoData.playlistCategory
       );
 
       //視聴回数・合計時間・最終更新日の情報を格納
