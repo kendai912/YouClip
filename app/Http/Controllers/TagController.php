@@ -301,8 +301,6 @@ class TagController extends Controller
             $tag->tags = $tags;
             $tag->start = $this->convertIStoHIS($request->start);
             $tag->end = $this->convertIStoHIS($request->end);
-            // $tag->start = "00:".$request->start;
-            // $tag->end = "00:".$request->end;
             $tag->privacySetting = $request->privacySetting;
             $tag->preview = "";
             $tag->previewgif = "";
@@ -495,8 +493,8 @@ class TagController extends Controller
         $tag->previewgif = $previewGifName;
         $tag->previewogp = $previewOgpName;
         $tag->tags = implode("::", $request->tags); //タグの配列を「::」で区切った文字列に変換
-        $tag->start = "00:".$request->start;
-        $tag->end = "00:".$request->end;
+        $tag->start = $this->convertIStoHIS($request->start);
+        $tag->end = $this->convertIStoHIS($request->end);
         $tag->privacySetting = $request->privacySetting;
         $tag->save();
 
