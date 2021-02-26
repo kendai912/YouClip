@@ -16,6 +16,12 @@ const state = {
   showAddPlaylistModal: false,
   currentCategory: null,
   playlistIdsOfTag: null,
+  // proceedPeriodOfRecommend: false,
+  proceedPeriodOfNew: false,
+  proceedPeriodOfVTuber: false,
+  proceedPeriodOfGame: false,
+  proceedPeriodOfMusic: false,
+  proceedPeriodOfLanguage: false,
   // toLoadRecommend: true,
   toLoadNew: true,
   toLoadVTuber: true,
@@ -58,6 +64,12 @@ const getters = {
   showAddPlaylistModal: (state) => state.showAddPlaylistModal,
   currentCategory: (state) => state.currentCategory,
   playlistIdsOfTag: (state) => state.playlistIdsOfTag,
+  // proceedPeriodOfRecommend: (state) => state.proceedPeriodOfRecommend,
+  proceedPeriodOfNew: (state) => state.proceedPeriodOfNew,
+  proceedPeriodOfVTuber: (state) => state.proceedPeriodOfVTuber,
+  proceedPeriodOfGame: (state) => state.proceedPeriodOfGame,
+  proceedPeriodOfMusic: (state) => state.proceedPeriodOfMusic,
+  proceedPeriodOfLanguage: (state) => state.proceedPeriodOfLanguage,
   // toLoadRecommend: (state) => state.toLoadRecommend,
   toLoadNew: (state) => state.toLoadNew,
   toLoadVTuber: (state) => state.toLoadVTuber,
@@ -142,6 +154,24 @@ const mutations = {
   setPlaylistIdsOfTag(state, data) {
     state.playlistIdsOfTag = data;
   },
+  // setProceedPeriodOfRecommend(state, data) {
+  //   state.proceedPeriodOfRecommend = data;
+  // },
+  setProceedPeriodOfNew(state, data) {
+    state.proceedPeriodOfNew = data;
+  },
+  setProceedPeriodOfVTuber(state, data) {
+    state.proceedPeriodOfVTuber = data;
+  },
+  setProceedPeriodOfGame(state, data) {
+    state.proceedPeriodOfGame = data;
+  },
+  setProceedPeriodOfMusic(state, data) {
+    state.proceedPeriodOfMusic = data;
+  },
+  setProceedPeriodOfLanguage(state, data) {
+    state.proceedPeriodOfLanguage = data;
+  },
   // setToLoadRecommend(state, data) {
   //   state.toLoadRecommend = data;
   // },
@@ -225,17 +255,23 @@ const actions = {
   //   }
   // },
   // 【新着】プレイリスト一覧を取得
-  async indexPlaylistAndTagPaginationOfNew(context, page) {
+  async indexPlaylistAndTagPaginationOfNew(context, input) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
     context.commit("setIsIndexNewPlaylistAndTagPaginating", true);
 
     const response = await axios.get(
-      "/api/index/playlistAndTagOfNew?page=" + page
+      "/api/index/playlistAndTagOfNew?page=" +
+        input.page +
+        "&period=" +
+        input.period
     );
     if (response.status == OK) {
       // 成功した時
-      if (response.data.playlistAndTagPaginationOfNew.last_page == page)
-        context.commit("setToLoadNew", false);
+      if (response.data.playlistAndTagPaginationOfNew.last_page == input.page)
+        context.commit("setProceedPeriodOfNew", true);
+
+      if (response.data.endOfPeriodFlg) context.commit("setToLoadNew", false);
+
       if (response.data.playlistAndTagPaginationOfNew.data) {
         context.commit(
           "setPlaylistAndTagPaginationOfNew",

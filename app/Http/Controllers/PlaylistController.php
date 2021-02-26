@@ -20,11 +20,15 @@ use DB;
 
 class PlaylistController extends Controller
 {
+    private $contentsPerPage = 5;
+    private $daysPerPeriod = 2; // 1 week
+    private $endOfPeriod = 20;  // 26 weeks = maximum half a year
+    
     //【レコメンド】プレイリスト一覧の取得
     // public function indexPlaylistAndTagPaginationOfRecommend()
     // {
     //     //プレイリストにタグのデータを結合し、直近30日のLike数が多い順・新しい順に並び替え
-    //     $contentsPerPage = 5;
+    //     $this->contentsPerPage = 5;
 
     //     $playlistAndTagPaginationOfRecommend = Playlist::whereHas('tags', function ($query) {
     //         //privacySettingがpublicのtagを最低1つ持つPlaylistを取得
@@ -44,7 +48,7 @@ class PlaylistController extends Controller
     //     }, 'playlistlogs as play_count'])
     //     //プレイリストのプライバシー設定がpublicに限定し、like数の降順で取得
     //     ->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')
-    //     ->paginate($contentsPerPage);
+    //     ->paginate($this->contentsPerPage);
 
     //     return response()->json(
     //         [
@@ -57,10 +61,13 @@ class PlaylistController extends Controller
     // }
 
     //【新着】プレイリスト一覧の取得
-    public function indexPlaylistAndTagPaginationOfNew()
+    public function indexPlaylistAndTagPaginationOfNew(Request $request)
     {
+        $period = $request->input('period');
+        $from = Carbon::now()->subDays($period * $this->daysPerPeriod);
+        $to = Carbon::now()->subDays(($period - 1) * $this->daysPerPeriod);
+
         //プレイリストにタグのデータを結合し、新しい順に並び替え
-        $contentsPerPage = 5;
         $playlistAndTagPaginationOfNew = Playlist::whereHas('tags', function ($query) {
             $query->where('privacySetting', 'public');
         })->with(array('tags'=> function ($query) {
@@ -72,11 +79,17 @@ class PlaylistController extends Controller
         }))->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'
-        ])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        ])->where('privacySetting', 'public')->whereBetween('created_at', [$from, $to])->whereNotNull('playlistName')->orderBy('created_at', 'desc')->paginate($this->contentsPerPage);
+
+        $endOfPeriodFlg = false;
+        if ($period >= $this->endOfPeriod) {
+            $endOfPeriodFlg = true;
+        }
 
         return response()->json(
             [
-            'playlistAndTagPaginationOfNew' => $playlistAndTagPaginationOfNew
+            'playlistAndTagPaginationOfNew' => $playlistAndTagPaginationOfNew,
+            'endOfPeriodFlg' => $endOfPeriodFlg
             ],
             200,
             [],
@@ -88,7 +101,6 @@ class PlaylistController extends Controller
     public function indexPlaylistAndTagPaginationOfVTuber()
     {
         //VTuberカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
-        $contentsPerPage = 5;
         $playlistAndTagPaginationOfVTuber = Playlist::whereHas('tags', function ($query) {
             $query->where('privacySetting', 'public');
         })->with(array('tags'=> function ($query) {
@@ -100,7 +112,7 @@ class PlaylistController extends Controller
         }))->where('playlistCategory', 'VTuber')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'
-        ])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        ])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($this->contentsPerPage);
 
         return response()->json(
             [
@@ -116,7 +128,6 @@ class PlaylistController extends Controller
     public function indexPlaylistAndTagPaginationOfGame()
     {
         //Gameカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
-        $contentsPerPage = 5;
         $playlistAndTagPaginationOfGame = Playlist::whereHas('tags', function ($query) {
             $query->where('privacySetting', 'public');
         })->with(array('tags'=> function ($query) {
@@ -127,7 +138,7 @@ class PlaylistController extends Controller
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
         }))->where('playlistCategory', 'Game')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
-        }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($this->contentsPerPage);
 
         return response()->json(
             [
@@ -143,7 +154,6 @@ class PlaylistController extends Controller
     public function indexPlaylistAndTagPaginationOfMusic()
     {
         //Musicカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
-        $contentsPerPage = 5;
         $playlistAndTagPaginationOfMusic = Playlist::whereHas('tags', function ($query) {
             $query->where('privacySetting', 'public');
         })->with(array('tags'=> function ($query) {
@@ -154,7 +164,7 @@ class PlaylistController extends Controller
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
         }))->where('playlistCategory', 'Music')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
-        }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($this->contentsPerPage);
 
         return response()->json(
             [
@@ -170,7 +180,6 @@ class PlaylistController extends Controller
     public function indexPlaylistAndTagPaginationOfLanguage()
     {
         //Languageカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
-        $contentsPerPage = 5;
         $playlistAndTagPaginationOfLanguage = Playlist::whereHas('tags', function ($query) {
             $query->where('privacySetting', 'public');
         })->with(array('tags'=> function ($query) {
@@ -181,7 +190,7 @@ class PlaylistController extends Controller
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
         }))->where('playlistCategory', 'Language')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
-        }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($contentsPerPage);
+        }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($this->contentsPerPage);
 
         return response()->json(
             [

@@ -145,6 +145,12 @@ export default {
       gamePage: 1,
       musicPage: 1,
       languagePage: 1,
+      // recommendPeriod: 1,
+      newPeriod: 1,
+      vtuberPeriod: 1,
+      gamePeriod: 1,
+      musicPeriod: 1,
+      languagePeriod: 1,
       // recommendMediaItems: [],
       newMediaItems: [],
       vtuberMediaItems: [],
@@ -168,6 +174,12 @@ export default {
         "playlist/playlistAndTagPaginationOfMusic",
       playlistAndTagPaginationOfLanguage:
         "playlist/playlistAndTagPaginationOfLanguage",
+      // proceedPeriodOfRecommend: "playlist/proceedPeriodOfRecommend",
+      proceedPeriodOfNew: "playlist/proceedPeriodOfNew",
+      proceedPeriodOfVTuber: "playlist/proceedPeriodOfVTuber",
+      proceedPeriodOfGame: "playlist/proceedPeriodOfGame",
+      proceedPeriodOfMusic: "playlist/proceedPeriodOfMusic",
+      proceedPeriodOfLanguage: "playlist/proceedPeriodOfLanguage",
       // toLoadRecommend: "playlist/toLoadRecommend",
       toLoadNew: "playlist/toLoadNew",
       toLoadVTuber: "playlist/toLoadVTuber",
@@ -191,7 +203,6 @@ export default {
   },
   watch: {
     async resetKey() {
-
       this.resetTabPagination();
       this.resetMediaItems();
 
@@ -205,11 +216,24 @@ export default {
         this.contentsPerPage * this.itemHeight * (startPage - 1);
       if (startPage > 1) window.scrollTo(0, topPositionY);
     },
+    proceedPeriodOfNew() {
+      if (this.proceedPeriodOfNew) {
+        this.newPeriod++;
+        this.newPage = 1;
+      }
+      this.setProceedPeriodOfNew(false);
+    },
   },
   mixins: [myMixin],
   methods: {
     ...mapMutations({
       setActiveTabIndex: "navbar/setActiveTabIndex",
+      // setProceedPeriodOfRecommend: "playlist/setProceedPeriodOfRecommend",
+      setProceedPeriodOfNew: "playlist/setProceedPeriodOfNew",
+      setProceedPeriodOfVTuber: "playlist/setProceedPeriodOfVTuber",
+      setProceedPeriodOfGame: "playlist/setProceedPeriodOfGame",
+      setProceedPeriodOfMusic: "playlist/setProceedPeriodOfMusic",
+      setProceedPeriodOfLanguage: "playlist/setProceedPeriodOfLanguage",
     }),
     setActiveTab(key) {
       //開いたタブをセッションストレージに保存
@@ -259,7 +283,10 @@ export default {
     // },
     //【新着】表示するプレイリストの無限スクロール
     async infinateLoadPlaylistOfNew() {
-      if (!this.toLoadNew) return;
+      if (!this.toLoadNew) {
+        this.$store.commit("loadingItem/setIsLoading", false);
+        return;
+      }
 
       //ローディングを表示
       this.$store.commit("loadingItem/setIsLoading", true);
@@ -267,7 +294,7 @@ export default {
       //無限スクロールに合わせてプレイリストのページネイションを取得
       await this.$store.dispatch(
         "playlist/indexPlaylistAndTagPaginationOfNew",
-        this.newPage++
+        { page: this.newPage++, period: this.newPeriod }
       );
 
       //ページネーションのデータをNewMediaItemsに格納
@@ -276,8 +303,13 @@ export default {
         this.playlistAndTagPaginationOfNew.data
       );
 
-      //ローディングを非表示
-      this.$store.commit("loadingItem/setIsLoading", false);
+      if (this.playlistAndTagPaginationOfNew.data.length) {
+        //ローディングを非表示
+        this.$store.commit("loadingItem/setIsLoading", false);
+      } else {
+        //データが何も返って来なかった場合は次のデータを再度ロード
+        this.infinateLoadPlaylistOfNew();
+      }
     },
     //【スポーツ】表示するプレイリストの無限スクロール
     async infinateLoadPlaylistOfSports() {
