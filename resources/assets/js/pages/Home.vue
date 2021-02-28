@@ -223,6 +223,34 @@ export default {
       }
       this.setProceedPeriodOfNew(false);
     },
+    proceedPeriodOfVTuber() {
+      if (this.proceedPeriodOfVTuber) {
+        this.vtuberPeriod++;
+        this.vtuberPage = 1;
+      }
+      this.setProceedPeriodOfVTuber(false);
+    },
+    proceedPeriodOfGame() {
+      if (this.proceedPeriodOfGame) {
+        this.gamePeriod++;
+        this.gamePage = 1;
+      }
+      this.setProceedPeriodOfGame(false);
+    },
+    proceedPeriodOfMusic() {
+      if (this.proceedPeriodOfMusic) {
+        this.musicPeriod++;
+        this.musicPage = 1;
+      }
+      this.setProceedPeriodOfMusic(false);
+    },
+    proceedPeriodOfLanguage() {
+      if (this.proceedPeriodOfLanguage) {
+        this.languagePeriod++;
+        this.languagePage = 1;
+      }
+      this.setProceedPeriodOfLanguage(false);
+    },
   },
   mixins: [myMixin],
   methods: {
@@ -261,7 +289,10 @@ export default {
     },
     //【レコメンド】表示するプレイリストの無限スクロール
     // async infinateLoadPlaylistOfRecommend() {
-    //   if (!this.toLoadRecommend) return;
+    //   if (!this.toLoadRecommend) {
+    //     this.$store.commit("loadingItem/setIsLoading", false);
+    //     return;
+    //   }
 
     //   //ローディングを表示
     //   this.$store.commit("loadingItem/setIsLoading", true);
@@ -269,7 +300,7 @@ export default {
     //   //無限スクロールに合わせてプレイリストのページネイションを取得
     //   await this.$store.dispatch(
     //     "playlist/indexPlaylistAndTagPaginationOfRecommend",
-    //     this.recommendPage++
+    //     { page: this.recommendPage++, period: this.recommendPeriod }
     //   );
 
     //   // ページネーションのデータをrecommendMediaItemsに格納
@@ -278,8 +309,13 @@ export default {
     //     this.playlistAndTagPaginationOfRecommend.data
     //   );
 
-    //   //ローディングを非表示
-    //   this.$store.commit("loadingItem/setIsLoading", false);
+    //   if (this.playlistAndTagPaginationOfRecommend.data.length) {
+    //     //ローディングを非表示
+    //     this.$store.commit("loadingItem/setIsLoading", false);
+    //   } else {
+    //     //データが何も返って来なかった場合は次のデータを再度ロード
+    //     this.infinateLoadPlaylistOfRecommend();
+    //   }
     // },
     //【新着】表示するプレイリストの無限スクロール
     async infinateLoadPlaylistOfNew() {
@@ -311,31 +347,12 @@ export default {
         this.infinateLoadPlaylistOfNew();
       }
     },
-    //【スポーツ】表示するプレイリストの無限スクロール
-    async infinateLoadPlaylistOfSports() {
-      if (!this.toLoadSports) return;
-
-      //ローディングを表示
-      this.$store.commit("loadingItem/setIsLoading", true);
-
-      //無限スクロールに合わせてプレイリストのページネイションを取得
-      await this.$store.dispatch(
-        "playlist/indexPlaylistAndTagPaginationOfSports",
-        this.sportsPage++
-      );
-
-      //ページネーションのデータをSportsMediaItemsに格納
-      this.putPlaylistTagIntoMediaItems(
-        this.sportsMediaItems,
-        this.playlistAndTagPaginationOfSports.data
-      );
-
-      //ローディングを非表示
-      this.$store.commit("loadingItem/setIsLoading", false);
-    },
     //【VTuber】表示するプレイリストの無限スクロール
     async infinateLoadPlaylistOfVTuber() {
-      if (!this.toLoadVTuber) return;
+      if (!this.toLoadVTuber) {
+        this.$store.commit("loadingItem/setIsLoading", false);
+        return;
+      }
 
       //ローディングを表示
       this.$store.commit("loadingItem/setIsLoading", true);
@@ -343,7 +360,7 @@ export default {
       //無限スクロールに合わせてプレイリストのページネイションを取得
       await this.$store.dispatch(
         "playlist/indexPlaylistAndTagPaginationOfVTuber",
-        this.vtuberPage++
+        { page: this.vtuberPage++, period: this.vtuberPeriod }
       );
 
       //ページネーションのデータをvtuberMediaItemsに格納
@@ -352,12 +369,20 @@ export default {
         this.playlistAndTagPaginationOfVTuber.data
       );
 
-      //ローディングを非表示
-      this.$store.commit("loadingItem/setIsLoading", false);
+      if (this.playlistAndTagPaginationOfVTuber.data.length) {
+        //ローディングを非表示
+        this.$store.commit("loadingItem/setIsLoading", false);
+      } else {
+        //データが何も返って来なかった場合は次のデータを再度ロード
+        this.infinateLoadPlaylistOfVTuber();
+      }
     },
     //【Game】表示するプレイリストの無限スクロール
     async infinateLoadPlaylistOfGame() {
-      if (!this.toLoadGame) return;
+      if (!this.toLoadGame) {
+        this.$store.commit("loadingItem/setIsLoading", false);
+        return;
+      }
 
       //ローディングを表示
       this.$store.commit("loadingItem/setIsLoading", true);
@@ -365,7 +390,7 @@ export default {
       //無限スクロールに合わせてプレイリストのページネイションを取得
       await this.$store.dispatch(
         "playlist/indexPlaylistAndTagPaginationOfGame",
-        this.gamePage++
+        { page: this.gamePage++, period: this.gamePeriod }
       );
 
       //ページネーションのデータをgameMediaItemsに格納
@@ -374,12 +399,20 @@ export default {
         this.playlistAndTagPaginationOfGame.data
       );
 
-      //ローディングを非表示
-      this.$store.commit("loadingItem/setIsLoading", false);
+      if (this.playlistAndTagPaginationOfGame.data.length) {
+        //ローディングを非表示
+        this.$store.commit("loadingItem/setIsLoading", false);
+      } else {
+        //データが何も返って来なかった場合は次のデータを再度ロード
+        this.infinateLoadPlaylistOfGame();
+      }
     },
     //【Music】表示するプレイリストの無限スクロール
     async infinateLoadPlaylistOfMusic() {
-      if (!this.toLoadMusic) return;
+      if (!this.toLoadMusic) {
+        this.$store.commit("loadingItem/setIsLoading", false);
+        return;
+      }
 
       //ローディングを表示
       this.$store.commit("loadingItem/setIsLoading", true);
@@ -387,7 +420,7 @@ export default {
       //無限スクロールに合わせてプレイリストのページネイションを取得
       await this.$store.dispatch(
         "playlist/indexPlaylistAndTagPaginationOfMusic",
-        this.musicPage++
+        { page: this.musicPage++, period: this.musicPeriod }
       );
 
       //ページネーションのデータをmusicMediaItemsに格納
@@ -396,12 +429,20 @@ export default {
         this.playlistAndTagPaginationOfMusic.data
       );
 
-      //ローディングを非表示
-      this.$store.commit("loadingItem/setIsLoading", false);
+      if (this.playlistAndTagPaginationOfMusic.data.length) {
+        //ローディングを非表示
+        this.$store.commit("loadingItem/setIsLoading", false);
+      } else {
+        //データが何も返って来なかった場合は次のデータを再度ロード
+        this.infinateLoadPlaylistOfMusic();
+      }
     },
     //【Language】表示するプレイリストの無限スクロール
     async infinateLoadPlaylistOfLanguage() {
-      if (!this.toLoadLanguage) return;
+      if (!this.toLoadLanguage) {
+        this.$store.commit("loadingItem/setIsLoading", false);
+        return;
+      }
 
       //ローディングを表示
       this.$store.commit("loadingItem/setIsLoading", true);
@@ -409,7 +450,7 @@ export default {
       //無限スクロールに合わせてプレイリストのページネイションを取得
       await this.$store.dispatch(
         "playlist/indexPlaylistAndTagPaginationOfLanguage",
-        this.languagePage++
+        { page: this.languagePage++, period: this.languagePeriod }
       );
 
       //ページネーションのデータをlanguageMediaItemsに格納
@@ -418,8 +459,13 @@ export default {
         this.playlistAndTagPaginationOfLanguage.data
       );
 
-      //ローディングを非表示
-      this.$store.commit("loadingItem/setIsLoading", false);
+      if (this.playlistAndTagPaginationOfLanguage.data.length) {
+        //ローディングを非表示
+        this.$store.commit("loadingItem/setIsLoading", false);
+      } else {
+        //データが何も返って来なかった場合は次のデータを再度ロード
+        this.infinateLoadPlaylistOfLanguage();
+      }
     },
     getCurrentPagePosition() {
       let windowMiddlePosition =

@@ -289,17 +289,26 @@ const actions = {
     }
   },
   // 【VTuber】プレイリスト一覧を取得
-  async indexPlaylistAndTagPaginationOfVTuber(context, page) {
+  async indexPlaylistAndTagPaginationOfVTuber(context, input) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
     context.commit("setIsIndexVTuberPlaylistAndTagPaginating", true);
 
     const response = await axios.get(
-      "/api/index/playlistAndTagOfVTuber?page=" + page
+      "/api/index/playlistAndTagOfVTuber?page=" +
+        input.page +
+        "&period=" +
+        input.period
     );
     if (response.status == OK) {
       // 成功した時
-      if (response.data.playlistAndTagPaginationOfVTuber.last_page == page)
+      if (
+        response.data.playlistAndTagPaginationOfVTuber.last_page == input.page
+      )
+        context.commit("setProceedPeriodOfVTuber", true);
+
+      if (response.data.endOfPeriodFlg)
         context.commit("setToLoadVTuber", false);
+
       if (response.data.playlistAndTagPaginationOfVTuber.data) {
         context.commit(
           "setPlaylistAndTagPaginationOfVTuber",
@@ -317,17 +326,22 @@ const actions = {
     }
   },
   // 【Game】プレイリスト一覧を取得
-  async indexPlaylistAndTagPaginationOfGame(context, page) {
+  async indexPlaylistAndTagPaginationOfGame(context, input) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
     context.commit("setIsIndexGamePlaylistAndTagPaginating", true);
 
     const response = await axios.get(
-      "/api/index/playlistAndTagOfGame?page=" + page
+      "/api/index/playlistAndTagOfGame?page=" +
+        input.page +
+        "&period=" +
+        input.period
     );
     if (response.status == OK) {
       // 成功した時
-      if (response.data.playlistAndTagPaginationOfGame.last_page == page)
-        context.commit("setToLoadGame", false);
+      if (response.data.playlistAndTagPaginationOfGame.last_page == input.page)
+        context.commit("setProceedPeriodOfGame", true);
+
+      if (response.data.endOfPeriodFlg) context.commit("setToLoadGame", false);
 
       if (response.data.playlistAndTagPaginationOfGame.data) {
         context.commit(
@@ -346,17 +360,22 @@ const actions = {
     }
   },
   // 【Music】プレイリスト一覧を取得
-  async indexPlaylistAndTagPaginationOfMusic(context, page) {
+  async indexPlaylistAndTagPaginationOfMusic(context, input) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
     context.commit("setIsIndexMusicPlaylistAndTagPaginating", true);
 
     const response = await axios.get(
-      "/api/index/playlistAndTagOfMusic?page=" + page
+      "/api/index/playlistAndTagOfMusic?page=" +
+        input.page +
+        "&period=" +
+        input.period
     );
     if (response.status == OK) {
       // 成功した時
-      if (response.data.playlistAndTagPaginationOfMusic.last_page == page)
-        context.commit("setToLoadMusic", false);
+      if (response.data.playlistAndTagPaginationOfMusic.last_page == input.page)
+        context.commit("setProceedPeriodOfMusic", true);
+
+      if (response.data.endOfPeriodFlg) context.commit("setToLoadMusic", false);
 
       if (response.data.playlistAndTagPaginationOfMusic.data) {
         context.commit(
@@ -375,16 +394,24 @@ const actions = {
     }
   },
   // 【Language】プレイリスト一覧を取得
-  async indexPlaylistAndTagPaginationOfLanguage(context, page) {
+  async indexPlaylistAndTagPaginationOfLanguage(context, input) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
     context.commit("setIsIndexLanguagePlaylistAndTagPaginating", true);
 
     const response = await axios.get(
-      "/api/index/playlistAndTagOfLanguage?page=" + page
+      "/api/index/playlistAndTagOfLanguage?page=" +
+        input.page +
+        "&period=" +
+        input.period
     );
     if (response.status == OK) {
       // 成功した時
-      if (response.data.playlistAndTagPaginationOfLanguage.last_page == page)
+      if (
+        response.data.playlistAndTagPaginationOfLanguage.last_page == input.page
+      )
+        context.commit("setProceedPeriodOfLanguage", true);
+
+      if (response.data.endOfPeriodFlg)
         context.commit("setToLoadLanguage", false);
 
       if (response.data.playlistAndTagPaginationOfLanguage.data) {
