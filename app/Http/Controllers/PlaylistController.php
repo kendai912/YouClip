@@ -21,8 +21,8 @@ use DB;
 class PlaylistController extends Controller
 {
     private $contentsPerPage = 5;
-    private $daysPerPeriod = 2; // 2 day
-    private $endOfPeriod = 45;  // 2 days * 45 = 3 months
+    private $daysPerPeriod = 3; // 3 days
+    private $endOfPeriod = 10;  // 3 days * 10 = 1 months
     
     //【レコメンド】プレイリスト一覧の取得
     // public function indexPlaylistAndTagPaginationOfRecommend()

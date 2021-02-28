@@ -318,7 +318,7 @@ export default {
     //   }
     // },
     //【新着】表示するプレイリストの無限スクロール
-    async infinateLoadPlaylistOfNew() {
+    async infinateLoadPlaylistOfNew(numOfItems = 0) {
       if (!this.toLoadNew) {
         this.$store.commit("loadingItem/setIsLoading", false);
         return;
@@ -339,16 +339,19 @@ export default {
         this.playlistAndTagPaginationOfNew.data
       );
 
-      if (this.playlistAndTagPaginationOfNew.data.length) {
+      let totalNumOfItems =
+        numOfItems + this.playlistAndTagPaginationOfNew.data.length;
+
+      if (totalNumOfItems >= 5) {
         //ローディングを非表示
         this.$store.commit("loadingItem/setIsLoading", false);
       } else {
         //データが何も返って来なかった場合は次のデータを再度ロード
-        this.infinateLoadPlaylistOfNew();
+        await this.infinateLoadPlaylistOfNew(totalNumOfItems);
       }
     },
     //【VTuber】表示するプレイリストの無限スクロール
-    async infinateLoadPlaylistOfVTuber() {
+    async infinateLoadPlaylistOfVTuber(numOfItems = 0) {
       if (!this.toLoadVTuber) {
         this.$store.commit("loadingItem/setIsLoading", false);
         return;
@@ -369,16 +372,19 @@ export default {
         this.playlistAndTagPaginationOfVTuber.data
       );
 
-      if (this.playlistAndTagPaginationOfVTuber.data.length) {
+      let totalNumOfItems =
+        numOfItems + this.playlistAndTagPaginationOfVTuber.data.length;
+
+      if (totalNumOfItems >= 5) {
         //ローディングを非表示
         this.$store.commit("loadingItem/setIsLoading", false);
       } else {
         //データが何も返って来なかった場合は次のデータを再度ロード
-        this.infinateLoadPlaylistOfVTuber();
+        await this.infinateLoadPlaylistOfVTuber(totalNumOfItems);
       }
     },
     //【Game】表示するプレイリストの無限スクロール
-    async infinateLoadPlaylistOfGame() {
+    async infinateLoadPlaylistOfGame(numOfItems = 0) {
       if (!this.toLoadGame) {
         this.$store.commit("loadingItem/setIsLoading", false);
         return;
@@ -399,16 +405,20 @@ export default {
         this.playlistAndTagPaginationOfGame.data
       );
 
-      if (this.playlistAndTagPaginationOfGame.data.length) {
+      let totalNumOfItems =
+        numOfItems + this.playlistAndTagPaginationOfGame.data.length;
+
+      if (totalNumOfItems >= 5) {
         //ローディングを非表示
         this.$store.commit("loadingItem/setIsLoading", false);
       } else {
         //データが何も返って来なかった場合は次のデータを再度ロード
-        this.infinateLoadPlaylistOfGame();
+        await this.infinateLoadPlaylistOfGame(totalNumOfItems);
       }
     },
     //【Music】表示するプレイリストの無限スクロール
-    async infinateLoadPlaylistOfMusic() {
+    async infinateLoadPlaylistOfMusic(numOfItems = 0) {
+      console.log("infinateLoadPlaylistOfMusic");
       if (!this.toLoadMusic) {
         this.$store.commit("loadingItem/setIsLoading", false);
         return;
@@ -429,16 +439,19 @@ export default {
         this.playlistAndTagPaginationOfMusic.data
       );
 
-      if (this.playlistAndTagPaginationOfMusic.data.length) {
+      let totalNumOfItems =
+        numOfItems + this.playlistAndTagPaginationOfMusic.data.length;
+
+      if (totalNumOfItems >= 5) {
         //ローディングを非表示
         this.$store.commit("loadingItem/setIsLoading", false);
       } else {
         //データが何も返って来なかった場合は次のデータを再度ロード
-        this.infinateLoadPlaylistOfMusic();
+        await this.infinateLoadPlaylistOfMusic(totalNumOfItems);
       }
     },
     //【Language】表示するプレイリストの無限スクロール
-    async infinateLoadPlaylistOfLanguage() {
+    async infinateLoadPlaylistOfLanguage(numOfItems = 0) {
       if (!this.toLoadLanguage) {
         this.$store.commit("loadingItem/setIsLoading", false);
         return;
@@ -459,12 +472,15 @@ export default {
         this.playlistAndTagPaginationOfLanguage.data
       );
 
-      if (this.playlistAndTagPaginationOfLanguage.data.length) {
+      let totalNumOfItems =
+        numOfItems + this.playlistAndTagPaginationOfLanguage.data.length;
+
+      if (totalNumOfItems >= 5) {
         //ローディングを非表示
         this.$store.commit("loadingItem/setIsLoading", false);
       } else {
         //データが何も返って来なかった場合は次のデータを再度ロード
-        this.infinateLoadPlaylistOfLanguage();
+        await this.infinateLoadPlaylistOfLanguage(totalNumOfItems);
       }
     },
     getCurrentPagePosition() {
@@ -628,6 +644,7 @@ export default {
     let topPositionY =
       this.topPositionOfItems +
       this.contentsPerPage * this.itemHeight * (startPage - 1);
+    // console.log("itemHeight = " + this.itemHeight);
     if (startPage > 1) window.scrollTo(0, topPositionY);
   },
   created() {},
