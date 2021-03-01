@@ -371,7 +371,7 @@ export default {
 
       window[this.youtubeCallbackName] =
         window[this.youtubeCallbackName] ||
-        function() {
+        function () {
           window[youtubeExistsFlag] = true;
           window[youtubeCallbackName] = null;
           delete window[youtubeCallbackName];
@@ -385,10 +385,10 @@ export default {
     },
     whenYoutubeAPIReady() {
       const existsFlag = this.youtubeExistsFlag;
-      return new Promise(function(resolve, reject) {
+      return new Promise(function (resolve, reject) {
         let elapsed = 0;
         let intervalHandle;
-        let checker = function() {
+        let checker = function () {
           elapsed += 48;
           if (!!window[existsFlag]) {
             clearTimeout(intervalHandle);
@@ -424,15 +424,19 @@ export default {
       this.$refs.YTPlayerController.hideOnYTSeekBarTouchEnd();
     },
     handleOrientationChange() {
-      const orientation = window.screen.orientation.type;
-      if (orientation === "portrait-primary") {
-        // portrait mode
-        console.log("portrait mode");
-        this.screenOrientation = "縦";
-      } else if (orientation === "landscape-primary") {
-        // landscape mode
+      let angle;
+      angle = screen && screen.orientation && screen.orientation.angle;
+
+      if (angle == null) {
+        angle = window.orientation || 0;
+      }
+
+      if (angle % 180 !== 0) {
         console.log("landscape mode");
         this.screenOrientation = "横";
+      } else {
+        console.log("portrait mode");
+        this.screenOrientation = "縦";
       }
     },
   },
@@ -445,6 +449,7 @@ export default {
     },
   },
   async created() {
+    console.log("WATCH");
     this.initialize();
 
     //URLのクエリパラメータからまとめIDとインデックスを取得

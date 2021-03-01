@@ -591,6 +591,7 @@ export default {
     },
   },
   async mounted() {
+    console.log("HOME");
     //ナビバーのデータをリセットし表示
     this.$store.commit("navbar/resetNavbar");
     this.$store.commit("navbar/setShowNavbar", true);
