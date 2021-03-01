@@ -1027,3 +1027,82 @@ div.v-snack:not(.v-snack--absolute) {
 .fontColorWhite {
   color: white;
 }
+
+.ribbon-content > .v-image,
+.ribbon-content-mypage > .v-image {
+  z-index: inherit;
+}
+
+.ribbon-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 85px;
+  height: 85px;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.ribbon-image {
+  right: -4px;
+  top: 46px;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.ribbon-text {
+  display: inline-block;
+  position: absolute;
+  padding: 5px 0;
+  right: -24px;
+  top: 20px;
+  width: 160px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 16px;
+  background: #a5d6a7;
+  color: black;
+  letter-spacing: 0.05em;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  box-shadow: 0 0 0 2px #a5d6a7;
+  border-top: dashed 1px rgba(255, 255, 255, 0.65);
+  border-bottom: dashed 1px rgba(255, 255, 255, 0.65);
+}
+
+.ribbon-content-mypage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 85px;
+  height: 85px;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.ribbon-image-mypage {
+  right: -3px;
+  top: 32px;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.ribbon-text-mypage {
+  display: inline-block;
+  position: absolute;
+  padding: 5px 0;
+  right: -20px;
+  top: 14px;
+  width: 160px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 4px;
+  background: #a5d6a7;
+  color: black;
+  letter-spacing: 0.05em;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  box-shadow: 0 0 0 2px #a5d6a7;
+  border-top: dashed 1px rgba(255, 255, 255, 0.65);
+  border-bottom: dashed 1px rgba(255, 255, 255, 0.65);
+}

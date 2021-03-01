@@ -418,7 +418,6 @@ export default {
     },
     //【Music】表示するプレイリストの無限スクロール
     async infinateLoadPlaylistOfMusic(numOfItems = 0) {
-      console.log("infinateLoadPlaylistOfMusic");
       if (!this.toLoadMusic) {
         this.$store.commit("loadingItem/setIsLoading", false);
         return;
@@ -644,7 +643,6 @@ export default {
     let topPositionY =
       this.topPositionOfItems +
       this.contentsPerPage * this.itemHeight * (startPage - 1);
-    // console.log("itemHeight = " + this.itemHeight);
     if (startPage > 1) window.scrollTo(0, topPositionY);
   },
   created() {},

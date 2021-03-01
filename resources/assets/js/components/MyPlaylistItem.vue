@@ -17,7 +17,7 @@
             <v-row class="ma-0" align="center">
               <v-col class="pa-0">
                 <v-row class="ma-0">
-                  <v-col cols="6" class="pa-2">
+                  <v-col cols="6" class="pa-2  d-flex justify-center">
                     <v-card
                       class="ma-0 pa-0"
                       aspect-ratio="calc(16 / 9)"
@@ -70,6 +70,18 @@
                           height="100%"
                           style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px; object-fit: cover;"
                         ></video>
+                        <div class="ribbon-content-mypage">
+                          <v-img
+                            src="/storage/icons/yt_social_red.png"
+                            width="14px"
+                            max-height="14px"
+                            alt="YouTube logo"
+                            class="ribbon-image-mypage"
+                          />
+                          <span class="ribbon-text-mypage"
+                            >&nbsp;&nbsp;&nbsp;まとめ</span
+                          >
+                        </div>
                       </router-link>
                     </v-card>
                   </v-col>
