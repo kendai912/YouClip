@@ -26,7 +26,7 @@
                     class="home-and-search-result-title"
                     style="font-weight: 400; !important"
                   >
-                    {{ playlistName }}
+                    {{ playlistName }} {{ screenOrientation }}
                   </h1>
                 </v-col>
                 <v-col cols="auto" class="ma-2 my-0 pa-0 text-right">
@@ -213,6 +213,7 @@ export default {
       timeout: 5000,
       text: "",
       watchBodyRef: this.$refs.watchBody,
+      screenOrientation: "",
     };
   },
   computed: {
@@ -422,6 +423,18 @@ export default {
     hideOnYTSeekBarTouchEnd() {
       this.$refs.YTPlayerController.hideOnYTSeekBarTouchEnd();
     },
+    handleOrientationChange() {
+      const orientation = window.screen.orientation.type;
+      if (orientation === "portrait-primary") {
+        // portrait mode
+        console.log("portrait mode");
+        this.screenOrientation = "縦";
+      } else if (orientation === "landscape-primary") {
+        // landscape mode
+        console.log("landscape mode");
+        this.screenOrientation = "横";
+      }
+    },
   },
   watch: {
     isPlayerReady() {
@@ -498,6 +511,9 @@ export default {
 
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.watchBodyRef = this.$refs.watchBody;
+
+    this.handleOrientationChange();
+    window.addEventListener("orientationchange", this.handleOrientationChange);
   },
 };
 </script>
