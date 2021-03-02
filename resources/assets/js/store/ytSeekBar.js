@@ -6,6 +6,7 @@ const state = {
   startTimeInput: null,
   endTimeInput: null,
   isMobile: false,
+  isIOS: false,
 };
 
 const getters = {
@@ -13,6 +14,7 @@ const getters = {
   startTimeInput: (state) => state.startTimeInput,
   endTimeInput: (state) => state.endTimeInput,
   isMobile: (state) => state.isMobile,
+  isIOS: (state) => state.isIOS,
 };
 
 const mutations = {
@@ -27,6 +29,9 @@ const mutations = {
   },
   setIsMobile(state, data) {
     state.isMobile = data;
+  },
+  setIsIOS(state, data) {
+    state.isIOS = data;
   },
 };
 

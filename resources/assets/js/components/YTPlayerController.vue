@@ -122,6 +122,7 @@ export default {
       isFullscreen: "ytPlayer/isFullscreen",
       isPlaying: "ytPlayer/isPlaying",
       isMobile: "ytSeekBar/isMobile",
+      isIOS: "ytSeekBar/isIOS",
       currentTime: "youtube/currentTime",
       isNew: "youtube/isNew",
       newVideoData: "youtube/newVideoData",
@@ -145,6 +146,7 @@ export default {
       setIsMuted: "ytPlayer/setIsMuted",
       setIsFullscreen: "ytPlayer/setIsFullscreen",
       setIsMobile: "ytSeekBar/setIsMobile",
+      setIsIOS: "ytSeekBar/setIsIOS",
     }),
     setImmediateHide() {
       this.immediateHideFlag = true;
@@ -229,7 +231,7 @@ export default {
       this.setIsMuted(true);
     },
     checkFullScreen() {
-      var fullscreen_flag = false;
+      let fullscreen_flag = false;
 
       if (
         document.fullscreenElement ||
@@ -246,6 +248,8 @@ export default {
       if (event.key === "f" || event.type === "click") {
         // フルスクリーン表示なら解除する
         if (this.checkFullScreen()) {
+          this.mobileCheck() ? "" : this.setIsMobile(false);
+          this.setIsFullscreen(false);
           if (document.exitFullscreen) {
             document.exitFullscreen();
           } else if (document.mozCancelFullScreen) {
@@ -255,8 +259,11 @@ export default {
           } else if (document.msExitFullscreen) {
             document.msExitFullscreen();
           }
+          this.revertFullScreenYtPlayerCSS();
           // 通常表示ならフルスクリーン表示位にする
         } else {
+          this.mobileCheck() ? "" : this.setIsMobile(true);
+          this.setIsFullscreen(true);
           if (document.body.requestFullscreen) {
             document.body.requestFullscreen();
           } else if (document.body.mozRequestFullScreen) {
@@ -266,6 +273,7 @@ export default {
           } else if (document.body.msRequestFullscreen) {
             document.body.msRequestFullscreen();
           }
+          this.setFullScreenYtPlayerCSS();
         }
       }
     },
@@ -274,12 +282,18 @@ export default {
       this.setIsFullscreen(true);
       this.switchFullScreenMode(event);
       this.setFullScreenYtPlayerCSS();
+      this.$nextTick(() => {
+        this.$emit("setEventListeners");
+      });
     },
     compressScreen(event) {
       this.mobileCheck() ? "" : this.setIsMobile(false);
       this.setIsFullscreen(false);
       this.switchFullScreenMode(event);
       this.revertFullScreenYtPlayerCSS();
+      this.$nextTick(() => {
+        this.$emit("setEventListeners");
+      });
     },
     isWidthBasedFullscreeen() {
       let screenWidth = screen.availWidth;
@@ -413,6 +427,22 @@ export default {
       //seekbarがプレイヤーの下になるように戻す
       this.revertYTSeekBar();
     },
+    exitFullscreenHandler() {
+      if (
+        !document.fullscreenElement &&
+        !document.webkitIsFullScreen &&
+        !document.mozFullScreen &&
+        !document.msFullscreenElement
+      ) {
+        // フルスクリーン表示なら解除する
+        this.mobileCheck() ? "" : this.setIsMobile(false);
+        this.setIsFullscreen(false);
+        this.revertFullScreenYtPlayerCSS();
+        this.$nextTick(() => {
+          this.$emit("setEventListeners");
+        });
+      }
+    },
   },
   mounted() {
     //iframeプレイヤーの表示から4秒後にプレイヤーコントロールボタンを非表示
@@ -422,6 +452,18 @@ export default {
 
     // fボタン押下よるフルスクリーンモード制御キーボード入力の受付
     window.addEventListener("keydown", this.switchFullScreenMode);
+
+    // escボタン押下によるフルスクリーンモード解除キーボード入力
+    document.addEventListener("fullscreenchange", this.exitFullscreenHandler);
+    document.addEventListener(
+      "webkitfullscreenchange",
+      this.exitFullscreenHandler
+    );
+    document.addEventListener(
+      "mozfullscreenchange",
+      this.exitFullscreenHandler
+    );
+    document.addEventListener("MSFullscreenChange", this.exitFullscreenHandler);
   },
 };
 </script>

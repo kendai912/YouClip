@@ -8,7 +8,11 @@
             v-if="ytIframeParameterReady"
             v-on:switchToPlayListIndexOf="switchToPlayListIndexOf"
           />
-          <YTPlayerController v-show="isPlayerReady" ref="YTPlayerController" />
+          <YTPlayerController
+            v-show="isPlayerReady"
+            ref="YTPlayerController"
+            v-on:setEventListeners="setEventListeners"
+          />
           <YTSeekBar
             v-show="isPlayerReady"
             ref="ytSeekBar"
@@ -442,6 +446,9 @@ export default {
       } else {
         this.screenOrientation = "portrait";
       }
+    },
+    setEventListeners() {
+      this.$refs.ytSeekBar.setEventListeners();
     },
   },
   watch: {

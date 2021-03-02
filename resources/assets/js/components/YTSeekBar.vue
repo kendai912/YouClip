@@ -96,8 +96,6 @@ export default {
       previousYtseekOffsetX: 0,
       previousYtseekPageX: null,
       ytseekbarPageX: null,
-      // isMobile: false,
-      isIOS: false,
       canUseOntouch: false,
     };
   },
@@ -113,6 +111,7 @@ export default {
       startTimeInput: "ytSeekBar/startTimeInput",
       endTimeInput: "ytSeekBar/endTimeInput",
       isMobile: "ytSeekBar/isMobile",
+      isIOS: "ytSeekBar/isMobile",
     }),
     duration() {
       if (this.isNew) {
@@ -205,6 +204,7 @@ export default {
   methods: {
     ...mapMutations({
       setIsMobile: "ytSeekBar/setIsMobile",
+      setIsIOS: "ytSeekBar/setIsIOS",
     }),
     getClickPosition(e) {
       e.preventDefault(); // prevent browser from moving objects, following links etc
@@ -310,21 +310,7 @@ export default {
         );
       }
     },
-  },
-  created() {},
-  mounted() {
-    let isMobileFlag = this.mobileCheck();
-    this.setIsMobile(isMobileFlag);
-    this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
-
-    var touch_event = window.ontouchstart;
-    var touch_points = navigator.maxTouchPoints;
-    if (touch_event !== undefined && 0 < touch_points) {
-      // ontouchstartに対応
-      this.canUseOntouch = true;
-    }
-
-    this.$nextTick(() => {
+    setEventListeners() {
       if (this.isIOS) {
         this.$refs.iosYtseekHead.addEventListener(
           "touchstart",
@@ -366,6 +352,64 @@ export default {
         );
         window.addEventListener("mouseup", this.detectMouseUp);
       }
+    },
+  },
+  created() {},
+  mounted() {
+    let isMobileFlag = this.mobileCheck();
+    this.setIsMobile(isMobileFlag);
+    let isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
+    this.setIsMobile(isIOS);
+
+    var touch_event = window.ontouchstart;
+    var touch_points = navigator.maxTouchPoints;
+    if (touch_event !== undefined && 0 < touch_points) {
+      // ontouchstartに対応
+      this.canUseOntouch = true;
+    }
+
+    this.$nextTick(() => {
+      this.setEventListeners();
+      // if (this.isIOS) {
+      //   this.$refs.iosYtseekHead.addEventListener(
+      //     "touchstart",
+      //     this.detectMouseDown
+      //   );
+      //   this.$refs.iosYtseekbarMask.addEventListener(
+      //     "touchstart",
+      //     this.detectMouseDownOfYtseekbarMask
+      //   );
+      //   window.addEventListener("touchend", this.detectMouseUp);
+      // } else if (this.isMobile) {
+      //   if (this.canUseOntouch) {
+      //     this.$refs.iosYtseekHead.ontouchstart = this.detectMouseDown;
+      //     this.$refs.iosYtseekHead.ontouchend = this.detectMouseUp;
+      //   } else {
+      //     this.$refs.iosYtseekHead.addEventListener(
+      //       "touchstart",
+      //       function(e) {
+      //         e.preventDefault();
+      //         this.detectMouseDown;
+      //       },
+      //       { passive: false }
+      //     );
+      //     window.addEventListener("touchend", this.detectMouseUp);
+      //   }
+      //   this.$refs.iosYtseekbarMask.addEventListener(
+      //     "click",
+      //     this.detectMouseDownOfYtseekbarMask
+      //   );
+      // } else {
+      //   this.$refs.ytseekHead.addEventListener(
+      //     "mousedown",
+      //     this.detectMouseDown
+      //   );
+      //   this.$refs.ytseekbarMask.addEventListener(
+      //     "click",
+      //     this.detectMouseDownOfYtseekbarMask
+      //   );
+      //   window.addEventListener("mouseup", this.detectMouseUp);
+      // }
     });
   },
 };
