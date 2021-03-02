@@ -96,7 +96,7 @@ export default {
       previousYtseekOffsetX: 0,
       previousYtseekPageX: null,
       ytseekbarPageX: null,
-      isMobile: false,
+      // isMobile: false,
       isIOS: false,
       canUseOntouch: false,
     };
@@ -104,14 +104,15 @@ export default {
   mixins: [myMixin],
   computed: {
     ...mapGetters({
-      player: "ytPlayer/player",
       currentTime: "youtube/currentTime",
       isNew: "youtube/isNew",
       newVideoData: "youtube/newVideoData",
       videoData: "youtube/videoData",
+      player: "ytPlayer/player",
       isPlayerReady: "ytPlayer/isPlayerReady",
       startTimeInput: "ytSeekBar/startTimeInput",
       endTimeInput: "ytSeekBar/endTimeInput",
+      isMobile: "ytSeekBar/isMobile",
     }),
     duration() {
       if (this.isNew) {
@@ -202,7 +203,9 @@ export default {
     },
   },
   methods: {
-    ...mapMutations({}),
+    ...mapMutations({
+      setIsMobile: "ytSeekBar/setIsMobile",
+    }),
     getClickPosition(e) {
       e.preventDefault(); // prevent browser from moving objects, following links etc
 
@@ -310,7 +313,8 @@ export default {
   },
   created() {},
   mounted() {
-    this.isMobile = this.mobileCheck();
+    let isMobileFlag = this.mobileCheck();
+    this.setIsMobile(isMobileFlag);
     this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
 
     var touch_event = window.ontouchstart;

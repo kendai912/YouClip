@@ -371,7 +371,7 @@ export default {
       $(".ytPlayerWrapper").css(
         "height",
         ($("iframe").width() * 9) / 16 +
-          (952 - ($("iframe").width() * 9) / 16) / 2 +
+          ($("iframe").height() - ($("iframe").width() * 9) / 16) / 2 +
           15
       );
       $(".ytPlayerWrapper").css(

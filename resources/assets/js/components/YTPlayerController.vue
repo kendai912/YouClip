@@ -70,6 +70,20 @@
             <v-icon large v-else v-on:click.stop.prevent="mute" color="white"
               >volume_up</v-icon
             >
+            <v-icon
+              large
+              v-if="!isFullscreen"
+              v-on:click.stop.prevent="expandScreen"
+              color="white"
+              >mdi-fullscreen</v-icon
+            >
+            <v-icon
+              large
+              v-else
+              v-on:click.stop.prevent="compressScreen"
+              color="white"
+              >mdi-fullscreen-exit</v-icon
+            >
           </v-col>
         </v-row>
       </v-container>
@@ -105,12 +119,14 @@ export default {
     ...mapGetters({
       player: "ytPlayer/player",
       isMuted: "ytPlayer/isMuted",
+      isFullscreen: "ytPlayer/isFullscreen",
+      isPlaying: "ytPlayer/isPlaying",
+      isMobile: "ytSeekBar/isMobile",
       currentTime: "youtube/currentTime",
       isNew: "youtube/isNew",
       newVideoData: "youtube/newVideoData",
       videoData: "youtube/videoData",
       showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
-      isPlaying: "ytPlayer/isPlaying",
     }),
     duration() {
       if (this.isNew) {
@@ -127,6 +143,8 @@ export default {
       openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal",
       setIsPlaying: "ytPlayer/setIsPlaying",
       setIsMuted: "ytPlayer/setIsMuted",
+      setIsFullscreen: "ytPlayer/setIsFullscreen",
+      setIsMobile: "ytSeekBar/setIsMobile",
     }),
     setImmediateHide() {
       this.immediateHideFlag = true;
@@ -210,12 +228,138 @@ export default {
       this.player.mute();
       this.setIsMuted(true);
     },
+    checkFullScreen() {
+      var fullscreen_flag = false;
+
+      if (
+        document.fullscreenElement ||
+        document.mozFullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.msFullscreenElement
+      ) {
+        fullscreen_flag = true;
+      }
+
+      return fullscreen_flag;
+    },
+    switchFullScreenMode(event) {
+      if (event.key === "f" || event.type === "click") {
+        // フルスクリーン表示なら解除する
+        if (this.checkFullScreen()) {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          }
+          // 通常表示ならフルスクリーン表示位にする
+        } else {
+          if (document.body.requestFullscreen) {
+            document.body.requestFullscreen();
+          } else if (document.body.mozRequestFullScreen) {
+            document.body.mozRequestFullScreen();
+          } else if (document.body.webkitRequestFullscreen) {
+            document.body.webkitRequestFullscreen();
+          } else if (document.body.msRequestFullscreen) {
+            document.body.msRequestFullscreen();
+          }
+        }
+      }
+    },
+    expandScreen(event) {
+      this.mobileCheck() ? "" : this.setIsMobile(true);
+      this.setIsFullscreen(true);
+      this.switchFullScreenMode(event);
+      this.setFullScreenYtPlayerCSS();
+    },
+    compressScreen(event) {
+      this.mobileCheck() ? "" : this.setIsMobile(false);
+      this.setIsFullscreen(false);
+      this.switchFullScreenMode(event);
+      // this.setUnFullScreenYtPlayerCSS();
+    },
+    isWidthBasedFullscreeen() {
+      let screenWidth = screen.availWidth;
+      let screenHeight = screen.availHeight;
+
+      if (screenHeight >= (screenWidth * 9) / 16) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    expandIframe(isWidthBasedFullscreen) {
+      if (isWidthBasedFullscreen) {
+        $("iframe").width(screen.availWidth);
+      } else {
+        $("iframe").width((screen.availHeight * 16) / 9);
+      }
+
+      $("iframe").css({ position: "absolute", top: "0px" });
+      $("iframe").height(1904);
+    },
+    adjustYTPlayerWrapper() {
+      //表示領域の高さと幅をセット
+      let playerHeight = ($("iframe").width() * 9) / 16;
+
+      $(".ytPlayerWrapper").width("100vw");
+      $(".ytPlayerWrapper").css(
+        "height",
+        playerHeight + ($("iframe").height() - playerHeight) / 2
+      );
+
+      //プレイヤーが画面の中央になるように上にずらす
+      $(".ytPlayerWrapper").css({
+        position: "fixed",
+        top:
+          (($("iframe").height() - playerHeight) / 2) * -1 +
+          (screen.availHeight - playerHeight) / 2,
+        left: "0px",
+      });
+    },
+    adjustYTPlayerController() {
+      $(".iframeHeight").css({
+        "padding-bottom": ($("iframe").width() * 9) / 16 - 15,
+      });
+    },
+    adjustYTSeekBar() {
+      this.$nextTick(() => {
+        $(".ios-wrapper-mask").css(
+          "top",
+          ($("iframe").width() * 9) / 16 +
+            ($("iframe").height() - ($("iframe").width() * 9) / 16) / 2 -
+            15
+        );
+      });
+    },
+    setFullScreenYtPlayerCSS() {
+      //画面の大きさから縦と横どちらに合わせるかを判定
+      let isWidthBasedFullscreen = this.isWidthBasedFullscreeen();
+
+      //iframeの縦・横のサイズをセット(縦は952 * 2 = 1904px、横は幅いっぱい)
+      this.expandIframe(isWidthBasedFullscreen);
+
+      //ytPlayerWrapperで表示する範囲をセット(iframeが見える範囲の高さをセットし、iframe上部の黒分が見えないよう上にスライド)
+      this.adjustYTPlayerWrapper();
+
+      //プレイヤーコントローラーの位置をfullscreen用に調整(seekbarを画面内に移動するためseekbar分の高さを短くする)
+      this.adjustYTPlayerController();
+
+      //seekbarが全画面表示でプレイヤー表示部の一番下になるように調整
+      this.adjustYTSeekBar();
+    },
   },
   mounted() {
     //iframeプレイヤーの表示から4秒後にプレイヤーコントロールボタンを非表示
     setTimeout(function() {
       $(".overlay").fadeOut(1000);
     }, 4000);
+
+    // キーボード入力の受付
+    window.addEventListener("keydown", this.switchFullScreenMode);
   },
 };
 </script>

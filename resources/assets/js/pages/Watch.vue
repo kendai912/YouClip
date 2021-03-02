@@ -1,5 +1,6 @@
 <template>
   <div style="height: 100vh; background-color: white">
+    <div v-if="isFullscreen" class="fullscreenBackground"></div>
     <div class="container--small">
       <div class="watch-body" ref="watchBody">
         <div class="ytPlayerWrapper" ref="ytPlayerWrapper">
@@ -17,7 +18,11 @@
             v-on:hideOnYTSeekBarTouchEnd="hideOnYTSeekBarTouchEnd"
           />
         </div>
-        <div v-if="isPlayerReady" class="highlightControllerBody">
+        <div
+          v-if="isPlayerReady"
+          v-show="!isFullscreen"
+          class="highlightControllerBody"
+        >
           <v-sheet v-if="isPlaylist" class="mx-auto pa-0">
             <v-container class="ma-0 pa-0 pt-2" fluid>
               <v-row class="ma-0 pa-0" align="center">
@@ -242,6 +247,7 @@ export default {
       playSpeed: "ytPlayer/playSpeed",
       player: "ytPlayer/player",
       isMuted: "ytPlayer/isMuted",
+      isFullscreen: "ytPlayer/isFullscreen",
     }),
     isLikedPlaylist() {
       return this.$store.getters["likePlaylist/isLikedPlaylist"](
@@ -371,7 +377,7 @@ export default {
 
       window[this.youtubeCallbackName] =
         window[this.youtubeCallbackName] ||
-        function () {
+        function() {
           window[youtubeExistsFlag] = true;
           window[youtubeCallbackName] = null;
           delete window[youtubeCallbackName];
@@ -385,10 +391,10 @@ export default {
     },
     whenYoutubeAPIReady() {
       const existsFlag = this.youtubeExistsFlag;
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
         let elapsed = 0;
         let intervalHandle;
-        let checker = function () {
+        let checker = function() {
           elapsed += 48;
           if (!!window[existsFlag]) {
             clearTimeout(intervalHandle);
@@ -432,11 +438,9 @@ export default {
       }
 
       if (angle % 180 !== 0) {
-        console.log("landscape mode");
-        this.screenOrientation = "横";
+        this.screenOrientation = "landscape";
       } else {
-        console.log("portrait mode");
-        this.screenOrientation = "縦";
+        this.screenOrientation = "portrait";
       }
     },
   },
@@ -449,7 +453,6 @@ export default {
     },
   },
   async created() {
-    console.log("WATCH");
     this.initialize();
 
     //URLのクエリパラメータからまとめIDとインデックスを取得

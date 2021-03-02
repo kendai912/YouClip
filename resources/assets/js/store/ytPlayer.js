@@ -5,6 +5,7 @@ import myMixin from "../util";
 const state = {
   player: null,
   isMuted: true,
+  isFullscreen: false,
   isPlayerReady: false,
   isPlaying: true,
   playSpeed: 1,
@@ -18,6 +19,7 @@ const state = {
 const getters = {
   player: (state) => state.player,
   isMuted: (state) => state.isMuted,
+  isFullscreen: (state) => state.isFullscreen,
   isPlayerReady: (state) => state.isPlayerReady,
   isPlaying: (state) => state.isPlaying,
   playSpeed: (state) => state.playSpeed,
@@ -35,6 +37,7 @@ const getters = {
     state.listOfYoutubeIdStartEndTime
       ? state.listOfYoutubeIdStartEndTime[state.listIndex].end
       : "",
+  
 };
 
 const mutations = {
@@ -43,6 +46,9 @@ const mutations = {
   },
   setIsMuted(state, data) {
     state.isMuted = data;
+  },
+  setIsFullscreen(state, data) {
+    state.isFullscreen = data;
   },
   setIsPlayerReady(state, data) {
     state.isPlayerReady = data;

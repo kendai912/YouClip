@@ -5,14 +5,13 @@ const version = "1.0.0",
   CACHE = version + "::youclip",
   urlsToCache = [
     "/storage/logos/youclip_logo.png",
-    "js/app.js",
     "/manifest.json",
   ];
 
 //************************************************
 //InstallEvent
 //************************************************
-self.addEventListener("install", function (event) {
+self.addEventListener("install", function(event) {
   // インストール処理
   event.waitUntil(
     caches
@@ -27,7 +26,7 @@ self.addEventListener("install", function (event) {
 //************************************************
 //FetchEvent
 //************************************************
-self.addEventListener("fetch", function (event) {
+self.addEventListener("fetch", function(event) {
   event.respondWith(
     // ページにレスポンスを返す（キャッシュがあれば）
     //cacheStrageを参照

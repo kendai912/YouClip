@@ -5,12 +5,14 @@ const state = {
   player: null,
   startTimeInput: null,
   endTimeInput: null,
+  isMobile: false,
 };
 
 const getters = {
   player: (state) => state.player,
   startTimeInput: (state) => state.startTimeInput,
   endTimeInput: (state) => state.endTimeInput,
+  isMobile: (state) => state.isMobile,
 };
 
 const mutations = {
@@ -22,6 +24,9 @@ const mutations = {
   },
   setEndTimeInput(state, data) {
     state.endTimeInput = data;
+  },
+  setIsMobile(state, data) {
+    state.isMobile = data;
   },
 };
 
