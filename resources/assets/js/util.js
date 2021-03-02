@@ -368,23 +368,19 @@ export default {
       $("iframe").height(952);
 
       //iframeとseekbarが見える範囲の高さをセットし、iframe上部の黒分が見えないよう上にスライド
+      let playerHeight = ($("iframe").width() * 9) / 16;
       $(".ytPlayerWrapper").css(
         "height",
-        ($("iframe").width() * 9) / 16 +
-          ($("iframe").height() - ($("iframe").width() * 9) / 16) / 2 +
-          15
+        playerHeight + ($("iframe").height() - playerHeight) / 2 + 15
       );
       $(".ytPlayerWrapper").css(
         "top",
-        (($("iframe").height() - ($("iframe").width() * 9) / 16) / 2) * -1
+        (($("iframe").height() - playerHeight) / 2) * -1
       );
 
       this.$nextTick(() => {
         //開始・終了ボタンがiframeとseekbarの下に来るようにtopを調整
-        $(".highlightControllerBody").css(
-          "top",
-          ($("iframe").width() * 9) / 16 + 15
-        );
+        $(".highlightControllerBody").css("top", playerHeight + 15);
       });
     },
     secondsToDuration(secondsVal) {

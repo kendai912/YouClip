@@ -279,7 +279,7 @@ export default {
       this.mobileCheck() ? "" : this.setIsMobile(false);
       this.setIsFullscreen(false);
       this.switchFullScreenMode(event);
-      // this.setUnFullScreenYtPlayerCSS();
+      this.revertFullScreenYtPlayerCSS();
     },
     isWidthBasedFullscreeen() {
       let screenWidth = screen.availWidth;
@@ -297,14 +297,13 @@ export default {
       } else {
         $("iframe").width((screen.availHeight * 16) / 9);
       }
-
       $("iframe").css({ position: "absolute", top: "0px" });
       $("iframe").height(1904);
     },
     adjustYTPlayerWrapper() {
-      //表示領域の高さと幅をセット
       let playerHeight = ($("iframe").width() * 9) / 16;
 
+      //表示領域の高さと幅をセット
       $(".ytPlayerWrapper").width("100vw");
       $(".ytPlayerWrapper").css(
         "height",
@@ -321,17 +320,19 @@ export default {
       });
     },
     adjustYTPlayerController() {
+      let playerHeight = ($("iframe").width() * 9) / 16;
+
       $(".iframeHeight").css({
-        "padding-bottom": ($("iframe").width() * 9) / 16 - 15,
+        "padding-bottom": playerHeight - 15,
       });
     },
     adjustYTSeekBar() {
+      let playerHeight = ($("iframe").width() * 9) / 16;
+
       this.$nextTick(() => {
         $(".ios-wrapper-mask").css(
           "top",
-          ($("iframe").width() * 9) / 16 +
-            ($("iframe").height() - ($("iframe").width() * 9) / 16) / 2 -
-            15
+          playerHeight + ($("iframe").height() - playerHeight) / 2 - 15
         );
       });
     },
@@ -351,6 +352,67 @@ export default {
       //seekbarが全画面表示でプレイヤー表示部の一番下になるように調整
       this.adjustYTSeekBar();
     },
+    revertIframe() {
+      $("iframe").width($(".watch-body").width());
+      $("iframe").css({ position: "absolute", top: "0px" });
+      $("iframe").height(952);
+    },
+    revertYTPlayerWrapper() {
+      let playerHeight = ($("iframe").width() * 9) / 16;
+
+      //fixedからabsoluteに戻す
+      $(".ytPlayerWrapper").css({ position: "absolute", top: "0px" });
+
+      //幅を戻す
+      $(".ytPlayerWrapper").width("100%");
+
+      //高さを戻す
+      $(".ytPlayerWrapper").css(
+        "height",
+        playerHeight + ($("iframe").height() - playerHeight) / 2 + 15
+      );
+
+      //topの位置を戻す
+      $(".ytPlayerWrapper").css(
+        "top",
+        (($("iframe").height() - playerHeight) / 2) * -1
+      );
+    },
+    revertYTPlayerController() {
+      $(".iframeHeight").css({
+        "padding-bottom": "56.25%",
+      });
+    },
+    revertYTSeekBar() {
+      let playerHeight = ($("iframe").width() * 9) / 16;
+
+      this.$nextTick(() => {
+        if (this.isMobile) {
+          $(".ios-wrapper-mask").css(
+            "top",
+            playerHeight + ($("iframe").height() - playerHeight) / 2
+          );
+        } else {
+          $(".ytseekbar-wrapper").css(
+            "top",
+            playerHeight + ($("iframe").height() - playerHeight) / 2
+          );
+        }
+      });
+    },
+    revertFullScreenYtPlayerCSS() {
+      //iframeの縦・横のサイズを通常の表示に戻す
+      this.revertIframe();
+
+      //ytPlayerWrapperで表示する範囲を通常の表示に戻す
+      this.revertYTPlayerWrapper();
+
+      //プレイヤーコントローラーの位置を通常の表示に戻す(seekbarを画面内に移動するためseekbar分の高さを短くする)
+      this.revertYTPlayerController();
+
+      //seekbarがプレイヤーの下になるように戻す
+      this.revertYTSeekBar();
+    },
   },
   mounted() {
     //iframeプレイヤーの表示から4秒後にプレイヤーコントロールボタンを非表示
@@ -358,7 +420,7 @@ export default {
       $(".overlay").fadeOut(1000);
     }, 4000);
 
-    // キーボード入力の受付
+    // fボタン押下よるフルスクリーンモード制御キーボード入力の受付
     window.addEventListener("keydown", this.switchFullScreenMode);
   },
 };
