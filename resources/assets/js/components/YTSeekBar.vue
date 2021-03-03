@@ -18,10 +18,10 @@
             class="ios-highlight-content"
             v-bind:style="
               'left: calc(' +
-                contentLeft +
-                'px + 3px ); width: calc(' +
-                contentWidth +
-                'px - 6px);'
+              contentLeft +
+              'px + 3px ); width: calc(' +
+              contentWidth +
+              'px - 6px);'
             "
           ></div>
           <div
@@ -59,10 +59,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-            contentLeft +
-            'px + 3px ); width: calc(' +
-            contentWidth +
-            'px - 6px);'
+          contentLeft +
+          'px + 3px ); width: calc(' +
+          contentWidth +
+          'px - 6px);'
         "
       ></div>
       <div
@@ -247,32 +247,36 @@ export default {
       e.preventDefault(); // prevent browser from moving objects, following links etc
 
       // start listening to mouse movements
+      let self = this;
       if (this.isIOS) {
-        this.bodyRef.addEventListener("touchmove", function() {
-          this.getClickPosition;
-          this.$emit("showOnYTSeekBarTouchMove");
-        });
+        this.bodyRef.addEventListener(
+          "touchmove",
+          function (e) {
+            self.getClickPosition(e);
+          },
+          { passive: false }
+        );
       } else if (this.isMobile) {
         if (this.canUseOntouch) {
-          this.bodyRef.ontouchmove = () => {
-            this.getClickPosition;
-            this.$emit("showOnYTSeekBarTouchMove");
+          this.bodyRef.ontouchmove = (e) => {
+            self.getClickPosition(e);
           };
         } else {
           this.bodyRef.addEventListener(
             "touchmove",
-            function(e) {
+            function (e) {
               e.preventDefault();
-              this.getClickPosition;
-              this.$emit("showOnYTSeekBarTouchMove");
+              self.getClickPosition(e);
             },
             { passive: false }
           );
         }
       } else {
-        this.bodyRef.addEventListener("mousemove", this.getClickPosition);
-        this.$emit("showOnYTSeekBarTouchMove");
+        this.bodyRef.addEventListener("mousemove", self.getClickPosition(e), {
+          passive: false,
+        });
       }
+      this.$emit("showOnYTSeekBarTouchMove");
     },
     detectMouseUp(e) {
       // stop listening to mouse movements
@@ -328,7 +332,7 @@ export default {
         } else {
           this.$refs.iosYtseekHead.addEventListener(
             "touchstart",
-            function(e) {
+            function (e) {
               e.preventDefault();
               this.detectMouseDown;
             },
