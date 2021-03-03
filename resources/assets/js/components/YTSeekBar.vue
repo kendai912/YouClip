@@ -18,10 +18,10 @@
             class="ios-highlight-content"
             v-bind:style="
               'left: calc(' +
-              contentLeft +
-              'px + 3px ); width: calc(' +
-              contentWidth +
-              'px - 6px);'
+                contentLeft +
+                'px + 3px ); width: calc(' +
+                contentWidth +
+                'px - 6px);'
             "
           ></div>
           <div
@@ -59,10 +59,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-          contentLeft +
-          'px + 3px ); width: calc(' +
-          contentWidth +
-          'px - 6px);'
+            contentLeft +
+            'px + 3px ); width: calc(' +
+            contentWidth +
+            'px - 6px);'
         "
       ></div>
       <div
@@ -251,7 +251,7 @@ export default {
       if (this.isIOS) {
         this.bodyRef.addEventListener(
           "touchmove",
-          function (e) {
+          function(e) {
             self.getClickPosition(e);
           },
           { passive: false }
@@ -264,7 +264,7 @@ export default {
         } else {
           this.bodyRef.addEventListener(
             "touchmove",
-            function (e) {
+            function(e) {
               e.preventDefault();
               self.getClickPosition(e);
             },
@@ -272,7 +272,7 @@ export default {
           );
         }
       } else {
-        this.bodyRef.addEventListener("mousemove", self.getClickPosition(e), {
+        this.bodyRef.addEventListener("mousemove", this.getClickPosition(e), {
           passive: false,
         });
       }
@@ -288,7 +288,13 @@ export default {
         //   this.bodyRef.removeEventListener("touchmove", this.getClickPosition);
         // }
       } else {
-        this.bodyRef.removeEventListener("mousemove", this.getClickPosition);
+        this.bodyRef.removeEventListener(
+          "mousemove",
+          this.getClickPosition(e),
+          {
+            passive: false,
+          }
+        );
       }
 
       this.$emit("hideOnYTSeekBarTouchEnd");
@@ -332,7 +338,7 @@ export default {
         } else {
           this.$refs.iosYtseekHead.addEventListener(
             "touchstart",
-            function (e) {
+            function(e) {
               e.preventDefault();
               this.detectMouseDown;
             },
