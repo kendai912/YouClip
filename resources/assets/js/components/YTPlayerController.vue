@@ -164,7 +164,7 @@ export default {
 
         let self = this;
         //set timer and fadeout in 2.5sec
-        this.timer = setTimeout(function() {
+        this.timer = setTimeout(function () {
           self.immediateHideFlag = false;
           $(".overlay").fadeOut(500);
         }, 2500);
@@ -280,7 +280,6 @@ export default {
     expandScreen(event) {
       this.mobileCheck() ? "" : this.setIsMobile(true);
       this.setIsFullscreen(true);
-      this.switchFullScreenMode(event);
       this.setFullScreenYtPlayerCSS();
       this.$nextTick(() => {
         this.$emit("setEventListeners");
@@ -289,7 +288,6 @@ export default {
     compressScreen(event) {
       this.mobileCheck() ? "" : this.setIsMobile(false);
       this.setIsFullscreen(false);
-      this.switchFullScreenMode(event);
       this.revertFullScreenYtPlayerCSS();
       this.$nextTick(() => {
         this.$emit("setEventListeners");
@@ -330,7 +328,7 @@ export default {
           position: "fixed",
           top:
             (($("iframe").height() - playerHeight) / 2) * -1 +
-            (window.innerHeight - playerHeight) / 2,
+            (document.documentElement.clientHeight - playerHeight) / 2,
           left: "0px",
         });
       } else {
@@ -456,7 +454,7 @@ export default {
   },
   mounted() {
     //iframeプレイヤーの表示から4秒後にプレイヤーコントロールボタンを非表示
-    setTimeout(function() {
+    setTimeout(function () {
       $(".overlay").fadeOut(1000);
     }, 4000);
 

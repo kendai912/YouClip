@@ -363,7 +363,7 @@ export default {
     let isMobileFlag = this.mobileCheck();
     this.setIsMobile(isMobileFlag);
     let isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
-    this.setIsMobile(isIOS);
+    this.setIsIOS(isIOS);
 
     var touch_event = window.ontouchstart;
     var touch_points = navigator.maxTouchPoints;
@@ -374,46 +374,6 @@ export default {
 
     this.$nextTick(() => {
       this.setEventListeners();
-      // if (this.isIOS) {
-      //   this.$refs.iosYtseekHead.addEventListener(
-      //     "touchstart",
-      //     this.detectMouseDown
-      //   );
-      //   this.$refs.iosYtseekbarMask.addEventListener(
-      //     "touchstart",
-      //     this.detectMouseDownOfYtseekbarMask
-      //   );
-      //   window.addEventListener("touchend", this.detectMouseUp);
-      // } else if (this.isMobile) {
-      //   if (this.canUseOntouch) {
-      //     this.$refs.iosYtseekHead.ontouchstart = this.detectMouseDown;
-      //     this.$refs.iosYtseekHead.ontouchend = this.detectMouseUp;
-      //   } else {
-      //     this.$refs.iosYtseekHead.addEventListener(
-      //       "touchstart",
-      //       function(e) {
-      //         e.preventDefault();
-      //         this.detectMouseDown;
-      //       },
-      //       { passive: false }
-      //     );
-      //     window.addEventListener("touchend", this.detectMouseUp);
-      //   }
-      //   this.$refs.iosYtseekbarMask.addEventListener(
-      //     "click",
-      //     this.detectMouseDownOfYtseekbarMask
-      //   );
-      // } else {
-      //   this.$refs.ytseekHead.addEventListener(
-      //     "mousedown",
-      //     this.detectMouseDown
-      //   );
-      //   this.$refs.ytseekbarMask.addEventListener(
-      //     "click",
-      //     this.detectMouseDownOfYtseekbarMask
-      //   );
-      //   window.addEventListener("mouseup", this.detectMouseUp);
-      // }
     });
   },
 };
