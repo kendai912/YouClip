@@ -325,13 +325,23 @@ export default {
       );
 
       //プレイヤーが画面の中央になるように上にずらす
-      $(".ytPlayerWrapper").css({
-        position: "fixed",
-        top:
-          (($("iframe").height() - playerHeight) / 2) * -1 +
-          (screen.availHeight - playerHeight) / 2,
-        left: "0px",
-      });
+      if (this.isIOS) {
+        $(".ytPlayerWrapper").css({
+          position: "fixed",
+          top:
+            (($("iframe").height() - playerHeight) / 2) * -1 +
+            (window.innerHeight - playerHeight) / 2,
+          left: "0px",
+        });
+      } else {
+        $(".ytPlayerWrapper").css({
+          position: "fixed",
+          top:
+            (($("iframe").height() - playerHeight) / 2) * -1 +
+            (screen.availHeight - playerHeight) / 2,
+          left: "0px",
+        });
+      }
     },
     adjustYTPlayerController() {
       let playerHeight = ($("iframe").width() * 9) / 16;
