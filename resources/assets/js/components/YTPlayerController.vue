@@ -291,8 +291,8 @@ export default {
       this.mobileCheck() ? "" : this.setIsMobile(true);
       this.setIsFullscreen(true);
       this.switchFullScreenMode(event);
-      this.setFullScreenYtPlayerCSS();
       this.$nextTick(() => {
+        this.setFullScreenYtPlayerCSS();
         this.$emit("setEventListeners");
       });
     },
@@ -300,8 +300,8 @@ export default {
       this.mobileCheck() ? "" : this.setIsMobile(false);
       this.setIsFullscreen(false);
       this.switchFullScreenMode(event);
-      this.revertFullScreenYtPlayerCSS();
       this.$nextTick(() => {
+        this.revertFullScreenYtPlayerCSS();
         this.$emit("setEventListeners");
       });
     },
@@ -315,26 +315,11 @@ export default {
         }
       } else {
         this.fullscreenWidth = screen.availWidth;
-        this.fullscreenHeight = screen.availHeight;
+        this.fullscreenHeight = Math.max(
+          document.documentElement.clientHeight,
+          window.innerHeight || 0
+        );
       }
-      // console.log("screen.availWidth = " + screen.availWidth);
-      // console.log("screen.availHeight = " + screen.availHeight);
-      // console.log("screen.width = " + screen.width);
-      // console.log("screen.height = " + screen.height);
-      // console.log("window.innerWidth = " + window.innerWidth);
-      // console.log("window.innerHeight = " + window.innerHeight);
-      // console.log("window.outerWidth = " + window.outerWidth);
-      // console.log("window.outerHeight = " + window.outerHeight);
-      // console.log("$(window).width() = " + $(window).width());
-      // console.log("$(window).height() = " + $(window).height());
-      // console.log(
-      //   "document.documentElement.clientWidth = " +
-      //     document.documentElement.clientWidth
-      // );
-      // console.log(
-      //   "document.documentElement.clientHeight = " +
-      //     document.documentElement.clientHeight
-      // );
 
       if (this.fullscreenHeight >= (this.fullscreenWidth * 9) / 16) {
         return true;
@@ -374,23 +359,13 @@ export default {
       }
 
       //プレイヤーが画面の中央になるように上にずらす
-      if (this.isIOS) {
-        $(".ytPlayerWrapper").css({
-          position: "fixed",
-          top:
-            (($("iframe").height() - playerHeight) / 2) * -1 +
-            (this.fullscreenHeight - playerHeight) / 2,
-          left: "0px",
-        });
-      } else {
-        $(".ytPlayerWrapper").css({
-          position: "fixed",
-          top:
-            (($("iframe").height() - playerHeight) / 2) * -1 +
-            (screen.availHeight - playerHeight) / 2,
-          left: "0px",
-        });
-      }
+      $(".ytPlayerWrapper").css({
+        position: "fixed",
+        top:
+          (($("iframe").height() - playerHeight) / 2) * -1 +
+          (this.fullscreenHeight - playerHeight) / 2,
+        left: "0px",
+      });
     },
     //オーバーレイコントローラーの高さをセット
     adjustYTPlayerController() {
@@ -540,6 +515,13 @@ export default {
         this.setIsPortraitScreen(true);
       }
     },
+    handleResize() {
+      if (this.isFullscreen) {
+        this.setFullScreenYtPlayerCSS();
+      } else {
+        this.revertFullScreenYtPlayerCSS();
+      }
+    },
   },
   mounted() {
     //iframeプレイヤーの表示から4秒後にプレイヤーコントロールボタンを非表示
@@ -564,6 +546,11 @@ export default {
       this.exitFullscreenHandler
     );
     document.addEventListener("MSFullscreenChange", this.exitFullscreenHandler);
+
+    window.addEventListener("resize", this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.handleResize);
   },
 };
 </script>

@@ -216,6 +216,7 @@ export default {
         }
         this.seekWidth = e.changedTouches[0].pageX - this.ytseekbarPageX;
       } else if (this.isMobile) {
+        console.log("Mobile");
         if (!this.ytseekbarPageX) {
           this.ytseekbarPageX = $(".ios-ytseekbar-mask").offset().left;
         }
@@ -264,14 +265,6 @@ export default {
           this.bodyRef.addEventListener("touchmove", self.getClickPosition, {
             passive: false,
           });
-          // this.bodyRef.addEventListener(
-          //   "touchmove",
-          //   function (e) {
-          //     e.preventDefault();
-          //     self.getClickPosition(e);
-          //   },
-          //   { passive: false }
-          // );
         }
       } else {
         console.log("PC");
@@ -321,6 +314,7 @@ export default {
       }
     },
     setEventListeners() {
+      let self = this;
       if (this.isIOS) {
         this.$refs.iosYtseekHead.addEventListener(
           "touchstart",
@@ -381,6 +375,7 @@ export default {
     this.$nextTick(() => {
       this.setEventListeners();
     });
+    console.log(this.bodyRef);
   },
 };
 </script>
