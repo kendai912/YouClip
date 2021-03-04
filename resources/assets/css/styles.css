@@ -197,11 +197,10 @@
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.6);
   border-radius: 50%;
   position: relative;
-  left: -6.5px;
-  top: -2px;
-  width: 13px;
-  height: 13px;
-  box-shadow: 0 0 0 4px transparent;
+  left: -7px;
+  top: -3px;
+  width: 15px;
+  height: 15px;
   z-index: 6;
 }
 
@@ -214,7 +213,6 @@
   top: 0px;
   width: 15px;
   height: 15px;
-  box-shadow: 0 0 0 4px transparent;
   z-index: 6;
 }
 
@@ -839,6 +837,14 @@ div.v-snack:not(.v-snack--absolute) {
 }
 .my-full-bar {
   max-width: 1600px !important;
+}
+
+.zIndex6 {
+  z-index: 6 !important;
+}
+
+div.row.align-end.ma-0.pa-0.text-center.pb50px {
+  padding-bottom: 50px !important;
 }
 
 /* .my-footer-menu:before {

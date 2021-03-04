@@ -18,10 +18,10 @@
             class="ios-highlight-content"
             v-bind:style="
               'left: calc(' +
-                contentLeft +
-                'px + 3px ); width: calc(' +
-                contentWidth +
-                'px - 6px);'
+              contentLeft +
+              'px + 3px ); width: calc(' +
+              contentWidth +
+              'px - 6px);'
             "
           ></div>
           <div
@@ -59,10 +59,10 @@
         class="highlight-content"
         v-bind:style="
           'left: calc(' +
-            contentLeft +
-            'px + 3px ); width: calc(' +
-            contentWidth +
-            'px - 6px);'
+          contentLeft +
+          'px + 3px ); width: calc(' +
+          contentWidth +
+          'px - 6px);'
         "
       ></div>
       <div
@@ -111,7 +111,7 @@ export default {
       startTimeInput: "ytSeekBar/startTimeInput",
       endTimeInput: "ytSeekBar/endTimeInput",
       isMobile: "ytSeekBar/isMobile",
-      isIOS: "ytSeekBar/isMobile",
+      isIOS: "ytSeekBar/isIOS",
     }),
     duration() {
       if (this.isNew) {
@@ -207,6 +207,7 @@ export default {
       setIsIOS: "ytSeekBar/setIsIOS",
     }),
     getClickPosition(e) {
+      console.log("getClickPosition");
       e.preventDefault(); // prevent browser from moving objects, following links etc
 
       if (this.isIOS) {
@@ -244,35 +245,37 @@ export default {
       }
     },
     detectMouseDown(e) {
+      console.log("detectMouseDown");
       e.preventDefault(); // prevent browser from moving objects, following links etc
 
       // start listening to mouse movements
       let self = this;
       if (this.isIOS) {
-        this.bodyRef.addEventListener(
-          "touchmove",
-          function(e) {
-            self.getClickPosition(e);
-          },
-          { passive: false }
-        );
+        console.log("iOS");
+        this.bodyRef.addEventListener("touchmove", self.getClickPosition, {
+          passive: false,
+        });
       } else if (this.isMobile) {
         if (this.canUseOntouch) {
-          this.bodyRef.ontouchmove = (e) => {
-            self.getClickPosition(e);
-          };
+          console.log("canUseOntouch");
+          this.bodyRef.ontouchmove = self.getClickPosition;
         } else {
-          this.bodyRef.addEventListener(
-            "touchmove",
-            function(e) {
-              e.preventDefault();
-              self.getClickPosition(e);
-            },
-            { passive: false }
-          );
+          console.log("Not canUseOntouch");
+          this.bodyRef.addEventListener("touchmove", self.getClickPosition, {
+            passive: false,
+          });
+          // this.bodyRef.addEventListener(
+          //   "touchmove",
+          //   function (e) {
+          //     e.preventDefault();
+          //     self.getClickPosition(e);
+          //   },
+          //   { passive: false }
+          // );
         }
       } else {
-        this.bodyRef.addEventListener("mousemove", this.getClickPosition(e), {
+        console.log("PC");
+        this.bodyRef.addEventListener("mousemove", self.getClickPosition, {
           passive: false,
         });
       }
@@ -280,6 +283,7 @@ export default {
     },
     detectMouseUp(e) {
       // stop listening to mouse movements
+      let self = this;
       if (this.isMobile) {
         // if (this.canUseOntouch) {
         this.bodyRef.ontouchmove = null;
@@ -288,13 +292,9 @@ export default {
         //   this.bodyRef.removeEventListener("touchmove", this.getClickPosition);
         // }
       } else {
-        this.bodyRef.removeEventListener(
-          "mousemove",
-          this.getClickPosition(e),
-          {
-            passive: false,
-          }
-        );
+        this.bodyRef.removeEventListener("mousemove", self.getClickPosition, {
+          passive: false,
+        });
       }
 
       this.$emit("hideOnYTSeekBarTouchEnd");
@@ -338,7 +338,7 @@ export default {
         } else {
           this.$refs.iosYtseekHead.addEventListener(
             "touchstart",
-            function(e) {
+            function (e) {
               e.preventDefault();
               this.detectMouseDown;
             },

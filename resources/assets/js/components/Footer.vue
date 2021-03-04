@@ -4,7 +4,7 @@
     v-bind:value="activeBtn"
     grow
     color="primary"
-    class="my-footer-menu"
+    v-bind:class="{ zIndex6: !isPortraitScreen && !isFullscreen }"
   >
     <v-btn to="/home" v-on:click="saveFooterTabIndex(0)">
       <span>ホーム</span>
@@ -55,6 +55,8 @@ export default {
     }),
     ...mapGetters({
       isLogin: "auth/check",
+      isPortraitScreen: "ytPlayer/isPortraitScreen",
+      isFullscreen: "ytPlayer/isFullscreen",
     }),
   },
   mounted() {

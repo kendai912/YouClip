@@ -35,7 +35,7 @@
                     class="home-and-search-result-title"
                     style="font-weight: 400; !important"
                   >
-                    {{ playlistName }} {{ screenOrientation }}
+                    {{ playlistName }}
                   </h1>
                 </v-col>
                 <v-col cols="auto" class="ma-2 my-0 pa-0 text-right">
@@ -222,7 +222,6 @@ export default {
       timeout: 5000,
       text: "",
       watchBodyRef: this.$refs.watchBody,
-      screenOrientation: "",
     };
   },
   computed: {
@@ -381,7 +380,7 @@ export default {
 
       window[this.youtubeCallbackName] =
         window[this.youtubeCallbackName] ||
-        function() {
+        function () {
           window[youtubeExistsFlag] = true;
           window[youtubeCallbackName] = null;
           delete window[youtubeCallbackName];
@@ -395,10 +394,10 @@ export default {
     },
     whenYoutubeAPIReady() {
       const existsFlag = this.youtubeExistsFlag;
-      return new Promise(function(resolve, reject) {
+      return new Promise(function (resolve, reject) {
         let elapsed = 0;
         let intervalHandle;
-        let checker = function() {
+        let checker = function () {
           elapsed += 48;
           if (!!window[existsFlag]) {
             clearTimeout(intervalHandle);
@@ -433,20 +432,7 @@ export default {
     hideOnYTSeekBarTouchEnd() {
       this.$refs.YTPlayerController.hideOnYTSeekBarTouchEnd();
     },
-    handleOrientationChange() {
-      let angle;
-      angle = screen && screen.orientation && screen.orientation.angle;
 
-      if (angle == null) {
-        angle = window.orientation || 0;
-      }
-
-      if (angle % 180 !== 0) {
-        this.screenOrientation = "landscape";
-      } else {
-        this.screenOrientation = "portrait";
-      }
-    },
     setEventListeners() {
       this.$refs.ytSeekBar.setEventListeners();
     },
@@ -526,9 +512,6 @@ export default {
 
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.watchBodyRef = this.$refs.watchBody;
-
-    this.handleOrientationChange();
-    window.addEventListener("orientationchange", this.handleOrientationChange);
   },
 };
 </script>
