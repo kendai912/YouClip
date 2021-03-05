@@ -207,7 +207,6 @@ export default {
       setIsIOS: "ytSeekBar/setIsIOS",
     }),
     getClickPosition(e) {
-      console.log("getClickPosition");
       e.preventDefault(); // prevent browser from moving objects, following links etc
 
       if (this.isIOS) {
@@ -216,7 +215,6 @@ export default {
         }
         this.seekWidth = e.changedTouches[0].pageX - this.ytseekbarPageX;
       } else if (this.isMobile) {
-        console.log("Mobile");
         if (!this.ytseekbarPageX) {
           this.ytseekbarPageX = $(".ios-ytseekbar-mask").offset().left;
         }
@@ -246,28 +244,23 @@ export default {
       }
     },
     detectMouseDown(e) {
-      console.log("detectMouseDown");
       e.preventDefault(); // prevent browser from moving objects, following links etc
 
       // start listening to mouse movements
       let self = this;
       if (this.isIOS) {
-        console.log("iOS");
         this.bodyRef.addEventListener("touchmove", self.getClickPosition, {
           passive: false,
         });
       } else if (this.isMobile) {
         if (this.canUseOntouch) {
-          console.log("canUseOntouch");
           this.bodyRef.ontouchmove = self.getClickPosition;
         } else {
-          console.log("Not canUseOntouch");
           this.bodyRef.addEventListener("touchmove", self.getClickPosition, {
             passive: false,
           });
         }
       } else {
-        console.log("PC");
         this.bodyRef.addEventListener("mousemove", self.getClickPosition, {
           passive: false,
         });
@@ -328,9 +321,19 @@ export default {
       } else if (this.isMobile) {
         if (this.canUseOntouch) {
           this.$refs.iosYtseekHead.ontouchstart = this.detectMouseDown;
+          this.$refs.iosYtseekbarMask.ontouchstart = this.detectMouseDown;
           this.$refs.iosYtseekHead.ontouchend = this.detectMouseUp;
+          this.$refs.iosYtseekbarMask.ontouchend = this.detectMouseUp;
         } else {
           this.$refs.iosYtseekHead.addEventListener(
+            "touchstart",
+            function (e) {
+              e.preventDefault();
+              this.detectMouseDown;
+            },
+            { passive: false }
+          );
+          this.$refs.iosYtseekbarMask.addEventListener(
             "touchstart",
             function (e) {
               e.preventDefault();
@@ -347,6 +350,10 @@ export default {
         );
       } else {
         this.$refs.ytseekHead.addEventListener(
+          "mousedown",
+          this.detectMouseDown
+        );
+        this.$refs.ytseekbarMask.addEventListener(
           "mousedown",
           this.detectMouseDown
         );
@@ -375,7 +382,6 @@ export default {
     this.$nextTick(() => {
       this.setEventListeners();
     });
-    console.log(this.bodyRef);
   },
 };
 </script>
