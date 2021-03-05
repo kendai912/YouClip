@@ -47,7 +47,7 @@
         </v-row>
         <v-row
           v-bind:class="
-            isIOS && !isPortraitScreen && isFullscreen
+            isMobile && !isPortraitScreen && isFullscreen
               ? 'ma-0 pa-0 text-center pb50px'
               : 'ma-0 pa-0 text-center'
           "
@@ -376,7 +376,7 @@ export default {
           "padding-bottom": playerHeight,
           bottom: "15px",
         });
-      } else if (!this.isPortraitScreen && this.isIOS) {
+      } else if (!this.isPortraitScreen && this.isMobile) {
         $(".iframeHeight").css({
           "padding-bottom": playerHeight,
           bottom: "0px",
@@ -392,7 +392,7 @@ export default {
       let playerHeight = ($("iframe").width() * 9) / 16;
       let seekBarPositionWhenPortrait =
         playerHeight + ($("iframe").height() - playerHeight) / 2;
-      let seekBarPositionWhenLandscapeIOS =
+      let seekBarPositionWhenLandscapeMobile =
         playerHeight + ($("iframe").height() - playerHeight) / 2 - 50;
       let seekBarPositionWhenLandscape =
         playerHeight + ($("iframe").height() - playerHeight) / 2 - 15;
@@ -400,8 +400,8 @@ export default {
       this.$nextTick(() => {
         if (this.isPortraitScreen) {
           $(".ios-wrapper-mask").css("top", seekBarPositionWhenPortrait);
-        } else if (!this.isPortraitScreen && this.isIOS) {
-          $(".ios-wrapper-mask").css("top", seekBarPositionWhenLandscapeIOS);
+        } else if (!this.isPortraitScreen && this.isMobile) {
+          $(".ios-wrapper-mask").css("top", seekBarPositionWhenLandscapeMobile);
         } else {
           $(".ios-wrapper-mask").css("top", seekBarPositionWhenLandscape);
         }
