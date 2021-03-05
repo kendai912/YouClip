@@ -114,7 +114,6 @@ export default {
     return {
       ytPlayerControllerTransition: "overlayfade",
       timer: null,
-      immediateHideFlag: false,
       isYTSeekBarTouchMoving: false,
       fullscreenWidth: 0,
       fullscreenHeight: 0,
@@ -128,6 +127,8 @@ export default {
       isFullscreen: "ytPlayer/isFullscreen",
       isPlaying: "ytPlayer/isPlaying",
       isPortraitScreen: "ytPlayer/isPortraitScreen",
+      showSeekbar: "ytPlayer/showSeekbar",
+      immediateHideFlag: "ytPlayer/immediateHideFlag",
       isMobile: "ytSeekBar/isMobile",
       isIOS: "ytSeekBar/isIOS",
       currentTime: "youtube/currentTime",
@@ -153,36 +154,52 @@ export default {
       setIsMuted: "ytPlayer/setIsMuted",
       setIsFullscreen: "ytPlayer/setIsFullscreen",
       setIsPortraitScreen: "ytPlayer/setIsPortraitScreen",
+      setShowSeekbar: "ytPlayer/setShowSeekbar",
+      setImmediateHideFlag: "ytPlayer/setImmediateHideFlag",
       setIsMobile: "ytSeekBar/setIsMobile",
       setIsIOS: "ytSeekBar/setIsIOS",
     }),
     setImmediateHide() {
-      this.immediateHideFlag = true;
+      this.setImmediateHideFlag(true);
     },
     toggleController() {
+      let self = this;
       if (!this.immediateHideFlag) {
         //show ytPlayerController
         $(".overlay").fadeIn(10);
+        if (this.isMobile && this.isFullscreen) {
+          this.setShowSeekbar(true);
+        }
 
-        // immdiately hide controller when touched continuously
-        this.immediateHideFlag = true;
+        setTimeout(() => {
+          // immdiately hide controller when touched continuously
+          self.setImmediateHideFlag(true);
 
-        //clear previous timer
-        clearTimeout(this.timer);
+          //clear previous timer
+          clearTimeout(self.timer);
 
-        let self = this;
-        //set timer and fadeout in 2.5sec
-        this.timer = setTimeout(function () {
-          self.immediateHideFlag = false;
-          $(".overlay").fadeOut(500);
-        }, 2500);
+          //set timer and fadeout in 2.5sec
+          self.timer = setTimeout(function () {
+            $(".overlay").fadeOut(500);
+            if (self.isMobile && self.isFullscreen) {
+              self.setShowSeekbar(false);
+            }
+
+            self.setImmediateHideFlag(false);
+          }, 2500);
+        }, 10);
       } else {
         $(".overlay").fadeOut(10);
-        this.immediateHideFlag = false;
+        if (this.isMobile && this.isFullscreen) {
+          this.setShowSeekbar(false);
+        }
+        setTimeout(() => {
+          self.setImmediateHideFlag(false);
+        }, 10);
       }
     },
     fadeInOutController() {
-      this.immediateHideFlag = false;
+      this.setImmediateHideFlag(false);
       this.toggleController();
     },
     //再生
@@ -197,8 +214,9 @@ export default {
       this.fadeInOutController();
 
       //keep showing ytPlayerController when pausing
+      let self = this;
       setTimeout(() => {
-        clearTimeout(this.timer);
+        clearTimeout(self.timer);
       }, 10);
 
       this.$store.commit("ytPlayer/setIsPlaying", false);
@@ -208,7 +226,7 @@ export default {
     showOnYTSeekBarTouchMove() {
       $(".overlay").fadeIn(10);
       clearTimeout(this.timer);
-      this.immediateHideFlag = true;
+      this.setImmediateHideFlag(true);
       this.isYTSeekBarTouchMoving = true;
     },
     //YTseekBar touchend
@@ -304,6 +322,7 @@ export default {
         this.revertFullScreenYtPlayerCSS();
         this.$emit("setEventListeners");
       });
+      this.fadeInSeekbar();
     },
     isWidthBasedFullscreeen() {
       if (this.isIOS) {

@@ -7,6 +7,7 @@ const state = {
   endTimeInput: null,
   isMobile: false,
   isIOS: false,
+  seekbarWidth: "",
 };
 
 const getters = {
@@ -15,6 +16,7 @@ const getters = {
   endTimeInput: (state) => state.endTimeInput,
   isMobile: (state) => state.isMobile,
   isIOS: (state) => state.isIOS,
+  seekbarWidth: (state) => state.seekbarWidth,
 };
 
 const mutations = {
@@ -32,6 +34,9 @@ const mutations = {
   },
   setIsIOS(state, data) {
     state.isIOS = data;
+  },
+  setSeekbarWidth(state, data) {
+    state.seekbarWidth = data;
   },
 };
 

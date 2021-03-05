@@ -1126,3 +1126,36 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
   border-top: dashed 1px rgba(255, 255, 255, 0.65);
   border-bottom: dashed 1px rgba(255, 255, 255, 0.65);
 }
+
+.fade-enter-active {
+  transition: all 0.01s;
+}
+
+.fade-leave-active {
+  transition: all 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave {
+  opacity: 1;
+}
+
+.immediate-enter-active,
+.immediate-leave-active {
+  transition: all 0.01s;
+}
+
+.immediate-enter,
+.immediate-leave-to {
+  opacity: 0;
+}
+
+.immediate-enter-to,
+.immediate-leave {
+  opacity: 1;
+}

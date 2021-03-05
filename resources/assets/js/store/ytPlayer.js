@@ -15,6 +15,8 @@ const state = {
   start: "",
   end: "",
   isPortraitScreen: true,
+  showSeekbar: true,
+  immediateHideFlag: false,
 };
 
 const getters = {
@@ -27,6 +29,8 @@ const getters = {
   listOfYoutubeIdStartEndTime: (state) => state.listOfYoutubeIdStartEndTime,
   listIndex: (state) => state.listIndex,
   isPortraitScreen: (state) => state.isPortraitScreen,
+  showSeekbar: (state) => state.showSeekbar,
+  immediateHideFlag: (state) => state.immediateHideFlag,
   youtubeId: (state) =>
     state.listOfYoutubeIdStartEndTime
       ? state.listOfYoutubeIdStartEndTime[state.listIndex].youtubeId
@@ -68,6 +72,12 @@ const mutations = {
   },
   setIsPortraitScreen(state, data) {
     state.isPortraitScreen = data;
+  },
+  setShowSeekbar(state, data) {
+    state.showSeekbar = data;
+  },
+  setImmediateHideFlag(state, data) {
+    state.immediateHideFlag = data;
   },
 };
 

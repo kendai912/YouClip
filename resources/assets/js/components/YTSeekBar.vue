@@ -1,85 +1,97 @@
 <template>
-  <div v-if="isMobile" class="ios-wrapper-mask">
-    <div class="ios-wrapper">
-      <div class="ios-ytseekbar-wrapper">
-        <div class="ios-ytseekbar-mask" ref="iosYtseekbarMask"></div>
-        <div
-          class="ios-ytseek-head"
-          ref="iosYtseekHead"
-          v-bind:style="'transform: translateX(' + progress + 'px)'"
-        ></div>
-        <div v-if="contentWidth >= 6">
+  <transition :name="immediateHideFlag ? 'immediate' : 'fade'">
+    <div
+      v-if="isMobile"
+      v-show="showSeekbar"
+      class="ios-wrapper-mask"
+      key="ios-wrapper-mask"
+    >
+      <div class="ios-wrapper">
+        <div class="ios-ytseekbar-wrapper">
+          <div class="ios-ytseekbar-mask" ref="iosYtseekbarMask"></div>
           <div
-            v-if="contentWidth"
-            class="ios-left-triangle"
-            v-bind:style="'left: ' + contentLeft + 'px;'"
+            class="ios-ytseek-head"
+            ref="iosYtseekHead"
+            v-bind:style="'transform: translateX(' + progress + 'px)'"
           ></div>
-          <div
-            class="ios-highlight-content"
-            v-bind:style="
-              'left: calc(' +
-              contentLeft +
-              'px + 3px ); width: calc(' +
-              contentWidth +
-              'px - 6px);'
-            "
-          ></div>
-          <div
-            v-if="contentWidth"
-            class="ios-right-triangle"
-            v-bind:style="'left: calc(' + contentRight + 'px - 3px);'"
-          ></div>
-        </div>
-        <div v-else>
-          <div
-            class="ios-highlight-content"
-            v-bind:style="
-              'left: ' + contentLeft + 'px; width: ' + contentWidth + 'px;'
-            "
-          ></div>
+          <div v-if="contentWidth >= 6">
+            <div
+              v-if="contentWidth"
+              class="ios-left-triangle"
+              v-bind:style="'left: ' + contentLeft + 'px;'"
+            ></div>
+            <div
+              class="ios-highlight-content"
+              v-bind:style="
+                'left: calc(' +
+                contentLeft +
+                'px + 3px ); width: calc(' +
+                contentWidth +
+                'px - 6px);'
+              "
+            ></div>
+            <div
+              v-if="contentWidth"
+              class="ios-right-triangle"
+              v-bind:style="'left: calc(' + contentRight + 'px - 3px);'"
+            ></div>
+          </div>
+          <div v-else>
+            <div
+              class="ios-highlight-content"
+              v-bind:style="
+                'left: ' + contentLeft + 'px; width: ' + contentWidth + 'px;'
+              "
+            ></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div v-else class="ytseekbar-wrapper">
-    <div class="ytseekbar-mask" ref="ytseekbarMask"></div>
     <div
-      class="ytseek-head"
-      ref="ytseekHead"
-      v-bind:style="'transform: translateX(' + progress + 'px)'"
-    ></div>
-    <div v-if="contentWidth >= 6">
+      v-else
+      v-show="showSeekbar"
+      class="ytseekbar-wrapper"
+      key="ytseekbar-wrapper"
+    >
+      <div class="ytseekbar-mask" ref="ytseekbarMask"></div>
       <div
-        v-if="contentWidth"
-        class="left-triangle"
-        v-bind:style="'left: ' + contentLeft + 'px;'"
+        class="ytseek-head"
+        ref="ytseekHead"
+        v-bind:style="'transform: translateX(' + progress + 'px)'"
       ></div>
-      <div
-        class="highlight-content"
-        v-bind:style="
-          'left: calc(' +
-          contentLeft +
-          'px + 3px ); width: calc(' +
-          contentWidth +
-          'px - 6px);'
-        "
-      ></div>
-      <div
-        v-if="contentWidth"
-        class="right-triangle"
-        v-bind:style="'left: calc(' + contentRight + 'px - 3px);'"
-      ></div>
+      <div v-if="contentWidth >= 6">
+        <div
+          v-if="contentWidth"
+          class="left-triangle"
+          v-bind:style="'left: ' + contentLeft + 'px;'"
+        ></div>
+        <div
+          class="highlight-content"
+          v-bind:style="
+            'left: calc(' +
+            contentLeft +
+            'px + 3px ); width: calc(' +
+            contentWidth +
+            'px - 6px);'
+          "
+        ></div>
+        <div
+          v-if="contentWidth"
+          class="right-triangle"
+          v-bind:style="'left: calc(' + contentRight + 'px - 3px);'"
+        ></div>
+      </div>
+      <div v-else>
+        <div
+          class="highlight-content"
+          v-bind:style="
+            'left: ' + contentLeft + 'px; width: ' + contentWidth + 'px;'
+          "
+        ></div>
+      </div>
     </div>
-    <div v-else>
-      <div
-        class="highlight-content"
-        v-bind:style="
-          'left: ' + contentLeft + 'px; width: ' + contentWidth + 'px;'
-        "
-      ></div>
-    </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -97,6 +109,7 @@ export default {
       previousYtseekPageX: null,
       ytseekbarPageX: null,
       canUseOntouch: false,
+      fadeName: "immediate",
     };
   },
   mixins: [myMixin],
@@ -108,10 +121,15 @@ export default {
       videoData: "youtube/videoData",
       player: "ytPlayer/player",
       isPlayerReady: "ytPlayer/isPlayerReady",
+      isFullscreen: "ytPlayer/isFullscreen",
+      isPortraitScreen: "ytPlayer/isPortraitScreen",
+      showSeekbar: "ytPlayer/showSeekbar",
+      immediateHideFlag: "ytPlayer/immediateHideFlag",
       startTimeInput: "ytSeekBar/startTimeInput",
       endTimeInput: "ytSeekBar/endTimeInput",
       isMobile: "ytSeekBar/isMobile",
       isIOS: "ytSeekBar/isIOS",
+      seekbarWidth: "ytSeekBar/seekbarWidth",
     }),
     duration() {
       if (this.isNew) {
@@ -123,19 +141,10 @@ export default {
       }
     },
     progress() {
-      if (this.isMobile) {
-        return (
-          $(".ios-ytseekbar-wrapper").width() *
-          (this.convertToSec(this.currentTime) /
-            this.convertToSec(this.duration))
-        );
-      } else {
-        return (
-          $(".ytseekbar-wrapper").width() *
-          (this.convertToSec(this.currentTime) /
-            this.convertToSec(this.duration))
-        );
-      }
+      return (
+        this.seekbarWidth *
+        (this.convertToSec(this.currentTime) / this.convertToSec(this.duration))
+      );
     },
     contentLeft() {
       if (
@@ -143,19 +152,11 @@ export default {
         this.convertToSec(this.startTimeInput) &&
         this.isPlayerReady
       ) {
-        if (this.isMobile) {
-          return (
-            $(".ios-ytseekbar-wrapper").width() *
-            (this.convertToSec(this.startTimeInput) /
-              this.convertToSec(this.duration))
-          );
-        } else {
-          return (
-            $(".ytseekbar-wrapper").width() *
-            (this.convertToSec(this.startTimeInput) /
-              this.convertToSec(this.duration))
-          );
-        }
+        return (
+          this.seekbarWidth *
+          (this.convertToSec(this.startTimeInput) /
+            this.convertToSec(this.duration))
+        );
       } else {
         return 0;
       }
@@ -173,21 +174,12 @@ export default {
           this.convertToSec(this.startTimeInput) <
             this.convertToSec(this.endTimeInput)
         ) {
-          if (this.isMobile) {
-            return (
-              $(".ios-ytseekbar-wrapper").width() *
-                (this.convertToSec(this.endTimeInput) /
-                  this.convertToSec(this.duration)) -
-              this.contentLeft
-            );
-          } else {
-            return (
-              $(".ytseekbar-wrapper").width() *
-                (this.convertToSec(this.endTimeInput) /
-                  this.convertToSec(this.duration)) -
-              this.contentLeft
-            );
-          }
+          return (
+            this.seekbarWidth *
+              (this.convertToSec(this.endTimeInput) /
+                this.convertToSec(this.duration)) -
+            this.contentLeft
+          );
         } else {
           return this.progress - this.contentLeft > 0
             ? this.progress - this.contentLeft
@@ -201,10 +193,22 @@ export default {
       return this.contentLeft + this.contentWidth;
     },
   },
+  watch: {
+    isFullscreen() {
+      this._setSeekBarWidth();
+    },
+    isPortraitScreen() {
+      this._setSeekBarWidth();
+    },
+    isPlayerReady() {
+      this._setSeekBarWidth();
+    },
+  },
   methods: {
     ...mapMutations({
       setIsMobile: "ytSeekBar/setIsMobile",
       setIsIOS: "ytSeekBar/setIsIOS",
+      setSeekbarWidth: "ytSeekBar/setSeekbarWidth",
     }),
     getClickPosition(e) {
       e.preventDefault(); // prevent browser from moving objects, following links etc
@@ -231,17 +235,9 @@ export default {
       }
 
       // change seek position
-      if (this.isMobile) {
-        this.player.seekTo(
-          this.convertToSec(this.duration) *
-            (this.seekWidth / $(".ios-ytseekbar-wrapper").width())
-        );
-      } else {
-        this.player.seekTo(
-          this.convertToSec(this.duration) *
-            (this.seekWidth / $(".ytseekbar-wrapper").width())
-        );
-      }
+      this.player.seekTo(
+        this.convertToSec(this.duration) * (this.seekWidth / this.seekbarWidth)
+      );
     },
     detectMouseDown(e) {
       e.preventDefault(); // prevent browser from moving objects, following links etc
@@ -362,6 +358,18 @@ export default {
           this.detectMouseDownOfYtseekbarMask
         );
         window.addEventListener("mouseup", this.detectMouseUp);
+      }
+
+      window.addEventListener("resize", this._setSeekBarWidth);
+    },
+    _setSeekBarWidth() {
+      if (this.isMobile) {
+        if ($(".ios-ytseekbar-wrapper").width())
+          this.setSeekbarWidth($(".ios-ytseekbar-wrapper").width());
+        console.log(this.seekbarWidth);
+      } else {
+        if ($(".ytseekbar-wrapper").width())
+          this.setSeekbarWidth($(".ytseekbar-wrapper").width());
       }
     },
   },
