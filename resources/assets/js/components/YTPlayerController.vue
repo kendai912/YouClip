@@ -180,12 +180,14 @@ export default {
 
           //set timer and fadeout in 2.5sec
           self.timer = setTimeout(function () {
-            $(".overlay").fadeOut(500);
-            if (self.isMobile && self.isFullscreen) {
-              self.setShowSeekbar(false);
-            }
+            if (self.isPlaying) {
+              $(".overlay").fadeOut(500);
+              if (self.isMobile && self.isFullscreen) {
+                self.setShowSeekbar(false);
+              }
 
-            self.setImmediateHideFlag(false);
+              self.setImmediateHideFlag(false);
+            }
           }, 2500);
         }, 10);
       } else {
@@ -305,7 +307,7 @@ export default {
         }
       }
     },
-    async expandScreen(event) {
+    expandScreen(event) {
       this.mobileCheck() ? "" : this.setIsMobile(true);
       this.setIsFullscreen(true);
       this.switchFullScreenMode(event);
@@ -322,7 +324,7 @@ export default {
         this.revertFullScreenYtPlayerCSS();
         this.$emit("setEventListeners");
       });
-      this.fadeInSeekbar();
+      this.setShowSeekbar(true);
     },
     isWidthBasedFullscreeen() {
       if (this.isIOS) {
@@ -504,20 +506,16 @@ export default {
       //seekbarがプレイヤーの下になるように戻す
       this.revertYTSeekBar();
     },
-    exitFullscreenHandler() {
+    fullscreenHandler(event) {
       if (
         !document.fullscreenElement &&
         !document.webkitIsFullScreen &&
         !document.mozFullScreen &&
         !document.msFullscreenElement
       ) {
-        // フルスクリーン表示なら解除する
-        this.mobileCheck() ? "" : this.setIsMobile(false);
-        this.setIsFullscreen(false);
-        this.revertFullScreenYtPlayerCSS();
-        this.$nextTick(() => {
-          this.$emit("setEventListeners");
-        });
+        this.compressScreen(event);
+      } else {
+        this.expandScreen(event);
       }
     },
     handleOrientationChange() {
@@ -544,27 +542,24 @@ export default {
   },
   mounted() {
     //iframeプレイヤーの表示から4秒後にプレイヤーコントロールボタンを非表示
+    let self = this;
     setTimeout(function () {
       $(".overlay").fadeOut(1000);
+      if (self.isMobile && self.isFullscreen) {
+        self.setShowSeekbar(false);
+      }
     }, 4000);
 
     this.handleOrientationChange();
     window.addEventListener("orientationchange", this.handleOrientationChange);
 
     // fボタン押下よるフルスクリーンモード制御キーボード入力の受付
-    window.addEventListener("keydown", this.switchFullScreenMode);
-
+    window.addEventListener("keydown", this.fullscreenHandler);
     // escボタン押下によるフルスクリーンモード解除キーボード入力
-    document.addEventListener("fullscreenchange", this.exitFullscreenHandler);
-    document.addEventListener(
-      "webkitfullscreenchange",
-      this.exitFullscreenHandler
-    );
-    document.addEventListener(
-      "mozfullscreenchange",
-      this.exitFullscreenHandler
-    );
-    document.addEventListener("MSFullscreenChange", this.exitFullscreenHandler);
+    document.addEventListener("fullscreenchange", this.fullscreenHandler);
+    document.addEventListener("webkitfullscreenchange", this.fullscreenHandler);
+    document.addEventListener("mozfullscreenchange", this.fullscreenHandler);
+    document.addEventListener("MSFullscreenChange", this.fullscreenHandler);
 
     window.addEventListener("resize", this.handleResize);
   },

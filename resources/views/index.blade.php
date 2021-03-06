@@ -84,7 +84,7 @@
       "@context": "https://schema.org",
       "@type": "VideoObject",
       "name": "{{$title}}",
-      "description": "{{$description}}"",
+      "description": "{{$description}}",
       "thumbnailUrl": "{!!$image_url!!}",
       "uploadDate": "{{$upload_date}}",
       "contentUrl": "{!!$url!!}",

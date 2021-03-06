@@ -240,6 +240,7 @@ export default {
       );
     },
     detectMouseDown(e) {
+      console.log("detectMouseDown");
       e.preventDefault(); // prevent browser from moving objects, following links etc
 
       // start listening to mouse movements
@@ -282,6 +283,7 @@ export default {
       this.$emit("hideOnYTSeekBarTouchEnd");
     },
     detectMouseDownOfYtseekbarMask(e) {
+      console.log("detectMouseDownOfYtseekbarMask");
       e.preventDefault(); // prevent browser from moving objects, following links etc
       this.$emit("fadeInOutController");
       this.getClickPosition(e);
@@ -303,6 +305,7 @@ export default {
       }
     },
     setEventListeners() {
+      console.log("setEventListeners");
       let self = this;
       if (this.isIOS) {
         this.$refs.iosYtseekHead.addEventListener(
@@ -323,27 +326,31 @@ export default {
         } else {
           this.$refs.iosYtseekHead.addEventListener(
             "touchstart",
-            function (e) {
-              e.preventDefault();
-              this.detectMouseDown;
-            },
+            this.detectMouseDown,
             { passive: false }
           );
           this.$refs.iosYtseekbarMask.addEventListener(
             "touchstart",
-            function (e) {
-              e.preventDefault();
-              this.detectMouseDown;
-            },
+            this.detectMouseDown,
             { passive: false }
           );
           window.addEventListener("touchend", this.detectMouseUp);
         }
 
-        this.$refs.iosYtseekbarMask.addEventListener(
-          "click",
-          this.detectMouseDownOfYtseekbarMask
-        );
+        this.$refs.iosYtseekbarMask.ontouchstart = function (e) {
+          self.detectMouseDownOfYtseekbarMask(e);
+          self.detectMouseDown(e);
+        };
+        // this.$refs.iosYtseekbarMask.addEventListener("click", function (e) {
+        //   console.log("added click eventlistener");
+        //   self.detectMouseDownOfYtseekbarMask(e);
+        // });
+        // this.$refs.iosYtseekbarMask.addEventListener(
+        //   "click",
+        //   this.detectMouseDownOfYtseekbarMask
+        // );
+
+        console.log("after addEventListener");
       } else {
         this.$refs.ytseekHead.addEventListener(
           "mousedown",
@@ -366,7 +373,6 @@ export default {
       if (this.isMobile) {
         if ($(".ios-ytseekbar-wrapper").width())
           this.setSeekbarWidth($(".ios-ytseekbar-wrapper").width());
-        console.log(this.seekbarWidth);
       } else {
         if ($(".ytseekbar-wrapper").width())
           this.setSeekbarWidth($(".ytseekbar-wrapper").width());
