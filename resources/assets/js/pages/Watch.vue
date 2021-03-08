@@ -68,17 +68,6 @@
               <v-col class="ma-0 pa-0 text-center">
                 <v-bottom-navigation class="bottom_navigation_no_shadow">
                   <v-btn
-                    v-on:click="sharePlaylist"
-                    class="ma-0 pa-0 narrow-btn"
-                  >
-                    <span>まとめをシェア</span>
-                    <i class="fas fa-share outlined-icon icon-large"></i>
-                  </v-btn>
-                </v-bottom-navigation>
-              </v-col>
-              <v-col class="ma-0 pa-0 text-center">
-                <v-bottom-navigation class="bottom_navigation_no_shadow">
-                  <v-btn
                     v-on:click="toggleLikePlaylist"
                     class="ma-0 pa-0 narrow-btn"
                   >
@@ -94,6 +83,31 @@
                   </v-btn>
                 </v-bottom-navigation>
               </v-col>
+
+              <v-col class="ma-0 pa-0 text-center">
+                <v-bottom-navigation class="bottom_navigation_no_shadow">
+                  <v-btn
+                    v-on:click="sharePlaylist"
+                    class="ma-0 pa-0 narrow-btn"
+                  >
+                    <span>まとめをシェア</span>
+                    <i class="fas fa-share outlined-icon icon-large"></i>
+                  </v-btn>
+                </v-bottom-navigation>
+              </v-col>
+
+              <v-col class="ma-0 pa-0 text-center">
+                <v-bottom-navigation class="bottom_navigation_no_shadow">
+                  <v-btn
+                    v-bind:href="'https://youtube.com/watch?v=' + youtubeId"
+                    class="ma-0 pa-0 narrow-btn"
+                  >
+                    <span>元のYouTubeを開く</span>
+                    <i class="fab fa-youtube outlined-icon icon-large"></i>
+                  </v-btn>
+                </v-bottom-navigation>
+              </v-col>
+
               <span
                 v-on:click="openOtherActionModal"
                 style="
@@ -230,7 +244,6 @@ export default {
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
       commentListofPlaylist: "playlist/commentListofPlaylist",
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
-      currentYoutubeId: "watch/currentYoutubeId",
       tagAndVideoData: "watch/tagAndVideoData",
       isPlaylist: "watch/isPlaylist",
       playlistName: "watch/playlistName",

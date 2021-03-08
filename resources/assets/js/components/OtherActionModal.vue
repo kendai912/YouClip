@@ -46,12 +46,12 @@ export default {
   computed: {
     ...mapGetters({
       user_id: "auth/user_id",
-      currentYoutubeId: "watch/currentYoutubeId",
       startHis: "watch/start",
       endHis: "watch/end",
       currentTagId: "watch/currentTagId",
       currentTagNameArray: "watch/currentTagNameArray",
       tagPrivacySetting: "watch/tagPrivacySetting",
+      youtubeId: "ytPlayer/youtubeId",
     }),
     startIs() {
       return this.formatToMinSec(this.startHis);
@@ -88,8 +88,8 @@ export default {
         this.closeOtherActionModal();
 
         //「編集」に必要なyoutubeデータをロード
-        this.$store.commit("youtube/setYoutubeId", this.currentYoutubeId);
-        await this.$store.dispatch("youtube/getVideo", this.currentYoutubeId);
+        this.$store.commit("youtube/setYoutubeId", this.youtubeId);
+        await this.$store.dispatch("youtube/getVideo", this.youtubeId);
         await this.$store.dispatch("youtube/getTag");
         this.$store.commit("youtube/setIsReady", true);
 
