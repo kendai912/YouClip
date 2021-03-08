@@ -11,7 +11,6 @@
           <YTPlayerController
             v-show="isPlayerReady"
             ref="YTPlayerController"
-            v-on:setEventListeners="setEventListeners"
           />
           <YTSeekBar
             v-show="isPlayerReady"
@@ -431,10 +430,6 @@ export default {
     },
     hideOnYTSeekBarTouchEnd() {
       this.$refs.YTPlayerController.hideOnYTSeekBarTouchEnd();
-    },
-
-    setEventListeners() {
-      this.$refs.ytSeekBar.setEventListeners();
     },
   },
   watch: {

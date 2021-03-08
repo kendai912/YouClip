@@ -214,23 +214,17 @@ export default {
       e.preventDefault(); // prevent browser from moving objects, following links etc
 
       if (this.isIOS) {
-        if (!this.ytseekbarPageX) {
-          this.ytseekbarPageX = $(".ios-ytseekbar-mask").offset().left;
-        }
+        this.ytseekbarPageX = $(".ios-ytseekbar-mask").offset().left;
         this.seekWidth = e.changedTouches[0].pageX - this.ytseekbarPageX;
       } else if (this.isMobile) {
-        if (!this.ytseekbarPageX) {
-          this.ytseekbarPageX = $(".ios-ytseekbar-mask").offset().left;
-        }
+        this.ytseekbarPageX = $(".ios-ytseekbar-mask").offset().left;
         if (e.changedTouches) {
           this.seekWidth = e.changedTouches[0].pageX - this.ytseekbarPageX;
         } else {
           this.seekWidth = e.pageX - this.ytseekbarPageX;
         }
       } else {
-        if (!this.ytseekbarPageX) {
-          this.ytseekbarPageX = $(".ytseekbar-mask").offset().left;
-        }
+        this.ytseekbarPageX = $(".ytseekbar-mask").offset().left;
         this.seekWidth = e.pageX - this.ytseekbarPageX;
       }
 
@@ -240,7 +234,6 @@ export default {
       );
     },
     detectMouseDown(e) {
-      console.log("detectMouseDown");
       e.preventDefault(); // prevent browser from moving objects, following links etc
 
       // start listening to mouse movements
@@ -268,12 +261,8 @@ export default {
       // stop listening to mouse movements
       let self = this;
       if (this.isMobile) {
-        // if (this.canUseOntouch) {
         this.bodyRef.ontouchmove = null;
         this.bodyRef.removeEventListener("touchmove", this.getClickPosition);
-        // } else {
-        //   this.bodyRef.removeEventListener("touchmove", this.getClickPosition);
-        // }
       } else {
         this.bodyRef.removeEventListener("mousemove", self.getClickPosition, {
           passive: false,
@@ -283,7 +272,6 @@ export default {
       this.$emit("hideOnYTSeekBarTouchEnd");
     },
     detectMouseDownOfYtseekbarMask(e) {
-      console.log("detectMouseDownOfYtseekbarMask");
       e.preventDefault(); // prevent browser from moving objects, following links etc
       this.$emit("fadeInOutController");
       this.getClickPosition(e);
@@ -305,7 +293,6 @@ export default {
       }
     },
     setEventListeners() {
-      console.log("setEventListeners");
       let self = this;
       if (this.isIOS) {
         this.$refs.iosYtseekHead.addEventListener(
@@ -314,7 +301,10 @@ export default {
         );
         this.$refs.iosYtseekbarMask.addEventListener(
           "touchstart",
-          this.detectMouseDownOfYtseekbarMask
+          function (e) {
+            self.detectMouseDownOfYtseekbarMask(e);
+            self.detectMouseDown(e);
+          }
         );
         window.addEventListener("touchend", this.detectMouseUp);
       } else if (this.isMobile) {
@@ -341,16 +331,14 @@ export default {
           self.detectMouseDownOfYtseekbarMask(e);
           self.detectMouseDown(e);
         };
-        // this.$refs.iosYtseekbarMask.addEventListener("click", function (e) {
-        //   console.log("added click eventlistener");
-        //   self.detectMouseDownOfYtseekbarMask(e);
-        // });
-        // this.$refs.iosYtseekbarMask.addEventListener(
-        //   "click",
-        //   this.detectMouseDownOfYtseekbarMask
-        // );
-
-        console.log("after addEventListener");
+        this.$refs.iosYtseekbarMask.addEventListener(
+          "touchstart",
+          this.detectMouseDownOfYtseekbarMask
+        );
+        this.$refs.iosYtseekbarMask.addEventListener(
+          "click",
+          this.detectMouseDownOfYtseekbarMask
+        );
       } else {
         this.$refs.ytseekHead.addEventListener(
           "mousedown",

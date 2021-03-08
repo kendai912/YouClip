@@ -313,7 +313,6 @@ export default {
       this.switchFullScreenMode(event);
       this.$nextTick(() => {
         this.setFullScreenYtPlayerCSS();
-        this.$emit("setEventListeners");
       });
     },
     compressScreen(event) {
@@ -322,7 +321,6 @@ export default {
       this.switchFullScreenMode(event);
       this.$nextTick(() => {
         this.revertFullScreenYtPlayerCSS();
-        this.$emit("setEventListeners");
       });
       this.setShowSeekbar(true);
     },
