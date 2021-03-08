@@ -7,6 +7,14 @@
           align="center"
           style="height: 33.333%"
         >
+          <v-col
+            v-if="isFullscreen"
+            align-self="start"
+            class="text-left"
+            style="font-size: calc(1rem * (16 / 14)); color: white; "
+          >
+            {{ playlistName }}
+          </v-col>
         </v-row>
         <v-row
           class="ma-0 pa-0 text-center"
@@ -122,6 +130,7 @@ export default {
   mixins: [myMixin],
   computed: {
     ...mapGetters({
+      playlistName: "watch/playlistName",
       player: "ytPlayer/player",
       isMuted: "ytPlayer/isMuted",
       isFullscreen: "ytPlayer/isFullscreen",
@@ -179,7 +188,7 @@ export default {
           clearTimeout(self.timer);
 
           //set timer and fadeout in 2.5sec
-          self.timer = setTimeout(function () {
+          self.timer = setTimeout(function() {
             if (self.isPlaying) {
               $(".overlay").fadeOut(500);
               if (self.isMobile && self.isFullscreen) {
@@ -541,7 +550,7 @@ export default {
   mounted() {
     //iframeプレイヤーの表示から4秒後にプレイヤーコントロールボタンを非表示
     let self = this;
-    setTimeout(function () {
+    setTimeout(function() {
       $(".overlay").fadeOut(1000);
       if (self.isMobile && self.isFullscreen) {
         self.setShowSeekbar(false);
