@@ -11,6 +11,7 @@
           <YTPlayerController
             v-show="isPlayerReady"
             ref="YTPlayerController"
+            v-on:switchToPlayListIndexOf="switchToPlayListIndexOf"
           />
           <YTSeekBar
             v-show="isPlayerReady"
@@ -379,7 +380,7 @@ export default {
 
       window[this.youtubeCallbackName] =
         window[this.youtubeCallbackName] ||
-        function () {
+        function() {
           window[youtubeExistsFlag] = true;
           window[youtubeCallbackName] = null;
           delete window[youtubeCallbackName];
@@ -393,10 +394,10 @@ export default {
     },
     whenYoutubeAPIReady() {
       const existsFlag = this.youtubeExistsFlag;
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
         let elapsed = 0;
         let intervalHandle;
-        let checker = function () {
+        let checker = function() {
           elapsed += 48;
           if (!!window[existsFlag]) {
             clearTimeout(intervalHandle);

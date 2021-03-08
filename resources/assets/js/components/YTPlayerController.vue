@@ -22,6 +22,23 @@
           justify="space-around"
           style="height: 33.333%"
         >
+          <v-col
+            class="ma-0 pt-3 pr-2 pb-3 pl-2"
+            v-on:click.stop.prevent="backToPrevious"
+          >
+            <v-row class="ma-0 pa-0">
+              <v-col class="ma-0 pa-0">
+                <v-icon large color="white">arrow_back</v-icon>
+              </v-col>
+            </v-row>
+            <v-row class="ma-0 pa-0">
+              <v-col class="ma-0 pa-0">
+                <span style="font-size: calc(1rem * (12 / 14)); color: white; "
+                  >前の場面</span
+                >
+              </v-col>
+            </v-row>
+          </v-col>
           <v-col>
             <v-icon
               x-large
@@ -51,6 +68,23 @@
               color="white"
               >forward_5</v-icon
             >
+          </v-col>
+          <v-col
+            class="ma-0 pt-3 pr-2 pb-3 pl-2"
+            v-on:click.stop.prevent="moveToNext"
+          >
+            <v-row class="ma-0 pa-0">
+              <v-col class="ma-0 pa-0">
+                <v-icon large color="white">arrow_forward</v-icon>
+              </v-col>
+            </v-row>
+            <v-row class="ma-0 pa-0">
+              <v-col class="ma-0 pa-0">
+                <span style="font-size: calc(1rem * (12 / 14)); color: white; "
+                  >次の場面</span
+                >
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
         <v-row
@@ -138,6 +172,10 @@ export default {
       isPortraitScreen: "ytPlayer/isPortraitScreen",
       showSeekbar: "ytPlayer/showSeekbar",
       immediateHideFlag: "ytPlayer/immediateHideFlag",
+      listOfYoutubeIdStartEndTime: "ytPlayer/listOfYoutubeIdStartEndTime",
+      startHis: "ytPlayer/start",
+      endHis: "ytPlayer/end",
+      listIndex: "ytPlayer/listIndex",
       isMobile: "ytSeekBar/isMobile",
       isIOS: "ytSeekBar/isIOS",
       currentTime: "youtube/currentTime",
@@ -145,6 +183,7 @@ export default {
       newVideoData: "youtube/newVideoData",
       videoData: "youtube/videoData",
       showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
+      isEditing: "tagging/isEditing",
     }),
     duration() {
       if (this.isNew) {
@@ -154,6 +193,12 @@ export default {
           ? this.formatToMinSec(this.videoData.duration)
           : "0:00";
       }
+    },
+    startIs() {
+      return this.formatToMinSec(this.startHis);
+    },
+    endIs() {
+      return this.formatToMinSec(this.endHis);
     },
   },
   methods: {
@@ -165,6 +210,7 @@ export default {
       setIsPortraitScreen: "ytPlayer/setIsPortraitScreen",
       setShowSeekbar: "ytPlayer/setShowSeekbar",
       setImmediateHideFlag: "ytPlayer/setImmediateHideFlag",
+      setListIndex: "ytPlayer/setListIndex",
       setIsMobile: "ytSeekBar/setIsMobile",
       setIsIOS: "ytSeekBar/setIsIOS",
     }),
@@ -544,6 +590,47 @@ export default {
         this.setFullScreenYtPlayerCSS();
       } else {
         this.revertFullScreenYtPlayerCSS();
+      }
+    },
+    //前の場面を再生
+    backToPrevious() {
+      if (this.isEditing || this.listOfYoutubeIdStartEndTime.length == 1) {
+        //現在と同じシーンをリピート(開始時間に戻る)
+        this.player.seekTo(this.convertToSec(this.startIs));
+      } else if (this.listOfYoutubeIdStartEndTime.length > 1) {
+        //まとめ再生の場合
+        if (this.listIndex == 0) {
+          // 最初の場面の場合は最後の場面のパラメータをセット
+          this.setListIndex(
+            Number(this.listOfYoutubeIdStartEndTime.length) - 1 - 1
+          );
+          this.$emit("switchToPlayListIndexOf", this.listIndex);
+        } else {
+          //最初の場面以外は前の場面へ
+          this.setListIndex(Number(this.listIndex) - 1);
+          this.$emit("switchToPlayListIndexOf", this.listIndex);
+        }
+      }
+    },
+    //次の場面を再生
+    moveToNext() {
+      if (this.isEditing || this.listOfYoutubeIdStartEndTime.length == 1) {
+        //現在と同じシーンをリピート(開始時間に戻る)
+        this.player.seekTo(this.convertToSec(this.startIs));
+      } else if (this.listOfYoutubeIdStartEndTime.length > 1) {
+        //まとめ再生の場合
+        if (this.listIndex < this.listOfYoutubeIdStartEndTime.length - 1) {
+          // //最後のシーンでない場合は次のシーンのパラメータをセット
+          this.setListIndex(Number(this.listIndex) + 1);
+          this.$emit("switchToPlayListIndexOf", this.listIndex);
+        } else if (
+          this.listIndex >=
+          this.listOfYoutubeIdStartEndTime.length - 1
+        ) {
+          //最後のシーンの場合は先頭に戻る
+          this.setListIndex(0);
+          this.$emit("switchToPlayListIndexOf", this.listIndex);
+        }
       }
     },
   },

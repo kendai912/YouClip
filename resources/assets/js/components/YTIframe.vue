@@ -195,7 +195,7 @@ export default {
         } else if (this.listOfYoutubeIdStartEndTime.length > 1) {
           //まとめ再生の場合
           if (this.listIndex < this.listOfYoutubeIdStartEndTime.length - 1) {
-            // //最後のシーンでない場合は次のシーンのパラメータをセット
+            // 最後のシーンでない場合は次のシーンのパラメータをセット
             this.setListIndex(Number(this.listIndex) + 1);
             this.$emit("switchToPlayListIndexOf", this.listIndex);
           } else if (
