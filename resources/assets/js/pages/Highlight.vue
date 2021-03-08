@@ -135,6 +135,7 @@ export default {
       (from.path == "/youtube/scene" && to.path == "/") ||
       (from.path == "/youtube/confirm" && to.path == "/youtube/scene") ||
       (from.path == "/youtube/confirm" && to.path == "/youtube") ||
+      (from.path == "/highlight/scenelist" && to.path == "/youtube/scene") ||
       (from.path == "/highlight/scenelist" && to.path == "/youtube/confirm") ||
       (from.path == "/highlight/scenelist" && to.path == "/youtube") ||
       (from.path == "/highlight/title" && to.path == "/highlight/scenelist") ||

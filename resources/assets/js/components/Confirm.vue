@@ -98,7 +98,7 @@
             <v-col class="text-right ma-0 pa-2">
               <v-btn
                 v-if="isVideoDataReady"
-                color="red lighten-2 white--text"
+                color="red lighten-1 white--text"
                 v-bind:disabled="isDisabled"
                 v-on:click="confirm"
                 >OK</v-btn
@@ -109,7 +109,6 @@
       </v-sheet>
     </div>
     <NoLoginModal v-if="showLoginModal" />
-    <ConfirmationModal v-if="showConfirmationModal" />
   </div>
 </template>
 
@@ -120,7 +119,6 @@ import YTIframe from "../components/YTIframe";
 import YTPlayerController from "../components/YTPlayerController";
 import YTSeekBar from "../components/YTSeekBar";
 import NoLoginModal from "../components/NoLoginModal.vue";
-import ConfirmationModal from "../components/ConfirmationModal.vue";
 import myMixin from "../util";
 
 export default {
@@ -130,7 +128,6 @@ export default {
     YTPlayerController,
     YTSeekBar,
     NoLoginModal,
-    ConfirmationModal,
   },
   data() {
     return {
@@ -167,7 +164,6 @@ export default {
       isEditing: "tagging/isEditing",
       showLoginModal: "noLoginModal/showLoginModal",
       newPlaylistId: "playlist/newPlaylistId",
-      showConfirmationModal: "confirmationModal/showConfirmationModal",
       youtubeId: "ytPlayer/youtubeId",
       player: "ytPlayer/player",
       isPlayerReady: "ytPlayer/isPlayerReady",
@@ -397,8 +393,17 @@ export default {
           //ローディングを非表示
           self.$store.commit("highlightHeader/setNotLoading");
 
-          //display scene tagging complete modal
-          self.$store.commit("confirmationModal/openConfirmationModal");
+          //display adding a new scene to existing playlist completion snackbar
+          self.$store.commit("snackbar/setText", "新しい場面を追加しました");
+          self.$store.commit("snackbar/setSnackbar", true);
+          self.$store.commit("snackbar/setTimeout", 5000);
+
+          //return to the playlist edit page
+          self.$router
+            .push({
+              path: "/highlight/scenelist",
+            })
+            .catch((err) => {});
         }
 
         //セッションに保存してある開始・終了時間データを破棄

@@ -22,14 +22,12 @@
             <v-btn
               width="100%"
               height="45px"
-              color="red lighten-2"
+              color="red lighten-1"
+              outlined
               class="white--text"
-              v-bind:to="{
-                path: '/youtube',
-                query: { return: true },
-              }"
+              v-on:click="openAddNewSceneModal"
               style="font-size: 14px; "
-              >続けて他の動画の場面を追加</v-btn
+              >新しい場面を追加</v-btn
             >
           </v-row>
           <v-row
@@ -55,17 +53,17 @@
             <v-btn
               width="100%"
               height="45px"
-              outlined
-              color="red lighten-2"
+              color="red lighten-1"
               class="white--text"
               to="/highlight/title"
               style="font-size: 14px;"
-              >まとめのタイトル入力へ</v-btn
+              >まとめタイトル入力へ</v-btn
             >
           </v-row>
         </v-container>
       </v-sheet>
     </div>
+    <AddNewSceneModal v-if="showAddNewSceneModal" />
   </div>
 </template>
 
@@ -73,12 +71,14 @@
 import { mapState, mapGetters, mapMutations } from "vuex";
 import HighlightHeader from "../components/HighlightHeader.vue";
 import SceneTagItem from "../components/SceneTagItem.vue";
+import AddNewSceneModal from "../components/AddNewSceneModal.vue";
 import myMixin from "../util";
 
 export default {
   components: {
     HighlightHeader,
     SceneTagItem,
+    AddNewSceneModal,
   },
   data() {
     return {
@@ -96,6 +96,7 @@ export default {
       youtubeId: "youtube/youtubeId",
       tagDataArray: "youtube/tagDataArray",
       myPlaylistToSave: "tagging/myPlaylistToSave",
+      showAddNewSceneModal: "addNewSceneModal/showAddNewSceneModal",
     }),
   },
   watch: {
@@ -104,7 +105,9 @@ export default {
     },
   },
   methods: {
-    ...mapMutations({}),
+    ...mapMutations({
+      openAddNewSceneModal: "addNewSceneModal/openAddNewSceneModal",
+    }),
     async initialize() {
       //ナビバーを非表示
       this.$store.commit("navbar/setShowNavbar", false);
@@ -161,10 +164,6 @@ export default {
   async mounted() {
     await this.initialize();
 
-    //headerの戻るアイコンを表示
-    this.$store.commit("highlightHeader/setShowBackIcon", true);
-  },
-  beforeDestroy() {
     //headerの戻るアイコンを非表示
     this.$store.commit("highlightHeader/setShowBackIcon", false);
   },

@@ -23,6 +23,7 @@
           style="height: 33.333%"
         >
           <v-col
+            v-if="isWatchingPlaylist"
             class="ma-0 pt-3 pr-2 pb-3 pl-2"
             v-on:click.stop.prevent="backToPrevious"
           >
@@ -70,6 +71,7 @@
             >
           </v-col>
           <v-col
+            v-if="isWatchingPlaylist"
             class="ma-0 pt-3 pr-2 pb-3 pl-2"
             v-on:click.stop.prevent="moveToNext"
           >

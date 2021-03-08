@@ -66,7 +66,7 @@
             <v-btn
               width="100%"
               height="45px"
-              color="red lighten-2"
+              color="red lighten-1"
               class="white--text ma-0 pa-0"
               v-on:click="updateAndMoveToCompletePage"
               style="font-size: 14px; "

@@ -22,7 +22,6 @@
             style="color: #757575; font-size: 14px;"
           >
             アカウントをお持ちでないですか?
-            <!-- <v-btn color="green" class="ma-0 pa-0" height="100%" text v-on:click="openRegisterPage">登録する</v-btn> -->
             <a
               href="javascript:void(0)"
               color="green"

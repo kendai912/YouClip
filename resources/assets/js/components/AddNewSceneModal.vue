@@ -1,21 +1,18 @@
 <template>
-  <v-dialog v-model="showConfirmationModal" max-width="360" persistent>
+  <v-dialog v-model="showAddNewSceneModal" max-width="360">
     <v-card>
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0">
-          <v-col class="mx-6 mt-6 pa-0 text-center"
-            >{{ start }}-{{ end }}の場面を切り抜きました！
-          </v-col>
-        </v-row>
-        <v-row class="ma-0 pa-0">
-          <v-col class="mx-6 px-0 pb-0">
+          <v-col class="mx-6 mt-6 pa-0">
             <v-btn
               width="100%"
-              color="red lighten-2"
+              color="red lighten-1"
+              outlined
               class="white--text"
               v-on:click="moveToYThighlightPage"
               style="font-size: 16px;"
-              >続けて他の場面を切り抜く</v-btn
+              ><span style="font-weight: bold; ">続けて他の</span
+              >場面を切り抜く</v-btn
             >
           </v-col>
         </v-row>
@@ -45,12 +42,13 @@
           <v-col class="mx-6 mb-6 pa-0">
             <v-btn
               width="100%"
+              color="red lighten-1"
               outlined
-              color="red lighten-2"
               class="white--text"
-              v-on:click="openSceneListPage"
+              v-on:click="moveToSearchNewYTvideo"
               style="font-size: 16px;"
-              >切り抜いた場面一覧へ</v-btn
+              ><span style="font-weight: bold; ">新しい動画の</span
+              >場面を追加</v-btn
             >
           </v-col>
         </v-row>
@@ -71,30 +69,50 @@ export default {
     ...mapGetters({
       start: "tagging/start",
       end: "tagging/end",
+      youtubeId: "ytPlayer/youtubeId",
     }),
-    showConfirmationModal: {
+    showAddNewSceneModal: {
       get() {
-        return this.$store.getters["confirmationModal/showConfirmationModal"];
+        return this.$store.getters["addNewSceneModal/showAddNewSceneModal"];
       },
       set() {
-        return this.$store.commit("confirmationModal/closeConfirmationModal");
+        return this.$store.commit("addNewSceneModal/closeAddNewSceneModal");
       },
     },
   },
   methods: {
     ...mapMutations({
-      closeConfirmationModal: "confirmationModal/closeConfirmationModal",
+      closeAddNewSceneModal: "addNewSceneModal/closeAddNewSceneModal",
     }),
     moveToYThighlightPage() {
       //close scene tagging complete modal
-      this.$store.commit("confirmationModal/closeConfirmationModal");
+      this.$store.commit("addNewSceneModal/closeAddNewSceneModal");
 
-      //一つ前のYouTube動画ハイライトページを表示
-      this.$router.go(-1);
+      //直前のYouTube動画ハイライトページを表示
+      this.$router
+        .push({
+          path: "/youtube/scene",
+          query: {
+            v: this.youtubeId,
+          },
+        })
+        .catch((err) => {});
+    },
+    moveToSearchNewYTvideo() {
+      //close scene tagging complete modal
+      this.$store.commit("addNewSceneModal/closeAddNewSceneModal");
+
+      //YouTube動画の検索ページへ
+      this.$router
+        .push({
+          path: "/youtube",
+          query: { return: true },
+        })
+        .catch((err) => {});
     },
     openSceneListPage() {
       //close scene tagging complete modal
-      this.$store.commit("confirmationModal/closeConfirmationModal");
+      this.$store.commit("addNewSceneModal/closeAddNewSceneModal");
 
       //切り抜いた場面一覧ページを表示
       this.$router

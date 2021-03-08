@@ -121,7 +121,7 @@
         <v-container class="ma-0 pa-0" fluid>
           <v-row align="center" class="ma-0 pa-0">
             <v-col class="text-right ma-0 pa-2">
-              <v-btn color="red lighten-2 white--text" v-on:click="next"
+              <v-btn color="red lighten-1 white--text" v-on:click="next"
                 >確認</v-btn
               >
             </v-col>
@@ -476,10 +476,6 @@ export default {
 
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.highlightBodyRef = this.$refs.highlightBody;
-  },
-  beforeDestroy() {
-    //headerの戻るアイコンを非表示
-    this.$store.commit("highlightHeader/setShowBackIcon", false);
   },
 };
 </script>

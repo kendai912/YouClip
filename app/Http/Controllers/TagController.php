@@ -571,6 +571,7 @@ class TagController extends Controller
         $isArray = explode(':', $is);
         $i = $isArray[0];
         $s = $isArray[1];
+        $H = "00";
 
         if ($i > 60) {
             $H = floor($i / 60);
