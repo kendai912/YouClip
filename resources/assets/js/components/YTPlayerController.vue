@@ -8,7 +8,7 @@
           style="height: 33.333%"
         >
           <v-col
-            v-if="isFullscreen"
+            v-if="isFullscreen && isWatchingPlaylist"
             align-self="start"
             class="text-left"
             style="font-size: calc(1rem * (16 / 14)); color: white; "
@@ -119,6 +119,7 @@
             <v-icon
               large
               v-if="!isFullscreen"
+              v-show="isWatchingPlaylist"
               v-on:click.stop.prevent="expandScreen"
               color="white"
               >mdi-fullscreen</v-icon
@@ -126,6 +127,7 @@
             <v-icon
               large
               v-else
+              v-show="isWatchingPlaylist"
               v-on:click.stop.prevent="compressScreen"
               color="white"
               >mdi-fullscreen-exit</v-icon
@@ -176,6 +178,7 @@ export default {
       startHis: "ytPlayer/start",
       endHis: "ytPlayer/end",
       listIndex: "ytPlayer/listIndex",
+      isWatchingPlaylist: "ytPlayer/isWatchingPlaylist",
       isMobile: "ytSeekBar/isMobile",
       isIOS: "ytSeekBar/isIOS",
       currentTime: "youtube/currentTime",

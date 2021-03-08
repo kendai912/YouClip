@@ -8,6 +8,7 @@ const state = {
   isFullscreen: false,
   isPlayerReady: false,
   isPlaying: true,
+  isWatchingPlaylist: false,
   playSpeed: 1,
   listOfYoutubeIdStartEndTime: "",
   listIndex: 0,
@@ -25,6 +26,7 @@ const getters = {
   isFullscreen: (state) => state.isFullscreen,
   isPlayerReady: (state) => state.isPlayerReady,
   isPlaying: (state) => state.isPlaying,
+  isWatchingPlaylist: (state) => state.isWatchingPlaylist,
   playSpeed: (state) => state.playSpeed,
   listOfYoutubeIdStartEndTime: (state) => state.listOfYoutubeIdStartEndTime,
   listIndex: (state) => state.listIndex,
@@ -60,6 +62,9 @@ const mutations = {
   },
   setIsPlaying(state, data) {
     state.isPlaying = data;
+  },
+  setIsWatchingPlaylist(state, data) {
+    state.isWatchingPlaylist = data;
   },
   setPlaySpeed(state, data) {
     state.playSpeed = data;

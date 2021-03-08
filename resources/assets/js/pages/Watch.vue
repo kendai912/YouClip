@@ -371,6 +371,8 @@ export default {
 
       //倍速視聴を1倍のリセット
       this.$store.commit("ytPlayer/setPlaySpeed", 1);
+
+      this.$store.commit("ytPlayer/setIsWatchingPlaylist", true);
     },
     clearAllInput() {
       this.$store.commit("ytSeekBar/setStartTimeInput", null);
@@ -521,6 +523,9 @@ export default {
 
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.watchBodyRef = this.$refs.watchBody;
+  },
+  beforeDestroy() {
+    this.$store.commit("ytPlayer/setIsWatchingPlaylist", false);
   },
 };
 </script>
