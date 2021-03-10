@@ -24,10 +24,10 @@
               class="ios-highlight-content"
               v-bind:style="
                 'left: calc(' +
-                contentLeft +
-                'px + 3px ); width: calc(' +
-                contentWidth +
-                'px - 6px);'
+                  contentLeft +
+                  'px + 3px ); width: calc(' +
+                  contentWidth +
+                  'px - 6px);'
               "
             ></div>
             <div
@@ -70,10 +70,10 @@
           class="highlight-content"
           v-bind:style="
             'left: calc(' +
-            contentLeft +
-            'px + 3px ); width: calc(' +
-            contentWidth +
-            'px - 6px);'
+              contentLeft +
+              'px + 3px ); width: calc(' +
+              contentWidth +
+              'px - 6px);'
           "
         ></div>
         <div
@@ -299,13 +299,10 @@ export default {
           "touchstart",
           this.detectMouseDown
         );
-        this.$refs.iosYtseekbarMask.addEventListener(
-          "touchstart",
-          function (e) {
-            self.detectMouseDownOfYtseekbarMask(e);
-            self.detectMouseDown(e);
-          }
-        );
+        this.$refs.iosYtseekbarMask.addEventListener("touchstart", function(e) {
+          self.detectMouseDownOfYtseekbarMask(e);
+          self.detectMouseDown(e);
+        });
         window.addEventListener("touchend", this.detectMouseUp);
       } else if (this.isMobile) {
         if (this.canUseOntouch) {
@@ -327,7 +324,7 @@ export default {
           window.addEventListener("touchend", this.detectMouseUp);
         }
 
-        this.$refs.iosYtseekbarMask.ontouchstart = function (e) {
+        this.$refs.iosYtseekbarMask.ontouchstart = function(e) {
           self.detectMouseDownOfYtseekbarMask(e);
           self.detectMouseDown(e);
         };

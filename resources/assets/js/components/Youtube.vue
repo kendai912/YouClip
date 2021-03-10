@@ -160,6 +160,7 @@ export default {
       playlistIdToEdit: null,
       tagIdToEdit: null,
       isIOS: false,
+      ytInputData: null,
       startRules: [
         (v) => !!v || "開始時間を入力して下さい",
         (v) => {
@@ -299,15 +300,6 @@ export default {
       this.$refs.YTPlayerController.toggleController();
       this.$refs.YTPlayerController.pauseVideo();
     },
-    //youtubeIdおよび入力された開始・終了時間をセッションストレージに保存
-    saveTimeInput(youtubeId, startTimeInput, endTimeInput) {
-      let ytInputData = {
-        youtubeId: youtubeId,
-        startTimeInput: startTimeInput,
-        endTimeInput: endTimeInput,
-      };
-      window.sessionStorage.setItem("ytInputData", JSON.stringify(ytInputData));
-    },
     clearAllInput() {
       this.$store.commit("ytSeekBar/setStartTimeInput", null);
       this.$store.commit("ytSeekBar/setEndTimeInput", null);
@@ -318,20 +310,14 @@ export default {
     },
     //以前入力された開始・終了時間をセッションストレージからロード
     loadTimeInput(youtubeId) {
-      let ytInputData = JSON.parse(
+      this.ytInputData = JSON.parse(
         window.sessionStorage.getItem("ytInputData")
       );
-      if (ytInputData && ytInputData.youtubeId == youtubeId) {
-        this.startTimeInput = ytInputData.startTimeInput;
-        this.endTimeInput = ytInputData.endTimeInput;
-        this.$store.commit(
-          "ytSeekBar/setStartTimeInput",
-          ytInputData.startTimeInput
-        );
-        this.$store.commit(
-          "ytSeekBar/setEndTimeInput",
-          ytInputData.endTimeInput
-        );
+      if (this.ytInputData && this.ytInputData.youtubeId == youtubeId) {
+        if (this.ytInputData.endTimeInput != "0:00") {
+          this.startTimeInput = this.ytInputData.startTimeInput;
+          this.endTimeInput = this.ytInputData.endTimeInput;
+        }
       }
     },
     // タグ入力へ進む
@@ -459,9 +445,13 @@ export default {
     let dataOfYoutubeIdStartEndTime = [];
     dataOfYoutubeIdStartEndTime[0] = [];
     dataOfYoutubeIdStartEndTime[0].youtubeId = youtubeId;
-    this.startTimeInput
-      ? (dataOfYoutubeIdStartEndTime[0].start = "00:" + this.startTimeInput)
+    this.ytInputData.startTimeInput
+      ? (dataOfYoutubeIdStartEndTime[0].start =
+          "00:" + this.ytInputData.startTimeInput)
       : (dataOfYoutubeIdStartEndTime[0].start = "");
+    // this.startTimeInput
+    //   ? (dataOfYoutubeIdStartEndTime[0].start = "00:" + this.startTimeInput)
+    //   : (dataOfYoutubeIdStartEndTime[0].start = "");
     dataOfYoutubeIdStartEndTime[0].end = "";
     dataOfYoutubeIdStartEndTime[0].scene_order = 1;
 

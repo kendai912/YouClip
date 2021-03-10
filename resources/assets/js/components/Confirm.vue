@@ -145,6 +145,7 @@ export default {
       tagItems: [],
       isIOS: false,
       isVideoDataReady: false,
+      ytInputData: null,
     };
   },
   mixins: [myMixin],
@@ -250,19 +251,19 @@ export default {
     },
     //以前入力された開始・終了時間をセッションストレージからロード
     loadTimeInput(youtubeId) {
-      let ytInputData = JSON.parse(
+      this.ytInputData = JSON.parse(
         window.sessionStorage.getItem("ytInputData")
       );
-      if (ytInputData && ytInputData.youtubeId == youtubeId) {
-        this.$store.commit("tagging/setStart", ytInputData.startTimeInput);
-        this.$store.commit("tagging/setEnd", ytInputData.endTimeInput);
+      if (this.ytInputData && this.ytInputData.youtubeId == youtubeId) {
+        this.$store.commit("tagging/setStart", this.ytInputData.startTimeInput);
+        this.$store.commit("tagging/setEnd", this.ytInputData.endTimeInput);
         this.$store.commit(
           "ytSeekBar/setStartTimeInput",
-          ytInputData.startTimeInput
+          this.ytInputData.startTimeInput
         );
         this.$store.commit(
           "ytSeekBar/setEndTimeInput",
-          ytInputData.endTimeInput
+          this.ytInputData.endTimeInput
         );
       }
       this.checkRouting();
@@ -411,8 +412,8 @@ export default {
             .catch((err) => {});
         }
 
-        //セッションに保存してある開始・終了時間データを破棄
-        window.sessionStorage.removeItem("ytInputData");
+        //「続けて他の場面を切り抜く」用に開始時間に今回の終了時間をセット
+        this.saveTimeInput(this.youtubeId, this.end, "0:00");
         // });
       }
     },

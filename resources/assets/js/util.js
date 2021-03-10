@@ -409,6 +409,14 @@ export default {
 
       return duration;
     },
+    saveTimeInput(youtubeId, startTimeInput, endTimeInput) {
+      let ytInputData = {
+        youtubeId: youtubeId,
+        startTimeInput: startTimeInput,
+        endTimeInput: endTimeInput,
+      };
+      window.sessionStorage.setItem("ytInputData", JSON.stringify(ytInputData));
+    },
   },
 
   data() {
