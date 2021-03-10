@@ -446,13 +446,12 @@ export default {
     let dataOfYoutubeIdStartEndTime = [];
     dataOfYoutubeIdStartEndTime[0] = [];
     dataOfYoutubeIdStartEndTime[0].youtubeId = youtubeId;
-    this.ytInputData.startTimeInput && this.ytInputData.youtubeId == youtubeId
+    this.ytInputData &&
+    this.ytInputData.startTimeInput &&
+    this.ytInputData.youtubeId == youtubeId
       ? (dataOfYoutubeIdStartEndTime[0].start =
           "00:" + this.ytInputData.startTimeInput)
       : (dataOfYoutubeIdStartEndTime[0].start = "");
-    // this.startTimeInput
-    //   ? (dataOfYoutubeIdStartEndTime[0].start = "00:" + this.startTimeInput)
-    //   : (dataOfYoutubeIdStartEndTime[0].start = "");
     dataOfYoutubeIdStartEndTime[0].end = "";
     dataOfYoutubeIdStartEndTime[0].scene_order = 1;
 
