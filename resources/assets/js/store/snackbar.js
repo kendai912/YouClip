@@ -2,14 +2,16 @@ const state = {
   snackbar: false,
   timeout: 5000,
   color: "blue",
-  text: ""
+  text: "",
+  vertical: false,
 };
 
 const getters = {
-  snackbar: state => state.snackbar,
-  timeout: state => state.timeout,
-  color: state => state.color,
-  text: state => state.text
+  snackbar: (state) => state.snackbar,
+  timeout: (state) => state.timeout,
+  color: (state) => state.color,
+  text: (state) => state.text,
+  vertical: (state) => state.vertical,
 };
 
 const mutations = {
@@ -24,7 +26,10 @@ const mutations = {
   },
   setText(state, data) {
     state.text = data;
-  }
+  },
+  seVertical(state, data) {
+    state.vertical = data;
+  },
 };
 
 const actions = {};
@@ -34,5 +39,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

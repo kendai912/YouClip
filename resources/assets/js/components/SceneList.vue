@@ -6,7 +6,7 @@
       <div
         v-bind:class="isIOS ? 'iosHighlightBodyUpper' : 'highlightBodyUpper'"
       >
-        <v-card class="pa-2 pb-0 ma-0" elevation="0">
+        <v-card class="pa-2 pb-0 ma-0 mt-2" elevation="0">
           <div>切り抜いた場面一覧</div>
           <div>(以下がまとめとして連続再生されます)</div>
         </v-card>
@@ -107,16 +107,18 @@ export default {
   methods: {
     ...mapMutations({
       openAddNewSceneModal: "addNewSceneModal/openAddNewSceneModal",
+      setStep: "highlightHeader/setStep",
     }),
     async initialize() {
       //ナビバーを非表示
       this.$store.commit("navbar/setShowNavbar", false);
 
-      //headerの文言をセット
+      //headerの文言とステップをセット
       this.$store.commit(
         "highlightHeader/setHeaderMessage",
         "切り抜いた場面からまとめを作成"
       );
+      this.setStep(4);
 
       //load new creating playlist ID
       await this.$store.dispatch("playlist/getNewPlaylistId");

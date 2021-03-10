@@ -1,7 +1,22 @@
 <template>
-  <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
+  <v-snackbar
+    v-model="snackbar"
+    v-bind:timeout="timeout"
+    v-bind:vertical="vertical"
+  >
     {{ text }}
-    <v-btn v-bind:color="color" text v-on:click="snackbar = false">Close</v-btn>
+    <template v-slot:action="{ attrs }">
+      <v-btn
+        color="white"
+        text
+        to="/highlight/scenelist"
+        v-on:click="snackbar = false"
+        >開く</v-btn
+      >
+      <v-btn v-bind:color="color" text v-on:click="snackbar = false"
+        >閉じる</v-btn
+      >
+    </template>
   </v-snackbar>
 </template>
 
@@ -14,12 +29,17 @@ export default {
     return {};
   },
   mixins: [myMixin],
-  methods: {},
+  methods: {
+    ...mapMutations({
+      seVertical: "snackbar/seVertical",
+    }),
+  },
   computed: {
     ...mapGetters({
       timeout: "snackbar/timeout",
       color: "snackbar/color",
       text: "snackbar/text",
+      vertical: "snackbar/vertical",
     }),
     snackbar: {
       get() {

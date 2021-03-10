@@ -59,6 +59,7 @@ export default {
     //URLのtoastパラメータを見てトーストを表示
     if (window.sessionStorage.getItem("deleteSuccess")) {
       this.$store.commit("snackbar/setText", "シーンタグを削除しました");
+      this.$store.commit("snackbar/seVertical", false);
       this.$store.commit("snackbar/setSnackbar", true);
       this.$store.commit("snackbar/setTimeout", 5000);
       window.sessionStorage.removeItem("deleteSuccess");

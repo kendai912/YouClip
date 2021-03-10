@@ -1158,3 +1158,26 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
 .immediate-leave {
   opacity: 1;
 }
+
+.v-stepper__header {
+  height: 24px !important;
+}
+
+.v-stepper__step__step {
+  height: 20px !important;
+  min-height: 20px !important;
+  width: 20px !important;
+  min-width: 20px !important;
+}
+
+.v-stepper__header {
+  box-shadow: none !important;
+}
+
+.v-stepper__header .v-divider {
+  margin: 0 8px !important;
+}
+
+.v-application--is-ltr .v-stepper__step__step {
+  margin-right: 0px !important;
+}

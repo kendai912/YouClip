@@ -60,6 +60,7 @@ export default {
     ...mapMutations({
       setIsAdding: "tagging/setIsAdding",
       setMyPlaylistToSave: "tagging/setMyPlaylistToSave",
+      setStep: "highlightHeader/setStep",
     }),
     setHeaderBackIcon() {
       this.$nextTick(() => {
@@ -77,7 +78,9 @@ export default {
       });
     },
     initialize() {
+      //highlightHeaderの設定
       this.setHeaderBackIcon();
+      this.setStep(1);
 
       //既存のプレイリストへの追加か判別
       if (this.$route.path == "/add" || this.$route.path == "/add/search") {
@@ -178,7 +181,6 @@ export default {
   watch: {
     // 検索バーによるルート変更後の初期化処理
     $route() {
-      // this.setHeaderBackIcon();
       this.initialize();
     },
   },

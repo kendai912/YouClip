@@ -180,16 +180,18 @@ export default {
       setIsNew: "youtube/setIsNew",
       setIsAdding: "tagging/setIsAdding",
       setIsEditing: "tagging/setIsEditing",
+      setStep: "highlightHeader/setStep",
     }),
     async initialize() {
       //ナビバーを非表示
       this.$store.commit("navbar/setShowNavbar", false);
 
-      //headerの文言をセット
+      //headerの文言とステップをセット
       this.$store.commit(
         "highlightHeader/setHeaderMessage",
         "切り抜いた場面を確認"
       );
+      this.setStep(3);
 
       //clear all data before loading
       this.clearAllInput();
@@ -308,6 +310,7 @@ export default {
 
           //display editting a new scene completion snackbar
           self.$store.commit("snackbar/setText", "場面を更新しました");
+          this.$store.commit("snackbar/seVertical", false);
           self.$store.commit("snackbar/setSnackbar", true);
           self.$store.commit("snackbar/setTimeout", 5000);
 
@@ -347,6 +350,7 @@ export default {
 
           //display adding a new scene to existing playlist completion snackbar
           self.$store.commit("snackbar/setText", "新しい場面を追加しました");
+          this.$store.commit("snackbar/seVertical", false);
           self.$store.commit("snackbar/setSnackbar", true);
           self.$store.commit("snackbar/setTimeout", 5000);
 
@@ -395,6 +399,7 @@ export default {
 
           //display adding a new scene to existing playlist completion snackbar
           self.$store.commit("snackbar/setText", "新しい場面を追加しました");
+          this.$store.commit("snackbar/seVertical", false);
           self.$store.commit("snackbar/setSnackbar", true);
           self.$store.commit("snackbar/setTimeout", 5000);
 

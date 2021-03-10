@@ -140,6 +140,7 @@ export default {
 
       //プレイリスト削除完了のトーストを表示
       this.$store.commit("snackbar/setText", "プレイリストに保存しました");
+      this.$store.commit("snackbar/seVertical", false);
       this.$store.commit("snackbar/setSnackbar", true);
       this.$store.commit("snackbar/setTimeout", 5000);
     },

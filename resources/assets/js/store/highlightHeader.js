@@ -7,12 +7,16 @@ const state = {
   headerMessage: "",
   showBackIcon: false,
   loading: false,
+  step: 1,
+  complete: 1,
 };
 
 const getters = {
   headerMessage: (state) => state.headerMessage,
   showBackIcon: (state) => state.showBackIcon,
   loading: (state) => state.loading,
+  step: (state) => state.step,
+  complete: (state) => state.complete,
 };
 
 const mutations = {
@@ -27,6 +31,12 @@ const mutations = {
   },
   setNotLoading(state) {
     state.loading = false;
+  },
+  setStep(state, data) {
+    state.step = data;
+  },
+  setComplete(state, data) {
+    state.complete = data;
   },
 };
 

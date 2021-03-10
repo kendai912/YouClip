@@ -6,9 +6,9 @@
       </v-btn>
       <v-card-title class="title-2 py-2">場面を削除</v-card-title>
       <v-card-subtitle class="subtitle-1 py-3"
-        >{{
-          tagName
-        }} {{ sceneListofPlaylist[tagIndex].start }}-{{ sceneListofPlaylist[tagIndex].end }}の場面を削除してもよろしいですか？<br />(削除すると元に戻すことはできません。)</v-card-subtitle
+        >{{ tagName }} {{ sceneListofPlaylist[tagIndex].start }}-{{
+          sceneListofPlaylist[tagIndex].end
+        }}の場面を削除してもよろしいですか？<br />(削除すると元に戻すことはできません。)</v-card-subtitle
       >
       <v-divider class="mx-6"></v-divider>
       <v-container class="ma-0 pa-0">
@@ -28,7 +28,7 @@
 import { mapState, mapGetters, mapMutations } from "vuex";
 
 export default {
-  name: 'TagDeleteModal',
+  name: "TagDeleteModal",
   data() {
     return {
       beforeLoginUrl: "",
@@ -48,21 +48,17 @@ export default {
     }),
     showTagDeleteModal: {
       get() {
-        return this.$store.getters[
-          "tagDeleteModal/showTagDeleteModal"
-        ];
+        return this.$store.getters["tagDeleteModal/showTagDeleteModal"];
       },
       set() {
-        return this.$store.commit(
-          "tagDeleteModal/closeTagDeleteModal"
-        );
+        return this.$store.commit("tagDeleteModal/closeTagDeleteModal");
       },
     },
   },
   methods: {
     ...mapMutations({
       closeTagDeleteModal: "tagDeleteModal/closeTagDeleteModal",
-      setPlaylistAndTagVideoData: "playlist/setSceneListofPlaylist"
+      setPlaylistAndTagVideoData: "playlist/setSceneListofPlaylist",
     }),
     cancel() {
       this.closeTagDeleteModal();
@@ -74,19 +70,22 @@ export default {
         if (res) {
           //プレイリスト削除完了のトーストを表示
           this.$store.commit("snackbar/setText", "まとめを削除しました");
+          this.$store.commit("snackbar/seVertical", false);
           this.$store.commit("snackbar/setSnackbar", true);
           this.$store.commit("snackbar/setTimeout", 5000);
 
           let tags = this.sceneListofPlaylist;
 
           //前のページに遷移
-          this.$store.dispatch("playlist/setSceneListofPlaylist", tags.splice(this.tagIndex, 1));
+          this.$store.dispatch(
+            "playlist/setSceneListofPlaylist",
+            tags.splice(this.tagIndex, 1)
+          );
         }
-      });      
+      });
 
       //モーダルを閉じる
       this.closeTagDeleteModal();
-      
     },
   },
   created() {},

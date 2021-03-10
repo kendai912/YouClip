@@ -145,7 +145,9 @@ export default {
     },
   },
   methods: {
-    ...mapMutations({}),
+    ...mapMutations({
+      setStep: "highlightHeader/setStep",
+    }),
     async initialize() {
       //ナビバーを非表示
       this.$store.commit("navbar/setShowNavbar", false);
@@ -155,6 +157,7 @@ export default {
         "highlightHeader/setHeaderMessage",
         "まとめのタイトルを入力"
       );
+      this.setStep(5);
 
       //load new creating playlist ID
       await this.$store.dispatch("playlist/getNewPlaylistId");

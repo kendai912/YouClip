@@ -39,14 +39,31 @@ export default {
     saveFooterTabIndex(index) {
       window.sessionStorage.setItem("footerTabIndex", JSON.stringify(index));
     },
-    setHighlight(index) {
+    async setHighlight(index) {
       this.saveFooterTabIndex(index);
 
       // 表示するコンポーネントをYTvideoSelectBoxにセットし、まとめ作成ページに遷移
       this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
-      // this.$router.push({
-      //   path: "/youtube",
-      // });
+
+      //check if there is editing new playlist
+      await this.$store.dispatch("playlist/getNewPlaylistId");
+      if (this.newPlaylistId) {
+        await this.loadSceneList();
+        //作成中のプレイリストデータがあればsnackbarを表示
+        if (this.playlistAndTagVideoData.tagVideoData.length >= 1) {
+          this.$store.commit("snackbar/setText", " 作成中のまとめがあります");
+          this.$store.commit("snackbar/seVertical", true);
+          this.$store.commit("snackbar/setSnackbar", true);
+          this.$store.commit("snackbar/setTimeout", 5000);
+        }
+      }
+    },
+    //作成中のプレイリストDataを取得
+    async loadSceneList() {
+      await this.$store.dispatch(
+        "watch/getPlaylistAndTagVideoDataById",
+        this.newPlaylistId
+      );
     },
   },
   computed: {
@@ -57,6 +74,8 @@ export default {
       isLogin: "auth/check",
       isPortraitScreen: "ytPlayer/isPortraitScreen",
       isFullscreen: "ytPlayer/isFullscreen",
+      newPlaylistId: "playlist/newPlaylistId",
+      playlistAndTagVideoData: "watch/playlistAndTagVideoData",
     }),
   },
   mounted() {

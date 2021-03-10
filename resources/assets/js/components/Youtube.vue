@@ -219,16 +219,18 @@ export default {
     ...mapMutations({
       setPlayer: "ytPlayer/setPlayer",
       setIsMuted: "ytPlayer/setIsMuted",
+      setStep: "highlightHeader/setStep",
     }),
     async initialize() {
       //ナビバーを非表示
       this.$store.commit("navbar/setShowNavbar", false);
 
-      //headerの文言をセット
+      //headerの文言とステップをセット
       this.$store.commit(
         "highlightHeader/setHeaderMessage",
         "切り抜く場面を指定"
       );
+      this.setStep(2);
 
       //clear all data before loading
       this.clearAllInput();
