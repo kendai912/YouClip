@@ -88,6 +88,7 @@ export default {
             likeCount: "",
             user_id: value.user_id,
             scene_order: value.scene_order,
+            youtubeId: value.youtubeId,
           };
           let tagCount = 0;
           if (Array.isArray(value.tags)) {

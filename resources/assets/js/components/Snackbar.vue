@@ -6,7 +6,9 @@
   >
     {{ text }}
     <template v-slot:action="{ attrs }">
+      <!-- 編集中のプレイリストがある場合 -->
       <v-btn
+        v-if="vertical"
         color="white"
         text
         to="/highlight/scenelist"

@@ -146,6 +146,7 @@ const actions = {
       start: state.start,
       end: state.end,
     };
+    let playlistIdTosaveThumbAndPreview = state.myPlaylistToSave;
 
     const response = await axios.post(
       "/api/tag/storeTagThumbAndPreview",
@@ -157,7 +158,7 @@ const actions = {
       //scenelistページの切り抜いた画面一覧を再ロード
       await context.dispatch(
         "watch/getPlaylistAndTagVideoDataById",
-        state.myPlaylistToSave,
+        playlistIdTosaveThumbAndPreview,
         { root: true }
       );
 

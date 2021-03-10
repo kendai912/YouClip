@@ -40,7 +40,7 @@
                   v-model="playlistCategory"
                   v-bind:items="playlistCategoryList"
                   v-bind:rules="rules"
-                  label="カテゴリー"
+                  label="カテゴリーを選択"
                   hide-details
                   dense
                   class="playlistCategoryBox"

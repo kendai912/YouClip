@@ -313,6 +313,7 @@ export default {
       this.ytInputData = JSON.parse(
         window.sessionStorage.getItem("ytInputData")
       );
+
       if (this.ytInputData && this.ytInputData.youtubeId == youtubeId) {
         if (this.ytInputData.endTimeInput != "0:00") {
           this.startTimeInput = this.ytInputData.startTimeInput;
@@ -445,7 +446,7 @@ export default {
     let dataOfYoutubeIdStartEndTime = [];
     dataOfYoutubeIdStartEndTime[0] = [];
     dataOfYoutubeIdStartEndTime[0].youtubeId = youtubeId;
-    this.ytInputData.startTimeInput
+    this.ytInputData.startTimeInput && this.ytInputData.youtubeId == youtubeId
       ? (dataOfYoutubeIdStartEndTime[0].start =
           "00:" + this.ytInputData.startTimeInput)
       : (dataOfYoutubeIdStartEndTime[0].start = "");

@@ -160,7 +160,6 @@ export default {
             rel: 0, //関連動画非表示
             controls: 0, //プレイーコントロールを非表示
             fs: 0, //全画面表示ボタンを非表示
-            iv_load_policy: 3, //動画アノテーションを非表示
             modestbranding: 1, //YouTubeロゴ非表示
             enablejsapi: 1, //postMessageを有効にするのに必要
           },

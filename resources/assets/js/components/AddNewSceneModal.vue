@@ -70,6 +70,7 @@ export default {
       start: "tagging/start",
       end: "tagging/end",
       youtubeId: "ytPlayer/youtubeId",
+      sceneListofPlaylist: "playlist/sceneListofPlaylist",
     }),
     showAddNewSceneModal: {
       get() {
@@ -93,7 +94,10 @@ export default {
         .push({
           path: "/youtube/scene",
           query: {
-            v: this.youtubeId,
+            v: this.youtubeId
+              ? this.youtubeId
+              : this.sceneListofPlaylist[this.sceneListofPlaylist.length - 1]
+                  .youtubeId,
           },
         })
         .catch((err) => {});
