@@ -123,6 +123,9 @@ export default {
       }
     },
     async getYTRecentVideos() {
+      // remove event listener of searchquery showYTresult()
+      window.onscroll = null;
+
       // 前回の検索結果を空にする
       this.$store.commit("YTsearch/clearYTRecentVideos");
 

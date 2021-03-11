@@ -22,7 +22,7 @@
             ref="YTsearchInputBox"
           >
             <template v-slot:item="data">
-              <template v-if="typeof data.item !== 'object'">
+              <template v-if="typeof data.item !== 'object'">>
                 <v-list-item-content v-text="data.item"></v-list-item-content>
               </template>
               <template v-else>
