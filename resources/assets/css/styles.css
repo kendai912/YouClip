@@ -1063,8 +1063,8 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
 }
 
 .ribbon-image {
-  right: -4px;
-  top: 46px;
+  right: -5px;
+  top: 45px;
   -webkit-transform: rotate(-45deg);
   transform: rotate(-45deg);
 }

@@ -607,7 +607,7 @@ export default {
         if (this.listIndex == 0) {
           // 最初の場面の場合は最後の場面のパラメータをセット
           this.setListIndex(
-            Number(this.listOfYoutubeIdStartEndTime.length) - 1 - 1
+            Number(this.listOfYoutubeIdStartEndTime.length) - 1
           );
           this.$emit("switchToPlayListIndexOf", this.listIndex);
         } else {
