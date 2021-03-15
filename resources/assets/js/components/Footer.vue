@@ -46,7 +46,7 @@ export default {
       this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
 
       //check if there is editing new playlist
-      await this.$store.dispatch("playlist/getNewPlaylistId");
+      if (this.isLogin) await this.$store.dispatch("playlist/getNewPlaylistId");
       if (this.newPlaylistId) {
         await this.loadSceneList();
         //作成中のプレイリストデータがあればsnackbarを表示

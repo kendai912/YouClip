@@ -51,7 +51,7 @@
             <v-row class="ma-0 mb-8 pa-2">
               <v-col class="ma-0 pa-0 text-center">
                 <v-card class="text-left pa-0 ma-0 mb-2 my-grey" elevation="0"
-                  >(任意)ハイライトの説明</v-card
+                  >(任意)まとめの説明</v-card
                 >
                 <v-textarea v-model="description" outlined></v-textarea>
               </v-col>

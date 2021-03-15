@@ -100,6 +100,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      isLogin: "auth/check",
       headerMessage: "highlightHeader/headerMessage",
       showBackIcon: "highlightHeader/showBackIcon",
       loading: "highlightHeader/loading",
@@ -127,7 +128,7 @@ export default {
   },
   async mounted() {
     //check if there is editing new playlist
-    await this.$store.dispatch("playlist/getNewPlaylistId");
+    if (this.isLogin) await this.$store.dispatch("playlist/getNewPlaylistId");
     if (this.newPlaylistId) {
       await this.loadSceneList();
       //作成中のプレイリストデータがあればcompleteを4に設定
