@@ -128,12 +128,14 @@ export default {
   },
   async mounted() {
     //check if there is editing new playlist
-    if (this.isLogin) await this.$store.dispatch("playlist/getNewPlaylistId");
-    if (this.newPlaylistId) {
-      await this.loadSceneList();
-      //作成中のプレイリストデータがあればcompleteを4に設定
-      if (this.playlistAndTagVideoData.tagVideoData.length >= 1) {
-        this.setComplete(4);
+    if (this.isLogin) {
+      await this.$store.dispatch("playlist/getNewPlaylistId");
+      if (this.newPlaylistId) {
+        await this.loadSceneList();
+        //作成中のプレイリストデータがあればcompleteを4に設定
+        if (this.playlistAndTagVideoData.tagVideoData.length >= 1) {
+          this.setComplete(4);
+        }
       }
     }
   },

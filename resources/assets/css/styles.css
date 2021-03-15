@@ -487,16 +487,16 @@
   top: 0px;
   left: 0px;
   width: 100vw;
-  /* height: 48px; */
+  /* height: 56px; */
   z-index: 100;
 }
 
 .highlight-body {
   position: relative;
-  top: 48px;
+  top: 56px;
   left: 0px;
   width: 100%;
-  min-height: calc(100vh - 48px - 56px);
+  min-height: calc(100vh - 56px - 56px);
 }
 
 .watch-body {
@@ -510,13 +510,13 @@
 .highlightBodyUpper {
   position: relative;
   width: 100%;
-  min-height: calc(100vh - 48px - 56px - 24px - 162px);
+  min-height: calc(100vh - 56px - 56px - 24px - 162px);
 }
 
 .iosHighlightBodyUpper {
   position: relative;
   width: 100%;
-  min-height: calc(100vh - 48px - 56px - 128px - 162px);
+  min-height: calc(100vh - 56px - 56px - 128px - 162px);
 }
 
 .search-box {
@@ -524,7 +524,7 @@
   position: relative;
   width: 100%;
   height: 48px;
-  top: 48px;
+  top: 56px;
   /* left: 0; */
   margin-top: 2px;
   z-index: 10;

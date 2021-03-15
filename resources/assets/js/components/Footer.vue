@@ -46,15 +46,17 @@ export default {
       this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
 
       //check if there is editing new playlist
-      if (this.isLogin) await this.$store.dispatch("playlist/getNewPlaylistId");
-      if (this.newPlaylistId) {
-        await this.loadSceneList();
-        //作成中のプレイリストデータがあればsnackbarを表示
-        if (this.playlistAndTagVideoData.tagVideoData.length >= 1) {
-          this.$store.commit("snackbar/setText", " 作成中のまとめがあります");
-          this.$store.commit("snackbar/seVertical", true);
-          this.$store.commit("snackbar/setSnackbar", true);
-          this.$store.commit("snackbar/setTimeout", 5000);
+      if (this.isLogin) {
+        await this.$store.dispatch("playlist/getNewPlaylistId");
+        if (this.newPlaylistId) {
+          await this.loadSceneList();
+          //作成中のプレイリストデータがあればsnackbarを表示
+          if (this.playlistAndTagVideoData.tagVideoData.length >= 1) {
+            this.$store.commit("snackbar/setText", " 作成中のまとめがあります");
+            this.$store.commit("snackbar/seVertical", true);
+            this.$store.commit("snackbar/setSnackbar", true);
+            this.$store.commit("snackbar/setTimeout", 5000);
+          }
         }
       }
     },
