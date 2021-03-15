@@ -136,6 +136,8 @@ export default {
         if (this.playlistAndTagVideoData.tagVideoData.length >= 1) {
           this.setComplete(4);
         }
+      } else {
+        this.setComplete(1);
       }
     }
   },

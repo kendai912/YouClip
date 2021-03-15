@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
 
 export default {
   data() {
@@ -35,6 +35,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations({}),
     //開いたタブをセッションストレージに保存
     saveFooterTabIndex(index) {
       window.sessionStorage.setItem("footerTabIndex", JSON.stringify(index));
