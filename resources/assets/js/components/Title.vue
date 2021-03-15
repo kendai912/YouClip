@@ -48,7 +48,7 @@
               </v-col>
             </v-row>
 
-            <v-row class="ma-0 mb-8 pa-2 pb-4">
+            <v-row class="ma-0 mb-8 pa-2">
               <v-col class="ma-0 pa-0 text-center">
                 <v-card class="text-left pa-0 ma-0 mb-2 my-grey" elevation="0"
                   >(任意)ハイライトの説明</v-card
@@ -57,11 +57,7 @@
               </v-col>
             </v-row>
           </v-form>
-        </v-container>
-      </v-card>
 
-      <v-sheet tile class="ma-0 pa-0 iosBottomPosition" width="100%">
-        <v-container class="ma-0 pa-0" fluid>
           <v-row class="ma-0 pa-2 justify-center">
             <v-btn
               width="100%"
@@ -74,7 +70,7 @@
             >
           </v-row>
         </v-container>
-      </v-sheet>
+      </v-card>
     </div>
   </div>
 </template>

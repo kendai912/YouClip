@@ -108,18 +108,12 @@
               </v-col>
             </v-row>
           </v-form>
-        </v-container>
-      </v-sheet>
 
-      <v-sheet
-        v-if="player != null"
-        tile
-        class="ma-0 pa-0"
-        v-bind:class="isIOS ? 'iosBottomPosition' : 'bottomPosition'"
-        width="100%"
-      >
-        <v-container class="ma-0 pa-0" fluid>
-          <v-row align="center" class="ma-0 pa-0">
+          <v-row
+            align="center"
+            class="ma-0 pa-0"
+            style="padding-top: 24px !important; padding-bottom: 128px !important; "
+          >
             <v-col class="text-right ma-0 pa-2">
               <v-btn color="red lighten-1 white--text" v-on:click="next"
                 >確認</v-btn

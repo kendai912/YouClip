@@ -79,22 +79,12 @@
               </v-form>
             </v-col>
           </v-row>
-        </v-container>
-      </v-sheet>
-      <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
-        {{ text }}
-        <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
-      </v-snackbar>
 
-      <v-sheet
-        v-if="player != null"
-        tile
-        class="ma-0 pa-0"
-        width="100%"
-        v-bind:class="isIOS ? 'iosBottomPosition' : 'bottomPosition'"
-      >
-        <v-container class="ma-0 pa-0" fluid>
-          <v-row align="center" class="ma-0 pa-0">
+          <v-row
+            align="center"
+            class="ma-0 pa-0"
+            style="padding-top: 24px !important; padding-bottom: 128px !important; "
+          >
             <v-col class="text-right ma-0 pa-2">
               <v-btn
                 v-if="isVideoDataReady"
@@ -108,6 +98,10 @@
         </v-container>
       </v-sheet>
     </div>
+    <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
+      {{ text }}
+      <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
+    </v-snackbar>
     <NoLoginModal v-if="showLoginModal" />
   </div>
 </template>
