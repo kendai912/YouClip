@@ -181,6 +181,7 @@ export default {
       endHis: "ytPlayer/end",
       listIndex: "ytPlayer/listIndex",
       isWatchingPlaylist: "ytPlayer/isWatchingPlaylist",
+      isFadingOut: "ytPlayer/isFadingOut",
       isMobile: "ytSeekBar/isMobile",
       isIOS: "ytSeekBar/isIOS",
       currentTime: "youtube/currentTime",
@@ -216,6 +217,7 @@ export default {
       setShowSeekbar: "ytPlayer/setShowSeekbar",
       setImmediateHideFlag: "ytPlayer/setImmediateHideFlag",
       setListIndex: "ytPlayer/setListIndex",
+      setIsFadingOut: "ytPlayer/setIsFadingOut",
       setIsMobile: "ytSeekBar/setIsMobile",
       setIsIOS: "ytSeekBar/setIsIOS",
     }),
@@ -241,12 +243,16 @@ export default {
           //set timer and fadeout in 2.5sec
           self.timer = setTimeout(function() {
             if (self.isPlaying) {
+              self.setIsFadingOut(true);
               $(".overlay").fadeOut(500);
               if (self.isMobile && self.isFullscreen) {
                 self.setShowSeekbar(false);
               }
 
               self.setImmediateHideFlag(false);
+              setTimeout(function() {
+                self.setIsFadingOut(false);
+              }, 500);
             }
           }, 2500);
         }, 10);
@@ -350,7 +356,7 @@ export default {
             document.msExitFullscreen();
           }
           this.revertFullScreenYtPlayerCSS();
-          // 通常表示ならフルスクリーン表示位にする
+          // 通常表示ならフルスクリーン表示にする
         } else {
           this.mobileCheck() ? "" : this.setIsMobile(true);
           this.setIsFullscreen(true);
@@ -365,6 +371,22 @@ export default {
           }
           this.setFullScreenYtPlayerCSS();
         }
+      } else if (event.key === "Esc" || event.type === "Escape") {
+        // フルスクリーン表示なら解除する
+        if (this.checkFullScreen()) {
+          this.mobileCheck() ? "" : this.setIsMobile(false);
+          this.setIsFullscreen(false);
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          }
+          this.revertFullScreenYtPlayerCSS();
+        }
       }
     },
     expandScreen(event) {
@@ -376,7 +398,10 @@ export default {
         if (!this.mobileCheck()) this.$emit("setEventListeners");
       });
     },
-    compressScreen(event) {
+    async compressScreen(event) {
+      if (this.isFadingOut) {
+        await this.sleep(500);
+      }
       this.mobileCheck() ? "" : this.setIsMobile(false);
       this.setIsFullscreen(false);
       this.switchFullScreenMode(event);
@@ -385,6 +410,13 @@ export default {
         if (!this.mobileCheck()) this.$emit("setEventListeners");
       });
       this.setShowSeekbar(true);
+    },
+    sleep(waitSec) {
+      return new Promise(function(resolve) {
+        setTimeout(function() {
+          resolve();
+        }, waitSec);
+      });
     },
     isWidthBasedFullscreeen() {
       if (this.isIOS) {
@@ -567,15 +599,17 @@ export default {
       this.revertYTSeekBar();
     },
     fullscreenHandler(event) {
-      if (
-        !document.fullscreenElement &&
-        !document.webkitIsFullScreen &&
-        !document.mozFullScreen &&
-        !document.msFullscreenElement
-      ) {
-        this.compressScreen(event);
+      if (this.checkFullScreen()) {
+        if (
+          event.key === "f" ||
+          event.type === "click" ||
+          event.key === "Esc" ||
+          event.type === "Escape"
+        )
+          this.compressScreen(event);
       } else {
-        this.expandScreen(event);
+        if (event.key === "f" || event.type === "click")
+          this.expandScreen(event);
       }
     },
     handleOrientationChange() {
@@ -656,11 +690,6 @@ export default {
 
     // fボタン押下よるフルスクリーンモード制御キーボード入力の受付
     window.addEventListener("keydown", this.fullscreenHandler);
-    // escボタン押下によるフルスクリーンモード解除キーボード入力
-    document.addEventListener("fullscreenchange", this.fullscreenHandler);
-    document.addEventListener("webkitfullscreenchange", this.fullscreenHandler);
-    document.addEventListener("mozfullscreenchange", this.fullscreenHandler);
-    document.addEventListener("MSFullscreenChange", this.fullscreenHandler);
 
     window.addEventListener("resize", this.handleResize);
   },

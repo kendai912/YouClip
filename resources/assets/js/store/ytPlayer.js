@@ -18,6 +18,7 @@ const state = {
   isPortraitScreen: true,
   showSeekbar: true,
   immediateHideFlag: false,
+  isFadingOut: false,
 };
 
 const getters = {
@@ -33,6 +34,7 @@ const getters = {
   isPortraitScreen: (state) => state.isPortraitScreen,
   showSeekbar: (state) => state.showSeekbar,
   immediateHideFlag: (state) => state.immediateHideFlag,
+  isFadingOut: (state) => state.isFadingOut,
   youtubeId: (state) =>
     state.listOfYoutubeIdStartEndTime
       ? state.listOfYoutubeIdStartEndTime[state.listIndex].youtubeId
@@ -83,6 +85,9 @@ const mutations = {
   },
   setImmediateHideFlag(state, data) {
     state.immediateHideFlag = data;
+  },
+  setIsFadingOut(state, data) {
+    state.isFadingOut = data;
   },
 };
 
