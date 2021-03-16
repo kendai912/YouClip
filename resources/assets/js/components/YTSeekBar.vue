@@ -250,6 +250,13 @@ export default {
             passive: false,
           });
         }
+
+        //when PC fullscreen mode
+        if (!this.mobileCheck()) {
+          this.bodyRef.addEventListener("mousemove", self.getClickPosition, {
+            passive: false,
+          });
+        }
       } else {
         this.bodyRef.addEventListener("mousemove", self.getClickPosition, {
           passive: false,
@@ -263,6 +270,13 @@ export default {
       if (this.isMobile) {
         this.bodyRef.ontouchmove = null;
         this.bodyRef.removeEventListener("touchmove", this.getClickPosition);
+
+        // when PC fullscreen mode
+        if (!this.mobileCheck()) {
+          this.bodyRef.removeEventListener("mousemove", self.getClickPosition, {
+            passive: false,
+          });
+        }
       } else {
         this.bodyRef.removeEventListener("mousemove", self.getClickPosition, {
           passive: false,
@@ -336,6 +350,19 @@ export default {
           "click",
           this.detectMouseDownOfYtseekbarMask
         );
+
+        // when PC fullscreen mode
+        if (!this.mobileCheck()) {
+          this.$refs.iosYtseekHead.addEventListener(
+            "mousedown",
+            this.detectMouseDown
+          );
+          this.$refs.iosYtseekbarMask.addEventListener(
+            "mousedown",
+            this.detectMouseDown
+          );
+          window.addEventListener("mouseup", this.detectMouseUp);
+        }
       } else {
         this.$refs.ytseekHead.addEventListener(
           "mousedown",

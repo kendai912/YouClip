@@ -12,6 +12,7 @@
             v-show="isPlayerReady"
             ref="YTPlayerController"
             v-on:switchToPlayListIndexOf="switchToPlayListIndexOf"
+            v-on:setEventListeners="setEventListeners"
           />
           <YTSeekBar
             v-show="isPlayerReady"
@@ -306,6 +307,9 @@ export default {
 
       //次のシーンをロードし再生
       this.$store.dispatch("ytPlayer/playListIndexOf", index);
+    },
+    setEventListeners() {
+      this.$refs.ytSeekBar.setEventListeners();
     },
     toggleLikePlaylist() {
       if (!this.isLogin) {
