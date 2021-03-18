@@ -911,6 +911,11 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
   font-weight: normal;
 }
 
+.fz-16 {
+  font-size: calc(1rem * (16 / 14));
+  font-weight: normal;
+}
+
 .fz-14 {
   font-size: calc(1rem * (14 / 14));
   font-weight: normal;
@@ -919,6 +924,10 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
 .fz-12 {
   font-size: calc(1rem * (12 / 14));
   font-weight: normal;
+}
+
+.maxhight140px {
+  max-height: 140px;
 }
 
 .text-gray-600 {
@@ -1180,4 +1189,12 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
 
 .v-application--is-ltr .v-stepper__step__step {
   margin-right: 0px !important;
+}
+
+.small-checkbox i {
+  font-size: 16px !important;
+}
+
+.small-checkbox label {
+  font-size: 12px !important;
 }

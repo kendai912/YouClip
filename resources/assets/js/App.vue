@@ -6,6 +6,7 @@
       <RouterView />
       <Snackbar />
       <Footer />
+      <Boardal v-if="!notShowBoarding" />
     </div>
   </v-app>
 </template>
@@ -15,6 +16,7 @@ import { mapState, mapGetters, mapMutations } from "vuex";
 import Navbar from "./components/Navbar.vue";
 import Snackbar from "./components/Snackbar.vue";
 import Footer from "./components/Footer.vue";
+import Boardal from "./components/Boardal.vue";
 import { INTERNAL_SERVER_ERROR, FORBIDDEN, UNAUTHORIZED } from "./util";
 import myMixin from "./util";
 
@@ -23,9 +25,12 @@ export default {
     Navbar,
     Snackbar,
     Footer,
+    Boardal,
   },
   data() {
-    return {};
+    return {
+      notShowBoarding: true,
+    };
   },
   mixins: [myMixin],
   computed: {
@@ -64,6 +69,13 @@ export default {
       this.$store.commit("snackbar/setTimeout", 5000);
       window.sessionStorage.removeItem("deleteSuccess");
     }
+
+    let notShowBoarding = JSON.parse(
+      window.sessionStorage.getItem("notShowBoarding")
+    );
+    if (!notShowBoarding) {
+      this.notShowBoarding = false;
+    }
   },
   mounted() {
     if ("serviceWorker" in navigator) {
@@ -80,6 +92,6 @@ export default {
 };
 </script>
 
-<style>
-@import "../css/styles.css";
+<style lang="scss">
+@import "../css/styles.scss";
 </style>
