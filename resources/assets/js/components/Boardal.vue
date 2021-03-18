@@ -17,7 +17,7 @@
                     >YouClipへようこそ！</span
                   >
                 </v-row>
-                <v-row class="ma-2 pa-0" align="center" justify="center">
+                <v-row class="ma-2 pa-0 text-center" align="center" justify="center">
                   <span class="fz-14"
                     >YouTube動画の"お気に入りの場面"を切り抜いてまとめよう</span
                   >
@@ -63,7 +63,7 @@
                         v-bind:src="img"
                         class="pa-0 ma-0"
                         v-bind:alt="title"
-                        v-bind:class="{ maxhight140px: isMobile }"
+                        v-bind:class="{ maxhight120px: isMobile }"
                         contain
                       />
                       <span class="pa-0 ma-0 fz-14">{{ title }}</span>

@@ -1,69 +1,56 @@
 <template>
   <div class="container--small">
-    <section id="hero">
-      <div style="height: 80px; width: 100%">
-        <img
-          src="/storage/logos/youclip_logo.png"
-          style="
+    <div style="height: 80px; width: 100%">
+      <img
+        src="/storage/logos/youclip_logo.png"
+        style="
               position: relative;
               height: 58%;
               top: 21%;
               left: 8px;
               object-fit: contain;
             "
-          alt="YouClip logo"
-        />
-      </div>
-      <v-row no-gutters>
-        <v-container fill-height>
-          <v-row align="center" class="mx-auto" justify="center">
-            <v-col class="text-center" cols="12">
-              <div style="margin-bottom: 64px;">
-                <h2 class="font-weight-bold mb-3 userguideSectionTitle">
-                  YouTube動画の<br />まとめ作成ツール
-                </h2>
-                <p
-                  style="margin-top:24px;letter-spacing:1.6px; font-size: 20px;"
-                >
-                  YouTube動画の"お気に入りの<br />場面"を切り抜いてまとめよう
-                </p>
-              </div>
+        alt="YouClip logo"
+      />
+    </div>
+    <v-row align="center" justify="center" class="ma-0 pa-0" no-gutters>
+      <v-container fill-height>
+        <v-row
+          align="center"
+          justify="center"
+          class="ma-0 pa-0"
+          style="width: 100%; "
+        >
+          <v-col class="text-center" cols="12">
+            <h2 class="font-weight-bold mb-3 userguideSectionTitle">
+              YouTube動画の<br />まとめ作成ツール
+            </h2>
+            <p style="margin-top:24px;letter-spacing:1.6px; font-size: 20px;">
+              YouTube動画の"お気に入りの<br />場面"を切り抜いてまとめよう
+            </p>
 
-              <section class="gNIwkZ">
-                <div style="position:relative;z-index:2" class="bzagnP">
-                  <v-lazy
-                    v-model="isActive"
-                    :options="{
-                      threshold: 0.5,
-                    }"
-                    class="fill-height"
-                  >
-                    <div>
-                      <img
-                        src="/storage/imgs/onboarding1.JPG"
-                        alt="thumbnail"
-                        loading="lazy"
-                        style="position: relative; width: 122%; left: -32px; top: 30px;"
-                      />
-                    </div>
-                  </v-lazy>
-                </div>
-              </section>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-row>
-    </section>
+            <v-row class="ma-2 pa-0" align="center" justify="center">
+              <v-img
+                src="/storage/imgs/YouClip-Onboarding1.png"
+                width="100%"
+                max-width="450px"
+                alt="YouClip Onboarding1"
+              />
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-row>
 
     <section id="features">
-      <div class="py-12"></div>
+      <div class="py-6"></div>
 
       <v-container class="text-center">
-        <h2 class="font-weight-bold mb-3 userguideSectionTitle">
+        <h2 class="font-weight-bold mb-2 userguideSectionTitle">
           こんな時に便利
         </h2>
 
-        <v-responsive class="mx-auto mb-6" width="56">
+        <v-responsive class="mx-auto mb-4" width="56">
           <v-divider class="mb-1"></v-divider>
 
           <v-divider></v-divider>
@@ -76,7 +63,7 @@
             cols="12"
             md="4"
           >
-            <v-card class="py-12 px-1" flat>
+            <v-card class="py-4 px-1" flat>
               <v-theme-provider dark>
                 <div>
                   <v-lazy
@@ -109,46 +96,36 @@
     </section>
 
     <section id="about-me">
-      <div class="py-12"></div>
+      <div class="py-6"></div>
 
       <v-container class="text-center">
-        <h2 class="font-weight-bold mb-3 userguideSectionTitle">
+        <h2 class="font-weight-bold mb-2 userguideSectionTitle">
           まとめ方は簡単
         </h2>
 
-        <v-responsive class="mx-auto mb-8" width="56">
+        <v-responsive class="mx-auto mb-4" width="56">
           <v-divider class="mb-1"></v-divider>
 
           <v-divider></v-divider>
         </v-responsive>
 
-        <v-responsive
-          class="mx-auto title font-weight-light mb-8"
-          max-width="720"
-        >
-          YouTubeの動画を検索して、切り抜く時間とタイトルを入力
-        </v-responsive>
-
-        <v-carousel cycle interval="5000" height="400" hide-delimiters>
-          <v-carousel-item v-for="(img, i) in howToImgs" :key="i">
-            <v-sheet color="white" height="100%">
-              <v-row class="fill-height" align="center" justify="center">
-                <v-lazy
-                  v-model="isActive"
-                  :options="{
-                    threshold: 0.5,
-                  }"
-                  class="fill-height"
-                >
-                  <img
+        <v-carousel cycle interval="8000" hide-delimiters height="290px">
+          <v-carousel-item v-for="({ img, text }, i) in howToImgs" :key="i">
+            <v-row align="center" justify="center" class="ma-0 pa-0 pt-2">
+              <v-col class="ma-0 pa-0">
+                <v-row align="center" justify="center" class="ma-0 pa-0 pt-2">
+                  <span class="fz-14" style="color: black; ">{{ text }}</span>
+                </v-row>
+                <v-row align="center" justify="center" class="ma-0 pa-0 pt-2">
+                  <v-img
                     v-bind:src="img"
-                    style="height: 100%; "
                     alt="How-to image"
-                    loading="lazy"
+                    max-width="290"
+                    contain
                   />
-                </v-lazy>
-              </v-row>
-            </v-sheet>
+                </v-row>
+              </v-col>
+            </v-row>
           </v-carousel-item>
         </v-carousel>
       </v-container>
@@ -223,11 +200,26 @@ export default {
         },
       ],
       howToImgs: [
-        "/storage/imgs/HowTo1.JPG",
-        "/storage/imgs/HowTo2.JPG",
-        "/storage/imgs/HowTo3.JPG",
-        "/storage/imgs/HowTo4.JPG",
-        "/storage/imgs/HowTo5.JPG",
+        {
+          img: "/storage/imgs/YouClip-Onboarding2-1.png",
+          text: "① YouTube動画を検索",
+        },
+        {
+          img: "/storage/imgs/YouClip-Onboarding2-2.png",
+          text: "② 切り抜く時間を指定",
+        },
+        {
+          img: "/storage/imgs/YouClip-Onboarding2-3.png",
+          text: "③ 切り抜いた場面を確認",
+        },
+        {
+          img: "/storage/imgs/YouClip-Onboarding2-4.png",
+          text: "④ タイトルを入力",
+        },
+        {
+          img: "/storage/imgs/YouClip-Onboarding2-5.png",
+          text: "⑤ 完成!!",
+        },
       ],
     };
   },
