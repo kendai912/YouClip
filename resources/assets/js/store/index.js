@@ -27,6 +27,7 @@ import tagDeleteModal from "./tagDeleteModal";
 import otherActionModal from "./otherActionModal";
 import playSpeedModal from "./playSpeedModal";
 import commentReplyModal from "./commentReplyModal";
+import onboarding from "./onboarding";
 import error from "./error";
 
 Vue.use(Vuex);
@@ -59,6 +60,7 @@ const store = new Vuex.Store({
     otherActionModal,
     playSpeedModal,
     commentReplyModal,
+    onboarding,
     error,
   },
 });

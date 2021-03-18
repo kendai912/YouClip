@@ -1,28 +1,31 @@
 <template>
-  <v-bottom-navigation
-    fixed
-    v-bind:value="activeBtn"
-    grow
-    color="primary"
-    v-bind:class="{ zIndex6: !isPortraitScreen && !isFullscreen }"
-  >
-    <v-btn to="/home" v-on:click="saveFooterTabIndex(0)">
-      <span>ホーム</span>
-      <v-icon large>mdi-home-outline</v-icon>
-    </v-btn>
+  <div>
+    <v-bottom-navigation
+      fixed
+      v-bind:value="activeBtn"
+      grow
+      color="primary"
+      v-bind:class="{ zIndex6: !isPortraitScreen && !isFullscreen }"
+    >
+      <v-btn to="/home" id="home" v-on:click="saveFooterTabIndex(0)">
+        <span>ホーム</span>
+        <v-icon large>mdi-home-outline</v-icon>
+      </v-btn>
 
-    <v-btn to="/youtube" v-on:click="setHighlight(1)">
-      <span>まとめ作成</span>
-      <div>
-        <v-icon large>mdi-plus-box</v-icon>
-      </div>
-    </v-btn>
+      <v-btn to="/youtube" id="youtube" v-on:click="setHighlight(1)">
+        <span>まとめ作成</span>
+        <div>
+          <v-icon large>mdi-plus-box</v-icon>
+        </div>
+      </v-btn>
 
-    <v-btn to="/mypage" v-on:click="saveFooterTabIndex(2)">
-      <span>マイページ</span>
-      <v-icon large>mdi-account-outline</v-icon>
-    </v-btn>
-  </v-bottom-navigation>
+      <v-btn to="/mypage" id="mypage" v-on:click="saveFooterTabIndex(2)">
+        <span>マイページ</span>
+        <v-icon large>mdi-account-outline</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
+    <v-tour name="myTour" :steps="steps" :options="myOptions"> </v-tour>
+  </div>
 </template>
 
 <script>
@@ -32,6 +35,29 @@ export default {
   data() {
     return {
       activeBtn: 0,
+      steps: [
+        {
+          target: "#home",
+          content: `みんなのまとめを見る`,
+        },
+        {
+          target: "#youtube",
+          content: "YouTube動画を切り抜きまとめを作成する",
+        },
+        {
+          target: "#mypage",
+          content: "自分が作成＆いいねしたまとめを確認する",
+        },
+      ],
+      myOptions: {
+        useKeyboardNavigation: false,
+        labels: {
+          buttonSkip: "スキップ",
+          buttonPrevious: "戻る",
+          buttonNext: "次へ",
+          buttonStop: "OK",
+        },
+      },
     };
   },
   methods: {
@@ -79,7 +105,13 @@ export default {
       isFullscreen: "ytPlayer/isFullscreen",
       newPlaylistId: "playlist/newPlaylistId",
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
+      showFooterTour: "onboarding/showFooterTour",
     }),
+  },
+  watch: {
+    showFooterTour() {
+      if (this.showFooterTour) this.$tours["myTour"].start();
+    },
   },
   mounted() {
     //以前に開いていたタブをセッションストレージからセット

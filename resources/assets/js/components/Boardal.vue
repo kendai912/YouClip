@@ -17,7 +17,11 @@
                     >YouClipへようこそ！</span
                   >
                 </v-row>
-                <v-row class="ma-2 pa-0 text-center" align="center" justify="center">
+                <v-row
+                  class="ma-2 pa-0 text-center"
+                  align="center"
+                  justify="center"
+                >
                   <span class="fz-14"
                     >YouTube動画の"お気に入りの場面"を切り抜いてまとめよう</span
                   >
@@ -25,7 +29,7 @@
                 <v-row class="ma-2 pa-0" align="center" justify="center">
                   <v-img
                     src="/storage/imgs/YouClip-Onboarding1.png"
-                    max-width="290px"
+                    max-width="400px"
                     width="100%"
                     alt="YouClip Onboarding1"
                   />
@@ -63,7 +67,7 @@
                         v-bind:src="img"
                         class="pa-0 ma-0"
                         v-bind:alt="title"
-                        v-bind:class="{ maxhight120px: isMobile }"
+                        v-bind:class="{ maxhight115px: isMobile }"
                         contain
                       />
                       <span class="pa-0 ma-0 fz-14">{{ title }}</span>
@@ -177,6 +181,16 @@ import myMixin from "../util";
 
 export default {
   components: {},
+  metaInfo() {
+    return {
+      meta: [
+        {
+          name: "robots",
+          content: "noindex",
+        },
+      ],
+    };
+  },
   data() {
     return {
       boardal: true,
@@ -229,7 +243,9 @@ export default {
     ...mapGetters({}),
   },
   methods: {
-    ...mapMutations({}),
+    ...mapMutations({
+      setShowFooterTour: "onboarding/setShowFooterTour",
+    }),
     prev() {
       this.onboarding =
         this.onboarding - 1 < 0 ? this.length - 1 : this.onboarding - 1;
@@ -242,6 +258,7 @@ export default {
             JSON.stringify(true)
           );
         }
+        this.setShowFooterTour(true);
         this.isFinished = true;
       } else {
         this.onboarding =

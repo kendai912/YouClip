@@ -926,8 +926,8 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
   font-weight: normal;
 }
 
-.maxhight120px {
-  max-height: 120px;
+.maxhight115px {
+  max-height: 115px;
 }
 
 .text-gray-600 {
@@ -1150,4 +1150,27 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
 
 .small-checkbox label {
   font-size: 12px !important;
+}
+
+.v-step {
+  background: white !important;
+}
+
+.v-step,
+.v-step__content {
+  color: black !important;
+}
+
+.v-step .v-step__arrow {
+  border-color: white !important;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+.v-step__button {
+  background: #4caf50 !important;
+  border: 0.05rem solid #4caf50 !important;
+  border-radius: 4px !important;
+  color: white !important;
 }

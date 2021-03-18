@@ -17,6 +17,9 @@ import colors from "vuetify/lib/util/colors";
 import lodash from "lodash";
 import VueGtag from "vue-gtag";
 import VueMeta from "vue-meta";
+import VueTour from "vue-tour";
+
+require("vue-tour/dist/vue-tour.css");
 
 Vue.use(Vuetify);
 Vue.use(
@@ -27,6 +30,7 @@ Vue.use(
   router
 );
 Vue.use(VueMeta);
+Vue.use(VueTour);
 
 Vue.prototype._ = lodash;
 
@@ -56,6 +60,7 @@ const createApp = async () => {
     },
     components: { App }, // ルートコンポーネントの使用を宣言する
     template: "<App />", // ルートコンポーネントを描画する
+    render: (h) => h(App),
   });
 };
 export default new Vuetify(opts);
