@@ -78,7 +78,7 @@ export default {
         if (this.newPlaylistId) {
           await this.loadSceneList();
           //作成中のプレイリストデータがあればsnackbarを表示
-          if (this.playlistAndTagVideoData.tagVideoData.length >= 1) {
+          if (this.playlistAndTagVideoData?.tagVideoData?.length >= 1) {
             this.$store.commit("snackbar/setText", " 作成中のまとめがあります");
             this.$store.commit("snackbar/seVertical", true);
             this.$store.commit("snackbar/setSnackbar", true);

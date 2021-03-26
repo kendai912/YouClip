@@ -14,7 +14,7 @@
         <v-col class="ma-0 pa-0" cols="10">
           <v-row align="center" justify="center" class="ma-0 pa-0">
             <v-col class="ma-0 pa-0 text-center" cols="auto">
-              <h1 style="font-size: 1rem; font-weight: normal;">
+              <h1 style="font-size: 1rem; font-weight: normal">
                 {{ headerMessage }}
               </h1>
             </v-col>
@@ -133,8 +133,10 @@ export default {
       if (this.newPlaylistId) {
         await this.loadSceneList();
         //作成中のプレイリストデータがあればcompleteを4に設定
-        if (this.playlistAndTagVideoData.tagVideoData.length >= 1) {
+        if (this.playlistAndTagVideoData?.tagVideoData?.length >= 1) {
           this.setComplete(4);
+        } else {
+          this.setComplete(1);
         }
       } else {
         this.setComplete(1);

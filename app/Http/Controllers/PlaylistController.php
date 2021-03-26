@@ -346,7 +346,7 @@ class PlaylistController extends Controller
                     [
                     'playlistAndTagVideoData' => 'private'
                     ],
-                    403,
+                    200,
                     [],
                     JSON_UNESCAPED_UNICODE
                 );
@@ -355,7 +355,7 @@ class PlaylistController extends Controller
                     [
                     'playlistAndTagVideoData' => 'private'
                     ],
-                    403,
+                    200,
                     [],
                     JSON_UNESCAPED_UNICODE
                 );
@@ -366,7 +366,7 @@ class PlaylistController extends Controller
                 [
                     'playlistAndTagVideoData' => 'private'
                     ],
-                403,
+                200,
                 [],
                 JSON_UNESCAPED_UNICODE
             );
