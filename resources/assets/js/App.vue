@@ -6,7 +6,7 @@
       <RouterView />
       <Snackbar />
       <Footer />
-      <Boardal v-if="!notShowBoarding" />
+      <Boardal v-if="showBoarding" />
     </div>
   </v-app>
 </template>
@@ -28,14 +28,13 @@ export default {
     Boardal,
   },
   data() {
-    return {
-      notShowBoarding: true,
-    };
+    return {};
   },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
       showNavbar: "navbar/showNavbar",
+      showBoarding: "onboarding/showBoarding",
       auth_check: "auth/check",
     }),
     errorCode() {
@@ -60,6 +59,11 @@ export default {
       this.$store.commit("error/setCode", null);
     },
   },
+  methods: {
+    ...mapMutations({
+      setShowBoarding: "onboarding/setShowBoarding",
+    }),
+  },
   created() {
     //URLのtoastパラメータを見てトーストを表示
     if (window.sessionStorage.getItem("deleteSuccess")) {
@@ -70,11 +74,9 @@ export default {
       window.sessionStorage.removeItem("deleteSuccess");
     }
 
-    let notShowBoarding = JSON.parse(
-      window.sessionStorage.getItem("notShowBoarding")
-    );
-    if (!notShowBoarding) {
-      this.notShowBoarding = false;
+    let notShowBoarding = JSON.parse(localStorage.getItem("notShowBoarding"));
+    if (!notShowBoarding && location.pathname != "/watch") {
+      this.setShowBoarding(true);
     }
   },
   mounted() {

@@ -61,10 +61,13 @@ export default {
     };
   },
   methods: {
-    ...mapMutations({}),
+    ...mapMutations({
+      setShowBoarding: "onboarding/setShowBoarding",
+    }),
     //開いたタブをセッションストレージに保存
     saveFooterTabIndex(index) {
       window.sessionStorage.setItem("footerTabIndex", JSON.stringify(index));
+      this.checkAndDisplayBoarding();
     },
     async setHighlight(index) {
       this.saveFooterTabIndex(index);
@@ -85,6 +88,14 @@ export default {
             this.$store.commit("snackbar/setTimeout", 5000);
           }
         }
+      }
+
+      this.checkAndDisplayBoarding();
+    },
+    checkAndDisplayBoarding() {
+      let notShowBoarding = JSON.parse(localStorage.getItem("notShowBoarding"));
+      if (!notShowBoarding) {
+        this.setShowBoarding(true);
       }
     },
     //作成中のプレイリストDataを取得

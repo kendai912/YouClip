@@ -253,10 +253,7 @@ export default {
     next() {
       if (this.onboarding == 2) {
         if (this.notShowBoarding) {
-          window.sessionStorage.setItem(
-            "notShowBoarding",
-            JSON.stringify(true)
-          );
+          localStorage.setItem("notShowBoarding", JSON.stringify(true));
         }
         this.setShowFooterTour(true);
         this.isFinished = true;
