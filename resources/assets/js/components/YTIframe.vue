@@ -78,13 +78,18 @@ export default {
       const youtubeExistsFlag = this.youtubeExistsFlag;
       const youtubeCallbackName = this.youtubeCallbackName;
 
-      window[this.youtubeCallbackName] =
-        window[this.youtubeCallbackName] ||
-        function() {
-          window[youtubeExistsFlag] = true;
-          window[youtubeCallbackName] = null;
-          delete window[youtubeCallbackName];
-        };
+      window[this.youtubeCallbackName] = function() {
+        window[youtubeExistsFlag] = true;
+        window[youtubeCallbackName] = null;
+        delete window[youtubeCallbackName];
+      };
+      // window[this.youtubeCallbackName] =
+      //   window[this.youtubeCallbackName] ||
+      //   function() {
+      //     window[youtubeExistsFlag] = true;
+      //     window[youtubeCallbackName] = null;
+      //     delete window[youtubeCallbackName];
+      //   };
 
       var tag = document.createElement("script");
       var first = document.getElementsByTagName("script")[0];

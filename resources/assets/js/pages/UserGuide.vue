@@ -15,6 +15,8 @@
     </div>
     <v-row align="center" justify="center" class="ma-0 pa-0" no-gutters>
       <v-container fill-height>
+        <div id="player"></div>
+
         <v-row
           align="center"
           justify="center"
@@ -228,7 +230,20 @@ export default {
   computed: {
     ...mapGetters({}),
   },
-  mounted() {},
+  mounted() {
+    console.log(window);
+    console.log(window.onYouTubeIframeAPIReady);
+    var tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName("script")[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    window.onYouTubeIframeAPIReady = () => {
+      new YT.Player("player", {
+        videoId: "M7lc1UVf-VE",
+      });
+    };
+  },
   created() {},
 };
 </script>
