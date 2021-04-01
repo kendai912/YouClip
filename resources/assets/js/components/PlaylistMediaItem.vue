@@ -49,14 +49,17 @@
                 style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px; object-fit: cover;"
               ></video>
               <div class="ribbon-content">
-                <v-img
+                <!-- <v-img
                   src="/storage/icons/yt_social_red.png"
                   width="16px"
                   max-height="16px"
                   alt="YouTube logo"
                   class="ribbon-image"
-                />
-                <span class="ribbon-text">&nbsp;&nbsp;&nbsp;&nbsp;切り抜き</span>
+                /> -->
+                
+                <span class="ribbon-text"
+                  ><v-icon size="16">content_cut</v-icon>&nbsp;切り抜き</span
+                >
               </div>
             </router-link>
           </v-card>
