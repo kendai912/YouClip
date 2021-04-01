@@ -27,7 +27,7 @@
             "
       >
         <v-icon size="30" color="my-grey">mdi-play-box-multiple-outline</v-icon>
-        <span>自分のまとめ・いいねしたまとめ</span>
+        <span>自分の切り抜き・いいねした切り抜き</span>
       </div>
       <v-spacer></v-spacer>
       <div
@@ -79,7 +79,7 @@ export default {
   data() {
     return {
       tab: 1, //デフォルトは場面タブを表示
-      items: ["まとめ", "場面"],
+      items: ["切り抜き", "場面"],
     };
   },
   mixins: [myMixin],

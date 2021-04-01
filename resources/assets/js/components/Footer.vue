@@ -13,7 +13,7 @@
       </v-btn>
 
       <v-btn to="/youtube" id="youtube" v-on:click="setHighlight(1)">
-        <span>まとめ作成</span>
+        <span>切り抜き作成</span>
         <div>
           <v-icon large>mdi-plus-box</v-icon>
         </div>
@@ -38,15 +38,15 @@ export default {
       steps: [
         {
           target: "#home",
-          content: `みんなのまとめを見る`,
+          content: `みんなの切り抜きを見る`,
         },
         {
           target: "#youtube",
-          content: "YouTube動画を切り抜きまとめを作成する",
+          content: "YouTube動画の切り抜きを作成する",
         },
         {
           target: "#mypage",
-          content: "自分が作成＆いいねしたまとめを確認する",
+          content: "自分が作成＆いいねした切り抜きを確認する",
         },
       ],
       myOptions: {
@@ -72,7 +72,7 @@ export default {
     async setHighlight(index) {
       this.saveFooterTabIndex(index);
 
-      // 表示するコンポーネントをYTvideoSelectBoxにセットし、まとめ作成ページに遷移
+      // 表示するコンポーネントをYTvideoSelectBoxにセットし、切り抜き作成ページに遷移
       this.$store.commit("highlight/setDisplayComponent", "YTvideoSelectBox");
 
       //check if there is editing new playlist
@@ -82,7 +82,7 @@ export default {
           await this.loadSceneList();
           //作成中のプレイリストデータがあればsnackbarを表示
           if (this.playlistAndTagVideoData?.tagVideoData?.length >= 1) {
-            this.$store.commit("snackbar/setText", " 作成中のまとめがあります");
+            this.$store.commit("snackbar/setText", " 作成中の切り抜きがあります");
             this.$store.commit("snackbar/seVertical", true);
             this.$store.commit("snackbar/setSnackbar", true);
             this.$store.commit("snackbar/setTimeout", 5000);

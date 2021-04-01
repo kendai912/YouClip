@@ -25,7 +25,7 @@
           alt="YouTube logo"
           class="float-left mr-2"
         />
-        <h2 class="fz-14">最近まとめたYouTube動画</h2>
+        <h2 class="fz-14">最近切り抜いたYouTube動画</h2>
       </div>
       <YTitem v-bind:YTitems="YTRecentVideos" />
     </div>
@@ -47,7 +47,7 @@ export default {
   },
   data() {
     return {
-      headerWord: "まとめを作成",
+      headerWord: "切り抜きまとめを作成",
       from: null,
     };
   },
@@ -88,7 +88,7 @@ export default {
         this.setMyPlaylistToSave(this.$route.query.playlist);
 
         //headerの文言を追加用に修正
-        this.headerWord = "まとめに追加";
+        this.headerWord = "切り抜きまとめに追加";
       } else {
         this.setIsAdding(false);
         this.setMyPlaylistToSave("none");
@@ -107,7 +107,7 @@ export default {
       this.$store.commit("YTsearch/setYTSearchPageToken", "");
 
       if (this.YTsearchQuery == null) {
-        //検索ワードがセットされていない場合、最近まとめたYouTube動画を表示
+        //検索ワードがセットされていない場合、最近切り抜いたYouTube動画を表示
         this.$store.commit(
           "highlightHeader/setHeaderMessage",
           this.headerWord + "する動画を検索"
@@ -132,7 +132,7 @@ export default {
       // ローディングを表示
       this.$store.commit("YTsearch/setIsYTLoading", true);
 
-      // まとめを作成したYouTube動画履歴データを取得
+      // 切り抜きまとめを作成したYouTube動画履歴データを取得
       await this.$store.dispatch("YTsearch/YTRecentVideos");
 
       // ローディングを非表示

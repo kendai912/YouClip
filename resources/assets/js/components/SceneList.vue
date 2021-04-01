@@ -8,7 +8,7 @@
       >
         <v-card class="pa-2 pb-0 ma-0 mt-2" elevation="0">
           <div>切り抜いた場面一覧</div>
-          <div>(以下がまとめとして連続再生されます)</div>
+          <div>(以下が切り抜きまとめとして連続再生されます)</div>
         </v-card>
         <SceneTagItem
           v-bind:showAddNewSceneComponent="showAddNewSceneComponent"
@@ -57,7 +57,7 @@
               class="white--text"
               to="/highlight/title"
               style="font-size: 14px;"
-              >まとめタイトル入力へ</v-btn
+              >切り抜きまとめタイトル入力へ</v-btn
             >
           </v-row>
         </v-container>

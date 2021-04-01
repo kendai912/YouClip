@@ -56,7 +56,7 @@
                   alt="YouTube logo"
                   class="ribbon-image"
                 />
-                <span class="ribbon-text">&nbsp;&nbsp;&nbsp;&nbsp;まとめ</span>
+                <span class="ribbon-text">&nbsp;&nbsp;&nbsp;&nbsp;切り抜き</span>
               </div>
             </router-link>
           </v-card>

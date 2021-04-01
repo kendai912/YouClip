@@ -12,7 +12,7 @@
         ><h1 class="fz-17">ログインが必要です</h1></v-card-title
       >
       <v-card-subtitle class="subtitle-1 pa-1 mt-0 mx-0 black--text"
-        >ログインすると、自分の作成した＆いいねしたまとめにアクセス出来ます</v-card-subtitle
+        >ログインすると、自分の作成／いいねした切り抜きにアクセス出来ます</v-card-subtitle
       >
       <v-card-actions class="justify-center pa-1 mt-4 mx-2">
         <v-container class="ma-0 pa-0">
@@ -80,7 +80,7 @@ export default {
         {
           name: "description",
           content:
-            "YouTube動画のまとめ作成ツール、YouClipのマイページです。YouTube動画からお気に入りの場面を切り抜いて作ったまとめを確認・編集出来ます。また、いいねしたみんなのまとめも見ることが出来ます。",
+            "YouTube動画の切り抜きまとめサイト、YouClipのマイページです。YouTube動画からお気に入りの場面を切り抜いて作ったまとめを確認・編集出来ます。また、いいねしたみんなの切り抜きまとめも見ることが出来ます。",
         },
         {
           property: "og:site_name",
@@ -101,7 +101,7 @@ export default {
         {
           property: "og:description",
           content:
-            "YouTube動画のまとめ作成ツール、YouClipのマイページです。YouTube動画からお気に入りの場面を切り抜いて作ったまとめを確認・編集出来ます。また、いいねしたみんなのまとめも見ることが出来ます。",
+            "YouTube動画の切り抜きまとめサイト、YouClipのマイページです。YouTube動画からお気に入りの場面を切り抜いて作ったまとめを確認・編集出来ます。また、いいねしたみんなの切り抜きまとめも見ることが出来ます。",
         },
         {
           property: "og:image",

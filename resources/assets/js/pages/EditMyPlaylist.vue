@@ -117,12 +117,12 @@ import PlaylistDeleteModal from "../components/PlaylistDeleteModal.vue";
 export default {
   metaInfo() {
     return {
-      title: "作成したまとめの編集 - YouClip",
+      title: "作成した切り抜きまとめの編集 - YouClip",
       meta: [
         {
           name: "description",
           content:
-            "YouTube動画のまとめ作成ツール、YouClipの作成したまとめ編集ページです。作成したまとめの開始・終了時間やタグを変更・修正出来ます。新たな場面も切り抜いて追加可能です。",
+            "YouTube動画の切り抜きまとめサイト、YouClipの編集ページです。作成した切り抜きまとめの開始・終了時間やタグを変更・修正出来ます。新たな場面も切り抜いて追加可能です。",
         },
         {
           property: "og:site_name",
@@ -138,12 +138,12 @@ export default {
         },
         {
           property: "og:title",
-          content: "作成したまとめの編集 - YouClip",
+          content: "作成した切り抜きまとめの編集 - YouClip",
         },
         {
           property: "og:description",
           content:
-            "YouTube動画のまとめ作成ツール、YouClipの作成したまとめ編集ページです。作成したまとめの開始・終了時間やタグを変更・修正出来ます。新たな場面も切り抜いて追加可能です。",
+            "YouTube動画の切り抜きまとめサイト、YouClipの編集ページです。作成した切り抜きまとめの開始・終了時間やタグを変更・修正出来ます。新たな場面も切り抜いて追加可能です。",
         },
         {
           property: "og:image",

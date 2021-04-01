@@ -23,7 +23,7 @@
         >
           <v-col class="text-center" cols="12">
             <h2 class="font-weight-bold mb-3 userguideSectionTitle">
-              YouTube動画の<br />まとめ作成ツール
+              YouTube動画の<br />切り抜きまとめサイト
             </h2>
             <p style="margin-top:24px;letter-spacing:1.6px; font-size: 20px;">
               YouTube動画の"お気に入りの<br />場面"を切り抜いてまとめよう
@@ -100,7 +100,7 @@
 
       <v-container class="text-center">
         <h2 class="font-weight-bold mb-2 userguideSectionTitle">
-          まとめ方は簡単
+          切り抜き方は簡単
         </h2>
 
         <v-responsive class="mx-auto mb-4" width="56">
@@ -147,7 +147,7 @@ export default {
         {
           name: "description",
           content:
-            "YouTube動画のまとめ作成ツール、YouClipの使い方紹介です。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。また、みんなが作った人気のまとめを見ることも可能です。",
+            "YouTube動画の切り抜きまとめサイト、YouClipの使い方紹介です。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きまとめを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きまとめを見ることも可能です。",
         },
         {
           property: "og:site_name",
@@ -168,7 +168,7 @@ export default {
         {
           property: "og:description",
           content:
-            "YouTube動画のまとめ作成ツール、YouClipの使い方紹介です。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。また、みんなが作った人気のまとめを見ることも可能です。",
+            "YouTube動画の切り抜きまとめサイト、YouClipの使い方紹介です。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きまとめを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きまとめを見ることも可能です。",
         },
         {
           property: "og:image",

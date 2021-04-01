@@ -23,7 +23,7 @@
                   justify="center"
                 >
                   <span class="fz-14"
-                    >YouTube動画の"お気に入りの場面"を切り抜いてまとめよう</span
+                    >YouTube動画の"お気に入りの場面"を切り抜こう</span
                   >
                 </v-row>
                 <v-row class="ma-2 pa-0" align="center" justify="center">
@@ -93,7 +93,7 @@
                       justify="center"
                     >
                       <span class="fz-17 font-weight-black"
-                        >まとめ方は簡単</span
+                        >切り抜き方は簡単</span
                       >
                     </v-row>
                     <v-row class="ma-2 pa-0" align="center" justify="center">

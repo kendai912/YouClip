@@ -86,7 +86,7 @@ export default {
           this.$store.commit("noLoginModal/openLoginModal");
           this.$store.commit(
             "noLoginModal/setMessageWhenNotLogined",
-            "まとめを作成するには、ログインしてください。(入力データは保持されます)"
+            "切り抜きを作成するには、ログインしてください。(入力データは保持されます)"
           );
         }
       } else if (this.$route.query.tag) {
@@ -105,7 +105,7 @@ export default {
           this.$store.commit("noLoginModal/openLoginModal");
           this.$store.commit(
             "noLoginModal/setMessageWhenNotLogined",
-            "まとめを作成するには、ログインしてください。(入力データは保持されます)"
+            "切り抜きを作成するには、ログインしてください。(入力データは保持されます)"
           );
         }
       }

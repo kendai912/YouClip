@@ -173,9 +173,9 @@ export default {
         {
           name: "description",
           content:
-            "YouTube動画のまとめ作成ツール、YouClipの「" +
+            "YouTube動画の切り抜きまとめサイト、YouClipの「" +
             this.playlistName +
-            "」です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。また、みんなが作った人気のまとめを見ることも可能です。",
+            "」です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きまとめを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きまとめを見ることも可能です。",
         },
         {
           property: "og:site_name",
@@ -196,9 +196,9 @@ export default {
         {
           property: "og:description",
           content:
-            "YouTube動画のまとめ作成ツール、YouClipの「" +
+            "YouTube動画の切り抜きまとめサイト、YouClipの「" +
             this.playlistName +
-            "」です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。",
+            "」です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きまとめを誰でも簡単に作ることが出来ます。",
         },
         {
           property: "og:image",
@@ -317,7 +317,7 @@ export default {
         this.$store.commit("noLoginModal/openLoginModal");
         this.$store.commit(
           "noLoginModal/setMessageWhenNotLogined",
-          "まとめを評価するには、ログインしてください。"
+          "切り抜きまとめを評価するには、ログインしてください。"
         );
       } else {
         //ログイン済の場合

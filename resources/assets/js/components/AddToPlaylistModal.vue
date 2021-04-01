@@ -5,7 +5,7 @@
         <v-col class="ma-0 pa-0">
           <v-list class="pb-0" dense>
             <v-list-item-subtitle class="ma-0 pa-2 pb-0"
-              >既存まとめに登録(チェック外すと解除)</v-list-item-subtitle
+              >既存切り抜きに登録(チェック外すと解除)</v-list-item-subtitle
             >
             <v-list-item
               v-for="myPlaylist in myCreatedPlaylist"
@@ -30,12 +30,12 @@
         <v-col class="ma-0 pa-0">
           <v-list class="pb-0" dense>
             <v-list-item-subtitle class="ma-0 pa-2 pb-3"
-              >新規まとめを作成</v-list-item-subtitle
+              >新規切り抜きを作成</v-list-item-subtitle
             >
             <v-list-item>
               <v-text-field
                 v-model="newPlaylistName"
-                label="新規まとめ名"
+                label="新規切り抜き名"
                 outlined
                 dense
                 style="font-size:10px;"

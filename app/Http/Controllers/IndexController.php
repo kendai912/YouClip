@@ -48,7 +48,7 @@ class IndexController extends Controller
                     $title = Playlist::find($playlistId)->playlistName;
                     $description = Playlist::find($playlistId)->description;
                     if ($description == "" || $description == null) {
-                        $description = "YouTube動画をまとめてみました";
+                        $description = "YouTube動画を切り抜いてみました";
                     }
                     $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . Tag::find($tagId)->preview;
                     
@@ -57,8 +57,8 @@ class IndexController extends Controller
                     // watchページ以外の場合
                     $site_name = "YouClip";
                     $url = "https://youclip.jp" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
-                    $title = "YouClip - YouTube動画のまとめ作成ツール";
-                    $description = "YouClipはYouTube動画のまとめ作成ツールです。お気に入りの場面をまとめて残すことが出来ます。みんなのまとめを見ることも可能です";
+                    $title = "YouClip - YouTube動画の切り抜きまとめ";
+                    $description = "YouClipはYouTube動画の切り抜きまとめサイトです。お気に入りの場面を切り抜いて残すことが出来ます。みんなの切り抜きまとめを見ることも可能です";
                     $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/twitter-youclip-logo.png";
                     
                     return view('ogp')->with('site_name', $site_name)->with('url', $url)->with('title', $title)->with('description', $description)->with('image_url', $image_url)->with('fb_app_id', env('FACEBOOK_ID'));

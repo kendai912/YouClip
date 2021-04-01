@@ -43,7 +43,7 @@
       {
         "@type": "ListItem",
         "position": 1,
-        "name": "まとめ作成",
+        "name": "切り抜き作成",
         "item": "https://youclip.jp/youtube"
       }
     ]

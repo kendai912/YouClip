@@ -15,7 +15,7 @@
               v-bind:items="items"
               v-bind:search-input.sync="searchquery"
               v-on:keydown.enter="search"
-              placeholder="YouTubeまとめを検索"
+              placeholder="YouTube切り抜きを検索"
               item-text="value"
               item-value="value"
               cache-items
@@ -71,7 +71,7 @@
             loading="lazy"
           />
           <p class="leading-none text-gray-600 text-s">
-            | YouTube動画のまとめ作成ツール
+            | YouTube動画の切り抜きまとめ
           </p>
         </router-link>
       </v-toolbar-items>

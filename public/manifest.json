@@ -2,7 +2,7 @@
   "name": "YouClip",
   "short_name": "YouClip",
   "start_url": "/",
-  "description": "YouTube動画のまとめ作成ツール",
+  "description": "YouTube動画の切り抜きまとめ",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#fff",

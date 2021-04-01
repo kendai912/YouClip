@@ -13,7 +13,7 @@
                   v-bind:rules="rules"
                   type="text"
                   name="playlistName"
-                  label="まとめのタイトルを入力"
+                  label="切り抜きまとめのタイトルを入力"
                   hide-details
                   class="playlistNameInputBox"
                 ></v-text-field>
@@ -51,7 +51,7 @@
             <v-row class="ma-0 mb-8 pa-2">
               <v-col class="ma-0 pa-0 text-center">
                 <v-card class="text-left pa-0 ma-0 mb-2 my-grey" elevation="0"
-                  >(任意)まとめの説明</v-card
+                  >(任意)切り抜きまとめの説明</v-card
                 >
                 <v-textarea v-model="description" outlined></v-textarea>
               </v-col>
@@ -151,7 +151,7 @@ export default {
       //headerの文言をセット
       this.$store.commit(
         "highlightHeader/setHeaderMessage",
-        "まとめのタイトルを入力"
+        "切り抜きまとめのタイトルを入力"
       );
       this.setStep(5);
 
@@ -182,7 +182,7 @@ export default {
         this.$store.commit("noLoginModal/openLoginModal");
         this.$store.commit(
           "noLoginModal/setMessageWhenNotLogined",
-          "まとめを保存するには、ログインしてください。(入力データは保持されます)"
+          "切り抜きまとめを保存するには、ログインしてください。(入力データは保持されます)"
         );
       } else {
         if (this.$refs.form.validate()) {

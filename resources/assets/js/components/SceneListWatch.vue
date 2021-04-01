@@ -14,7 +14,7 @@
         >
           <v-fade-transition leave-absolute>
             <span v-if="opened" key="0">
-              まとめの場面一覧
+              切り抜きまとめの場面一覧
             </span>
             <span v-else key="1">
               再生中の場面

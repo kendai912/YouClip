@@ -79,7 +79,7 @@
                             class="ribbon-image-mypage"
                           />
                           <span class="ribbon-text-mypage"
-                            >&nbsp;&nbsp;&nbsp;まとめ</span
+                            >&nbsp;&nbsp;&nbsp;切り抜き</span
                           >
                         </div>
                       </router-link>
@@ -184,7 +184,7 @@
           ></v-img>
         </v-card-title>
         <v-card-title class="pa-1 mt-2 mx-0 justify-center"
-          >まだ作成した・いいねしたまとめはありません</v-card-title
+          >まだ作成／いいねした切り抜きはありません</v-card-title
         >
       </v-card>
     </div>

@@ -17,14 +17,14 @@ export default {
       title:
         "「" +
         this.$route.query.search_query +
-        "」のYouTube動画まとめ検索結果 - YouClip",
+        "」のYouTube動画切り抜きまとめ検索結果 - YouClip",
       meta: [
         {
           name: "description",
           content:
-            "YouTube動画のまとめ作成ツール、YouClipでの「" +
+            "YouTube動画の切り抜きまとめサイト、YouClipでの「" +
             this.$route.query.search_query +
-            "」に関するYouTube動画まとめ検索結果です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。また、みんなが作った人気のまとめを見ることも可能です。",
+            "」に関するYouTube動画切り抜きまとめ検索結果です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きまとめを見ることも可能です。",
         },
         {
           property: "og:site_name",
@@ -43,14 +43,14 @@ export default {
           content:
             "「" +
             this.$route.query.search_query +
-            "」のYouTube動画まとめ検索結果 - YouClip",
+            "」のYouTube動画切り抜きまとめ検索結果 - YouClip",
         },
         {
           property: "og:description",
           content:
-            "YouTube動画のまとめ作成ツール、YouClipでの「" +
+            "YouTube動画の切り抜きまとめサイト、YouClipでの「" +
             this.$route.query.search_query +
-            "」に関するYouTube動画まとめ検索結果です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。",
+            "」に関するYouTube動画切り抜きまとめ検索結果です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きまとめを誰でも簡単に作ることが出来ます。",
         },
         {
           property: "og:image",
@@ -69,7 +69,7 @@ export default {
   data() {
     return {
       tab: null,
-      items: ["まとめ", "場面"],
+      items: ["切り抜き", "場面"],
       pageOfPlaylist: 1,
       playlistMediaItems: [],
     };

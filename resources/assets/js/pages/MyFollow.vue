@@ -15,7 +15,7 @@
         >ログインが必要です</v-card-title
       >
       <v-card-subtitle class="pa-1 mt-0 mx-0 darkgrey--text"
-        >ログインすると、まとめを作成したYouTube動画にアクセス出来ます</v-card-subtitle
+        >ログインすると、切り抜いたYouTube動画にアクセス出来ます</v-card-subtitle
       >
       <v-card-actions class="justify-center pa-1 mt-4 mx-2">
         <v-container class="ma-0 pa-0">
