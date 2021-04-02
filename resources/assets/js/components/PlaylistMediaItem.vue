@@ -163,13 +163,5 @@ export default {
   created() {
     this.isMobile = this.mobileCheck();
   },
-  mounted() {
-    this.now = new Date();
-    console.log("---now---");
-    console.log(this.now);
-    this.$nextTick(() => {
-      console.log(this.mediaItems[0]);
-    });
-  },
 };
 </script>
