@@ -16,7 +16,6 @@
             elevation="0"
             v-on:mouseover="setShowPreviewIndex(index)"
             v-on:touchstart="setShowPreviewIndex(index)"
-            style="overflow: hidden;"
           >
             <router-link
               v-bind:to="{
@@ -48,15 +47,11 @@
                 width="100%"
                 style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px; object-fit: cover;"
               ></video>
+              <div
+                v-if="item.isNew"
+                v-bind:class="isMobile ? 'icon-new-mobile' : 'icon-new-pc'"
+              ></div>
               <div class="ribbon-content">
-                <!-- <v-img
-                  src="/storage/icons/yt_social_red.png"
-                  width="16px"
-                  max-height="16px"
-                  alt="YouTube logo"
-                  class="ribbon-image"
-                /> -->
-                
                 <span class="ribbon-text"
                   ><v-icon size="16">content_cut</v-icon>&nbsp;切り抜き</span
                 >
@@ -141,6 +136,8 @@ import myMixin from "../util";
 export default {
   data: () => ({
     showPreviewIndex: null,
+    isMobile: false,
+    now: "",
   }),
   components: {
     LoadingItem,
@@ -163,6 +160,16 @@ export default {
       this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
     },
   },
-  created() {},
+  created() {
+    this.isMobile = this.mobileCheck();
+  },
+  mounted() {
+    this.now = new Date();
+    console.log("---now---");
+    console.log(this.now);
+    this.$nextTick(() => {
+      console.log(this.mediaItems[0]);
+    });
+  },
 };
 </script>

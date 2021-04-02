@@ -24,7 +24,7 @@
       </v-tab>
     </v-tabs>
 
-    <v-tabs-items v-model="tab">
+    <v-tabs-items v-model="tab" style="overflow: visible; ">
       <!-- <v-tab-item>
         <v-card flat>
           <PlaylistMediaItem
@@ -338,6 +338,7 @@ export default {
         this.newMediaItems,
         this.playlistAndTagPaginationOfNew.data
       );
+      console.log(this.newMediaItems);
 
       let totalNumOfItems =
         numOfItems + this.playlistAndTagPaginationOfNew.data.length;
