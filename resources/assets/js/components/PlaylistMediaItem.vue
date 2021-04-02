@@ -89,12 +89,11 @@
                       <v-icon
                         small
                         style="vertical-align: top; padding-top: 2px;"
-                        >mdi-timer-outline</v-icon
+                        >far fa-clock</v-icon
                       >
-                      &nbsp;<span style="font-weight: bold">{{
-                        item.totalDuration
-                      }}</span
-                      >&nbsp;⬅&nbsp;元のYouTube動画:&nbsp;{{
+                      <span style="font-size: 6px">&nbsp;&nbsp;</span
+                      ><span>{{ item.totalDuration }}</span
+                      >&nbsp;⬅&nbsp;元の動画:&nbsp;{{
                         item.numberOfYTvideos
                       }}本の合計{{ item.totalYTDuration }}</span
                     >
@@ -105,11 +104,11 @@
                     <span style="font-size:12px;">
                       <v-icon
                         small
-                        style="vertical-align: top; padding-top: 1px;"
+                        style="vertical-align: top; padding-top: 2px;"
                         >far fa-eye</v-icon
-                      ><span style="font-size: 6px">&nbsp;&nbsp;</span
-                      ><span style="font-weight: bold"
-                        >{{ item.visitCount ? item.visitCount : 0 }}回</span
+                      >
+                      <span style="font-size: 12px">&nbsp;</span
+                      ><span>{{ item.visitCount ? item.visitCount : 0 }}回</span
                       ><span>&nbsp;&#8226;&nbsp;</span
                       >{{ item.timeSince }}前</span
                     >
