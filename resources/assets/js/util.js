@@ -38,7 +38,7 @@ export default {
   methods: {
     mobileCheck() {
       let check = false;
-      (function(a) {
+      (function (a) {
         if (
           /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(
             a
@@ -60,7 +60,7 @@ export default {
       this.$store.commit("tagging/setPrivacySetting", "");
     },
     //タグデータをレコメンド画面に表示するメディアアイテムに格納
-    putTagVideoIntoMediaItems: function(mediaItems, tagVideo) {
+    putTagVideoIntoMediaItems: function (mediaItems, tagVideo) {
       if (tagVideo) {
         tagVideo.forEach((value, index) => {
           //合計時間を計算
@@ -114,7 +114,7 @@ export default {
         });
       }
     },
-    getTotalDuration: function(mediaItems) {
+    getTotalDuration: function (mediaItems) {
       if (mediaItems.length) {
         let totalDuration = "00:00:00";
         mediaItems.forEach((item) => {
@@ -128,7 +128,7 @@ export default {
       return "0秒 ";
     },
     //プレイリストデータをメディアアイテムに追加格納
-    putPlaylistTagIntoMediaItems: function(mediaItems, playlistTag) {
+    putPlaylistTagIntoMediaItems: function (mediaItems, playlistTag) {
       if (playlistTag) {
         //プレイリスト毎にアイテム(mediaItem)をmediaItemsに格納
         playlistTag.forEach((value, index) => {
@@ -215,7 +215,7 @@ export default {
       }
     },
     //YTPlayerのまとめの再生に必要なパラメータをセット
-    putTagVideoIntolistOfYoutubeIdStartEndTime: function(
+    putTagVideoIntolistOfYoutubeIdStartEndTime: function (
       listOfYoutubeIdStartEndTimeArray,
       tagVideo
     ) {
@@ -321,10 +321,19 @@ export default {
       }
       return Math.round(num) + ext;
     },
+    replaceDate(dateStr) {
+      const regexp = /^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?: ([0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/;
+      return dateStr.replace(
+        regexp,
+        (match, year, month, day, hour, minutes, seconds) => {
+          return `${year}-${month}-${day}T${hour}:${minutes}:${seconds}.000000Z`;
+        }
+      );
+    },
     //日付が現時点からどのくらい前か表示変換を行う関数
     timeSince(publishedAt) {
       if (publishedAt != null) {
-        let date = new Date(publishedAt);
+        let date = new Date(this.replaceDate(publishedAt));
         let seconds = Math.floor((new Date() - date) / 1000);
 
         let interval = Math.floor(seconds / 31536000);
@@ -438,7 +447,7 @@ export default {
         "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/gifs/",
       timeMath: {
         // 加算
-        sum: function() {
+        sum: function () {
           var result,
             times,
             second,
@@ -471,7 +480,7 @@ export default {
         },
 
         // 減算
-        sub: function() {
+        sub: function () {
           var result,
             times,
             second,
@@ -504,7 +513,7 @@ export default {
         },
 
         // 乗算
-        multiply: function() {
+        multiply: function () {
           var result,
             times,
             second,
@@ -537,7 +546,7 @@ export default {
         },
 
         // 除算
-        division: function() {
+        division: function () {
           var result,
             times,
             second,
@@ -570,7 +579,7 @@ export default {
         },
 
         // 時間を秒に変換
-        toSecond: function(hour, minute, second) {
+        toSecond: function (hour, minute, second) {
           if (
             (!hour && hour !== 0) ||
             (!minute && minute !== 0) ||
@@ -591,7 +600,7 @@ export default {
         },
 
         // 秒を時間（hh:mm:ss）のフォーマットに変換
-        toTimeFormat: function(fullSecond) {
+        toTimeFormat: function (fullSecond) {
           var hour, minute, second;
 
           if (
@@ -600,7 +609,7 @@ export default {
           )
             return;
 
-          var paddingZero = function(n) {
+          var paddingZero = function (n) {
             return n < 10 ? "0" + n : n;
           };
 
