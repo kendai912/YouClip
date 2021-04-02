@@ -132,7 +132,7 @@ export default {
     return {
       tab: 0,
       items: [
-        { tabIcon: "fiber_new", tabName: "新着" },
+        { tabIcon: "fas fa-fire", tabName: "急上昇" },
         { tabIcon: "fas fa-gamepad", tabName: "VTuber" },
         { tabIcon: "fas fa-gamepad", tabName: "ゲーム" },
         { tabIcon: "fas fa-music", tabName: "音楽" },
