@@ -103,11 +103,10 @@
                   <v-col class="pa-0 ma-0 d-flex align-center">
                     <span style="font-size:12px;">
                       <v-icon
-                        small
-                        style="vertical-align: top; padding-top: 2px;"
+                        style="vertical-align: top; padding-top: 3px; font-size: calc(1rem * (14.222 / 14));"
                         >far fa-eye</v-icon
                       >
-                      <span style="font-size: 12px">&nbsp;</span
+                      <span style="font-size: 6px">&nbsp;&nbsp;</span
                       ><span>{{ item.visitCount ? item.visitCount : 0 }}回</span
                       ><span>&nbsp;&#8226;&nbsp;</span
                       >{{ item.timeSince }}前</span
