@@ -74,7 +74,7 @@ export default {
             thumbnail: value.thumbnail,
             created_at: value.tag_created_at,
             timeSince: this.timeSince(value.tag_created_at),
-            isNew: this.isNew(value.tag_created_at),
+            isNewClip: this.isNewClip(value.tag_created_at),
             tagsList: "",
             tags: value.tags,
             tagArray: [],
@@ -164,7 +164,7 @@ export default {
               thumbnail: "",
               created_at: value.created_at,
               timeSince: this.timeSince(value.created_at),
-              isNew: this.isNew(value.created_at),
+              isNewClip: this.isNewClip(value.created_at),
               tagsList: value.tags,
               tags: "",
               tagArray: [],
@@ -354,7 +354,7 @@ export default {
         return Math.floor(seconds) + "秒";
       }
     },
-    isNew(publishedAt) {
+    isNewClip(publishedAt) {
       if (publishedAt != null) {
         let date = new Date(publishedAt);
         let seconds = Math.floor((new Date() - date) / 1000);

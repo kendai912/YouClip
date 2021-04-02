@@ -220,6 +220,7 @@ export default {
       setIsFadingOut: "ytPlayer/setIsFadingOut",
       setIsMobile: "ytSeekBar/setIsMobile",
       setIsIOS: "ytSeekBar/setIsIOS",
+      setIsNew: "youtube/setIsNew",
     }),
     setImmediateHide() {
       this.setImmediateHideFlag(true);

@@ -48,7 +48,7 @@
                 style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px; object-fit: cover;"
               ></video>
               <div
-                v-if="item.isNew"
+                v-if="item.isNewClip"
                 v-bind:class="isMobile ? 'icon-new-mobile' : 'icon-new-pc'"
               ></div>
               <div class="ribbon-content">
