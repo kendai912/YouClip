@@ -467,6 +467,9 @@ export default {
     this.playlistIdUrl = this.$route.query.playlist;
     this.indexUrl = this.$route.query.index;
 
+    //視聴回数をインクリメント
+    this.$store.dispatch("playlist/addPlaylistVisitCount", this.playlistIdUrl);
+
     //まとめおよび動画・タグデータを取得
     await this.$store.dispatch(
       "watch/getPlaylistAndTagVideoDataById",

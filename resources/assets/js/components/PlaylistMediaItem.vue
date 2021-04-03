@@ -23,7 +23,6 @@
                 query: { playlist: item.id, index: 0 },
               }"
               class="no-text-decoration"
-              v-on:click.native="select(item)"
             >
               <v-img
                 class="white--text align-end rounded"
@@ -66,7 +65,6 @@
                 query: { playlist: item.id, index: 0 },
               }"
               class="no-text-decoration"
-              v-on:click.native="select(item)"
             >
               <h3 class="home-and-search-result-title">
                 {{ item.title }}
@@ -81,7 +79,6 @@
                   query: { playlist: item.id, index: 0 },
                 }"
                 class="no-text-decoration"
-                v-on:click.native="select(item)"
               >
                 <v-row class="pa-0 ma-0" align-content="center">
                   <v-col class="pa-0 ma-0 d-flex align-center">
@@ -153,9 +150,6 @@ export default {
   methods: {
     setShowPreviewIndex(index) {
       this.showPreviewIndex = index;
-    },
-    select(mediaItem) {
-      this.$store.dispatch("playlist/addPlaylistVisitCount", mediaItem.id);
     },
   },
   created() {
