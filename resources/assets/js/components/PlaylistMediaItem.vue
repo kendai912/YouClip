@@ -107,7 +107,7 @@
                         >far fa-eye</v-icon
                       >
                       <span style="font-size: 6px">&nbsp;&nbsp;</span
-                      ><span>{{ item.visitCount ? item.visitCount : 0 }}回</span
+                      ><span>{{ item.visitCount ? item.visitCount : 0 }}回視聴</span
                       ><span>&nbsp;&#8226;&nbsp;</span
                       >{{ item.timeSince }}前</span
                     >

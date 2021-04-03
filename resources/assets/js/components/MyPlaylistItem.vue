@@ -71,15 +71,9 @@
                           style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px; object-fit: cover;"
                         ></video>
                         <div class="ribbon-content-mypage">
-                          <v-img
-                            src="/storage/icons/yt_social_red.png"
-                            width="14px"
-                            max-height="14px"
-                            alt="YouTube logo"
-                            class="ribbon-image-mypage"
-                          />
                           <span class="ribbon-text-mypage"
-                            >&nbsp;&nbsp;&nbsp;切り抜き</span
+                            ><v-icon size="10">content_cut</v-icon
+                            >&nbsp;切り抜き</span
                           >
                         </div>
                       </router-link>
