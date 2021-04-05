@@ -42,7 +42,7 @@ export default {
         // },
         {
           target: "#youtube",
-          content: "YouTube動画を切り抜いてみる",
+          content: "YouTube動画を切り抜いてみる<br />(簡単4ステップ)",
         },
         // {
         //   target: "#mypage",
