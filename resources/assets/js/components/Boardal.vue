@@ -201,7 +201,7 @@ export default {
       isMobile: false,
       features: [
         {
-          img: "/storage/imgs/onboarding2.png",
+          img: "/storage/imgs/userguide-save.png",
           title: "あとで動画の一部を見返したい",
         },
         {

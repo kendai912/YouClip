@@ -36,18 +36,18 @@ export default {
     return {
       activeBtn: 0,
       steps: [
-        {
-          target: "#home",
-          content: `みんなの切り抜きを見る`,
-        },
+        // {
+        //   target: "#home",
+        //   content: `みんなの切り抜きを見る`,
+        // },
         {
           target: "#youtube",
-          content: "YouTube動画の切り抜きを作成する",
+          content: "YouTube動画を切り抜いてみる",
         },
-        {
-          target: "#mypage",
-          content: "自分が作成＆いいねした切り抜きを確認する",
-        },
+        // {
+        //   target: "#mypage",
+        //   content: "自分が作成＆いいねした切り抜きを確認する",
+        // },
       ],
       myOptions: {
         useKeyboardNavigation: false,
