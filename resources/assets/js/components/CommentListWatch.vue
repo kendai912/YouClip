@@ -45,7 +45,7 @@
                   rows="3"
                   hide-details
                   name="comment_box"
-                  :placeholder="'公開コメントを入力'"
+                  :placeholder="'コメントを入力'"
                   class="pa-2"
                 ></v-textarea>
               </v-form>
