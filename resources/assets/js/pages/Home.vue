@@ -25,15 +25,6 @@
     </v-tabs>
 
     <v-tabs-items v-model="tab" style="overflow: visible; ">
-      <!-- <v-tab-item>
-        <v-card flat>
-          <PlaylistMediaItem
-            v-bind:mediaItems="recommendMediaItems"
-            v-bind:key="resetKey"
-            ref="recommendMediaItems"
-          />
-        </v-card>
-      </v-tab-item> -->
       <v-tab-item>
         <v-card flat>
           <PlaylistMediaItem
@@ -139,19 +130,16 @@ export default {
         { tabIcon: "fas fa-language", tabName: "語学" },
       ],
       page: 1,
-      // recommendPage: 1,
       newPage: 1,
       vtuberPage: 1,
       gamePage: 1,
       musicPage: 1,
       languagePage: 1,
-      // recommendPeriod: 1,
       newPeriod: 1,
       vtuberPeriod: 1,
       gamePeriod: 1,
       musicPeriod: 1,
       languagePeriod: 1,
-      // recommendMediaItems: [],
       newMediaItems: [],
       vtuberMediaItems: [],
       gameMediaItems: [],
@@ -164,8 +152,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      // playlistAndTagPaginationOfRecommend:
-      //   "playlist/playlistAndTagPaginationOfRecommend",
       playlistAndTagPaginationOfNew: "playlist/playlistAndTagPaginationOfNew",
       playlistAndTagPaginationOfVTuber:
         "playlist/playlistAndTagPaginationOfVTuber",
@@ -174,20 +160,16 @@ export default {
         "playlist/playlistAndTagPaginationOfMusic",
       playlistAndTagPaginationOfLanguage:
         "playlist/playlistAndTagPaginationOfLanguage",
-      // proceedPeriodOfRecommend: "playlist/proceedPeriodOfRecommend",
       proceedPeriodOfNew: "playlist/proceedPeriodOfNew",
       proceedPeriodOfVTuber: "playlist/proceedPeriodOfVTuber",
       proceedPeriodOfGame: "playlist/proceedPeriodOfGame",
       proceedPeriodOfMusic: "playlist/proceedPeriodOfMusic",
       proceedPeriodOfLanguage: "playlist/proceedPeriodOfLanguage",
-      // toLoadRecommend: "playlist/toLoadRecommend",
       toLoadNew: "playlist/toLoadNew",
       toLoadVTuber: "playlist/toLoadVTuber",
       toLoadGame: "playlist/toLoadGame",
       toLoadMusic: "playlist/toLoadMusic",
       toLoadLanguage: "playlist/toLoadLanguage",
-      // isIndexRecommendPlaylistAndTagPaginating:
-      //   "playlist/isIndexRecommendPlaylistAndTagPaginating",
       isIndexNewPlaylistAndTagPaginating:
         "playlist/isIndexNewPlaylistAndTagPaginating",
       isIndexVTuberPlaylistAndTagPaginating:
@@ -256,7 +238,6 @@ export default {
   methods: {
     ...mapMutations({
       setActiveTabIndex: "navbar/setActiveTabIndex",
-      // setProceedPeriodOfRecommend: "playlist/setProceedPeriodOfRecommend",
       setProceedPeriodOfNew: "playlist/setProceedPeriodOfNew",
       setProceedPeriodOfVTuber: "playlist/setProceedPeriodOfVTuber",
       setProceedPeriodOfGame: "playlist/setProceedPeriodOfGame",
@@ -287,36 +268,6 @@ export default {
       let sec = parseInt(His.split(":")[2], 10);
       return min + ":" + sec;
     },
-    //【レコメンド】表示するプレイリストの無限スクロール
-    // async infinateLoadPlaylistOfRecommend() {
-    //   if (!this.toLoadRecommend) {
-    //     this.$store.commit("loadingItem/setIsLoading", false);
-    //     return;
-    //   }
-
-    //   //ローディングを表示
-    //   this.$store.commit("loadingItem/setIsLoading", true);
-
-    //   //無限スクロールに合わせてプレイリストのページネイションを取得
-    //   await this.$store.dispatch(
-    //     "playlist/indexPlaylistAndTagPaginationOfRecommend",
-    //     { page: this.recommendPage++, period: this.recommendPeriod }
-    //   );
-
-    //   // ページネーションのデータをrecommendMediaItemsに格納
-    //   this.putPlaylistTagIntoMediaItems(
-    //     this.recommendMediaItems,
-    //     this.playlistAndTagPaginationOfRecommend.data
-    //   );
-
-    //   if (this.playlistAndTagPaginationOfRecommend.data.length) {
-    //     //ローディングを非表示
-    //     this.$store.commit("loadingItem/setIsLoading", false);
-    //   } else {
-    //     //データが何も返って来なかった場合は次のデータを再度ロード
-    //     this.infinateLoadPlaylistOfRecommend();
-    //   }
-    // },
     //【新着】表示するプレイリストの無限スクロール
     async infinateLoadPlaylistOfNew(numOfItems = 0) {
       if (!this.toLoadNew) {
@@ -516,6 +467,7 @@ export default {
           })
           .catch((err) => {});
       } else {
+        // use replaceState not to return to top position by router.replace/push
         window.history.replaceState(null, null, "/?page=" + page);
       }
     },

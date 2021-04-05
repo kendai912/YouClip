@@ -352,9 +352,10 @@ const router = new VueRouter({
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return new Promise((resolve, reject) => {
-        setTimeOut(() => {
+        setTimeout(() => {
           resolve(savedPosition);
         });
+        500;
       });
     } else {
       return { x: 0, y: 0 };

@@ -22,6 +22,7 @@
                 path: '/watch',
                 query: { playlist: item.id, index: 0 },
               }"
+              v-on:click="moveTo(item.id, 0)"
               class="no-text-decoration"
             >
               <v-img
@@ -64,6 +65,7 @@
                 path: '/watch',
                 query: { playlist: item.id, index: 0 },
               }"
+              v-on:click="moveTo(item.id, 0)"
               class="no-text-decoration"
             >
               <h3 class="home-and-search-result-title">
@@ -78,6 +80,7 @@
                   path: '/watch',
                   query: { playlist: item.id, index: 0 },
                 }"
+                v-on:click="moveTo(item.id, 0)"
                 class="no-text-decoration"
               >
                 <v-row class="pa-0 ma-0" align-content="center">
@@ -104,7 +107,8 @@
                         >far fa-eye</v-icon
                       >
                       <span style="font-size: 6px">&nbsp;&nbsp;</span
-                      ><span>{{ item.visitCount ? item.visitCount : 0 }}回視聴</span
+                      ><span
+                        >{{ item.visitCount ? item.visitCount : 0 }}回視聴</span
                       ><span>&nbsp;&#8226;&nbsp;</span
                       >{{ item.timeSince }}前</span
                     >
@@ -150,6 +154,14 @@ export default {
   methods: {
     setShowPreviewIndex(index) {
       this.showPreviewIndex = index;
+    },
+    moveTo(id, index) {
+      this.$router
+        .push({
+          path: "/watch",
+          query: { playlist: id, index: index },
+        })
+        .catch((err) => {});
     },
   },
   created() {
