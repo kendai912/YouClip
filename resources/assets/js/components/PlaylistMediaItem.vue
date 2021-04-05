@@ -35,7 +35,7 @@
               >
               </v-img>
               <video
-                v-if="showPreviewIndex == index"
+                v-if="showPreviewIndex == index || showPreviewIndex + 1 == index"
                 v-bind:src="gifStoragePath + item.previewgif"
                 autoplay
                 playsinline
@@ -131,7 +131,7 @@ import myMixin from "../util";
 
 export default {
   data: () => ({
-    showPreviewIndex: null,
+    showPreviewIndex: 0,
     isMobile: false,
     now: "",
   }),
