@@ -350,12 +350,15 @@ const router = new VueRouter({
   mode: "history",
   routes,
   scrollBehavior(to, from, savedPosition) {
+    if (from && to.name === from.name && _.isEqual(to.params, from.params)) {
+      return;
+    }
+
     if (savedPosition) {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve(savedPosition);
         });
-        500;
       });
     } else {
       return { x: 0, y: 0 };

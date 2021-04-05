@@ -467,8 +467,12 @@ export default {
           })
           .catch((err) => {});
       } else {
-        // use replaceState not to return to top position by router.replace/push
-        window.history.replaceState(null, null, "/?page=" + page);
+        this.$router
+          .replace({
+            path: "/",
+            query: { page: page },
+          })
+          .catch((err) => {});
       }
     },
     setTopPositionOfItems() {
