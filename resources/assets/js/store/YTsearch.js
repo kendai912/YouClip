@@ -237,10 +237,6 @@ const actions = {
     //検索結果が帰ってくる前に連続でリクエストをかけないようにフラグをセット
     context.commit("setIsYTSearching", true);
 
-    //検索と動画データのAPI Keyをセット
-    context.commit("setKeyOfSearch", context.getters["keyIndex"]);
-    context.commit("setKeyOfVideos", context.getters["keyIndex"]);
-
     let params = {};
     params = {
       q: state.paramsOfSearch.q,
@@ -323,27 +319,6 @@ const actions = {
     if (response.status == OK) {
       // 成功した時
       context.commit("setCandidates", response.data.searchCandidates);
-    } else if (response.status == INTERNAL_SERVER_ERROR) {
-      // 失敗した時
-      context.commit("error/setCode", response.status, { root: true });
-    } else {
-      // 上記以外で失敗した時
-      context.commit("error/setCode", response.status, { root: true });
-    }
-  },
-  //視聴回数と再生時間を取得するためのAPIリクエスト
-  async getYTstatisticsAndcontentDetails(context, youtubeIds) {
-    //paramsのidにリクエストするyoutubeIdをセット
-    context.commit("setYoutubeIdsOfParamsOfVideos", youtubeIds);
-
-    const response = await axios.post("/api/search/getYoutubeVideos", {
-      params: state.paramsOfVideos,
-      apiUrl: state.apiOfVideos,
-    });
-    if (response.status == OK) {
-      // 成功した時
-      //videosのAPI検索結果を格納
-      context.commit("setYTvideosResponse", response.data.items);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
