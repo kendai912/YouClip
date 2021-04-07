@@ -100,8 +100,10 @@
                       <v-carousel
                         cycle
                         interval="8000"
-                        hide-delimiters
                         height="290px"
+                        progress
+                        progress-color="grey"
+                        hide-delimiters
                       >
                         <v-carousel-item
                           v-for="({ img, text }, i) in howToImgs"
@@ -160,7 +162,7 @@
             ></v-checkbox>
           </v-row>
           <v-row>
-            <v-btn :disabled="onboarding === 0" text @click="prev">
+            <v-btn v-if="onboarding !== 0" text @click="prev">
               戻る
             </v-btn>
             <v-spacer></v-spacer>
@@ -202,7 +204,7 @@ export default {
       features: [
         {
           img: "/storage/imgs/userguide-save.png",
-          title: "あとで動画の一部を見返したい",
+          title: "動画の一部を繰り返し見返したい",
         },
         {
           img: "/storage/imgs/userguide-share.png",
