@@ -183,16 +183,6 @@ import myMixin from "../util";
 
 export default {
   components: {},
-  metaInfo() {
-    return {
-      meta: [
-        {
-          name: "robots",
-          content: "noindex",
-        },
-      ],
-    };
-  },
   data() {
     return {
       boardal: true,

@@ -31,11 +31,21 @@ class AuthController extends Controller
         if ($authUser) {
             return $authUser;
         }
+
+        try {
+            $avatarFileName = $user->id . "-avatar" . "-" . rand() . ".jpg";
+            Storage::disk('s3')->putFileAs('avatars', $user->getAvatar(), $avatarFileName, 'public');
+        } catch (\Exception $e) {
+            \Log::debug($e->getMessage());
+            $avatarFileName = "";
+        }
+        
         return User::create([
             'name' => $user->name,
             'email' => $user->email,
             'provider' => $provider,
-            'provider_id' => $user->id
+            'provider_id' => $user->id,
+            'avatar' => $avatarFileName
         ]);
     }
 }
