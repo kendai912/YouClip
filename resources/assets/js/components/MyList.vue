@@ -1,22 +1,5 @@
 <template>
   <div>
-    <!--    <v-tabs v-model="tab" background-color="transparent" grow hide-slider>-->
-    <!--      <v-tab v-for="(item, key) in items" :key="item" v-on:click="setActiveTab(key)">{{ item }}</v-tab>-->
-    <!--    </v-tabs>-->
-
-    <!--    <v-tabs-items v-model="tab" class="pb-14" style="background-color: transparent">-->
-    <!--      <v-tab-item>-->
-    <!--        <v-card flat>-->
-    <!--          <MyPlaylistItem v-bind:mediaItems="myCreatedAndLikedPlaylistMediaItems" />-->
-    <!--          &lt;!&ndash; <MyPlaylistItem v-bind:mediaItems="myPlaylist" /> &ndash;&gt;-->
-    <!--        </v-card>-->
-    <!--      </v-tab-item>-->
-    <!--      <v-tab-item>-->
-    <!--        <v-card flat>-->
-    <!--          <MyTagItem v-bind:mediaItems="myCreatedAndLikedTagVideoMediaItems" />-->
-    <!--        </v-card>-->
-    <!--      </v-tab-item>-->
-    <!--    </v-tabs-items>-->
     <div class="pa-0 ma-0" style="position: relative; height: 40px;">
       <div
         style="
@@ -28,32 +11,6 @@
       >
         <v-icon size="30" color="my-grey">mdi-play-box-multiple-outline</v-icon>
         <span>自分の切り抜き・いいねした切り抜き</span>
-      </div>
-      <v-spacer></v-spacer>
-      <div
-        style="
-              position: absolute;
-              height: 100%;
-              top: 12px;
-              right: 8px;
-            "
-      >
-        <v-menu offset-y>
-          <template v-slot:activator="{ on }">
-            <i
-              v-on="on"
-              class="fas fa-bars"
-              style="color: rgb(158, 158, 158); text-align: right; font-size: 20px;"
-            ></i>
-          </template>
-          <v-list>
-            <v-list-item>
-              <v-list-item-title class="button button--link" v-on:click="logout"
-                >ログアウト</v-list-item-title
-              >
-            </v-list-item>
-          </v-list>
-        </v-menu>
       </div>
     </div>
     <MyPlaylistItem
@@ -73,7 +30,6 @@ export default {
   components: {
     MyPlaylistItem,
     MyTagItem,
-    // PlaylistMediaItem
   },
   props: {},
   data() {
@@ -184,12 +140,6 @@ export default {
     },
   },
   methods: {
-    async logout() {
-      await this.$store.dispatch("auth/logout");
-      if (this.apiStatus) {
-        this.$router.push("/login");
-      }
-    },
     setActiveTab(key) {
       //開いたタブをセッションストレージに保存
       window.sessionStorage.setItem("myPageTabIndex", JSON.stringify(key));

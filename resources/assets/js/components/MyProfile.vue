@@ -1,72 +1,54 @@
 <template>
   <v-container class="pa-0 body-color">
-    <v-card
-      class="mx-auto"
-      max-width="420"
-      tile
-      flat
-    >
-      <v-row class="ma-0">
-        <v-col class="pa-0 pt-2 text-center">
-          <span class="h5 font-weight-black">
-            Kendai Miyazawa
-          </span>
-        </v-col>
+    <v-card class="mx-auto" tile flat>
+      <v-row align="center" justify="end" class="ma-0 pa-2">
+        <v-btn v-on:click="logout" elevation="0" color="white">
+          <v-icon>mdi-logout</v-icon>
+          ログアウト
+        </v-btn>
       </v-row>
-      <v-row class="ma-0">
-        <v-col cols="4">
-          <div class="text-center">
-            <v-avatar
-              class="profile"
-              size="100"
-            >
-              <v-img src="/storage/logos/pph_son.png" alt="profile pic"></v-img>
-            </v-avatar>
-          </div>
-        </v-col>
-        <v-col cols="4" class="d-flex justify-center align-center text-center">
-          <div>
-            <span class="h6 font-weight-medium">
-              100
-            </span> <br/>
-            <span class="h6 font-weight-medium">
-              フォロワー
-            </span>
-          </div>
-        </v-col>        
-        <v-col cols="4" class="d-flex justify-center align-center text-center">
-          <div>
-            <span class="h6 font-weight-medium">
-              100
-            </span> <br/>
-            <span class="h6 font-weight-medium">
-              フォロー中
-            </span>
-          </div>
-        </v-col>
+      <v-row align="center" justify="center" class="ma-0 pa-2">
+        <v-avatar class="profile" size="100">
+          <v-img
+            v-bind:src="avatarStoragePath + avatar"
+            alt="profile pic"
+          ></v-img>
+        </v-avatar>
       </v-row>
-      <v-row class="ma-0">
-        <v-col class="pt-0">
-          <div>
-            <span class="h6 font-weight-bold">
-              Kendai Miyazawa
-            </span>
-          </div>
-        </v-col>
+      <v-row align="center" justify="center" class="ma-0 pt-0 pb-2">
+        <span class="fz-16">
+          {{ username }}
+        </span>
       </v-row>
-      <v-row class="ma-0">
-        <v-col class="pb-1">
-          <v-btn width="100%" color="white" >プロフィールを編集</v-btn>
-        </v-col>
+      <v-row class="ma-0 pt-4 pb-4 px-2">
+        <v-btn width="100%" color="white"
+          ><span class="fz-14">プロフィールを編集</span></v-btn
+        >
       </v-row>
     </v-card>
   </v-container>
 </template>
 
 <script>
+import { mapState, mapGetters, mapMutations } from "vuex";
+import myMixin from "../util";
 
 export default {
-  data: () => ({
-  }),
-}
+  data: () => ({}),
+  mixins: [myMixin],
+  computed: {
+    ...mapGetters({
+      username: "auth/username",
+      avatar: "auth/avatar",
+    }),
+  },
+  methods: {
+    async logout() {
+      await this.$store.dispatch("auth/logout");
+      if (this.apiStatus) {
+        this.$router.push("/login");
+      }
+    },
+  },
+};
 </script>
