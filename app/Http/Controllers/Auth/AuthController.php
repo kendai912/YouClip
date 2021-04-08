@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Socialite;
 use App\User;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -32,8 +33,8 @@ class AuthController extends Controller
             return $authUser;
         }
 
+        $avatarFileName = $user->id . "-avatar" . "-" . rand() . ".jpg";
         try {
-            $avatarFileName = $user->id . "-avatar" . "-" . rand() . ".jpg";
             Storage::disk('s3')->putFileAs('avatars', $user->getAvatar(), $avatarFileName, 'public');
         } catch (\Exception $e) {
             \Log::debug($e->getMessage());
