@@ -77,7 +77,7 @@
                         v-bind:src="avatarStoragePath + item.avatar"
                         alt="profile pic"
                       ></v-img>
-                      <v-icon v-else style="color:grey;"
+                      <v-icon v-else style="color:grey;" size="40"
                         >fas fa-user-circle</v-icon
                       >
                     </v-avatar>
