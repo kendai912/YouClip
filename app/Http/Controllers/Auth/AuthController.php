@@ -34,12 +34,7 @@ class AuthController extends Controller
         }
 
         $avatarFileName = "avatar" . "-" . rand() . ".jpg";
-        try {
-            Storage::disk('s3')->putFileAs('avatars', $user->getAvatar(), $avatarFileName, 'public');
-        } catch (\Exception $e) {
-            \Log::debug($e->getMessage());
-            $avatarFileName = "";
-        }
+        $this->saveSocialLoginAvatar($user->getAvatar(), $avatarFileName);
         
         return User::create([
             'name' => $user->name,
@@ -48,5 +43,15 @@ class AuthController extends Controller
             'provider_id' => $user->id,
             'avatar' => $avatarFileName
         ]);
+    }
+
+    public function saveSocialLoginAvatar($avatar, $avatarFileName)
+    {
+        try {
+            Storage::disk('s3')->putFileAs('avatars', $avatar, $avatarFileName, 'public');
+        } catch (\Exception $e) {
+            \Log::debug($e->getMessage());
+            $avatarFileName = "";
+        }
     }
 }
