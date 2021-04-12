@@ -413,38 +413,17 @@ class PlaylistController extends Controller
         );
     }
 
-    //Likeまたは作成したプレイリスト一覧をロード
-    public function loadMyCreatedAndLikedPlaylist()
+    //作成したプレイリストを取得
+    public function loadMyCreatedPlaylist()
     {
         if (Auth::user()) {
-            //Likeしたプレイリストを取得
-            $LikedPlaylist = $this->likedPlaylist();
-
-            //作成したプレイリストを取得
-            $createdPlaylist = $this->createdPlaylist();
-
-            //Likeしたプレイリストと作成したプレイリストをマージ
-            $myCreatedAndLikedPlaylist = $LikedPlaylist->merge($createdPlaylist);
-            
-            //更新日順に並び替え
-            $myCreatedAndLikedPlaylist = $myCreatedAndLikedPlaylist->toArray();
-            usort($myCreatedAndLikedPlaylist, function ($a, $b) {
-                if ($a['updated_at'] != $b['updated_at']) {
-                    // 両者のupdated_atが異なる、つまり比較が可能
-                    return ($a['updated_at'] < $b['updated_at']) ? +1 : -1;
-                }
-
-                if ($a['created_at'] != $b['created_at']) {
-                    return ($a['created_at'] < $b['created_at']) ? +1 : -1;
-                }
-
-                // 両者のupdated_at、created_atが同じ場合、idで比較
-                return ($a['id'] < $b['id']) ? +1 : -1;
-            });
+            $myCreatedPlaylist = Playlist::with(array('tags' => function ($query) {
+                $query->with('video')->select('*')->get();
+            }))->withCount(['playlistlogs as play_count'])->where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get();
 
             return response()->json(
                 [
-                'myCreatedAndLikedPlaylist' => $myCreatedAndLikedPlaylist
+                'myCreatedPlaylist' => $myCreatedPlaylist
                 ],
                 200,
                 [],
@@ -463,7 +442,7 @@ class PlaylistController extends Controller
     }
 
     //Likeしたプレイリストを取得
-    public function likedPlaylist()
+    public function loadMyLikedPlaylist()
     {
         if (Auth::user()) {
             $likesPlaylists = LikesPlaylist::where('user_id', Auth::user()->id)->get();
@@ -472,27 +451,27 @@ class PlaylistController extends Controller
                 $likesPlaylistIds[] = $likesPlaylist->playlist_id;
             }
 
-            $myLikedPlaylists = Playlist::with(array('tags' => function ($query) {
+            $myLikedPlaylist = Playlist::with(array('tags' => function ($query) {
                 $query->with('video')->select('*')->get();
-            }))->withCount(['playlistlogs as play_count'])->find($likesPlaylistIds);
+            }))->withCount(['playlistlogs as play_count'])->whereIn('id', $likesPlaylistIds)->orderBy('updated_at', 'DESC')->get();
 
-            return $myLikedPlaylists;
+            return response()->json(
+                [
+                'myLikedPlaylist' => $myLikedPlaylist
+                ],
+                200,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
         } else {
-            return [];
-        }
-    }
-
-    //作成したプレイリストを取得
-    public function createdPlaylist()
-    {
-        if (Auth::user()) {
-            $createdPlaylist = Playlist::with(array('tags' => function ($query) {
-                $query->with('video')->select('*')->get();
-            }))->withCount(['playlistlogs as play_count'])->where('user_id', Auth::user()->id)->get();
-
-            return $createdPlaylist;
-        } else {
-            return [];
+            return response()->json(
+                [
+                'error' => 'セッションが切れているので、もう一度ログインして下さい'
+                ],
+                401,
+                [],
+                JSON_UNESCAPED_UNICODE
+            );
         }
     }
 

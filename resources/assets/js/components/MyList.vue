@@ -1,23 +1,38 @@
 <template>
-  <div>
-    <div class="pa-0 ma-0" style="position: relative; height: 40px;">
-      <div
-        style="
-              position: absolute;
-              height: 100%;
-              top: 12px;
-              left: 8px;
-            "
+  <v-card flat class="ma-0 pa-0 px-2">
+    <v-tabs
+      v-model="tab"
+      background-color="transparent"
+      centered
+      grow
+      icons-and-text
+      height="60"
+    >
+      <v-tab
+        active-class="activated-tab"
+        v-for="(item, key) in items"
+        :key="key"
       >
-        <v-icon size="30" color="my-grey">mdi-play-box-multiple-outline</v-icon>
-        <span>自分の切り抜き・いいねした切り抜き</span>
-      </div>
-    </div>
-    <MyPlaylistItem
-      v-if="myCreatedAndLikedPlaylist"
-      v-bind:mediaItems="myCreatedAndLikedPlaylistMediaItems"
-    />
-  </div>
+        {{ item.tabName }}
+        <v-icon>{{ item.tabIcon }}</v-icon>
+      </v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="tab">
+      <v-tab-item>
+        <MyPlaylistItem
+          v-if="myCreatedPlaylist"
+          v-bind:mediaItems="myCreatedPlaylistMediaItems"
+        />
+      </v-tab-item>
+      <v-tab-item>
+        <MyPlaylistItem
+          v-if="myLikedPlaylist"
+          v-bind:mediaItems="myLikedPlaylistMediaItems"
+        />
+      </v-tab-item>
+    </v-tabs-items>
+  </v-card>
 </template>
 
 <script>
@@ -34,8 +49,14 @@ export default {
   props: {},
   data() {
     return {
-      tab: 1, //デフォルトは場面タブを表示
-      items: ["切り抜き", "場面"],
+      tab: 0,
+      items: [
+        {
+          tabIcon: "mdi-play-box-multiple-outline",
+          tabName: "作成した切り抜き",
+        },
+        { tabIcon: "mdi-heart-outline", tabName: "いいねした切り抜き" },
+      ],
     };
   },
   mixins: [myMixin],
@@ -44,94 +65,25 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      myCreatedAndLikedPlaylist: "playlist/myCreatedAndLikedPlaylist",
-      myCreatedAndLikedTagVideo: "tag/myCreatedAndLikedTagVideo",
+      myCreatedPlaylist: "playlist/myCreatedPlaylist",
+      myLikedPlaylist: "playlist/myLikedPlaylist",
       resetKey: "playlist/resetKey",
     }),
-    myCreatedAndLikedPlaylistMediaItems() {
-      if (!this.myCreatedAndLikedPlaylist) return;
+    myCreatedPlaylistMediaItems() {
+      if (!this.myCreatedPlaylist) return;
 
-      // プレイリストのデータをmyCreatedAndLikedPlaylistMediaItemsに格納
+      // プレイリストのデータをmyCreatedPlaylistMediaItemsに格納
       let mediaItems = [];
-      this.putPlaylistTagIntoMediaItems(
-        mediaItems,
-        this.myCreatedAndLikedPlaylist
-      );
+      this.putPlaylistTagIntoMediaItems(mediaItems, this.myCreatedPlaylist);
       return mediaItems;
     },
-    myCreatedAndLikedTagVideoMediaItems() {
-      if (!this.myCreatedAndLikedTagVideo) return;
+    myLikedPlaylistMediaItems() {
+      if (!this.myLikedPlaylist) return;
 
-      // タグのデータをmyCreatedAndLikedTagVideoMediaItemsに格納
+      // プレイリストのデータをmyLikedPlaylistMediaItemsに格納
       let mediaItems = [];
-      this.putTagVideoIntoMediaItems(
-        mediaItems,
-        this.myCreatedAndLikedTagVideo
-      );
-
-      var groupedData = Object.values(
-        mediaItems.reduce(
-          (
-            result,
-            {
-              video_id,
-              category,
-              id,
-              title,
-              thumbnail,
-              created_at,
-              timeSince,
-              tagsList,
-              tags,
-              tagArray,
-              totalDuration,
-              start,
-              end,
-              preview,
-              previewgif,
-              sceneCount,
-              likeCount,
-              user_id,
-            }
-          ) => {
-            // Create new group
-            if (!result[video_id]) {
-              result[video_id] = {
-                video_id,
-                title,
-                tagVideoData: [],
-              };
-            }
-            // if (!result[title]) {
-            //   result[title]
-            // }
-            // Append to group
-            result[video_id].tagVideoData.push({
-              category,
-              id,
-              title,
-              thumbnail,
-              created_at,
-              timeSince,
-              tagsList,
-              tags,
-              tagArray,
-              totalDuration,
-              start,
-              end,
-              preview,
-              previewgif,
-              sceneCount,
-              likeCount,
-              user_id,
-            });
-            return result;
-          },
-          {}
-        )
-      );
-      groupedData.sort((a, b) => (a.video_id < b.video_id ? 1 : -1));
-      return groupedData;
+      this.putPlaylistTagIntoMediaItems(mediaItems, this.myLikedPlaylist);
+      return mediaItems;
     },
   },
   watch: {
@@ -139,19 +91,15 @@ export default {
       this.$store.dispatch("playlist/loadMyCreatedAndLikedPlaylist");
     },
   },
-  methods: {
-    setActiveTab(key) {
-      //開いたタブをセッションストレージに保存
-      window.sessionStorage.setItem("myPageTabIndex", JSON.stringify(key));
-    },
-  },
+  methods: {},
   async created() {
     //以前に開いていたタブをセッションストレージからセット
     window.sessionStorage.getItem("myPageTabIndex")
       ? (this.tab = parseInt(window.sessionStorage.getItem("myPageTabIndex")))
       : "";
     //Likeまたは作成したプレイリストをロード
-    await this.$store.dispatch("playlist/loadMyCreatedAndLikedPlaylist");
+    await this.$store.dispatch("playlist/loadMyCreatedPlaylist");
+    await this.$store.dispatch("playlist/loadMyLikedPlaylist");
   },
 };
 </script>

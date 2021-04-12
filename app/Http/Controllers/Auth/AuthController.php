@@ -45,7 +45,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function saveSocialLoginAvatar($avatar, $avatarFileName)
+    public function saveSocialLoginAvatar($avatar, &$avatarFileName)
     {
         try {
             Storage::disk('s3')->putFileAs('avatars', $avatar, $avatarFileName, 'public');

@@ -2,7 +2,6 @@ import axios from "axios";
 import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
 import router from "../router";
 import store from "../store";
-import { times } from "lodash";
 
 const state = {
   // playlistAndTagPaginationOfRecommend: null,
@@ -12,7 +11,7 @@ const state = {
   playlistAndTagPaginationOfMusic: null,
   playlistAndTagPaginationOfLanguage: null,
   myCreatedPlaylist: null,
-  myCreatedAndLikedPlaylist: null,
+  myLikedPlaylist: null,
   showAddPlaylistModal: false,
   currentCategory: null,
   playlistIdsOfTag: null,
@@ -57,7 +56,7 @@ const getters = {
   playlistAndTagPaginationOfLanguage: (state) =>
     state.playlistAndTagPaginationOfLanguage,
   myCreatedPlaylist: (state) => state.myCreatedPlaylist,
-  myCreatedAndLikedPlaylist: (state) => state.myCreatedAndLikedPlaylist,
+  myLikedPlaylist: (state) => state.myLikedPlaylist,
   publicPlaylist: (state) => state.publicPlaylist,
   createdSceneList: (state) => state.createdSceneList,
   resetKey: (state) => state.resetKey,
@@ -130,8 +129,8 @@ const mutations = {
   setMyCreatedPlaylist(state, data) {
     state.myCreatedPlaylist = data;
   },
-  setMyCreatedAndLikedPlaylist(state, data) {
-    state.myCreatedAndLikedPlaylist = data;
+  setMyLikedPlaylist(state, data) {
+    state.myLikedPlaylist = data;
   },
   setPublicPlaylist(state, data) {
     state.publicPlaylist = data;
@@ -470,15 +469,26 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
-  //Likeまたは作成したプレイリストをロード
-  async loadMyCreatedAndLikedPlaylist(context) {
-    const response = await axios.get("/api/load/myCreatedAndLikedPlaylist");
+  //作成したプレイリストをロード
+  async loadMyCreatedPlaylist(context) {
+    const response = await axios.get("/api/load/myCreatedPlaylist");
     if (response.status == OK) {
       // 成功した時
-      context.commit(
-        "setMyCreatedAndLikedPlaylist",
-        response.data.myCreatedAndLikedPlaylist
-      );
+      context.commit("setMyCreatedPlaylist", response.data.myCreatedPlaylist);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+  //いいねしたプレイリストをロード
+  async loadMyLikedPlaylist(context) {
+    const response = await axios.get("/api/load/myLikedPlaylist");
+    if (response.status == OK) {
+      // 成功した時
+      context.commit("setMyLikedPlaylist", response.data.myLikedPlaylist);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });

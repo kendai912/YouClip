@@ -38,8 +38,6 @@ Route::post('/updateUserProfile', 'UserController@updateUserProfile');
 
 //ID指定でのタグ・動画データの取得
 Route::get('/get/tagAndVideoData', 'TagController@getTagAndVideoDataById');
-//Likeまたは作成したタグデータのロード
-Route::get('/load/myCreatedAndLikedTagVideo', 'TagController@loadMyCreatedAndLikedTagVideo');
 
 //【レコメンド】プレイリスト一覧のロード
 // Route::get('/index/playlistAndTagOfRecommend', 'PlaylistController@indexPlaylistAndTagPaginationOfRecommend');
@@ -57,8 +55,10 @@ Route::get('/index/playlistAndTagOfLanguage', 'PlaylistController@indexPlaylistA
 Route::get('/get/playlistAndTagVideoData', 'PlaylistController@getPlaylistAndTagVideoDataById');
 //作成したプレイリスト一覧を取得
 Route::get('/get/myCreatedPlaylist', 'PlaylistController@getMyCreatedPlaylist');
-//Likeまたは作成したプレイリスト一覧をロード
-Route::get('/load/myCreatedAndLikedPlaylist', 'PlaylistController@loadMyCreatedAndLikedPlaylist');
+//作成したプレイリスト一覧をロード
+Route::get('/load/myCreatedPlaylist', 'PlaylistController@loadMyCreatedPlaylist');
+//いいねしたプレイリスト一覧をロード
+Route::get('/load/myLikedPlaylist', 'PlaylistController@loadMyLikedPlaylist');
 //playlistのcategoryを取得
 Route::get('/get/currentCategory', 'PlaylistController@getCurrentCategory');
 
