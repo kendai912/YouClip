@@ -25,7 +25,7 @@ class UserController extends Controller
 
             // resize and temporarily save in local
             $newAvatar = \Image::make($newAvatar);
-            $newAvatar->fit(200, 200, function ($constraint) {
+            $newAvatar->orientate()->fit(200, 200, function ($constraint) {
                 $constraint->upsize();
             })->save(storage_path()."/app/public/imgs/".$avatarFileName);
 
