@@ -134,12 +134,12 @@ export default {
     cancel() {
       this.$router.push("/mypage");
     },
-    async save() {
+    save() {
       let formData = new FormData();
       this.newAvatar ? formData.append("file", this.newAvatar) : "";
       formData.append("newUserName", this.username);
 
-      await this.$store.dispatch("auth/updateUserProfile", formData);
+      this.$store.dispatch("auth/updateUserProfile", formData);
 
       this.$store.commit("snackbar/setText", "プロフィールを更新しました");
       this.$store.commit("snackbar/seVertical", false);
