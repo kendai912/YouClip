@@ -455,20 +455,6 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
-  async getMyCreatedPlaylist(context) {
-    const response = await axios.get("/api/get/myCreatedPlaylist");
-    if (response.status == OK) {
-      // 成功した時
-      context.commit("setMyCreatedPlaylist", response.data.myCreatedPlaylist);
-    } else if (response.status == INTERNAL_SERVER_ERROR) {
-      // 失敗した時
-      context.commit("error/setCode", response.status, { root: true });
-      router.push("/login");
-    } else {
-      // 上記以外で失敗した時
-      context.commit("error/setCode", response.status, { root: true });
-    }
-  },
   //作成したプレイリストをロード
   async loadMyCreatedPlaylist(context) {
     const response = await axios.get("/api/load/myCreatedPlaylist");

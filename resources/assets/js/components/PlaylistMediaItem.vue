@@ -35,7 +35,9 @@
               >
               </v-img>
               <video
-                v-if="showPreviewIndex == index || showPreviewIndex + 1 == index"
+                v-if="
+                  showPreviewIndex == index || showPreviewIndex + 1 == index
+                "
                 v-bind:src="gifStoragePath + item.previewgif"
                 autoplay
                 playsinline
@@ -58,19 +60,45 @@
             </router-link>
           </v-card>
 
-          <v-card-title class="pt-2 px-2 pb-1 ma-0">
-            <router-link
-              v-bind:to="{
-                path: '/watch',
-                query: { playlist: item.id, index: 0 },
-              }"
-              class="no-text-decoration"
-            >
-              <h3 class="home-and-search-result-title">
-                {{ item.title }}
-              </h3></router-link
+          <v-card-title class="pt-2 pr-2 pb-1 pl-0 ma-0">
+            <v-container class="ma-0 pa-0" fluid>
+              <router-link
+                v-bind:to="{
+                  path: '/watch',
+                  query: { playlist: item.id, index: 0 },
+                }"
+                class="no-text-decoration"
+              >
+                <v-row class="pa-0 ma-0" align-content="center">
+                  <v-col class="pa-0 pr-2 ma-0 d-flex align-center" cols="auto">
+                    <v-avatar class="profile" size="40">
+                      <v-img
+                        v-if="item.avatar"
+                        v-bind:src="avatarStoragePath + item.avatar"
+                        alt="profile pic"
+                      ></v-img>
+                      <v-icon v-else style="color:grey;"
+                        >fas fa-user-circle</v-icon
+                      >
+                    </v-avatar>
+                  </v-col>
+                  <v-col class="pa-0 ma-0">
+                    <v-row class="pa-0 ma-0">
+                      <h3 class="home-and-search-result-title">
+                        {{ item.title }}
+                      </h3>
+                    </v-row>
+                    <v-row class="pa-0 ma-0 home-and-search-result-username">
+                      <span class="grey--text text--darken-3 fz-14">
+                        {{ item.username }}
+                      </span>
+                    </v-row></v-col
+                  ></v-row
+                ></router-link
+              ></v-container
             ></v-card-title
           >
+
           <v-card-text class="pl-2 ma-0 text--primary">
             <v-container class="ma-0 pa-0 grey--text text--darken-3" fluid>
               <router-link

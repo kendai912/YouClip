@@ -53,8 +53,6 @@ Route::get('/index/playlistAndTagOfMusic', 'PlaylistController@indexPlaylistAndT
 Route::get('/index/playlistAndTagOfLanguage', 'PlaylistController@indexPlaylistAndTagPaginationOfLanguage');
 // ID指定でのプレイリストおよびタグ・動画データの取得
 Route::get('/get/playlistAndTagVideoData', 'PlaylistController@getPlaylistAndTagVideoDataById');
-//作成したプレイリスト一覧を取得
-Route::get('/get/myCreatedPlaylist', 'PlaylistController@getMyCreatedPlaylist');
 //作成したプレイリスト一覧をロード
 Route::get('/load/myCreatedPlaylist', 'PlaylistController@loadMyCreatedPlaylist');
 //いいねしたプレイリスト一覧をロード

@@ -76,7 +76,7 @@ class PlaylistController extends Controller
             $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
-        }))->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+        }))->with('user')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'
         ])->where('privacySetting', 'public')->whereBetween('created_at', [$from, $to])->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($this->contentsPerPage);
@@ -113,7 +113,7 @@ class PlaylistController extends Controller
             $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
-        }))->where('playlistCategory', 'VTuber')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+        }))->where('playlistCategory', 'VTuber')->with('user')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'
         ])->where('privacySetting', 'public')->whereBetween('created_at', [$from, $to])->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($this->contentsPerPage);
@@ -150,7 +150,7 @@ class PlaylistController extends Controller
             $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
-        }))->where('playlistCategory', 'Game')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+        }))->where('playlistCategory', 'Game')->with('user')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereBetween('created_at', [$from, $to])->whereNotNull('playlistName')->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($this->contentsPerPage);
 
@@ -186,7 +186,7 @@ class PlaylistController extends Controller
             $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
-        }))->where('playlistCategory', 'Music')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+        }))->where('playlistCategory', 'Music')->with('user')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereBetween('created_at', [$from, $to])->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($this->contentsPerPage);
 
@@ -222,7 +222,7 @@ class PlaylistController extends Controller
             $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
-        }))->where('playlistCategory', 'Language')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+        }))->where('playlistCategory', 'Language')->with('user')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereBetween('created_at', [$from, $to])->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($this->contentsPerPage);
 
@@ -397,29 +397,13 @@ class PlaylistController extends Controller
         );
     }
 
-    //作成したプレイリスト一覧を取得
-    public function getMyCreatedPlaylist()
-    {
-        //作成したプレイリスト一覧を取得
-        $createdPlaylist = $this->createdPlaylist();
-        
-        return response()->json(
-            [
-            'myCreatedPlaylist' => $createdPlaylist
-            ],
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
-    }
-
     //作成したプレイリストを取得
     public function loadMyCreatedPlaylist()
     {
         if (Auth::user()) {
             $myCreatedPlaylist = Playlist::with(array('tags' => function ($query) {
                 $query->with('video')->select('*')->get();
-            }))->withCount(['playlistlogs as play_count'])->where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get();
+            }))->with('user')->withCount(['playlistlogs as play_count'])->where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get();
 
             return response()->json(
                 [
@@ -453,7 +437,7 @@ class PlaylistController extends Controller
 
             $myLikedPlaylist = Playlist::with(array('tags' => function ($query) {
                 $query->with('video')->select('*')->get();
-            }))->withCount(['playlistlogs as play_count'])->whereIn('id', $likesPlaylistIds)->orderBy('updated_at', 'DESC')->get();
+            }))->with('user')->withCount(['playlistlogs as play_count'])->whereIn('id', $likesPlaylistIds)->orderBy('updated_at', 'DESC')->get();
 
             return response()->json(
                 [

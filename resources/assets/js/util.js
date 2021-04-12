@@ -183,6 +183,8 @@ export default {
               totalYTDuration: this.convertToKanjiTime(
                 this.convertToSec(this.formatToMinSec(totalYTDuration))
               ),
+              username: value.user.name,
+              avatar: value.user.avatar,
             };
             let tagCount = 0;
             if (Array.isArray(value.tags)) {
