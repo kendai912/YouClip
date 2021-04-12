@@ -247,6 +247,19 @@ const routes = [
       );
     },
   },
+  {
+    path: "/mypage/edit",
+    name: "mypage_edit",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/EditMypage.vue"],
+        () => {
+          resolve(require("./pages/EditMypage.vue"));
+        },
+        "js/editmypage"
+      );
+    },
+  },
   // {
   //   path: "/myfollow",
   //   component: MyFollow,

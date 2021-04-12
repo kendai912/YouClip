@@ -199,9 +199,6 @@ export default {
   },
   methods: {
     async login() {
-      // 日本語入力中のEnterキー操作は無効にする
-      if (event.keyCode != undefined && event.keyCode !== 13) return;
-
       // authストアのloginアクションを呼び出す
       await this.$store.dispatch("auth/login", this.loginForm);
 

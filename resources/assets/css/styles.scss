@@ -549,6 +549,7 @@
   left: -33px !important;
 }
 
+.playlistNameInputBox .v-label,
 .playlistTitleInputBox .v-label,
 .scenePrivacySettingBox .v-label,
 .playlistCategoryBox .v-label,
@@ -1196,4 +1197,10 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
   border: 0.05rem solid #4caf50 !important;
   border-radius: 4px !important;
   color: white !important;
+}
+
+.profile-pic-label .v-label,
+.profile-username-label input {
+  font-size: calc(1rem * (14 / 14));
+  font-weight: normal;
 }

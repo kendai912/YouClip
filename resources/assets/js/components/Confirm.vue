@@ -305,7 +305,7 @@ export default {
 
           //display editting a new scene completion snackbar
           self.$store.commit("snackbar/setText", "場面を更新しました");
-          this.$store.commit("snackbar/seVertical", false);
+          self.$store.commit("snackbar/seVertical", false);
           self.$store.commit("snackbar/setSnackbar", true);
           self.$store.commit("snackbar/setTimeout", 5000);
 

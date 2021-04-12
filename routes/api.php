@@ -33,6 +33,9 @@ Route::get('/user', function () {
 // ログアウト
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
+// プロフィール更新
+Route::post('/updateUserProfile', 'UserController@updateUserProfile');
+
 //ID指定でのタグ・動画データの取得
 Route::get('/get/tagAndVideoData', 'TagController@getTagAndVideoDataById');
 //Likeまたは作成したタグデータのロード
@@ -139,19 +142,9 @@ Route::post('/tag/update', 'TagController@update');
 //シーンタグの削除
 Route::post('/tag/delete', 'TagController@delete');
 
-
 //YT Search API
 Route::post('/search/getYoutubeScrapingResults', 'SearchController@getYTScrapingResultList');
 Route::post('/search/getYoutubeSearch', 'SearchController@getYTSearchList');
 Route::post('/search/getYoutubeVideos', 'VideoController@getYTVideoList');
 Route::post('/search/getYoutubeVideoCategories', 'VideoController@getYTVideoCategoryList');
 Route::post('/search/getRecentVideos', 'VideoController@getYTRecentVideoList');
-
-
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-// //後でweb.phpに移す
-// Route::post('/tag/update', 'TagController@update');
-// Route::post('/tag/delete', 'TagController@delete');

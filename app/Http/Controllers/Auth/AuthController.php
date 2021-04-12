@@ -33,7 +33,7 @@ class AuthController extends Controller
             return $authUser;
         }
 
-        $avatarFileName = $user->id . "-avatar" . "-" . rand() . ".jpg";
+        $avatarFileName = "avatar" . "-" . rand() . ".jpg";
         try {
             Storage::disk('s3')->putFileAs('avatars', $user->getAvatar(), $avatarFileName, 'public');
         } catch (\Exception $e) {

@@ -10,9 +10,13 @@
       <v-row align="center" justify="center" class="ma-0 pa-2">
         <v-avatar class="profile" size="100">
           <v-img
+            v-if="avatar"
             v-bind:src="avatarStoragePath + avatar"
             alt="profile pic"
           ></v-img>
+          <v-icon v-else size="100" style="color:grey;"
+            >fas fa-user-circle</v-icon
+          >
         </v-avatar>
       </v-row>
       <v-row align="center" justify="center" class="ma-0 pt-0 pb-2">
@@ -21,7 +25,7 @@
         </span>
       </v-row>
       <v-row class="ma-0 pt-4 pb-4 px-2">
-        <v-btn width="100%" color="white"
+        <v-btn width="100%" color="white" to="/mypage/edit"
           ><span class="fz-14">プロフィールを編集</span></v-btn
         >
       </v-row>
