@@ -84,16 +84,14 @@ const actions = {
     user ? context.commit("setUsername", user.name) : "";
   },
   async updateUserProfile(context, data) {
-    console.log("updateUserProfile");
     const response = await axios
       .post("/api/updateUserProfile", data)
       .catch((err) => err.response || err);
 
-    console.log(response);
     if (response.status == OK) {
       context.commit("setApiStatus", true);
-      context.commit("setUser", response.data);
-      context.commit("setUsername", response.data.name);
+      context.commit("setUser", response.data.user);
+      context.commit("setUsername", response.data.user.name);
       return false;
     }
 

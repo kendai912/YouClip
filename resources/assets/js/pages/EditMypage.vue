@@ -141,12 +141,12 @@ export default {
 
       await this.$store.dispatch("auth/updateUserProfile", formData);
 
-      // this.$store.commit("snackbar/setText", "プロフィールを更新しました");
-      // this.$store.commit("snackbar/seVertical", false);
-      // this.$store.commit("snackbar/setSnackbar", true);
-      // this.$store.commit("snackbar/setTimeout", 5000);
+      this.$store.commit("snackbar/setText", "プロフィールを更新しました");
+      this.$store.commit("snackbar/seVertical", false);
+      this.$store.commit("snackbar/setSnackbar", true);
+      this.$store.commit("snackbar/setTimeout", 5000);
 
-      // this.$router.push("/mypage");
+      this.$router.push("/mypage");
     },
     onFileChange(e) {
       const file = e; // in case vuetify file input
