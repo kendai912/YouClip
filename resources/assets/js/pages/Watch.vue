@@ -386,53 +386,6 @@ export default {
       this.$store.commit("tagging/setEnd", "");
       this.$store.commit("tagging/setPrivacySetting", "public");
     },
-    hasYoutubeFrameAPI() {
-      if (!this.hasYTFrame) {
-        this.hasYTFrame = !!document.getElementsByClassName(".yt-frame-api")
-          .length;
-      }
-      return this.hasYTFrame;
-    },
-    injectYoutubeFrameAPI() {
-      const youtubeExistsFlag = this.youtubeExistsFlag;
-      const youtubeCallbackName = this.youtubeCallbackName;
-
-      window[this.youtubeCallbackName] =
-        window[this.youtubeCallbackName] ||
-        function() {
-          window[youtubeExistsFlag] = true;
-          window[youtubeCallbackName] = null;
-          delete window[youtubeCallbackName];
-        };
-
-      var tag = document.createElement("script");
-      var first = document.getElementsByTagName("script")[0];
-      tag.src = "https://www.youtube.com/iframe_api";
-      tag.className = "yt-frame-api";
-      first.parentNode.insertBefore(tag, first);
-    },
-    whenYoutubeAPIReady() {
-      const existsFlag = this.youtubeExistsFlag;
-      return new Promise(function(resolve, reject) {
-        let elapsed = 0;
-        let intervalHandle;
-        let checker = function() {
-          elapsed += 48;
-          if (!!window[existsFlag]) {
-            clearTimeout(intervalHandle);
-            resolve();
-          } else {
-            if (elapsed <= 15000) {
-              intervalHandle = setTimeout(checker, 48);
-            } else {
-              reject("timeout");
-            }
-          }
-        };
-
-        setTimeout(checker, 48);
-      });
-    },
     convertToISOString(uploadedAt) {
       let date = new Date(
         uploadedAt.substring(0, 4),

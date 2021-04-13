@@ -1,6 +1,20 @@
 <template>
   <div class="iframeHeight">
-    <v-sheet class="overlay" v-on:click.prevent="toggleController">
+    <div v-if="isMutedDefault" class="unmuteDefaultBtn">
+      <v-btn color="grey" height="32" v-on:click="unmuteDefault">
+        <v-icon left>
+          volume_off
+        </v-icon>
+        ミュートを解除
+      </v-btn>
+    </div>
+    <v-sheet
+      class="overlay"
+      v-on:click.prevent="
+        toggleController();
+        unmuteDefault();
+      "
+    >
       <v-container class="ma-0 pa-0" fluid fill-height>
         <v-row
           class="ma-0 pa-0 text-center"
@@ -25,7 +39,10 @@
           <v-col
             v-if="isWatchingPlaylist"
             class="ma-0 pt-3 pr-2 pb-3 pl-2"
-            v-on:click.stop.prevent="backToPrevious"
+            v-on:click.stop.prevent="
+              backToPrevious();
+              unmuteDefault();
+            "
           >
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
@@ -43,7 +60,10 @@
           <v-col>
             <v-icon
               x-large
-              v-on:click.stop.prevent="backwardFiveSec"
+              v-on:click.stop.prevent="
+                backwardFiveSec();
+                unmuteDefault();
+              "
               color="white"
               >replay_5</v-icon
             >
@@ -51,13 +71,19 @@
           <v-col>
             <i
               v-if="isPlaying"
-              v-on:click.stop.prevent="pauseVideo"
+              v-on:click.stop.prevent="
+                pauseVideo();
+                unmuteDefault();
+              "
               class="fas fa-pause fa-2x"
               style="color: white"
             ></i>
             <i
               v-else
-              v-on:click.stop.prevent="playVideo"
+              v-on:click.stop.prevent="
+                playVideo();
+                unmuteDefault();
+              "
               class="fas fa-play fa-2x"
               style="color: white"
             ></i>
@@ -65,7 +91,10 @@
           <v-col>
             <v-icon
               x-large
-              v-on:click.stop.prevent="forwardFiveSec"
+              v-on:click.stop.prevent="
+                forwardFiveSec();
+                unmuteDefault();
+              "
               color="white"
               >forward_5</v-icon
             >
@@ -73,7 +102,10 @@
           <v-col
             v-if="isWatchingPlaylist"
             class="ma-0 pt-3 pr-2 pb-3 pl-2"
-            v-on:click.stop.prevent="moveToNext"
+            v-on:click.stop.prevent="
+              moveToNext();
+              unmuteDefault();
+            "
           >
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
@@ -102,27 +134,37 @@
             {{ currentTime }} / {{ duration }}
           </v-col>
           <v-col align-self="end" class="text-right">
-            <v-icon
-              large
-              v-on:click.stop.prevent="openPlaySpeedModal"
-              color="white"
+            <v-icon large v-on:click.prevent="openPlaySpeedModal" color="white"
               >mdi-speedometer</v-icon
             >
             <v-icon
               large
               v-if="isMuted"
-              v-on:click.stop.prevent="unmute"
+              v-on:click.stop.prevent="
+                unmute();
+                unmuteDefault();
+              "
               color="white"
               >volume_off</v-icon
             >
-            <v-icon large v-else v-on:click.stop.prevent="mute" color="white"
+            <v-icon
+              large
+              v-else
+              v-on:click.stop.prevent="
+                mute();
+                unmuteDefault();
+              "
+              color="white"
               >volume_up</v-icon
             >
             <v-icon
               large
               v-if="!isFullscreen"
               v-show="isWatchingPlaylist"
-              v-on:click.stop.prevent="expandScreen"
+              v-on:click.stop.prevent="
+                expandScreen($event);
+                unmuteDefault();
+              "
               color="white"
               >mdi-fullscreen</v-icon
             >
@@ -130,7 +172,10 @@
               large
               v-else
               v-show="isWatchingPlaylist"
-              v-on:click.stop.prevent="compressScreen"
+              v-on:click.stop.prevent="
+                compressScreen($event);
+                unmuteDefault();
+              "
               color="white"
               >mdi-fullscreen-exit</v-icon
             >
@@ -140,7 +185,10 @@
     </v-sheet>
     <v-sheet
       class="overlayWrap"
-      v-on:click.prevent="toggleController"
+      v-on:click.prevent="
+        toggleController();
+        unmuteDefault();
+      "
     ></v-sheet>
     <PlaySpeedModal v-if="showPlaySpeedModal" v-bind:player="player" />
   </div>
@@ -163,6 +211,7 @@ export default {
       isYTSeekBarTouchMoving: false,
       fullscreenWidth: 0,
       fullscreenHeight: 0,
+      isMutedDefault: true,
     };
   },
   mixins: [myMixin],
@@ -314,6 +363,13 @@ export default {
     forwardFiveSec() {
       this.fadeInOutController();
       this.player.seekTo(this.convertToSec(this.currentTime) + 5);
+    },
+    unmuteDefault() {
+      if (this.isMutedDefault) {
+        this.player.unMute();
+        this.setIsMuted(false);
+        this.isMutedDefault = false;
+      }
     },
     unmute() {
       this.fadeInOutController();
