@@ -121,7 +121,7 @@
                                 </div>
 
                                 <div
-                                  class="horizontal-list-wrap block-chip-lines3 color-black mt-2 mb-0"
+                                  class="horizontal-list-wrap block-chip-lines3 color-black pt-1"
                                 >
                                   <v-chip
                                     v-for="(tag, tagIndex) in readMore(
@@ -253,7 +253,7 @@
                               </div>
 
                               <div
-                                class="horizontal-list-wrap block-chip-lines3 color-black mt-2 mb-0"
+                                class="horizontal-list-wrap block-chip-lines3 color-black pt-1"
                                 v-on:click.stop="select(index)"
                               >
                                 <v-chip
