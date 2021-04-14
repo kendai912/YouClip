@@ -130,10 +130,24 @@ export default {
       isMobile: "ytSeekBar/isMobile",
       isIOS: "ytSeekBar/isIOS",
       seekbarWidth: "ytSeekBar/seekbarWidth",
+      isWatchingPlaylist: "ytPlayer/isWatchingPlaylist",
+      startHis: "ytPlayer/start",
+      endHis: "ytPlayer/end",
     }),
     duration() {
       if (this.isNew) {
         return this.newVideoData ? this.newVideoData.duration : "0:00";
+      } else if (this.isWatchingPlaylist) {
+        let durationInSec;
+        if (this.startHis && this.endHis) {
+          durationInSec =
+            this.convertToSec(this.formatToMinSec(this.endHis)) -
+            this.convertToSec(this.formatToMinSec(this.startHis));
+        }
+
+        return typeof durationInSec != "undefined"
+          ? this.formatTime(durationInSec)
+          : "0:00";
       } else {
         return this.videoData
           ? this.formatToMinSec(this.videoData.duration)
@@ -141,10 +155,20 @@ export default {
       }
     },
     progress() {
-      return (
-        this.seekbarWidth *
-        (this.convertToSec(this.currentTime) / this.convertToSec(this.duration))
-      );
+      if (this.isWatchingPlaylist) {
+        return this.startHis
+          ? this.seekbarWidth *
+              ((this.convertToSec(this.currentTime) -
+                this.convertToSec(this.formatToMinSec(this.startHis))) /
+                this.convertToSec(this.duration))
+          : 0;
+      } else {
+        return (
+          this.seekbarWidth *
+          (this.convertToSec(this.currentTime) /
+            this.convertToSec(this.duration))
+        );
+      }
     },
     contentLeft() {
       if (
@@ -229,9 +253,18 @@ export default {
       }
 
       // change seek position
-      this.player.seekTo(
-        this.convertToSec(this.duration) * (this.seekWidth / this.seekbarWidth)
-      );
+      if (this.isWatchingPlaylist) {
+        this.player.seekTo(
+          this.convertToSec(this.duration) *
+            (this.seekWidth / this.seekbarWidth) +
+            this.convertToSec(this.formatToMinSec(this.startHis))
+        );
+      } else {
+        this.player.seekTo(
+          this.convertToSec(this.duration) *
+            (this.seekWidth / this.seekbarWidth)
+        );
+      }
     },
     detectMouseDown(e) {
       e.preventDefault(); // prevent browser from moving objects, following links etc

@@ -131,7 +131,7 @@
           style="height: 33.333%"
         >
           <v-col align-self="end" class="text-left" style="color: white">
-            {{ currentTime }} / {{ duration }}
+            {{ currentDisplayingTime }} / {{ duration }}
           </v-col>
           <v-col align-self="end" class="text-right">
             <v-icon large v-on:click.prevent="openPlaySpeedModal" color="white"
@@ -240,9 +240,35 @@ export default {
       showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
       isEditing: "tagging/isEditing",
     }),
+    currentDisplayingTime() {
+      if (this.isWatchingPlaylist) {
+        if (this.currentTime && this.startHis) {
+          let currentDisplayingTimeInSec =
+            this.convertToSec(this.currentTime) -
+            this.convertToSec(this.formatToMinSec(this.startHis));
+
+          return this.formatTime(currentDisplayingTimeInSec);
+        } else {
+          return "0:00";
+        }
+      } else {
+        return this.currentTime;
+      }
+    },
     duration() {
       if (this.isNew) {
         return this.newVideoData ? this.newVideoData.duration : "0:00";
+      } else if (this.isWatchingPlaylist) {
+        let durationInSec;
+        if (this.startHis && this.endHis) {
+          durationInSec =
+            this.convertToSec(this.formatToMinSec(this.endHis)) -
+            this.convertToSec(this.formatToMinSec(this.startHis));
+        }
+
+        return typeof durationInSec != "undefined"
+          ? this.formatTime(durationInSec)
+          : "0:00";
       } else {
         return this.videoData
           ? this.formatToMinSec(this.videoData.duration)

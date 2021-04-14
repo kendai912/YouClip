@@ -103,10 +103,22 @@
                                   class="green--text text--darken-2 pt-1"
                                   style="font-size: 12px; padding-left: 0; font-weight: bold"
                                 >
-                                  <span>{{ mediaItems[listIndex].start }}</span>
+                                  <span>{{
+                                    formatTime(
+                                      convertToSec(mediaItems[listIndex].end) -
+                                        convertToSec(
+                                          mediaItems[listIndex].start
+                                        )
+                                    )
+                                  }}</span>
+                                  <span
+                                    >({{ mediaItems[listIndex].start }}</span
+                                  >
                                   <span style="font-size:8px;">-</span>
                                   <span
-                                    >{{ mediaItems[listIndex].end }}の場面</span
+                                    >{{
+                                      mediaItems[listIndex].end
+                                    }}の場面)</span
                                   >
                                 </div>
 
@@ -227,12 +239,18 @@
                                 style="font-size: 12px; padding-left: 0; font-weight: bold"
                                 v-on:click.stop="select(index)"
                               >
-                                <span v-show="opened">{{ item.start }}</span>
+                                <span>{{
+                                  formatTime(
+                                    convertToSec(item.end) -
+                                      convertToSec(item.start)
+                                  )
+                                }}</span>
+                                <span v-show="opened">({{ item.start }}</span>
                                 <span v-show="opened" style="font-size:8px;"
                                   >-</span
                                 >
                                 <span v-show="opened"
-                                  >{{ item.end }}の場面</span
+                                  >{{ item.end }}の場面)</span
                                 >
                               </div>
 
