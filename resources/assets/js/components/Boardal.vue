@@ -194,7 +194,7 @@ export default {
       features: [
         {
           img: "/storage/imgs/userguide-save.png",
-          title: "動画の一部を繰り返し見返したい",
+          title: "動画の一部をあとで見返したい",
         },
         {
           img: "/storage/imgs/userguide-share.png",

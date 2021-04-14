@@ -809,8 +809,9 @@
   overflow: hidden;
 }
 
-.v-expansion-panel-content__wrap {
-  padding: 0 16px 16px !important;
+.v-expansion-panel-content__wrap,
+.sceneListExpansionPanelCustomHeaderContent {
+  padding: 0 12px 16px !important;
 }
 
 .scene-order {

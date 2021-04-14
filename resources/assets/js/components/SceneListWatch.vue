@@ -79,7 +79,7 @@
                                 </v-card>
                               </v-col>
 
-                              <v-col cols="6" class="pa-1 pl-0 pr-2 py-0">
+                              <v-col cols="6" class="pa-0 pr-2">
                                 <div
                                   class="px-0 py-0 pt-1"
                                   style="display: flex; flex-wrap: nowrap; align-items: flex-start;"
@@ -209,7 +209,7 @@
                                 </v-img>
                               </v-card>
                             </v-col>
-                            <v-col cols="6" class="pa-1 pl-0 pr-2 py-0">
+                            <v-col cols="6" class="pa-0 pr-2">
                               <div
                                 v-on:click.stop="select(index)"
                                 class="px-0 py-0 pt-1"
