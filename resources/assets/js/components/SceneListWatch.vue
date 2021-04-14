@@ -112,14 +112,12 @@
                                     )
                                   }}</span>
                                   <span
-                                    >({{ mediaItems[listIndex].start }}</span
+                                    >(元場面{{
+                                      mediaItems[listIndex].start
+                                    }}</span
                                   >
                                   <span style="font-size:8px;">-</span>
-                                  <span
-                                    >{{
-                                      mediaItems[listIndex].end
-                                    }}の場面)</span
-                                  >
+                                  <span>{{ mediaItems[listIndex].end }})</span>
                                 </div>
 
                                 <div
@@ -245,13 +243,13 @@
                                       convertToSec(item.start)
                                   )
                                 }}</span>
-                                <span v-show="opened">({{ item.start }}</span>
+                                <span v-show="opened"
+                                  >(元場面{{ item.start }}</span
+                                >
                                 <span v-show="opened" style="font-size:8px;"
                                   >-</span
                                 >
-                                <span v-show="opened"
-                                  >{{ item.end }}の場面)</span
-                                >
+                                <span v-show="opened">{{ item.end }})</span>
                               </div>
 
                               <div
