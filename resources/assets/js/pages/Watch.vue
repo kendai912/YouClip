@@ -29,15 +29,31 @@
           class="highlightControllerBody"
         >
           <v-sheet v-if="isPlaylist" class="mx-auto pa-0">
-            <v-container class="ma-0 pa-0 pt-2" fluid>
+            <v-container class="ma-0 pa-0 pt-2 px-2" fluid>
               <v-row class="ma-0 pa-0" align="center">
-                <v-col class="ma-2 my-0 pa-0">
-                  <h1
-                    class="home-and-search-result-title"
-                    style="font-weight: 400; !important"
-                  >
-                    {{ playlistName }}
-                  </h1>
+                <v-col class="pa-0 pr-2 ma-0 d-flex align-center" cols="auto">
+                  <v-avatar class="profile" size="40">
+                    <v-img
+                      v-if="playlistUserAvatar"
+                      v-bind:src="avatarStoragePath + playlistUserAvatar"
+                      alt="profile pic"
+                    ></v-img>
+                    <v-icon v-else style="color:grey;" size="40"
+                      >fas fa-user-circle</v-icon
+                    >
+                  </v-avatar>
+                </v-col>
+                <v-col class="ma-0 pa-0">
+                  <v-row class="pa-0 ma-0">
+                    <h1 class="home-and-search-result-title">
+                      {{ playlistName }}
+                    </h1>
+                  </v-row>
+                  <v-row class="pa-0 ma-0 home-and-search-result-username">
+                    <span class="grey--text text--darken-3 fz-14">
+                      {{ playlistUserName }}
+                    </span>
+                  </v-row>
                 </v-col>
                 <v-col cols="auto" class="ma-2 my-0 pa-0 text-right">
                   <!-- <v-icon class="mdi mdi-chevron-down"></v-icon> -->
@@ -45,7 +61,7 @@
               </v-row>
 
               <v-row class="ma-0 pa-0">
-                <v-col class="ma-2 my-0 pa-0 grey--text text--darken-3">
+                <v-col class="ma-0 pa-0 pt-1 grey--text text--darken-3">
                   <span style="font-size: 12px"
                     >{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span
                   >
@@ -248,6 +264,8 @@ export default {
       tagAndVideoData: "watch/tagAndVideoData",
       isPlaylist: "watch/isPlaylist",
       playlistName: "watch/playlistName",
+      playlistUserAvatar: "watch/playlistUserAvatar",
+      playlistUserName: "watch/playlistUserName",
       playlistViewCount: "watch/playlistViewCount",
       showLoginModal: "noLoginModal/showLoginModal",
       messageWhenNotLogined: "noLoginModal/messageWhenNotLogined",
@@ -429,11 +447,19 @@ export default {
       this.playlistIdUrl
     );
 
-    //まとめIDとまとめ名、視聴回数をwatchストアに格納
+    //まとめID、まとめ名、アバター、ユーザー名、視聴回数をwatchストアに格納
     this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
     this.$store.commit(
       "watch/setPlaylistName",
       this.playlistAndTagVideoData.playlistName
+    );
+    this.$store.commit(
+      "watch/setPlaylistUserAvatar",
+      this.playlistAndTagVideoData.user.avatar
+    );
+    this.$store.commit(
+      "watch/setPlaylistUserName",
+      this.playlistAndTagVideoData.user.name
     );
     this.$store.commit(
       "watch/setPlaylistViewCount",

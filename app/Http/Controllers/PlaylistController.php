@@ -246,7 +246,7 @@ class PlaylistController extends Controller
     {
         //プレイリストとタグのデータを取得
         $playlistId = $request->input('id');
-        $playlistAndTagData = Playlist::with('tags')->where('id', $playlistId)->withCount(['playlistlogs as play_count'])->first();
+        $playlistAndTagData = Playlist::with('tags')->with('user')->where('id', $playlistId)->withCount(['playlistlogs as play_count'])->first();
         //タグから動画データを取得
         $tagVideoDatas = [];
         $total_duration = 0;
@@ -332,6 +332,7 @@ class PlaylistController extends Controller
             'playlistCategory' => $playlistAndTagData->playlistCategory,
             'playlist_total_duration' => $total_duration,
             'play_count' => $playlistAndTagData->play_count,
+            'user' => $playlistAndTagData->user,
             'user_id' => $playlistAndTagData->user_id,
             'playlist_created_at' => (new Carbon($playlistAndTagData->created_at))->toDateTimeString(),
             'playlist_updated_at' => (new Carbon($playlistAndTagData->updated_at))->toDateTimeString(),

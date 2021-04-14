@@ -8,6 +8,8 @@ const state = {
   listIndex: 0,
   playlistId: "",
   playlistName: "",
+  playlistUserAvatar: "",
+  playlistUserName: "",
   playlistViewCount: "",
   privacySetting: "",
   playlistCategory: "",
@@ -22,6 +24,8 @@ const getters = {
   listIndex: (state) => state.listIndex,
   playlistId: (state) => state.playlistId,
   playlistName: (state) => state.playlistName,
+  playlistUserAvatar: (state) => state.playlistUserAvatar,
+  playlistUserName: (state) => state.playlistUserName,
   playlistViewCount: (state) => state.playlistViewCount,
   privacySetting: (state) => state.privacySetting,
   playlistCategory: (state) => state.playlistCategory,
@@ -52,6 +56,12 @@ const mutations = {
   setPlaylistName(state, data) {
     state.playlistName = data;
   },
+  setPlaylistUserAvatar(state, data) {
+    state.playlistUserAvatar = data;
+  },
+  setPlaylistUserName(state, data) {
+    state.playlistUserName = data;
+  },
   setPlaylistViewCount(state, data) {
     state.playlistViewCount = data;
   },
@@ -75,6 +85,7 @@ const actions = {
       "/api/get/playlistAndTagVideoData?id=" + playlistId
     );
     if (response.status == OK) {
+      console.log(response.data.playlistAndTagVideoData);
       // 成功した時
       context.commit(
         "setPlaylistAndTagVideoData",
