@@ -41,10 +41,14 @@
                     <v-col class="ma-0 pa-0" justify="center">
                       <v-bottom-navigation
                         class="bottom_navigation_no_shadow"
-                        elevation="0"
-                        height="64"
+                        height="80"
                       >
-                        <v-btn v-on:click.stop="tapStartBtn" class="ma-0 pa-0">
+                        <v-btn
+                          v-on:click.stop="tapStartBtn"
+                          elevation="2"
+                          class="ma-0 pa-4 py-6"
+                          style="border-radius: 4px !important;"
+                        >
                           <span class="green--text text--lighten-1"
                             >開始時間を指定</span
                           >
@@ -77,10 +81,14 @@
                     <v-col class="ma-0 pa-0" justify="center">
                       <v-bottom-navigation
                         class="bottom_navigation_no_shadow"
-                        elevation="0"
-                        height="64"
+                        height="80"
                       >
-                        <v-btn v-on:click.stop="tapStopBtn" class="ma-0 pa-0">
+                        <v-btn
+                          v-on:click.stop="tapStopBtn"
+                          elevation="2"
+                          class="ma-0 pa-4 py-6"
+                          style="border-radius: 4px !important;"
+                        >
                           <span class="red--text text--darken-1"
                             >終了時間を指定</span
                           >

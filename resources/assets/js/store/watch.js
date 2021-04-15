@@ -85,7 +85,6 @@ const actions = {
       "/api/get/playlistAndTagVideoData?id=" + playlistId
     );
     if (response.status == OK) {
-      console.log(response.data.playlistAndTagVideoData);
       // 成功した時
       context.commit(
         "setPlaylistAndTagVideoData",

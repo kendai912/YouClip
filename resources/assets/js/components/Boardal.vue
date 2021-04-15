@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-if="!isFinished" v-model="boardal" persistent max-width="700px">
+  <v-dialog v-if="!isFinished" v-model="boardal" max-width="700px">
     <v-card flat>
       <v-window v-model="onboarding">
         <v-window-item v-for="n in length" :key="`card-${n}`">
@@ -77,7 +77,7 @@
               </v-col>
             </v-row>
 
-            <v-row
+            <!-- <v-row
               class="fill-height px-3"
               align="center"
               justify="center"
@@ -144,7 +144,7 @@
                   </v-col>
                 </v-row>
               </v-col>
-            </v-row>
+            </v-row> -->
           </v-card>
         </v-window-item>
       </v-window>
@@ -153,7 +153,7 @@
         <v-container>
           <v-row align="center" justify="center">
             <v-checkbox
-              v-if="onboarding == 2"
+              v-if="onboarding == 1"
               v-model="notShowBoarding"
               class="small-checkbox ma-0 pa-0"
               label="今後表示しない"
@@ -167,7 +167,7 @@
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn color="primary" depressed @click="next">
-              <span v-if="onboarding !== 2">次へ</span
+              <span v-if="onboarding !== 1">次へ</span
               ><span v-else>使ってみる</span>
             </v-btn>
           </v-row>
@@ -186,7 +186,7 @@ export default {
   data() {
     return {
       boardal: true,
-      length: 3,
+      length: 2,
       onboarding: 0,
       notShowBoarding: false,
       isFinished: false,
@@ -202,7 +202,7 @@ export default {
         },
         {
           img: "/storage/imgs/userguide-collect.png",
-          title: "色々な動画のお気に入りの場面を集めたい",
+          title: "色々な動画のお気に入りの場面をまとめたい",
         },
       ],
       howToImgs: [
@@ -220,7 +220,7 @@ export default {
         },
         {
           img: "/storage/imgs/YouClip-Onboarding2-4.png",
-          text: "④ タイトルを入力",
+          text: "④ タイトル・公開/非公開を入力",
         },
         {
           img: "/storage/imgs/YouClip-Onboarding2-5.png",
@@ -243,7 +243,7 @@ export default {
         this.onboarding - 1 < 0 ? this.length - 1 : this.onboarding - 1;
     },
     next() {
-      if (this.onboarding == 2) {
+      if (this.onboarding == 1) {
         if (this.notShowBoarding) {
           localStorage.setItem("notShowBoarding", JSON.stringify(true));
         }
