@@ -428,7 +428,7 @@ class TagController extends Controller
     public function storeTagPreview(Request $request, $ytDirectUrl)
     {
         $startSec = $this->convertToSec("00:".$request->start);
-        $duration = 3;
+        $duration = 6;
         $endSec = $startSec + $duration;
 
         //プレビュー動画用のファイル名を取得
