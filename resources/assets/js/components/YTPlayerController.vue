@@ -772,11 +772,17 @@ export default {
     window.addEventListener("orientationchange", this.handleOrientationChange);
 
     // fボタン押下よるフルスクリーンモード制御キーボード入力の受付
-    window.addEventListener("keydown", this.fullscreenHandler);
+    if (this.isWatchingPlaylist)
+      window.addEventListener("keydown", this.fullscreenHandler);
 
     window.addEventListener("resize", this.handleResize);
   },
   beforeDestroy() {
+    window.removeEventListener(
+      "orientationchange",
+      this.handleOrientationChange
+    );
+    window.removeEventListener("keydown", this.fullscreenHandler);
     window.removeEventListener("resize", this.handleResize);
   },
 };
