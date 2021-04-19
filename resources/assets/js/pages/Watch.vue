@@ -87,6 +87,7 @@
                   <v-btn
                     v-on:click="toggleLikePlaylist"
                     class="ma-0 pa-0 narrow-btn"
+                    style="z-index: 1;"
                   >
                     <span>{{ likePlaylistCount }}</span>
                     <i
@@ -98,29 +99,47 @@
                       class="fas fa-heart outlined-icon icon-large"
                     ></i>
                   </v-btn>
-                  <div
-                    v-for="(user, index) in likedUsers"
-                    v-bind:key="user.id"
-                    class="absoluteCenter"
-                  >
-                    <v-avatar
-                      size="28"
-                      v-if="index < 4"
-                      v-bind:class="
-                        index == 0
-                          ? 'likedUserAvatar1'
-                          : index == 1
-                          ? 'likedUserAvatar2'
-                          : index == 2
-                          ? 'likedUserAvatar3'
-                          : index == 3
-                          ? 'likedUserAvatar4'
-                          : ''
-                      "
-                    >
+                  <div class="absoluteCenter">
+                    <v-avatar size="28" class="likedUserAvatar4">
                       <v-img
-                        v-if="user.avatar"
-                        v-bind:src="avatarStoragePath + user.avatar"
+                        v-if="likedUsers[3]"
+                        v-bind:src="avatarStoragePath + likedUsers[3].avatar"
+                        alt="profile pic"
+                      ></v-img>
+                      <v-icon v-else style="color:grey;" size="28"
+                        >fas fa-user-circle</v-icon
+                      >
+                    </v-avatar>
+                  </div>
+                  <div class="absoluteCenter">
+                    <v-avatar size="28" class="likedUserAvatar3">
+                      <v-img
+                        v-if="likedUsers[2]"
+                        v-bind:src="avatarStoragePath + likedUsers[2].avatar"
+                        alt="profile pic"
+                      ></v-img>
+                      <v-icon v-else style="color:grey;" size="28"
+                        >fas fa-user-circle</v-icon
+                      >
+                    </v-avatar>
+                  </div>
+                  <div class="absoluteCenter">
+                    <v-avatar size="28" class="likedUserAvatar2">
+                      <v-img
+                        v-if="likedUsers[1]"
+                        v-bind:src="avatarStoragePath + likedUsers[1].avatar"
+                        alt="profile pic"
+                      ></v-img>
+                      <v-icon v-else style="color:grey;" size="28"
+                        >fas fa-user-circle</v-icon
+                      >
+                    </v-avatar>
+                  </div>
+                  <div class="absoluteCenter">
+                    <v-avatar size="28" class="likedUserAvatar1">
+                      <v-img
+                        v-if="likedUsers[0]"
+                        v-bind:src="avatarStoragePath + likedUsers[0].avatar"
                         alt="profile pic"
                       ></v-img>
                       <v-icon v-else style="color:grey;" size="28"
@@ -325,6 +344,9 @@ export default {
       );
     },
     likedUsers() {
+      console.log(
+        this.$store.getters["likePlaylist/likedUsers"](this.playlistIdUrl)
+      );
       return this.$store.getters["likePlaylist/likedUsers"](this.playlistIdUrl);
     },
     startIs() {

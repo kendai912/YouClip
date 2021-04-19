@@ -472,6 +472,7 @@
 
 .bottom_navigation_no_shadow {
   box-shadow: none !important;
+  background-color: transparent !important;
 }
 
 .v-expansion-panel::before {
@@ -1234,6 +1235,8 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
   bottom: 0;
   margin: auto;
   height: 50%;
+  width: 28px;
+  z-index: 0;
 }
 
 .likedUserAvatar1 {
@@ -1245,17 +1248,17 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
 .likedUserAvatar2 {
   left: 46px;
   border: 2px solid #fff;
-  z-index: 0.9;
+  z-index: 1;
 }
 
 .likedUserAvatar3 {
   left: 66px;
   border: 2px solid #fff;
-  z-index: 0.8;
+  z-index: 1;
 }
 
 .likedUserAvatar4 {
   left: 86px;
   border: 2px solid #fff;
-  z-index: 0.7;
+  z-index: 1;
 }
