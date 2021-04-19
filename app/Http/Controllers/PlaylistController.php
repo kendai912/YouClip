@@ -667,6 +667,10 @@ class PlaylistController extends Controller
 
         try {
             $playlist->save();
+
+            // save description to comment table
+            $this->savePlaylistComment($request->newPlaylistId, $request->description, Auth::user()->id, 0);
+
             return response()->json(
                 [
                     'result' => 'updated',
@@ -852,21 +856,24 @@ class PlaylistController extends Controller
             );
         }
     }
+    
     public function addPlaylistComment(Request $request)
     {
         if (Auth::user()) {
-            $playlistComment = new PlaylistComment;
-            $playlistComment->playlist_id = $request->playlist_id;
-            $playlistComment->content = $request->content;
-            $playlistComment->user_id = $request->user_id;
-            $playlistComment->parent_id = $request->parent_id;
-            $playlistComment->save();
+            // $playlistComment = new PlaylistComment;
+            // $playlistComment->playlist_id = $request->playlist_id;
+            // $playlistComment->content = $request->content;
+            // $playlistComment->user_id = $request->user_id;
+            // $playlistComment->parent_id = $request->parent_id;
+            // $playlistComment->save();
+            $playlistComment = $this->savePlaylistComment($request->playlist_id, $request->content, $request->user_id, $request->parent_id);
             $newPlaylistComment = PlaylistComment::leftJoin('users', 'users.id', '=', 'playlist_comments.user_id')->select('playlist_comments.id as comment_id', 'playlist_comments.created_at as comment_publishedAt', 'playlist_comments.*', 'users.*')->where('playlist_comments.id', $playlistComment->id)->first();
             if (!$request->parent_id) {
                 $newPlaylistComment->replies = [];
             }
             $newPlaylistComment->isLiked = false;
             $newPlaylistComment->likes_count = 0;
+
             return response()->json(
                 [
                 'newComment' => $newPlaylistComment
@@ -886,6 +893,20 @@ class PlaylistController extends Controller
             );
         }
     }
+
+
+    public function savePlaylistComment($playlist_id, $content, $user_id, $parent_id)
+    {
+        $playlistComment = new PlaylistComment;
+        $playlistComment->playlist_id = $playlist_id;
+        $playlistComment->content = $content;
+        $playlistComment->user_id = $user_id;
+        $playlistComment->parent_id = $parent_id;
+        $playlistComment->save();
+
+        return $playlistComment;
+    }
+
     public function likeComment(Request $request)
     {
         if (Auth::user()) {

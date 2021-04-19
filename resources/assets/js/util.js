@@ -328,7 +328,7 @@ export default {
       return dateStr.replace(
         regexp,
         (match, year, month, day, hour, minutes, seconds) => {
-          return `${year}-${month}-${day}T${hour}:${minutes}:${seconds}.000000Z`;
+          return `${year}-${month}-${day}T${hour}:${minutes}:${seconds}`;
         }
       );
     },
