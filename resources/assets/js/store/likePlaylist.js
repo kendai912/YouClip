@@ -65,7 +65,6 @@ const actions = {
     const response = await axios.get("/api/load/playlistLike");
     if (response.status == OK) {
       // 成功した時
-      console.log(response.data);
       context.commit("setPlaylistLikeData", response.data.playlistLike);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時

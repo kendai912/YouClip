@@ -328,9 +328,6 @@ export default {
       );
     },
     likedUsers() {
-      console.log(
-        this.$store.getters["likePlaylist/likedUsers"](this.playlistIdUrl)
-      );
       return this.$store.getters["likePlaylist/likedUsers"](this.playlistIdUrl);
     },
     startIs() {
