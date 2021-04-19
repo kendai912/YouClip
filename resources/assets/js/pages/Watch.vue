@@ -99,52 +99,36 @@
                       class="fas fa-heart outlined-icon icon-large"
                     ></i>
                   </v-btn>
-                  <div class="absoluteCenter">
+                  <div v-if="likedUsers[3]" class="absoluteCenter">
                     <v-avatar size="28" class="likedUserAvatar4">
                       <v-img
-                        v-if="likedUsers[3]"
                         v-bind:src="avatarStoragePath + likedUsers[3].avatar"
                         alt="profile pic"
                       ></v-img>
-                      <v-icon v-else style="color:grey;" size="28"
-                        >fas fa-user-circle</v-icon
-                      >
                     </v-avatar>
                   </div>
-                  <div class="absoluteCenter">
+                  <div v-if="likedUsers[2]" class="absoluteCenter">
                     <v-avatar size="28" class="likedUserAvatar3">
                       <v-img
-                        v-if="likedUsers[2]"
                         v-bind:src="avatarStoragePath + likedUsers[2].avatar"
                         alt="profile pic"
                       ></v-img>
-                      <v-icon v-else style="color:grey;" size="28"
-                        >fas fa-user-circle</v-icon
-                      >
                     </v-avatar>
                   </div>
-                  <div class="absoluteCenter">
+                  <div v-if="likedUsers[1]" class="absoluteCenter">
                     <v-avatar size="28" class="likedUserAvatar2">
                       <v-img
-                        v-if="likedUsers[1]"
                         v-bind:src="avatarStoragePath + likedUsers[1].avatar"
                         alt="profile pic"
                       ></v-img>
-                      <v-icon v-else style="color:grey;" size="28"
-                        >fas fa-user-circle</v-icon
-                      >
                     </v-avatar>
                   </div>
-                  <div class="absoluteCenter">
+                  <div v-if="likedUsers[0]" class="absoluteCenter">
                     <v-avatar size="28" class="likedUserAvatar1">
                       <v-img
-                        v-if="likedUsers[0]"
                         v-bind:src="avatarStoragePath + likedUsers[0].avatar"
                         alt="profile pic"
                       ></v-img>
-                      <v-icon v-else style="color:grey;" size="28"
-                        >fas fa-user-circle</v-icon
-                      >
                     </v-avatar>
                   </div>
                 </v-bottom-navigation>

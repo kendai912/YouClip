@@ -51,7 +51,7 @@ class LikesPlaylistController extends Controller
         $likedUsers = [];
 
         foreach ($likeDataArray as $index => $likeData) {
-            if ($index < 4) {
+            if ($index < 4 && $likeData->user->avatar) {
                 $likedUsers[] = $likeData->user;
             }
         }
