@@ -20,14 +20,15 @@ class LikesPlaylistController extends Controller
 
         foreach ($likes as $like) {
             //プレイリストのlikes数を取得
-            $likeCount = $this->getLikeCountById($like->playlist_id);
+            $likeData = $this->getLikeDataById($like->playlist_id);
             
             //ユーザーによるプレイリストへのlike有無フラグを判定
             $isLiked = $this->getIsLikedFlagById($like->playlist_id);
 
             //playlist_idをキーとした連想配列に格納
             $playlistLike[$like->playlist_id] = [
-                'likeCount' => $likeCount,
+                'likedUsers' => $likeData['likedUsers'],
+                'likeCount' => $likeData['likeCount'],
                 'isLiked' => $isLiked
             ];
         }
@@ -43,12 +44,22 @@ class LikesPlaylistController extends Controller
     }
 
     //Likeの件数を取得
-    public function getLikeCountById($playlist_id)
+    public function getLikeDataById($playlist_id)
     {
-        $like = LikesPlaylist::where('playlist_id', $playlist_id)->get();
-        $likeCount = $like->count();
+        $likeDataArray = LikesPlaylist::where('playlist_id', $playlist_id)->with('user')->get();
+        $likeData = [];
+        $likedUsers = [];
 
-        return $likeCount;
+        foreach ($likeDataArray as $index => $likeData) {
+            if ($index < 4) {
+                $likedUsers[] = $likeData->user;
+            }
+        }
+
+        $likeData['likedUsers'] = $likedUsers;
+        $likeData['likeCount'] = $likeDataArray->count();
+
+        return $likeData;
     }
 
     public function getIsLikedFlagById($playlist_id)

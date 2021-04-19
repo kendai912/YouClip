@@ -2,25 +2,32 @@ import axios from "axios";
 import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
 
 const state = {
-  playlistLikeData: null
+  playlistLikeData: null,
 };
 
 const getters = {
-  playlistLikeData: state => state.playlistLikeData,
-  isLikedPlaylist: state => playlist_id => {
+  playlistLikeData: (state) => state.playlistLikeData,
+  isLikedPlaylist: (state) => (playlist_id) => {
     if (state.playlistLikeData != null && state.playlistLikeData[playlist_id]) {
       return state.playlistLikeData[playlist_id].isLiked;
     } else {
       return false;
     }
   },
-  likePlaylistCount: state => playlist_id => {
+  likePlaylistCount: (state) => (playlist_id) => {
     if (state.playlistLikeData != null && state.playlistLikeData[playlist_id]) {
       return state.playlistLikeData[playlist_id].likeCount;
     } else {
       return 0;
     }
-  }
+  },
+  likedUsers: (state) => (playlist_id) => {
+    if (state.playlistLikeData != null && state.playlistLikeData[playlist_id]) {
+      return state.playlistLikeData[playlist_id].likedUsers;
+    } else {
+      return 0;
+    }
+  },
 };
 
 const mutations = {
@@ -34,7 +41,7 @@ const mutations = {
     if (!state.playlistLikeData[playlist_id]) {
       state.playlistLikeData = {
         ...state.playlistLikeData,
-        [playlist_id]: { isLiked: false, likeCount: 0 }
+        [playlist_id]: { isLiked: false, likeCount: 0 },
       };
     }
     state.playlistLikeData[playlist_id].isLiked = !state.playlistLikeData[
@@ -49,7 +56,7 @@ const mutations = {
   },
   decrementLikeCount(state, playlist_id) {
     state.playlistLikeData[playlist_id].likeCount -= 1;
-  }
+  },
 };
 
 const actions = {
@@ -70,7 +77,7 @@ const actions = {
   async toggleLikePlaylist(context, playlist_id) {
     this.errors = {};
     let params = {
-      playlist_id: playlist_id
+      playlist_id: playlist_id,
     };
 
     const response = await axios.post("/api/toggleLikePlaylist", params);
@@ -92,7 +99,7 @@ const actions = {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
     }
-  }
+  },
 };
 
 export default {
@@ -100,5 +107,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

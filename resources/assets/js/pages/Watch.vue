@@ -98,6 +98,36 @@
                       class="fas fa-heart outlined-icon icon-large"
                     ></i>
                   </v-btn>
+                  <div
+                    v-for="(user, index) in likedUsers"
+                    v-bind:key="user.id"
+                    class="absoluteCenter"
+                  >
+                    <v-avatar
+                      size="28"
+                      v-if="index < 4"
+                      v-bind:class="
+                        index == 0
+                          ? 'likedUserAvatar1'
+                          : index == 1
+                          ? 'likedUserAvatar2'
+                          : index == 2
+                          ? 'likedUserAvatar3'
+                          : index == 3
+                          ? 'likedUserAvatar4'
+                          : ''
+                      "
+                    >
+                      <v-img
+                        v-if="user.avatar"
+                        v-bind:src="avatarStoragePath + user.avatar"
+                        alt="profile pic"
+                      ></v-img>
+                      <v-icon v-else style="color:grey;" size="28"
+                        >fas fa-user-circle</v-icon
+                      >
+                    </v-avatar>
+                  </div>
                 </v-bottom-navigation>
               </v-col>
 
@@ -107,7 +137,7 @@
                     v-on:click="sharePlaylist"
                     class="ma-0 pa-0 narrow-btn"
                   >
-                    <span>まとめをシェア</span>
+                    <span>シェア</span>
                     <i class="fas fa-share outlined-icon icon-large"></i>
                   </v-btn>
                 </v-bottom-navigation>
@@ -293,6 +323,9 @@ export default {
       return this.$store.getters["likePlaylist/likePlaylistCount"](
         this.playlistIdUrl
       );
+    },
+    likedUsers() {
+      return this.$store.getters["likePlaylist/likedUsers"](this.playlistIdUrl);
     },
     startIs() {
       return this.formatToMinSec(this.startHis);
