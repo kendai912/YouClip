@@ -152,7 +152,7 @@
                     v-bind:href="'https://youtube.com/watch?v=' + youtubeId"
                     class="ma-0 pa-0 narrow-btn"
                   >
-                    <span>元のYouTubeを開く</span>
+                    <span>YouTubeで全編再生</span>
                     <i class="fab fa-youtube outlined-icon icon-large"></i>
                   </v-btn>
                 </v-bottom-navigation>
