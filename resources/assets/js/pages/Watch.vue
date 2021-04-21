@@ -346,6 +346,7 @@ export default {
       setListIndex: "watch/setListIndex",
       setPlayer: "ytPlayer/setPlayer",
       setIsMuted: "ytPlayer/setIsMuted",
+      setShowFooterTour: "onboarding/setShowFooterTour",
     }),
     switchToPlayListIndexOf(index) {
       //URLを更新
@@ -545,6 +546,11 @@ export default {
 
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.watchBodyRef = this.$refs.watchBody;
+
+    let notShowBoarding = JSON.parse(localStorage.getItem("notShowBoarding"));
+    if (!notShowBoarding) {
+      this.setShowFooterTour(true);
+    }
   },
   beforeDestroy() {
     this.$store.commit("ytPlayer/setIsWatchingPlaylist", false);

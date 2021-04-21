@@ -82,7 +82,10 @@ export default {
           await this.loadSceneList();
           //作成中のプレイリストデータがあればsnackbarを表示
           if (this.playlistAndTagVideoData?.tagVideoData?.length >= 1) {
-            this.$store.commit("snackbar/setText", " 作成中の切り抜きがあります");
+            this.$store.commit(
+              "snackbar/setText",
+              " 作成中の切り抜きがあります"
+            );
             this.$store.commit("snackbar/seVertical", true);
             this.$store.commit("snackbar/setSnackbar", true);
             this.$store.commit("snackbar/setTimeout", 5000);
