@@ -276,12 +276,12 @@ class PlaylistController extends Controller
             return (($a["scene_order"] < $b["scene_order"]) ? -1 : 1);
         });
 
-        $comments = PlaylistComment::leftJoin('users', 'users.id', '=', 'playlist_comments.user_id')->select('playlist_comments.id as comment_id', 'playlist_comments.created_at as comment_publishedAt', 'playlist_comments.*', 'users.*')->where('playlist_comments.playlist_id', $playlistId)->where('playlist_comments.parent_id', '0')->orderBy('comment_publishedAt', 'desc')->get();
+        $comments = PlaylistComment::leftJoin('users', 'users.id', '=', 'playlist_comments.user_id')->select('playlist_comments.id as comment_id', 'playlist_comments.created_at as comment_publishedAt', 'playlist_comments.*', 'users.*')->where('playlist_comments.playlist_id', $playlistId)->where('playlist_comments.parent_id', '0')->orderBy('comment_publishedAt', 'DESC')->get();
         $commentDatas = [];
 
         foreach ($comments as $comment) {
             $commentData = $comment;
-            $child_comments = PlaylistComment::leftJoin('users', 'users.id', '=', 'playlist_comments.user_id')->select('playlist_comments.id as comment_id', 'playlist_comments.created_at as comment_publishedAt', 'playlist_comments.*', 'users.*')->where('parent_id', $comment->comment_id)->orderBy('comment_publishedAt', 'desc')->get();
+            $child_comments = PlaylistComment::leftJoin('users', 'users.id', '=', 'playlist_comments.user_id')->select('playlist_comments.id as comment_id', 'playlist_comments.created_at as comment_publishedAt', 'playlist_comments.*', 'users.*')->where('parent_id', $comment->comment_id)->orderBy('comment_publishedAt', 'ASC')->get();
             $childCommentDatas = [];
             foreach ($child_comments as $child) {
                 $childCommentData = $child;
@@ -860,12 +860,6 @@ class PlaylistController extends Controller
     public function addPlaylistComment(Request $request)
     {
         if (Auth::user()) {
-            // $playlistComment = new PlaylistComment;
-            // $playlistComment->playlist_id = $request->playlist_id;
-            // $playlistComment->content = $request->content;
-            // $playlistComment->user_id = $request->user_id;
-            // $playlistComment->parent_id = $request->parent_id;
-            // $playlistComment->save();
             $playlistComment = $this->savePlaylistComment($request->playlist_id, $request->content, $request->user_id, $request->parent_id);
             $newPlaylistComment = PlaylistComment::leftJoin('users', 'users.id', '=', 'playlist_comments.user_id')->select('playlist_comments.id as comment_id', 'playlist_comments.created_at as comment_publishedAt', 'playlist_comments.*', 'users.*')->where('playlist_comments.id', $playlistComment->id)->first();
             if (!$request->parent_id) {
