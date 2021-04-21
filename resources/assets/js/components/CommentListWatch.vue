@@ -32,7 +32,6 @@
           <v-row class="ma-0 py-1 pl-3 pr-1">
             <v-col cols="auto" class="ma-0 pa-0 text-center">
               <v-avatar size="32" class="mt-2">
-                <!-- <v-img src="/storage/logos/pph_son.png" /> -->
                 <i class="fas fa-user-circle fa-2x" style="color:grey;"></i>
               </v-avatar>
             </v-col>
@@ -74,9 +73,15 @@
             <v-col cols="auto" class="ma-0 pa-0 text-center">
               <v-avatar size="32" class="mt-2">
                 <v-img
+                  v-if="item.avatar"
                   v-bind:src="avatarStoragePath + item.avatar"
                   alt="commented user pic"
                 ></v-img>
+                <i
+                  v-else
+                  class="fas fa-user-circle fa-2x"
+                  style="color:grey;"
+                ></i>
               </v-avatar>
             </v-col>
             <v-col class="ma-0 pa-2">
@@ -118,9 +123,15 @@
                 <v-col cols="auto" class="ma-0 pa-1 text-center">
                   <v-avatar size="24" class="mt-2">
                     <v-img
+                      v-if="item.avatar"
                       v-bind:src="avatarStoragePath + item.avatar"
                       alt="commented user pic"
                     ></v-img>
+                    <i
+                      v-else
+                      class="fas fa-user-circle fa-2x"
+                      style="color:grey;"
+                    ></i>
                   </v-avatar>
                 </v-col>
                 <v-col class="ma-0 pa-2">
