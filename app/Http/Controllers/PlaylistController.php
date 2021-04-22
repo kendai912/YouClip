@@ -669,7 +669,9 @@ class PlaylistController extends Controller
             $playlist->save();
 
             // save description to comment table
-            $this->savePlaylistComment($request->newPlaylistId, $request->description, Auth::user()->id, 0);
+            if ($request->description != "" && $request->description) {
+                $this->savePlaylistComment($request->newPlaylistId, $request->description, Auth::user()->id, 0);
+            }
 
             return response()->json(
                 [
