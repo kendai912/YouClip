@@ -253,6 +253,7 @@ const actions = {
   //     context.commit("error/setCode", response.status, { root: true });
   //   }
   // },
+
   // 【新着】プレイリスト一覧を取得
   async indexPlaylistAndTagPaginationOfNew(context, input) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
@@ -264,12 +265,16 @@ const actions = {
         "&period=" +
         input.period
     );
+
     if (response.status == OK) {
       // 成功した時
-      if (response.data.playlistAndTagPaginationOfNew.last_page == input.page)
+      if (response.data.playlistAndTagPaginationOfNew.last_page <= input.page) {
         context.commit("setProceedPeriodOfNew", true);
+      }
 
-      if (response.data.endOfPeriodFlg) context.commit("setToLoadNew", false);
+      if (response.data.endOfPeriodFlg) {
+        context.commit("setToLoadNew", false);
+      }
 
       if (response.data.playlistAndTagPaginationOfNew.data) {
         context.commit(
@@ -287,6 +292,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   // 【VTuber】プレイリスト一覧を取得
   async indexPlaylistAndTagPaginationOfVTuber(context, input) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
@@ -298,10 +304,11 @@ const actions = {
         "&period=" +
         input.period
     );
+
     if (response.status == OK) {
       // 成功した時
       if (
-        response.data.playlistAndTagPaginationOfVTuber.last_page == input.page
+        response.data.playlistAndTagPaginationOfVTuber.last_page <= input.page
       )
         context.commit("setProceedPeriodOfVTuber", true);
 
@@ -324,6 +331,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   // 【Game】プレイリスト一覧を取得
   async indexPlaylistAndTagPaginationOfGame(context, input) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
@@ -335,9 +343,10 @@ const actions = {
         "&period=" +
         input.period
     );
+
     if (response.status == OK) {
       // 成功した時
-      if (response.data.playlistAndTagPaginationOfGame.last_page == input.page)
+      if (response.data.playlistAndTagPaginationOfGame.last_page <= input.page)
         context.commit("setProceedPeriodOfGame", true);
 
       if (response.data.endOfPeriodFlg) context.commit("setToLoadGame", false);
@@ -358,6 +367,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   // 【Music】プレイリスト一覧を取得
   async indexPlaylistAndTagPaginationOfMusic(context, input) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
@@ -369,9 +379,10 @@ const actions = {
         "&period=" +
         input.period
     );
+
     if (response.status == OK) {
       // 成功した時
-      if (response.data.playlistAndTagPaginationOfMusic.last_page == input.page)
+      if (response.data.playlistAndTagPaginationOfMusic.last_page <= input.page)
         context.commit("setProceedPeriodOfMusic", true);
 
       if (response.data.endOfPeriodFlg) context.commit("setToLoadMusic", false);
@@ -392,6 +403,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   // 【Language】プレイリスト一覧を取得
   async indexPlaylistAndTagPaginationOfLanguage(context, input) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
@@ -403,10 +415,11 @@ const actions = {
         "&period=" +
         input.period
     );
+
     if (response.status == OK) {
       // 成功した時
       if (
-        response.data.playlistAndTagPaginationOfLanguage.last_page == input.page
+        response.data.playlistAndTagPaginationOfLanguage.last_page <= input.page
       )
         context.commit("setProceedPeriodOfLanguage", true);
 
@@ -455,6 +468,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   //作成したプレイリストをロード
   async loadMyCreatedPlaylist(context) {
     const response = await axios.get("/api/load/myCreatedPlaylist");
@@ -469,6 +483,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   //いいねしたプレイリストをロード
   async loadMyLikedPlaylist(context) {
     const response = await axios.get("/api/load/myLikedPlaylist");
@@ -483,6 +498,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   //Public playlist data and scene list
   async loadPublicPlaylistAndScenelist(context, user_id) {
     let params = {
@@ -504,6 +520,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   //完了ボタンを押したらチェックの入ったプレイリストにタグを追加
   async addMyPlaylists(context, input) {
     this.errors = {};
@@ -528,6 +545,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   async updatePlaylist(context, params) {
     this.errors = {};
 
@@ -550,6 +568,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   async updatePlaylistTitle(context, playlist) {
     this.errors = {};
 
@@ -568,6 +587,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   async updatePlaylistPrivacy(context, playlist) {
     this.errors = {};
 
@@ -587,6 +607,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   async updatePlaylistCategory(context, playlist) {
     this.errors = {};
 
@@ -606,6 +627,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   async updatePlaylistSceneOrder(context, playlist) {
     this.errors = {};
 
@@ -621,6 +643,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   //プレイリスト新規作成と選択中のタグの保存
   async createPlaylist(context, input) {
     this.errors = {};
@@ -645,6 +668,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   // Get newly created playlist ID
   async getNewPlaylistId(context, input) {
     const response = await axios.post("/api/playlist/getNewPlaylist");
@@ -663,6 +687,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   //選択されたタグが追加済のユーザーのプレイリストIDを取得
   async getPlaylistIdsOfTag(context, tag_id) {
     this.errors = {};
@@ -681,6 +706,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   async addPlaylistComment(context, data) {
     const params = data;
     const response = await axios.post("/api/playlist/addComment", params);
@@ -706,6 +732,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   async likeComment(context, data) {
     const params = data;
     const isLiked = data.isLiked;
@@ -748,6 +775,7 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
   async refreshNewPreview(context, newPlaylistId) {
     var params = {
       newPlaylistId: newPlaylistId,

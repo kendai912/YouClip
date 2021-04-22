@@ -88,7 +88,7 @@
             <v-col class="text-right ma-0 pa-2">
               <v-btn
                 v-if="isVideoDataReady"
-                color="red lighten-1 white--text"
+                color="red darken-1 white--text"
                 v-bind:disabled="isDisabled"
                 v-on:click="confirm"
                 >OK</v-btn

@@ -11,7 +11,7 @@
         <v-col class="mx-6 px-0">
           <v-btn
             width="100%"
-            color="green lighten-1"
+            color="green darken-1"
             class="white--text"
             v-on:click="openLoginPage"
             style="font-size: 14px;"

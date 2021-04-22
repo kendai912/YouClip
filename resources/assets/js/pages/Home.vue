@@ -148,6 +148,7 @@ export default {
       topPositionOfItems: 0,
       itemHeight: "",
       contentsPerPage: 5,
+      isOnHome: true,
     };
   },
   computed: {
@@ -197,41 +198,6 @@ export default {
         this.topPositionOfItems +
         this.contentsPerPage * this.itemHeight * (startPage - 1);
       if (startPage > 1) window.scrollTo(0, topPositionY);
-    },
-    proceedPeriodOfNew() {
-      if (this.proceedPeriodOfNew) {
-        this.newPeriod++;
-        this.newPage = 1;
-      }
-      this.setProceedPeriodOfNew(false);
-    },
-    proceedPeriodOfVTuber() {
-      if (this.proceedPeriodOfVTuber) {
-        this.vtuberPeriod++;
-        this.vtuberPage = 1;
-      }
-      this.setProceedPeriodOfVTuber(false);
-    },
-    proceedPeriodOfGame() {
-      if (this.proceedPeriodOfGame) {
-        this.gamePeriod++;
-        this.gamePage = 1;
-      }
-      this.setProceedPeriodOfGame(false);
-    },
-    proceedPeriodOfMusic() {
-      if (this.proceedPeriodOfMusic) {
-        this.musicPeriod++;
-        this.musicPage = 1;
-      }
-      this.setProceedPeriodOfMusic(false);
-    },
-    proceedPeriodOfLanguage() {
-      if (this.proceedPeriodOfLanguage) {
-        this.languagePeriod++;
-        this.languagePage = 1;
-      }
-      this.setProceedPeriodOfLanguage(false);
     },
   },
   mixins: [myMixin],
@@ -290,14 +256,21 @@ export default {
         this.playlistAndTagPaginationOfNew.data
       );
 
+      // 現在のperiodのlast_pageに達したので次のperiodの最初にパラメータを変更
+      if (this.proceedPeriodOfNew) {
+        this.newPeriod++;
+        this.newPage = 1;
+      }
+      this.setProceedPeriodOfNew(false);
+
       let totalNumOfItems =
         numOfItems + this.playlistAndTagPaginationOfNew.data.length;
 
       if (totalNumOfItems >= 5) {
         //ローディングを非表示
         this.$store.commit("loadingItem/setIsLoading", false);
-      } else {
-        //データが何も返って来なかった場合は次のデータを再度ロード
+      } else if (this.isOnHome) {
+        //データ数が5未満の場合は次のデータを再度ロード
         await this.infinateLoadPlaylistOfNew(totalNumOfItems);
       }
     },
@@ -323,14 +296,21 @@ export default {
         this.playlistAndTagPaginationOfVTuber.data
       );
 
+      // 現在のperiodのlast_pageに達したので次のperiodの最初にパラメータを変更
+      if (this.proceedPeriodOfVTuber) {
+        this.vtuberPeriod++;
+        this.vtuberPage = 1;
+      }
+      this.setProceedPeriodOfVTuber(false);
+
       let totalNumOfItems =
         numOfItems + this.playlistAndTagPaginationOfVTuber.data.length;
 
       if (totalNumOfItems >= 5) {
         //ローディングを非表示
         this.$store.commit("loadingItem/setIsLoading", false);
-      } else {
-        //データが何も返って来なかった場合は次のデータを再度ロード
+      } else if (this.isOnHome) {
+        //データ数が5未満の場合は次のデータを再度ロード
         await this.infinateLoadPlaylistOfVTuber(totalNumOfItems);
       }
     },
@@ -356,14 +336,21 @@ export default {
         this.playlistAndTagPaginationOfGame.data
       );
 
+      // 現在のperiodのlast_pageに達したので次のperiodの最初にパラメータを変更
+      if (this.proceedPeriodOfGame) {
+        this.gamePeriod++;
+        this.gamePage = 1;
+      }
+      this.setProceedPeriodOfGame(false);
+
       let totalNumOfItems =
         numOfItems + this.playlistAndTagPaginationOfGame.data.length;
 
       if (totalNumOfItems >= 5) {
         //ローディングを非表示
         this.$store.commit("loadingItem/setIsLoading", false);
-      } else {
-        //データが何も返って来なかった場合は次のデータを再度ロード
+      } else if (this.isOnHome) {
+        //データ数が5未満の場合は次のデータを再度ロード
         await this.infinateLoadPlaylistOfGame(totalNumOfItems);
       }
     },
@@ -389,14 +376,21 @@ export default {
         this.playlistAndTagPaginationOfMusic.data
       );
 
+      // 現在のperiodのlast_pageに達したので次のperiodの最初にパラメータを変更
+      if (this.proceedPeriodOfMusic) {
+        this.musicPeriod++;
+        this.musicPage = 1;
+      }
+      this.setProceedPeriodOfMusic(false);
+
       let totalNumOfItems =
         numOfItems + this.playlistAndTagPaginationOfMusic.data.length;
 
       if (totalNumOfItems >= 5) {
         //ローディングを非表示
         this.$store.commit("loadingItem/setIsLoading", false);
-      } else {
-        //データが何も返って来なかった場合は次のデータを再度ロード
+      } else if (this.isOnHome) {
+        //データ数が5未満の場合は次のデータを再度ロード
         await this.infinateLoadPlaylistOfMusic(totalNumOfItems);
       }
     },
@@ -422,14 +416,21 @@ export default {
         this.playlistAndTagPaginationOfLanguage.data
       );
 
+      // 現在のperiodのlast_pageに達したので次のperiodの最初にパラメータを変更
+      if (this.proceedPeriodOfLanguage) {
+        this.languagePeriod++;
+        this.languagePage = 1;
+      }
+      this.setProceedPeriodOfLanguage(false);
+
       let totalNumOfItems =
         numOfItems + this.playlistAndTagPaginationOfLanguage.data.length;
 
       if (totalNumOfItems >= 5) {
         //ローディングを非表示
         this.$store.commit("loadingItem/setIsLoading", false);
-      } else {
-        //データが何も返って来なかった場合は次のデータを再度ロード
+      } else if (this.isOnHome) {
+        //データ数が5未満の場合は次のデータを再度ロード
         await this.infinateLoadPlaylistOfLanguage(totalNumOfItems);
       }
     },
@@ -477,49 +478,75 @@ export default {
     },
     setTopPositionOfItems() {
       if (this.tab == 0) {
-        this.topPositionOfItems = this.getOffsetTop(
-          this.$refs.newMediaItems.$refs.playlistMediaItemBox
-        );
+        this.topPositionOfItems =
+          typeof this.$refs.newMediaItems !== "undefined"
+            ? this.getOffsetTop(
+                this.$refs.newMediaItems.$refs.playlistMediaItemBox
+              )
+            : 128;
       } else if (this.tab == 1) {
-        this.topPositionOfItems = this.getOffsetTop(
-          this.$refs.vtuberMediaItems.$refs.playlistMediaItemBox
-        );
+        this.topPositionOfItems =
+          typeof this.$refs.vtuberMediaItems !== "undefined"
+            ? this.getOffsetTop(
+                this.$refs.vtuberMediaItems.$refs.playlistMediaItemBox
+              )
+            : 128;
       } else if (this.tab == 2) {
-        this.topPositionOfItems = this.getOffsetTop(
-          this.$refs.gameMediaItems.$refs.playlistMediaItemBox
-        );
+        this.topPositionOfItems =
+          typeof this.$refs.gameMediaItems !== "undefined"
+            ? this.getOffsetTop(
+                this.$refs.gameMediaItems.$refs.playlistMediaItemBox
+              )
+            : 128;
       } else if (this.tab == 3) {
-        this.topPositionOfItems = this.getOffsetTop(
-          this.$refs.musicMediaItems.$refs.playlistMediaItemBox
-        );
+        this.topPositionOfItems =
+          typeof this.$refs.musicMediaItems !== "undefined"
+            ? this.getOffsetTop(
+                this.$refs.musicMediaItems.$refs.playlistMediaItemBox
+              )
+            : 128;
       } else if (this.tab == 4) {
-        this.topPositionOfItems = this.getOffsetTop(
-          this.$refs.languageMediaItems.$refs.playlistMediaItemBox
-        );
+        this.topPositionOfItems =
+          typeof this.$refs.languageMediaItems !== "undefined"
+            ? this.getOffsetTop(
+                this.$refs.languageMediaItems.$refs.playlistMediaItemBox
+              )
+            : 128;
       }
     },
     setItemHeight() {
       if (this.tab == 0) {
-        this.itemHeight = this.$refs.newMediaItems.$refs.playlistMediaItem
-          ? this.$refs.newMediaItems.$refs.playlistMediaItem[0].clientHeight
-          : 329;
+        this.itemHeight =
+          typeof this.$refs.newMediaItems?.$refs.playlistMediaItem !==
+          "undefined"
+            ? this.$refs.newMediaItems.$refs.playlistMediaItem[0].clientHeight
+            : 329;
       } else if (this.tab == 1) {
-        this.itemHeight = this.$refs.vtuberMediaItems.$refs.playlistMediaItem
-          ? this.$refs.vtuberMediaItems.$refs.playlistMediaItem[0].clientHeight
-          : 329;
+        this.itemHeight =
+          typeof this.$refs.vtuberMediaItems?.$refs.playlistMediaItem !==
+          "undefined"
+            ? this.$refs.vtuberMediaItems.$refs.playlistMediaItem[0]
+                .clientHeight
+            : 329;
       } else if (this.tab == 2) {
-        this.itemHeight = this.$refs.gameMediaItems.$refs.playlistMediaItem
-          ? this.$refs.gameMediaItems.$refs.playlistMediaItem[0].clientHeight
-          : 329;
+        this.itemHeight =
+          typeof this.$refs.gameMediaItems?.$refs.playlistMediaItem !==
+          "undefined"
+            ? this.$refs.gameMediaItems.$refs.playlistMediaItem[0].clientHeight
+            : 329;
       } else if (this.tab == 3) {
-        this.itemHeight = this.$refs.musicMediaItems.$refs.playlistMediaItem
-          ? this.$refs.musicMediaItems.$refs.playlistMediaItem[0].clientHeight
-          : 329;
+        this.itemHeight =
+          typeof this.$refs.musicMediaItems?.$refs.playlistMediaItem !==
+          "undefined"
+            ? this.$refs.musicMediaItems.$refs.playlistMediaItem[0].clientHeight
+            : 329;
       } else if (this.tab == 4) {
-        this.itemHeight = this.$refs.languageMediaItems.$refs.playlistMediaItem
-          ? this.$refs.languageMediaItems.$refs.playlistMediaItem[0]
-              .clientHeight
-          : 329;
+        this.itemHeight =
+          typeof this.$refs.languageMediaItems?.$refs.playlistMediaItem !==
+          "undefined"
+            ? this.$refs.languageMediaItems.$refs.playlistMediaItem[0]
+                .clientHeight
+            : 329;
       }
     },
     async initialLoad(startPage) {
@@ -604,6 +631,9 @@ export default {
   created() {},
   beforeDestroy() {
     window.onscroll = null;
+
+    // parameter necessary to prevent inifinit loop
+    this.isOnHome = false;
   },
 };
 </script>

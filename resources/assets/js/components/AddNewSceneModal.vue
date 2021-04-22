@@ -6,7 +6,7 @@
           <v-col class="mx-6 mt-6 pa-0">
             <v-btn
               width="100%"
-              color="red lighten-1"
+              color="red darken-1"
               outlined
               class="white--text"
               v-on:click="moveToYThighlightPage"
@@ -42,7 +42,7 @@
           <v-col class="mx-6 mb-6 pa-0">
             <v-btn
               width="100%"
-              color="red lighten-1"
+              color="red darken-1"
               outlined
               class="white--text"
               v-on:click="moveToSearchNewYTvideo"

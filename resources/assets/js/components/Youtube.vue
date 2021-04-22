@@ -123,7 +123,7 @@
             style="padding-top: 24px !important; padding-bottom: 128px !important; "
           >
             <v-col class="text-right ma-0 pa-2">
-              <v-btn color="red lighten-1 white--text" v-on:click="next"
+              <v-btn color="red darken-1 white--text" v-on:click="next"
                 >確認</v-btn
               >
             </v-col>

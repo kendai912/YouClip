@@ -63,7 +63,7 @@
             v-bind:data-href="
               'https://twitter.com/intent/tweet?url=' +
                 encodedShareURI +
-                '&text=[YouClip] ' +
+                '&text=[切り抜き] ' +
                 shareText
             "
           >
