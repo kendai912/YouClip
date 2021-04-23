@@ -721,7 +721,7 @@ const actions = {
         const parentIndex = comments.findIndex(
           (comment) => comment.comment_id === newPlaylistComment.parent_id
         );
-        comments[parentIndex].replies.unshift(newPlaylistComment);
+        comments[parentIndex].replies.push(newPlaylistComment);
       }
       context.commit("setCommentListofPlaylist", comments);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
