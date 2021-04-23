@@ -335,6 +335,7 @@ export default {
     //日付が現時点からどのくらい前か表示変換を行う関数
     timeSince(publishedAt) {
       if (publishedAt != null) {
+        console.log(publishedAt);
         let date = new Date(this.replaceDate(publishedAt));
         let seconds = Math.floor((new Date() - date) / 1000);
 
