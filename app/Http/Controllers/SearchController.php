@@ -61,7 +61,7 @@ class SearchController extends Controller
         //検索ワードに紐付くプレイリスト・ビデオ・タグのデータを取得
         $playlistTagResult = Playlist::whereHas('tags', function ($query) {
             $query->where('privacySetting', 'public');
-        })->with(array('tags' => function ($query) {
+        })->with('user')->with(array('tags' => function ($query) {
             $query->with('video')->select('*')->get();
         }))->where('privacySetting', 'public')->where('playlistName', 'LIKE', "%$searchQuery%")->paginate($contentsPerPage);
 

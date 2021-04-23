@@ -94,7 +94,10 @@ const actions = {
       searchOption: 0,
     };
 
-    const response = await axios.post("/api/search/getSearchCandidates", params);
+    const response = await axios.post(
+      "/api/search/getSearchCandidates",
+      params
+    );
     if (response.status == OK) {
       // 成功した時
       context.commit("setSearchCandidates", response.data.searchCandidates);
