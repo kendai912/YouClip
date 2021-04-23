@@ -9,6 +9,7 @@ use App\Like;
 use App\Playlist;
 use App\Taglog;
 use App\TagComment;
+use DateTimeInterface;
 
 class Tag extends Model
 {
@@ -44,5 +45,10 @@ class Tag extends Model
     public function tag_comments()
     {
         return $this->hasMany('App\TagComment');
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

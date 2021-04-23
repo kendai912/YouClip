@@ -11,6 +11,7 @@ use App\Playlist;
 use App\Searchquery;
 use App\Playlistlog;
 use App\Taglog;
+use DateTimeInterface;
 
 class User extends Authenticatable
 {
@@ -80,5 +81,10 @@ class User extends Authenticatable
     {
         //Taglogモデルのデータを引っ張ってくる
         return $this->hasMany('App\Taglog');
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

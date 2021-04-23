@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\User;
 use App\Tag;
+use DateTimeInterface;
 
 class Video extends Model
 {
@@ -98,5 +99,10 @@ class Video extends Model
             }
         }
         return $videoArray;
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

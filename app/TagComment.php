@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Tag;
 use App\User;
+use DateTimeInterface;
 
 class TagComment extends Model
 {
@@ -19,5 +20,10 @@ class TagComment extends Model
     {
         //Userモデルのデータを引っ張ってくる
         return $this->belongsTo('App\User');
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

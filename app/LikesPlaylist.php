@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Playlist;
 use App\User;
+use DateTimeInterface;
 
 class LikesPlaylist extends Model
 {
@@ -18,5 +19,10 @@ class LikesPlaylist extends Model
     {
         //Userモデルのデータを引っ張ってくる
         return $this->belongsTo('App\User');
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }
