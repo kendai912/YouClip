@@ -700,13 +700,10 @@
 .block-playlist-title {
   display: block;
   display: -webkit-box;
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: 4px;
-  margin-right: 0;
+  margin: 0;
   padding-top: 1px;
-  font-size: 12px;
-  line-height: 1.1;
+  font-size: calc(1rem * (14 / 14));
+  line-height: 1.2;
   min-height: 18px;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -946,6 +943,11 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
 
 .fz-12 {
   font-size: calc(1rem * (12 / 14));
+  font-weight: normal;
+}
+
+.fz-8 {
+  font-size: calc(1rem * (8 / 14));
   font-weight: normal;
 }
 

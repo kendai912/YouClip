@@ -17,7 +17,7 @@
             <v-row class="ma-0" align="center">
               <v-col class="pa-0">
                 <v-row class="ma-0">
-                  <v-col cols="6" class="pa-2  d-flex justify-center">
+                  <v-col cols="6" class="px-1 py-2 d-flex justify-center">
                     <v-card
                       class="ma-0 pa-0"
                       aspect-ratio="calc(16 / 9)"
@@ -79,7 +79,8 @@
                       </router-link>
                     </v-card>
                   </v-col>
-                  <v-col cols="6" class="pa-2">
+
+                  <v-col cols="6" class="px-1 py-2">
                     <v-row class="ma-0 pa-0">
                       <v-col cols="10" class="ma-0 pa-0">
                         <div class="py-1">
@@ -138,16 +139,12 @@
                                 item.visitCount ? item.visitCount : 0
                               }}回視聴</span
                             >
-                            <span style="font-size:8px;"
-                              >&nbsp;&#8226;&nbsp;</span
-                            >
+                            <span class="fz-8">&#8226;</span>
                             <span>合計{{ item.totalDuration }}</span>
-                            <span style="font-size:8px;"
-                              >&nbsp;&#8226;&nbsp;</span
-                            >
+                            <span class="fz-8">&#8226;</span>
                             <span>{{ item.timeSince }}前</span>
-                            <span v-if="item.likeCount" style="font-size:8px;"
-                              >&nbsp;&#8226;&nbsp;</span
+                            <span v-if="item.likeCount" class="fz-8"
+                              >&#8226;</span
                             >
                             <span v-if="item.likeCount">
                               <i class="fas fa-heart my-grey-heart"></i>
