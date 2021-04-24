@@ -39,24 +39,18 @@
                 <v-card class="ma-0" tile elevation="0">
                   <v-row class="ma-0 pa-0">
                     <v-col class="ma-0 pa-0" justify="center">
-                      <v-bottom-navigation
-                        class="bottom_navigation_no_shadow"
-                        height="80"
-                      >
+                      <v-sheet class="text-center">
                         <v-btn
                           v-on:click.stop="tapStartBtn"
+                          rounded
+                          color="primary"
+                          height="56"
                           elevation="2"
-                          class="ma-0 pa-4 py-6"
-                          style="border-radius: 4px !important;"
                         >
-                          <span class="green--text text--lighten-1"
-                            >開始時間を指定</span
-                          >
-                          <v-icon color="green lighten-1" x-large
-                            >alarm_on</v-icon
-                          >
-                        </v-btn>
-                      </v-bottom-navigation>
+                          <v-icon x-large>alarm_on</v-icon
+                          >&nbsp;開始時間を指定<br />&nbsp;(押す)</v-btn
+                        >
+                      </v-sheet>
                     </v-col>
                   </v-row>
                   <v-row class="ma-0 pa-0" justify="center">
@@ -79,24 +73,20 @@
                 <v-card class="ma-0" tile elevation="0">
                   <v-row class="ma-0 pa-0">
                     <v-col class="ma-0 pa-0" justify="center">
-                      <v-bottom-navigation
-                        class="bottom_navigation_no_shadow"
-                        height="80"
-                      >
+                      <v-sheet class="text-center">
                         <v-btn
                           v-on:click.stop="tapStopBtn"
+                          rounded
+                          color="red darken-1"
+                          height="56"
                           elevation="2"
-                          class="ma-0 pa-4 py-6"
-                          style="border-radius: 4px !important;"
                         >
-                          <span class="red--text text--darken-1"
-                            >終了時間を指定</span
-                          >
-                          <v-icon color="red darken-1" x-large
-                            >alarm_off</v-icon
-                          >
-                        </v-btn>
-                      </v-bottom-navigation>
+                          <v-icon x-large color="white">alarm_off</v-icon
+                          ><span style="color: white; "
+                            >&nbsp;終了時間を指定<br />&nbsp;(押す)</span
+                          ></v-btn
+                        >
+                      </v-sheet>
                     </v-col>
                   </v-row>
                   <v-row class="ma-0 pa-0" justify="center">
