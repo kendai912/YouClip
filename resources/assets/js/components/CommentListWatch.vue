@@ -124,7 +124,7 @@
                   <v-avatar size="24" class="mt-2">
                     <v-img
                       v-if="item.avatar"
-                      v-bind:src="avatarStoragePath + item.avatar"
+                      v-bind:src="avatarStoragePath + replyItem.avatar"
                       alt="commented user pic"
                     ></v-img>
                     <i

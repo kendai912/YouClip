@@ -168,14 +168,14 @@
       >
         <v-card-title class="pa-0 ma-0 justify-center">
           <v-img
-            max-width="160"
+            max-width="144"
             aspect-ratio="1"
             alt="no post"
             src="/storage/imgs/noPost.svg"
           ></v-img>
         </v-card-title>
         <v-card-title class="pa-1 mt-2 mx-0 justify-center"
-          >まだ作成／いいねした切り抜きはありません</v-card-title
+          >No Content</v-card-title
         >
       </v-card>
     </div>
