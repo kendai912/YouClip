@@ -99,7 +99,7 @@
                       class="fas fa-heart outlined-icon icon-large"
                     ></i>
                   </v-btn>
-                  <div v-if="likedUsers[3]" class="absoluteCenter">
+                  <div v-if="likedUsers && likedUsers[3]" class="absoluteCenter">
                     <v-avatar size="28" class="likedUserAvatar4">
                       <v-img
                         v-bind:src="avatarStoragePath + likedUsers[3].avatar"
@@ -107,7 +107,7 @@
                       ></v-img>
                     </v-avatar>
                   </div>
-                  <div v-if="likedUsers[2]" class="absoluteCenter">
+                  <div v-if="likedUsers && likedUsers[2]" class="absoluteCenter">
                     <v-avatar size="28" class="likedUserAvatar3">
                       <v-img
                         v-bind:src="avatarStoragePath + likedUsers[2].avatar"
@@ -115,7 +115,7 @@
                       ></v-img>
                     </v-avatar>
                   </div>
-                  <div v-if="likedUsers[1]" class="absoluteCenter">
+                  <div v-if="likedUsers && likedUsers[1]" class="absoluteCenter">
                     <v-avatar size="28" class="likedUserAvatar2">
                       <v-img
                         v-bind:src="avatarStoragePath + likedUsers[1].avatar"
@@ -123,7 +123,7 @@
                       ></v-img>
                     </v-avatar>
                   </div>
-                  <div v-if="likedUsers[0]" class="absoluteCenter">
+                  <div v-if="likedUsers && likedUsers[0]" class="absoluteCenter">
                     <v-avatar size="28" class="likedUserAvatar1">
                       <v-img
                         v-bind:src="avatarStoragePath + likedUsers[0].avatar"
