@@ -128,7 +128,7 @@ export default {
       return "0秒 ";
     },
     //プレイリストデータをメディアアイテムに追加格納
-    putPlaylistTagIntoMediaItems: function (mediaItems, playlistTag) {
+    putPlaylistTagIntoMediaItems: function(mediaItems, playlistTag) {
       if (playlistTag) {
         //プレイリスト毎にアイテム(mediaItem)をmediaItemsに格納
         playlistTag.forEach((value, index) => {
@@ -367,7 +367,7 @@ export default {
     },
     isNewClip(publishedAt) {
       if (publishedAt != null) {
-        let date = new Date(publishedAt);
+        let date = new Date(this.replaceDate(publishedAt));
         let seconds = Math.floor((new Date() - date) / 1000);
 
         if (seconds <= 60 * 60 * 24) {
