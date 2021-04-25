@@ -8,14 +8,14 @@
       v-bind:class="{ zIndex6: !isPortraitScreen && !isFullscreen }"
     >
       <v-btn to="/home" id="home" v-on:click="saveFooterTabIndex(0)">
-        <span>ホーム</span>
+        <span>みんなの切り抜き</span>
         <v-icon large>mdi-home-outline</v-icon>
       </v-btn>
 
       <v-btn to="/youtube" id="youtube" v-on:click="setHighlight(1)">
         <span>切り抜き作成</span>
         <div>
-          <v-icon large>mdi-plus-box</v-icon>
+          <v-icon large>mdi-content-cut</v-icon>
         </div>
       </v-btn>
 
@@ -42,7 +42,7 @@ export default {
         // },
         {
           target: "#youtube",
-          content: "YouTube動画を切り抜いてみる<br />(簡単4ステップ・非公開OK)",
+          content: "YouTube動画を切り抜いてみる<br />(DL不要で簡単・非公開OK!)",
         },
         // {
         //   target: "#mypage",
