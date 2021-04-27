@@ -460,6 +460,12 @@ class PlaylistController extends Controller
         }
     }
 
+    //人気のプレイリストを取得
+    public function loadPopularPlaylist(Request $request)
+    {
+        $playlistId = $request->input('id');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

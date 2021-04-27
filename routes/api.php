@@ -57,6 +57,8 @@ Route::get('/get/playlistAndTagVideoData', 'PlaylistController@getPlaylistAndTag
 Route::get('/load/myCreatedPlaylist', 'PlaylistController@loadMyCreatedPlaylist');
 //いいねしたプレイリスト一覧をロード
 Route::get('/load/myLikedPlaylist', 'PlaylistController@loadMyLikedPlaylist');
+//人気のプレイリスト一覧をロード
+Route::get('/load/popularPlaylist', 'PlaylistController@loadPopularPlaylist');
 //playlistのcategoryを取得
 Route::get('/get/currentCategory', 'PlaylistController@getCurrentCategory');
 

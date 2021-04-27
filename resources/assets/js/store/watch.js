@@ -4,6 +4,7 @@ import { OK, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR } from "../util";
 const state = {
   playlistAndTagVideoData: null,
   tagAndVideoData: null,
+  popularPlaylistData: null,
   watchList: null,
   listIndex: 0,
   playlistId: "",
@@ -20,6 +21,7 @@ const state = {
 const getters = {
   playlistAndTagVideoData: (state) => state.playlistAndTagVideoData,
   tagAndVideoData: (state) => state.tagAndVideoData,
+  popularPlaylistData: (state) => state.popularPlaylistData,
   watchList: (state) => state.watchList,
   listIndex: (state) => state.listIndex,
   playlistId: (state) => state.playlistId,
@@ -49,6 +51,9 @@ const mutations = {
   },
   setTagAndVideoData(state, data) {
     state.tagAndVideoData = data;
+  },
+  setPopularPlaylistData(state, data) {
+    state.popularPlaylistData = data;
   },
   setPlaylistId(state, data) {
     state.playlistId = data;
@@ -107,6 +112,28 @@ const actions = {
     if (response.status == OK) {
       // 成功した時
       context.commit("setTagAndVideoData", response.data.tagAndVideoData);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else if (response.status == FORBIDDEN) {
+      // 非公開データのため失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+
+  async loadPopularPlaylist(context, playlistId) {
+    const response = await axios.get(
+      "/api/load/popularPlaylist?id=" + playlistId
+    );
+    if (response.status == OK) {
+      // 成功した時
+      context.commit(
+        "setPopularPlaylistData",
+        response.data.popularPlaylistData
+      );
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });

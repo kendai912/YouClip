@@ -99,7 +99,10 @@
                       class="fas fa-heart outlined-icon icon-large"
                     ></i>
                   </v-btn>
-                  <div v-if="likedUsers && likedUsers[3]" class="absoluteCenter">
+                  <div
+                    v-if="likedUsers && likedUsers[3]"
+                    class="absoluteCenter"
+                  >
                     <v-avatar size="28" class="likedUserAvatar4">
                       <v-img
                         v-bind:src="avatarStoragePath + likedUsers[3].avatar"
@@ -107,7 +110,10 @@
                       ></v-img>
                     </v-avatar>
                   </div>
-                  <div v-if="likedUsers && likedUsers[2]" class="absoluteCenter">
+                  <div
+                    v-if="likedUsers && likedUsers[2]"
+                    class="absoluteCenter"
+                  >
                     <v-avatar size="28" class="likedUserAvatar3">
                       <v-img
                         v-bind:src="avatarStoragePath + likedUsers[2].avatar"
@@ -115,7 +121,10 @@
                       ></v-img>
                     </v-avatar>
                   </div>
-                  <div v-if="likedUsers && likedUsers[1]" class="absoluteCenter">
+                  <div
+                    v-if="likedUsers && likedUsers[1]"
+                    class="absoluteCenter"
+                  >
                     <v-avatar size="28" class="likedUserAvatar2">
                       <v-img
                         v-bind:src="avatarStoragePath + likedUsers[1].avatar"
@@ -123,7 +132,10 @@
                       ></v-img>
                     </v-avatar>
                   </div>
-                  <div v-if="likedUsers && likedUsers[0]" class="absoluteCenter">
+                  <div
+                    v-if="likedUsers && likedUsers[0]"
+                    class="absoluteCenter"
+                  >
                     <v-avatar size="28" class="likedUserAvatar1">
                       <v-img
                         v-bind:src="avatarStoragePath + likedUsers[0].avatar"
@@ -178,6 +190,7 @@
             v-on:switchToPlayListIndexOf="switchToPlayListIndexOf"
           />
           <CommentListWatch v-bind:mediaItems="commentListofPlaylist" />
+          <!-- <PopularPlaylist v-bind:popularPlaylistItems="popularPlaylistItems" /> -->
           <NoLoginModal v-if="showLoginModal" />
           <ShareModal v-if="showShareModal" v-bind:player="player" />
           <OtherActionModal
@@ -546,6 +559,13 @@ export default {
 
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.watchBodyRef = this.$refs.watchBody;
+
+    // //人気の切り抜きデータをロード
+    // await this.$store.dispatch("watch/loadPopularPlaylist", this.playlistIdUrl);
+
+    // //人気の切り抜きデータをセット
+    // let popularPlaylistItems = [];
+    // this.setPopularPlaylistItems(popularPlaylistItems, this.popularPlaylist);
 
     let notShowBoarding = JSON.parse(localStorage.getItem("notShowBoarding"));
     if (!notShowBoarding) {
