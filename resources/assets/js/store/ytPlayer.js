@@ -51,6 +51,9 @@ const getters = {
 };
 
 const mutations = {
+  clearPlayerArray(state) {
+    state.playerArray = [];
+  },
   setPlayerArray(state, player) {
     state.playerArray.push(player);
   },
@@ -120,15 +123,6 @@ const actions = {
       )
     );
     context.getters["player"].playVideo();
-    // context.getters["player"].loadVideoById({
-    //   videoId: context.getters["youtubeId"],
-    //   startSeconds: myMixin.methods.convertToSec(
-    //     myMixin.methods.formatToMinSec(context.getters["start"])
-    //   ),
-    //   endSeconds: myMixin.methods.convertToSec(
-    //     myMixin.methods.formatToMinSec(context.getters["end"])
-    //   ),
-    // });
   },
 };
 

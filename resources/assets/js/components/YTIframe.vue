@@ -5,15 +5,6 @@
       v-bind:key="`item.youtubeId-${index}`"
       v-bind:style="{ visibility: index == listIndex ? 'visible' : 'hidden' }"
     >
-      <!-- <div
-      v-for="(item, index) in listOfYoutubeIdStartEndTime"
-      v-bind:key="`item.youtubeId-${index}`"
-      v-bind:style="
-        index == 0
-          ? 'position: absolute; left: 300px; '
-          : 'position: absolute; left: -300px; '
-      "
-    > -->
       <div v-bind:class="`video-placeholder-${index}`"></div>
     </div>
   </div>
@@ -62,6 +53,7 @@ export default {
       setListIndex: "ytPlayer/setListIndex",
       setIsPlayerReady: "ytPlayer/setIsPlayerReady",
       setIsPlaying: "ytPlayer/setIsPlaying",
+      clearPlayerArray: "ytPlayer/clearPlayerArray",
       setPlayerArray: "ytPlayer/setPlayerArray",
       setIsMuted: "ytPlayer/setIsMuted",
     }),
@@ -151,6 +143,9 @@ export default {
     }
     this.whenYoutubeAPIReady().then(
       () => {
+        //プレイヤーをリセット
+        self.clearPlayerArray();
+
         this.listOfYoutubeIdStartEndTime.forEach((item, index) => {
           let playerId =
             "player-" +
@@ -198,12 +193,10 @@ export default {
       event.target.mute();
       event.target.playVideo();
       self.setIsPlayerReady(true);
-      // self.startTimer();
+      self.startTimer();
     };
 
     window.onPlayerStateChange = (event) => {
-      console.log(event.target.m.classList.value + ": " + event.data);
-
       if (event.data == YT.PlayerState.ENDED && this.isPlaying) {
         //フラグを停止中に反転
         this.$store.commit("ytPlayer/setIsPlaying", false);
@@ -214,14 +207,12 @@ export default {
           //まとめ再生の場合
           if (this.listIndex < this.listOfYoutubeIdStartEndTime.length - 1) {
             // 最後のシーンでない場合は、現在のプレイヤーを停止し、次のシーンのパラメータとプレイヤーをセット
-            this.player.pauseVideo();
             this.$emit("switchToPlayListIndexOf", Number(this.listIndex) + 1);
           } else if (
             this.listIndex >=
             this.listOfYoutubeIdStartEndTime.length - 1
           ) {
             //最後のシーンの場合は現在のプレイヤーを停止し、先頭に戻る
-            this.player.pauseVideo();
             this.$emit("switchToPlayListIndexOf", 0);
           }
         }
