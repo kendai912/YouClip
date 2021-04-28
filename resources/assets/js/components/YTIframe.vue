@@ -1,5 +1,22 @@
 <template>
-  <div class="video-placeholder"></div>
+  <div style="position: absolute; width: 100%; height: 100%;">
+    <div
+      v-for="(item, index) in listOfYoutubeIdStartEndTime"
+      v-bind:key="`item.youtubeId-${index}`"
+      v-bind:style="{ visibility: index == listIndex ? 'visible' : 'hidden' }"
+    >
+      <!-- <div
+      v-for="(item, index) in listOfYoutubeIdStartEndTime"
+      v-bind:key="`item.youtubeId-${index}`"
+      v-bind:style="
+        index == 0
+          ? 'position: absolute; left: 300px; '
+          : 'position: absolute; left: -300px; '
+      "
+    > -->
+      <div v-bind:class="`video-placeholder-${index}`"></div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -26,6 +43,7 @@ export default {
       startHis: "ytPlayer/start",
       endHis: "ytPlayer/end",
       isPlaying: "ytPlayer/isPlaying",
+      playerArray: "ytPlayer/playerArray",
       player: "ytPlayer/player",
       isMuted: "ytPlayer/isMuted",
       isEditing: "tagging/isEditing",
@@ -44,7 +62,7 @@ export default {
       setListIndex: "ytPlayer/setListIndex",
       setIsPlayerReady: "ytPlayer/setIsPlayerReady",
       setIsPlaying: "ytPlayer/setIsPlaying",
-      setPlayer: "ytPlayer/setPlayer",
+      setPlayerArray: "ytPlayer/setPlayerArray",
       setIsMuted: "ytPlayer/setIsMuted",
     }),
     startTimer() {
@@ -133,42 +151,44 @@ export default {
     }
     this.whenYoutubeAPIReady().then(
       () => {
-        let playerId =
-          "player-" +
-          Math.floor(Math.random() * 1024) +
-          Date.now() +
-          Math.floor(Math.random() * 1024);
-        $("div.video-placeholder").attr("id", playerId);
+        this.listOfYoutubeIdStartEndTime.forEach((item, index) => {
+          let playerId =
+            "player-" +
+            Math.floor(Math.random() * 1024) +
+            Date.now() +
+            Math.floor(Math.random() * 1024);
+          $("div.video-placeholder-" + index).attr("id", playerId);
 
-        let YTPLayer = new YT.Player(playerId, {
-          width: "560",
-          height: "315",
-          videoId: this.youtubeId,
-          playerVars: {
-            start: this.startHis
-              ? this.convertToSec(this.formatToMinSec(this.startHis))
-              : "",
-            end: this.endHis
-              ? this.convertToSec(this.formatToMinSec(this.endHis))
-              : "",
-            playsinline: 1,
-            autoplay: 1,
-            iv_load_policy: 3, //アノテーション非表示
-            modestbranding: 1, //YouTubeロゴ非表示
-            rel: 0, //関連動画非表示
-            controls: 0, //プレイーコントロールを非表示
-            fs: 0, //全画面表示ボタンを非表示
-            modestbranding: 1, //YouTubeロゴ非表示
-            enablejsapi: 1, //postMessageを有効にするのに必要
-          },
-          events: {
-            onReady: onPlayerReady,
-            onStateChange: onPlayerStateChange,
-          },
+          let YTPLayer = new YT.Player(playerId, {
+            width: "560",
+            height: "315",
+            videoId: item.youtubeId,
+            playerVars: {
+              start: this.startHis
+                ? this.convertToSec(this.formatToMinSec(item.start))
+                : "",
+              end: this.endHis
+                ? this.convertToSec(this.formatToMinSec(item.end))
+                : "",
+              playsinline: 1,
+              autoplay: 1,
+              iv_load_policy: 3, //アノテーション非表示
+              modestbranding: 1, //YouTubeロゴ非表示
+              rel: 0, //関連動画非表示
+              controls: 0, //プレイーコントロールを非表示
+              fs: 0, //全画面表示ボタンを非表示
+              modestbranding: 1, //YouTubeロゴ非表示
+              enablejsapi: 1, //postMessageを有効にするのに必要
+            },
+            events: {
+              onReady: onPlayerReady,
+              onStateChange: onPlayerStateChange,
+            },
+          });
+
+          //playerインスタンスをytPlayerControllerストアに格納
+          self.setPlayerArray(YTPLayer);
         });
-
-        //playerインスタンスをytPlayerControllerストアに格納
-        self.setPlayer(YTPLayer);
       },
       (error) => console.error(error)
     );
@@ -178,30 +198,31 @@ export default {
       event.target.mute();
       event.target.playVideo();
       self.setIsPlayerReady(true);
-      self.startTimer();
+      // self.startTimer();
     };
 
     window.onPlayerStateChange = (event) => {
+      console.log(event.target.m.classList.value + ": " + event.data);
+
       if (event.data == YT.PlayerState.ENDED && this.isPlaying) {
         //フラグを停止中に反転
         this.$store.commit("ytPlayer/setIsPlaying", false);
-
         if (this.isEditing || this.listOfYoutubeIdStartEndTime.length == 1) {
           //現在と同じシーンをリピート(開始時間に戻る)
           this.player.seekTo(this.convertToSec(this.startIs));
         } else if (this.listOfYoutubeIdStartEndTime.length > 1) {
           //まとめ再生の場合
           if (this.listIndex < this.listOfYoutubeIdStartEndTime.length - 1) {
-            // 最後のシーンでない場合は次のシーンのパラメータをセット
-            this.setListIndex(Number(this.listIndex) + 1);
-            this.$emit("switchToPlayListIndexOf", this.listIndex);
+            // 最後のシーンでない場合は、現在のプレイヤーを停止し、次のシーンのパラメータとプレイヤーをセット
+            this.player.pauseVideo();
+            this.$emit("switchToPlayListIndexOf", Number(this.listIndex) + 1);
           } else if (
             this.listIndex >=
             this.listOfYoutubeIdStartEndTime.length - 1
           ) {
-            //最後のシーンの場合は先頭に戻る
-            this.setListIndex(0);
-            this.$emit("switchToPlayListIndexOf", this.listIndex);
+            //最後のシーンの場合は現在のプレイヤーを停止し、先頭に戻る
+            this.player.pauseVideo();
+            this.$emit("switchToPlayListIndexOf", 0);
           }
         }
       }
@@ -209,10 +230,14 @@ export default {
       if (event.data == YT.PlayerState.PLAYING) {
         //フラグを再生中にセット
         this.$store.commit("ytPlayer/setIsPlaying", true);
-
         if (!self.isMuted) {
           self.mute();
           self.unmute();
+        }
+
+        //選択されたシーン以外のプレイヤーは停止
+        if (event.target.m.classList.value != self.player.m.classList.value) {
+          event.target.pauseVideo();
         }
       }
 

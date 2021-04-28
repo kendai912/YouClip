@@ -3,7 +3,7 @@ import { OK, CREATED, DELETED, INTERNAL_SERVER_ERROR } from "../util";
 import myMixin from "../util";
 
 const state = {
-  player: null,
+  playerArray: [],
   isMuted: true,
   isFullscreen: false,
   isPlayerReady: false,
@@ -22,7 +22,8 @@ const state = {
 };
 
 const getters = {
-  player: (state) => state.player,
+  playerArray: (state) => state.playerArray,
+  player: (state) => state.playerArray[state.listIndex],
   isMuted: (state) => state.isMuted,
   isFullscreen: (state) => state.isFullscreen,
   isPlayerReady: (state) => state.isPlayerReady,
@@ -50,8 +51,8 @@ const getters = {
 };
 
 const mutations = {
-  setPlayer(state, data) {
-    state.player = data;
+  setPlayerArray(state, player) {
+    state.playerArray.push(player);
   },
   setIsMuted(state, data) {
     state.isMuted = data;
@@ -93,7 +94,15 @@ const mutations = {
 
 const actions = {
   playListIndexOf(context, index) {
-    //場面インデックスを変更
+    //現在のプレイヤーを先頭に戻して一時停止
+    context.getters["player"].seekTo(
+      myMixin.methods.convertToSec(
+        myMixin.methods.formatToMinSec(context.getters["start"])
+      )
+    );
+    context.getters["player"].pauseVideo();
+
+    //場面インデックスおよびプレイヤーを変更
     context.commit("setListIndex", index);
 
     //Durationデータの取得のための処理
@@ -104,16 +113,22 @@ const actions = {
       root: true,
     });
 
-    //次のシーンをロードし再生
-    context.state.player.loadVideoById({
-      videoId: context.getters["youtubeId"],
-      startSeconds: myMixin.methods.convertToSec(
+    //次のシーンの開始時間からプレイヤーを再生
+    context.getters["player"].seekTo(
+      myMixin.methods.convertToSec(
         myMixin.methods.formatToMinSec(context.getters["start"])
-      ),
-      endSeconds: myMixin.methods.convertToSec(
-        myMixin.methods.formatToMinSec(context.getters["end"])
-      ),
-    });
+      )
+    );
+    context.getters["player"].playVideo();
+    // context.getters["player"].loadVideoById({
+    //   videoId: context.getters["youtubeId"],
+    //   startSeconds: myMixin.methods.convertToSec(
+    //     myMixin.methods.formatToMinSec(context.getters["start"])
+    //   ),
+    //   endSeconds: myMixin.methods.convertToSec(
+    //     myMixin.methods.formatToMinSec(context.getters["end"])
+    //   ),
+    // });
   },
 };
 

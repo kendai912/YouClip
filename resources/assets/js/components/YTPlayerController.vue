@@ -725,14 +725,13 @@ export default {
         //まとめ再生の場合
         if (this.listIndex == 0) {
           // 最初の場面の場合は最後の場面のパラメータをセット
-          this.setListIndex(
+          this.$emit(
+            "switchToPlayListIndexOf",
             Number(this.listOfYoutubeIdStartEndTime.length) - 1
           );
-          this.$emit("switchToPlayListIndexOf", this.listIndex);
         } else {
           //最初の場面以外は前の場面へ
-          this.setListIndex(Number(this.listIndex) - 1);
-          this.$emit("switchToPlayListIndexOf", this.listIndex);
+          this.$emit("switchToPlayListIndexOf", Number(this.listIndex) - 1);
         }
       }
     },
@@ -745,15 +744,13 @@ export default {
         //まとめ再生の場合
         if (this.listIndex < this.listOfYoutubeIdStartEndTime.length - 1) {
           // //最後のシーンでない場合は次のシーンのパラメータをセット
-          this.setListIndex(Number(this.listIndex) + 1);
-          this.$emit("switchToPlayListIndexOf", this.listIndex);
+          this.$emit("switchToPlayListIndexOf", Number(this.listIndex) + 1);
         } else if (
           this.listIndex >=
           this.listOfYoutubeIdStartEndTime.length - 1
         ) {
           //最後のシーンの場合は先頭に戻る
-          this.setListIndex(0);
-          this.$emit("switchToPlayListIndexOf", this.listIndex);
+          this.$emit("switchToPlayListIndexOf", 0);
         }
       }
     },
