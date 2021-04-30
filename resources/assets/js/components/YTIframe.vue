@@ -63,18 +63,19 @@ export default {
 
       this.timer = setInterval(function() {
         //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
-        self.$store.commit(
-          "youtube/setCurrentTime",
-          self.formatTime(self.player.getCurrentTime())
-        );
+        if (typeof self.player.getCurrentTime == "function")
+          self.$store.commit(
+            "youtube/setCurrentTime",
+            self.formatTime(self.player.getCurrentTime())
+          );
       });
     },
-    unmute() {
-      this.player.unMute();
+    unmute(event) {
+      event.target.unMute();
       this.setIsMuted(false);
     },
-    mute() {
-      this.player.mute();
+    mute(event) {
+      event.target.mute();
       this.setIsMuted(true);
     },
     hasYoutubeFrameAPI() {
@@ -189,11 +190,12 @@ export default {
     );
 
     window.onPlayerReady = (event) => {
-      self.setIsMuted(true);
       event.target.mute();
       event.target.playVideo();
       self.setIsPlayerReady(true);
-      self.startTimer();
+      if (event.target.m.classList.value == self.player.m.classList.value) {
+        self.startTimer();
+      }
     };
 
     window.onPlayerStateChange = (event) => {
@@ -221,9 +223,11 @@ export default {
       if (event.data == YT.PlayerState.PLAYING) {
         //フラグを再生中にセット
         this.$store.commit("ytPlayer/setIsPlaying", true);
+        console.log("[playing] isMuted = " + this.isMuted);
         if (!self.isMuted) {
-          self.mute();
-          self.unmute();
+          console.log("unmute");
+          self.mute(event);
+          self.unmute(event);
         }
 
         //選択されたシーン以外のプレイヤーは停止

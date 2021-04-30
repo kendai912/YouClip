@@ -147,14 +147,7 @@
               color="white"
               >volume_off</v-icon
             >
-            <v-icon
-              large
-              v-else
-              v-on:click.stop.prevent="
-                mute();
-                unmuteDefault();
-              "
-              color="white"
+            <v-icon large v-else v-on:click.stop.prevent="mute()" color="white"
               >volume_up</v-icon
             >
             <v-icon
@@ -243,9 +236,21 @@ export default {
     currentDisplayingTime() {
       if (this.isWatchingPlaylist) {
         if (this.currentTime && this.startHis) {
+          // time of current scene
           let currentDisplayingTimeInSec =
             this.convertToSec(this.currentTime) -
             this.convertToSec(this.formatToMinSec(this.startHis));
+
+          // sum previous scene durations
+          for (var i = 0; i < this.listIndex; i++) {
+            currentDisplayingTimeInSec =
+              currentDisplayingTimeInSec +
+              this.convertToSec(
+                this.formatToMinSec(
+                  this.listOfYoutubeIdStartEndTime[i].duration
+                )
+              );
+          }
 
           return this.formatTime(currentDisplayingTimeInSec);
         } else {
@@ -259,16 +264,14 @@ export default {
       if (this.isNew) {
         return this.newVideoData ? this.newVideoData.duration : "0:00";
       } else if (this.isWatchingPlaylist) {
-        let durationInSec;
-        if (this.startHis && this.endHis) {
-          durationInSec =
-            this.convertToSec(this.formatToMinSec(this.endHis)) -
-            this.convertToSec(this.formatToMinSec(this.startHis));
-        }
+        let durationInSec = "0:00:00";
 
-        return typeof durationInSec != "undefined"
-          ? this.formatTime(durationInSec)
-          : "0:00";
+        if (this.listOfYoutubeIdStartEndTime)
+          this.listOfYoutubeIdStartEndTime.forEach((item) => {
+            durationInSec = this.timeMath.sum(durationInSec, item.duration);
+          });
+
+        return this.formatToMinSec(durationInSec);
       } else {
         return this.videoData
           ? this.formatToMinSec(this.videoData.duration)
@@ -393,6 +396,7 @@ export default {
     unmuteDefault() {
       if (this.isMutedDefault) {
         this.player.unMute();
+        console.log("unmuteDefault");
         this.setIsMuted(false);
         this.isMutedDefault = false;
       }

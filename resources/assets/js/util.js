@@ -227,6 +227,7 @@ export default {
             youtubeId: value.youtubeId,
             start: value.start,
             end: value.end,
+            duration: this.timeMath.sub(value.end, value.start),
             scene_order: value.scene_order,
           };
           listOfYoutubeIdStartEndTimeArray.push(listOfYoutubeIdStartEndTime);

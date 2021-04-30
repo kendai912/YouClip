@@ -58,6 +58,7 @@ const mutations = {
     state.playerArray.push(player);
   },
   setIsMuted(state, data) {
+    console.log("set " + data);
     state.isMuted = data;
   },
   setIsFullscreen(state, data) {
