@@ -1,5 +1,6 @@
 import axios from "axios";
 import { OK, CREATED, DELETED, INTERNAL_SERVER_ERROR } from "../util";
+import store from "../store";
 import myMixin from "../util";
 
 const state = {
@@ -12,7 +13,7 @@ const state = {
   playSpeed: 1,
   listOfYoutubeIdStartEndTime: "",
   listIndex: 0,
-  youtubeId: null,
+  youtubeId: "",
   start: "",
   end: "",
   isPortraitScreen: true,
@@ -23,7 +24,10 @@ const state = {
 
 const getters = {
   playerArray: (state) => state.playerArray,
-  player: (state) => state.playerArray[state.listIndex],
+  player: (state) =>
+    state.playerArray[
+      state.listOfYoutubeIdStartEndTime[state.listIndex].youtubeId
+    ],
   isMuted: (state) => state.isMuted,
   isFullscreen: (state) => state.isFullscreen,
   isPlayerReady: (state) => state.isPlayerReady,
@@ -54,11 +58,10 @@ const mutations = {
   clearPlayerArray(state) {
     state.playerArray = [];
   },
-  setPlayerArray(state, player) {
-    state.playerArray.push(player);
+  setPlayerArray(state, data) {
+    state.playerArray[data.youtubeId] = data.YTPlayer;
   },
   setIsMuted(state, data) {
-    console.log("set " + data);
     state.isMuted = data;
   },
   setIsFullscreen(state, data) {
@@ -105,6 +108,7 @@ const actions = {
       )
     );
     context.getters["player"].pauseVideo();
+    context.commit("setIsPlaying", false);
 
     //場面インデックスおよびプレイヤーを変更
     context.commit("setListIndex", index);
@@ -117,13 +121,29 @@ const actions = {
       root: true,
     });
 
-    //次のシーンの開始時間からプレイヤーを再生
+    //次のシーンの開始時間をセット
     context.getters["player"].seekTo(
       myMixin.methods.convertToSec(
         myMixin.methods.formatToMinSec(context.getters["start"])
       )
     );
+
+    //音設定
+    if (context.getters["isMuted"]) {
+      context.getters["player"].mute();
+    } else {
+      context.getters["player"].mute();
+      context.getters["player"].unMute();
+    }
+
+    //倍速設定
+    context.getters["player"].setPlaybackRate(
+      parseFloat(context.getters["playSpeed"])
+    );
+
+    //再生
     context.getters["player"].playVideo();
+    context.commit("setIsPlaying", true);
   },
 };
 

@@ -550,6 +550,7 @@ export default {
     listOfYoutubeIdStartEndTime.sort((a, b) =>
       a.scene_order > b.scene_order ? 1 : -1
     );
+    this.addFirstSceneOfYouTubeIdFlg(listOfYoutubeIdStartEndTime);
     this.$store.commit(
       "ytPlayer/setListOfYoutubeIdStartEndTime",
       listOfYoutubeIdStartEndTime

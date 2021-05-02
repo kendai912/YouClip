@@ -223,6 +223,12 @@ export default {
     ) {
       if (tagVideo) {
         tagVideo.forEach((value) => {
+          // for (let i = 0; i < index; i++) {
+          //   if (tagVideo[i].youtubeId == tagVideo[index].youtubeId) {
+          //     firstSceneOfPlayerFlg = false;
+          //   }
+          // }
+
           let listOfYoutubeIdStartEndTime = {
             youtubeId: value.youtubeId,
             start: value.start,
@@ -231,6 +237,27 @@ export default {
             scene_order: value.scene_order,
           };
           listOfYoutubeIdStartEndTimeArray.push(listOfYoutubeIdStartEndTime);
+        });
+      }
+    },
+    //add FirstSceneOfYouTubeIdFlg to listOfYoutubeIdStartEndTime after sorting by scene_order
+    addFirstSceneOfYouTubeIdFlg: function(listOfYoutubeIdStartEndTime) {
+      if (listOfYoutubeIdStartEndTime) {
+        listOfYoutubeIdStartEndTime.forEach((value, index) => {
+          let indexOfFirstSceneOfYouTubeId = listOfYoutubeIdStartEndTime.findIndex(
+            (item) => item.youtubeId == value.youtubeId
+          );
+
+          let isFirstSceneOfYouTubeId;
+          if (indexOfFirstSceneOfYouTubeId == index) {
+            isFirstSceneOfYouTubeId = true;
+          } else {
+            isFirstSceneOfYouTubeId = false;
+          }
+
+          listOfYoutubeIdStartEndTime[
+            index
+          ].isFirstSceneOfYouTubeId = isFirstSceneOfYouTubeId;
         });
       }
     },

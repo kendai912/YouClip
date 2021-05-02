@@ -3,9 +3,17 @@
     <div
       v-for="(item, index) in listOfYoutubeIdStartEndTime"
       v-bind:key="`item.youtubeId-${index}`"
-      v-bind:style="{ visibility: index == listIndex ? 'visible' : 'hidden' }"
+      v-bind:style="{
+        visibility:
+          item.youtubeId == youtubeId && item.isFirstSceneOfYouTubeId
+            ? 'visible'
+            : 'hidden',
+      }"
     >
-      <div v-bind:class="`video-placeholder-${index}`"></div>
+      <div
+        v-if="item.isFirstSceneOfYouTubeId"
+        v-bind:class="`video-placeholder-${item.youtubeId}`"
+      ></div>
     </div>
   </div>
 </template>
@@ -37,6 +45,7 @@ export default {
       playerArray: "ytPlayer/playerArray",
       player: "ytPlayer/player",
       isMuted: "ytPlayer/isMuted",
+      currentTime: "youtube/currentTime",
       isEditing: "tagging/isEditing",
     }),
     startIs() {
@@ -46,7 +55,6 @@ export default {
       return this.formatToMinSec(this.endHis);
     },
   },
-
   mixins: [myMixin],
   methods: {
     ...mapMutations({
@@ -69,14 +77,6 @@ export default {
             self.formatTime(self.player.getCurrentTime())
           );
       });
-    },
-    unmute(event) {
-      event.target.unMute();
-      this.setIsMuted(false);
-    },
-    mute(event) {
-      event.target.mute();
-      this.setIsMuted(true);
     },
     hasYoutubeFrameAPI() {
       if (!this.hasYTFrame) {
@@ -132,74 +132,8 @@ export default {
       this.indexUrl = this.$route.query.index;
       this.setListIndex(this.$route.query.index);
     },
-  },
-  async mounted() {
-    //Durationデータの取得のための処理
-    this.$store.commit("youtube/setYoutubeId", this.youtubeId);
-    await this.$store.dispatch("youtube/getVideo", this.youtubeId);
-
-    let self = this;
-    if (!this.hasYoutubeFrameAPI()) {
-      this.injectYoutubeFrameAPI();
-    }
-    this.whenYoutubeAPIReady().then(
-      () => {
-        //プレイヤーをリセット
-        self.clearPlayerArray();
-
-        this.listOfYoutubeIdStartEndTime.forEach((item, index) => {
-          let playerId =
-            "player-" +
-            Math.floor(Math.random() * 1024) +
-            Date.now() +
-            Math.floor(Math.random() * 1024);
-          $("div.video-placeholder-" + index).attr("id", playerId);
-
-          let YTPLayer = new YT.Player(playerId, {
-            width: "560",
-            height: "315",
-            videoId: item.youtubeId,
-            playerVars: {
-              start: this.startHis
-                ? this.convertToSec(this.formatToMinSec(item.start))
-                : "",
-              end: this.endHis
-                ? this.convertToSec(this.formatToMinSec(item.end))
-                : "",
-              playsinline: 1,
-              autoplay: 1,
-              iv_load_policy: 3, //アノテーション非表示
-              modestbranding: 1, //YouTubeロゴ非表示
-              rel: 0, //関連動画非表示
-              controls: 0, //プレイーコントロールを非表示
-              fs: 0, //全画面表示ボタンを非表示
-              modestbranding: 1, //YouTubeロゴ非表示
-              enablejsapi: 1, //postMessageを有効にするのに必要
-            },
-            events: {
-              onReady: onPlayerReady,
-              onStateChange: onPlayerStateChange,
-            },
-          });
-
-          //playerインスタンスをytPlayerControllerストアに格納
-          self.setPlayerArray(YTPLayer);
-        });
-      },
-      (error) => console.error(error)
-    );
-
-    window.onPlayerReady = (event) => {
-      event.target.mute();
-      event.target.playVideo();
-      self.setIsPlayerReady(true);
-      if (event.target.m.classList.value == self.player.m.classList.value) {
-        self.startTimer();
-      }
-    };
-
-    window.onPlayerStateChange = (event) => {
-      if (event.data == YT.PlayerState.ENDED && this.isPlaying) {
+    currentTime() {
+      if (this.currentTime == this.endIs) {
         //フラグを停止中に反転
         this.$store.commit("ytPlayer/setIsPlaying", false);
         if (this.isEditing || this.listOfYoutubeIdStartEndTime.length == 1) {
@@ -219,16 +153,82 @@ export default {
           }
         }
       }
+    },
+  },
+  async mounted() {
+    //Durationデータの取得のための処理
+    this.$store.commit("youtube/setYoutubeId", this.youtubeId);
+    await this.$store.dispatch("youtube/getVideo", this.youtubeId);
 
+    let self = this;
+    if (!this.hasYoutubeFrameAPI()) {
+      this.injectYoutubeFrameAPI();
+    }
+    this.whenYoutubeAPIReady().then(
+      () => {
+        //プレイヤーをリセット
+        self.clearPlayerArray();
+
+        this.listOfYoutubeIdStartEndTime.forEach((item) => {
+          if (item.isFirstSceneOfYouTubeId) {
+            let playerId =
+              "player-" +
+              Math.floor(Math.random() * 1024) +
+              Date.now() +
+              Math.floor(Math.random() * 1024);
+            $("div.video-placeholder-" + item.youtubeId).attr("id", playerId);
+
+            let YTPlayer = new YT.Player(playerId, {
+              width: "560",
+              height: "315",
+              videoId: item.youtubeId,
+              playerVars: {
+                start: this.startHis
+                  ? this.convertToSec(this.formatToMinSec(item.start))
+                  : "",
+                end: this.endHis
+                  ? this.convertToSec(this.formatToMinSec(item.end))
+                  : "",
+                playsinline: 1,
+                autoplay: 1,
+                iv_load_policy: 3, //アノテーション非表示
+                modestbranding: 1, //YouTubeロゴ非表示
+                rel: 0, //関連動画非表示
+                controls: 0, //プレイーコントロールを非表示
+                fs: 0, //全画面表示ボタンを非表示
+                modestbranding: 1, //YouTubeロゴ非表示
+                enablejsapi: 1, //postMessageを有効にするのに必要
+              },
+              events: {
+                onReady: onPlayerReady,
+                onStateChange: onPlayerStateChange,
+              },
+            });
+
+            //playerインスタンスをytPlayerControllerストアに格納
+            self.setPlayerArray({
+              YTPlayer: YTPlayer,
+              youtubeId: item.youtubeId,
+            });
+          }
+        });
+      },
+      (error) => console.error(error)
+    );
+
+    window.onPlayerReady = (event) => {
+      event.target.mute();
+      event.target.playVideo();
+      self.setIsPlayerReady(true);
+      if (event.target.m.classList.value == self.player.m.classList.value) {
+        self.startTimer();
+      }
+    };
+
+    window.onPlayerStateChange = (event) => {
       if (event.data == YT.PlayerState.PLAYING) {
         //フラグを再生中にセット
         this.$store.commit("ytPlayer/setIsPlaying", true);
-        console.log("[playing] isMuted = " + this.isMuted);
-        if (!self.isMuted) {
-          console.log("unmute");
-          self.mute(event);
-          self.unmute(event);
-        }
 
         //選択されたシーン以外のプレイヤーは停止
         if (event.target.m.classList.value != self.player.m.classList.value) {

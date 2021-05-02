@@ -396,7 +396,6 @@ export default {
     unmuteDefault() {
       if (this.isMutedDefault) {
         this.player.unMute();
-        console.log("unmuteDefault");
         this.setIsMuted(false);
         this.isMutedDefault = false;
       }
