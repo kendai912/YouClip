@@ -486,6 +486,7 @@ export default {
       listOfYoutubeIdStartEndTime,
       dataOfYoutubeIdStartEndTime
     );
+    this.addFirstSceneOfYouTubeIdFlg(listOfYoutubeIdStartEndTime);
     this.$store.commit(
       "ytPlayer/setListOfYoutubeIdStartEndTime",
       listOfYoutubeIdStartEndTime
