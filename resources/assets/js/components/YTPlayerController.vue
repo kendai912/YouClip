@@ -224,6 +224,8 @@ export default {
       listIndex: "ytPlayer/listIndex",
       isWatchingPlaylist: "ytPlayer/isWatchingPlaylist",
       isFadingOut: "ytPlayer/isFadingOut",
+      currentDisplayingTimeInSecOfWatch:
+        "ytPlayer/currentDisplayingTimeInSecOfWatch",
       isMobile: "ytSeekBar/isMobile",
       isIOS: "ytSeekBar/isIOS",
       currentTime: "youtube/currentTime",
@@ -235,29 +237,7 @@ export default {
     }),
     currentDisplayingTime() {
       if (this.isWatchingPlaylist) {
-        if (this.currentTime && this.startHis) {
-          // time of current scene
-          let currentDisplayingTimeInSec =
-            this.convertToSec(this.currentTime) -
-            this.convertToSec(this.formatToMinSec(this.startHis));
-
-          // sum previous scene durations
-          for (var i = 0; i < this.listIndex; i++) {
-            currentDisplayingTimeInSec =
-              currentDisplayingTimeInSec +
-              this.convertToSec(
-                this.formatToMinSec(
-                  this.listOfYoutubeIdStartEndTime[i].duration
-                )
-              );
-          }
-
-          // this.setCurrentDisplayingTimeInSecOfWatch(currentDisplayingTimeInSec);
-          return this.formatTime(currentDisplayingTimeInSec);
-        } else {
-          // this.setCurrentDisplayingTimeInSecOfWatch(0);
-          return "0:00";
-        }
+        return this.formatTime(this.currentDisplayingTimeInSecOfWatch);
       } else {
         return this.currentTime;
       }

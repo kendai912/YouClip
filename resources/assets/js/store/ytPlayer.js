@@ -10,6 +10,7 @@ const state = {
   isPlayerReady: false,
   isPlaying: true,
   isWatchingPlaylist: false,
+  isSwitchingScene: false,
   playSpeed: 1,
   listOfYoutubeIdStartEndTime: "",
   listIndex: 0,
@@ -36,6 +37,7 @@ const getters = {
   isPlayerReady: (state) => state.isPlayerReady,
   isPlaying: (state) => state.isPlaying,
   isWatchingPlaylist: (state) => state.isWatchingPlaylist,
+  isSwitchingScene: (state) => state.isSwitchingScene,
   playSpeed: (state) => state.playSpeed,
   listOfYoutubeIdStartEndTime: (state) => state.listOfYoutubeIdStartEndTime,
   listIndex: (state) => state.listIndex,
@@ -83,6 +85,9 @@ const mutations = {
   setIsWatchingPlaylist(state, data) {
     state.isWatchingPlaylist = data;
   },
+  setIsSwitchingScene(state, data) {
+    state.isSwitchingScene = data;
+  },
   setPlaySpeed(state, data) {
     state.playSpeed = data;
   },
@@ -117,6 +122,8 @@ const mutations = {
 
 const actions = {
   playListIndexOf(context, index) {
+    context.commit("setIsSwitchingScene", true);
+
     //現在のプレイヤーを先頭に戻して一時停止
     context.getters["player"].seekTo(
       myMixin.methods.convertToSec(
@@ -124,7 +131,6 @@ const actions = {
       )
     );
     context.getters["player"].pauseVideo();
-    context.commit("setIsPlaying", false);
 
     //場面インデックスおよびプレイヤーを変更
     context.commit("setListIndex", index);
@@ -158,10 +164,10 @@ const actions = {
     );
 
     //再生
-    context.getters["player"].playVideo();
+    if (context.getters["isPlaying"]) context.getters["player"].playVideo();
     setTimeout(() => {
       //同じyoutubeIdの最初のシーンが一瞬流れるためその間はタイマーが作動しないようにする
-      context.commit("setIsPlaying", true);
+      context.commit("setIsSwitchingScene", false);
     }, 400);
   },
   startTimer(context) {
@@ -172,7 +178,7 @@ const actions = {
       if (
         context.getters["player"] &&
         typeof context.getters["player"].getCurrentTime == "function" &&
-        context.getters["isPlaying"]
+        !context.getters["isSwitchingScene"]
       )
         context.commit(
           "youtube/setCurrentTime",
@@ -189,7 +195,7 @@ const actions = {
         context.getters["player"] &&
         typeof context.getters["player"].getCurrentTime == "function" &&
         context.getters["start"] &&
-        context.getters["isPlaying"]
+        !context.getters["isSwitchingScene"]
       ) {
         let currentDisplayingTimeInSec =
           myMixin.methods.convertToSec(

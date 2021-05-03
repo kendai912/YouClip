@@ -123,7 +123,6 @@ export default {
         let self = this;
         setTimeout(function() {
           //フラグを停止中に反転
-          self.$store.commit("ytPlayer/setIsPlaying", false);
           if (self.isEditing || self.listOfYoutubeIdStartEndTime.length == 1) {
             //現在と同じシーンをリピート(開始時間に戻る)
             self.player.seekTo(self.convertToSec(self.startIs));
@@ -207,11 +206,12 @@ export default {
 
     window.onPlayerReady = (event) => {
       event.target.mute();
+      if (event.target.m.classList.value == self.player.m.classList.value) {
+        event.target.seekTo(self.convertToSec(self.startIs));
+        self.$store.dispatch("ytPlayer/startTimer");
+      }
       event.target.playVideo();
       self.setIsPlayerReady(true);
-      if (event.target.m.classList.value == self.player.m.classList.value) {
-        this.$store.dispatch("ytPlayer/startTimer");
-      }
     };
 
     window.onPlayerStateChange = (event) => {
