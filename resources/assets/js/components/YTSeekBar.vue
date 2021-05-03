@@ -10,9 +10,16 @@
         <div class="ios-ytseekbar-wrapper">
           <div class="ios-ytseekbar-mask" ref="iosYtseekbarMask"></div>
           <div
+            v-if="isWatchingPlaylist"
             class="ios-ytseek-head"
             ref="iosYtseekHead"
-            v-bind:style="'transform: translateX(' + progress + 'px)'"
+            v-bind:style="'transform: translateX(' + progressOfWatch + 'px)'"
+          ></div>
+          <div
+            v-else
+            class="ios-ytseek-head"
+            ref="iosYtseekHead"
+            v-bind:style="'transform: translateX(' + progressOfCreate + 'px)'"
           ></div>
           <div v-if="contentWidth >= 6">
             <div
@@ -56,9 +63,16 @@
     >
       <div class="ytseekbar-mask" ref="ytseekbarMask"></div>
       <div
+        v-if="isWatchingPlaylist"
         class="ytseek-head"
         ref="ytseekHead"
-        v-bind:style="'transform: translateX(' + progress + 'px)'"
+        v-bind:style="'transform: translateX(' + progressOfWatch + 'px)'"
+      ></div>
+      <div
+        v-else
+        class="ytseek-head"
+        ref="ytseekHead"
+        v-bind:style="'transform: translateX(' + progressOfCreate + 'px)'"
       ></div>
       <div v-if="contentWidth >= 6">
         <div
@@ -133,6 +147,9 @@ export default {
       isWatchingPlaylist: "ytPlayer/isWatchingPlaylist",
       startHis: "ytPlayer/start",
       endHis: "ytPlayer/end",
+      currentDisplayingTimeInSecOfWatch:
+        "ytPlayer/currentDisplayingTimeInSecOfWatch",
+      durationInSecOfWatch: "ytPlayer/durationInSecOfWatch",
     }),
     duration() {
       if (this.isNew) {
@@ -154,21 +171,17 @@ export default {
           : "0:00";
       }
     },
-    progress() {
-      if (this.isWatchingPlaylist) {
-        return this.startHis
-          ? this.seekbarWidth *
-              ((this.convertToSec(this.currentTime) -
-                this.convertToSec(this.formatToMinSec(this.startHis))) /
-                this.convertToSec(this.duration))
-          : 0;
-      } else {
-        return (
-          this.seekbarWidth *
-          (this.convertToSec(this.currentTime) /
-            this.convertToSec(this.duration))
-        );
-      }
+    progressOfWatch() {
+      return (
+        this.seekbarWidth *
+        (this.currentDisplayingTimeInSecOfWatch / this.durationInSecOfWatch)
+      );
+    },
+    progressOfCreate() {
+      return (
+        this.seekbarWidth *
+        (this.convertToSec(this.currentTime) / this.convertToSec(this.duration))
+      );
     },
     contentLeft() {
       if (

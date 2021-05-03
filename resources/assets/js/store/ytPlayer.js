@@ -20,6 +20,9 @@ const state = {
   showSeekbar: true,
   immediateHideFlag: false,
   isFadingOut: false,
+  currentDisplayingTimeInSecOfWatch: "",
+  durationInSecOfWatch: "",
+  timer: null,
 };
 
 const getters = {
@@ -40,6 +43,10 @@ const getters = {
   showSeekbar: (state) => state.showSeekbar,
   immediateHideFlag: (state) => state.immediateHideFlag,
   isFadingOut: (state) => state.isFadingOut,
+  currentDisplayingTimeInSecOfWatch: (state) =>
+    state.currentDisplayingTimeInSecOfWatch,
+  durationInSecOfWatch: (state) => state.durationInSecOfWatch,
+  timer: (state) => state.timer,
   youtubeId: (state) =>
     state.listOfYoutubeIdStartEndTime
       ? state.listOfYoutubeIdStartEndTime[state.listIndex].youtubeId
@@ -97,6 +104,15 @@ const mutations = {
   setIsFadingOut(state, data) {
     state.isFadingOut = data;
   },
+  setCurrentDisplayingTimeInSecOfWatch(state, data) {
+    state.currentDisplayingTimeInSecOfWatch = data;
+  },
+  setDurationInSecOfWatch(state, data) {
+    state.durationInSecOfWatch = data;
+  },
+  setTimer(state, data) {
+    state.timer = data;
+  },
 };
 
 const actions = {
@@ -143,7 +159,69 @@ const actions = {
 
     //再生
     context.getters["player"].playVideo();
-    context.commit("setIsPlaying", true);
+    setTimeout(() => {
+      //同じyoutubeIdの最初のシーンが一瞬流れるためその間はタイマーが作動しないようにする
+      context.commit("setIsPlaying", true);
+    }, 400);
+  },
+  startTimer(context) {
+    context.dispatch("clearTimer");
+
+    let timer = setInterval(function() {
+      //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
+      if (
+        context.getters["player"] &&
+        typeof context.getters["player"].getCurrentTime == "function" &&
+        context.getters["isPlaying"]
+      )
+        context.commit(
+          "youtube/setCurrentTime",
+          myMixin.methods.formatTime(
+            context.getters["player"].getCurrentTime()
+          ),
+          {
+            root: true,
+          }
+        );
+
+      if (
+        context.getters["isWatchingPlaylist"] &&
+        context.getters["player"] &&
+        typeof context.getters["player"].getCurrentTime == "function" &&
+        context.getters["start"] &&
+        context.getters["isPlaying"]
+      ) {
+        let currentDisplayingTimeInSec =
+          myMixin.methods.convertToSec(
+            myMixin.methods.formatTime(
+              context.getters["player"].getCurrentTime()
+            )
+          ) -
+          myMixin.methods.convertToSec(
+            myMixin.methods.formatToMinSec(context.getters["start"])
+          );
+
+        // sum previous scene durations
+        for (var i = 0; i < context.getters["listIndex"]; i++) {
+          currentDisplayingTimeInSec =
+            currentDisplayingTimeInSec +
+            myMixin.methods.convertToSec(
+              myMixin.methods.formatToMinSec(
+                context.getters["listOfYoutubeIdStartEndTime"][i].duration
+              )
+            );
+        }
+
+        context.commit(
+          "setCurrentDisplayingTimeInSecOfWatch",
+          currentDisplayingTimeInSec
+        );
+      }
+    });
+    context.commit("setTimer", timer);
+  },
+  clearTimer(context) {
+    if (context.getters["timer"]) clearInterval(context.getters["timer"]);
   },
 };
 

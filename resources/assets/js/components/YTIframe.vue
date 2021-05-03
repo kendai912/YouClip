@@ -28,7 +28,6 @@ export default {
     return {
       playlistIdUrl: "",
       indexUrl: 0,
-      timer: null,
       youtubeCallbackName: "onYouTubeIframeAPIReady",
       youtubeExistsFlag: "$isYoutubeFrameAPIReady",
       hasYTFrame: false,
@@ -65,19 +64,6 @@ export default {
       setPlayerArray: "ytPlayer/setPlayerArray",
       setIsMuted: "ytPlayer/setIsMuted",
     }),
-    startTimer() {
-      let self = this;
-      if (this.timer) clearInterval(this.timer);
-
-      this.timer = setInterval(function() {
-        //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
-        if (typeof self.player.getCurrentTime == "function")
-          self.$store.commit(
-            "youtube/setCurrentTime",
-            self.formatTime(self.player.getCurrentTime())
-          );
-      });
-    },
     hasYoutubeFrameAPI() {
       if (!this.hasYTFrame) {
         this.hasYTFrame = !!document.getElementsByClassName(".yt-frame-api")
@@ -134,24 +120,27 @@ export default {
     },
     currentTime() {
       if (this.currentTime == this.endIs) {
-        //フラグを停止中に反転
-        this.$store.commit("ytPlayer/setIsPlaying", false);
-        if (this.isEditing || this.listOfYoutubeIdStartEndTime.length == 1) {
-          //現在と同じシーンをリピート(開始時間に戻る)
-          this.player.seekTo(this.convertToSec(this.startIs));
-        } else if (this.listOfYoutubeIdStartEndTime.length > 1) {
-          //まとめ再生の場合
-          if (this.listIndex < this.listOfYoutubeIdStartEndTime.length - 1) {
-            // 最後のシーンでない場合は、現在のプレイヤーを停止し、次のシーンのパラメータとプレイヤーをセット
-            this.$emit("switchToPlayListIndexOf", Number(this.listIndex) + 1);
-          } else if (
-            this.listIndex >=
-            this.listOfYoutubeIdStartEndTime.length - 1
-          ) {
-            //最後のシーンの場合は現在のプレイヤーを停止し、先頭に戻る
-            this.$emit("switchToPlayListIndexOf", 0);
+        let self = this;
+        setTimeout(function() {
+          //フラグを停止中に反転
+          self.$store.commit("ytPlayer/setIsPlaying", false);
+          if (self.isEditing || self.listOfYoutubeIdStartEndTime.length == 1) {
+            //現在と同じシーンをリピート(開始時間に戻る)
+            self.player.seekTo(self.convertToSec(self.startIs));
+          } else if (self.listOfYoutubeIdStartEndTime.length > 1) {
+            //まとめ再生の場合
+            if (self.listIndex < self.listOfYoutubeIdStartEndTime.length - 1) {
+              // 最後のシーンでない場合は、現在のプレイヤーを停止し、次のシーンのパラメータとプレイヤーをセット
+              self.$emit("switchToPlayListIndexOf", Number(self.listIndex) + 1);
+            } else if (
+              self.listIndex >=
+              self.listOfYoutubeIdStartEndTime.length - 1
+            ) {
+              //最後のシーンの場合は現在のプレイヤーを停止し、先頭に戻る
+              self.$emit("switchToPlayListIndexOf", 0);
+            }
           }
-        }
+        }, 400);
       }
     },
   },
@@ -186,9 +175,9 @@ export default {
                 start: this.startHis
                   ? this.convertToSec(this.formatToMinSec(item.start))
                   : "",
-                end: this.endHis
-                  ? this.convertToSec(this.formatToMinSec(item.end))
-                  : "",
+                // end: this.endHis
+                //   ? this.convertToSec(this.formatToMinSec(item.end))
+                //   : "",
                 playsinline: 1,
                 autoplay: 1,
                 iv_load_policy: 3, //アノテーション非表示
@@ -221,7 +210,7 @@ export default {
       event.target.playVideo();
       self.setIsPlayerReady(true);
       if (event.target.m.classList.value == self.player.m.classList.value) {
-        self.startTimer();
+        this.$store.dispatch("ytPlayer/startTimer");
       }
     };
 

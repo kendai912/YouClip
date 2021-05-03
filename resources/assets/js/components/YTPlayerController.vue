@@ -252,8 +252,10 @@ export default {
               );
           }
 
+          // this.setCurrentDisplayingTimeInSecOfWatch(currentDisplayingTimeInSec);
           return this.formatTime(currentDisplayingTimeInSec);
         } else {
+          // this.setCurrentDisplayingTimeInSecOfWatch(0);
           return "0:00";
         }
       } else {
@@ -271,6 +273,9 @@ export default {
             durationInSec = this.timeMath.sum(durationInSec, item.duration);
           });
 
+        this.setDurationInSecOfWatch(
+          this.convertToSec(this.formatToMinSec(durationInSec))
+        );
         return this.formatToMinSec(durationInSec);
       } else {
         return this.videoData
@@ -296,6 +301,9 @@ export default {
       setImmediateHideFlag: "ytPlayer/setImmediateHideFlag",
       setListIndex: "ytPlayer/setListIndex",
       setIsFadingOut: "ytPlayer/setIsFadingOut",
+      setCurrentDisplayingTimeInSecOfWatch:
+        "ytPlayer/setCurrentDisplayingTimeInSecOfWatch",
+      setDurationInSecOfWatch: "ytPlayer/setDurationInSecOfWatch",
       setIsMobile: "ytSeekBar/setIsMobile",
       setIsIOS: "ytSeekBar/setIsIOS",
       setIsNew: "youtube/setIsNew",
