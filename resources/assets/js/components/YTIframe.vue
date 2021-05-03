@@ -44,6 +44,7 @@ export default {
       playerArray: "ytPlayer/playerArray",
       player: "ytPlayer/player",
       isMuted: "ytPlayer/isMuted",
+      isWatchingPlaylist: "ytPlayer/isWatchingPlaylist",
       currentTime: "youtube/currentTime",
       isEditing: "tagging/isEditing",
     }),
@@ -171,12 +172,6 @@ export default {
               height: "315",
               videoId: item.youtubeId,
               playerVars: {
-                start: this.startHis
-                  ? this.convertToSec(this.formatToMinSec(item.start))
-                  : "",
-                // end: this.endHis
-                //   ? this.convertToSec(this.formatToMinSec(item.end))
-                //   : "",
                 playsinline: 1,
                 autoplay: 1,
                 iv_load_policy: 3, //アノテーション非表示
@@ -207,7 +202,7 @@ export default {
     window.onPlayerReady = (event) => {
       event.target.mute();
       if (event.target.m.classList.value == self.player.m.classList.value) {
-        event.target.seekTo(self.convertToSec(self.startIs));
+        if (self.startIs) event.target.seekTo(self.convertToSec(self.startIs));
         self.$store.dispatch("ytPlayer/startTimer");
       }
       event.target.playVideo();

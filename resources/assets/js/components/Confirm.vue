@@ -275,7 +275,6 @@ export default {
         clearInterval(this.timer);
 
         let self = this;
-        // setTimeout(async function() {
         //ログイン済の場合
         if (self.isEditing) {
           //編集の場合
@@ -408,7 +407,6 @@ export default {
 
         //「続けて他の場面を切り抜く」用に開始時間に今回の終了時間をセット
         this.saveTimeInput(this.youtubeId, this.end, "0:00");
-        // });
       }
     },
     unmute() {

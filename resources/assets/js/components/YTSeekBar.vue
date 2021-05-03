@@ -218,8 +218,8 @@ export default {
             this.contentLeft
           );
         } else {
-          return this.progress - this.contentLeft > 0
-            ? this.progress - this.contentLeft
+          return this.progressOfCreate - this.contentLeft > 0
+            ? this.progressOfCreate - this.contentLeft
             : 0;
         }
       } else {
