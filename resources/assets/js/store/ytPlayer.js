@@ -1,5 +1,6 @@
 import axios from "axios";
 import { OK, CREATED, DELETED, INTERNAL_SERVER_ERROR } from "../util";
+import router from "../router";
 import store from "../store";
 import myMixin from "../util";
 
@@ -50,15 +51,18 @@ const getters = {
   durationInSecOfWatch: (state) => state.durationInSecOfWatch,
   timer: (state) => state.timer,
   youtubeId: (state) =>
-    state.listOfYoutubeIdStartEndTime
+    state.listOfYoutubeIdStartEndTime &&
+    state.listOfYoutubeIdStartEndTime[state.listIndex]
       ? state.listOfYoutubeIdStartEndTime[state.listIndex].youtubeId
       : "",
   start: (state) =>
-    state.listOfYoutubeIdStartEndTime
+    state.listOfYoutubeIdStartEndTime &&
+    state.listOfYoutubeIdStartEndTime[state.listIndex]
       ? state.listOfYoutubeIdStartEndTime[state.listIndex].start
       : "",
   end: (state) =>
-    state.listOfYoutubeIdStartEndTime
+    state.listOfYoutubeIdStartEndTime &&
+    state.listOfYoutubeIdStartEndTime[state.listIndex]
       ? state.listOfYoutubeIdStartEndTime[state.listIndex].end
       : "",
 };
@@ -121,55 +125,6 @@ const mutations = {
 };
 
 const actions = {
-  playListIndexOf(context, index) {
-    context.commit("setIsSwitchingScene", true);
-
-    //現在のプレイヤーを先頭に戻して一時停止
-    context.getters["player"].seekTo(
-      myMixin.methods.convertToSec(
-        myMixin.methods.formatToMinSec(context.getters["start"])
-      )
-    );
-    context.getters["player"].pauseVideo();
-
-    //場面インデックスおよびプレイヤーを変更
-    context.commit("setListIndex", index);
-
-    //Durationデータの取得のための処理
-    context.commit("youtube/setYoutubeId", context.getters["youtubeId"], {
-      root: true,
-    });
-    context.dispatch("youtube/getVideo", context.getters["youtubeId"], {
-      root: true,
-    });
-
-    //次のシーンの開始時間をセット
-    context.getters["player"].seekTo(
-      myMixin.methods.convertToSec(
-        myMixin.methods.formatToMinSec(context.getters["start"])
-      )
-    );
-
-    //音設定
-    if (context.getters["isMuted"]) {
-      context.getters["player"].mute();
-    } else {
-      context.getters["player"].mute();
-      context.getters["player"].unMute();
-    }
-
-    //倍速設定
-    context.getters["player"].setPlaybackRate(
-      parseFloat(context.getters["playSpeed"])
-    );
-
-    //再生
-    if (context.getters["isPlaying"]) context.getters["player"].playVideo();
-    setTimeout(() => {
-      //同じyoutubeIdの最初のシーンが一瞬流れるためその間はタイマーが作動しないようにする
-      context.commit("setIsSwitchingScene", false);
-    }, 400);
-  },
   startTimer(context) {
     context.dispatch("clearTimer");
 
@@ -226,8 +181,118 @@ const actions = {
     });
     context.commit("setTimer", timer);
   },
+
   clearTimer(context) {
     if (context.getters["timer"]) clearInterval(context.getters["timer"]);
+  },
+
+  playListIndexOf(context, index) {
+    context.commit("setIsSwitchingScene", true);
+
+    //現在のプレイヤーを先頭に戻して一時停止
+    context.getters["player"].seekTo(
+      myMixin.methods.convertToSec(
+        myMixin.methods.formatToMinSec(context.getters["start"])
+      )
+    );
+    context.getters["player"].pauseVideo();
+
+    //場面インデックスおよびプレイヤーを変更
+    context.commit("setListIndex", index);
+
+    //次のシーンの開始時間をセット
+    context.getters["player"].seekTo(
+      myMixin.methods.convertToSec(
+        myMixin.methods.formatToMinSec(context.getters["start"])
+      )
+    );
+
+    //音設定
+    if (context.getters["isMuted"]) {
+      context.getters["player"].mute();
+    } else {
+      context.getters["player"].mute();
+      context.getters["player"].unMute();
+    }
+
+    //倍速設定
+    context.getters["player"].setPlaybackRate(
+      parseFloat(context.getters["playSpeed"])
+    );
+
+    //再生設定
+    if (context.getters["isPlaying"]) context.getters["player"].playVideo();
+
+    setTimeout(() => {
+      //同じyoutubeIdの最初のシーンが一瞬流れるためその間はタイマーが作動しないようにする
+      context.commit("setIsSwitchingScene", false);
+    }, 400);
+  },
+
+  playListIndexOfAndSeekAt(context, input) {
+    context.commit("setIsSwitchingScene", true);
+
+    //現在のプレイヤーを一時停止
+    context.getters["player"].pauseVideo();
+
+    //場面インデックスおよびプレイヤーを変更
+    context.commit("setListIndex", input.seekTimeListIndex);
+
+    //seekTimeをセット
+    let seekTime =
+      input.seekTimeFromStartInSec +
+      myMixin.methods.convertToSec(
+        myMixin.methods.formatToMinSec(context.getters["start"])
+      );
+    context.getters["player"].seekTo(seekTime);
+
+    //音設定
+    if (context.getters["isMuted"]) {
+      context.getters["player"].mute();
+    } else {
+      context.getters["player"].mute();
+      context.getters["player"].unMute();
+    }
+
+    //倍速設定
+    context.getters["player"].setPlaybackRate(
+      parseFloat(context.getters["playSpeed"])
+    );
+
+    //再生設定
+    if (context.getters["isPlaying"]) context.getters["player"].playVideo();
+
+    setTimeout(() => {
+      //同じyoutubeIdの最初のシーンが一瞬流れるためその間はタイマーが作動しないようにする
+      context.commit("setIsSwitchingScene", false);
+    }, 400);
+  },
+
+  seekToDisplayingTime(context, seekingDisplayingTimeInSec) {
+    let seekTimeFromStartInSec, seekTimeListIndex, seeker;
+    seeker = Math.round(seekingDisplayingTimeInSec);
+
+    for (
+      var i = 0;
+      seeker >= 0 && i < context.getters["listOfYoutubeIdStartEndTime"].length;
+      i++
+    ) {
+      seekTimeFromStartInSec = seeker;
+      seekTimeListIndex = i;
+
+      seeker =
+        seeker -
+        myMixin.methods.convertToSec(
+          myMixin.methods.formatToMinSec(
+            context.getters["listOfYoutubeIdStartEndTime"][i].duration
+          )
+        );
+    }
+
+    context.dispatch("playListIndexOfAndSeekAt", {
+      seekTimeListIndex: seekTimeListIndex,
+      seekTimeFromStartInSec: seekTimeFromStartInSec,
+    });
   },
 };
 

@@ -223,12 +223,6 @@ export default {
     ) {
       if (tagVideo) {
         tagVideo.forEach((value) => {
-          // for (let i = 0; i < index; i++) {
-          //   if (tagVideo[i].youtubeId == tagVideo[index].youtubeId) {
-          //     firstSceneOfPlayerFlg = false;
-          //   }
-          // }
-
           let listOfYoutubeIdStartEndTime = {
             youtubeId: value.youtubeId,
             start: value.start,

@@ -267,10 +267,12 @@ export default {
 
       // change seek position
       if (this.isWatchingPlaylist) {
-        this.player.seekTo(
-          this.convertToSec(this.duration) *
-            (this.seekWidth / this.seekbarWidth) +
-            this.convertToSec(this.formatToMinSec(this.startHis))
+        let seekingDisplayingTimeInSec =
+          this.durationInSecOfWatch * (this.seekWidth / this.seekbarWidth);
+
+        this.$store.dispatch(
+          "ytPlayer/seekToDisplayingTime",
+          seekingDisplayingTimeInSec
         );
       } else {
         this.player.seekTo(
