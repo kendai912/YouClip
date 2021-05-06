@@ -121,7 +121,6 @@ export default {
     },
     currentTime() {
       if (this.currentTime == this.endIs) {
-
         let self = this;
         setTimeout(function() {
           //フラグを停止中に反転

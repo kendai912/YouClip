@@ -211,6 +211,7 @@ export default {
   computed: {
     ...mapGetters({
       playlistName: "watch/playlistName",
+      playerArray: "ytPlayer/playerArray",
       player: "ytPlayer/player",
       isMuted: "ytPlayer/isMuted",
       isFullscreen: "ytPlayer/isFullscreen",
@@ -383,19 +384,25 @@ export default {
     },
     unmuteDefault() {
       if (this.isMutedDefault) {
-        this.player.unMute();
+        Object.keys(this.playerArray).forEach((key) => {
+          this.playerArray[key].unMute();
+        });
         this.setIsMuted(false);
         this.isMutedDefault = false;
       }
     },
     unmute() {
       this.fadeInOutController();
-      this.player.unMute();
+      Object.keys(this.playerArray).forEach((key) => {
+        this.playerArray[key].unMute();
+      });
       this.setIsMuted(false);
     },
     mute() {
       this.fadeInOutController();
-      this.player.mute();
+      Object.keys(this.playerArray).forEach((key) => {
+        this.playerArray[key].mute();
+      });
       this.setIsMuted(true);
     },
     checkFullScreen() {
