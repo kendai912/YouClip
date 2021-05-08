@@ -128,7 +128,7 @@ const actions = {
   startTimer(context) {
     context.dispatch("clearTimer");
 
-    let timer = setInterval(function() {
+    let timer = setInterval(function () {
       //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
       if (
         context.getters["player"] &&
@@ -207,21 +207,15 @@ const actions = {
       )
     );
 
-    //音設定
-    if (context.getters["isMuted"]) {
-      context.getters["player"].mute();
-    } else {
-      context.getters["player"].mute();
-      context.getters["player"].unMute();
-    }
-
     //倍速設定
     context.getters["player"].setPlaybackRate(
       parseFloat(context.getters["playSpeed"])
     );
 
     //再生設定
-    if (context.getters["isPlaying"]) context.getters["player"].playVideo();
+    if (context.getters["isPlaying"]) {
+      context.getters["player"].playVideo();
+    }
 
     setTimeout(() => {
       //同じyoutubeIdの最初のシーンが一瞬流れるためその間はタイマーが作動しないようにする

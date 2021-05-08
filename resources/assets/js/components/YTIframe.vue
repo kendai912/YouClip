@@ -1,8 +1,9 @@
 <template>
-  <div style="position: absolute; width: 100%; height: 100%;">
+  <div class="iframeWrapper">
     <div
       v-for="(item, index) in listOfYoutubeIdStartEndTime"
       v-bind:key="`item.youtubeId-${index}`"
+      class="iframeWrapper"
       v-bind:style="{
         visibility:
           item.youtubeId == youtubeId && item.isFirstSceneOfYouTubeId
@@ -44,6 +45,7 @@ export default {
       playerArray: "ytPlayer/playerArray",
       player: "ytPlayer/player",
       isMuted: "ytPlayer/isMuted",
+      isIOS: "ytSeekBar/isIOS",
       isWatchingPlaylist: "ytPlayer/isWatchingPlaylist",
       currentTime: "youtube/currentTime",
       isEditing: "tagging/isEditing",
@@ -76,7 +78,7 @@ export default {
       const youtubeExistsFlag = this.youtubeExistsFlag;
       const youtubeCallbackName = this.youtubeCallbackName;
 
-      window[this.youtubeCallbackName] = function() {
+      window[this.youtubeCallbackName] = function () {
         window[youtubeExistsFlag] = true;
         window[youtubeCallbackName] = null;
         delete window[youtubeCallbackName];
@@ -92,10 +94,10 @@ export default {
     },
     whenYoutubeAPIReady() {
       const existsFlag = this.youtubeExistsFlag;
-      return new Promise(function(resolve, reject) {
+      return new Promise(function (resolve, reject) {
         let elapsed = 0;
         let intervalHandle;
-        let checker = function() {
+        let checker = function () {
           elapsed += 48;
           if (!!window[existsFlag]) {
             clearTimeout(intervalHandle);
@@ -112,6 +114,14 @@ export default {
         setTimeout(checker, 48);
       });
     },
+    unmute() {
+      this.player.unMute();
+      this.setIsMuted(false);
+    },
+    mute() {
+      this.player.mute();
+      this.setIsMuted(true);
+    },
   },
   watch: {
     //シーン切替時のlistIndexセット
@@ -122,7 +132,7 @@ export default {
     currentTime() {
       if (this.currentTime == this.endIs) {
         let self = this;
-        setTimeout(function() {
+        setTimeout(function () {
           //フラグを停止中に反転
           if (self.isEditing || self.listOfYoutubeIdStartEndTime.length == 1) {
             //現在と同じシーンをリピート(開始時間に戻る)
@@ -131,11 +141,13 @@ export default {
             //まとめ再生の場合
             if (self.listIndex < self.listOfYoutubeIdStartEndTime.length - 1) {
               // 最後のシーンでない場合は、現在のプレイヤーを停止し、次のシーンのパラメータとプレイヤーをセット
+              console.log("Next scene");
               self.$emit("switchToPlayListIndexOf", Number(self.listIndex) + 1);
             } else if (
               self.listIndex >=
               self.listOfYoutubeIdStartEndTime.length - 1
             ) {
+              console.log("Return to first scene");
               //最後のシーンの場合は現在のプレイヤーを停止し、先頭に戻る
               self.$emit("switchToPlayListIndexOf", 0);
             }
@@ -214,9 +226,36 @@ export default {
         //フラグを再生中にセット
         this.$store.commit("ytPlayer/setIsPlaying", true);
 
-        //選択されたシーン以外のプレイヤーは停止
-        if (event.target.m.classList.value != self.player.m.classList.value) {
+        if (
+          !self.isIOS &&
+          event.target.m.classList.value != self.player.m.classList.value
+        ) {
           event.target.pauseVideo();
+        }
+
+        if (
+          !self.isMuted &&
+          event.target.m.classList.value == self.player.m.classList.value
+        ) {
+          self.mute();
+          self.unmute();
+        } else if (
+          self.isMuted &&
+          event.target.m.classList.value == self.player.m.classList.value
+        ) {
+          self.mute();
+        }
+      }
+
+      if (event.data == YT.PlayerState.BUFFERING) {
+        //選択されたシーン以外のプレイヤーは停止
+        if (
+          self.isIOS &&
+          event.target.m.classList.value != self.player.m.classList.value
+        ) {
+          setTimeout(() => {
+            event.target.pauseVideo();
+          }, 100);
         }
       }
 

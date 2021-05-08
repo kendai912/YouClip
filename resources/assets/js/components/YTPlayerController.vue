@@ -2,9 +2,7 @@
   <div class="iframeHeight">
     <div v-if="isMutedDefault" class="unmuteDefaultBtn">
       <v-btn color="red lighten-3" height="32" v-on:click="unmuteDefault">
-        <v-icon left>
-          volume_off
-        </v-icon>
+        <v-icon left> volume_off </v-icon>
         ミュートを解除
       </v-btn>
     </div>
@@ -25,7 +23,7 @@
             v-if="isFullscreen && isWatchingPlaylist"
             align-self="start"
             class="text-left"
-            style="font-size: calc(1rem * (16 / 14)); color: white; "
+            style="font-size: calc(1rem * (16 / 14)); color: white"
           >
             {{ playlistName }}
           </v-col>
@@ -51,7 +49,7 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <span style="font-size: calc(1rem * (12 / 14)); color: white; "
+                <span style="font-size: calc(1rem * (12 / 14)); color: white"
                   >前の場面</span
                 >
               </v-col>
@@ -114,7 +112,7 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <span style="font-size: calc(1rem * (12 / 14)); color: white; "
+                <span style="font-size: calc(1rem * (12 / 14)); color: white"
                   >次の場面</span
                 >
               </v-col>
@@ -309,7 +307,7 @@ export default {
           clearTimeout(self.timer);
 
           //set timer and fadeout in 2.5sec
-          self.timer = setTimeout(function() {
+          self.timer = setTimeout(function () {
             if (self.isPlaying) {
               self.setIsFadingOut(true);
               $(".overlay").fadeOut(500);
@@ -318,7 +316,7 @@ export default {
               }
 
               self.setImmediateHideFlag(false);
-              setTimeout(function() {
+              setTimeout(function () {
                 self.setIsFadingOut(false);
               }, 500);
             }
@@ -384,25 +382,23 @@ export default {
     },
     unmuteDefault() {
       if (this.isMutedDefault) {
+        let self = this;
         Object.keys(this.playerArray).forEach((key) => {
-          this.playerArray[key].unMute();
+          self.playerArray[key].unMute();
         });
+
         this.setIsMuted(false);
         this.isMutedDefault = false;
       }
     },
     unmute() {
       this.fadeInOutController();
-      Object.keys(this.playerArray).forEach((key) => {
-        this.playerArray[key].unMute();
-      });
+      this.player.unMute();
       this.setIsMuted(false);
     },
     mute() {
       this.fadeInOutController();
-      Object.keys(this.playerArray).forEach((key) => {
-        this.playerArray[key].mute();
-      });
+      this.player.mute();
       this.setIsMuted(true);
     },
     checkFullScreen() {
@@ -493,8 +489,8 @@ export default {
       this.setShowSeekbar(true);
     },
     sleep(waitSec) {
-      return new Promise(function(resolve) {
-        setTimeout(function() {
+      return new Promise(function (resolve) {
+        setTimeout(function () {
           resolve();
         }, waitSec);
       });
@@ -756,7 +752,7 @@ export default {
   mounted() {
     //iframeプレイヤーの表示から4秒後にプレイヤーコントロールボタンを非表示
     let self = this;
-    setTimeout(function() {
+    setTimeout(function () {
       $(".overlay").fadeOut(1000);
       if (self.isMobile && self.isFullscreen) {
         self.setShowSeekbar(false);
