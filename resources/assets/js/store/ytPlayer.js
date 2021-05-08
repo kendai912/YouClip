@@ -207,6 +207,14 @@ const actions = {
       )
     );
 
+    //音設定
+    if (context.getters["isMuted"]) {
+      context.getters["player"].mute();
+    } else {
+      context.getters["player"].mute();
+      context.getters["player"].unMute();
+    }
+
     //倍速設定
     context.getters["player"].setPlaybackRate(
       parseFloat(context.getters["playSpeed"])
