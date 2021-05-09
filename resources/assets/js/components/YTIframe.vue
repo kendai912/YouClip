@@ -141,13 +141,11 @@ export default {
             //まとめ再生の場合
             if (self.listIndex < self.listOfYoutubeIdStartEndTime.length - 1) {
               // 最後のシーンでない場合は、現在のプレイヤーを停止し、次のシーンのパラメータとプレイヤーをセット
-              console.log("Next scene");
               self.$emit("switchToPlayListIndexOf", Number(self.listIndex) + 1);
             } else if (
               self.listIndex >=
               self.listOfYoutubeIdStartEndTime.length - 1
             ) {
-              console.log("Return to first scene");
               //最後のシーンの場合は現在のプレイヤーを停止し、先頭に戻る
               self.$emit("switchToPlayListIndexOf", 0);
             }

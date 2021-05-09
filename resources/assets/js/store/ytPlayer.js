@@ -128,7 +128,7 @@ const actions = {
   startTimer(context) {
     context.dispatch("clearTimer");
 
-    let timer = setInterval(function () {
+    let timer = setInterval(function() {
       //currentTimeを「分:秒」にフォーマットしてyoutubeストアにセット
       if (
         context.getters["player"] &&
@@ -273,6 +273,14 @@ const actions = {
   seekToDisplayingTime(context, seekingDisplayingTimeInSec) {
     let seekTimeFromStartInSec, seekTimeListIndex, seeker;
     seeker = Math.round(seekingDisplayingTimeInSec);
+
+    while (seeker >= context.getters["durationInSecOfWatch"]) {
+      seeker = seeker - context.getters["durationInSecOfWatch"];
+    }
+
+    while (seeker < 0) {
+      seeker = seeker + context.getters["durationInSecOfWatch"];
+    }
 
     for (
       var i = 0;

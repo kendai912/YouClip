@@ -307,7 +307,7 @@ export default {
           clearTimeout(self.timer);
 
           //set timer and fadeout in 2.5sec
-          self.timer = setTimeout(function () {
+          self.timer = setTimeout(function() {
             if (self.isPlaying) {
               self.setIsFadingOut(true);
               $(".overlay").fadeOut(500);
@@ -316,7 +316,7 @@ export default {
               }
 
               self.setImmediateHideFlag(false);
-              setTimeout(function () {
+              setTimeout(function() {
                 self.setIsFadingOut(false);
               }, 500);
             }
@@ -373,12 +373,26 @@ export default {
     //5秒戻る
     backwardFiveSec() {
       this.fadeInOutController();
-      this.player.seekTo(this.convertToSec(this.currentTime) - 5);
+      let backwardTimeInSec = this.convertToSec(this.currentDisplayingTime) - 5;
+
+      if (this.isWatchingPlaylist) {
+        this.$store.dispatch("ytPlayer/seekToDisplayingTime", backwardTimeInSec);
+      } else {
+        this.player.seekTo(backwardTimeInSec);
+      }
+      // this.player.seekTo(this.convertToSec(this.currentTime) - 5);
     },
     //5秒進む
     forwardFiveSec() {
       this.fadeInOutController();
-      this.player.seekTo(this.convertToSec(this.currentTime) + 5);
+      let forwardTimeInSec = this.convertToSec(this.currentDisplayingTime) + 5;
+
+      if (this.isWatchingPlaylist) {
+        this.$store.dispatch("ytPlayer/seekToDisplayingTime", forwardTimeInSec);
+      } else {
+        this.player.seekTo(forwardTimeInSec);
+      }
+      // this.player.seekTo(this.convertToSec(this.currentTime) + 5);
     },
     unmuteDefault() {
       if (this.isMutedDefault) {
@@ -489,8 +503,8 @@ export default {
       this.setShowSeekbar(true);
     },
     sleep(waitSec) {
-      return new Promise(function (resolve) {
-        setTimeout(function () {
+      return new Promise(function(resolve) {
+        setTimeout(function() {
           resolve();
         }, waitSec);
       });
@@ -752,7 +766,7 @@ export default {
   mounted() {
     //iframeプレイヤーの表示から4秒後にプレイヤーコントロールボタンを非表示
     let self = this;
-    setTimeout(function () {
+    setTimeout(function() {
       $(".overlay").fadeOut(1000);
       if (self.isMobile && self.isFullscreen) {
         self.setShowSeekbar(false);
