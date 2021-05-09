@@ -190,11 +190,8 @@ const actions = {
     context.commit("setIsSwitchingScene", true);
 
     //現在のプレイヤーを先頭に戻して一時停止
-    context.getters["player"].seekTo(
-      myMixin.methods.convertToSec(
-        myMixin.methods.formatToMinSec(context.getters["start"])
-      )
-    );
+    let currentListIndex = context.getters["listIndex"];
+    context.dispatch("cueNextSceneOfCurrentYoutubeId", currentListIndex);
     context.getters["player"].pauseVideo();
 
     //場面インデックスおよびプレイヤーを変更
@@ -303,6 +300,57 @@ const actions = {
       seekTimeListIndex: seekTimeListIndex,
       seekTimeFromStartInSec: seekTimeFromStartInSec,
     });
+  },
+
+  cueNextSceneOfCurrentYoutubeId(context, currentListIndex) {
+    let currentYoutubeId =
+      context.getters["listOfYoutubeIdStartEndTime"][currentListIndex]
+        .youtubeId;
+
+    let nextSceneIndexOfCurrentYoutubeId;
+    if (
+      Number(currentListIndex) >=
+      context.getters["listOfYoutubeIdStartEndTime"].length - 1
+    ) {
+      nextSceneIndexOfCurrentYoutubeId =
+        Number(currentListIndex) -
+        (context.getters["listOfYoutubeIdStartEndTime"].length - 1);
+    } else {
+      nextSceneIndexOfCurrentYoutubeId = Number(currentListIndex) + 1;
+    }
+
+    while (
+      context.getters["listOfYoutubeIdStartEndTime"][
+        nextSceneIndexOfCurrentYoutubeId
+      ].youtubeId != currentYoutubeId
+    ) {
+      if (
+        nextSceneIndexOfCurrentYoutubeId <
+        context.getters["listOfYoutubeIdStartEndTime"].length - 1
+      ) {
+        nextSceneIndexOfCurrentYoutubeId++;
+      } else {
+        nextSceneIndexOfCurrentYoutubeId =
+          nextSceneIndexOfCurrentYoutubeId -
+          (context.getters["listOfYoutubeIdStartEndTime"].length - 1);
+      }
+    }
+
+    console.log(
+      "next start = " +
+        context.getters["listOfYoutubeIdStartEndTime"][
+          nextSceneIndexOfCurrentYoutubeId
+        ].start
+    );
+    context.getters["player"].seekTo(
+      myMixin.methods.convertToSec(
+        myMixin.methods.formatToMinSec(
+          context.getters["listOfYoutubeIdStartEndTime"][
+            nextSceneIndexOfCurrentYoutubeId
+          ].start
+        )
+      )
+    );
   },
 };
 

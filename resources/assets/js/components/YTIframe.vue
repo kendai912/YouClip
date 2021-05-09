@@ -78,7 +78,7 @@ export default {
       const youtubeExistsFlag = this.youtubeExistsFlag;
       const youtubeCallbackName = this.youtubeCallbackName;
 
-      window[this.youtubeCallbackName] = function () {
+      window[this.youtubeCallbackName] = function() {
         window[youtubeExistsFlag] = true;
         window[youtubeCallbackName] = null;
         delete window[youtubeCallbackName];
@@ -94,10 +94,10 @@ export default {
     },
     whenYoutubeAPIReady() {
       const existsFlag = this.youtubeExistsFlag;
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
         let elapsed = 0;
         let intervalHandle;
-        let checker = function () {
+        let checker = function() {
           elapsed += 48;
           if (!!window[existsFlag]) {
             clearTimeout(intervalHandle);
@@ -132,7 +132,7 @@ export default {
     currentTime() {
       if (this.currentTime == this.endIs) {
         let self = this;
-        setTimeout(function () {
+        setTimeout(function() {
           //フラグを停止中に反転
           if (self.isEditing || self.listOfYoutubeIdStartEndTime.length == 1) {
             //現在と同じシーンをリピート(開始時間に戻る)
@@ -182,6 +182,9 @@ export default {
               height: "315",
               videoId: item.youtubeId,
               playerVars: {
+                start: this.startHis
+                  ? this.convertToSec(this.formatToMinSec(item.start))
+                  : "",
                 playsinline: 1,
                 autoplay: 1,
                 iv_load_policy: 3, //アノテーション非表示
