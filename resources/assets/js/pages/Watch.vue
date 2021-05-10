@@ -62,15 +62,11 @@
 
               <v-row class="ma-0 pa-0">
                 <v-col class="ma-0 pa-0 pt-1 grey--text text--darken-3">
-                  <span style="font-size: 12px"
-                    >{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span
-                  >
-                  <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
-                  <span style="font-size: 12px"
-                    >合計{{ totalDurationKanji }}</span
-                  >
+                  <span style="font-size: 12px">{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span>
                   <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
                   <span style="font-size: 12px">{{ playlistCreatedAt }}前</span>
+                  <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
+                  <span style="font-size: 12px">合計{{ totalDurationKanji }}({{ sceneListofPlaylist.length }}場面)</span>
                 </v-col>
               </v-row>
             </v-container>
