@@ -248,7 +248,23 @@
 
 .ios-highlight-content {
   height: 9px;
-  background-color: #00d873;
+  background-color: #00d87362;
+  position: absolute;
+  top: 0px;
+  z-index: 4;
+}
+
+.ios-highlight-content-of-watch {
+  height: 9px;
+  background-color: #e8f5e9;
+  position: absolute;
+  top: 0px;
+  z-index: 4;
+}
+
+.ios-highlight-content-of-watch-now-playing {
+  height: 9px;
+  background-color: #a5d6a7;
   position: absolute;
   top: 0px;
   z-index: 4;
@@ -257,6 +273,22 @@
 .highlight-content {
   height: 15px;
   background-color: #00d873;
+  position: absolute;
+  top: 0px;
+  z-index: 4;
+}
+
+.highlight-content-of-watch {
+  height: 15px;
+  background-color: #e8f5e9;
+  position: absolute;
+  top: 0px;
+  z-index: 4;
+}
+
+.highlight-content-of-watch-now-playing {
+  height: 15px;
+  background-color: #a5d6a7;
   position: absolute;
   top: 0px;
   z-index: 4;
@@ -272,6 +304,26 @@
   z-index: 4;
 }
 
+.ios-left-triangle-of-watch {
+  position: absolute;
+  top: 0px;
+  height: 9px;
+  border-bottom: 4.5px solid transparent;
+  border-top: 4.5px solid transparent;
+  border-right: 3px solid #e8f5e9;
+  z-index: 4;
+}
+
+.ios-left-triangle-of-watch-now-playing {
+  position: absolute;
+  top: 0px;
+  height: 9px;
+  border-bottom: 4.5px solid transparent;
+  border-top: 4.5px solid transparent;
+  border-right: 3px solid #a5d6a7;
+  z-index: 4;
+}
+
 .left-triangle {
   position: absolute;
   top: 0px;
@@ -279,6 +331,26 @@
   border-bottom: 7.5px solid transparent;
   border-top: 7.5px solid transparent;
   border-right: 3px solid #00d873;
+  z-index: 4;
+}
+
+.left-triangle-of-watch {
+  position: absolute;
+  top: 0px;
+  height: 15px;
+  border-bottom: 7.5px solid transparent;
+  border-top: 7.5px solid transparent;
+  border-right: 3px solid #e8f5e9;
+  z-index: 4;
+}
+
+.left-triangle-of-watch-now-playing {
+  position: absolute;
+  top: 0px;
+  height: 15px;
+  border-bottom: 7.5px solid transparent;
+  border-top: 7.5px solid transparent;
+  border-right: 3px solid #a5d6a7;
   z-index: 4;
 }
 
@@ -292,6 +364,26 @@
   z-index: 4;
 }
 
+.ios-right-triangle-of-watch {
+  position: absolute;
+  top: 0px;
+  height: 9px;
+  border-bottom: 4.5px solid transparent;
+  border-top: 4.5px solid transparent;
+  border-left: 3px solid #e8f5e9;
+  z-index: 4;
+}
+
+.ios-right-triangle-of-watch-now-playing {
+  position: absolute;
+  top: 0px;
+  height: 9px;
+  border-bottom: 4.5px solid transparent;
+  border-top: 4.5px solid transparent;
+  border-left: 3px solid #a5d6a7;
+  z-index: 4;
+}
+
 .right-triangle {
   position: absolute;
   top: 0px;
@@ -299,6 +391,26 @@
   border-bottom: 7.5px solid transparent;
   border-top: 7.5px solid transparent;
   border-left: 3px solid #00d873;
+  z-index: 4;
+}
+
+.right-triangle-of-watch {
+  position: absolute;
+  top: 0px;
+  height: 15px;
+  border-bottom: 7.5px solid transparent;
+  border-top: 7.5px solid transparent;
+  border-left: 3px solid #e8f5e9;
+  z-index: 4;
+}
+
+.right-triangle-of-watch-now-playing {
+  position: absolute;
+  top: 0px;
+  height: 15px;
+  border-bottom: 7.5px solid transparent;
+  border-top: 7.5px solid transparent;
+  border-left: 3px solid #a5d6a7;
   z-index: 4;
 }
 

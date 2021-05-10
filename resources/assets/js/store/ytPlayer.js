@@ -187,6 +187,7 @@ const actions = {
   },
 
   playListIndexOf(context, index) {
+    console.log(context.getters["listOfYoutubeIdStartEndTime"]);
     context.commit("setIsSwitchingScene", true);
 
     //現在のプレイヤーを先頭に戻して一時停止
@@ -336,12 +337,6 @@ const actions = {
       }
     }
 
-    console.log(
-      "next start = " +
-        context.getters["listOfYoutubeIdStartEndTime"][
-          nextSceneIndexOfCurrentYoutubeId
-        ].start
-    );
     context.getters["player"].seekTo(
       myMixin.methods.convertToSec(
         myMixin.methods.formatToMinSec(

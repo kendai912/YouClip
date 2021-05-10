@@ -21,6 +21,13 @@
             ref="iosYtseekHead"
             v-bind:style="'transform: translateX(' + progressOfCreate + 'px)'"
           ></div>
+          <div v-if="isWatchingPlaylist">
+            <ContentMobile
+              v-for="(item, index) in listOfYoutubeIdStartEndTime"
+              v-bind:key="`content-mobile-${index}`"
+              v-bind:contentIndex="index"
+            />
+          </div>
           <div v-if="contentWidth >= 6">
             <div
               v-if="contentWidth"
@@ -74,6 +81,13 @@
         ref="ytseekHead"
         v-bind:style="'transform: translateX(' + progressOfCreate + 'px)'"
       ></div>
+      <div v-if="isWatchingPlaylist">
+        <ContentPC
+          v-for="(item, index) in listOfYoutubeIdStartEndTime"
+          v-bind:key="`content-pc-${index}`"
+          v-bind:contentIndex="index"
+        />
+      </div>
       <div v-if="contentWidth >= 6">
         <div
           v-if="contentWidth"
@@ -110,9 +124,15 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
+import ContentMobile from "../components/ContentMobile";
+import ContentPC from "../components/ContentPC";
 import myMixin from "../util";
 
 export default {
+  components: {
+    ContentMobile,
+    ContentPC,
+  },
   props: {
     bodyRef: HTMLDivElement,
   },
@@ -150,21 +170,11 @@ export default {
       currentDisplayingTimeInSecOfWatch:
         "ytPlayer/currentDisplayingTimeInSecOfWatch",
       durationInSecOfWatch: "ytPlayer/durationInSecOfWatch",
+      listOfYoutubeIdStartEndTime: "ytPlayer/listOfYoutubeIdStartEndTime",
     }),
     duration() {
       if (this.isNew) {
         return this.newVideoData ? this.newVideoData.duration : "0:00";
-      } else if (this.isWatchingPlaylist) {
-        let durationInSec;
-        if (this.startHis && this.endHis) {
-          durationInSec =
-            this.convertToSec(this.formatToMinSec(this.endHis)) -
-            this.convertToSec(this.formatToMinSec(this.startHis));
-        }
-
-        return typeof durationInSec != "undefined"
-          ? this.formatTime(durationInSec)
-          : "0:00";
       } else {
         return this.videoData
           ? this.formatToMinSec(this.videoData.duration)
