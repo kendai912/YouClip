@@ -1393,3 +1393,14 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
   font-size: calc(1rem * (12 / 14));
   font-weight: bold;
 }
+
+.reducedDuration {
+  font-size: calc(1rem * (14 / 14));
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.originalDuration {
+  font-size: calc(1rem * (14 / 14));
+  color: #F44336;
+}

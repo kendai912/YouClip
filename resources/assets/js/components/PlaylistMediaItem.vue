@@ -117,10 +117,13 @@
                         >far fa-clock</v-icon
                       >
                       <span style="font-size: 6px">&nbsp;&nbsp;</span
-                      ><span>{{ item.totalDuration }}</span
-                      >&nbsp;⬅&nbsp;元の動画:&nbsp;{{
-                        item.numberOfYTvideos
-                      }}本の合計{{ item.totalYTDuration }}</span
+                      ><span class="reducedDuration">{{
+                        item.totalDuration
+                      }}</span
+                      >&nbsp;⬅&nbsp;元の動画:&nbsp;<span
+                        class="originalDuration"
+                        >{{ item.totalYTDuration }} </span
+                      >({{ item.numberOfYTvideos }}本の合計)</span
                     >
                   </v-col>
                 </v-row>

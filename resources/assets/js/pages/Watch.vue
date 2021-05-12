@@ -62,11 +62,20 @@
 
               <v-row class="ma-0 pa-0">
                 <v-col class="ma-0 pa-0 pt-1 grey--text text--darken-3">
-                  <span style="font-size: 12px">{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span>
+                  <span style="font-size: 12px"
+                    ><span class="reducedDuration">{{
+                      totalDurationKanji
+                    }}</span>
+                    &nbsp;⬅&nbsp;元の動画:&nbsp;合計<span class="originalDuration"
+                      >{{ totalYTDurationKanji }}
+                    </span></span
+                  >
+                  <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
+                  <span style="font-size: 12px"
+                    >{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span
+                  >
                   <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
                   <span style="font-size: 12px">{{ playlistCreatedAt }}前</span>
-                  <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
-                  <span style="font-size: 12px">合計{{ totalDurationKanji }}({{ sceneListofPlaylist.length }}場面)</span>
                 </v-col>
               </v-row>
             </v-container>
@@ -291,6 +300,7 @@ export default {
       playlistCreatedAt: "",
       totalDuration: "00:00:00",
       totalDurationKanji: "",
+      totalYTDurationKanji: "",
       snackbar: false,
       timeout: 5000,
       text: "",
@@ -512,7 +522,7 @@ export default {
       this.playlistAndTagVideoData.play_count
     );
 
-    //Player直下のまとめ情報欄に表示する作成日・合計時間の情報を取得
+    //Player直下のまとめ情報欄に表示する視聴回数・作成日・合計時間の情報を取得
     this.playlistCreatedAt = this.timeSince(
       this.playlistAndTagVideoData.playlist_created_at
     );
@@ -522,6 +532,9 @@ export default {
     });
     this.totalDurationKanji = this.convertToKanjiTime(
       this.convertToSec(this.totalDuration)
+    );
+    this.totalYTDurationKanji = this.convertToKanjiTime(
+      this.playlistAndTagVideoData.playlist_total_duration
     );
 
     //場面リストをセット
