@@ -80,7 +80,7 @@ export default {
         {
           name: "description",
           content:
-            "YouTube動画の切り抜きまとめサイト、YouClipのマイページです。YouTube動画からお気に入りの場面を切り抜いて作ったまとめを確認・編集出来ます。また、いいねしたみんなの切り抜きまとめも見ることが出来ます。",
+            "YouTube長時間動画の見所切り抜きサイト、YouClipのマイページです。YouTube動画からお気に入りの場面を切り抜いて作ったまとめを確認・編集出来ます。また、いいねしたみんなの切り抜きも見ることが出来ます。",
         },
         {
           property: "og:site_name",
@@ -101,7 +101,7 @@ export default {
         {
           property: "og:description",
           content:
-            "YouTube動画の切り抜きまとめサイト、YouClipのマイページです。YouTube動画からお気に入りの場面を切り抜いて作ったまとめを確認・編集出来ます。また、いいねしたみんなの切り抜きまとめも見ることが出来ます。",
+            "YouTube長時間動画の見所切り抜きサイト、YouClipのマイページです。YouTube動画からお気に入りの場面の切り抜きを作成・編集出来ます。また、いいねしたみんなの切り抜きも見ることが出来ます。",
         },
         {
           property: "og:image",

@@ -57,8 +57,8 @@ class IndexController extends Controller
                     // watchページ以外の場合
                     $site_name = "YouClip";
                     $url = "https://youclip.jp" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
-                    $title = "YouClip - YouTube動画の切り抜きまとめ";
-                    $description = "YouClipはYouTube動画の切り抜きまとめサイトです。お気に入りの場面を切り抜いて残すことが出来ます。みんなの切り抜きまとめを見ることも可能です";
+                    $title = "YouClip - YouTube長時間動画の見所切り抜き";
+                    $description = "YouClipはYouTube長時間動画の見所切り抜きサイトです。お気に入りの場面を切り抜いて残すことが出来ます。みんなの切り抜きまとめを見ることも可能です";
                     $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/twitter-youclip-logo.png";
                     
                     return view('ogp')->with('site_name', $site_name)->with('url', $url)->with('title', $title)->with('description', $description)->with('image_url', $image_url)->with('fb_app_id', env('FACEBOOK_ID'));

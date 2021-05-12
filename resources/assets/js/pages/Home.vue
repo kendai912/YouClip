@@ -70,12 +70,12 @@ import myMixin from "../util";
 export default {
   metaInfo() {
     return {
-      title: "YouClip - YouTube動画の切り抜きまとめサイト",
+      title: "YouClip - YouTube長時間動画の見所切り抜きサイト",
       meta: [
         {
           name: "description",
           content:
-            "YouClipはYouTube動画の切り抜きまとめサイトです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きまとめを見ることも可能です。",
+            "YouClipはYouTube長時間動画の見所切り抜きサイトです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きを見ることも可能です。",
         },
         {
           property: "og:site_name",
@@ -91,12 +91,12 @@ export default {
         },
         {
           property: "og:title",
-          content: "YouClip - YouTube動画の切り抜きまとめサイト",
+          content: "YouClip - YouTube長時間動画の見所切り抜きサイト",
         },
         {
           property: "og:description",
           content:
-            "YouClipはYouTube動画の切り抜きまとめサイトです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きまとめを誰でも簡単に作ることが出来ます。",
+            "YouClipはYouTube長時間動画の見所切り抜きサイトです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。",
         },
         {
           property: "og:image",

@@ -71,7 +71,7 @@
             loading="lazy"
           />
           <p class="leading-none text-gray-600 text-s">
-            | YouTube動画の切り抜きまとめ
+            | YouTube長時間動画の見所切り抜き
           </p>
         </router-link>
       </v-toolbar-items>

@@ -122,7 +122,7 @@ export default {
         {
           name: "description",
           content:
-            "YouTube動画の切り抜きまとめサイト、YouClipの編集ページです。作成した切り抜きまとめの開始・終了時間やタグを変更・修正出来ます。新たな場面も切り抜いて追加可能です。",
+            "YouTube長時間動画の見所切り抜きサイト、YouClipの編集ページです。作成した切り抜きまとめの開始・終了時間やタグを変更・修正出来ます。新たな場面も切り抜いて追加可能です。",
         },
         {
           property: "og:site_name",
@@ -143,7 +143,7 @@ export default {
         {
           property: "og:description",
           content:
-            "YouTube動画の切り抜きまとめサイト、YouClipの編集ページです。作成した切り抜きまとめの開始・終了時間やタグを変更・修正出来ます。新たな場面も切り抜いて追加可能です。",
+            "YouTube長時間動画の見所切り抜きサイト、YouClipの編集ページです。作成した切り抜きまとめの開始・終了時間やタグを変更・修正出来ます。新たな場面も切り抜いて追加可能です。",
         },
         {
           property: "og:image",

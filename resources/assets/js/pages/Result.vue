@@ -22,9 +22,9 @@ export default {
         {
           name: "description",
           content:
-            "YouTube動画の切り抜きまとめサイト、YouClipでの「" +
+            "YouTube長時間動画の見所切り抜きサイト、YouClipでの「" +
             this.$route.query.search_query +
-            "」に関するYouTube動画切り抜きまとめ検索結果です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜き集を誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きまとめを見ることも可能です。",
+            "」に関するYouTube動画切り抜きまとめ検索結果です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きを見ることも可能です。",
         },
         {
           property: "og:site_name",
@@ -48,9 +48,9 @@ export default {
         {
           property: "og:description",
           content:
-            "YouTube動画の切り抜きまとめサイト、YouClipでの「" +
+            "YouTube長時間動画の見所切り抜きサイト、YouClipでの「" +
             this.$route.query.search_query +
-            "」に関するYouTube動画切り抜きまとめ検索結果です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きまとめを誰でも簡単に作ることが出来ます。",
+            "」に関するYouTube動画切り抜きまとめ検索結果です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。",
         },
         {
           property: "og:image",
