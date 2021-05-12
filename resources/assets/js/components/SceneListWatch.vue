@@ -101,7 +101,7 @@
 
                                 <div class="green--text text--darken-2 pt-1">
                                   <span class="sceneTime">{{
-                                    formatTime(
+                                    convertToKanjiTime(
                                       convertToSec(mediaItems[listIndex].end) -
                                         convertToSec(
                                           mediaItems[listIndex].start
@@ -236,7 +236,7 @@
                                 v-on:click.stop="select(index)"
                               >
                                 <span class="sceneTime">{{
-                                  formatTime(
+                                  convertToKanjiTime(
                                     convertToSec(item.end) -
                                       convertToSec(item.start)
                                   )
