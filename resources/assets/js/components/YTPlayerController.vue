@@ -1,7 +1,7 @@
 <template>
   <div class="iframeHeight">
     <div v-if="isMutedDefault" class="unmuteDefaultBtn">
-      <v-btn color="red lighten-3" height="32" v-on:click="unmuteDefault">
+      <v-btn color="white lighten-3" height="32" v-on:click="unmuteDefault">
         <v-icon left> volume_off </v-icon>
         ミュートを解除
       </v-btn>
