@@ -8,8 +8,7 @@ const state = {
   playlistAndTagPaginationOfNew: null,
   playlistAndTagPaginationOfVTuber: null,
   playlistAndTagPaginationOfGame: null,
-  playlistAndTagPaginationOfMusic: null,
-  playlistAndTagPaginationOfLanguage: null,
+  playlistAndTagPaginationOfSports: null,
   myCreatedPlaylist: null,
   myLikedPlaylist: null,
   showAddPlaylistModal: false,
@@ -19,20 +18,17 @@ const state = {
   proceedPeriodOfNew: false,
   proceedPeriodOfVTuber: false,
   proceedPeriodOfGame: false,
-  proceedPeriodOfMusic: false,
-  proceedPeriodOfLanguage: false,
+  proceedPeriodOfSports: false,
   // toLoadRecommend: true,
   toLoadNew: true,
   toLoadVTuber: true,
   toLoadGame: true,
-  toLoadMusic: true,
-  toLoadLanguage: true,
+  toLoadSports: true,
   // isIndexRecommendPlaylistAndTagPaginating: false,
   isIndexNewPlaylistAndTagPaginating: false,
   isIndexVTuberPlaylistAndTagPaginating: false,
   isIndexGamePlaylistAndTagPaginating: false,
-  isIndexMusicPlaylistAndTagPaginating: false,
-  isIndexLanguagePlaylistAndTagPaginating: false,
+  isIndexSportsPlaylistAndTagPaginating: false,
   sceneListofPlaylist: null,
   commentListofPlaylist: null,
   newPlaylistId: null,
@@ -51,10 +47,8 @@ const getters = {
     state.playlistAndTagPaginationOfVTuber,
   playlistAndTagPaginationOfGame: (state) =>
     state.playlistAndTagPaginationOfGame,
-  playlistAndTagPaginationOfMusic: (state) =>
-    state.playlistAndTagPaginationOfMusic,
-  playlistAndTagPaginationOfLanguage: (state) =>
-    state.playlistAndTagPaginationOfLanguage,
+  playlistAndTagPaginationOfSports: (state) =>
+    state.playlistAndTagPaginationOfSports,
   myCreatedPlaylist: (state) => state.myCreatedPlaylist,
   myLikedPlaylist: (state) => state.myLikedPlaylist,
   publicPlaylist: (state) => state.publicPlaylist,
@@ -67,14 +61,12 @@ const getters = {
   proceedPeriodOfNew: (state) => state.proceedPeriodOfNew,
   proceedPeriodOfVTuber: (state) => state.proceedPeriodOfVTuber,
   proceedPeriodOfGame: (state) => state.proceedPeriodOfGame,
-  proceedPeriodOfMusic: (state) => state.proceedPeriodOfMusic,
-  proceedPeriodOfLanguage: (state) => state.proceedPeriodOfLanguage,
+  proceedPeriodOfSports: (state) => state.proceedPeriodOfSports,
   // toLoadRecommend: (state) => state.toLoadRecommend,
   toLoadNew: (state) => state.toLoadNew,
   toLoadVTuber: (state) => state.toLoadVTuber,
   toLoadGame: (state) => state.toLoadGame,
-  toLoadMusic: (state) => state.toLoadMusic,
-  toLoadLanguage: (state) => state.toLoadLanguage,
+  toLoadSports: (state) => state.toLoadSports,
   // isIndexRecommendPlaylistAndTagPaginating: (state) =>
   //   state.isIndexRecommendPlaylistAndTagPaginating,
   isIndexNewPlaylistAndTagPaginating: (state) =>
@@ -83,10 +75,8 @@ const getters = {
     state.isIndexVTuberPlaylistAndTagPaginating,
   isIndexGamePlaylistAndTagPaginating: (state) =>
     state.isIndexGamePlaylistAndTagPaginating,
-  isIndexMusicPlaylistAndTagPaginating: (state) =>
-    state.isIndexMusicPlaylistAndTagPaginating,
-  isIndexLanguagePlaylistAndTagPaginating: (state) =>
-    state.isIndexLanguagePlaylistAndTagPaginating,
+  isIndexSportsPlaylistAndTagPaginating: (state) =>
+    state.isIndexSportsPlaylistAndTagPaginating,
   getPlaylistTagContentById: (state) => (playlistId) => {
     return state.playlistData.find(
       (playlistTag) => playlistTag.id == playlistId
@@ -120,11 +110,8 @@ const mutations = {
   setPlaylistAndTagPaginationOfGame(state, data) {
     state.playlistAndTagPaginationOfGame = data;
   },
-  setPlaylistAndTagPaginationOfMusic(state, data) {
-    state.playlistAndTagPaginationOfMusic = data;
-  },
-  setPlaylistAndTagPaginationOfLanguage(state, data) {
-    state.playlistAndTagPaginationOfLanguage = data;
+  setPlaylistAndTagPaginationOfSports(state, data) {
+    state.playlistAndTagPaginationOfSports = data;
   },
   setMyCreatedPlaylist(state, data) {
     state.myCreatedPlaylist = data;
@@ -165,11 +152,8 @@ const mutations = {
   setProceedPeriodOfGame(state, data) {
     state.proceedPeriodOfGame = data;
   },
-  setProceedPeriodOfMusic(state, data) {
-    state.proceedPeriodOfMusic = data;
-  },
-  setProceedPeriodOfLanguage(state, data) {
-    state.proceedPeriodOfLanguage = data;
+  setProceedPeriodOfSports(state, data) {
+    state.proceedPeriodOfSports = data;
   },
   // setToLoadRecommend(state, data) {
   //   state.toLoadRecommend = data;
@@ -183,11 +167,8 @@ const mutations = {
   setToLoadGame(state, data) {
     state.toLoadGame = data;
   },
-  setToLoadMusic(state, data) {
-    state.toLoadMusic = data;
-  },
-  setToLoadLanguage(state, data) {
-    state.toLoadLanguage = data;
+  setToLoadSports(state, data) {
+    state.toLoadSports = data;
   },
   // setIsIndexRecommendPlaylistAndTagPaginating(state, data) {
   //   state.isIndexRecommendPlaylistAndTagPaginating = data;
@@ -201,11 +182,8 @@ const mutations = {
   setIsIndexGamePlaylistAndTagPaginating(state, data) {
     state.isIndexGamePlaylistAndTagPaginating = data;
   },
-  setIsIndexMusicPlaylistAndTagPaginating(state, data) {
-    state.isIndexMusicPlaylistAndTagPaginating = data;
-  },
-  setIsIndexLanguagePlaylistAndTagPaginating(state, data) {
-    state.isIndexLanguagePlaylistAndTagPaginating = data;
+  setIsIndexSportsPlaylistAndTagPaginating(state, data) {
+    state.isIndexSportsPlaylistAndTagPaginating = data;
   },
   setSceneListofPlaylist(state, data) {
     state.sceneListofPlaylist = data;
@@ -368,13 +346,13 @@ const actions = {
     }
   },
 
-  // 【Music】プレイリスト一覧を取得
-  async indexPlaylistAndTagPaginationOfMusic(context, input) {
+  // 【Sports】プレイリスト一覧を取得
+  async indexPlaylistAndTagPaginationOfSports(context, input) {
     //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
-    context.commit("setIsIndexMusicPlaylistAndTagPaginating", true);
+    context.commit("setIsIndexSportsPlaylistAndTagPaginating", true);
 
     const response = await axios.get(
-      "/api/index/playlistAndTagOfMusic?page=" +
+      "/api/index/playlistAndTagOfSports?page=" +
         input.page +
         "&period=" +
         input.period
@@ -382,57 +360,18 @@ const actions = {
 
     if (response.status == OK) {
       // 成功した時
-      if (response.data.playlistAndTagPaginationOfMusic.last_page <= input.page)
-        context.commit("setProceedPeriodOfMusic", true);
+      if (response.data.playlistAndTagPaginationOfSports.last_page <= input.page)
+        context.commit("setProceedPeriodOfSports", true);
 
-      if (response.data.endOfPeriodFlg) context.commit("setToLoadMusic", false);
+      if (response.data.endOfPeriodFlg) context.commit("setToLoadSports", false);
 
-      if (response.data.playlistAndTagPaginationOfMusic.data) {
+      if (response.data.playlistAndTagPaginationOfSports.data) {
         context.commit(
-          "setPlaylistAndTagPaginationOfMusic",
-          response.data.playlistAndTagPaginationOfMusic
+          "setPlaylistAndTagPaginationOfSports",
+          response.data.playlistAndTagPaginationOfSports
         );
         //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
-        context.commit("setIsIndexMusicPlaylistAndTagPaginating", false);
-      }
-    } else if (response.status == INTERNAL_SERVER_ERROR) {
-      // 失敗した時
-      context.commit("error/setCode", response.status, { root: true });
-    } else {
-      // 上記以外で失敗した時
-      context.commit("error/setCode", response.status, { root: true });
-    }
-  },
-
-  // 【Language】プレイリスト一覧を取得
-  async indexPlaylistAndTagPaginationOfLanguage(context, input) {
-    //連続して無限スクロールイベントが発生しないようにするためのフラグをセット
-    context.commit("setIsIndexLanguagePlaylistAndTagPaginating", true);
-
-    const response = await axios.get(
-      "/api/index/playlistAndTagOfLanguage?page=" +
-        input.page +
-        "&period=" +
-        input.period
-    );
-
-    if (response.status == OK) {
-      // 成功した時
-      if (
-        response.data.playlistAndTagPaginationOfLanguage.last_page <= input.page
-      )
-        context.commit("setProceedPeriodOfLanguage", true);
-
-      if (response.data.endOfPeriodFlg)
-        context.commit("setToLoadLanguage", false);
-
-      if (response.data.playlistAndTagPaginationOfLanguage.data) {
-        context.commit(
-          "setPlaylistAndTagPaginationOfLanguage",
-          response.data.playlistAndTagPaginationOfLanguage
-        );
-        //連続して無限スクロールイベントが発生しないようにするためのフラグを解除
-        context.commit("setIsIndexLanguagePlaylistAndTagPaginating", false);
+        context.commit("setIsIndexSportsPlaylistAndTagPaginating", false);
       }
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時

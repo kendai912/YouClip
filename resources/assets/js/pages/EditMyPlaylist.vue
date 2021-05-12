@@ -185,12 +185,8 @@ export default {
           value: "Game",
         },
         {
-          text: "音楽",
-          value: "Music",
-        },
-        {
-          text: "語学",
-          value: "Language",
+          text: "スポーツ",
+          value: "Sports",
         },
         {
           text: "その他",

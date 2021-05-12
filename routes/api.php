@@ -47,10 +47,8 @@ Route::get('/index/playlistAndTagOfNew', 'PlaylistController@indexPlaylistAndTag
 Route::get('/index/playlistAndTagOfVTuber', 'PlaylistController@indexPlaylistAndTagPaginationOfVTuber');
 //【Game】プレイリスト一覧のロード
 Route::get('/index/playlistAndTagOfGame', 'PlaylistController@indexPlaylistAndTagPaginationOfGame');
-//【Music】プレイリスト一覧のロード
-Route::get('/index/playlistAndTagOfMusic', 'PlaylistController@indexPlaylistAndTagPaginationOfMusic');
-//【Language】プレイリスト一覧のロード
-Route::get('/index/playlistAndTagOfLanguage', 'PlaylistController@indexPlaylistAndTagPaginationOfLanguage');
+//【Sports】プレイリスト一覧のロード
+Route::get('/index/playlistAndTagOfSports', 'PlaylistController@indexPlaylistAndTagPaginationOfSports');
 // ID指定でのプレイリストおよびタグ・動画データの取得
 Route::get('/get/playlistAndTagVideoData', 'PlaylistController@getPlaylistAndTagVideoDataById');
 //作成したプレイリスト一覧をロード

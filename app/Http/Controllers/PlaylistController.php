@@ -170,15 +170,15 @@ class PlaylistController extends Controller
         );
     }
 
-    //【Music】プレイリスト一覧の取得
-    public function indexPlaylistAndTagPaginationOfMusic(Request $request)
+    //【Sports】プレイリスト一覧の取得
+    public function indexPlaylistAndTagPaginationOfSports(Request $request)
     {
         $period = $request->input('period');
         $from = Carbon::now()->subDays($period * $this->daysPerPeriod);
         $to = Carbon::now()->subDays(($period - 1) * $this->daysPerPeriod);
 
-        //Musicカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
-        $playlistAndTagPaginationOfMusic = Playlist::whereHas('tags', function ($query) {
+        //Sportsカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
+        $playlistAndTagPaginationOfSports = Playlist::whereHas('tags', function ($query) {
             $query->where('privacySetting', 'public');
         })->with(array('tags'=> function ($query) {
             $likes_tags = Like::groupBy('tag_id')->select('tag_id', DB::raw('count(*) as likes_tag_count'))->orderBy('likes_tag_count', 'DESC');
@@ -186,7 +186,7 @@ class PlaylistController extends Controller
             $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
-        }))->where('playlistCategory', 'Music')->with('user')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
+        }))->where('playlistCategory', 'Sports')->with('user')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
             $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
         }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereBetween('created_at', [$from, $to])->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($this->contentsPerPage);
 
@@ -197,43 +197,8 @@ class PlaylistController extends Controller
 
         return response()->json(
             [
-            'playlistAndTagPaginationOfMusic' => $playlistAndTagPaginationOfMusic,
+            'playlistAndTagPaginationOfSports' => $playlistAndTagPaginationOfSports,
             'endOfPeriodFlg' => $endOfPeriodFlg
-            ],
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
-    }
-
-    //【Language】プレイリスト一覧の取得
-    public function indexPlaylistAndTagPaginationOfLanguage(Request $request)
-    {
-        $period = $request->input('period');
-        $from = Carbon::now()->subDays($period * $this->daysPerPeriod);
-        $to = Carbon::now()->subDays(($period - 1) * $this->daysPerPeriod);
-
-        //Languageカテゴリの、直近30日のLike数が多い順・新しい順に並び替え
-        $playlistAndTagPaginationOfLanguage = Playlist::whereHas('tags', function ($query) {
-            $query->where('privacySetting', 'public');
-        })->with(array('tags'=> function ($query) {
-            $likes_tags = Like::groupBy('tag_id')->select('tag_id', DB::raw('count(*) as likes_tag_count'))->orderBy('likes_tag_count', 'DESC');
-            $likes_tags_sql = $likes_tags->toSql();
-            $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
-                $join->on('tags.id', '=', 'likes_tags.tag_id');
-            })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
-        }))->where('playlistCategory', 'Language')->with('user')->withCount(['likesPlaylist as likesPlaylist_count' => function ($query) {
-            $query->where('likes_playlists.created_at', '>', Carbon::now()->subDays(30));
-        }, 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereBetween('created_at', [$from, $to])->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->paginate($this->contentsPerPage);
-
-        $endOfPeriodFlg = false;
-        if ($period >= $this->endOfPeriod) {
-            $endOfPeriodFlg = true;
-        }
-
-        return response()->json(
-            [
-            'playlistAndTagPaginationOfLanguage' => $playlistAndTagPaginationOfLanguage,            'endOfPeriodFlg' => $endOfPeriodFlg
             ],
             200,
             [],

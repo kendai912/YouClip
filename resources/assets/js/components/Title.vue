@@ -107,12 +107,8 @@ export default {
           value: "Game",
         },
         {
-          text: "音楽",
-          value: "Music",
-        },
-        {
-          text: "語学",
-          value: "Language",
+          text: "スポーツ",
+          value: "Sports",
         },
         {
           text: "その他",
@@ -240,8 +236,8 @@ export default {
       this.myPlaylistToSave
     );
 
-    if (this.currentCategory == "Music") {
-      this.playlistCategory = "Music";
+    if (this.currentCategory == "Sports") {
+      this.playlistCategory = "Sports";
     } else if (this.currentCategory == "Gaming") {
       this.playlistCategory = "Game";
     }
