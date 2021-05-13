@@ -6,7 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
-        "athlon1600/youtube-downloader": "^2.1",
+        "athlon1600/youtube-downloader": "^3.0",
         "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.0",
         "grabzit/grabzit": "^3.4",

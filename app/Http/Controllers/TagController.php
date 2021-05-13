@@ -344,10 +344,18 @@ class TagController extends Controller
     public function getYoutubeDirectLinkMp4($url)
     {
         $yt = new YouTubeDownloader();
-        $links = $yt->getDownloadLinks($url);
+        $result = $yt->getDownloadLinks($url);
+        $links = $result->getAllFormats();
 
-        $key = array_search('22', array_column($links, 'itag'));
-        $yturl = $links[$key]['url'];
+        $itagArray = array_column($links, 'itag');
+        $key = array_search(22, $itagArray) ?: array_search(18, $itagArray) ?: array_search(37, $itagArray) ?: array_search(38, $itagArray);
+ 
+        // check in case $key is 0 and then array_search returns false
+        if (!$key && (in_array(22, $itagArray, true) || in_array(18, $itagArray, true) || in_array(37, $itagArray, true) || in_array(38, $itagArray, true))) {
+            $yturl = $links[0]->url;
+        } else {
+            $yturl = $links[$key]->url;
+        }
         return $yturl;
     }
 
