@@ -220,9 +220,12 @@ class PlaylistController extends Controller
             $sceneOrder = DB::table('playlist_tag')->where('playlist_id', $playlistId)->where('tag_id', $tag->id)->select('scene_order')->first();
             $tagVideoData->scene_order = $sceneOrder->scene_order;
 
-            sscanf($tagVideoData->duration, "%d:%d:%d", $hours, $minutes, $seconds);
-            $time_seconds = isset($hours) ? $hours * 3600 + $minutes * 60 + $seconds : $minutes * 60 + $seconds;
-            $total_duration += $time_seconds;
+            if (!in_array($tagVideoData->video_id, array_column($tagVideoDatas, 'video_id'))) {
+                sscanf($tagVideoData->duration, "%d:%d:%d", $hours, $minutes, $seconds);
+                $time_seconds = isset($hours) ? $hours * 3600 + $minutes * 60 + $seconds : $minutes * 60 + $seconds;
+                $total_duration += $time_seconds;
+            }
+
             // シーンが公開設定、限定公開、もしくは非公開設定だがユーザーが作成したものの場合のみ追加
             if ($tagVideoData->privacySetting == 'public' || $tagVideoData->privacySetting == 'limited') {
                 $tagVideoDatas[] = $tagVideoData;
