@@ -376,7 +376,10 @@ export default {
       let backwardTimeInSec = this.convertToSec(this.currentDisplayingTime) - 5;
 
       if (this.isWatchingPlaylist) {
-        this.$store.dispatch("ytPlayer/seekToDisplayingTime", backwardTimeInSec);
+        this.$store.dispatch(
+          "ytPlayer/seekToDisplayingTime",
+          backwardTimeInSec
+        );
       } else {
         this.player.seekTo(backwardTimeInSec);
       }
@@ -432,7 +435,7 @@ export default {
     switchFullScreenMode(event) {
       if (this.isIOS) return;
 
-      if (event.key === "f" || event.type === "click") {
+      if (event.type === "click") {
         // フルスクリーン表示なら解除する
         if (this.checkFullScreen()) {
           this.mobileCheck() ? "" : this.setIsMobile(false);
@@ -692,15 +695,13 @@ export default {
     fullscreenHandler(event) {
       if (this.checkFullScreen()) {
         if (
-          event.key === "f" ||
           event.type === "click" ||
           event.key === "Esc" ||
           event.type === "Escape"
         )
           this.compressScreen(event);
       } else {
-        if (event.key === "f" || event.type === "click")
-          this.expandScreen(event);
+        if (event.type === "click") this.expandScreen(event);
       }
     },
     handleOrientationChange() {
