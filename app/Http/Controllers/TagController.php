@@ -361,7 +361,7 @@ class TagController extends Controller
 
     public function getPreviewThumbFileName($request)
     {
-        $startSec = $this->convertToSec("00:".$request->start);
+        $startSec = $this->convertToSec($request->start);
         $previewThumbName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".webp";
 
         return $previewThumbName;
@@ -369,7 +369,7 @@ class TagController extends Controller
 
     public function getPreviewGifFileName($request)
     {
-        $startSec = $this->convertToSec("00:".$request->start);
+        $startSec = $this->convertToSec($request->start);
         $previewGifName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".mp4";
 
         return $previewGifName;
@@ -377,7 +377,7 @@ class TagController extends Controller
 
     public function getPreviewOgpFileName($request)
     {
-        $startSec = $this->convertToSec("00:".$request->start);
+        $startSec = $this->convertToSec($request->start);
         $previewOgpName = $request->youtubeId . "-" . $startSec . "-" . rand() . ".webp";
 
         return $previewOgpName;
@@ -414,7 +414,7 @@ class TagController extends Controller
     //サムネイル画像を取得しS3に保存
     public function storeTagThumbnail(Request $request, $ytDirectUrl)
     {
-        $startSec = $this->convertToSec("00:".$request->start);
+        $startSec = $this->convertToSec($request->start);
 
         //サムネイル用のファイル名を取得
         $previewThumbName = $this->getPreviewThumbFileName($request);
@@ -435,7 +435,7 @@ class TagController extends Controller
     //プレビュー動画を取得しS3に保存
     public function storeTagPreview(Request $request, $ytDirectUrl)
     {
-        $startSec = $this->convertToSec("00:".$request->start);
+        $startSec = $this->convertToSec($request->start);
         $duration = 7;
         $endSec = $startSec + $duration;
 
@@ -457,7 +457,7 @@ class TagController extends Controller
     //OGP画像を取得しS3に保存
     public function storeTagOgp(Request $request, $ytDirectUrl)
     {
-        $startSec = $this->convertToSec("00:".$request->start);
+        $startSec = $this->convertToSec($request->start);
         $duration = 3;
         $endSec = $startSec + $duration;
 

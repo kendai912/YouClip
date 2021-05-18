@@ -473,10 +473,10 @@ export default {
     dataOfYoutubeIdStartEndTime[0] = [];
     dataOfYoutubeIdStartEndTime[0].youtubeId = youtubeId;
     this.start
-      ? (dataOfYoutubeIdStartEndTime[0].start = "00:" + this.start)
+      ? (dataOfYoutubeIdStartEndTime[0].start = this.start)
       : (dataOfYoutubeIdStartEndTime[0].start = "");
     this.end
-      ? (dataOfYoutubeIdStartEndTime[0].end = "00:" + this.end)
+      ? (dataOfYoutubeIdStartEndTime[0].end = this.end)
       : (dataOfYoutubeIdStartEndTime[0].end = "");
     dataOfYoutubeIdStartEndTime[0].scene_order = 1;
 

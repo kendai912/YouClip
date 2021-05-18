@@ -296,7 +296,6 @@ export default {
         return false;
       }
     },
-
     //playerが取得した時間を「分:秒」に整形
     formatTime(time) {
       time = Math.round(time);
@@ -330,7 +329,6 @@ export default {
         return "0:" + sec;
       }
     },
-
     //数値の桁変換を行う関数
     convertNumDigit(numTxt) {
       let units = ["", "万", "億"];
@@ -649,6 +647,30 @@ export default {
           return (
             (fullSecond < 0 ? "-" : "") + hour + ":" + minute + ":" + second
           );
+        },
+
+        //H:i:s表記にフォーマット
+        toHis: function(time) {
+          if (time.split(":").length == 1) {
+            let fullSecond = this.toSecond(parseInt(time, 10));
+            return this.toTimeFormat(fullSecond);
+          } else if (time.split(":").length == 2) {
+            let fullSecond = this.toSecond(
+              0,
+              parseInt(time.split(":")[0], 10),
+              parseInt(time.split(":")[1], 10)
+            );
+            return this.toTimeFormat(fullSecond);
+          } else if (time.split(":").length == 3) {
+            let fullSecond = this.toSecond(
+              parseInt(time.split(":")[0], 10),
+              parseInt(time.split(":")[1], 10),
+              parseInt(time.split(":")[2], 10)
+            );
+            return this.toTimeFormat(fullSecond);
+          } else {
+            return false;
+          }
         },
       },
     };

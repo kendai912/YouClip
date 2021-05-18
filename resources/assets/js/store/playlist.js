@@ -1,5 +1,6 @@
 import axios from "axios";
 import { OK, CREATED, INTERNAL_SERVER_ERROR } from "../util";
+import myMixin from "../util";
 import router from "../router";
 import store from "../store";
 
@@ -360,10 +361,13 @@ const actions = {
 
     if (response.status == OK) {
       // 成功した時
-      if (response.data.playlistAndTagPaginationOfSports.last_page <= input.page)
+      if (
+        response.data.playlistAndTagPaginationOfSports.last_page <= input.page
+      )
         context.commit("setProceedPeriodOfSports", true);
 
-      if (response.data.endOfPeriodFlg) context.commit("setToLoadSports", false);
+      if (response.data.endOfPeriodFlg)
+        context.commit("setToLoadSports", false);
 
       if (response.data.playlistAndTagPaginationOfSports.data) {
         context.commit(

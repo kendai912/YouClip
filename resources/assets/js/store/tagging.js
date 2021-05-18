@@ -1,5 +1,6 @@
 import axios from "axios";
 import { OK, CREATED, DELETED, INTERNAL_SERVER_ERROR } from "../util";
+import myMixin from "../util";
 import router from "../router";
 import store from "../store";
 
@@ -45,10 +46,10 @@ const mutations = {
     state.tags = data;
   },
   setStart(state, data) {
-    state.start = data;
+    state.start = data ? myMixin.data().timeMath.toHis(data) : "";
   },
   setEnd(state, data) {
-    state.end = data;
+    state.end = data ? myMixin.data().timeMath.toHis(data) : "";
   },
   setPrivacySetting(state, data) {
     state.privacySetting = data;
