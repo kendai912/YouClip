@@ -6,8 +6,15 @@
       </v-btn>
       <v-card-title class="title-2 py-2">場面を削除</v-card-title>
       <v-card-subtitle class="subtitle-1 py-3"
-        >{{ tagName }} {{ sceneListofPlaylist[tagIndex].start }}-{{
-          sceneListofPlaylist[tagIndex].end
+        >{{ tagName }}
+        {{
+          sceneListofPlaylist[tagIndex]
+            ? sceneListofPlaylist[tagIndex].start
+            : ""
+        }}-{{
+          sceneListofPlaylist[tagIndex]
+            ? sceneListofPlaylist[tagIndex].end
+            : ""
         }}の場面を削除してもよろしいですか？<br />(削除すると元に戻すことはできません。)</v-card-subtitle
       >
       <v-divider class="mx-6"></v-divider>
@@ -58,7 +65,7 @@ export default {
   methods: {
     ...mapMutations({
       closeTagDeleteModal: "tagDeleteModal/closeTagDeleteModal",
-      setPlaylistAndTagVideoData: "playlist/setSceneListofPlaylist",
+      setSceneListofPlaylist: "playlist/setSceneListofPlaylist",
     }),
     cancel() {
       this.closeTagDeleteModal();
@@ -69,7 +76,10 @@ export default {
       await this.$store.dispatch("tagDeleteModal/deleteTag").then((res) => {
         if (res) {
           //プレイリスト削除完了のトーストを表示
-          this.$store.commit("snackbar/setText", "切り抜きまとめを削除しました");
+          this.$store.commit(
+            "snackbar/setText",
+            "切り抜きまとめを削除しました"
+          );
           this.$store.commit("snackbar/seVertical", false);
           this.$store.commit("snackbar/setSnackbar", true);
           this.$store.commit("snackbar/setTimeout", 5000);
@@ -77,10 +87,7 @@ export default {
           let tags = this.sceneListofPlaylist;
 
           //前のページに遷移
-          this.$store.dispatch(
-            "playlist/setSceneListofPlaylist",
-            tags.splice(this.tagIndex, 1)
-          );
+          this.setSceneListofPlaylist(tags.splice(this.tagIndex, 1));
         }
       });
 

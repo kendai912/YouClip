@@ -299,8 +299,8 @@ class TagController extends Controller
             $tag->video_id = $video->id;
             $tag->user_id = Auth::user()->id;
             $tag->tags = $tags;
-            $tag->start = $this->convertIStoHIS($request->start);
-            $tag->end = $this->convertIStoHIS($request->end);
+            $tag->start = $request->start;
+            $tag->end = $request->end;
             $tag->privacySetting = $request->privacySetting;
             $tag->preview = "";
             $tag->previewgif = "";
@@ -501,8 +501,8 @@ class TagController extends Controller
         $tag->previewgif = $previewGifName;
         $tag->previewogp = $previewOgpName;
         $tag->tags = implode("::", $request->tags); //タグの配列を「::」で区切った文字列に変換
-        $tag->start = $this->convertIStoHIS($request->start);
-        $tag->end = $this->convertIStoHIS($request->end);
+        $tag->start = $request->start;
+        $tag->end = $request->end;
         $tag->privacySetting = $request->privacySetting;
         $tag->save();
 
