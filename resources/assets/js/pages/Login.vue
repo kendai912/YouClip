@@ -95,7 +95,7 @@
         </v-row>
         <v-row class="ma-0 pa-0 text-right" align="center">
           <v-col class="ma-0 pa-0">
-            <v-btn v-on:click="login" color="primary">ログイン</v-btn>
+            <v-btn v-on:click="login" color="primary darken-2">ログイン</v-btn>
           </v-col>
         </v-row>
         <v-row class="ma-0 pa-0" align="center">

@@ -46,8 +46,8 @@ const createApp = async () => {
       theme: {
         themes: {
           light: {
-            primary: colors.green,
-            secondary: colors.grey.darken1,
+            primary: colors.orange,
+            secondary: colors.blue,
             accent: colors.shades.black,
             error: colors.red.accent3,
           },

@@ -23,7 +23,7 @@
             <v-btn
               width="300px"
               height="45px"
-              color="green lighten-1"
+              color="primary darken-2"
               class="white--text"
               to="/login"
               style="font-size: 14px; "
@@ -54,7 +54,7 @@
               width="300px"
               height="45px"
               outlined
-              color="green lighten-1"
+              color="primary darken-2"
               class="white--text"
               to="/register"
               style="font-size: 14px;"

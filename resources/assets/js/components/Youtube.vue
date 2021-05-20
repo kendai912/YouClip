@@ -43,7 +43,7 @@
                         <v-btn
                           v-on:click.stop="tapStartBtn"
                           rounded
-                          color="primary"
+                          color="primary darken-2"
                           height="56"
                           elevation="2"
                         >
@@ -77,7 +77,7 @@
                         <v-btn
                           v-on:click.stop="tapStopBtn"
                           rounded
-                          color="red darken-1"
+                          color="primary darken-2"
                           height="56"
                           elevation="2"
                         >
@@ -113,7 +113,7 @@
             style="padding-top: 24px !important; padding-bottom: 128px !important; "
           >
             <v-col class="text-right ma-0 pa-2">
-              <v-btn color="red darken-1 white--text" v-on:click="next"
+              <v-btn color="primary darken-2 white--text" v-on:click="next"
                 >確認</v-btn
               >
             </v-col>

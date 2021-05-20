@@ -99,7 +99,7 @@
                                   </div>
                                 </div>
 
-                                <div class="green--text text--darken-2 pt-1">
+                                <div class="blue--text pt-1">
                                   <span class="sceneTime">{{
                                     convertToKanjiTime(
                                       convertToSec(mediaItems[listIndex].end) -
@@ -160,7 +160,7 @@
             <v-col class="pa-0 ma-0">
               <div
                 v-bind:class="
-                  listIndex == index && opened ? `green lighten-5` : ``
+                  listIndex == index && opened ? `orange lighten-5` : ``
                 "
               >
                 <v-card
@@ -232,7 +232,7 @@
                               </div>
 
                               <div
-                                class="green--text text--darken-2 pt-1"
+                                class="blue--text pt-1"
                                 v-on:click.stop="select(index)"
                               >
                                 <span class="sceneTime">{{

@@ -37,7 +37,7 @@ export default {
       activeTabIndex: "navbar/activeTabIndex",
     }),
     color() {
-      return this.activeTabIndex == this.selfTabIndex ? "#A5D6A7" : "white";
+      return this.activeTabIndex == this.selfTabIndex ? "primary" : "white";
     },
   },
   mounted() {},

@@ -3,10 +3,7 @@
 
 const version = "1.0.0",
   CACHE = version + "::youclip",
-  urlsToCache = [
-    "/storage/logos/youclip_logo.png",
-    "/manifest.json",
-  ];
+  urlsToCache = ["/manifest.json"];
 
 //************************************************
 //InstallEvent

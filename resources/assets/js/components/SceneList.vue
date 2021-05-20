@@ -22,7 +22,7 @@
             <v-btn
               width="100%"
               height="45px"
-              color="red darken-1"
+              color="primary darken-2"
               outlined
               class="white--text"
               v-on:click="openAddNewSceneModal"
@@ -53,7 +53,7 @@
             <v-btn
               width="100%"
               height="45px"
-              color="red darken-1"
+              color="primary darken-2"
               class="white--text"
               to="/highlight/title"
               style="font-size: 14px;"

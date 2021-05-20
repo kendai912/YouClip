@@ -104,7 +104,7 @@
                         </div>
 
                         <div
-                          class="green--text text--darken-2 pt-2"
+                          class="orange--text text--darken-2 pt-2"
                           style="font-size: 12px; padding-left: 0; font-weight: bold"
                         >
                           <span>{{ item.start }}</span>
