@@ -7,7 +7,6 @@
 /public/mix-manifest.json
 /storage/debugbar
 /storage/*.key
-/storage/app/public/imgs
 /storage/app/public/gifs
 /storage/app/public/.DS_Store
 /storage/.DS_Store
