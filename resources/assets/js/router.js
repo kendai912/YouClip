@@ -317,19 +317,6 @@ const routes = [
     },
   },
   {
-    path: "/deleteAccount",
-    name: "deleteAccount",
-    component: (resolve) => {
-      require.ensure(
-        ["./pages/DeleteAccount.vue"],
-        () => {
-          resolve(require("./pages/DeleteAccount.vue"));
-        },
-        "js/deleteAccount"
-      );
-    },
-  },
-  {
     path: "/500",
     name: "systemError",
     component: (resolve) => {

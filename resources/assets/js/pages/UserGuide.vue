@@ -1,18 +1,5 @@
 <template>
   <div class="container--small">
-    <div style="height: 80px; width: 100%">
-      <img
-        src="/storage/logos/youclip_logo.png"
-        style="
-              position: relative;
-              height: 58%;
-              top: 21%;
-              left: 8px;
-              object-fit: contain;
-            "
-        alt="YouClip logo"
-      />
-    </div>
     <v-row align="center" justify="center" class="ma-0 pa-0" no-gutters>
       <v-container fill-height>
         <v-row
@@ -23,11 +10,8 @@
         >
           <v-col class="text-center" cols="12">
             <h2 class="font-weight-bold mb-3 userguideSectionTitle">
-              YouTube動画の<br />切り抜きまとめサイト
+              YouTube動画の切り抜きツール
             </h2>
-            <p style="margin-top:24px;letter-spacing:1.6px; font-size: 20px;">
-              YouTube動画の"お気に入りの<br />場面"を切り抜いてまとめよう
-            </p>
 
             <v-row class="ma-2 pa-0" align="center" justify="center">
               <v-img
@@ -49,12 +33,6 @@
         <h2 class="font-weight-bold mb-2 userguideSectionTitle">
           こんな時に便利
         </h2>
-
-        <v-responsive class="mx-auto mb-4" width="56">
-          <v-divider class="mb-1"></v-divider>
-
-          <v-divider></v-divider>
-        </v-responsive>
 
         <v-row>
           <v-col
@@ -102,12 +80,6 @@
         <h2 class="font-weight-bold mb-2 userguideSectionTitle">
           切り抜き方は簡単
         </h2>
-
-        <v-responsive class="mx-auto mb-4" width="56">
-          <v-divider class="mb-1"></v-divider>
-
-          <v-divider></v-divider>
-        </v-responsive>
 
         <v-carousel cycle interval="8000" hide-delimiters height="290px">
           <v-carousel-item v-for="({ img, text }, i) in howToImgs" :key="i">
@@ -187,7 +159,7 @@ export default {
       isActive: false,
       features: [
         {
-          img: "/storage/imgs/onboarding2.png",
+          img: "/storage/imgs/userguide-save.png",
           title: "動画の一部を繰り返し見返したい",
         },
         {
@@ -228,7 +200,11 @@ export default {
   computed: {
     ...mapGetters({}),
   },
-  mounted() {},
+  mounted() {
+    //ナビバーのデータをリセットし表示
+    this.$store.commit("navbar/resetNavbar");
+    this.$store.commit("navbar/setShowNavbar", true);
+  },
   created() {},
 };
 </script>

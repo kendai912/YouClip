@@ -77,30 +77,46 @@
       </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-icon v-on:click="search" size="37">search</v-icon>
-      <div>
-        <v-menu offset-y>
-          <template v-slot:activator="{ on }">
-            <router-link to="/userguide">
-              <i
-                v-on="on"
-                class="fas fa-info-circle fa-2x"
-                style="color: grey"
-              ></i>
-            </router-link>
+      <v-card class="ma-0 pa-0" elevation="0">
+        <v-menu bottom left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-app-bar-nav-icon v-bind="attrs" v-on="on"></v-app-bar-nav-icon>
           </template>
+
+          <v-list>
+            <v-list-item v-for="(item, i) in menuItems" :key="i">
+              <v-list-item-title
+                ><router-link v-bind:to="item.to" class="no-text-decoration">{{
+                  item.title
+                }}</router-link></v-list-item-title
+              >
+            </v-list-item>
+          </v-list>
         </v-menu>
-      </div>
+      </v-card>
     </template>
   </v-app-bar>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import TabItem from "./TabItem.vue";
 
 export default {
+  components: { TabItem },
   data() {
     return {
       model: null,
+      menuItems: [
+        { title: "ホーム", to: "/home" },
+        { title: "YouClipについて", to: "/userguide" },
+        {
+          title: this.isLogin ? "ログアウト" : "ログイン",
+          to: this.isLogin ? "/logout" : "/login",
+        },
+        { title: "利用規約", to: "/termsofservice" },
+        { title: "プライバシーポリシー", to: "/privacypolicy" },
+      ],
     };
   },
   computed: {
