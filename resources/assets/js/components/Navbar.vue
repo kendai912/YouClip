@@ -71,7 +71,7 @@
             loading="lazy"
           />
           <p class="leading-none text-gray-600 text-s">
-            | YouTube動画の切り抜きツール
+            | YouTube動画の切り抜きツール {{ isLogin }}
           </p>
         </router-link>
       </v-toolbar-items>
@@ -85,7 +85,7 @@
 
           <v-list>
             <v-list-item v-for="(item, i) in menuItems" :key="i">
-              <v-list-item-title
+              <v-list-item-title v-on:click="menuClickHandler(item.event)"
                 ><router-link v-bind:to="item.to" class="no-text-decoration">{{
                   item.title
                 }}</router-link></v-list-item-title
@@ -107,16 +107,6 @@ export default {
   data() {
     return {
       model: null,
-      menuItems: [
-        { title: "ホーム", to: "/home" },
-        { title: "YouClipについて", to: "/userguide" },
-        {
-          title: this.isLogin ? "ログアウト" : "ログイン",
-          to: this.isLogin ? "/logout" : "/login",
-        },
-        { title: "利用規約", to: "/termsofservice" },
-        { title: "プライバシーポリシー", to: "/privacypolicy" },
-      ],
     };
   },
   computed: {
@@ -137,6 +127,19 @@ export default {
       set(val) {
         this.$store.commit("navbar/setSearchquery", val);
       },
+    },
+    menuItems() {
+      return [
+        { title: "ホーム", event: "", to: "/home" },
+        { title: "YouClipについて", event: "", to: "/userguide" },
+        {
+          title: this.isLogin ? "ログアウト" : "ログイン",
+          event: this.isLogin ? "logout" : "",
+          to: this.isLogin ? "/" : "/login",
+        },
+        { title: "利用規約", event: "", to: "/termsofservice" },
+        { title: "プライバシーポリシー", event: "", to: "/privacypolicy" },
+      ];
     },
     //過去の検索履歴と人気の検索履歴を履歴優先で合計7件までサジェストに表示
     items() {
@@ -175,6 +178,11 @@ export default {
       await this.$store.dispatch("auth/logout");
       if (this.apiStatus) {
         this.$router.push("/login");
+      }
+    },
+    async menuClickHandler(eventName) {
+      if (eventName == "logout") {
+        await this.$store.dispatch("auth/logout");
       }
     },
     search(event) {
