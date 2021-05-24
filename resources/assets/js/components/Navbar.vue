@@ -134,7 +134,7 @@ export default {
         { title: "YouClipについて", event: "", to: "/userguide" },
         {
           title: this.isLogin ? "ログアウト" : "ログイン",
-          event: this.isLogin ? "logout" : "",
+          event: this.isLogin ? "logout" : "login",
           to: this.isLogin ? "/" : "/login",
         },
         { title: "利用規約", event: "", to: "/termsofservice" },
@@ -183,6 +183,10 @@ export default {
     async menuClickHandler(eventName) {
       if (eventName == "logout") {
         await this.$store.dispatch("auth/logout");
+      }
+
+      if (eventName == "logout" || eventName == "login") {
+        this.$router.push("/mypage");
       }
     },
     search(event) {
