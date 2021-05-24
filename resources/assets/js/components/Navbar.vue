@@ -71,7 +71,7 @@
             loading="lazy"
           />
           <p class="leading-none text-gray-600 text-s">
-            | YouTube動画の切り抜きツール {{ isLogin }}
+            | YouTube動画の切り抜きツール
           </p>
         </router-link>
       </v-toolbar-items>
