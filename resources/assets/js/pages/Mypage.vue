@@ -92,7 +92,7 @@ export default {
         },
         {
           property: "og:url",
-          content: "https://youclip.jp" + this.$route.fullPath,
+          content: "https://youclip.app" + this.$route.fullPath,
         },
         {
           property: "og:title",
@@ -110,7 +110,7 @@ export default {
         },
       ],
       link: [
-        { rel: "canonical", href: "https://youclip.jp" + this.$route.path },
+        { rel: "canonical", href: "https://youclip.app" + this.$route.path },
       ],
     };
   },

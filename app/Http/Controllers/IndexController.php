@@ -44,7 +44,7 @@ class IndexController extends Controller
                     
                     // get parameter contents by playlistId
                     $site_name = "YouClip";
-                    $url = "https://youclip.jp" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
+                    $url = "https://youclip.app" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
                     $title = Playlist::find($playlistId)->playlistName;
                     $description = Playlist::find($playlistId)->description;
                     if ($description == "" || $description == null) {
@@ -56,9 +56,9 @@ class IndexController extends Controller
                 } else {
                     // watchページ以外の場合
                     $site_name = "YouClip";
-                    $url = "https://youclip.jp" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
-                    $title = "YouClip - YouTube長時間動画の見所切り抜き";
-                    $description = "YouClipはYouTube長時間動画の見所切り抜きサイトです。お気に入りの場面を切り抜いて残すことが出来ます。みんなの切り抜きまとめを見ることも可能です";
+                    $url = "https://youclip.app" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
+                    $title = "YouClip - YouTube動画の見所切り抜き";
+                    $description = "YouClipはYouTube動画の見所切り抜きツールです。オンラインで１分とかからず見所を切り抜くことが出来ます。みんなの作成した切り抜きを見ることも可能です";
                     $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/twitter-youclip-logo.png";
                     
                     return view('ogp')->with('site_name', $site_name)->with('url', $url)->with('title', $title)->with('description', $description)->with('image_url', $image_url)->with('fb_app_id', env('FACEBOOK_ID'));
@@ -75,7 +75,7 @@ class IndexController extends Controller
                     
             // get parameter contents by playlistId
             $site_name = "YouClip";
-            $url = "https://youclip.jp" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
+            $url = "https://youclip.app" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
             $title = Playlist::find($playlistId)->playlistName;
             $description = Playlist::find($playlistId)->description;
             if ($description == "" || $description == null) {

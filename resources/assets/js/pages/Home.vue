@@ -87,7 +87,7 @@ export default {
         },
         {
           property: "og:url",
-          content: "https://youclip.jp",
+          content: "https://youclip.app",
         },
         {
           property: "og:title",
@@ -104,7 +104,7 @@ export default {
             "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/facebook-youclip-logo.png",
         },
       ],
-      link: [{ rel: "canonical", href: "https://youclip.jp" }],
+      link: [{ rel: "canonical", href: "https://youclip.app" }],
     };
   },
   components: {
