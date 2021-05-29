@@ -181,18 +181,21 @@
         unmuteDefault();
       "
     ></v-sheet>
+    <Telop />
     <PlaySpeedModal v-if="showPlaySpeedModal" v-bind:player="player" />
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
-import PlaySpeedModal from "../components/PlaySpeedModal.vue";
 import myMixin from "../util";
+import PlaySpeedModal from "../components/PlaySpeedModal.vue";
+import Telop from "../components/Telop.vue";
 
 export default {
   components: {
     PlaySpeedModal,
+    Telop,
   },
   props: {},
   data() {

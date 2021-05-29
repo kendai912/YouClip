@@ -33,51 +33,106 @@
             >
           </v-row>
 
-          <v-row class="ma-0 pt-4">
+          <v-row class="ma-0 pa-0">
             <v-col class="text-center now-playing">
               <img
                 src="/storage/icons/now_playing.svg"
                 alt="now playing"
                 loading="lazy"
               />
-              <span>{{ start }}-{{ end }}の場面を再生中</span>
+              <span>切り抜いた場面({{ start }}-{{ end }})を再生中</span>
+            </v-col>
+          </v-row>
+
+          <v-row class="ma-0 pa-0">
+            <v-col class="text-left pb-0"
+              >(任意) いま再生中の画面にテロップを挿入
             </v-col>
           </v-row>
 
           <v-row class="ma-0 pa-0" align="center">
-            <v-col>
+            <v-col class="ma-0 pa-0">
               <v-form ref="form" class="ma-0 pa-0">
-                <v-combobox
-                  v-model="tags"
-                  v-bind:items="tagItems"
-                  required
-                  validate-on-blur
-                  chips
-                  clearable
-                  label="(任意) タグを入力　例: 「◯◯の場面」"
-                  multiple
-                  flat
-                  dense
-                  small-chips
-                  class="sceneTagInputBox"
-                >
-                  <template v-slot:selection="{ attrs, item, selected }">
-                    <v-chip
-                      v-bind="attrs"
-                      v-show="item"
-                      :input-value="selected"
-                      class="my-tag-chip pr-2"
-                      text-color="black"
-                      style="font-weight: normal; border-color: #bdbdbd"
-                      outlined
-                      small
-                    >
-                      {{ item }}
-                    </v-chip>
-                  </template>
-                </v-combobox>
+                <v-row class="ma-0 pa-0">
+                  <v-col class="pb-0">
+                    <v-select
+                      v-model="telopPosition"
+                      v-bind:items="telopPositionList"
+                      v-bind:rules="rules"
+                      label="位置"
+                      hide-details
+                      dense
+                      class="telopLabel"
+                    ></v-select
+                  ></v-col>
+                  <v-col class="pb-0">
+                    <v-select
+                      v-model="telopColor"
+                      v-bind:items="telopColorList"
+                      v-bind:rules="rules"
+                      label="色"
+                      hide-details
+                      dense
+                      class="telopLabel"
+                    ></v-select
+                  ></v-col>
+                  <v-col class="pb-0">
+                    <v-select
+                      v-model="telopSize"
+                      v-bind:items="telopSizeList"
+                      v-bind:rules="rules"
+                      label="サイズ"
+                      hide-details
+                      dense
+                      class="telopLabel"
+                    ></v-select
+                  ></v-col>
+                  <v-col class="pb-0">
+                    <v-text-field
+                      v-model="telopDuration"
+                      v-bind:rules="[durationRule]"
+                      type="text"
+                      label="表示"
+                      hide-details
+                      dense
+                      suffix="秒"
+                      class="telopLabel"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-row class="ma-0 pa-0">
+                  <v-col>
+                    <v-text-field
+                      v-model="telopText"
+                      v-bind:rules="rules"
+                      type="text"
+                      name="telopText"
+                      label="テロップ"
+                      hide-details
+                      dense
+                      class="telopLabel"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="auto" class="pr-3">
+                    <v-btn outlined color="primary">
+                      挿入
+                    </v-btn>
+                  </v-col>
+                </v-row>
               </v-form>
             </v-col>
+          </v-row>
+
+          <v-row class="ma-0 pa-3" align="center" justify="center">
+            <v-data-table
+              :headers="headers"
+              :items="telops"
+              sort-by="start"
+              hide-default-footer
+              class="elevation-1 telop-table"
+            >
+            </v-data-table>
           </v-row>
 
           <v-row
@@ -85,13 +140,13 @@
             class="ma-0 pa-0"
             style="padding-top: 24px !important; padding-bottom: 128px !important; "
           >
-            <v-col class="text-right ma-0 pa-2">
+            <v-col class="text-right ma-0 pa-3">
               <v-btn
                 v-if="isVideoDataReady"
                 color="primary darken-2 white--text"
                 v-bind:disabled="isDisabled"
                 v-on:click="confirm"
-                >OK</v-btn
+                >次へ</v-btn
               >
             </v-col>
           </v-row>
@@ -114,6 +169,7 @@ import YTPlayerController from "../components/YTPlayerController";
 import YTSeekBar from "../components/YTSeekBar";
 import NoLoginModal from "../components/NoLoginModal.vue";
 import myMixin from "../util";
+import Navbar from "./Navbar.vue";
 
 export default {
   components: {
@@ -122,6 +178,7 @@ export default {
     YTPlayerController,
     YTSeekBar,
     NoLoginModal,
+    Navbar,
   },
   data() {
     return {
@@ -140,6 +197,59 @@ export default {
       isIOS: false,
       isVideoDataReady: false,
       ytInputData: null,
+      telopPosition: "bottomCenter",
+      telopPositionList: [
+        { text: "下段左", value: "bottomLeft" },
+        { text: "下段中央", value: "bottomCenter" },
+        { text: "下段右", value: "bottomRight" },
+        { text: "中段左", value: "middleLeft" },
+        { text: "中段中央", value: "middleCenter" },
+        { text: "中段右", value: "middleRight" },
+        { text: "上段左", value: "upperLeft" },
+        { text: "上段中央", value: "upperCenter" },
+        { text: "上段右", value: "upperRight" },
+      ],
+      telopColor: "white",
+      telopColorList: [
+        { text: "白", value: "white" },
+        { text: "赤", value: "red" },
+        { text: "ピンク", value: "pink" },
+        { text: "黄", value: "yellow" },
+        { text: "緑", value: "green" },
+        { text: "水色", value: "cyan" },
+        { text: "青", value: "blue" },
+        { text: "紫", value: "purple" },
+        { text: "黒", value: "black" },
+      ],
+      telopSize: "medium",
+      telopSizeList: [
+        { text: "大", value: "large" },
+        { text: "中", value: "medium" },
+        { text: "小", value: "small" },
+      ],
+      telopDuration: 2,
+      durationRule: (v) => {
+        if (!v.trim()) return true;
+        if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
+        return "0〜999秒の間で入力ください";
+      },
+      headers: [
+        { text: "開始", value: "start", sortable: false, width: "15%" },
+        { text: "表示", value: "duration", sortable: false, width: "15%" },
+        {
+          text: "テロップ",
+          value: "telop",
+          sortable: false,
+        },
+      ],
+      telops: [],
+      defaultItem: {
+        name: "",
+        calories: 0,
+        fat: 0,
+        carbs: 0,
+        protein: 0,
+      },
     };
   },
   mixins: [myMixin],
@@ -446,6 +556,18 @@ export default {
   },
   async created() {
     this.initialize();
+    this.telops = [
+      {
+        telop: "あいうえお",
+        start: "10:10:00",
+        duration: 24,
+      },
+      {
+        telop: "Ice cream sandwich",
+        start: "1:00",
+        duration: 37,
+      },
+    ];
 
     //必要データを取得するまでTagItemは非表示
     this.$store.commit("youtube/setIsReady", false);
