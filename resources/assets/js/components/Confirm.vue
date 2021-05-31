@@ -58,10 +58,10 @@
                     <v-select
                       v-model="telopPosition"
                       v-bind:items="telopPositionList"
-                      v-bind:rules="rules"
                       label="位置"
                       hide-details
                       dense
+                      v-bind:rules="required"
                       class="telopLabel"
                     ></v-select
                   ></v-col>
@@ -69,10 +69,10 @@
                     <v-select
                       v-model="telopColor"
                       v-bind:items="telopColorList"
-                      v-bind:rules="rules"
                       label="色"
                       hide-details
                       dense
+                      v-bind:rules="required"
                       class="telopLabel"
                     ></v-select
                   ></v-col>
@@ -80,22 +80,24 @@
                     <v-select
                       v-model="telopSize"
                       v-bind:items="telopSizeList"
-                      v-bind:rules="rules"
                       label="サイズ"
                       hide-details
                       dense
+                      v-bind:rules="required"
                       class="telopLabel"
                     ></v-select
                   ></v-col>
                   <v-col class="pb-0">
                     <v-text-field
                       v-model="telopDuration"
-                      v-bind:rules="[durationRule]"
-                      type="text"
+                      min="0"
+                      max="999"
+                      type="number"
                       label="表示"
                       hide-details
                       dense
                       suffix="秒"
+                      v-bind:rules="required"
                       class="telopLabel"
                     ></v-text-field>
                   </v-col>
@@ -105,17 +107,17 @@
                   <v-col>
                     <v-text-field
                       v-model="telopText"
-                      v-bind:rules="rules"
                       type="text"
                       name="telopText"
                       label="テロップ"
                       hide-details
                       dense
+                      v-bind:rules="required"
                       class="telopLabel"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="auto" class="pr-3">
-                    <v-btn outlined color="primary">
+                    <v-btn outlined color="primary" v-on:click="insert">
                       挿入
                     </v-btn>
                   </v-col>
@@ -124,7 +126,12 @@
             </v-col>
           </v-row>
 
-          <v-row class="ma-0 pa-3" align="center" justify="center">
+          <v-row
+            v-if="telops.length"
+            class="ma-0 pa-3"
+            align="center"
+            justify="center"
+          >
             <v-data-table
               :headers="headers"
               :items="telops"
@@ -228,17 +235,19 @@ export default {
         { text: "小", value: "small" },
       ],
       telopDuration: 2,
-      durationRule: (v) => {
-        if (!v.trim()) return true;
-        if (!isNaN(parseFloat(v)) && v >= 0 && v <= 999) return true;
-        return "0〜999秒の間で入力ください";
-      },
+      telopText: "",
+      required: [(value) => !!value || "必須項目です."],
       headers: [
-        { text: "開始", value: "start", sortable: false, width: "15%" },
-        { text: "表示", value: "duration", sortable: false, width: "15%" },
+        { text: "開始", value: "telopStart", sortable: false, width: "15%" },
+        {
+          text: "表示(秒)",
+          value: "telopDuration",
+          sortable: false,
+          width: "15%",
+        },
         {
           text: "テロップ",
-          value: "telop",
+          value: "telopText",
           sortable: false,
         },
       ],
@@ -369,6 +378,7 @@ export default {
           "ytSeekBar/setEndTimeInput",
           this.ytInputData.endTimeInput
         );
+        if (this.ytInputData.telops) this.telops = this.ytInputData.telops;
       }
       this.checkRouting();
     },
@@ -541,6 +551,24 @@ export default {
       //次のシーンをロードし再生
       this.$store.dispatch("ytPlayer/playListIndexOf", index);
     },
+    insert() {
+      if (this.$refs.form.validate()) {
+        this.telops.push({
+          telopPosition: this.telopPosition,
+          telopColor: this.telopColor,
+          telopSize: this.telopSize,
+          telopStart: this.timeMath.toHis(this.currentTime),
+          telopDuration: this.telopDuration,
+          telopText: this.telopText,
+        });
+
+        this.ytInputData.telops = this.telops;
+        window.sessionStorage.setItem(
+          "ytInputData",
+          JSON.stringify(this.ytInputData)
+        );
+      }
+    },
   },
   watch: {
     // 検索バーによるルート変更後の初期化処理
@@ -556,18 +584,24 @@ export default {
   },
   async created() {
     this.initialize();
-    this.telops = [
-      {
-        telop: "あいうえお",
-        start: "10:10:00",
-        duration: 24,
-      },
-      {
-        telop: "Ice cream sandwich",
-        start: "1:00",
-        duration: 37,
-      },
-    ];
+    // this.telops = [
+    //   {
+    //     telopPosition: "bottomCenter",
+    //     telopColor: "white",
+    //     telopSize: "medium",
+    //     telopStart: "1:10:00",
+    //     telopDuration: 24,
+    //     telopText: "あいうえお",
+    //   },
+    //   {
+    //     telopPosition: "bottomCenter",
+    //     telopColor: "white",
+    //     telopSize: "medium",
+    //     telopStart: "2:20:30",
+    //     telopDuration: 37,
+    //     telopText: "Ice cream sandwich",
+    //   },
+    // ];
 
     //必要データを取得するまでTagItemは非表示
     this.$store.commit("youtube/setIsReady", false);
