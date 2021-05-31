@@ -11,7 +11,11 @@
       <span
         v-else
         class="vtuberIcon"
-        v-bind:class="[selfTabIndex == activeTabIndex ? 'fontColorPrimary' : 'fontColorWhite']"
+        v-bind:class="[
+          selfTabIndex == activeTabIndex
+            ? 'fontColorPrimary'
+            : 'fontColorWhite',
+        ]"
         >V</span
       >
     </div>

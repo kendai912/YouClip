@@ -251,7 +251,7 @@ export default {
           sortable: false,
         },
       ],
-      telops: [],
+      // telops: [],
       defaultItem: {
         name: "",
         calories: 0,
@@ -284,6 +284,7 @@ export default {
       isMuted: "ytPlayer/isMuted",
       isPlaying: "ytPlayer/isPlaying",
       tagAndVideoData: "watch/tagAndVideoData",
+      telops: "telop/telops",
     }),
   },
   methods: {
@@ -295,6 +296,8 @@ export default {
       setIsAdding: "tagging/setIsAdding",
       setIsEditing: "tagging/setIsEditing",
       setStep: "highlightHeader/setStep",
+      setTelops: "telop/setTelops",
+      pushTelops: "telop/pushTelops",
     }),
     async initialize() {
       //ナビバーを非表示
@@ -378,7 +381,8 @@ export default {
           "ytSeekBar/setEndTimeInput",
           this.ytInputData.endTimeInput
         );
-        if (this.ytInputData.telops) this.telops = this.ytInputData.telops;
+        if (this.ytInputData.telops) this.setTelops(this.ytInputData.telops);
+        // if (this.ytInputData.telops) this.pushTelops(this.ytInputData.telops);
       }
       this.checkRouting();
     },
@@ -553,7 +557,7 @@ export default {
     },
     insert() {
       if (this.$refs.form.validate()) {
-        this.telops.push({
+        this.pushTelops({
           telopPosition: this.telopPosition,
           telopColor: this.telopColor,
           telopSize: this.telopSize,
@@ -584,24 +588,6 @@ export default {
   },
   async created() {
     this.initialize();
-    // this.telops = [
-    //   {
-    //     telopPosition: "bottomCenter",
-    //     telopColor: "white",
-    //     telopSize: "medium",
-    //     telopStart: "1:10:00",
-    //     telopDuration: 24,
-    //     telopText: "あいうえお",
-    //   },
-    //   {
-    //     telopPosition: "bottomCenter",
-    //     telopColor: "white",
-    //     telopSize: "medium",
-    //     telopStart: "2:20:30",
-    //     telopDuration: 37,
-    //     telopText: "Ice cream sandwich",
-    //   },
-    // ];
 
     //必要データを取得するまでTagItemは非表示
     this.$store.commit("youtube/setIsReady", false);

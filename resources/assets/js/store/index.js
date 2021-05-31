@@ -20,6 +20,7 @@ import youtube from "./youtube";
 import ytPlayer from "./ytPlayer";
 import ytSeekBar from "./ytSeekBar";
 import tagging from "./tagging";
+import telop from "./telop";
 import noLoginModal from "./noLoginModal";
 import addNewSceneModal from "./addNewSceneModal";
 import playlistDeleteModal from "./playlistDeleteModal";
@@ -53,6 +54,7 @@ const store = new Vuex.Store({
     ytPlayer,
     ytSeekBar,
     tagging,
+    telop,
     noLoginModal,
     addNewSceneModal,
     playlistDeleteModal,

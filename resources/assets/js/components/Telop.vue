@@ -1,23 +1,66 @@
 <template>
-  <div style="color:white; ">
-    <div
-      v-if="
-        93 <= convertToSec(currentDisplayingTime) &&
-          convertToSec(currentDisplayingTime) <= 96
-      "
-    >
-      -----------TELOP-----------
-    </div>
-    <div>☆☆☆☆☆☆{{ convertToSec(currentDisplayingTime) }}☆☆☆☆☆☆☆</div>
+  <div class="telopLayer">
+    <v-container class="ma-0 pa-0" fluid fill-height style="color: white; ">
+      <v-row
+        class="ma-0 pa-0 text-center"
+        align="center"
+        style="height: 33.333%"
+      >
+        <v-col align-self="center" class="text-left"
+          ><TelopItem columnPosition="upperLeft" />
+        </v-col>
+        <v-col align-self="center" class="text-center"
+          ><TelopItem columnPosition="upperCenter" />
+        </v-col>
+        <v-col align-self="center" class="text-right"
+          ><TelopItem columnPosition="upperRight" />
+        </v-col>
+      </v-row>
+
+      <v-row
+        class="ma-0 pa-0 text-center"
+        align="center"
+        style="height: 33.333%"
+      >
+        <v-col align-self="center" class="text-left"
+          ><TelopItem columnPosition="middleLeft" />
+        </v-col>
+        <v-col align-self="center" class="text-center"
+          ><TelopItem columnPosition="middleCenter" />
+        </v-col>
+        <v-col align-self="center" class="text-right">
+          <TelopItem columnPosition="middleRight" />
+        </v-col>
+      </v-row>
+
+      <v-row
+        class="ma-0 pa-0 text-center"
+        align="center"
+        style="height: 33.333%"
+      >
+        <v-col align-self="center" class="text-left"
+          ><TelopItem columnPosition="bottomLeft" />
+        </v-col>
+        <v-col align-self="center" class="text-center">
+          <TelopItem columnPosition="bottomCenter" />
+        </v-col>
+        <v-col align-self="center" class="text-right">
+          <TelopItem columnPosition="bottomRight" />
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
 import myMixin from "../util";
+import TelopItem from "../components/TelopItem.vue";
 
 export default {
-  components: {},
+  components: {
+    TelopItem,
+  },
   props: {},
   data() {
     return {};
@@ -30,6 +73,7 @@ export default {
       currentDisplayingTimeInSecOfWatch:
         "ytPlayer/currentDisplayingTimeInSecOfWatch",
       currentTime: "youtube/currentTime",
+      telops: "telop/telops",
     }),
     currentDisplayingTime() {
       if (this.isWatchingPlaylist) {
@@ -41,6 +85,9 @@ export default {
   },
   methods: {
     ...mapMutations({}),
+  },
+  created() {
+    console.log(this.telops);
   },
   beforeDestroy() {},
 };
