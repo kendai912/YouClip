@@ -20,6 +20,9 @@ import Boardal from "./components/Boardal.vue";
 import { INTERNAL_SERVER_ERROR, FORBIDDEN, UNAUTHORIZED } from "./util";
 import myMixin from "./util";
 
+const ElementQueries = require("css-element-queries/src/ElementQueries");
+ElementQueries.listen();
+
 export default {
   components: {
     Navbar,

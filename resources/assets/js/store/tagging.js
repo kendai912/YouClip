@@ -7,6 +7,7 @@ import store from "../store";
 const state = {
   tagId: null,
   tags: null,
+  telops: null,
   start: null,
   end: null,
   privacySetting: "public",
@@ -24,6 +25,7 @@ const state = {
 const getters = {
   tagId: (state) => state.tagId,
   tags: (state) => state.tags,
+  telops: (state) => state.telops,
   start: (state) => state.start,
   end: (state) => state.end,
   privacySetting: (state) => state.privacySetting,
@@ -44,6 +46,9 @@ const mutations = {
   },
   setTags(state, data) {
     state.tags = data;
+  },
+  setTelops(state, data) {
+    state.telops = data;
   },
   setStart(state, data) {
     state.start = data ? myMixin.data().timeMath.toHis(data) : "";
@@ -104,6 +109,7 @@ const actions = {
       isNew: store.getters["youtube/isNew"],
       newVideoData: store.getters["youtube/newVideoData"],
       tags: state.tags,
+      telops: state.telops,
       start: state.start,
       end: state.end,
       privacySetting: state.privacySetting,

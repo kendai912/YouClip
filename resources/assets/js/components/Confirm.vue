@@ -520,6 +520,7 @@ export default {
           //新規の場合
           //入力済データをセット
           self.$store.commit("tagging/setTags", self.tags);
+          self.$store.commit("tagging/setTelops", self.telops);
           self.$store.commit("tagging/setPrivacySetting", "public");
 
           //check if there is editing new playlist
