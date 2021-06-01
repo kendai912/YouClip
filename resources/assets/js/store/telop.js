@@ -17,6 +17,9 @@ const mutations = {
   pushTelops(state, data) {
     state.telops.push(data);
   },
+  spliceTelops(state, deleteIndex) {
+    state.telops.splice(deleteIndex, 1);
+  },
 };
 
 const actions = {};

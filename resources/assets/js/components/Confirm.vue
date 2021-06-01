@@ -135,10 +135,39 @@
             <v-data-table
               :headers="headers"
               :items="telops"
-              sort-by="start"
+              sort-by="telopStart"
               hide-default-footer
               class="elevation-1 telop-table"
+              v-on:click:row="seekToTelop"
             >
+              <template v-slot:item.actions="{ item }">
+                <v-icon small v-on:click="deleteTelop(item)">
+                  mdi-delete
+                </v-icon>
+              </template>
+
+              <template v-slot:top>
+                <v-dialog v-model="dialogDelete" max-width="500px">
+                  <v-card>
+                    <v-card-title class="subtitle-1"
+                      >選択したテロップを削除しますか？</v-card-title
+                    >
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="closeDelete"
+                        >キャンセル</v-btn
+                      >
+                      <v-btn
+                        color="blue darken-1"
+                        text
+                        @click="deleteItemConfirm"
+                        >削除する</v-btn
+                      >
+                      <v-spacer></v-spacer>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </template>
             </v-data-table>
           </v-row>
 
@@ -204,6 +233,8 @@ export default {
       isIOS: false,
       isVideoDataReady: false,
       ytInputData: null,
+      dialogDelete: false,
+      deleteIndex: -1,
       telopPosition: "bottomCenter",
       telopPositionList: [
         { text: "下段左", value: "bottomLeft" },
@@ -250,8 +281,8 @@ export default {
           value: "telopText",
           sortable: false,
         },
+        { text: "", value: "actions", sortable: false },
       ],
-      // telops: [],
       defaultItem: {
         name: "",
         calories: 0,
@@ -298,6 +329,7 @@ export default {
       setStep: "highlightHeader/setStep",
       setTelops: "telop/setTelops",
       pushTelops: "telop/pushTelops",
+      spliceTelops: "telop/spliceTelops",
     }),
     async initialize() {
       //ナビバーを非表示
@@ -572,6 +604,25 @@ export default {
           JSON.stringify(this.ytInputData)
         );
       }
+    },
+    seekToTelop(row) {
+      this.player.seekTo(
+        this.convertToSec(this.formatToMinSec(row.telopStart))
+      );
+    },
+    deleteTelop(item) {
+      this.deleteIndex = this.telops.indexOf(item);
+      this.dialogDelete = true;
+    },
+    deleteItemConfirm() {
+      this.spliceTelops(this.deleteIndex);
+      this.closeDelete();
+    },
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.deleteIndex = -1;
+      });
     },
   },
   watch: {
