@@ -1,6 +1,6 @@
 <template>
   <div class="telopLayer">
-    <v-container class="ma-0 pa-0" fluid fill-height style="color: white; ">
+    <v-container class="ma-0 pa-0" fluid fill-height>
       <v-row
         class="ma-0 pa-0 text-center"
         align="center"

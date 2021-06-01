@@ -5,11 +5,12 @@
         v-if="
           convertToSec(formatToMinSec(telop.telopStart)) <=
             convertToSec(currentDisplayingTime) &&
-            convertToSec(currentDisplayingTime) <=
+            convertToSec(currentDisplayingTime) <
               convertToSec(formatToMinSec(telop.telopStart)) +
-                telop.telopDuration &&
+                Number(telop.telopDuration) &&
             telop.telopPosition == columnPosition
         "
+        v-bind:class="telop.telopColor + 'Telop ' + telop.telopSize + 'Telop'"
         >{{ telop.telopText }}</span
       >
     </div>

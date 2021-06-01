@@ -413,8 +413,11 @@ export default {
           "ytSeekBar/setEndTimeInput",
           this.ytInputData.endTimeInput
         );
-        if (this.ytInputData.telops) this.setTelops(this.ytInputData.telops);
-        // if (this.ytInputData.telops) this.pushTelops(this.ytInputData.telops);
+        if (this.ytInputData.telops) {
+          this.setTelops(this.ytInputData.telops);
+        } else {
+          this.setTelops([]);
+        }
       }
       this.checkRouting();
     },
