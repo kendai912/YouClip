@@ -265,7 +265,7 @@ export default {
         { text: "中", value: "medium" },
         { text: "小", value: "small" },
       ],
-      telopDuration: 2,
+      telopDuration: 3,
       telopText: "",
       required: [(value) => !!value || "必須項目です."],
       headers: [

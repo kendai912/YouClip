@@ -37,6 +37,12 @@ class Tag extends Model
         return $this->hasMany('App\Like');
     }
 
+    public function telops()
+    {
+        //Telopモデルのデータを引っ張ってくる
+        return $this->hasMany('App\Telop');
+    }
+
     public function taglogs()
     {
         //Taglogモデルのデータを引っ張ってくる

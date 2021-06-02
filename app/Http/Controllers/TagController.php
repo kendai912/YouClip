@@ -8,6 +8,7 @@ use Auth;
 use FFMpeg;
 use App\Video;
 use App\Tag;
+use App\Telop;
 use App\Like;
 use App\User;
 use App\Playlist;
@@ -306,6 +307,19 @@ class TagController extends Controller
             $tag->previewgif = "";
             $tag->previewogp = "";
             $tag->save();
+
+            //テロップをDBに保存
+            foreach ($request->telops as $telopData) {
+                $telop = new Telop;
+                $telop->tag_id = $tag->id;
+                $telop->position = $telopData['telopPosition'];
+                $telop->color = $telopData['telopColor'];
+                $telop->size = $telopData['telopSize'];
+                $telop->start = $telopData['telopStart'];
+                $telop->duration = $telopData['telopDuration'];
+                $telop->text = $telopData['telopText'];
+                $telop->save();
+            }
 
             //保存先プレイリストが指定されている場合
             if ($request->myPlaylistToSave != "none") {

@@ -10,7 +10,12 @@
                 Number(telop.telopDuration) &&
             telop.telopPosition == columnPosition
         "
-        v-bind:class="telop.telopColor + 'Telop ' + telop.telopSize + 'Telop'"
+        v-bind:class="
+          telop.telopColor +
+            'Telop ' +
+            telop.telopSize +
+            'Telop telopFontFamily'
+        "
         >{{ telop.telopText }}</span
       >
     </div>
