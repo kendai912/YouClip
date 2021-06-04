@@ -5,7 +5,6 @@ const state = {
   playlistAndTagVideoData: null,
   tagAndVideoData: null,
   popularPlaylistData: null,
-  watchList: null,
   listIndex: 0,
   playlistId: "",
   playlistName: "",
@@ -22,7 +21,6 @@ const getters = {
   playlistAndTagVideoData: (state) => state.playlistAndTagVideoData,
   tagAndVideoData: (state) => state.tagAndVideoData,
   popularPlaylistData: (state) => state.popularPlaylistData,
-  watchList: (state) => state.watchList,
   listIndex: (state) => state.listIndex,
   playlistId: (state) => state.playlistId,
   playlistName: (state) => state.playlistName,
@@ -31,17 +29,6 @@ const getters = {
   playlistViewCount: (state) => state.playlistViewCount,
   privacySetting: (state) => state.privacySetting,
   playlistCategory: (state) => state.playlistCategory,
-  currentTagId: (state) => state.watchList[state.listIndex].tag_id,
-  currentTagName: (state) =>
-    state.watchList ? state.watchList[state.listIndex].tags : "",
-  currentTagNameArray: (state, getters) =>
-    state.watchList ? getters.currentTagName.split(/::/) : "",
-  tagPrivacySetting: (state) =>
-    state.watchList ? state.watchList[state.listIndex].privacySetting : "",
-  currentTitle: (state) =>
-    state.watchList ? state.watchList[state.listIndex].title : "",
-  currentCategory: (state) =>
-    state.watchList ? state.watchList[state.listIndex].category : "",
   isPlaylist: (state) => (state.playlistId ? true : false),
 };
 

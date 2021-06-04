@@ -60,7 +60,8 @@ export default {
       this.$store.commit("tagging/setPrivacySetting", "");
     },
     //タグデータをレコメンド画面に表示するメディアアイテムに格納
-    putTagVideoIntoMediaItems: function(mediaItems, tagVideo) {
+    putTagVideoIntoMediaItems: function (mediaItems, tagVideo) {
+      console.log(tagVideo);
       if (tagVideo) {
         tagVideo.forEach((value, index) => {
           //合計時間を計算
@@ -69,7 +70,7 @@ export default {
           let mediaItem = {
             video_id: value.video_id,
             category: "tag",
-            id: value.tag_id,
+            id: value.id,
             title: value.title,
             thumbnail: value.thumbnail,
             created_at: value.tag_created_at,

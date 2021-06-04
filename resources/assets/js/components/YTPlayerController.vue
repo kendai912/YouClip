@@ -386,7 +386,6 @@ export default {
       } else {
         this.player.seekTo(backwardTimeInSec);
       }
-      // this.player.seekTo(this.convertToSec(this.currentTime) - 5);
     },
     //5秒進む
     forwardFiveSec() {
@@ -398,7 +397,6 @@ export default {
       } else {
         this.player.seekTo(forwardTimeInSec);
       }
-      // this.player.seekTo(this.convertToSec(this.currentTime) + 5);
     },
     unmuteDefault() {
       if (this.isMutedDefault) {

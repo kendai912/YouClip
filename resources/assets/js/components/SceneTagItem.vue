@@ -307,7 +307,7 @@ export default {
     },
     searchYtIdByTagId(tagId) {
       let target = this.playlistAndTagVideoData.tagVideoData.find((item) => {
-        return item.tag_id == tagId;
+        return item.id == tagId;
       });
 
       return target.youtubeId;

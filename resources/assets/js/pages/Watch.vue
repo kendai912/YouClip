@@ -552,6 +552,7 @@ export default {
 
     //YTPlayerのまとめの再生に必要なパラメータをセット
     let listOfYoutubeIdStartEndTime = [];
+    console.log(this.playlistAndTagVideoData);
     this.putTagVideoIntolistOfYoutubeIdStartEndTime(
       listOfYoutubeIdStartEndTime,
       this.playlistAndTagVideoData.tagVideoData

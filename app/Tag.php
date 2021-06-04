@@ -7,6 +7,7 @@ use App\User;
 use App\Video;
 use App\Like;
 use App\Playlist;
+use App\Telop;
 use App\Taglog;
 use App\TagComment;
 use DateTimeInterface;

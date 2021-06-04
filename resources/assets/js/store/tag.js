@@ -9,11 +9,8 @@ const state = {
 };
 
 const getters = {
-  tagVideoData: state => state.tagVideoData,
-  myCreatedAndLikedTagVideo: state => state.myCreatedAndLikedTagVideo,
-  getTagVideoContentById: state => tagId => {
-    return state.tagVideoData.find(tagVideo => tagVideo.tag_id == tagId);
-  },
+  tagVideoData: (state) => state.tagVideoData,
+  myCreatedAndLikedTagVideo: (state) => state.myCreatedAndLikedTagVideo,
   commentListofTag: (state) => state.commentListofTag,
 };
 
@@ -26,7 +23,7 @@ const mutations = {
   },
   setCommentListofTag(state, data) {
     state.commentListofTag = data;
-  }
+  },
 };
 
 const actions = {
@@ -59,7 +56,9 @@ const actions = {
       if (!newTagComment.parent_id) {
         comments.unshift(newTagComment);
       } else {
-        const parentIndex = comments.findIndex(comment => comment.comment_id === newTagComment.parent_id);
+        const parentIndex = comments.findIndex(
+          (comment) => comment.comment_id === newTagComment.parent_id
+        );
         comments[parentIndex].replies.unshift(newTagComment);
       }
       context.commit("setCommentListofTag", comments);
@@ -76,21 +75,27 @@ const actions = {
     const isLiked = data.isLiked;
     const comments = state.commentListofTag;
     if (!data.parent_id) {
-      const commentIndex = comments.findIndex(comment => comment.comment_id === data.comment_id);
+      const commentIndex = comments.findIndex(
+        (comment) => comment.comment_id === data.comment_id
+      );
       comments[commentIndex].isLiked = isLiked;
       if (isLiked) {
-        comments[commentIndex].likes_count ++;
+        comments[commentIndex].likes_count++;
       } else {
-        comments[commentIndex].likes_count --;
+        comments[commentIndex].likes_count--;
       }
     } else {
-      const parentIndex = comments.findIndex(comment => comment.comment_id === data.parent_id);
-      const commentIndex = comments[parentIndex].replies.findIndex(reply => reply.comment_id === data.comment_id);
+      const parentIndex = comments.findIndex(
+        (comment) => comment.comment_id === data.parent_id
+      );
+      const commentIndex = comments[parentIndex].replies.findIndex(
+        (reply) => reply.comment_id === data.comment_id
+      );
       comments[parentIndex].replies[commentIndex].isLiked = isLiked;
       if (isLiked) {
-        comments[parentIndex].replies[commentIndex].likes_count ++;
+        comments[parentIndex].replies[commentIndex].likes_count++;
       } else {
-        comments[parentIndex].replies[commentIndex].likes_count --;
+        comments[parentIndex].replies[commentIndex].likes_count--;
       }
     }
     context.commit("setCommentListofTag", comments);
@@ -105,7 +110,7 @@ const actions = {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
     }
-  }
+  },
 };
 
 export default {
@@ -113,5 +118,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

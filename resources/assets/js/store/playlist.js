@@ -83,11 +83,6 @@ const getters = {
       (playlistTag) => playlistTag.id == playlistId
     );
   },
-  myPlaylistAndTagPagination: (state) => (user_id) => {
-    return state.playlistAndTagPagination.data.filter(
-      (playlistTag) => playlistTag.user_id == user_id
-    );
-  },
   hasMyPlaylists: (state) => {
     return state.myCreatedPlaylist ? !!state.myCreatedPlaylist.length : false;
   },

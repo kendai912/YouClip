@@ -233,6 +233,8 @@ export default {
         this.newMediaItems,
         this.playlistAndTagPaginationOfNew.data
       );
+      console.log(this.playlistAndTagPaginationOfNew.data);
+      console.log(this.newMediaItems);
 
       // 現在のperiodのlast_pageに達したので次のperiodの最初にパラメータを変更
       if (this.proceedPeriodOfNew) {

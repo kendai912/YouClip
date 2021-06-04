@@ -86,9 +86,7 @@ export default {
   methods: {
     ...mapMutations({}),
   },
-  created() {
-    console.log(this.telops);
-  },
+  created() {},
   beforeDestroy() {},
 };
 </script>

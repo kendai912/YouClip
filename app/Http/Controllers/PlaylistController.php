@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Video;
 use App\Tag;
+use App\Telop;
 use App\User;
 use App\Playlist;
 use App\Playlistlog;
@@ -216,10 +217,11 @@ class PlaylistController extends Controller
         $tagVideoDatas = [];
         $total_duration = 0;
         foreach ($playlistAndTagData->tags as $tag) {
-            $tagVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'channel_title', 'published_at', 'view_count', 'category', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at', 'privacySetting')->where('tags.id', $tag->id)->first();
+            $tagVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id', 'title', 'thumbnail', 'duration', 'channel_title', 'published_at', 'view_count', 'category', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at', 'privacySetting')->with('telops')->where('tags.id', $tag->id)->first();
             $sceneOrder = DB::table('playlist_tag')->where('playlist_id', $playlistId)->where('tag_id', $tag->id)->select('scene_order')->first();
             $tagVideoData->scene_order = $sceneOrder->scene_order;
 
+            //sum up durations of original youtube videos
             if (!in_array($tagVideoData->video_id, array_column($tagVideoDatas, 'video_id'))) {
                 sscanf($tagVideoData->duration, "%d:%d:%d", $hours, $minutes, $seconds);
                 $time_seconds = isset($hours) ? $hours * 3600 + $minutes * 60 + $seconds : $minutes * 60 + $seconds;
