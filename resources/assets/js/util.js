@@ -61,7 +61,6 @@ export default {
     },
     //タグデータをレコメンド画面に表示するメディアアイテムに格納
     putTagVideoIntoMediaItems: function (mediaItems, tagVideo) {
-      console.log(tagVideo);
       if (tagVideo) {
         tagVideo.forEach((value, index) => {
           //合計時間を計算

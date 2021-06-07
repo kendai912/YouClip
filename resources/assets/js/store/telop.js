@@ -3,22 +3,38 @@ import { OK, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR } from "../util";
 import router from "../router";
 
 const state = {
-  telops: [],
+  telopsArray: [],
+  telopsArrayIndex: 0,
 };
 
 const getters = {
-  telops: (state) => state.telops,
+  telopsArray: (state) => state.telopsArray,
+  telopsArrayIndex: (state) => state.telopsArrayIndex,
+  telops: (state) =>
+    state.telopsArray[state.telopsArrayIndex]
+      ? state.telopsArray[state.telopsArrayIndex]
+      : [],
 };
 
 const mutations = {
-  setTelops(state, data) {
-    state.telops = data;
+  setTelopsArrayIndex(state, data) {
+    state.telopsArrayIndex = data;
   },
-  pushTelops(state, data) {
-    state.telops.push(data);
+  pushOneTelop(state, telop) {
+    if (typeof state.telopsArray[state.telopsArrayIndex] === "undefined") {
+      state.telopsArray.push([]);
+    }
+    state.telopsArray[state.telopsArrayIndex].push(telop);
   },
-  spliceTelops(state, deleteIndex) {
-    state.telops.splice(deleteIndex, 1);
+  pushTelops(state, telops) {
+    state.telopsArray.push(telops);
+  },
+  spliceOneTelop(state, deleteIndex) {
+    state.telopsArray[state.telopsArrayIndex].splice(deleteIndex, 1);
+  },
+  resetTelops(state) {
+    state.telopsArrayIndex = 0;
+    state.telopsArray = [];
   },
 };
 

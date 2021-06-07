@@ -312,12 +312,12 @@ class TagController extends Controller
             foreach ($request->telops as $telopData) {
                 $telop = new Telop;
                 $telop->tag_id = $tag->id;
-                $telop->position = $telopData['telopPosition'];
-                $telop->color = $telopData['telopColor'];
-                $telop->size = $telopData['telopSize'];
-                $telop->start = $telopData['telopStart'];
-                $telop->duration = $telopData['telopDuration'];
-                $telop->text = $telopData['telopText'];
+                $telop->position = $telopData['position'];
+                $telop->color = $telopData['color'];
+                $telop->size = $telopData['size'];
+                $telop->start = $telopData['start'];
+                $telop->duration = $telopData['duration'];
+                $telop->text = $telopData['text'];
                 $telop->save();
             }
 

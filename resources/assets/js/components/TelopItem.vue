@@ -1,22 +1,31 @@
 <template>
-  <div>
+  <div
+    class="d-flex align-center"
+    v-bind:class="
+      columnPosition.includes('Left')
+        ? 'justify-start'
+        : columnPosition.includes('Center')
+        ? 'justify-center'
+        : columnPosition.includes('Right')
+        ? 'justify-end'
+        : ''
+    "
+  >
     <div v-for="(telop, key) in telops" v-bind:key="key">
       <span
         v-if="
-          convertToSec(formatToMinSec(telop.telopStart)) <=
-            convertToSec(currentDisplayingTime) &&
-            convertToSec(currentDisplayingTime) <
-              convertToSec(formatToMinSec(telop.telopStart)) +
-                Number(telop.telopDuration) &&
-            telop.telopPosition == columnPosition
+          convertToSec(formatToMinSec(telop.start)) <=
+            convertToSec(currentTime) &&
+            convertToSec(currentTime) <
+              convertToSec(formatToMinSec(telop.start)) +
+                Number(telop.duration) &&
+            telop.position == columnPosition
         "
         v-bind:class="
-          telop.telopColor +
-            'Telop ' +
-            telop.telopSize +
-            'Telop telopFontFamily'
+          telop.color + 'Telop ' + telop.size + 'Telop telopFontFamily'
         "
-        >{{ telop.telopText }}</span
+        style="text-align: left;"
+        >{{ telop.text }}</span
       >
     </div>
   </div>
@@ -37,19 +46,11 @@ export default {
   mixins: [myMixin],
   computed: {
     ...mapGetters({
-      currentDisplayingTimeInSecOfWatch:
-        "ytPlayer/currentDisplayingTimeInSecOfWatch",
       currentTime: "youtube/currentTime",
       telops: "telop/telops",
     }),
-    currentDisplayingTime() {
-      if (this.isWatchingPlaylist) {
-        return this.formatTime(this.currentDisplayingTimeInSecOfWatch);
-      } else {
-        return this.currentTime;
-      }
-    },
   },
+
   methods: {
     ...mapMutations({}),
   },

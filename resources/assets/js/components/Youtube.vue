@@ -213,6 +213,7 @@ export default {
       setPlayer: "ytPlayer/setPlayer",
       setIsMuted: "ytPlayer/setIsMuted",
       setStep: "highlightHeader/setStep",
+      resetTelops: "telop/resetTelops",
     }),
     async initialize() {
       //ナビバーを非表示
@@ -311,6 +312,8 @@ export default {
           this.startTimeInput = this.ytInputData.startTimeInput;
           this.endTimeInput = this.ytInputData.endTimeInput;
         }
+      } else {
+        this.resetTelops();
       }
     },
     // タグ入力へ進む
@@ -360,6 +363,8 @@ export default {
             })
             .catch((err) => {});
         }
+
+        this.resetTelops();
       }
     },
     unmute() {

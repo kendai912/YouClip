@@ -135,7 +135,7 @@
             <v-data-table
               :headers="headers"
               :items="telops"
-              sort-by="telopStart"
+              sort-by="start"
               hide-default-footer
               class="elevation-1 telop-table"
               v-on:click:row="seekToTelop"
@@ -269,16 +269,16 @@ export default {
       telopText: "",
       required: [(value) => !!value || "必須項目です."],
       headers: [
-        { text: "開始", value: "telopStart", sortable: false, width: "15%" },
+        { text: "開始", value: "start", sortable: false, width: "15%" },
         {
           text: "表示(秒)",
-          value: "telopDuration",
+          value: "duration",
           sortable: false,
           width: "15%",
         },
         {
           text: "テロップ",
-          value: "telopText",
+          value: "text",
           sortable: false,
         },
         { text: "", value: "actions", sortable: false },
@@ -316,6 +316,7 @@ export default {
       isPlaying: "ytPlayer/isPlaying",
       tagAndVideoData: "watch/tagAndVideoData",
       telops: "telop/telops",
+      telopsArray: "telop/telopsArray",
     }),
   },
   methods: {
@@ -327,9 +328,10 @@ export default {
       setIsAdding: "tagging/setIsAdding",
       setIsEditing: "tagging/setIsEditing",
       setStep: "highlightHeader/setStep",
-      setTelops: "telop/setTelops",
+      pushOneTelop: "telop/pushOneTelop",
       pushTelops: "telop/pushTelops",
-      spliceTelops: "telop/spliceTelops",
+      spliceOneTelop: "telop/spliceOneTelop",
+      resetTelops: "telop/resetTelops",
     }),
     async initialize() {
       //ナビバーを非表示
@@ -414,10 +416,10 @@ export default {
           this.ytInputData.endTimeInput
         );
         if (this.ytInputData.telops) {
-          this.setTelops(this.ytInputData.telops);
-        } else {
-          this.setTelops([]);
+          this.pushTelops(this.ytInputData.telops);
         }
+      } else {
+        this.resetTelops();
       }
       this.checkRouting();
     },
@@ -565,6 +567,8 @@ export default {
             .catch((err) => {});
         }
 
+        this.resetTelops();
+
         //「続けて他の場面を切り抜く」用に開始時間に今回の終了時間をセット
         this.saveTimeInput(this.youtubeId, this.end, "0:00");
       }
@@ -593,13 +597,13 @@ export default {
     },
     insert() {
       if (this.$refs.form.validate()) {
-        this.pushTelops({
-          telopPosition: this.telopPosition,
-          telopColor: this.telopColor,
-          telopSize: this.telopSize,
-          telopStart: this.timeMath.toHis(this.currentTime),
-          telopDuration: this.telopDuration,
-          telopText: this.telopText,
+        this.pushOneTelop({
+          position: this.telopPosition,
+          color: this.telopColor,
+          size: this.telopSize,
+          start: this.timeMath.toHis(this.currentTime),
+          duration: this.telopDuration,
+          text: this.telopText,
         });
 
         this.ytInputData.telops = this.telops;
@@ -610,17 +614,26 @@ export default {
       }
     },
     seekToTelop(row) {
-      this.player.seekTo(
-        this.convertToSec(this.formatToMinSec(row.telopStart))
-      );
+      this.player.seekTo(this.convertToSec(this.formatToMinSec(row.start)));
     },
     deleteTelop(item) {
       this.deleteIndex = this.telops.indexOf(item);
       this.dialogDelete = true;
     },
     deleteItemConfirm() {
-      this.spliceTelops(this.deleteIndex);
+      this.spliceOneTelop(this.deleteIndex);
+      this.deleteOneTelopFromSessionStorage(this.deleteIndex);
       this.closeDelete();
+    },
+    deleteOneTelopFromSessionStorage(deleteIndex) {
+      this.ytInputData = JSON.parse(
+        window.sessionStorage.getItem("ytInputData")
+      );
+      this.ytInputData.telops.splice(deleteIndex, 1);
+      window.sessionStorage.setItem(
+        "ytInputData",
+        JSON.stringify(this.ytInputData)
+      );
     },
     closeDelete() {
       this.dialogDelete = false;

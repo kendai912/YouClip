@@ -66,7 +66,8 @@
                     ><span class="reducedDuration">{{
                       totalDurationKanji
                     }}</span>
-                    &nbsp;⬅&nbsp;元の動画:&nbsp;合計<span class="originalDuration"
+                    &nbsp;⬅&nbsp;元の動画:&nbsp;合計<span
+                      class="originalDuration"
                       >{{ totalYTDurationKanji }}
                     </span></span
                   >
@@ -276,7 +277,10 @@ export default {
         },
       ],
       link: [
-        { rel: "canonical", href: "https://youclip.app" + this.$route.fullPath },
+        {
+          rel: "canonical",
+          href: "https://youclip.app" + this.$route.fullPath,
+        },
       ],
     };
   },
@@ -335,6 +339,9 @@ export default {
       player: "ytPlayer/player",
       isMuted: "ytPlayer/isMuted",
       isFullscreen: "ytPlayer/isFullscreen",
+      telopsArray: "telop/telopsArray",
+      telopsArrayIndex: "telop/telopsArrayIndex",
+      telops: "telop/telops",
     }),
     isLikedPlaylist() {
       return this.$store.getters["likePlaylist/isLikedPlaylist"](
@@ -366,6 +373,9 @@ export default {
       setPlayer: "ytPlayer/setPlayer",
       setIsMuted: "ytPlayer/setIsMuted",
       setShowFooterTour: "onboarding/setShowFooterTour",
+      pushOneTelop: "telop/pushOneTelop",
+      pushTelops: "telop/pushTelops",
+      resetTelops: "telop/resetTelops",
     }),
     switchToPlayListIndexOf(index) {
       //URLを更新
@@ -552,7 +562,6 @@ export default {
 
     //YTPlayerのまとめの再生に必要なパラメータをセット
     let listOfYoutubeIdStartEndTime = [];
-    console.log(this.playlistAndTagVideoData);
     this.putTagVideoIntolistOfYoutubeIdStartEndTime(
       listOfYoutubeIdStartEndTime,
       this.playlistAndTagVideoData.tagVideoData
@@ -567,6 +576,12 @@ export default {
     );
     this.$store.commit("ytPlayer/setListIndex", this.indexUrl);
     this.ytIframeParameterReady = true;
+
+    //Telopに必要なパラメータをセット
+    this.resetTelops();
+    this.playlistAndTagVideoData.tagVideoData.forEach((item) => {
+      this.pushTelops(item.telops);
+    });
 
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.watchBodyRef = this.$refs.watchBody;

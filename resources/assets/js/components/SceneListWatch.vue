@@ -369,7 +369,6 @@ export default {
     },
   },
   created() {
-    console.log(this.mediaItems);
     this.isMobile = this.mobileCheck();
 
     let self = this;
