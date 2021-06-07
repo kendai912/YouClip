@@ -117,7 +117,11 @@
                     ></v-text-field>
                   </v-col>
                   <v-col cols="auto" class="pr-3">
-                    <v-btn outlined color="primary" v-on:click="insert">
+                    <v-btn
+                      outlined
+                      color="primary"
+                      v-on:click.stop.prevent="insert"
+                    >
                       挿入
                     </v-btn>
                   </v-col>
@@ -138,10 +142,10 @@
               sort-by="start"
               hide-default-footer
               class="elevation-1 telop-table"
-              v-on:click:row="seekToTelop"
+              v-on:click:row.stop.prevent="seekToTelop"
             >
               <template v-slot:item.actions="{ item }">
-                <v-icon small v-on:click="deleteTelop(item)">
+                <v-icon small v-on:click.stop.prevent="deleteTelop(item)">
                   mdi-delete
                 </v-icon>
               </template>
@@ -181,7 +185,7 @@
                 v-if="isVideoDataReady"
                 color="primary darken-2 white--text"
                 v-bind:disabled="isDisabled"
-                v-on:click="confirm"
+                v-on:click.stop.prevent="confirm"
                 >次へ</v-btn
               >
             </v-col>
@@ -191,7 +195,9 @@
     </div>
     <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
       {{ text }}
-      <v-btn color="blue" text v-on:click="snackbar = false">Close</v-btn>
+      <v-btn color="blue" text v-on:click.stop.prevent="snackbar = false"
+        >Close</v-btn
+      >
     </v-snackbar>
     <NoLoginModal v-if="showLoginModal" />
   </div>

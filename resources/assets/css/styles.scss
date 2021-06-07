@@ -1559,3 +1559,14 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
   font-size: calc(1rem * (14 / 14));
   color: #f57c00;
 }
+
+.v-toolbar__content,
+.v-toolbar__extension {
+  padding: 4px 8px !important;
+}
+
+.v-toolbar__content .v-btn.v-btn--icon.v-size--default,
+.v-toolbar__extension .v-btn.v-btn--icon.v-size--default {
+  height: 48px;
+  width: 32px !important;
+}

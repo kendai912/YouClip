@@ -10,7 +10,7 @@
         >
           <v-col class="text-center" cols="12">
             <h2 class="font-weight-bold mb-3 userguideSectionTitle">
-              YouTube動画の切り抜きツール
+              YouTube動画の見所切り抜き
             </h2>
 
             <v-row class="ma-2 pa-0" align="center" justify="center">
