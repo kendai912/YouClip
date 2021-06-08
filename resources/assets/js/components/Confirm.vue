@@ -138,11 +138,12 @@
           >
             <v-data-table
               :headers="headers"
-              :items="telops"
+              :items="indexedTelops"
               sort-by="start"
               hide-default-footer
               class="elevation-1 telop-table"
               v-on:click:row="seekToTelop"
+              item-key="indexedId"
             >
               <template v-slot:item.actions="{ item }">
                 <v-icon small v-on:click.stop.prevent="deleteTelop(item)">
@@ -324,6 +325,12 @@ export default {
       telops: "telop/telops",
       telopsArray: "telop/telopsArray",
     }),
+    indexedTelops() {
+      return this.telops.map((telop, index) => ({
+        indexedId: index,
+        ...telop,
+      }));
+    },
   },
   methods: {
     ...mapMutations({
