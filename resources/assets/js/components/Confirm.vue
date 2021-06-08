@@ -142,7 +142,7 @@
               sort-by="start"
               hide-default-footer
               class="elevation-1 telop-table"
-              v-on:click:row.stop.prevent="seekToTelop"
+              v-on:click:row="seekToTelop"
             >
               <template v-slot:item.actions="{ item }">
                 <v-icon small v-on:click.stop.prevent="deleteTelop(item)">
@@ -204,7 +204,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import HighlightHeader from "../components/HighlightHeader.vue";
 import YTIframe from "../components/YTIframe";
 import YTPlayerController from "../components/YTPlayerController";
@@ -336,8 +336,10 @@ export default {
       setStep: "highlightHeader/setStep",
       pushOneTelop: "telop/pushOneTelop",
       pushTelops: "telop/pushTelops",
-      spliceOneTelop: "telop/spliceOneTelop",
       resetTelops: "telop/resetTelops",
+    }),
+    ...mapActions({
+      deleteOneTelop: "telop/deleteOneTelop",
     }),
     async initialize() {
       //ナビバーを非表示
@@ -369,7 +371,7 @@ export default {
         );
 
         //set tags data for editing
-        this.setEditingTagData();
+        this.setEditingTagAndTelopData();
       }
 
       //倍速視聴を1倍のリセット
@@ -381,10 +383,17 @@ export default {
       this.$store.commit("highlightHeader/setShowBackIcon", true);
     },
     //set tags data for editing
-    setEditingTagData() {
+    setEditingTagAndTelopData() {
       let defaultTags = this.tagAndVideoData[0].tags.split(/::/);
       this.$store.commit("tagging/setTags", defaultTags);
       this.tags = defaultTags;
+
+      if (this.tagAndVideoData[0].telops) {
+        console.log(this.tagAndVideoData[0].telops);
+        this.pushTelops(this.tagAndVideoData[0].telops);
+      } else {
+        this.resetTelops();
+      }
     },
     checkRouting() {
       if (this.start == null || this.end == null) {
@@ -448,6 +457,7 @@ export default {
           //入力済データ(除く、保存先プレイリスト)をセット
           self.$store.commit("tagging/setTagId", self.tagIdToEdit);
           self.$store.commit("tagging/setTags", self.tags);
+          self.$store.commit("tagging/setTelops", self.telops);
           self.$store.commit("tagging/setPrivacySetting", "public");
 
           //新しく作成したplaylistIdをセット
@@ -488,6 +498,7 @@ export default {
           //in case of adding to existing playlist
           //入力済データをセット
           self.$store.commit("tagging/setTags", self.tags);
+          self.$store.commit("tagging/setTelops", self.telops);
           self.$store.commit("tagging/setPrivacySetting", "public");
 
           //新しく場面を追加する既存のplaylistIdをセット
@@ -610,6 +621,7 @@ export default {
           start: this.timeMath.toHis(this.currentTime),
           duration: this.telopDuration,
           text: this.telopText,
+          id: "",
         });
 
         this.ytInputData.telops = this.telops;
@@ -627,7 +639,7 @@ export default {
       this.dialogDelete = true;
     },
     deleteItemConfirm() {
-      this.spliceOneTelop(this.deleteIndex);
+      this.deleteOneTelop(this.deleteIndex);
       this.deleteOneTelopFromSessionStorage(this.deleteIndex);
       this.closeDelete();
     },
@@ -635,11 +647,13 @@ export default {
       this.ytInputData = JSON.parse(
         window.sessionStorage.getItem("ytInputData")
       );
-      this.ytInputData.telops.splice(deleteIndex, 1);
-      window.sessionStorage.setItem(
-        "ytInputData",
-        JSON.stringify(this.ytInputData)
-      );
+      if (this.ytInputData.telops) {
+        this.ytInputData.telops.splice(deleteIndex, 1);
+        window.sessionStorage.setItem(
+          "ytInputData",
+          JSON.stringify(this.ytInputData)
+        );
+      }
     },
     closeDelete() {
       this.dialogDelete = false;
@@ -675,7 +689,6 @@ export default {
     //必要データを取得
     this.$store.commit("youtube/setYoutubeId", youtubeId);
     await this.$store.dispatch("youtube/getVideo", youtubeId);
-    await this.$store.dispatch("youtube/getTag");
 
     if (this.isNew) {
       //新規動画・タグの場合はData APIから取得

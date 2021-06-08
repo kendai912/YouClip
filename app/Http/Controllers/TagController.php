@@ -45,7 +45,7 @@ class TagController extends Controller
     public function getTagAndVideoDataById(Request $request)
     {
         $tagId = $request->input('id');
-        $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id as video_user_id', 'title', 'thumbnail', 'duration', 'category', 'channel_title', 'published_at', 'view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id as tag_id', 'tags.user_id as tag_user_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at', 'privacySetting')->where('tags.id', $tagId)->get();
+        $tagAndVideoData = Tag::join('videos', 'videos.id', '=', 'tags.video_id')->select('videos.id as video_id', 'youtubeId', 'videos.user_id as video_user_id', 'title', 'thumbnail', 'duration', 'category', 'channel_title', 'published_at', 'view_count', 'videos.created_at as video_created_at', 'videos.updated_at as video_updated_at', 'tags.id', 'tags.user_id as tag_user_id', 'tags', 'start', 'end', 'preview', 'previewgif', 'tags.created_at as tag_created_at', 'tags.updated_at as tag_updated_at', 'privacySetting')->with('telops')->where('tags.id', $tagId)->get();
 
         $comments = TagComment::leftJoin('users', 'users.id', '=', 'tag_comments.user_id')->select('tag_comments.id as comment_id', 'tag_comments.created_at as comment_publishedAt', 'tag_comments.*', 'users.*')->where('tag_comments.tag_id', $tagId)->where('tag_comments.parent_id', '0')->orderBy('comment_publishedAt', 'desc')->get();
         $commentDatas = [];
@@ -499,6 +499,7 @@ class TagController extends Controller
     public function update(Request $request)
     {
         //DBを更新
+        //tagを更新
         $tag = Tag::find($request->tagId);
  
         //既存のS3に保存されているサムネイルとプレビューgifを削除
@@ -519,6 +520,10 @@ class TagController extends Controller
         $tag->end = $request->end;
         $tag->privacySetting = $request->privacySetting;
         $tag->save();
+
+        //telopを更新
+        $telop = Telop::where('tag_id', $request->tagId);
+        
 
         //保存したタグデータをリターン
         return response()->json(

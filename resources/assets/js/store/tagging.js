@@ -128,7 +128,9 @@ const actions = {
       //動画をDBに保存したのでisNewフラグをfalseにセット
       if (params.isNew) {
         //storeのVideoデータを更新
-        await context.dispatch("youtube/getVideo", "", { root: true });
+        await context.dispatch("youtube/getVideo", params.youtubeId, {
+          root: true,
+        });
         context.commit("youtube/setIsNew", false, { root: true });
       }
 
@@ -192,6 +194,7 @@ const actions = {
       youtubeId: store.getters["youtube/youtubeId"],
       tagId: state.tagId,
       tags: state.tags,
+      telops: state.telops,
       start: state.start,
       end: state.end,
       privacySetting: state.privacySetting,

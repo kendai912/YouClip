@@ -140,6 +140,9 @@ Route::post('/tag/update', 'TagController@update');
 //シーンタグの削除
 Route::post('/tag/delete', 'TagController@delete');
 
+//テロップの削除
+Route::delete('/telop/delete/{telopId}', 'TelopController@delete');
+
 //YT Search API
 Route::post('/search/getYoutubeScrapingResults', 'SearchController@getYTScrapingResultList');
 Route::post('/search/getYoutubeSearch', 'SearchController@getYTSearchList');

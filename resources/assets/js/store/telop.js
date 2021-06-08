@@ -1,5 +1,11 @@
 import axios from "axios";
-import { OK, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR } from "../util";
+import {
+  OK,
+  CREATED,
+  DELETED,
+  FORBIDDEN,
+  INTERNAL_SERVER_ERROR,
+} from "../util";
 import router from "../router";
 
 const state = {
@@ -38,7 +44,29 @@ const mutations = {
   },
 };
 
-const actions = {};
+const actions = {
+  async deleteOneTelop(context, deleteIndex) {
+    // delete from DB when having id
+    let telopId =
+      context.getters["telopsArray"][context.getters["telopsArrayIndex"]][
+        deleteIndex
+      ].id;
+    if (telopId) {
+      const response = await axios.delete("/api/telop/delete/" + telopId);
+      if (response.status == DELETED) {
+        // 成功した時
+      } else if (response.status == INTERNAL_SERVER_ERROR) {
+        // 失敗した時
+        context.commit("error/setCode", response.status, { root: true });
+      } else {
+        // 上記以外で失敗した時
+        context.commit("error/setCode", response.status, { root: true });
+      }
+    }
+
+    context.commit("spliceOneTelop", deleteIndex);
+  },
+};
 
 export default {
   namespaced: true,
