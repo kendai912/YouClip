@@ -641,7 +641,7 @@ export default {
       this.player.seekTo(this.convertToSec(this.formatToMinSec(row.start)));
     },
     deleteTelop(item) {
-      this.deleteIndex = this.telops.indexOf(item);
+      this.deleteIndex = this.indexedTelops.indexOf(item);
       this.dialogDelete = true;
     },
     deleteItemConfirm() {

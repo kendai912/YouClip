@@ -60,7 +60,7 @@ export default {
       this.$store.commit("tagging/setPrivacySetting", "");
     },
     //タグデータをレコメンド画面に表示するメディアアイテムに格納
-    putTagVideoIntoMediaItems: function (mediaItems, tagVideo) {
+    putTagVideoIntoMediaItems: function(mediaItems, tagVideo) {
       if (tagVideo) {
         tagVideo.forEach((value, index) => {
           //合計時間を計算
@@ -641,6 +641,7 @@ export default {
           minute = Math.floor((Math.abs(fullSecond) % 3600) / 60);
           second = Math.floor(Math.abs(fullSecond) % 60);
 
+          hour = paddingZero(hour);
           minute = paddingZero(minute);
           second = paddingZero(second);
 

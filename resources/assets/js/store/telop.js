@@ -47,10 +47,7 @@ const mutations = {
 const actions = {
   async deleteOneTelop(context, deleteIndex) {
     // delete from DB when having id
-    let telopId =
-      context.getters["telopsArray"][context.getters["telopsArrayIndex"]][
-        deleteIndex
-      ].id;
+    let telopId = context.getters["telops"][deleteIndex].id;
     if (telopId) {
       const response = await axios.delete("/api/telop/delete/" + telopId);
       if (response.status == DELETED) {
