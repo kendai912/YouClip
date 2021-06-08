@@ -447,6 +447,8 @@ export default {
     this.ytInputData.startTimeInput &&
     this.ytInputData.youtubeId == youtubeId
       ? (dataOfYoutubeIdStartEndTime[0].start = this.ytInputData.startTimeInput)
+      : this.isEditing
+      ? (dataOfYoutubeIdStartEndTime[0].start = this.tagAndVideoData[0].start)
       : (dataOfYoutubeIdStartEndTime[0].start = "");
     dataOfYoutubeIdStartEndTime[0].end = "";
     dataOfYoutubeIdStartEndTime[0].scene_order = 1;
