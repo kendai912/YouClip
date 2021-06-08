@@ -389,7 +389,6 @@ export default {
       this.tags = defaultTags;
 
       if (this.tagAndVideoData[0].telops) {
-        console.log(this.tagAndVideoData[0].telops);
         this.pushTelops(this.tagAndVideoData[0].telops);
       } else {
         this.resetTelops();

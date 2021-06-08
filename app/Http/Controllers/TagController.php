@@ -522,8 +522,19 @@ class TagController extends Controller
         $tag->save();
 
         //telopを更新
-        $telop = Telop::where('tag_id', $request->tagId);
-        
+        foreach ($request->telops as $telop) {
+            if (empty($telop['id'])) {
+                $newTelop = new Telop;
+                $newTelop->tag_id = $request->tagId;
+                $newTelop->position = $telop['position'];
+                $newTelop->color = $telop['color'];
+                $newTelop->size = $telop['size'];
+                $newTelop->start = $telop['start'];
+                $newTelop->duration = $telop['duration'];
+                $newTelop->text = $telop['text'];
+                $newTelop->save();
+            }
+        }
 
         //保存したタグデータをリターン
         return response()->json(
