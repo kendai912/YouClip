@@ -237,6 +237,17 @@ const actions = {
     //場面インデックスおよびプレイヤーを変更
     context.commit("setListIndex", input.seekTimeListIndex);
 
+    //URLを更新
+    router
+      .push({
+        path: "/watch",
+        query: {
+          playlist: router.history.current.query.playlist,
+          index: input.seekTimeListIndex,
+        },
+      })
+      .catch((err) => {});
+
     //seekTimeをセット
     let seekTime =
       input.seekTimeFromStartInSec +
