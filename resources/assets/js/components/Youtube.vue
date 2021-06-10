@@ -253,7 +253,8 @@ export default {
 
       this.isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
 
-      //headerの戻るアイコンを表示
+      //highlightHeaderを設定
+      this.$store.commit("highlightHeader/setShowSteps", true);
       this.$store.commit("highlightHeader/setShowBackIcon", true);
     },
     setEditingTimeData() {

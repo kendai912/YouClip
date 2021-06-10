@@ -72,7 +72,7 @@
                       rounded
                       color="primary"
                       outlined
-                      v-on:click="updateAndMoveToCompletePage"
+                      v-on:click="selectCustomThumbnail"
                       >好きな場面をサムネイルに選択</v-btn
                     >
                   </v-col>
@@ -257,6 +257,17 @@ export default {
         }
       }
     },
+    selectCustomThumbnail() {
+      this.$router
+        .push({
+          path: "/highlight/thumbnail",
+          query: {
+            playlist: this.myPlaylistToSave,
+            index: 0,
+          },
+        })
+        .catch((err) => {});
+    },
   },
   watch: {
     // 検索バーによるルート変更後の初期化処理
@@ -267,7 +278,8 @@ export default {
   async mounted() {
     await this.initialize();
 
-    //headerの戻るアイコンを表示
+    //highlightHeaderを設定
+    this.$store.commit("highlightHeader/setShowSteps", true);
     this.$store.commit("highlightHeader/setShowBackIcon", true);
 
     //プレイリストのカテゴリーを取得しセット
@@ -278,17 +290,12 @@ export default {
 
     //デフォルトのサムネイルを取得
     await this.getDefaultPreview(this.myPlaylistToSave);
-    console.log(this.defaultPreview);
 
     if (this.currentCategory == "Sports") {
       this.playlistCategory = "Sports";
     } else if (this.currentCategory == "Gaming") {
       this.playlistCategory = "Game";
     }
-  },
-  beforeDestroy() {
-    //headerの戻るアイコンを非表示
-    this.$store.commit("highlightHeader/setShowBackIcon", false);
   },
 };
 </script>

@@ -67,7 +67,7 @@
                         v-bind:src="img"
                         class="pa-0 ma-0"
                         v-bind:alt="title"
-                        v-bind:class="{ maxhight104px: isMobile }"
+                        v-bind:class="{ maxheight104px: isMobile }"
                         contain
                       />
                       <span class="pa-0 ma-0 fz-14">{{ title }}</span>

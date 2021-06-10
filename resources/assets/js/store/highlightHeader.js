@@ -5,6 +5,7 @@ import store from "../store";
 
 const state = {
   headerMessage: "",
+  showSteps: true,
   showBackIcon: false,
   loading: false,
   step: 1,
@@ -13,6 +14,7 @@ const state = {
 
 const getters = {
   headerMessage: (state) => state.headerMessage,
+  showSteps: (state) => state.showSteps,
   showBackIcon: (state) => state.showBackIcon,
   loading: (state) => state.loading,
   step: (state) => state.step,
@@ -22,6 +24,9 @@ const getters = {
 const mutations = {
   setHeaderMessage(state, data) {
     state.headerMessage = data;
+  },
+  setShowSteps(state, data) {
+    state.showSteps = data;
   },
   setShowBackIcon(state, data) {
     state.showBackIcon = data;

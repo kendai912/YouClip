@@ -240,7 +240,7 @@ const actions = {
     //URLを更新
     router
       .push({
-        path: "/watch",
+        path: router.currentRoute.path,
         query: {
           playlist: router.history.current.query.playlist,
           index: input.seekTimeListIndex,

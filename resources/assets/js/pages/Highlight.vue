@@ -14,6 +14,7 @@ import Youtube from "../components/Youtube.vue";
 import Confirm from "../components/Confirm.vue";
 import SceneList from "../components/SceneList.vue";
 import Title from "../components/Title.vue";
+import Thumbnail from "../components/Thumbnail.vue";
 import Complete from "../components/Complete.vue";
 
 export default {
@@ -62,6 +63,7 @@ export default {
     Confirm,
     SceneList,
     Title,
+    Thumbnail,
     Complete,
   },
   data() {
@@ -79,6 +81,8 @@ export default {
         this.$store.commit("highlight/setDisplayComponent", "SceneList");
       } else if (this.$route.path == "/highlight/title") {
         this.$store.commit("highlight/setDisplayComponent", "Title");
+      } else if (this.$route.path == "/highlight/thumbnail") {
+        this.$store.commit("highlight/setDisplayComponent", "Thumbnail");
       } else if (this.$route.path == "/highlight/complete") {
         this.$store.commit("highlight/setDisplayComponent", "Complete");
       } else if (this.$route.path == "/add") {
@@ -140,6 +144,10 @@ export default {
       (from.path == "/highlight/scenelist" && to.path == "/youtube") ||
       (from.path == "/highlight/title" && to.path == "/highlight/scenelist") ||
       (from.path == "/highlight/title" && to.path == "/youtube") ||
+      (from.path == "/highlight/thumbnail" && to.path == "/highlight/title") ||
+      (from.path == "/highlight/thumbnail" &&
+        to.path == "/highlight/scenelist") ||
+      (from.path == "/highlight/thumbnail" && to.path == "/youtube") ||
       (from.path == "/highlight/complete" && to.path == "/youtube") ||
       (from.path == "/add" && to.path == "/youtube") ||
       (from.path == "/add" && to.path == "/mypage") ||

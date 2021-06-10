@@ -122,9 +122,6 @@ export default {
       setIsAdding: "tagging/setIsAdding",
     }),
     YTsearch(event) {
-      console.log("ytsearch");
-      console.log(event);
-      console.log(this.searchquery);
       // 日本語入力中のEnterキー操作は無効にする
       if (event.keyCode != undefined && event.keyCode !== 13) return;
 

@@ -19,7 +19,7 @@
               </h1>
             </v-col>
           </v-row>
-          <v-row class="ma-0 pa-0">
+          <v-row v-if="showSteps" class="ma-0 pa-0">
             <v-col class="ma-0 pa-0">
               <v-stepper v-model="step" class="elevation-0 pa-0 ma-0">
                 <v-stepper-header class="pa-0 ma-0">
@@ -102,6 +102,7 @@ export default {
     ...mapGetters({
       isLogin: "auth/check",
       headerMessage: "highlightHeader/headerMessage",
+      showSteps: "highlightHeader/showSteps",
       showBackIcon: "highlightHeader/showBackIcon",
       loading: "highlightHeader/loading",
       step: "highlightHeader/step",

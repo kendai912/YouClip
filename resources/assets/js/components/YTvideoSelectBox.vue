@@ -70,6 +70,7 @@ export default {
           this.$route.query.return == "true"
         ) {
           //追加の場合、もしくはreturnフラグがtrueの場合は、headerの戻るアイコンを表示
+          this.$store.commit("highlightHeader/setShowSteps", true);
           this.$store.commit("highlightHeader/setShowBackIcon", true);
         } else {
           //デフォルトではheaderの戻るアイコンを非表示
