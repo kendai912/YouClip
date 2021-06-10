@@ -1,17 +1,30 @@
 <template>
-  <div
-    class="d-flex align-center"
-    v-bind:class="
-      columnPosition.includes('Left')
-        ? 'justify-start'
-        : columnPosition.includes('Center')
-        ? 'justify-center'
-        : columnPosition.includes('Right')
-        ? 'justify-end'
-        : ''
-    "
-  >
-    <div v-for="(telop, key) in telops" v-bind:key="key">
+  <div class="telopItemContainer">
+    <div
+      v-for="(telop, key) in telops"
+      v-bind:key="key"
+      v-bind:class="
+        columnPosition == 'upperLeft'
+          ? 'telopItemUpperLeft'
+          : columnPosition == 'upperCenter'
+          ? 'telopItemUpperCenter'
+          : columnPosition == 'upperRight'
+          ? 'telopItemUpperRight'
+          : columnPosition == 'middleLeft'
+          ? 'telopItemMiddleLeft'
+          : columnPosition == 'middleCenter'
+          ? 'telopItemMiddleCenter'
+          : columnPosition == 'middleRight'
+          ? 'telopItemMiddleRight'
+          : columnPosition == 'bottomLeft'
+          ? 'telopItemBottomLeft'
+          : columnPosition == 'bottomCenter'
+          ? 'telopItemBottomCenter'
+          : columnPosition == 'bottomRight'
+          ? 'telopItemBottomRight'
+          : ''
+      "
+    >
       <span
         v-if="
           convertToSec(formatToMinSec(telop.start)) <=
@@ -24,9 +37,9 @@
         v-bind:class="
           telop.color + 'Telop ' + telop.size + 'Telop telopFontFamily'
         "
-        style="text-align: left;"
-        >{{ telop.text }}</span
       >
+        {{ telop.text }}
+      </span>
     </div>
   </div>
 </template>

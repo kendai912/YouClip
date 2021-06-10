@@ -1570,3 +1570,75 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
   height: 48px;
   width: 32px !important;
 }
+
+.telopItemContainer {
+  position: relative;
+  height: 100%;
+}
+
+.telopItemUpperLeft {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.telopItemUpperCenter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.telopItemUpperRight {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.telopItemMiddleLeft {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+}
+
+.telopItemMiddleCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+
+.telopItemMiddleRight {
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+}
+
+.telopItemBottomLeft {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.telopItemBottomCenter {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.telopItemBottomRight {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
