@@ -1585,9 +1585,10 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
 .telopItemUpperCenter {
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
 }
 
 .telopItemUpperRight {
@@ -1632,9 +1633,10 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
 .telopItemBottomCenter {
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
 }
 
 .telopItemBottomRight {
