@@ -935,4 +935,20 @@ class PlaylistController extends Controller
             JSON_UNESCAPED_UNICODE
         );
     }
+
+    public function getDefaultPreview($playlistId)
+    {
+        //Get preview name for complete page
+        $tagId = DB::table('playlist_tag')->where('playlist_id', $playlistId)->select('tag_id')->orderBy('scene_order', 'ASC')->first();
+        $tag = Tag::find($tagId->tag_id);
+
+        return response()->json(
+            [
+                'defaultPreview' => $tag->preview
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
 }

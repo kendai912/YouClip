@@ -124,6 +124,9 @@ Route::post("/addPlaylistVisitCount/{playlist_id}", 'PlaylistController@addVisit
 Route::post('/load/publicPlaylistAndScenelist', 'PlaylistController@loadPublicPlaylistAndScenelist');
 //refresh new playlist's preview
 Route::post('/playlist/refreshNewPreview', 'PlaylistController@refreshNewPreview');
+//get playlist's default preview thumbnail
+Route::get('/playlist/getDefaultPreview/{playlistId}', 'PlaylistController@getDefaultPreview');
+
 
 //シーン登録におけるyoutubeIdから既存のvideoIdの取得
 Route::get('/youtube/getVideo', 'VideoController@getVideoByYoutubeId');

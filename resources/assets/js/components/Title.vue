@@ -3,10 +3,10 @@
     <HighlightHeader />
 
     <div class="highlight-body" ref="highlightBody" style="height: auto;">
-      <v-card class="pa-2 ma-0 mt-2" elevation="0">
+      <v-card class="pa-2 ma-0" elevation="0">
         <v-container class="ma-0 pa-0" fluid>
           <v-form ref="form">
-            <v-row class="ma-0 mb-8 pa-2 pb-4">
+            <v-row class="ma-0 mb-6 pa-2 pb-4">
               <v-col class="ma-0 pa-0">
                 <v-text-field
                   v-model="playlistName"
@@ -20,7 +20,7 @@
               </v-col>
             </v-row>
 
-            <v-row class="ma-0 mb-8 pa-2 pb-4">
+            <v-row class="ma-0 mb-6 pa-2 pb-4">
               <v-col class="ma-0 pa-0 text-center">
                 <v-select
                   v-model="privacySetting"
@@ -34,7 +34,7 @@
               </v-col>
             </v-row>
 
-            <v-row class="ma-0 mb-8 pa-2 pb-4">
+            <v-row class="ma-0 mb-6 pa-2 pb-4">
               <v-col class="ma-0 pa-0 text-center">
                 <v-select
                   v-model="playlistCategory"
@@ -48,12 +48,48 @@
               </v-col>
             </v-row>
 
-            <v-row class="ma-0 mb-8 pa-2">
+            <v-row class="ma-0 mb-6 pa-2">
+              <v-col class="ma-0 pa-0 text-center">
+                <v-row class="ma-0 pa-0">
+                  <v-card class="text-left pa-0 ma-0 mb-2 my-grey" elevation="0"
+                    >(任意)サムネイル設定</v-card
+                  >
+                </v-row>
+                <v-row class="ma-0 pa-0">
+                  <v-col class="ma-0 pa-2">
+                    <div style="position: relative;">
+                      <v-img
+                        class="align-end rounded"
+                        max-height="266.66px"
+                        v-bind:src="thumbStoragePath + defaultPreview"
+                        aspect-ratio="1.7777"
+                      >
+                      </v-img>
+                    </div>
+                  </v-col>
+                  <v-col align-self="center" class="ma-0 pa-2">
+                    <v-btn
+                      rounded
+                      color="primary"
+                      outlined
+                      v-on:click="updateAndMoveToCompletePage"
+                      >好きな場面をサムネイルに選択</v-btn
+                    >
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+
+            <v-row class="ma-0 mb-6 pa-2">
               <v-col class="ma-0 pa-0 text-center">
                 <v-card class="text-left pa-0 ma-0 mb-2 my-grey" elevation="0"
                   >(任意)切り抜きまとめの説明</v-card
                 >
-                <v-textarea v-model="description" outlined></v-textarea>
+                <v-textarea
+                  rows="3"
+                  v-model="description"
+                  outlined
+                ></v-textarea>
               </v-col>
             </v-row>
           </v-form>
@@ -76,7 +112,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import HighlightHeader from "../components/HighlightHeader.vue";
 import myMixin from "../util";
 
@@ -123,9 +159,10 @@ export default {
     ...mapGetters({
       isLogin: "auth/check",
       youtubeId: "youtube/youtubeId",
-      newPlaylistId: "playlist/newPlaylistId",
       myPlaylistToSave: "tagging/myPlaylistToSave",
+      newPlaylistId: "playlist/newPlaylistId",
       currentCategory: "playlist/currentCategory",
+      defaultPreview: "playlist/defaultPreview",
     }),
     privacySetting: {
       get() {
@@ -139,6 +176,9 @@ export default {
   methods: {
     ...mapMutations({
       setStep: "highlightHeader/setStep",
+    }),
+    ...mapActions({
+      getDefaultPreview: "playlist/getDefaultPreview",
     }),
     async initialize() {
       //ナビバーを非表示
@@ -235,6 +275,10 @@ export default {
       "playlist/getCurrentCategory",
       this.myPlaylistToSave
     );
+
+    //デフォルトのサムネイルを取得
+    await this.getDefaultPreview(this.myPlaylistToSave);
+    console.log(this.defaultPreview);
 
     if (this.currentCategory == "Sports") {
       this.playlistCategory = "Sports";

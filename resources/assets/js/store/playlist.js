@@ -38,6 +38,7 @@ const state = {
   publicPlaylist: null,
   createdSceneList: null,
   resetKey: 0,
+  defaultPreview: null,
 };
 
 const getters = {
@@ -91,6 +92,7 @@ const getters = {
   newPlaylistId: (state) => state.newPlaylistId,
   newPlaylistName: (state) => state.newPlaylistName,
   newPreview: (state) => state.newPreview,
+  defaultPreview: (state) => state.defaultPreview,
 };
 
 const mutations = {
@@ -195,6 +197,9 @@ const mutations = {
   },
   setNewPreview(state, data) {
     state.newPreview = data;
+  },
+  setDefaultPreview(state, data) {
+    state.defaultPreview = data;
   },
 };
 
@@ -725,6 +730,20 @@ const actions = {
     );
     if (response.status == CREATED) {
       context.commit("setNewPreview", response.data.preview);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+
+  async getDefaultPreview(context, playlistId) {
+    const response = await axios.get(
+      "/api/playlist/getDefaultPreview/" + playlistId
+    );
+    if (response.status == OK) {
+      context.commit("setDefaultPreview", response.data.defaultPreview);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
     } else {
