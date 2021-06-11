@@ -22,7 +22,169 @@
           v-on:hideOnYTSeekBarTouchEnd="hideOnYTSeekBarTouchEnd"
         />
       </div>
+      <v-sheet v-if="isPlayerReady" class="highlightControllerBody">
+        <v-stepper
+          v-model="thumbStep"
+          vertical
+          class="bottom_navigation_no_shadow"
+        >
+          <v-stepper-step :complete="thumbStep > 1" step="1">
+            サムネイルに使う場面を選択
+          </v-stepper-step>
+
+          <v-stepper-content step="1">
+            <v-card elevation="0" class="mb-2">
+              <v-btn
+                block
+                color="primary darken-2"
+                dark
+                height="45px"
+                v-on:click="selectCurrentScene"
+                style="font-size: 14px;"
+                >いま再生中の場面を使う<br />(押すと一時停止します)</v-btn
+              ></v-card
+            >
+          </v-stepper-content>
+
+          <v-stepper-step :complete="thumbStep > 2" step="2"
+            >(任意) サムネイルにテキストを挿入</v-stepper-step
+          >
+          <v-stepper-content step="2">
+            <v-card elevation="0" class="mb-12">
+              <v-container class="ma-0 pa-0" fluid>
+                <v-row class="ma-0 pa-0" align="center">
+                  <v-col class="ma-0 pa-0">
+                    <v-form ref="form" class="ma-0 pa-0">
+                      <v-row class="ma-0 pa-0">
+                        <v-col class="pb-0">
+                          <v-select
+                            v-model="telopPosition"
+                            v-bind:items="telopPositionList"
+                            label="位置"
+                            hide-details
+                            dense
+                            v-bind:rules="required"
+                            class="telopLabel"
+                          ></v-select
+                        ></v-col>
+                        <v-col class="pb-0">
+                          <v-select
+                            v-model="telopColor"
+                            v-bind:items="telopColorList"
+                            label="色"
+                            hide-details
+                            dense
+                            v-bind:rules="required"
+                            class="telopLabel"
+                          ></v-select
+                        ></v-col>
+                        <v-col class="pb-0">
+                          <v-select
+                            v-model="telopSize"
+                            v-bind:items="telopSizeList"
+                            label="サイズ"
+                            hide-details
+                            dense
+                            v-bind:rules="required"
+                            class="telopLabel"
+                          ></v-select
+                        ></v-col>
+                      </v-row>
+
+                      <v-row class="ma-0 pa-0">
+                        <v-col>
+                          <v-text-field
+                            v-model="telopText"
+                            type="text"
+                            name="telopText"
+                            label="テキスト"
+                            hide-details
+                            dense
+                            v-bind:rules="required"
+                            class="telopLabel"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="auto" class="pr-3">
+                          <v-btn
+                            outlined
+                            color="primary"
+                            v-on:click.stop.prevent="insert"
+                          >
+                            挿入
+                          </v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-form>
+                  </v-col>
+                </v-row>
+
+                <v-row
+                  v-if="telops.length"
+                  class="ma-0 pa-3"
+                  align="center"
+                  justify="center"
+                >
+                  <v-data-table
+                    :headers="headers"
+                    :items="indexedTelops"
+                    sort-by="start"
+                    hide-default-footer
+                    class="elevation-1 telop-table"
+                    v-on:click:row="seekToTelop"
+                    item-key="indexedId"
+                  >
+                    <template v-slot:item.actions="{ item }">
+                      <v-icon small v-on:click.stop.prevent="deleteTelop(item)">
+                        mdi-delete
+                      </v-icon>
+                    </template>
+
+                    <template v-slot:top>
+                      <v-dialog v-model="dialogDelete" max-width="500px">
+                        <v-card>
+                          <v-card-title class="subtitle-1"
+                            >選択したテロップを削除しますか？</v-card-title
+                          >
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              color="blue darken-1"
+                              text
+                              @click="closeDelete"
+                              >キャンセル</v-btn
+                            >
+                            <v-btn
+                              color="blue darken-1"
+                              text
+                              @click="deleteItemConfirm"
+                              >削除する</v-btn
+                            >
+                            <v-spacer></v-spacer>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </template>
+                  </v-data-table>
+                </v-row>
+              </v-container>
+            </v-card>
+            <v-btn
+              color="primary"
+              v-bind:disabled="isDisabled"
+              v-on:click="saveCustomThumbnail"
+              >完了</v-btn
+            >
+            <v-btn
+              text
+              v-bind:disabled="isDisabled"
+              v-on:click="returnToSelectCurrentScene"
+              >キャンセル</v-btn
+            >
+          </v-stepper-content>
+        </v-stepper>
+      </v-sheet>
     </div>
+
     <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
       {{ text }}
       <v-btn color="blue" text v-on:click.stop.prevent="snackbar = false"
@@ -38,7 +200,6 @@ import HighlightHeader from "../components/HighlightHeader.vue";
 import YTIframe from "../components/YTIframe";
 import YTPlayerController from "../components/YTPlayerController";
 import YTSeekBar from "../components/YTSeekBar";
-import NoLoginModal from "../components/NoLoginModal.vue";
 import myMixin from "../util";
 import Navbar from "./Navbar.vue";
 
@@ -93,24 +254,19 @@ export default {
         { text: "中", value: "medium" },
         { text: "小", value: "small" },
       ],
-      telopDuration: 3,
+      telopDuration: 1,
       telopText: "",
       required: [(value) => !!value || "必須項目です."],
       headers: [
-        { text: "開始", value: "start", sortable: false, width: "15%" },
         {
-          text: "表示(秒)",
-          value: "duration",
-          sortable: false,
-          width: "15%",
-        },
-        {
-          text: "テロップ",
+          text: "テキスト",
           value: "text",
           sortable: false,
         },
-        { text: "", value: "actions", sortable: false },
+        { text: "", value: "actions", sortable: false, width: 24 },
       ],
+      thumbStep: 1,
+      isDisabled: false,
     };
   },
   mixins: [myMixin],
@@ -129,6 +285,7 @@ export default {
       isPlayerReady: "ytPlayer/isPlayerReady",
       isMuted: "ytPlayer/isMuted",
       isPlaying: "ytPlayer/isPlaying",
+      youtubeId: "ytPlayer/youtubeId",
       tagAndVideoData: "watch/tagAndVideoData",
       telops: "telop/telops",
       telopsArray: "telop/telopsArray",
@@ -144,7 +301,9 @@ export default {
     ...mapMutations({
       setIsMuted: "ytPlayer/setIsMuted",
       setIsPlaying: "ytPlayer/setIsPlaying",
+      setShowPlayerController: "ytPlayer/setShowPlayerController",
       setStep: "highlightHeader/setStep",
+      setTelopsArrayIndex: "telop/setTelopsArrayIndex",
       pushOneTelop: "telop/pushOneTelop",
       pushTelops: "telop/pushTelops",
       resetTelops: "telop/resetTelops",
@@ -195,8 +354,22 @@ export default {
       //次のシーンをロードし再生
       this.$store.dispatch("ytPlayer/playListIndexOf", index);
     },
+    selectCurrentScene() {
+      this.setShowPlayerController(false);
+      this.thumbStep = 2;
+      this.$store.commit("ytPlayer/setIsPlaying", false);
+      this.player.pauseVideo();
+    },
+    returnToSelectCurrentScene() {
+      this.setShowPlayerController(true);
+      this.thumbStep = 1;
+      this.$store.commit("ytPlayer/setIsPlaying", true);
+      this.player.playVideo();
+      this.resetTelops();
+    },
     insert() {
       if (this.$refs.form.validate()) {
+        this.setTelopsArrayIndex(0);
         this.pushOneTelop({
           position: this.telopPosition,
           color: this.telopColor,
@@ -206,12 +379,6 @@ export default {
           text: this.telopText,
           id: "",
         });
-
-        this.ytInputData.telops = this.telops;
-        window.sessionStorage.setItem(
-          "ytInputData",
-          JSON.stringify(this.ytInputData)
-        );
       }
     },
     seekToTelop(row) {
@@ -223,26 +390,49 @@ export default {
     },
     deleteItemConfirm() {
       this.deleteOneTelop(this.deleteIndex);
-      this.deleteOneTelopFromSessionStorage(this.deleteIndex);
       this.closeDelete();
-    },
-    deleteOneTelopFromSessionStorage(deleteIndex) {
-      this.ytInputData = JSON.parse(
-        window.sessionStorage.getItem("ytInputData")
-      );
-      if (this.ytInputData.telops) {
-        this.ytInputData.telops.splice(deleteIndex, 1);
-        window.sessionStorage.setItem(
-          "ytInputData",
-          JSON.stringify(this.ytInputData)
-        );
-      }
     },
     closeDelete() {
       this.dialogDelete = false;
       this.$nextTick(() => {
         this.deleteIndex = -1;
       });
+    },
+    saveCustomThumbnail() {
+      clearInterval(this.timer);
+
+      //ローディングを表示し、完了ボタンを無効化
+      this.$store.commit("highlightHeader/setIsLoading");
+      this.isDisabled = true;
+
+      let params = {
+        playlistId: this.playlistIdUrl,
+        youtubeId: this.youtubeId,
+        telop: this.telops,
+      };
+      console.log(params);
+
+      //カスタムサムネイルを保存
+      this.$store.dispatch("playlist/saveCustomThumbnail", params);
+
+      //ローディングを非表示
+      this.$store.commit("highlightHeader/setNotLoading");
+
+      //display adding a new scene to existing playlist completion snackbar
+      this.$store.commit(
+        "snackbar/setText",
+        "カスタムサムネイルを設定しました"
+      );
+      this.$store.commit("snackbar/seVertical", false);
+      this.$store.commit("snackbar/setSnackbar", true);
+      this.$store.commit("snackbar/setTimeout", 5000);
+
+      //return to the playlist edit page
+      this.$router
+        .push({
+          path: "/highlight/title",
+        })
+        .catch((err) => {});
     },
     setEventListeners() {
       this.$refs.ytSeekBar.setEventListeners();
@@ -281,7 +471,6 @@ export default {
       "watch/getPlaylistAndTagVideoDataById",
       this.playlistIdUrl
     );
-    console.log(this.playlistAndTagVideoData);
     if (this.playlistAndTagVideoData.user_id != this.user_id) {
       this.$store.commit("error/setCode", 403);
     }
@@ -303,11 +492,8 @@ export default {
     this.$store.commit("ytPlayer/setListIndex", this.indexUrl);
     this.ytIframeParameterReady = true;
 
-    //Telopに必要なパラメータをセット
+    //場面に紐づくTelopをリセット
     this.resetTelops();
-    this.playlistAndTagVideoData.tagVideoData.forEach((item) => {
-      this.pushTelops(item.telops);
-    });
 
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.highlightBodyRef = this.$refs.highlightBody;
@@ -317,6 +503,7 @@ export default {
     clearInterval(this.timer);
 
     this.$store.commit("ytPlayer/setIsWatchingPlaylist", false);
+    this.setShowPlayerController(true);
   },
 };
 </script>

@@ -751,6 +751,22 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
+
+  async saveCustomThumbnail(context, params) {
+    const response = await axios.post(
+      "/api/playlist/saveCustomThumbnail",
+      params
+    );
+    if (response.status == CREATED) {
+      console.log(response.data);
+      // context.commit("setCustomThumbnail", response.data.customThumbnail);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
 };
 
 export default {

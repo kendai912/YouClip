@@ -7,6 +7,7 @@
       </v-btn>
     </div>
     <v-sheet
+      v-if="showPlayerController"
       class="overlay"
       v-on:click.prevent="
         toggleController();
@@ -228,6 +229,7 @@ export default {
       isFadingOut: "ytPlayer/isFadingOut",
       currentDisplayingTimeInSecOfWatch:
         "ytPlayer/currentDisplayingTimeInSecOfWatch",
+      showPlayerController: "ytPlayer/showPlayerController",
       isMobile: "ytSeekBar/isMobile",
       isIOS: "ytSeekBar/isIOS",
       currentTime: "youtube/currentTime",
@@ -286,6 +288,7 @@ export default {
       setCurrentDisplayingTimeInSecOfWatch:
         "ytPlayer/setCurrentDisplayingTimeInSecOfWatch",
       setDurationInSecOfWatch: "ytPlayer/setDurationInSecOfWatch",
+      setShowPlayerController: "ytPlayer/setShowPlayerController",
       setIsMobile: "ytSeekBar/setIsMobile",
       setIsIOS: "ytSeekBar/setIsIOS",
       setIsNew: "youtube/setIsNew",
@@ -766,6 +769,7 @@ export default {
     },
   },
   mounted() {
+    this.setShowPlayerController(true);
     //iframeプレイヤーの表示から4秒後にプレイヤーコントロールボタンを非表示
     let self = this;
     setTimeout(function() {

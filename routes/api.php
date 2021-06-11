@@ -126,6 +126,8 @@ Route::post('/load/publicPlaylistAndScenelist', 'PlaylistController@loadPublicPl
 Route::post('/playlist/refreshNewPreview', 'PlaylistController@refreshNewPreview');
 //get playlist's default preview thumbnail
 Route::get('/playlist/getDefaultPreview/{playlistId}', 'PlaylistController@getDefaultPreview');
+//save custom thumbnail
+Route::post('/playlist/saveCustomThumbnail', 'PlaylistController@saveCustomThumbnail');
 
 
 //シーン登録におけるyoutubeIdから既存のvideoIdの取得

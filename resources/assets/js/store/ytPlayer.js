@@ -25,6 +25,7 @@ const state = {
   currentDisplayingTimeInSecOfWatch: "",
   durationInSecOfWatch: "",
   timer: null,
+  showPlayerController: true,
 };
 
 const getters = {
@@ -50,6 +51,7 @@ const getters = {
     state.currentDisplayingTimeInSecOfWatch,
   durationInSecOfWatch: (state) => state.durationInSecOfWatch,
   timer: (state) => state.timer,
+  showPlayerController: (state) => state.showPlayerController,
   youtubeId: (state) =>
     state.listOfYoutubeIdStartEndTime &&
     state.listOfYoutubeIdStartEndTime[state.listIndex]
@@ -121,6 +123,9 @@ const mutations = {
   },
   setTimer(state, data) {
     state.timer = data;
+  },
+  setShowPlayerController(state, data) {
+    state.showPlayerController = data;
   },
 };
 

@@ -951,4 +951,18 @@ class PlaylistController extends Controller
             JSON_UNESCAPED_UNICODE
         );
     }
+
+    public function saveCustomThumbnail(Request $request)
+    {
+        $customThumbnail = "test";
+
+        return response()->json(
+            [
+                'customThumbnail' => $customThumbnail
+            ],
+            201,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
 }
