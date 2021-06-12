@@ -409,7 +409,7 @@ export default {
         playlistId: this.playlistIdUrl,
         youtubeId: this.youtubeId,
         start: this.timeMath.toHis(this.currentTime),
-        telop: this.telops,
+        telops: this.telops,
       };
       console.log(params);
 

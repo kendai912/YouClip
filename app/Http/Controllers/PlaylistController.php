@@ -974,9 +974,31 @@ class PlaylistController extends Controller
         //ダウンロードリンクの取得
         $ytDirectUrl = $tagController->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
 
-        //サムネイル用の画像を取得しS3に保存
-        $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$customThumbnail.' 2>&1';
+        //サムネイル用の画像を取得
+        $tempFile = 'temp.webp';
+        $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$tempFile.' 2>&1';
         exec($cmd_webp);
+
+        //テキストを画像に合成
+        $cmd_filter_start = 'ffmpeg -i '.storage_path()."/app/public/imgs/".$tempFile.' -filter_complex "';
+        $cmd_filter_end = '" '.storage_path()."/app/public/imgs/".$customThumbnail;
+        $cmd_drawtext = '';
+        foreach ($request->telops as $key => $telop) {
+            $text_drawtext = $telop['text'];
+            $position_drawtext = $this->convertToDrawtextPosition($telop['position']);
+            $fontcolor_drawtext = $telop['color'];
+            $fontsize_drawtext = $this->convertToDrawtextFontsize($telop['size']);
+            $connection_drawtext = '';
+
+            if ($key > 0) {
+                $connection_drawtext = ',';
+            }
+            $cmd_drawtext .=  $connection_drawtext.'drawtext=fontfile='.storage_path().'/app/public/fonts/meiryo.ttc:text='.$text_drawtext.$position_drawtext.':fontcolor='.$fontcolor_drawtext.':bordercolor=black:borderw=1:fontsize='.$fontsize_drawtext;
+        }
+        $cmd_filter_drawtext = $cmd_filter_start.$cmd_drawtext.$cmd_filter_end;
+        exec($cmd_filter_drawtext);
+
+        //S3に保存
         Storage::disk('s3')->putFileAs('thumbs', new File(storage_path()."/app/public/imgs/".$customThumbnail), $customThumbnail, 'public');
 
         //一時的にローカルに保存したファイルを削除
@@ -990,5 +1012,43 @@ class PlaylistController extends Controller
             [],
             JSON_UNESCAPED_UNICODE
         );
+    }
+
+    private function convertToDrawtextPosition($telopPosition)
+    {
+        if ($telopPosition == 'bottomLeft') {
+            return ':x=12:y=h-text_h-24';
+        } elseif ($telopPosition == 'bottomCenter') {
+            return ':x=(w-text_w)/2:y=h-text_h-24';
+        } elseif ($telopPosition == 'bottomRight') {
+            return ':x=w-text_w-12:y=h-text_h-24';
+        } elseif ($telopPosition == 'middleLeft') {
+            return ':x=12:y=(h-text_h)/2';
+        } elseif ($telopPosition == 'middleCenter') {
+            return ':x=(w-text_w)/2:y=(h-text_h)/2';
+        } elseif ($telopPosition == 'middleRight') {
+            return ':x=w-text_w-12:y=(h-text_h)/2';
+        } elseif ($telopPosition == 'upperLeft') {
+            return ':x=12:y=24';
+        } elseif ($telopPosition == 'upperCenter') {
+            return ':x=(w-text_w)/2:y=24';
+        } elseif ($telopPosition == 'upperRight') {
+            return ':x=w-text_w-12:y=24';
+        } else {
+            return '';
+        }
+    }
+
+    private function convertToDrawtextFontsize($telopSize)
+    {
+        if ($telopSize == 'large') {
+            return 40;
+        } elseif ($telopSize == 'medium') {
+            return 32;
+        } elseif ($telopSize == 'small') {
+            return 24;
+        } else {
+            return '';
+        }
     }
 }
