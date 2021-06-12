@@ -408,6 +408,7 @@ export default {
       let params = {
         playlistId: this.playlistIdUrl,
         youtubeId: this.youtubeId,
+        start: this.timeMath.toHis(this.currentTime),
         telop: this.telops,
       };
       console.log(params);

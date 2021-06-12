@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 use Auth;
+use FFMpeg;
 use App\Video;
 use App\Tag;
 use App\Telop;
@@ -14,10 +16,14 @@ use App\LikesPlaylist;
 use App\Like;
 use App\PlaylistComment;
 use App\LikesComment;
-
 use Carbon\Carbon;
-
-use DB;
+use FFMpeg\Filters\Video\VideoFilters;
+use FFMpeg\Media\Gif;
+use FFMpeg\Format\ProgressListener\AbstractProgressListener;
+use ProtoneMedia\LaravelFFMpeg\FFMpeg\ProgressListenerDecorator;
+use YouTube\YouTubeDownloader;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
 
 class PlaylistController extends Controller
 {
@@ -954,7 +960,27 @@ class PlaylistController extends Controller
 
     public function saveCustomThumbnail(Request $request)
     {
-        $customThumbnail = "test";
+        $tagController = app()->make('App\Http\Controllers\TagController');
+        
+        //サムネイル用のファイル名を取得
+        $startSec = $tagController->convertToSec($request->start);
+        $customThumbnail = $tagController->getPreviewThumbFileName($request);
+
+        //plyalistsテーブルのcustom_thumbnailにファイル名を保存
+        $playlist = Playlist::find($request->playlistId);
+        $playlist->custom_thumbnail = $customThumbnail;
+        $playlist->save();
+
+        //ダウンロードリンクの取得
+        $ytDirectUrl = $tagController->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
+
+        //サムネイル用の画像を取得しS3に保存
+        $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$customThumbnail.' 2>&1';
+        exec($cmd_webp);
+        Storage::disk('s3')->putFileAs('thumbs', new File(storage_path()."/app/public/imgs/".$customThumbnail), $customThumbnail, 'public');
+
+        //一時的にローカルに保存したファイルを削除
+        unlink(storage_path(). "/app/public/imgs/" . $customThumbnail);
 
         return response()->json(
             [
