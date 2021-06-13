@@ -43,14 +43,15 @@ class IndexController extends Controller
                     $tagId = DB::table('playlist_tag')->where('playlist_id', $playlistId)->select('tag_id')->orderBy('scene_order', 'ASC')->first()->tag_id;
                     
                     // get parameter contents by playlistId
+                    $playlist = Playlist::find($playlistId);
                     $site_name = "YouClip";
                     $url = "https://youclip.app" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
-                    $title = Playlist::find($playlistId)->playlistName;
-                    $description = Playlist::find($playlistId)->description;
+                    $title = $playlist->playlistName;
+                    $description = $playlist->description;
                     if ($description == "" || $description == null) {
-                        $description = "YouTube動画を切り抜いてみました";
+                        $description = "YouTube動画の見所を切り抜いたよ";
                     }
-                    $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . Tag::find($tagId)->preview;
+                    $image_url = $playlist->custom_thumbnail ? "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . $playlist->custom_thumbnail : "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . Tag::find($tagId)->preview ;
                     
                     return view('ogp')->with('site_name', $site_name)->with('url', $url)->with('title', $title)->with('description', $description)->with('image_url', $image_url)->with('fb_app_id', env('FACEBOOK_ID'));
                 } else {
@@ -58,7 +59,7 @@ class IndexController extends Controller
                     $site_name = "YouClip";
                     $url = "https://youclip.app" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
                     $title = "YouClip - YouTube動画の見所切り抜き";
-                    $description = "YouClipはYouTube動画の見所切り抜きツールです。オンラインで１分とかからず見所を切り抜くことが出来ます。みんなの作成した切り抜きを見ることも可能です";
+                    $description = "YouClipはYouTube動画の見所切り抜きツールです。サイト上で１分とかからず見所を切り抜くことが出来ます。みんなの作成した切り抜きを見ることも可能です";
                     $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/twitter-youclip-logo.png";
                     
                     return view('ogp')->with('site_name', $site_name)->with('url', $url)->with('title', $title)->with('description', $description)->with('image_url', $image_url)->with('fb_app_id', env('FACEBOOK_ID'));
@@ -74,14 +75,15 @@ class IndexController extends Controller
             $tagId = DB::table('playlist_tag')->where('playlist_id', $playlistId)->select('tag_id')->orderBy('scene_order', 'ASC')->first()->tag_id;
                     
             // get parameter contents by playlistId
+            $playlist = Playlist::find($playlistId);
             $site_name = "YouClip";
             $url = "https://youclip.app" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
-            $title = Playlist::find($playlistId)->playlistName;
-            $description = Playlist::find($playlistId)->description;
+            $title = $playlist->playlistName;
+            $description = $playlist->description;
             if ($description == "" || $description == null) {
-                $description = "YouTube動画をまとめてみました";
+                $description = "YouTube動画の見所を切り抜いたよ";
             }
-            $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . Tag::find($tagId)->preview;
+            $image_url = $playlist->custom_thumbnail ? "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . $playlist->custom_thumbnail : "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . Tag::find($tagId)->preview ;
 
             $upload_date = new \DateTime(Playlist::find($playlistId)->created_at, new \DateTimeZone('Asia/Tokyo'));
             $upload_date->setTimezone(new \DateTimeZone('UTC'));
