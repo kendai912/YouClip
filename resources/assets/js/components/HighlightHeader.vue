@@ -117,7 +117,15 @@ export default {
       setComplete: "highlightHeader/setComplete",
     }),
     back() {
-      this.$router.go(-1);
+      if (this.$route.path == "/highlight/thumbnail") {
+        this.$router
+          .push({
+            path: "/highlight/title",
+          })
+          .catch((err) => {});
+      } else {
+        this.$router.go(-1);
+      }
     },
     //作成中のプレイリストDataを取得
     async loadSceneList() {
