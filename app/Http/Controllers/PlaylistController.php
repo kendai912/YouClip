@@ -942,15 +942,20 @@ class PlaylistController extends Controller
         );
     }
 
-    public function getDefaultPreview($playlistId)
+    public function getThumbnail($playlistId)
     {
-        //Get preview name for complete page
-        $tagId = DB::table('playlist_tag')->where('playlist_id', $playlistId)->select('tag_id')->orderBy('scene_order', 'ASC')->first();
-        $tag = Tag::find($tagId->tag_id);
+        $playlist = Playlist::find($playlistId);
+        if ($playlist->custom_thumbnail) {
+            $thumbnail = $playlist->custom_thumbnail;
+        } else {
+            $tagId = DB::table('playlist_tag')->where('playlist_id', $playlistId)->select('tag_id')->orderBy('scene_order', 'ASC')->first();
+            $tag = Tag::find($tagId->tag_id);
+            $thumbnail = $tag->preview;
+        }
 
         return response()->json(
             [
-                'defaultPreview' => $tag->preview
+                'thumbnail' => $thumbnail
             ],
             200,
             [],
@@ -979,7 +984,7 @@ class PlaylistController extends Controller
         $ytDirectUrl = $tagController->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
 
         //サムネイル用の画像を取得
-        $tempFile = 'temp.webp';
+        $tempFile = 'temp'. "-" . rand() .'.webp';
         $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$tempFile.' 2>&1';
         exec($cmd_webp);
 
@@ -1006,6 +1011,7 @@ class PlaylistController extends Controller
         Storage::disk('s3')->putFileAs('thumbs', new File(storage_path()."/app/public/imgs/".$customThumbnail), $customThumbnail, 'public');
 
         //一時的にローカルに保存したファイルを削除
+        unlink(storage_path(). "/app/public/imgs/" . $tempFile);
         unlink(storage_path(). "/app/public/imgs/" . $customThumbnail);
 
         return response()->json(

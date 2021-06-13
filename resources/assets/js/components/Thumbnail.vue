@@ -398,7 +398,7 @@ export default {
         this.deleteIndex = -1;
       });
     },
-    saveCustomThumbnail() {
+    async saveCustomThumbnail() {
       clearInterval(this.timer);
 
       //ローディングを表示し、完了ボタンを無効化
@@ -411,10 +411,9 @@ export default {
         start: this.timeMath.toHis(this.currentTime),
         telops: this.telops,
       };
-      console.log(params);
 
       //カスタムサムネイルを保存
-      this.$store.dispatch("playlist/saveCustomThumbnail", params);
+      await this.$store.dispatch("playlist/saveCustomThumbnail", params);
 
       //ローディングを非表示
       this.$store.commit("highlightHeader/setNotLoading");

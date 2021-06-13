@@ -61,7 +61,7 @@
                       <v-img
                         class="align-end rounded"
                         max-height="266.66px"
-                        v-bind:src="thumbStoragePath + defaultPreview"
+                        v-bind:src="thumbStoragePath + thumbnail"
                         aspect-ratio="1.7777"
                       >
                       </v-img>
@@ -162,7 +162,7 @@ export default {
       myPlaylistToSave: "tagging/myPlaylistToSave",
       newPlaylistId: "playlist/newPlaylistId",
       currentCategory: "playlist/currentCategory",
-      defaultPreview: "playlist/defaultPreview",
+      thumbnail: "playlist/thumbnail",
     }),
     privacySetting: {
       get() {
@@ -178,7 +178,7 @@ export default {
       setStep: "highlightHeader/setStep",
     }),
     ...mapActions({
-      getDefaultPreview: "playlist/getDefaultPreview",
+      getThumbnail: "playlist/getThumbnail",
     }),
     async initialize() {
       //ナビバーを非表示
@@ -289,7 +289,7 @@ export default {
     );
 
     //デフォルトのサムネイルを取得
-    await this.getDefaultPreview(this.myPlaylistToSave);
+    await this.getThumbnail(this.myPlaylistToSave);
 
     if (this.currentCategory == "Sports") {
       this.playlistCategory = "Sports";

@@ -38,7 +38,7 @@ const state = {
   publicPlaylist: null,
   createdSceneList: null,
   resetKey: 0,
-  defaultPreview: null,
+  thumbnail: null,
 };
 
 const getters = {
@@ -92,7 +92,7 @@ const getters = {
   newPlaylistId: (state) => state.newPlaylistId,
   newPlaylistName: (state) => state.newPlaylistName,
   newPreview: (state) => state.newPreview,
-  defaultPreview: (state) => state.defaultPreview,
+  thumbnail: (state) => state.thumbnail,
 };
 
 const mutations = {
@@ -198,8 +198,8 @@ const mutations = {
   setNewPreview(state, data) {
     state.newPreview = data;
   },
-  setDefaultPreview(state, data) {
-    state.defaultPreview = data;
+  setThumbnail(state, data) {
+    state.thumbnail = data;
   },
 };
 
@@ -738,12 +738,12 @@ const actions = {
     }
   },
 
-  async getDefaultPreview(context, playlistId) {
+  async getThumbnail(context, playlistId) {
     const response = await axios.get(
-      "/api/playlist/getDefaultPreview/" + playlistId
+      "/api/playlist/getThumbnail/" + playlistId
     );
     if (response.status == OK) {
-      context.commit("setDefaultPreview", response.data.defaultPreview);
+      context.commit("setThumbnail", response.data.thumbnail);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
     } else {
@@ -758,8 +758,7 @@ const actions = {
       params
     );
     if (response.status == CREATED) {
-      console.log(response.data);
-      // context.commit("setCustomThumbnail", response.data.customThumbnail);
+      context.commit("setThumbnail", response.data.customThumbnail);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
     } else {

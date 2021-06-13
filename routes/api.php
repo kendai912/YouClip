@@ -125,7 +125,7 @@ Route::post('/load/publicPlaylistAndScenelist', 'PlaylistController@loadPublicPl
 //refresh new playlist's preview
 Route::post('/playlist/refreshNewPreview', 'PlaylistController@refreshNewPreview');
 //get playlist's default preview thumbnail
-Route::get('/playlist/getDefaultPreview/{playlistId}', 'PlaylistController@getDefaultPreview');
+Route::get('/playlist/getThumbnail/{playlistId}', 'PlaylistController@getThumbnail');
 //save custom thumbnail
 Route::post('/playlist/saveCustomThumbnail', 'PlaylistController@saveCustomThumbnail');
 
