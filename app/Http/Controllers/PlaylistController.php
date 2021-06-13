@@ -968,6 +968,10 @@ class PlaylistController extends Controller
 
         //plyalistsテーブルのcustom_thumbnailにファイル名を保存
         $playlist = Playlist::find($request->playlistId);
+        //既存のS3に保存されているサムネイルを削除
+        if ($playlist->custom_thumbnail) {
+            Storage::disk('s3')->delete('thumbs/'.$playlist->custom_thumbnail);
+        }
         $playlist->custom_thumbnail = $customThumbnail;
         $playlist->save();
 
