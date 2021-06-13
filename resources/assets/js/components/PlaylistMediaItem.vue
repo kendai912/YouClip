@@ -26,7 +26,11 @@
             >
               <v-img
                 class="white--text align-end rounded"
-                v-bind:src="thumbStoragePath + item.preview"
+                v-bind:src="
+                  item.thumbnail
+                    ? thumbStoragePath + item.thumbnail
+                    : thumbStoragePath + item.preview
+                "
                 v-bind:alt="item.title"
                 width="100%"
                 min-height="170"
@@ -35,9 +39,7 @@
               >
               </v-img>
               <video
-                v-if="
-                  showPreviewIndex == index || showPreviewIndex + 1 == index
-                "
+                v-if="showPreviewIndex == index"
                 v-bind:src="gifStoragePath + item.previewgif"
                 autoplay
                 playsinline
@@ -162,7 +164,7 @@ import myMixin from "../util";
 
 export default {
   data: () => ({
-    showPreviewIndex: 0,
+    showPreviewIndex: -1,
     isMobile: false,
     now: "",
   }),

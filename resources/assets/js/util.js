@@ -155,13 +155,13 @@ export default {
           });
           numberOfYTvideos = uniqueYTvideoArray.length;
 
-          //データをmediaItemsに格納(サムネイル&プレビュー動画は最初のシーンのデータを格納)
+          //データをmediaItemsに格納
           if (value.tags[0]) {
             let mediaItem = {
               category: "playlist",
               id: value.id,
               title: value.playlistName,
-              thumbnail: "",
+              thumbnail: value.custom_thumbnail,
               created_at: value.created_at,
               timeSince: this.timeSince(value.created_at),
               isNewClip: this.isNewClip(value.created_at),
