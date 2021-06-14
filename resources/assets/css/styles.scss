@@ -725,16 +725,16 @@
 }
 
 .iframeHeight[min-width~="600px"] .smallTelop {
-  font-size: calc(1rem * (40 / 14)) !important;
+  font-size: calc(1rem * (34 / 14)) !important; // modified size jump
 }
 
 .iframeHeight[min-width~="800px"] .smallTelop {
-  font-size: calc(1rem * (56 / 14)) !important;
+  font-size: calc(1rem * (50 / 14)) !important; // modified size jump
   -webkit-text-stroke-width: 2px;
 }
 
 .iframeHeight[min-width~="1000px"] .smallTelop {
-  font-size: calc(1rem * (72 / 14)) !important;
+  font-size: calc(1rem * (66 / 14)) !important; // modified size jump
   -webkit-text-stroke-width: 3px;
 }
 
