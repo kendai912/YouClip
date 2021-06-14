@@ -709,62 +709,76 @@
 }
 
 .smallTelop {
-  font-size: calc(1rem * (16 / 14)) !important;
+  font-size: calc(1rem * (12 / 14)) !important;
+  // font-size: calc(1rem * (16 / 14)) !important;
 }
 
 .iframeHeight[min-width~="375px"] .smallTelop {
-  font-size: calc(1rem * (20 / 14)) !important;
+  font-size: calc(1rem * (18 / 14)) !important; // modified size jump
+  // font-size: calc(1rem * (20 / 14)) !important;
 }
 
 .iframeHeight[min-width~="420px"] .smallTelop {
-  font-size: calc(1rem * (24 / 14)) !important;
+  font-size: calc(1rem * (20 / 14)) !important;
+  // font-size: calc(1rem * (24 / 14)) !important;
 }
 
 .iframeHeight[min-width~="500px"] .smallTelop {
-  font-size: calc(1rem * (32 / 14)) !important;
+  font-size: calc(1rem * (28 / 14)) !important;
+  // font-size: calc(1rem * (32 / 14)) !important;
 }
 
 .iframeHeight[min-width~="600px"] .smallTelop {
-  font-size: calc(1rem * (34 / 14)) !important; // modified size jump
+  font-size: calc(1rem * (28 / 14)) !important; // modified size jump
+  // font-size: calc(1rem * (34 / 14)) !important; // modified size jump
 }
 
 .iframeHeight[min-width~="800px"] .smallTelop {
-  font-size: calc(1rem * (50 / 14)) !important; // modified size jump
+  font-size: calc(1rem * (44 / 14)) !important; // modified size jump
+  // font-size: calc(1rem * (50 / 14)) !important; // modified size jump
   -webkit-text-stroke-width: 2px;
 }
 
 .iframeHeight[min-width~="1000px"] .smallTelop {
-  font-size: calc(1rem * (66 / 14)) !important; // modified size jump
+  font-size: calc(1rem * (60 / 14)) !important; // modified size jump
+  // font-size: calc(1rem * (66 / 14)) !important; // modified size jump
   -webkit-text-stroke-width: 3px;
 }
 
 .mediumTelop {
-  font-size: calc(1rem * (24 / 14)) !important;
+  font-size: calc(1rem * (20 / 14)) !important;
+  // font-size: calc(1rem * (24 / 14)) !important;
 }
 
 .iframeHeight[min-width~="375px"] .mediumTelop {
-  font-size: calc(1rem * (28 / 14)) !important;
+  font-size: calc(1rem * (24 / 14)) !important;
+  // font-size: calc(1rem * (28 / 14)) !important;
 }
 
 .iframeHeight[min-width~="420px"] .mediumTelop {
-  font-size: calc(1rem * (32 / 14)) !important;
+  font-size: calc(1rem * (28 / 14)) !important;
+  // font-size: calc(1rem * (32 / 14)) !important;
 }
 
 .iframeHeight[min-width~="500px"] .mediumTelop {
-  font-size: calc(1rem * (40 / 14)) !important;
+  font-size: calc(1rem * (36 / 14)) !important;
+  // font-size: calc(1rem * (40 / 14)) !important;
 }
 
 .iframeHeight[min-width~="600px"] .mediumTelop {
-  font-size: calc(1rem * (48 / 14)) !important;
+  font-size: calc(1rem * (40 / 14)) !important; // modified size jump
+  // font-size: calc(1rem * (48 / 14)) !important;
 }
 
 .iframeHeight[min-width~="800px"] .mediumTelop {
-  font-size: calc(1rem * (64 / 14)) !important;
+  font-size: calc(1rem * (56 / 14)) !important; // modified size jump
+  // font-size: calc(1rem * (64 / 14)) !important;
   -webkit-text-stroke-width: 2px;
 }
 
 .iframeHeight[min-width~="1000px"] .mediumTelop {
-  font-size: calc(1rem * (80 / 14)) !important;
+  font-size: calc(1rem * (72 / 14)) !important; // modified size jump
+  // font-size: calc(1rem * (80 / 14)) !important;
   -webkit-text-stroke-width: 3px;
 }
 

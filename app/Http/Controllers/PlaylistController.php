@@ -1038,9 +1038,9 @@ class PlaylistController extends Controller
         if ($telopSize == 'large') {
             return 40;
         } elseif ($telopSize == 'medium') {
-            return 32;
+            return 28;
         } elseif ($telopSize == 'small') {
-            return 24;
+            return 20;
         } else {
             return '';
         }
