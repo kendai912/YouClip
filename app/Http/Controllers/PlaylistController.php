@@ -1036,11 +1036,11 @@ class PlaylistController extends Controller
     private function convertToDrawtextFontsize($telopSize)
     {
         if ($telopSize == 'large') {
-            return 40;
+            return 36;
         } elseif ($telopSize == 'medium') {
-            return 28;
+            return 24;
         } elseif ($telopSize == 'small') {
-            return 20;
+            return 16;
         } else {
             return '';
         }
