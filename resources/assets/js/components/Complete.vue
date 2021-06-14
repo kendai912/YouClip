@@ -26,7 +26,7 @@
         <v-img
           class="align-end rounded"
           max-height="266.66px"
-          v-bind:src="thumbStoragePath + newPreview"
+          v-bind:src="thumbStoragePath + thumbnail"
           v-bind:alt="newPlaylistName"
           aspect-ratio="1.7777"
         >
@@ -181,7 +181,7 @@ export default {
       isLogin: "auth/check",
       newPlaylistId: "playlist/newPlaylistId",
       newPlaylistName: "playlist/newPlaylistName",
-      newPreview: "playlist/newPreview",
+      thumbnail: "playlist/thumbnail",
       myPlaylistToSave: "tagging/myPlaylistToSave",
       shareUrl: "shareModal/shareUrl",
       shareText: "shareModal/shareText",
@@ -278,7 +278,7 @@ export default {
       this.initialize();
     },
     resetKey() {
-      this.$store.dispatch("playlist/refreshNewPreview", this.newPlaylistId);
+      this.$store.dispatch("playlist/getThumbnail", this.newPlaylistId);
     },
   },
   mounted() {

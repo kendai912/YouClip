@@ -926,22 +926,6 @@ class PlaylistController extends Controller
         }
     }
 
-    public function refreshNewPreview(Request $request)
-    {
-        //Get preview name for complete page
-        $tagId = DB::table('playlist_tag')->where('playlist_id', $request->newPlaylistId)->select('tag_id')->orderBy('scene_order', 'ASC')->first();
-        $tag = Tag::find($tagId->tag_id);
-
-        return response()->json(
-            [
-                'preview' => $tag->preview
-            ],
-            201,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
-    }
-
     public function getThumbnail($playlistId)
     {
         $playlist = Playlist::find($playlistId);

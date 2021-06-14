@@ -34,7 +34,6 @@ const state = {
   commentListofPlaylist: null,
   newPlaylistId: null,
   newPlaylistName: null,
-  newPreview: null,
   publicPlaylist: null,
   createdSceneList: null,
   resetKey: 0,
@@ -91,7 +90,6 @@ const getters = {
   commentListofPlaylist: (state) => state.commentListofPlaylist,
   newPlaylistId: (state) => state.newPlaylistId,
   newPlaylistName: (state) => state.newPlaylistName,
-  newPreview: (state) => state.newPreview,
   thumbnail: (state) => state.thumbnail,
 };
 
@@ -194,9 +192,6 @@ const mutations = {
   },
   setNewPlaylistName(state, data) {
     state.newPlaylistName = data;
-  },
-  setNewPreview(state, data) {
-    state.newPreview = data;
   },
   setThumbnail(state, data) {
     state.thumbnail = data;
@@ -713,25 +708,6 @@ const actions = {
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
       context.commit("error/setCode", response.status, { root: true });
-    } else {
-      // 上記以外で失敗した時
-      context.commit("error/setCode", response.status, { root: true });
-    }
-  },
-
-  async refreshNewPreview(context, newPlaylistId) {
-    var params = {
-      newPlaylistId: newPlaylistId,
-    };
-
-    const response = await axios.post(
-      "/api/playlist/refreshNewPreview",
-      params
-    );
-    if (response.status == CREATED) {
-      context.commit("setNewPreview", response.data.preview);
-    } else if (response.status == INTERNAL_SERVER_ERROR) {
-      // 失敗した時
     } else {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
