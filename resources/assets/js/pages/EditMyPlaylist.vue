@@ -56,6 +56,38 @@
         </v-row>
 
         <v-row class="ma-0">
+          <v-col class="pa-0 pt-3 text-center">
+            <v-row class="ma-0 pa-0">
+              <v-card class="text-left pa-0 ma-0 my-grey" elevation="0"
+                >サムネイル</v-card
+              >
+            </v-row>
+            <v-row class="ma-0 pa-0">
+              <v-col class="ma-0 pa-2 py-0 pt-1">
+                <div style="position: relative;">
+                  <v-img
+                    class="align-end rounded"
+                    max-height="266.66px"
+                    v-bind:src="thumbStoragePath + thumbnail"
+                    aspect-ratio="1.7777"
+                  >
+                  </v-img>
+                </div>
+              </v-col>
+              <v-col align-self="center" class="ma-0 pa-2">
+                <v-btn
+                  rounded
+                  color="primary"
+                  outlined
+                  v-on:click="changeThumbnail"
+                  >サムネイルを変更</v-btn
+                >
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+
+        <v-row class="ma-0">
           <v-col class="pa-0 pt-2 align-bottom" align-self="end">
             <v-card elevation="0">
               <v-card-subtitle class="pa-0 ma-0 subtitle-1 my-grey">
@@ -109,7 +141,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from "vuex";
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import myMixin from "../util";
 import SceneTagItem from "../components/SceneTagItem.vue";
 import PlaylistDeleteModal from "../components/PlaylistDeleteModal.vue";
@@ -211,6 +243,7 @@ export default {
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
       resetKey: "playlist/resetKey",
+      thumbnail: "playlist/thumbnail",
       playlistName: "watch/playlistName",
       privacySetting: "watch/privacySetting",
       showPlaylistDeleteModal: "playlistDeleteModal/showPlaylistDeleteModal",
@@ -251,6 +284,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      getThumbnail: "playlist/getThumbnail",
+    }),
     toggleIsEditTitle() {
       this.isEditTitle = true;
     },
@@ -326,6 +362,17 @@ export default {
       s = parseInt(s);
       return `${s}時間` + retStr;
     },
+    changeThumbnail() {
+      this.$router
+        .push({
+          path: "/edit/thumbnail",
+          query: {
+            playlist: this.playlistId,
+            index: 0,
+          },
+        })
+        .catch((err) => {});
+    },
   },
   async created() {
     if (this.$route.query.playlist) {
@@ -372,6 +419,9 @@ export default {
       );
       this.$store.commit("playlist/setSceneListofPlaylist", mediaItems);
       this.sceneListofPlaylistIsReady = true;
+
+      //デフォルトのサムネイルを取得
+      this.getThumbnail(this.playlistId);
     }
   },
 };

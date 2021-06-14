@@ -109,6 +109,7 @@ export default {
       complete: "highlightHeader/complete",
       newPlaylistId: "playlist/newPlaylistId",
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
+      playlistId: "watch/playlistId",
     }),
   },
   watch: {},
@@ -121,6 +122,15 @@ export default {
         this.$router
           .push({
             path: "/highlight/title",
+          })
+          .catch((err) => {});
+      } else if (this.$route.path == "/edit/thumbnail") {
+        this.$router
+          .push({
+            path: "/editmyplaylist",
+            query: {
+              playlist: this.playlistId,
+            },
           })
           .catch((err) => {});
       } else {

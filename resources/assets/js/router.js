@@ -144,6 +144,19 @@ const routes = [
     },
   },
   {
+    path: "/edit/thumbnail",
+    name: "edit_thumbnail",
+    component: (resolve) => {
+      require.ensure(
+        ["./pages/Highlight.vue"],
+        () => {
+          resolve(require("./pages/Highlight.vue"));
+        },
+        "js/highlight"
+      );
+    },
+  },
+  {
     path: "/highlight/complete",
     name: "highlight_complete",
     component: (resolve) => {

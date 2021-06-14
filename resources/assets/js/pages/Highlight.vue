@@ -83,6 +83,8 @@ export default {
         this.$store.commit("highlight/setDisplayComponent", "Title");
       } else if (this.$route.path == "/highlight/thumbnail") {
         this.$store.commit("highlight/setDisplayComponent", "Thumbnail");
+      } else if (this.$route.path == "/edit/thumbnail") {
+        this.$store.commit("highlight/setDisplayComponent", "Thumbnail");
       } else if (this.$route.path == "/highlight/complete") {
         this.$store.commit("highlight/setDisplayComponent", "Complete");
       } else if (this.$route.path == "/add") {
