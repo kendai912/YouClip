@@ -166,20 +166,29 @@
                     </template>
                   </v-data-table>
                 </v-row>
+
+                <v-row
+                  align="center"
+                  class="ma-0 pa-0"
+                  style="padding-top: 24px !important; padding-bottom: 128px !important; "
+                >
+                  <v-col class="ma-0 pa-3">
+                    <v-btn
+                      color="primary"
+                      v-bind:disabled="isDisabled"
+                      v-on:click="saveCustomThumbnail"
+                      >完了</v-btn
+                    >
+                    <v-btn
+                      text
+                      v-bind:disabled="isDisabled"
+                      v-on:click="returnToSelectCurrentScene"
+                      >キャンセル</v-btn
+                    >
+                  </v-col>
+                </v-row>
               </v-container>
             </v-card>
-            <v-btn
-              color="primary"
-              v-bind:disabled="isDisabled"
-              v-on:click="saveCustomThumbnail"
-              >完了</v-btn
-            >
-            <v-btn
-              text
-              v-bind:disabled="isDisabled"
-              v-on:click="returnToSelectCurrentScene"
-              >キャンセル</v-btn
-            >
           </v-stepper-content>
         </v-stepper>
       </v-sheet>
