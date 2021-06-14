@@ -50,13 +50,9 @@
                 width="100%"
                 style="position: absolute; top: 0; left: 0; z-index: 2; border-radius: 4px; object-fit: cover;"
               ></video>
-              <div
-                v-if="item.isNewClip"
-                v-bind:class="isMobile ? 'icon-new-mobile' : 'icon-new-pc'"
-              ></div>
               <div class="ribbon-content">
                 <span class="ribbon-text"
-                  ><v-icon size="16">content_cut</v-icon>&nbsp;切り抜き</span
+                  ><v-icon size="14">content_cut</v-icon>&nbsp;切り抜き</span
                 >
               </div>
             </router-link>
@@ -86,7 +82,18 @@
                   </v-col>
                   <v-col class="pa-0 ma-0">
                     <v-row class="pa-0 ma-0">
-                      <h3 class="home-and-search-result-title">
+                      <v-badge
+                        v-if="item.isNewClip"
+                        bordered
+                        color="pink lighten-2"
+                        dot
+                        offset-y="4"
+                      >
+                        <h3 class="home-and-search-result-title">
+                          {{ item.title }}
+                        </h3>
+                      </v-badge>
+                      <h3 v-else class="home-and-search-result-title">
                         {{ item.title }}
                       </h3>
                     </v-row>

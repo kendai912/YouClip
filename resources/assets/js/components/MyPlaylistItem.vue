@@ -38,7 +38,11 @@
                       >
                         <v-img
                           class="white--text align-end rounded"
-                          v-bind:src="thumbStoragePath + item.preview"
+                          v-bind:src="
+                            item.thumbnail
+                              ? thumbStoragePath + item.thumbnail
+                              : thumbStoragePath + item.preview
+                          "
                           lazy-src="/storage/imgs/dummy-image.jpg"
                           v-bind:alt="item.title"
                           height="100%"
