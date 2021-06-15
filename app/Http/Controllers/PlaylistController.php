@@ -223,7 +223,7 @@ class PlaylistController extends Controller
         //再生中のプレイリストのカテゴリを取得
         $playlistCategory = Playlist::find($playlistId)->playlistCategory;
 
-        //再生中のプレイリストと同じカテゴリで過去2ヶ月のいいね件数の上位10件を取得
+        //再生中のプレイリストと同じカテゴリで過去2ヶ月のいいね件数の上位6件を取得
         $playlistAndTagPaginationOfPopular = Playlist::whereHas('tags', function ($query) {
             $query->where('privacySetting', 'public');
         })->with(array('tags'=> function ($query) {
@@ -232,7 +232,7 @@ class PlaylistController extends Controller
             $query->with('video')->leftJoinSub('(' . $likes_tags_sql. ')', 'likes_tags', function ($join) {
                 $join->on('tags.id', '=', 'likes_tags.tag_id');
             })->select('*')->where('privacySetting', 'public')->orderBy('likes_tags.likes_tag_count', 'desc')->get();
-        }))->where('playlistCategory', $playlistCategory)->with('user')->withCount(['likesPlaylist as likesPlaylist_count', 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereBetween('created_at', [$from, $to])->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->take(10)->get();
+        }))->where('playlistCategory', $playlistCategory)->whereNotIn('id', [$playlistId])->with('user')->withCount(['likesPlaylist as likesPlaylist_count', 'playlistlogs as play_count'])->where('privacySetting', 'public')->whereBetween('created_at', [$from, $to])->whereNotNull('playlistName')->orderBy('likesPlaylist_count', 'desc')->orderBy('created_at', 'desc')->take(6)->get();
         ;
 
         return response()->json(

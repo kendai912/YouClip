@@ -395,7 +395,6 @@ const actions = {
 
     if (response.status == OK) {
       // 成功した時
-      console.log(response.data.playlistAndTagPaginationOfPopular);
       if (response.data.playlistAndTagPaginationOfPopular) {
         context.commit(
           "setPlaylistAndTagPaginationOfPopular",

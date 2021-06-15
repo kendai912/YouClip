@@ -596,7 +596,6 @@ export default {
       "playlist/indexPlaylistAndTagPaginationOfPopular",
       this.playlistIdUrl
     );
-    console.log(this.playlistAndTagPaginationOfPopular);
 
     //人気の切り抜きデータをセット
     this.putPlaylistTagIntoMediaItems(
