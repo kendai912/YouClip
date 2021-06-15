@@ -51,9 +51,11 @@
             <v-row class="ma-0 mb-6 pa-2">
               <v-col class="ma-0 pa-0 text-center">
                 <v-row class="ma-0 pa-0">
-                  <v-card class="text-left pa-0 ma-0 mb-2 my-grey" elevation="0"
-                    >(任意)サムネイル設定</v-card
-                  >
+                  <v-card class="text-left pa-0 pt-1 ma-0 mb-2 my-grey" elevation="0"
+                    >(任意)サムネイル設定<v-card-subtitle class="pa-0 ma-0"
+                      >動画の内容がわかる場面を選択し、視聴者の目を引くサムネイルにしましょう</v-card-subtitle
+                    >
+                  </v-card>
                 </v-row>
                 <v-row class="ma-0 pa-0">
                   <v-col class="ma-0 pa-2">

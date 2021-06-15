@@ -196,7 +196,7 @@
             v-on:switchToPlayListIndexOf="switchToPlayListIndexOf"
           />
           <CommentListWatch v-bind:mediaItems="commentListofPlaylist" />
-          <!-- <PopularPlaylist v-bind:popularPlaylistItems="popularPlaylistItems" /> -->
+          <PlaylistMediaItem v-bind:mediaItems="popularPlaylistItems" class="pb-12" />
           <NoLoginModal v-if="showLoginModal" />
           <ShareModal v-if="showShareModal" v-bind:player="player" />
           <OtherActionModal
@@ -227,6 +227,7 @@ import ShareModal from "../components/ShareModal.vue";
 import OtherActionModal from "../components/OtherActionModal.vue";
 import PlaySpeedModal from "../components/PlaySpeedModal.vue";
 import SceneListWatch from "../components/SceneListWatch.vue";
+import PlaylistMediaItem from "../components/PlaylistMediaItem.vue";
 import CommentListWatch from "../components/CommentListWatch.vue";
 import YTIframe from "../components/YTIframe";
 import YTPlayerController from "../components/YTPlayerController";
@@ -291,6 +292,7 @@ export default {
     PlaySpeedModal,
     SceneListWatch,
     CommentListWatch,
+    PlaylistMediaItem,
     YTIframe,
     YTPlayerController,
     YTSeekBar,
@@ -309,6 +311,7 @@ export default {
       timeout: 5000,
       text: "",
       watchBodyRef: this.$refs.watchBody,
+      popularPlaylistItems: [],
     };
   },
   computed: {
@@ -316,6 +319,8 @@ export default {
       isLogin: "auth/check",
       sceneListofPlaylist: "playlist/sceneListofPlaylist",
       commentListofPlaylist: "playlist/commentListofPlaylist",
+      playlistAndTagPaginationOfPopular:
+        "playlist/playlistAndTagPaginationOfPopular",
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       tagAndVideoData: "watch/tagAndVideoData",
       isPlaylist: "watch/isPlaylist",
@@ -586,12 +591,18 @@ export default {
     //YTSeekBarのクリックイベント用にボディのrefをセット
     this.watchBodyRef = this.$refs.watchBody;
 
-    // //人気の切り抜きデータをロード
-    // await this.$store.dispatch("watch/loadPopularPlaylist", this.playlistIdUrl);
+    //人気の切り抜きデータをロード
+    await this.$store.dispatch(
+      "playlist/indexPlaylistAndTagPaginationOfPopular",
+      this.playlistIdUrl
+    );
+    console.log(this.playlistAndTagPaginationOfPopular);
 
-    // //人気の切り抜きデータをセット
-    // let popularPlaylistItems = [];
-    // this.setPopularPlaylistItems(popularPlaylistItems, this.popularPlaylist);
+    //人気の切り抜きデータをセット
+    this.putPlaylistTagIntoMediaItems(
+      this.popularPlaylistItems,
+      this.playlistAndTagPaginationOfPopular
+    );
 
     let notShowBoarding = JSON.parse(localStorage.getItem("notShowBoarding"));
     if (!notShowBoarding) {

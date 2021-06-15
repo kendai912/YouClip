@@ -549,7 +549,7 @@ export default {
               newPlaylistName: "",
               privacySetting: self.privacySetting,
               currentTagId: "",
-              currentCategory: self.currentCategory,
+              playlistCategory: self.recategorize(self.currentCategory),
             });
           }
 
@@ -659,6 +659,15 @@ export default {
       this.$nextTick(() => {
         this.deleteIndex = -1;
       });
+    },
+    recategorize(currentYtCategory) {
+      if (currentYtCategory == "Sports") {
+        return "Sports";
+      } else if (currentYtCategory == "Gaming") {
+        return "Game";
+      } else {
+        return "Other";
+      }
     },
   },
   watch: {

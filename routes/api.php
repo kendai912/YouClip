@@ -49,14 +49,14 @@ Route::get('/index/playlistAndTagOfVTuber', 'PlaylistController@indexPlaylistAnd
 Route::get('/index/playlistAndTagOfGame', 'PlaylistController@indexPlaylistAndTagPaginationOfGame');
 //【Sports】プレイリスト一覧のロード
 Route::get('/index/playlistAndTagOfSports', 'PlaylistController@indexPlaylistAndTagPaginationOfSports');
+//人気のプレイリスト一覧をロード
+Route::get('/index/playlistAndTagOfPopular/{playlistId}', 'PlaylistController@indexPlaylistAndTagPaginationOfPopular');
 // ID指定でのプレイリストおよびタグ・動画データの取得
 Route::get('/get/playlistAndTagVideoData', 'PlaylistController@getPlaylistAndTagVideoDataById');
 //作成したプレイリスト一覧をロード
 Route::get('/load/myCreatedPlaylist', 'PlaylistController@loadMyCreatedPlaylist');
 //いいねしたプレイリスト一覧をロード
 Route::get('/load/myLikedPlaylist', 'PlaylistController@loadMyLikedPlaylist');
-//人気のプレイリスト一覧をロード
-Route::get('/load/popularPlaylist', 'PlaylistController@loadPopularPlaylist');
 //playlistのcategoryを取得
 Route::get('/get/currentCategory', 'PlaylistController@getCurrentCategory');
 

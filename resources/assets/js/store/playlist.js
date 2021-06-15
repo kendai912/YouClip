@@ -10,6 +10,7 @@ const state = {
   playlistAndTagPaginationOfVTuber: null,
   playlistAndTagPaginationOfGame: null,
   playlistAndTagPaginationOfSports: null,
+  playlistAndTagPaginationOfPopular: null,
   myCreatedPlaylist: null,
   myLikedPlaylist: null,
   showAddPlaylistModal: false,
@@ -50,6 +51,8 @@ const getters = {
     state.playlistAndTagPaginationOfGame,
   playlistAndTagPaginationOfSports: (state) =>
     state.playlistAndTagPaginationOfSports,
+  playlistAndTagPaginationOfPopular: (state) =>
+    state.playlistAndTagPaginationOfPopular,
   myCreatedPlaylist: (state) => state.myCreatedPlaylist,
   myLikedPlaylist: (state) => state.myLikedPlaylist,
   publicPlaylist: (state) => state.publicPlaylist,
@@ -108,6 +111,9 @@ const mutations = {
   },
   setPlaylistAndTagPaginationOfSports(state, data) {
     state.playlistAndTagPaginationOfSports = data;
+  },
+  setPlaylistAndTagPaginationOfPopular(state, data) {
+    state.playlistAndTagPaginationOfPopular = data;
   },
   setMyCreatedPlaylist(state, data) {
     state.myCreatedPlaylist = data;
@@ -381,6 +387,30 @@ const actions = {
     }
   },
 
+  // 【人気】プレイリスト一覧を取得
+  async indexPlaylistAndTagPaginationOfPopular(context, playlistId) {
+    const response = await axios.get(
+      "/api/index/playlistAndTagOfPopular/" + playlistId
+    );
+
+    if (response.status == OK) {
+      // 成功した時
+      console.log(response.data.playlistAndTagPaginationOfPopular);
+      if (response.data.playlistAndTagPaginationOfPopular) {
+        context.commit(
+          "setPlaylistAndTagPaginationOfPopular",
+          response.data.playlistAndTagPaginationOfPopular
+        );
+      }
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+
   async addPlaylistVisitCount(context, playlist_id) {
     const response = await axios.post(
       "/api/addPlaylistVisitCount/" + playlist_id
@@ -498,7 +528,6 @@ const actions = {
 
     const response = await axios.post("/api/playlist/update", playlistParams);
     if (response.status == CREATED) {
-      context.commit("setNewPreview", response.data.preview);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
     } else {
@@ -591,7 +620,7 @@ const actions = {
       playlistName: input.newPlaylistName,
       privacySetting: input.privacySetting,
       currentTagId: input.currentTagId,
-      currentCategory: input.currentCategory,
+      playlistCategory: input.playlistCategory,
     };
 
     const response = await axios.post("/api/playlist/create", params);

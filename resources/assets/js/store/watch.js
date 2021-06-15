@@ -110,28 +110,6 @@ const actions = {
       context.commit("error/setCode", response.status, { root: true });
     }
   },
-
-  async loadPopularPlaylist(context, playlistId) {
-    const response = await axios.get(
-      "/api/load/popularPlaylist?id=" + playlistId
-    );
-    if (response.status == OK) {
-      // 成功した時
-      context.commit(
-        "setPopularPlaylistData",
-        response.data.popularPlaylistData
-      );
-    } else if (response.status == INTERNAL_SERVER_ERROR) {
-      // 失敗した時
-      context.commit("error/setCode", response.status, { root: true });
-    } else if (response.status == FORBIDDEN) {
-      // 非公開データのため失敗した時
-      context.commit("error/setCode", response.status, { root: true });
-    } else {
-      // 上記以外で失敗した時
-      context.commit("error/setCode", response.status, { root: true });
-    }
-  },
 };
 
 export default {

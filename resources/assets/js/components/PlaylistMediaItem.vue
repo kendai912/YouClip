@@ -55,7 +55,7 @@
                   ><v-icon size="14">content_cut</v-icon>&nbsp;切り抜き</span
                 >
               </div>
-            </router-link>
+        </router-link>
           </v-card>
 
           <v-card-title class="pt-2 pr-2 pb-1 pl-0 ma-0">

@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-bottom: 72px">
+  <div style="padding-bottom: 32px">
     <v-divider></v-divider>
     <v-expansion-panels v-model="panelComment">
       <v-expansion-panel key="panelComment">
@@ -163,6 +163,7 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+    <v-divider></v-divider>
     <NoLoginModal v-if="showLoginModal" />
     <CommentReplyModal
       v-if="showCommentReplyModal"
