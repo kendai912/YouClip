@@ -140,7 +140,6 @@
               :headers="headers"
               :items="indexedTelops"
               sort-by="start"
-              hide-default-footer
               class="elevation-1 telop-table"
               v-on:click:row="seekToTelop"
               item-key="indexedId"
