@@ -436,13 +436,16 @@ export default {
       this.$store.commit("snackbar/setTimeout", 5000);
 
       //return to the playlist edit page
+      console.log(this.$route.path);
       if (this.$route.path == "/highlight/thumbnail") {
+        console.log("move to /highlight/title");
         this.$router
           .push({
             path: "/highlight/title",
           })
           .catch((err) => {});
       } else if (this.$route.path == "/edit/thumbnail") {
+        console.log("move to /editmyplaylist");
         this.$router
           .push({
             path: "/editmyplaylist",
