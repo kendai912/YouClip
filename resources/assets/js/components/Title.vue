@@ -51,7 +51,9 @@
             <v-row class="ma-0 mb-6 pa-2">
               <v-col class="ma-0 pa-0 text-center">
                 <v-row class="ma-0 pa-0">
-                  <v-card class="text-left pa-0 pt-1 ma-0 mb-2 my-grey" elevation="0"
+                  <v-card
+                    class="text-left pa-0 pt-1 ma-0 mb-2 my-grey"
+                    elevation="0"
                     >(任意)サムネイル設定<v-card-subtitle class="pa-0 ma-0"
                       >動画の内容がわかる場面を選択し、視聴者の目を引くサムネイルにしましょう</v-card-subtitle
                     >
@@ -205,6 +207,8 @@ export default {
         //set new creating playlist ID
         this.$store.commit("tagging/setMyPlaylistToSave", this.newPlaylistId);
       }
+
+      this.loadPlaylistInput();
     },
     moveToCompletePage() {
       this.$router
@@ -260,6 +264,18 @@ export default {
       }
     },
     selectCustomThumbnail() {
+      let playlistInputData = {
+        playlistId: this.myPlaylistToSave,
+        playlistName: this.playlistName,
+        privacySetting: this.privacySetting,
+        playlistCategory: this.playlistCategory,
+        description: this.description,
+      };
+      window.sessionStorage.setItem(
+        "playlistInputData",
+        JSON.stringify(playlistInputData)
+      );
+
       this.$router
         .push({
           path: "/highlight/thumbnail",
@@ -269,6 +285,20 @@ export default {
           },
         })
         .catch((err) => {});
+    },
+    loadPlaylistInput() {
+      let playlistInputData = JSON.parse(
+        window.sessionStorage.getItem("playlistInputData")
+      );
+      if (
+        playlistInputData &&
+        playlistInputData.playlistId == this.myPlaylistToSave
+      ) {
+        this.playlistName = playlistInputData.playlistName;
+        this.privacySetting = playlistInputData.privacySetting;
+        this.playlistCategory = playlistInputData.playlistCategory;
+        this.description = playlistInputData.description;
+      }
     },
   },
   watch: {
