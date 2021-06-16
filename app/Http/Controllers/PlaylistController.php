@@ -16,6 +16,7 @@ use App\LikesPlaylist;
 use App\Like;
 use App\PlaylistComment;
 use App\LikesComment;
+use App\Report;
 use Carbon\Carbon;
 use FFMpeg\Filters\Video\VideoFilters;
 use FFMpeg\Media\Gif;
@@ -1022,6 +1023,24 @@ class PlaylistController extends Controller
         return response()->json(
             [
                 'customThumbnail' => $customThumbnail
+            ],
+            201,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    public function report(Request $request)
+    {
+        $report = new Report;
+        $report->playlist_id = $request->playlistId;
+        $report->reportCategory = $request->reportCategory;
+        $report->detail = $request->detail;
+        $report->save();
+
+        return response()->json(
+            [
+                'report' => $report
             ],
             201,
             [],

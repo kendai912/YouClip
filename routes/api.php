@@ -128,6 +128,8 @@ Route::post('/playlist/refreshNewPreview', 'PlaylistController@refreshNewPreview
 Route::get('/playlist/getThumbnail/{playlistId}', 'PlaylistController@getThumbnail');
 //save custom thumbnail
 Route::post('/playlist/saveCustomThumbnail', 'PlaylistController@saveCustomThumbnail');
+//report
+Route::post('/report', 'PlaylistController@report');
 
 
 //シーン登録におけるyoutubeIdから既存のvideoIdの取得

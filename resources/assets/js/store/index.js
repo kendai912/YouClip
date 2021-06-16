@@ -22,10 +22,10 @@ import ytSeekBar from "./ytSeekBar";
 import tagging from "./tagging";
 import telop from "./telop";
 import noLoginModal from "./noLoginModal";
+import reportModal from "./reportModal";
 import addNewSceneModal from "./addNewSceneModal";
 import playlistDeleteModal from "./playlistDeleteModal";
 import tagDeleteModal from "./tagDeleteModal";
-import otherActionModal from "./otherActionModal";
 import playSpeedModal from "./playSpeedModal";
 import commentReplyModal from "./commentReplyModal";
 import onboarding from "./onboarding";
@@ -56,10 +56,10 @@ const store = new Vuex.Store({
     tagging,
     telop,
     noLoginModal,
+    reportModal,
     addNewSceneModal,
     playlistDeleteModal,
     tagDeleteModal,
-    otherActionModal,
     playSpeedModal,
     commentReplyModal,
     onboarding,

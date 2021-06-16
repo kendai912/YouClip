@@ -176,17 +176,17 @@
                 </v-bottom-navigation>
               </v-col>
 
-              <span
-                v-on:click="openOtherActionModal"
-                style="
-                  position: absolute;
-                  top: 10px;
-                  right: 14px;
-                  font-size: 16px;
-                "
-              >
-                <i class="fas fa-ellipsis-v my-grey-heart"></i>
-              </span>
+              <v-col class="ma-0 pa-0 text-center">
+                <v-bottom-navigation class="bottom_navigation_no_shadow">
+                  <v-btn
+                    v-on:click="openReportModal"
+                    class="ma-0 pa-0 narrow-btn"
+                  >
+                    <span>報告</span>
+                    <i class="fas fa-flag outlined-icon icon-large"></i>
+                  </v-btn>
+                </v-bottom-navigation>
+              </v-col>
             </v-row>
           </v-sheet>
 
@@ -196,19 +196,13 @@
             v-on:switchToPlayListIndexOf="switchToPlayListIndexOf"
           />
           <CommentListWatch v-bind:mediaItems="commentListofPlaylist" />
-          <PlaylistMediaItem v-bind:mediaItems="popularPlaylistItems" class="pb-12" />
-          <NoLoginModal v-if="showLoginModal" />
-          <ShareModal v-if="showShareModal" v-bind:player="player" />
-          <OtherActionModal
-            v-if="showOtherActionModal"
-            v-bind:player="player"
-            v-bind:created_user_id="
-              playlistIdUrl
-                ? playlistAndTagVideoData.user_id
-                : tagAndVideoData[0].tag_user_id
-            "
-            v-on:deleteSucceed="deleteSucceed"
+          <PlaylistMediaItem
+            v-bind:mediaItems="popularPlaylistItems"
+            class="pb-12"
           />
+          <NoLoginModal v-if="showLoginModal" />
+          <ReportModal v-if="isReportModalOpen" />
+          <ShareModal v-if="showShareModal" v-bind:player="player" />
           <PlaySpeedModal v-if="showPlaySpeedModal" v-bind:player="player" />
           <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
             {{ text }}
@@ -223,8 +217,8 @@
 <script>
 import { mapState, mapGetters, mapMutations } from "vuex";
 import NoLoginModal from "../components/NoLoginModal.vue";
+import ReportModal from "../components/ReportModal.vue";
 import ShareModal from "../components/ShareModal.vue";
-import OtherActionModal from "../components/OtherActionModal.vue";
 import PlaySpeedModal from "../components/PlaySpeedModal.vue";
 import SceneListWatch from "../components/SceneListWatch.vue";
 import PlaylistMediaItem from "../components/PlaylistMediaItem.vue";
@@ -288,7 +282,7 @@ export default {
   components: {
     NoLoginModal,
     ShareModal,
-    OtherActionModal,
+    ReportModal,
     PlaySpeedModal,
     SceneListWatch,
     CommentListWatch,
@@ -330,9 +324,9 @@ export default {
       playlistViewCount: "watch/playlistViewCount",
       showLoginModal: "noLoginModal/showLoginModal",
       messageWhenNotLogined: "noLoginModal/messageWhenNotLogined",
+      isReportModalOpen: "reportModal/isReportModalOpen",
       showShareModal: "shareModal/showShareModal",
       showAddPlaylistModal: "playlist/showAddPlaylistModal",
-      showOtherActionModal: "otherActionModal/showOtherActionModal",
       showPlaySpeedModal: "playSpeedModal/showPlaySpeedModal",
       isEditing: "tagging/isEditing",
       youtubeId: "ytPlayer/youtubeId",
@@ -372,7 +366,6 @@ export default {
   methods: {
     ...mapMutations({
       openShareModal: "shareModal/openShareModal",
-      openOtherActionModal: "otherActionModal/openOtherActionModal",
       openPlaySpeedModal: "playSpeedModal/openPlaySpeedModal",
       setListIndex: "watch/setListIndex",
       setPlayer: "ytPlayer/setPlayer",
@@ -381,6 +374,7 @@ export default {
       pushOneTelop: "telop/pushOneTelop",
       pushTelops: "telop/pushTelops",
       resetTelops: "telop/resetTelops",
+      openReportModal: "reportModal/openReportModal",
     }),
     switchToPlayListIndexOf(index) {
       //URLを更新

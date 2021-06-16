@@ -55,7 +55,7 @@
                     class="text-left pa-0 pt-1 ma-0 mb-2 my-grey"
                     elevation="0"
                     >(任意)サムネイル設定<v-card-subtitle class="pa-0 ma-0"
-                      >動画の内容がわかる場面を選択し、視聴者の目を引くサムネイルにしましょう</v-card-subtitle
+                      >内容がわかる場面を選択し、目を引くサムネイルにしましょう(<span style="font-weight: bold;">テキストも挿入できます</span>)</v-card-subtitle
                     >
                   </v-card>
                 </v-row>

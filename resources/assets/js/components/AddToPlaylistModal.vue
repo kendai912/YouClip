@@ -5,7 +5,7 @@
         <v-col class="ma-0 pa-0">
           <v-list class="pb-0" dense>
             <v-list-item-subtitle class="ma-0 pa-2 pb-0"
-              >既存切り抜きに登録(チェック外すと解除)</v-list-item-subtitle
+              >既存の切り抜きに追加(チェック外すと解除)</v-list-item-subtitle
             >
             <v-list-item
               v-for="myPlaylist in myCreatedPlaylist"
