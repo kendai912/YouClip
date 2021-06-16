@@ -41,6 +41,8 @@ class UserController extends Controller
 
         // update user table
         $user->name = $request->newUserName;
+        $user->twitter_account = $request->twitterAccount;
+        $user->youtube_channel = $request->youtubeChannel;
         if (isset($avatarFileName)) {
             $user->avatar = $avatarFileName;
         }

@@ -97,6 +97,62 @@
             ></v-text-field>
           </v-col>
         </v-row>
+
+        <v-row align="center" justify="center" class="ma-0 pa-2">
+          <v-col class="pa-0 ma-0">
+            <v-avatar class="profile" size="60">
+              <v-icon size="32" class="twitterBlue">fab fa-twitter</v-icon>
+            </v-avatar>
+          </v-col>
+          <v-col class="pa-0 pr-4 ma-0" cols="9">
+            <v-row align="center" justify="start" class="ma-0 pa-0">
+              <v-col class="pa-0 ma-0" cols="auto">
+                https://twitter.com/
+              </v-col>
+              <v-col class="pa-0 ma-0">
+                <v-text-field
+                  v-model="twitterAccount"
+                  v-bind:rules="rules"
+                  type="text"
+                  name="twitterAccount"
+                  filled
+                  dense
+                  hide-details
+                  placeholder="Twitterアカウント"
+                  class="profile-username-label"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+
+        <v-row align="center" justify="center" class="ma-0 pa-2">
+          <v-col class="pa-0 ma-0">
+            <v-avatar class="profile" size="60">
+              <v-icon size="32" color="red">fab fa-youtube</v-icon>
+            </v-avatar>
+          </v-col>
+          <v-col class="pa-0 pr-4 ma-0" cols="9">
+            <v-row align="center" justify="start" class="ma-0 pa-0">
+              <v-col class="pa-0 ma-0" cols="auto">
+                https://www.youtube.com/channel/
+              </v-col>
+              <v-col class="pa-0 ma-0">
+                <v-text-field
+                  v-model="youtubeChannel"
+                  v-bind:rules="rules"
+                  type="text"
+                  name="youtubeChannel"
+                  filled
+                  dense
+                  hide-details
+                  placeholder="YouTubeチャンネル"
+                  class="profile-username-label"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
       </v-container>
     </v-sheet>
   </div>
@@ -128,6 +184,22 @@ export default {
         return this.$store.commit("auth/setUsername", val);
       },
     },
+    twitterAccount: {
+      get() {
+        return this.$store.getters["auth/twitterAccount"];
+      },
+      set(val) {
+        return this.$store.commit("auth/setTwitterAccount", val);
+      },
+    },
+    youtubeChannel: {
+      get() {
+        return this.$store.getters["auth/youtubeChannel"];
+      },
+      set(val) {
+        return this.$store.commit("auth/setYoutubeChannel", val);
+      },
+    },
   },
   methods: {
     ...mapMutations({}),
@@ -138,6 +210,8 @@ export default {
       let formData = new FormData();
       this.newAvatar ? formData.append("file", this.newAvatar) : "";
       formData.append("newUserName", this.username);
+      formData.append("twitterAccount", this.twitterAccount);
+      formData.append("youtubeChannel", this.youtubeChannel);
 
       this.$store.dispatch("auth/updateUserProfile", formData);
 

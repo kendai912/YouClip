@@ -3,6 +3,8 @@ import { OK, CREATED, UNPROCESSABLE_ENTITY } from "../util";
 const state = {
   user: null,
   username: null,
+  twitterAccount: null,
+  youtubeChannel: null,
   apiStatus: null,
   loginErrorMessages: null,
   registerErrorMessages: null,
@@ -13,6 +15,8 @@ const getters = {
   user_id: (state) => (state.user ? state.user.id : ""),
   username: (state) => state.username,
   avatar: (state) => (state.user ? state.user.avatar : ""),
+  twitterAccount: (state) => state.twitterAccount,
+  youtubeChannel: (state) => state.youtubeChannel,
 };
 
 const mutations = {
@@ -21,6 +25,12 @@ const mutations = {
   },
   setUsername(state, data) {
     state.username = data;
+  },
+  setTwitterAccount(state, data) {
+    state.twitterAccount = data;
+  },
+  setYoutubeChannel(state, data) {
+    state.youtubeChannel = data;
   },
   setApiStatus(state, status) {
     state.apiStatus = status;
@@ -92,6 +102,8 @@ const actions = {
       context.commit("setApiStatus", true);
       context.commit("setUser", response.data.user);
       context.commit("setUsername", response.data.user.name);
+      context.commit("setTwitterAccount", response.data.user.twitter_account);
+      context.commit("setYoutubeChannel", response.data.user.youtube_channel);
       return false;
     }
 
