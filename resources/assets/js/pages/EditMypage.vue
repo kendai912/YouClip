@@ -210,8 +210,14 @@ export default {
       let formData = new FormData();
       this.newAvatar ? formData.append("file", this.newAvatar) : "";
       formData.append("newUserName", this.username);
-      formData.append("twitterAccount", this.twitterAccount);
-      formData.append("youtubeChannel", this.youtubeChannel);
+      formData.append(
+        "twitterAccount",
+        this.twitterAccount ? this.twitterAccount : ""
+      );
+      formData.append(
+        "youtubeChannel",
+        this.youtubeChannel ? this.youtubeChannel : ""
+      );
 
       this.$store.dispatch("auth/updateUserProfile", formData);
 

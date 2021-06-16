@@ -10,6 +10,8 @@ const state = {
   playlistName: "",
   playlistUserAvatar: "",
   playlistUserName: "",
+  playlistTwitterAccount: "",
+  playlistYoutubeChannel: "",
   playlistViewCount: "",
   privacySetting: "",
   playlistCategory: "",
@@ -24,6 +26,8 @@ const getters = {
   listIndex: (state) => state.listIndex,
   playlistId: (state) => state.playlistId,
   playlistName: (state) => state.playlistName,
+  playlistTwitterAccount: (state) => state.playlistTwitterAccount,
+  playlistYoutubeChannel: (state) => state.playlistYoutubeChannel,
   playlistUserAvatar: (state) => state.playlistUserAvatar,
   playlistUserName: (state) => state.playlistUserName,
   playlistViewCount: (state) => state.playlistViewCount,
@@ -53,6 +57,12 @@ const mutations = {
   },
   setPlaylistUserName(state, data) {
     state.playlistUserName = data;
+  },
+  setPlaylistTwitterAccount(state, data) {
+    state.playlistTwitterAccount = data;
+  },
+  setPlaylistYoutubeChannel(state, data) {
+    state.playlistYoutubeChannel = data;
   },
   setPlaylistViewCount(state, data) {
     state.playlistViewCount = data;

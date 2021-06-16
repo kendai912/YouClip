@@ -50,9 +50,42 @@
                     </h1>
                   </v-row>
                   <v-row class="pa-0 ma-0 home-and-search-result-username">
-                    <span class="grey--text text--darken-3 fz-14">
-                      {{ playlistUserName }}
-                    </span>
+                    <v-col class="pa-0 ma-0" cols="auto">
+                      <span class="grey--text text--darken-3 fz-14">
+                        {{ playlistUserName }}
+                      </span>
+                    </v-col>
+                    <v-col
+                      v-if="playlistTwitterAccount"
+                      class="pa-0 px-1 ma-0  text-left"
+                      cols="auto"
+                    >
+                      <a
+                        class="pa-0 ma-0 no-text-decoration"
+                        v-bind:href="
+                          'https://twitter.com/' + playlistTwitterAccount
+                        "
+                      >
+                        <v-icon dense class="twitterBlue"
+                          >fab fa-twitter</v-icon
+                        >
+                      </a>
+                    </v-col>
+                    <v-col
+                      v-if="playlistYoutubeChannel"
+                      class="pa-0 px-1 ma-0  text-left"
+                      cols="auto"
+                    >
+                      <a
+                        class="pa-0 ma-0 no-text-decoration"
+                        v-bind:href="
+                          'https://www.youtube.com/channel/' +
+                            playlistYoutubeChannel
+                        "
+                      >
+                        <v-icon dense color="red">fab fa-youtube</v-icon>
+                      </a>
+                    </v-col>
                   </v-row>
                 </v-col>
                 <v-col cols="auto" class="ma-2 my-0 pa-0 text-right">
@@ -321,6 +354,8 @@ export default {
       playlistName: "watch/playlistName",
       playlistUserAvatar: "watch/playlistUserAvatar",
       playlistUserName: "watch/playlistUserName",
+      playlistTwitterAccount: "watch/playlistTwitterAccount",
+      playlistYoutubeChannel: "watch/playlistYoutubeChannel",
       playlistViewCount: "watch/playlistViewCount",
       showLoginModal: "noLoginModal/showLoginModal",
       messageWhenNotLogined: "noLoginModal/messageWhenNotLogined",
@@ -512,7 +547,7 @@ export default {
       this.playlistIdUrl
     );
 
-    //まとめID、まとめ名、アバター、ユーザー名、視聴回数をwatchストアに格納
+    //まとめID、まとめ名、アバター、ユーザー名、Twitter&YouTubeアカウント、視聴回数をwatchストアに格納
     this.$store.commit("watch/setPlaylistId", this.playlistIdUrl);
     this.$store.commit(
       "watch/setPlaylistName",
@@ -525,6 +560,14 @@ export default {
     this.$store.commit(
       "watch/setPlaylistUserName",
       this.playlistAndTagVideoData.user.name
+    );
+    this.$store.commit(
+      "watch/setPlaylistTwitterAccount",
+      this.playlistAndTagVideoData.user.twitter_account
+    );
+    this.$store.commit(
+      "watch/setPlaylistYoutubeChannel",
+      this.playlistAndTagVideoData.user.youtube_channel
     );
     this.$store.commit(
       "watch/setPlaylistViewCount",

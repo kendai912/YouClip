@@ -92,6 +92,8 @@ const actions = {
     const user = response.data || null;
     context.commit("setUser", user);
     user ? context.commit("setUsername", user.name) : "";
+    user ? context.commit("setTwitterAccount", user.twitter_account) : "";
+    user ? context.commit("setYoutubeChannel", user.youtube_channel) : "";
   },
   async updateUserProfile(context, data) {
     const response = await axios
