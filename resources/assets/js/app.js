@@ -18,6 +18,7 @@ import lodash from "lodash";
 import VueGtag from "vue-gtag";
 import VueMeta from "vue-meta";
 import VueTour from "vue-tour";
+import VueI18n from "vue-i18n";
 
 require("vue-tour/dist/vue-tour.css");
 
@@ -31,6 +32,21 @@ Vue.use(
 );
 Vue.use(VueMeta);
 Vue.use(VueTour);
+Vue.use(VueI18n);
+
+let url = new URL(location.href);
+let params = new URLSearchParams(url.search);
+let hl = params.get("hl");
+
+const i18n = new VueI18n({
+  locale: hl ? hl : navigator.language.split("-")[0],
+  fallbackLocale: "en",
+  messages: {
+    // 翻訳用のjson
+    ja: require("../../lang/ja/ja.json"),
+    en: require("../../lang/en/en.json"),
+  },
+});
 
 Vue.prototype._ = lodash;
 
@@ -41,6 +57,7 @@ const createApp = async () => {
 
   new Vue({
     el: "#app",
+    i18n: i18n,
     router, // ルーティングの定義を読み込む
     vuetify: new Vuetify({
       theme: {

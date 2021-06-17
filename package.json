@@ -37,6 +37,7 @@
     "ajv": "^6.12.6",
     "css-element-queries": "^1.2.3",
     "vue-gtag": "^1.9.1",
+    "vue-i18n": "^8.24.4",
     "vue-lodash": "^2.1.2",
     "vue-meta": "^2.4.0",
     "vue-template-compiler": "^2.6.12",
