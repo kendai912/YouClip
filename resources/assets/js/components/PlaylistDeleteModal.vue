@@ -4,19 +4,22 @@
       <v-btn icon dark small v-on:click="closePlaylistDeleteModal">
         <v-icon color="grey darken-1">mdi-close</v-icon>
       </v-btn>
-      <v-card-title class="title-2 py-2">プレイリストを削除</v-card-title>
-      <v-card-subtitle class="subtitle-1 py-3"
-        >{{
-          playlistName
-        }}を削除してもよろしいですか？<br />(削除すると元に戻すことはできません。)</v-card-subtitle
-      >
+      <v-card-title class="title-2 py-2">{{
+        $t("PlaylistDeleteModal.title")
+      }}</v-card-title>
+      <v-card-subtitle
+        class="subtitle-1 py-3"
+        v-html="
+          $t('PlaylistDeleteModal.message', { playlistName: this.playlistName })
+        "
+      ></v-card-subtitle>
       <v-divider class="mx-6"></v-divider>
       <v-container class="ma-0 pa-0">
         <v-row class="ma-0 pa-0">
           <v-col class="mx-6 py-3 px-0 text-right">
-            <a style="color: grey" v-on:click="cancel">キャンセル</a
+            <a style="color: grey" v-on:click="cancel">{{ $t("PlaylistDeleteModal.cancel") }}</a
             >&nbsp;&nbsp;
-            <a style="color: black" v-on:click="deletePlaylist">削除</a>
+            <a style="color: black" v-on:click="deletePlaylist">{{ $t("PlaylistDeleteModal.delete") }}</a>
           </v-col>
         </v-row>
       </v-container>

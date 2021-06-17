@@ -1,5 +1,59 @@
 {
+  "CommonMetaInfo": {},
+
+  "mixin": {},
+
   "Navbar": {
     "subtitle": "YouTube online clipping site"
+  },
+
+  "EditMypage": {
+    "return": "Return",
+    "profileSetting": "Profile setting",
+    "save": "Save",
+    "profilePicChange": "Profile picture change",
+    "userNameChange": "Username change",
+    "twitterAccount": "Twitter account",
+    "youtubeChannel": "YouTube channel"
+  },
+
+  "EditMyPlaylist": {
+    "playlistTitle": "Title",
+    "privacySetting": "Privacy setting",
+    "playlistCategory": "Category",
+    "thumbnail": "Thumbnail",
+    "changeThumbnail": "Change thumbnail",
+    "second": "s",
+    "minute": "min",
+    "views": "views",
+    "createdAt": "Created at: ",
+    "sort": "Sort (Drag & Drop)",
+    "MetaInfo": {
+      "title": "Edit playlist - YouClip",
+      "description": "Playlist editing page of YouClip, YouTube online clipping site. You can modify the start/end time and the thumbnail of a clip, add another scene ot the clip, etc."
+    },
+    "data": {
+      "public": "Public",
+      "limited": "Unlisted",
+      "private": "Private",
+      "game": "Game",
+      "sports": "Sports",
+      "other": "Other"
+    }
+  },
+
+  "SceneTagItem": {
+    "originalSceneTime": "(original)",
+    "delete": "Delete",
+    "edit": "Edit",
+    "addToPlaylist": "Add to other playlist",
+    "addNewScene": "Add new scene"
+  },
+
+  "PlaylistDeleteModal": {
+    "title": "Delete playlist",
+    "message": "Permanently delete [{playlistName}]?<br>(You can't undo after deleting)",
+    "cancel": "Cancel",
+    "delete": "Delete"
   }
 }

@@ -1,5 +1,59 @@
 {
+  "CommonMetaInfo": {},
+
+  "mixin": {},
+
   "Navbar": {
     "subtitle": "YouTube動画の見所切り抜き"
+  },
+
+  "EditMypage": {
+    "return": "戻る",
+    "profileSetting": "プロフィール設定",
+    "save": "保存",
+    "profilePicChange": "プロフィール画像変更",
+    "userNameChange": "ユーザー名変更",
+    "twitterAccount": "Twitterアカウント",
+    "youtubeChannel": "YouTubeチャンネル"
+  },
+
+  "EditMyPlaylist": {
+    "playlistTitle": "タイトル",
+    "privacySetting": "プライバシー設定",
+    "playlistCategory": "カテゴリー",
+    "thumbnail": "サムネイル",
+    "changeThumbnail": "サムネイルを変更",
+    "second": "秒",
+    "minute": "分",
+    "views": "回視聴",
+    "createdAt": "最終更新日: ",
+    "sort": "場面の並び替え(ドラッグ＆ドロップ)",
+    "MetaInfo": {
+      "title": "切り抜きの編集 - YouClip",
+      "description": "YouTube動画の見所切り抜きサイト、YouClipの編集ページです。切り抜きの開始・終了時間やサムネイルなどを修正したり、既存の切り抜きに新しい場面を追加したり出来ます。"
+    },
+    "data": {
+      "public": "公開",
+      "limited": "限定公開",
+      "private": "非公開",
+      "game": "ゲーム",
+      "sports": "スポーツ",
+      "other": "その他"
+    }
+  },
+
+  "SceneTagItem": {
+    "originalSceneTime": "の場面",
+    "delete": "削除",
+    "edit": "編集",
+    "addToPlaylist": "他のまとめに追加",
+    "addNewScene": "新しい場面を追加"
+  },
+
+  "PlaylistDeleteModal": {
+    "title": "プレイリストを削除",
+    "message": "「{playlistName}」を削除してもよろしいですか？<br>(削除すると元に戻すことはできません。)",
+    "cancel": "キャンセル",
+    "delete": "削除"
   }
 }

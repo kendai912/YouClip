@@ -10,11 +10,11 @@
               color="white"
               class="ma-0 pa-0 px-2"
             >
-              <span class="fz-14">戻る</span>
+              <span class="fz-14">{{ $t("EditMypage.return") }}</span>
             </v-btn>
           </v-col>
           <v-col class="ma-0 pa-0 text-center">
-            <span class="fz-14">プロフィール設定</span>
+            <span class="fz-14">{{ $t("EditMypage.profileSetting") }}</span>
           </v-col>
           <v-col class="ma-0 pa-0 text-right" cols="2">
             <v-btn
@@ -23,7 +23,7 @@
               color="white"
               class="ma-0 pa-0 px-2"
             >
-              <span class="fz-14">保存</span>
+              <span class="fz-14">{{ $t("EditMypage.save") }}</span>
             </v-btn>
           </v-col>
         </v-row>
@@ -66,7 +66,7 @@
           </v-col>
           <v-col class="pa-0 pr-4 ma-0" cols="9">
             <v-file-input
-              label="プロフィール画像変更"
+              v-bind:label="$t('EditMypage.profilePicChange')"
               hide-details
               outlined
               dense
@@ -92,7 +92,7 @@
               filled
               dense
               hide-details
-              placeholder="ユーザー名変更"
+              v-bind:placeholder="$t('EditMypage.userNameChange')"
               class="profile-username-label"
             ></v-text-field>
           </v-col>
@@ -118,7 +118,7 @@
                   filled
                   dense
                   hide-details
-                  placeholder="Twitterアカウント"
+                  v-bind:placeholder="$t('EditMypage.twitterAccount')"
                   class="profile-username-label"
                 ></v-text-field>
               </v-col>
@@ -146,7 +146,7 @@
                   filled
                   dense
                   hide-details
-                  placeholder="YouTubeチャンネル"
+                  v-bind:placeholder="$t('EditMypage.youtubeChannel')"
                   class="profile-username-label"
                 ></v-text-field>
               </v-col>

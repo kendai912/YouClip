@@ -109,7 +109,7 @@
                         >
                           <span>{{ item.start }}</span>
                           <span style="font-size:8px;">-</span>
-                          <span>{{ item.end }}の場面</span>
+                          <span>{{ item.end }}{{ $t("SceneTagItem.originalSceneTime") }}</span>
                         </div>
 
                         <div
@@ -157,7 +157,7 @@
                   v-on:click="deleteItem(item.id, item.title, index)"
                 >
                   <v-icon class="outlined-icon">mdi-delete</v-icon>
-                  <h2 class="fz-12">削除</h2>
+                  <h2 class="fz-12">{{ $t("SceneTagItem.delete") }}</h2>
                 </div>
               </v-col>
               <v-col cols="4">
@@ -166,7 +166,7 @@
                   v-on:click="editItem(item.id)"
                 >
                   <v-icon class="outlined-icon">mdi-pencil</v-icon>
-                  <h2 class="fz-12">編集</h2>
+                  <h2 class="fz-12">{{ $t("SceneTagItem.edit") }}</h2>
                 </div>
               </v-col>
               <v-col cols="4">
@@ -175,7 +175,7 @@
                   v-on:click="plusItem(item.id)"
                 >
                   <v-icon class="outlined-icon">mdi-plus-circle</v-icon>
-                  <h2 class="fz-12">他のまとめに追加</h2>
+                  <h2 class="fz-12">{{ $t("SceneTagItem.addToPlaylist") }}</h2>
                 </div>
               </v-col>
             </v-row>
@@ -200,7 +200,7 @@
                 </div>
               </v-col>
               <v-col cols="6" class="pa-1 align-center" style="display:flex">
-                <div>新しい場面を追加</div>
+                <div>{{ $t("SceneTagItem.addNewScene") }}</div>
               </v-col>
             </v-row>
           </v-col>

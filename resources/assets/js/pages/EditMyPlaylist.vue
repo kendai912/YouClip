@@ -11,7 +11,7 @@
               :readonly="!isEditTitle"
               type="text"
               name="playlistTitle"
-              label="タイトル"
+              v-bind:label="$t('EditMyPlaylist.playlistTitle')"
               v-on:keydown.enter="saveTitle"
               @click="toggleIsEditTitle"
               @click:append="saveTitle"
@@ -27,7 +27,7 @@
             <v-select
               v-model="playlistPrivacySetting"
               :items="privacySettingList"
-              label="プライバシー設定"
+              v-bind:label="$t('EditMyPlaylist.privacySetting')"
               prepend-icon="mdi-earth"
               :append-icon="isEditPrivacy ? 'fas fa-save' : 'mdi-pencil'"
               @click="toggleIsEditPrivacy"
@@ -44,7 +44,7 @@
             <v-select
               v-model="playlistCategory"
               :items="playlistCategoryList"
-              label="カテゴリー"
+              v-bind:label="$t('EditMyPlaylist.playlistCategory')"
               :append-icon="isEditCategory ? 'fas fa-save' : 'mdi-pencil'"
               @click="toggleIsEditCategory"
               @click:append="saveCategory"
@@ -58,9 +58,9 @@
         <v-row class="ma-0">
           <v-col class="pa-0 pt-3 text-center">
             <v-row class="ma-0 pa-0">
-              <v-card class="text-left pa-0 ma-0 my-grey" elevation="0"
-                >サムネイル</v-card
-              >
+              <v-card class="text-left pa-0 ma-0 my-grey" elevation="0">{{
+                $t("EditMyPlaylist.thumbnail")
+              }}</v-card>
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-2 py-0 pt-1">
@@ -80,7 +80,7 @@
                   color="primary"
                   outlined
                   v-on:click="changeThumbnail"
-                  >サムネイルを変更</v-btn
+                  >{{ $t("EditMyPlaylist.changeThumbnail") }}</v-btn
                 >
               </v-col>
             </v-row>
@@ -95,11 +95,15 @@
                 ><span style="font-size:8px;"
                   >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
                 >
-                <span>{{ playCount ? playCount : 0 }}回視聴</span
+                <span
+                  >{{ playCount ? playCount : 0
+                  }}{{ $t("EditMyPlaylist.views") }}</span
                 ><span style="font-size:8px;"
                   >&nbsp;&nbsp;&#8226;&nbsp;&nbsp;</span
                 >
-                <span>最終更新日: {{ lastUpdatedAt }}</span>
+                <span
+                  >{{ $t("EditMyPlaylist.createdAt") }}{{ lastUpdatedAt }}</span
+                >
               </v-card-subtitle>
             </v-card>
           </v-col>
@@ -125,9 +129,9 @@
           </v-col>
           <v-col class="pa-0 pt-2 align-bottom" align-self="end">
             <v-card elevation="0">
-              <v-card-title class="pa-0 pl-2 ma-0 subtitle-1 my-grey"
-                >場面の並び替え(ドラッグ＆ドロップ)</v-card-title
-              >
+              <v-card-title class="pa-0 pl-2 ma-0 subtitle-1 my-grey">{{
+                $t("EditMyPlaylist.sort")
+              }}</v-card-title>
             </v-card>
           </v-col>
         </v-row>
@@ -149,12 +153,11 @@ import PlaylistDeleteModal from "../components/PlaylistDeleteModal.vue";
 export default {
   metaInfo() {
     return {
-      title: "作成した切り抜きまとめの編集 - YouClip",
+      title: this.$t("EditMyPlaylist.title"),
       meta: [
         {
           name: "description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipの編集ページです。作成した切り抜きまとめの開始・終了時間やタグを変更・修正出来ます。新たな場面も切り抜いて追加可能です。",
+          content: this.$t("EditMyPlaylist.MetaInfo.description"),
         },
         {
           property: "og:site_name",
@@ -174,8 +177,7 @@ export default {
         },
         {
           property: "og:description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipの編集ページです。作成した切り抜きまとめの開始・終了時間やタグを変更・修正出来ます。新たな場面も切り抜いて追加可能です。",
+          content: this.$t("EditMyPlaylist.MetaInfo.description"),
         },
         {
           property: "og:image",
@@ -185,8 +187,16 @@ export default {
       ],
       link: [
         { rel: "canonical", href: "https://youclip.app" + this.$route.path },
-        { rel: "alternate", hreflang: "en", href: "https://youclip.app" + this.$route.path + "?hl=en" },
-        { rel: "alternate", hreflang: "ja", href: "https://youclip.app" + this.$route.path + "?hl=ja" },
+        {
+          rel: "alternate",
+          hreflang: "en",
+          href: "https://youclip.app" + this.$route.path + "?hl=en",
+        },
+        {
+          rel: "alternate",
+          hreflang: "ja",
+          href: "https://youclip.app" + this.$route.path + "?hl=ja",
+        },
       ],
     };
   },
@@ -202,28 +212,28 @@ export default {
       isEditCategory: false,
       showAddNewSceneComponent: true,
       privacySettingList: [
-        { text: "公開", value: "public" },
+        { text: this.$t("EditMyPlaylist.data.public"), value: "public" },
         {
-          text: "限定公開",
+          text: this.$t("EditMyPlaylist.data.limited"),
           value: "limited",
         },
         {
-          text: "非公開",
+          text: this.$t("EditMyPlaylist.data.private"),
           value: "private",
         },
       ],
       playlistCategoryList: [
         { text: "VTuber", value: "VTuber" },
         {
-          text: "ゲーム",
+          text: this.$t("EditMyPlaylist.data.game"),
           value: "Game",
         },
         {
-          text: "スポーツ",
+          text: this.$t("EditMyPlaylist.data.sports"),
           value: "Sports",
         },
         {
-          text: "その他",
+          text: this.$t("EditMyPlaylist.data.other"),
           value: "Other",
         },
       ],
@@ -346,7 +356,10 @@ export default {
       this.$store.commit("playlistDeleteModal/openPlaylistDeleteModal");
     },
     convertToKanjiTime(s) {
-      let units = ["秒", "分"];
+      let units = [
+        this.$t("EditMyPlaylist.second"),
+        this.$t("EditMyPlaylist.minute"),
+      ];
       var ext = units[0];
       var retStr = "";
       for (var i = 0; i < units.length; i += 1) {
