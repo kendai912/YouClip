@@ -70,12 +70,11 @@ import myMixin from "../util";
 export default {
   metaInfo() {
     return {
-      title: "YouClip - YouTube長時間動画の見所切り抜きサイト",
+      title: this.$t("Home.MetaInfo.title"),
       meta: [
         {
           name: "description",
-          content:
-            "YouClipはYouTube長時間動画の見所切り抜きサイトです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きを見ることも可能です。",
+          content: this.$t("Home.MetaInfo.description"),
         },
         {
           property: "og:site_name",
@@ -91,12 +90,11 @@ export default {
         },
         {
           property: "og:title",
-          content: "YouClip - YouTube長時間動画の見所切り抜きサイト",
+          content: this.$t("Home.MetaInfo.title"),
         },
         {
           property: "og:description",
-          content:
-            "YouClipはYouTube長時間動画の見所切り抜きサイトです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。",
+          content: this.$t("Home.MetaInfo.description"),
         },
         {
           property: "og:image",
@@ -127,10 +125,10 @@ export default {
     return {
       tab: 0,
       items: [
-        { tabIcon: "fas fa-fire", tabName: "急上昇" },
+        { tabIcon: "fas fa-fire", tabName: this.$t("Home.data.popular") },
         { tabIcon: "fas fa-gamepad", tabName: "VTuber" },
-        { tabIcon: "fas fa-gamepad", tabName: "ゲーム" },
-        { tabIcon: "fas fa-running", tabName: "スポーツ" },
+        { tabIcon: "fas fa-gamepad", tabName: this.$t("Home.data.game") },
+        { tabIcon: "fas fa-running", tabName: this.$t("Home.data.sports") },
       ],
       page: 1,
       newPage: 1,

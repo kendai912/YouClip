@@ -8,19 +8,19 @@
       v-bind:class="{ zIndex6: !isPortraitScreen && !isFullscreen }"
     >
       <v-btn to="/home" id="home" v-on:click="saveFooterTabIndex(0)">
-        <span>みんなの切り抜き</span>
+        <span>{{ $t("Footer.home") }}</span>
         <v-icon large>mdi-home-outline</v-icon>
       </v-btn>
 
       <v-btn to="/youtube" id="youtube" v-on:click="setHighlight(1)">
-        <span>切り抜き作成</span>
+        <span>{{ $t("Footer.clip") }}</span>
         <div>
           <v-icon large>mdi-content-cut</v-icon>
         </div>
       </v-btn>
 
       <v-btn to="/mypage" id="mypage" v-on:click="saveFooterTabIndex(2)">
-        <span>マイページ</span>
+        <span>{{ $t("Footer.myPage") }}</span>
         <v-icon large>mdi-account-outline</v-icon>
       </v-btn>
     </v-bottom-navigation>
@@ -42,7 +42,7 @@ export default {
         // },
         {
           target: "#youtube",
-          content: "YouTube動画を切り抜く<br />(４ステップで簡単・非公開OK!)",
+          content: this.$t("Footer.data.steps"),
         },
         // {
         //   target: "#mypage",
@@ -52,10 +52,10 @@ export default {
       myOptions: {
         useKeyboardNavigation: false,
         labels: {
-          buttonSkip: "スキップ",
-          buttonPrevious: "戻る",
-          buttonNext: "次へ",
-          buttonStop: "OK",
+          buttonSkip: this.$t("Footer.data.buttonSkip"),
+          buttonPrevious: this.$t("Footer.data.buttonPrevious"),
+          buttonNext: this.$t("Footer.data.buttonNext"),
+          buttonStop: this.$t("Footer.data.buttonStop"),
         },
       },
     };

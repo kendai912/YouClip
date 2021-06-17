@@ -257,7 +257,11 @@ export default {
     },
     //ss表記から「◯時間」か「◯分」か「◯秒」に変換
     convertToKanjiTime(s) {
-      let units = ["秒", "分", "時間"];
+      let units = [
+        this.$t("mixin.second"),
+        this.$t("mixin.minute"),
+        this.$t("mixin.hour"),
+      ];
       var ext = units[0];
       for (var i = 1; i < units.length; i += 1) {
         if (parseInt(s) >= 60) {
@@ -360,29 +364,31 @@ export default {
 
         let interval = Math.floor(seconds / 31536000);
         if (interval > 1) {
-          return Math.floor(interval) + "年";
+          return Math.floor(interval) + this.$t("mixin.years");
         }
         interval = Math.floor(seconds / 2592000);
         if (interval > 1) {
-          return interval + "ヶ月";
+          return interval + this.$t("mixin.months");
         }
         interval = Math.floor(seconds / 604800);
         if (interval > 1) {
-          return interval + "週間";
+          return interval + this.$t("mixin.weeks");
         }
         interval = Math.floor(seconds / 86400);
         if (interval >= 1) {
-          return interval + "日";
+          return interval == 1
+            ? interval + this.$t("mixin.day")
+            : interval + this.$t("mixin.days");
         }
         interval = Math.floor(seconds / 3600);
         if (interval > 1) {
-          return interval + "時間";
+          return interval + this.$t("mixin.hour");
         }
         interval = Math.floor(seconds / 60);
         if (interval > 1) {
-          return interval + "分";
+          return interval + this.$t("mixin.minute");
         }
-        return Math.floor(seconds) + "秒";
+        return Math.floor(seconds) + this.$t("mixin.second");
       }
     },
     isNewClip(publishedAt) {

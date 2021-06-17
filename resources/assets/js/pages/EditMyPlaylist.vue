@@ -153,7 +153,7 @@ import PlaylistDeleteModal from "../components/PlaylistDeleteModal.vue";
 export default {
   metaInfo() {
     return {
-      title: this.$t("EditMyPlaylist.title"),
+      title: this.$t("EditMyPlaylist.MetaInfo.title"),
       meta: [
         {
           name: "description",
@@ -173,7 +173,7 @@ export default {
         },
         {
           property: "og:title",
-          content: "作成した切り抜きまとめの編集 - YouClip",
+          content: this.$t("EditMyPlaylist.MetaInfo.title"),
         },
         {
           property: "og:description",

@@ -1,10 +1,35 @@
 {
   "CommonMetaInfo": {},
 
-  "mixin": {},
+  "mixin": {
+    "second": "sec.",
+    "minute": "min.",
+    "hour": "h",
+    "day": " day",
+    "days": " days",
+    "week": " week",
+    "weeks": " weeks",
+    "month": " month",
+    "months": " months",
+    "year": " year",
+    "years": " years"
+  },
 
   "Navbar": {
     "subtitle": "YouTube online clipping site"
+  },
+
+  "Footer": {
+    "home": "Home",
+    "clip": "Clip",
+    "myPage": "My page",
+    "data": {
+      "steps": "Clip YouTube video!<br />(Easy 4 steps)",
+      "buttonSkip": "Skip",
+      "buttonPrevious": "Return",
+      "buttonNext": "Next",
+      "buttonStop": "OK"
+    }
   },
 
   "EditMypage": {
@@ -23,14 +48,14 @@
     "playlistCategory": "Category",
     "thumbnail": "Thumbnail",
     "changeThumbnail": "Change thumbnail",
-    "second": "s",
-    "minute": "min",
+    "second": "sec.",
+    "minute": "min.",
     "views": "views",
     "createdAt": "Created at: ",
     "sort": "Sort (Drag & Drop)",
     "MetaInfo": {
       "title": "Edit playlist - YouClip",
-      "description": "Playlist editing page of YouClip, YouTube online clipping site. You can modify the start/end time and the thumbnail of a clip, add another scene ot the clip, etc."
+      "description": "Playlist edit page of YouClip - YouTube online clipping app. You can modify the start/end time and the thumbnail of a clip, add another scene ot the clip, etc."
     },
     "data": {
       "public": "Public",
@@ -55,5 +80,32 @@
     "message": "Permanently delete [{playlistName}]?<br>(You can't undo after deleting)",
     "cancel": "Cancel",
     "delete": "Delete"
+  },
+
+  "Highlight": {
+    "MetaInfo": {
+      "title": "Clip - YouClip",
+      "description": "Create clip page of YouClip - YouTube online clipping app. You can highlight and share your favorite moments of YouTube videos (e.g. Gaming, VTuber, etc) with no video editing experience needed."
+    }
+  },
+
+  "Home": {
+    "MetaInfo": {
+      "title": "YouClip - YouTube動画の見所切り抜きサイト",
+      "description": "YouClip is YouTube online clipping app. You can highlight and share your favorite moments of YouTube videos (e.g. Gaming, VTuber, etc) with no video editing experience needed. Also you can enjoy popular clips other fans created."
+    },
+    "data": {
+      "popular": "Trending",
+      "game": "Gaming",
+      "sports": "Sports"
+    }
+  },
+
+  "PlaylistMediaItem": {
+    "clip": "Clip",
+    "originalLength": "Original video:",
+    "sumOfYTvideos": "(Total of {numberOfYTvideos} videos)",
+    "views": " views",
+    "ago": " ago"
   }
 }

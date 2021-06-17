@@ -52,10 +52,12 @@
               ></video>
               <div class="ribbon-content">
                 <span class="ribbon-text"
-                  ><v-icon size="14">content_cut</v-icon>&nbsp;切り抜き</span
+                  ><v-icon size="14">content_cut</v-icon>&nbsp;{{
+                    $t("PlaylistMediaItem.clip")
+                  }}</span
                 >
               </div>
-        </router-link>
+            </router-link>
           </v-card>
 
           <v-card-title class="pt-2 pr-2 pb-1 pl-0 ma-0">
@@ -129,11 +131,16 @@
                       ><span class="reducedDuration">{{
                         item.totalDuration
                       }}</span
-                      >&nbsp;⬅&nbsp;元の動画:&nbsp;<span
-                        class="originalDuration"
+                      >&nbsp;⬅&nbsp;{{
+                        $t("PlaylistMediaItem.originalLength")
+                      }}&nbsp;<span class="originalDuration"
                         >{{ item.totalYTDuration }} </span
-                      >({{ item.numberOfYTvideos }}本の合計)</span
-                    >
+                      >{{
+                        $t("PlaylistMediaItem.sumOfYTvideos", {
+                          numberOfYTvideos: item.numberOfYTvideos,
+                        })
+                      }}
+                    </span>
                   </v-col>
                 </v-row>
                 <v-row class="pa-0 ma-0" align-content="center">
@@ -145,9 +152,10 @@
                       >
                       <span style="font-size: 6px">&nbsp;&nbsp;</span
                       ><span
-                        >{{ item.visitCount ? item.visitCount : 0 }}回視聴</span
-                      ><span>&nbsp;&#8226;&nbsp;</span
-                      >{{ item.timeSince }}前</span
+                        >{{ item.visitCount ? item.visitCount : 0
+                        }}{{ $t("PlaylistMediaItem.views") }}</span
+                      ><span>&nbsp;&#8226;&nbsp;</span>{{ item.timeSince
+                      }}{{ $t("PlaylistMediaItem.ago") }}</span
                     >
                   </v-col>
                 </v-row>

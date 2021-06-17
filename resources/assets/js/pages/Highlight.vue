@@ -20,12 +20,11 @@ import Complete from "../components/Complete.vue";
 export default {
   metaInfo() {
     return {
-      title: "切り抜きまとめ作成 - YouClip",
+      title: this.$t("Highlight.MetaInfo.title"),
       meta: [
         {
           name: "description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipの切り抜きまとめ作成ページです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きまとめを見ることも可能です。",
+          content: this.$t("Highlight.MetaInfo.description"),
         },
         {
           property: "og:site_name",
@@ -41,12 +40,11 @@ export default {
         },
         {
           property: "og:title",
-          content: "切り抜きまとめ作成 - YouClip",
+          content: this.$t("Highlight.MetaInfo.title"),
         },
         {
           property: "og:description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipの切り抜きまとめ作成ページです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きまとめを見ることも可能です。",
+          content: this.$t("Highlight.MetaInfo.description"),
         },
         {
           property: "og:image",
