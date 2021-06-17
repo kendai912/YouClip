@@ -54,7 +54,19 @@ export default {
             "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/facebook-youclip-logo.png",
         },
       ],
-      link: [{ rel: "canonical", href: "https://youclip.app/youtube" }],
+      link: [
+        { rel: "canonical", href: "https://youclip.app/youtube" },
+        {
+          rel: "alternate",
+          hreflang: "en",
+          href: "https://youclip.app/youtube" + "?hl=en",
+        },
+        {
+          rel: "alternate",
+          hreflang: "ja",
+          href: "https://youclip.app/youtube" + "?hl=ja",
+        },
+      ],
     };
   },
   components: {

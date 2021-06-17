@@ -43,8 +43,8 @@ const i18n = new VueI18n({
   fallbackLocale: "en",
   messages: {
     // 翻訳用のjson
-    ja: require("../../lang/ja/ja.json"),
     en: require("../../lang/en/en.json"),
+    ja: require("../../lang/ja/ja.json"),
   },
 });
 

@@ -185,6 +185,8 @@ export default {
       ],
       link: [
         { rel: "canonical", href: "https://youclip.app" + this.$route.path },
+        { rel: "alternate", hreflang: "en", href: "https://youclip.app" + this.$route.path + "?hl=en" },
+        { rel: "alternate", hreflang: "ja", href: "https://youclip.app" + this.$route.path + "?hl=ja" },
       ],
     };
   },

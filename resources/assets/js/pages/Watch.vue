@@ -309,6 +309,16 @@ export default {
           rel: "canonical",
           href: "https://youclip.app" + this.$route.fullPath,
         },
+        {
+          rel: "alternate",
+          hreflang: "en",
+          href: "https://youclip.app" + this.$route.fullPath + "?hl=en",
+        },
+        {
+          rel: "alternate",
+          hreflang: "ja",
+          href: "https://youclip.app" + this.$route.fullPath + "?hl=ja",
+        },
       ],
     };
   },
