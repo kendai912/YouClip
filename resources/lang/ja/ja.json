@@ -107,5 +107,27 @@
     "sumOfYTvideos": "({numberOfYTvideos}本の合計)",
     "views": "回視聴",
     "ago": "前"
+  },
+
+  "Login": {
+    "socialLogin": "連携済みアカウントでログイン",
+    "emailLogin": "メールアドレス・パスワードでログイン",
+    "login": "ログイン",
+    "MetaInfo": {
+      "title": "ログイン - YouClip",
+      "description": "YouTube動画の見所切り抜きサイト、YouClipのログインページです。"
+    }
+  },
+
+  "MyPage": {
+    "needLogin": "ログインが必要です",
+    "ableToAccessYourClips": "ログインすると、自分の作成／いいねした切り抜きにアクセス出来ます",
+    "login": "ログイン",
+    "forNewUser": "はじめての方はこちら",
+    "signup": "新規登録",
+    "MetaInfo": {
+      "title": "マイページ - YouClip",
+      "description": "YouTube動画の見所切り抜きサイト、YouClipのマイページです。自分の切り抜きを確認・編集出来ます。"
+    }
   }
 }

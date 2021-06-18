@@ -18,7 +18,7 @@
             <h2
               style="font-size: 1rem !important; font-weight: normal !important;"
             >
-              連携済みアカウントでログイン
+              {{ $t("Login.socialLogin") }}
             </h2>
           </v-col>
         </v-row>
@@ -64,7 +64,7 @@
             <h2
               style="font-size: 1rem !important; font-weight: normal !important;"
             >
-              メールアドレス・パスワードでログイン
+              {{ $t("Login.emailLogin") }}
             </h2>
           </v-col>
         </v-row>
@@ -95,7 +95,9 @@
         </v-row>
         <v-row class="ma-0 pa-0 text-right" align="center">
           <v-col class="ma-0 pa-0">
-            <v-btn v-on:click="login" color="primary darken-2">ログイン</v-btn>
+            <v-btn v-on:click="login" color="primary darken-2">{{
+              $t("Login.login")
+            }}</v-btn>
           </v-col>
         </v-row>
         <v-row class="ma-0 pa-0" align="center">
@@ -140,12 +142,11 @@ import { mapState } from "vuex";
 export default {
   metaInfo() {
     return {
-      title: "ログイン - YouClip",
+      title: this.$t("Login.MetaInfo.title"),
       meta: [
         {
           name: "description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipのログインページです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きを見ることも可能です。",
+          content: this.$t("Login.MetaInfo.description"),
         },
         {
           property: "og:site_name",
@@ -161,12 +162,11 @@ export default {
         },
         {
           property: "og:title",
-          content: "ログイン - YouClip",
+          content: this.$t("Login.MetaInfo.title"),
         },
         {
           property: "og:description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipのログインページです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。",
+          content: this.$t("Login.MetaInfo.description"),
         },
         {
           property: "og:image",

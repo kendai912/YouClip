@@ -107,5 +107,27 @@
     "sumOfYTvideos": "(Total of {numberOfYTvideos} videos)",
     "views": " views",
     "ago": " ago"
+  },
+
+  "Login": {
+    "socialLogin": "Login with your social media account",
+    "emailLogin": "Login with your email and password",
+    "login": "Login",
+    "MetaInfo": {
+      "title": "Login - YouClip",
+      "description": "Login page of YouClip - YouTube online clipping app."
+    }
+  },
+
+  "MyPage": {
+    "needLogin": "Please Login to your account.",
+    "ableToAccessYourClips": "You can access to your created/liked clips after login.",
+    "login": "Login",
+    "forNewUser": "For new user",
+    "signup": "Sign up",
+    "MetaInfo": {
+      "title": "My page - YouClip",
+      "description": "My page of YouClip - YouTube online clipping app. You can access to your created/liked clips after login."
+    }
   }
 }

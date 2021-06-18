@@ -9,11 +9,11 @@
         <v-icon class="pa-0 ma-0" size="100">video_library</v-icon>
       </v-card-title>
       <v-card-title class="pa-1 mt-2 mx-0 justify-center"
-        ><h1 class="fz-17">ログインが必要です</h1></v-card-title
+        ><h1 class="fz-17">{{ $t("MyPage.needLogin") }}</h1></v-card-title
       >
-      <v-card-subtitle class="subtitle-1 pa-1 mt-0 mx-0 black--text"
-        >ログインすると、自分の作成／いいねした切り抜きにアクセス出来ます</v-card-subtitle
-      >
+      <v-card-subtitle class="subtitle-1 pa-1 mt-0 mx-0 black--text">{{
+        $t("MyPage.ableToAccessYourClips")
+      }}</v-card-subtitle>
       <v-card-actions class="justify-center pa-1 mt-4 mx-2">
         <v-container class="ma-0 pa-0">
           <v-row class="ma-0 pa-0 justify-center">
@@ -24,7 +24,7 @@
               class="white--text"
               to="/login"
               style="font-size: 14px; "
-              >ログイン</v-btn
+              >{{ $t("MyPage.login") }}</v-btn
             >
           </v-row>
           <v-row
@@ -38,9 +38,9 @@
               ></div>
             </v-col>
             <v-col class="ma-0 pa-0 text-center" cols="7">
-              <v-card-text style="font-size: 12px !important;"
-                >はじめての方はこちら</v-card-text
-              >
+              <v-card-text style="font-size: 12px !important;">{{
+                $t("MyPage.forNewUser")
+              }}</v-card-text>
             </v-col>
             <v-col class="ma-0 pa-0">
               <div
@@ -57,7 +57,7 @@
               class="white--text"
               to="/register"
               style="font-size: 14px;"
-              >新規登録</v-btn
+              >{{ $t("MyPage.signup") }}</v-btn
             >
           </v-row>
         </v-container>
@@ -75,12 +75,11 @@ import myMixin from "../util";
 export default {
   metaInfo() {
     return {
-      title: "マイページ - YouClip",
+      title: this.$t("MyPage.MetaInfo.title"),
       meta: [
         {
           name: "description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipのマイページです。YouTube動画からお気に入りの場面を切り抜いて作ったまとめを確認・編集出来ます。また、いいねしたみんなの切り抜きも見ることが出来ます。",
+          content: this.$t("MyPage.MetaInfo.description"),
         },
         {
           property: "og:site_name",
@@ -96,12 +95,11 @@ export default {
         },
         {
           property: "og:title",
-          content: "マイページ - YouClip",
+          content: this.$t("MyPage.MetaInfo.title"),
         },
         {
           property: "og:description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipのマイページです。YouTube動画からお気に入りの場面の切り抜きを作成・編集出来ます。また、いいねしたみんなの切り抜きも見ることが出来ます。",
+          content: this.$t("MyPage.MetaInfo.description"),
         },
         {
           property: "og:image",
