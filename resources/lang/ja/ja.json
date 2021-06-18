@@ -92,7 +92,7 @@
   "Home": {
     "MetaInfo": {
       "title": "YouClip - YouTube動画の見所切り抜きサイト",
-      "description": "YouClipはYouTube長時間動画の見所切り抜きサイトです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きを見ることも可能です。"
+      "description": "YouClipはYouTube動画の見所切り抜きサイトです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きを見ることも可能です。"
     },
     "data": {
       "popular": "急上昇",
@@ -112,7 +112,7 @@
   "Result": {
     "MetaInfo": {
       "title": "「{searchQuery}」の切り抜き検索結果 - YouClip",
-      "description": "YouTube長時間動画の見所切り抜きサイト、YouClipでの「{searchQuery}」に関するYouTube動画切り抜きまとめ検索結果です。"
+      "description": "YouTube動画の見所切り抜きサイト、YouClipでの「{searchQuery}」に関するYouTube動画切り抜きまとめ検索結果です。"
     }
   },
 
@@ -190,5 +190,86 @@
       "inputTitle": "④ タイトルを入力",
       "complete": "⑤ 完成!!"
     }
+  },
+
+  "Watch": {
+    "originalLength": "元の動画:",
+    "views": "回視聴",
+    "ago": "前",
+    "share": "シェア",
+    "playFullVideo": "全編再生",
+    "report": "報告",
+    "MetaInfo": {
+      "title": "{playlistName} - YouClip",
+      "description": "「{playlistName}」の切り抜き再生画面です。"
+    },
+    "methods": {
+      "messageWhenNotLogined": "切り抜きをいいねするには、ログインしてください。"
+    }
+  },
+
+  "YTPlayerController": {
+    "unmute": "ミュートを解除",
+    "back": "前の場面",
+    "next": "次の場面"
+  },
+
+  "SceneListWatch": {
+    "sceneList": "再生中の場面一覧",
+    "originalScene": "元場面"
+  },
+
+  "CommentListWatch": {
+    "comment": "コメント",
+    "commentPlaceholder": "コメントを入力",
+    "cancel": "キャンセル",
+    "ago": "前",
+    "displayOtherComment": "他の返信を表示",
+    "hideOtherComment": "他の返信を非表示",
+    "data": {
+      "commentRules": "コメントを入力して下さい"
+    },
+    "methods": {
+      "messageWhenNotLogined": "コメントするには、ログインしてください。(入力データは保持されます)"
+    }
+  },
+
+  "NoLoginModal": {
+    "login": "ログイン",
+    "noAccount": "アカウントをお持ちでないですか?",
+    "signup": "登録する"
+  },
+
+  "ReportModal": {
+    "detailLabel": "(任意)詳細を記載",
+    "cancel": "キャンセル",
+    "report": "報告",
+    "data": {
+      "infringement": "権利の侵害",
+      "inappropriate": "その他不適切なコンテンツ"
+    },
+    "methods": {
+      "reported": "報告しました"
+    }
+  },
+
+  "ShareModal": {
+    "selectHowToShare": "共有方法を選択",
+    "clip": "切り抜き",
+    "copyURL": "URLをコピー",
+    "cancel": "キャンセル"
+  },
+
+  "PlaySpeedModal": {
+    "selectSpeed": "速度を選択",
+    "close": "閉じる",
+    "oneFourth": "0.25倍速",
+    "half": "0.5倍速",
+    "threeFourth": "0.75倍速",
+    "normal": "通常",
+    "oneAndOneFourth": "1.25倍速",
+    "oneAndHalf": "1.5倍速",
+    "oneAndThreeFourth": "1.75倍速",
+    "double": "2倍速"
   }
 }

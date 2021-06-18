@@ -3,7 +3,9 @@
     <v-sheet class="mx-auto">
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-2">
-          <v-col class="ma-0 pa-0">共有方法を選択</v-col>
+          <v-col class="ma-0 pa-0">{{
+            $t("ShareModal.selectHowToShare")
+          }}</v-col>
         </v-row>
 
         <v-row class="ma-0 pa-">
@@ -19,7 +21,9 @@
             v-bind:data-href="
               'https://twitter.com/intent/tweet?url=' +
                 encodedShareURI +
-                '&text=[切り抜き] ' +
+                '&text=[' +
+                $t('ShareModal.clip') +
+                '] ' +
                 shareText
             "
           >
@@ -110,9 +114,9 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <v-card-text class="ma-0 pa-1 grey--text text--darken-3"
-                  >URLをコピー</v-card-text
-                >
+                <v-card-text class="ma-0 pa-1 grey--text text--darken-3">{{
+                  $t("ShareModal.copyURL")
+                }}</v-card-text>
               </v-col>
             </v-row>
           </v-col>
@@ -131,7 +135,7 @@
               v-on:click="closeShareModal"
               width="100%"
               color="grey darken-3"
-              >キャンセル</v-btn
+              >{{ $t("ShareModal.cancel") }}</v-btn
             >
           </v-col>
         </v-row>

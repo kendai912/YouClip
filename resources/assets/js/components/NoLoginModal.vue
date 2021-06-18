@@ -15,18 +15,18 @@
             class="white--text"
             v-on:click="openLoginPage"
             style="font-size: 14px;"
-            >ログイン</v-btn
+            >{{ $t("NoLoginModal.login") }}</v-btn
           >
           <div
             class="mt-3 text-center"
             style="color: #757575; font-size: 14px;"
           >
-            アカウントをお持ちでないですか?
+            {{ $t("NoLoginModal.noAccount") }}
             <a
               href="javascript:void(0)"
               color="green"
               v-on:click="openRegisterPage"
-              >登録する</a
+              >{{ $t("NoLoginModal.signup") }}</a
             >
           </div>
         </v-col>

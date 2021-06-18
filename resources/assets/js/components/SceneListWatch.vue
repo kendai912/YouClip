@@ -14,10 +14,10 @@
         >
           <v-fade-transition leave-absolute>
             <span v-if="opened" key="0">
-              再生中の場面一覧
+              {{ $t("SceneListWatch.sceneList") }}
             </span>
             <span v-else key="1">
-              再生中の場面一覧
+              {{ $t("SceneListWatch.sceneList") }}
             </span>
           </v-fade-transition>
 
@@ -109,7 +109,7 @@
                                     )
                                   }}</span>
                                   <span class="fz-12 grey--text text--darken-3"
-                                    >(元場面{{
+                                    >({{ $t("SceneListWatch.originalScene") }}{{
                                       mediaItems[listIndex].start
                                     }}</span
                                   >
@@ -244,7 +244,7 @@
                                 <span
                                   v-show="opened"
                                   class="fz-12 grey--text text--darken-3"
-                                  >(元場面{{ item.start }}</span
+                                  >({{ $t("SceneListWatch.originalScene") }}{{ item.start }}</span
                                 >
                                 <span v-show="opened" style="font-size:8px;"
                                   >-</span

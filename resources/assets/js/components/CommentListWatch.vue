@@ -11,7 +11,9 @@
           class="ma-0 pl-3 pr-2"
         >
           <span class="ma-0 pa-0 pt-1"
-            >コメント&nbsp;&#8226;&nbsp;{{ getTotal(mediaItems) }}</span
+            >{{ $t("CommentListWatch.comment") }}&nbsp;&#8226;&nbsp;{{
+              getTotal(mediaItems)
+            }}</span
           >
           <div
             v-if="panelComment !== 0 && mostLikesItem"
@@ -44,7 +46,7 @@
                   rows="3"
                   hide-details
                   name="comment_box"
-                  :placeholder="'コメントを入力'"
+                  v-bind:placeholder="$t('CommentListWatch.commentPlaceholder')"
                   class="pa-2"
                 ></v-textarea>
               </v-form>
@@ -55,13 +57,13 @@
               href="javascript:void(0)"
               style="color: grey"
               v-on:click="resetComment"
-              >キャンセル</a
+              >{{ $t("CommentListWatch.cancel") }}</a
             >&nbsp;&nbsp;&nbsp;
             <a
               href="javascript:void(0)"
               style="color: black"
               v-on:click="addComment"
-              >コメント</a
+              >{{ $t("CommentListWatch.comment") }}</a
             >
           </div>
           <v-row
@@ -92,7 +94,8 @@
                 {{ item.content }}
               </div>
               <div class="placeholder-color">
-                {{ timeSince(item.comment_publishedAt) }}前 &nbsp;
+                {{ timeSince(item.comment_publishedAt)
+                }}{{ $t("CommentListWatch.ago") }} &nbsp;
                 <v-icon
                   size="16"
                   v-on:click="likeComment(item)"
@@ -110,7 +113,9 @@
                   style="color: grey; font-size:13px;"
                   v-on:click="showReplies(index)"
                   >{{
-                    !isOpened(index) ? "他の返信を表示" : "他の返信を非表示"
+                    !isOpened(index)
+                      ? $t("CommentListWatch.displayOtherComment")
+                      : $t("CommentListWatch.hideOtherComment")
                   }}</a
                 >
               </div>
@@ -142,7 +147,8 @@
                     {{ replyItem.content }}
                   </div>
                   <div class="placeholder-color">
-                    {{ timeSince(replyItem.comment_publishedAt) }}前 &nbsp;
+                    {{ timeSince(replyItem.comment_publishedAt)
+                    }}{{ $t("CommentListWatch.ago") }} &nbsp;
                     <v-icon
                       size="16"
                       v-on:click="likeComment(replyItem)"
@@ -188,7 +194,9 @@ export default {
       showReplyList: [],
       content: "",
       parentId: 0,
-      commentRules: [(v) => !!v || "コメントを入力して下さい"],
+      commentRules: [
+        (v) => !!v || this.$t("CommentListWatch.data.commentRules"),
+      ],
       mostLikesItem: null,
       panelComment: 0,
     };
@@ -233,7 +241,7 @@ export default {
           this.$store.commit("noLoginModal/openLoginModal");
           this.$store.commit(
             "noLoginModal/setMessageWhenNotLogined",
-            "切り抜きを作成するには、ログインしてください。(入力データは保持されます)"
+            this.$t("CommentListWatch.methods.messageWhenNotLogined")
           );
         }
       } else if (this.$route.query.tag) {
@@ -252,7 +260,7 @@ export default {
           this.$store.commit("noLoginModal/openLoginModal");
           this.$store.commit(
             "noLoginModal/setMessageWhenNotLogined",
-            "切り抜きを作成するには、ログインしてください。(入力データは保持されます)"
+            this.$t("CommentListWatch.methods.messageWhenNotLogined")
           );
         }
       }
@@ -280,7 +288,7 @@ export default {
         this.$store.commit("noLoginModal/openLoginModal");
         this.$store.commit(
           "noLoginModal/setMessageWhenNotLogined",
-          "切り抜きを作成するには、ログインしてください。(入力データは保持されます)"
+          this.$t("CommentListWatch.methods.messageWhenNotLogined")
         );
       }
     },

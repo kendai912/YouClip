@@ -99,17 +99,20 @@
                     ><span class="reducedDuration">{{
                       totalDurationKanji
                     }}</span>
-                    &nbsp;⬅&nbsp;元の動画:&nbsp;合計<span
+                    &nbsp;⬅&nbsp;{{ $t("Watch.originalLength") }}&nbsp;<span
                       class="originalDuration"
                       >{{ totalYTDurationKanji }}
                     </span></span
                   >
                   <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
                   <span style="font-size: 12px"
-                    >{{ playlistViewCount ? playlistViewCount : 0 }}回視聴</span
+                    >{{ playlistViewCount ? playlistViewCount : 0
+                    }}{{ $t("Watch.views") }}</span
                   >
                   <span style="font-size: 8px">&nbsp;&#8226;&nbsp;</span>
-                  <span style="font-size: 12px">{{ playlistCreatedAt }}前</span>
+                  <span style="font-size: 12px"
+                    >{{ playlistCreatedAt }}{{ $t("Watch.ago") }}</span
+                  >
                 </v-col>
               </v-row>
             </v-container>
@@ -191,7 +194,7 @@
                     v-on:click="sharePlaylist"
                     class="ma-0 pa-0 narrow-btn"
                   >
-                    <span>シェア</span>
+                    <span>{{ $t("Watch.share") }}</span>
                     <i class="fas fa-share outlined-icon icon-large"></i>
                   </v-btn>
                 </v-bottom-navigation>
@@ -203,7 +206,7 @@
                     v-bind:href="'https://youtube.com/watch?v=' + youtubeId"
                     class="ma-0 pa-0 narrow-btn"
                   >
-                    <span>全編再生</span>
+                    <span>{{ $t("Watch.playFullVideo") }}</span>
                     <i class="fab fa-youtube icon-large" style="color:red;"></i>
                   </v-btn>
                 </v-bottom-navigation>
@@ -215,7 +218,7 @@
                     v-on:click="openReportModal"
                     class="ma-0 pa-0 narrow-btn"
                   >
-                    <span>報告</span>
+                    <span>{{ $t("Watch.report") }}</span>
                     <i class="fas fa-flag outlined-icon icon-large"></i>
                   </v-btn>
                 </v-bottom-navigation>
@@ -264,14 +267,15 @@ import myMixin from "../util";
 export default {
   metaInfo() {
     return {
-      title: this.playlistName + " - YouClip",
+      title: this.$t("Watch.MetaInfo.title", {
+        playlistName: this.playlistName,
+      }),
       meta: [
         {
           name: "description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipの「" +
-            this.playlistName +
-            "」です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きを見ることも可能です。",
+          content: this.$t("Watch.MetaInfo.description", {
+            playlistName: this.playlistName,
+          }),
         },
         {
           property: "og:site_name",
@@ -287,14 +291,15 @@ export default {
         },
         {
           property: "og:title",
-          content: this.playlistName + " - YouClip",
+          content: this.$t("Watch.MetaInfo.title", {
+            playlistName: this.playlistName,
+          }),
         },
         {
           property: "og:description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipの「" +
-            this.playlistName +
-            "」です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きまとめを誰でも簡単に作ることが出来ます。",
+          content: this.$t("Watch.MetaInfo.description", {
+            playlistName: this.playlistName,
+          }),
         },
         {
           property: "og:image",
@@ -445,7 +450,7 @@ export default {
         this.$store.commit("noLoginModal/openLoginModal");
         this.$store.commit(
           "noLoginModal/setMessageWhenNotLogined",
-          "切り抜きまとめを評価するには、ログインしてください。"
+          this.$t("Watch.methods.messageWhenNotLogined")
         );
       } else {
         //ログイン済の場合

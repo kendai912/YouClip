@@ -3,7 +3,7 @@
     <div v-if="isMutedDefault" class="unmuteDefaultBtn">
       <v-btn color="white lighten-3" height="32" v-on:click="unmuteDefault">
         <v-icon left> volume_off </v-icon>
-        ミュートを解除
+        {{ $t("YTPlayerController.unmute") }}
       </v-btn>
     </div>
     <v-sheet
@@ -51,7 +51,7 @@
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
                 <span style="font-size: calc(1rem * (12 / 14)); color: white"
-                  >前の場面</span
+                  >{{ $t("YTPlayerController.back") }}</span
                 >
               </v-col>
             </v-row>
@@ -114,7 +114,7 @@
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
                 <span style="font-size: calc(1rem * (12 / 14)); color: white"
-                  >次の場面</span
+                  >{{ $t("YTPlayerController.next") }}</span
                 >
               </v-col>
             </v-row>

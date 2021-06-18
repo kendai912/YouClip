@@ -103,7 +103,7 @@
 
   "PlaylistMediaItem": {
     "clip": "Clip",
-    "originalLength": "Original video:",
+    "originalLength": "Original:",
     "sumOfYTvideos": "(Total of {numberOfYTvideos} videos)",
     "views": " views",
     "ago": " ago"
@@ -190,5 +190,86 @@
       "inputTitle": "4. Input a title",
       "complete": "5. Done!!"
     }
+  },
+
+  "Watch": {
+    "originalLength": "Original:",
+    "views": " views",
+    "ago": " ago",
+    "share": "Share",
+    "playFullVideo": "Watch full video",
+    "report": "Report",
+    "MetaInfo": {
+      "title": "{playlistName} - YouClip",
+      "description": "[{playlistName}] clip playback page of YouClip - YouTube online clipping app."
+    },
+    "methods": {
+      "messageWhenNotLogined": "Please login to like this clip"
+    }
+  },
+
+  "YTPlayerController": {
+    "unmute": "Unmute",
+    "back": "Back",
+    "next": "Next"
+  },
+
+  "SceneListWatch": {
+    "sceneList": "Scenes in this clip",
+    "originalScene": "Original"
+  },
+
+  "CommentListWatch": {
+    "comment": "Comment",
+    "commentPlaceholder": "Enter your comment",
+    "cancel": "Cancel",
+    "ago": " ago",
+    "displayOtherComment": "Display other comments",
+    "hideOtherComment": "Hide other comments",
+    "data": {
+      "commentRules": "Please enter your comment"
+    },
+    "methods": {
+      "messageWhenNotLogined": "Please login to comment.(Input data is retained)"
+    }
+  },
+
+  "NoLoginModal": {
+    "login": "Login",
+    "noAccount": "If you don't have an account yet, this is the place to start.",
+    "signup": "Sign up"
+  },
+
+  "ReportModal": {
+    "detailLabel": "(optional) Describe the detail",
+    "cancel": "Cancel",
+    "report": "Report",
+    "data": {
+      "infringement": "Infringement of right",
+      "inappropriate": "Inappropriate content"
+    },
+    "methods": {
+      "reported": "Reported."
+    }
+  },
+
+  "ShareModal": {
+    "selectHowToShare": "Select how to share",
+    "clip": "Clip",
+    "copyURL": "Copy URL",
+    "cancel": "Cancel"
+  },
+
+  "PlaySpeedModal": {
+    "selectSpeed": "Select playback speed",
+    "close": "Close",
+    "oneFourth": "0.25",
+    "half": "0.5",
+    "threeFourth": "0.75",
+    "normal": "Normal",
+    "oneAndOneFourth": "1.25",
+    "oneAndHalf": "1.5",
+    "oneAndThreeFourth": "1.75",
+    "double": "2"
   }
 }

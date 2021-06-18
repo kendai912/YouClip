@@ -21,7 +21,7 @@
             rows="6"
             v-model="detail"
             outlined
-            label="(任意)詳細を記載"
+            v-bind:label="$t('ReportModal.detailLabel')"
           ></v-textarea>
         </v-row>
         <v-divider></v-divider>
@@ -32,9 +32,11 @@
               width="90px"
               color="default"
               class="mr-1"
-              >キャンセル</v-btn
+              >{{ $t("ReportModal.cancel") }}</v-btn
             >
-            <v-btn v-on:click="submit" width="90px" color="primary">報告</v-btn>
+            <v-btn v-on:click="submit" width="90px" color="primary">{{
+              $t("ReportModal.report")
+            }}</v-btn>
           </v-row>
         </v-card-actions>
       </v-form>
@@ -50,8 +52,14 @@ export default {
     return {
       reportCategory: null,
       reportCategories: [
-        { label: "権利の侵害", value: "Infringement" },
-        { label: "その他不適切なコンテンツ", value: "Inappropriate" },
+        {
+          label: this.$t("ReportModal.data.infringement"),
+          value: "Infringement",
+        },
+        {
+          label: this.$t("ReportModal.data.inappropriate"),
+          value: "Inappropriate",
+        },
       ],
       detail: null,
       rules: [(value) => !!value || "Required"],
@@ -88,7 +96,10 @@ export default {
         this.report(params);
 
         //display editting a new scene completion snackbar
-        this.$store.commit("snackbar/setText", "報告しました");
+        this.$store.commit(
+          "snackbar/setText",
+          this.$t("ReportModal.methods.reported")
+        );
         this.$store.commit("snackbar/seVertical", false);
         this.$store.commit("snackbar/setSnackbar", true);
         this.$store.commit("snackbar/setTimeout", 5000);
