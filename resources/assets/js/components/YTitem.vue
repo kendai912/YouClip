@@ -48,12 +48,16 @@
                       >
                       <v-list-item-subtitle>
                         <span v-if="item.view_count"
-                          >{{ convertNumDigit(item.view_count) }}回視聴</span
+                          >{{ convertNumDigit(item.view_count)
+                          }}{{ $t("YTitem.views") }}</span
                         >
-                        <span v-if="item.num_views"
-                          >{{ item.published_at }}前</span
+                        <span v-if="item.num_views">{{
+                          alignUnitLocale(item.published_at)
+                        }}</span>
+                        <span v-else
+                          >{{ timeSince(item.published_at)
+                          }}{{ $t("YTitem.ago") }}</span
                         >
-                        <span v-else>{{ timeSince(item.published_at) }}前</span>
                       </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>

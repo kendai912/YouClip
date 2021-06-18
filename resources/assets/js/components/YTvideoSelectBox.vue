@@ -11,7 +11,7 @@
           alt="YouTube logo"
           class="float-left mr-2"
         />
-        <h2 class="fz-14">YouTube検索結果</h2>
+        <h2 class="fz-14">{{ $t("YTvideoSelectBox.youtubeSearchResult") }}</h2>
       </div>
       <YTitem v-bind:YTitems="YTresult" />
     </div>
@@ -25,7 +25,9 @@
           alt="YouTube logo"
           class="float-left mr-2"
         />
-        <h2 class="fz-14">最近切り抜いたYouTube動画</h2>
+        <h2 class="fz-14">
+          {{ $t("YTvideoSelectBox.recentlyClippedYoutube") }}
+        </h2>
       </div>
       <YTitem v-bind:YTitems="YTRecentVideos" />
     </div>
@@ -47,7 +49,7 @@ export default {
   },
   data() {
     return {
-      headerWord: "切り抜きまとめを作成",
+      headerWord: this.$t("YTvideoSelectBox.searchVideoToClip"),
       from: null,
     };
   },
@@ -87,9 +89,6 @@ export default {
       if (this.$route.path == "/add" || this.$route.path == "/add/search") {
         this.setIsAdding(true);
         this.setMyPlaylistToSave(this.$route.query.playlist);
-
-        //headerの文言を追加用に修正
-        this.headerWord = "切り抜きまとめに追加";
       } else {
         this.setIsAdding(false);
         this.setMyPlaylistToSave("none");
@@ -109,17 +108,11 @@ export default {
 
       if (this.YTsearchQuery == null) {
         //検索ワードがセットされていない場合、最近切り抜いたYouTube動画を表示
-        this.$store.commit(
-          "highlightHeader/setHeaderMessage",
-          this.headerWord + "する動画を検索"
-        );
+        this.$store.commit("highlightHeader/setHeaderMessage", this.headerWord);
         this.getYTRecentVideos();
       } else {
         //検索ワードがセットされている場合、YouTube検索結果を表示
-        this.$store.commit(
-          "highlightHeader/setHeaderMessage",
-          this.headerWord + "する動画を選択"
-        );
+        this.$store.commit("highlightHeader/setHeaderMessage", this.headerWord);
         this.showYTresult();
       }
     },

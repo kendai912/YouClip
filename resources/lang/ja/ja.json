@@ -271,5 +271,20 @@
     "oneAndHalf": "1.5倍速",
     "oneAndThreeFourth": "1.75倍速",
     "double": "2倍速"
+  },
+
+  "YTvideoSelectBox": {
+    "youtubeSearchResult": "YouTube検索結果",
+    "recentlyClippedYoutube": "最近切り抜いたYouTube動画",
+    "searchVideoToClip": "切り抜くYouTube動画を検索"
+  },
+
+  "YTSearchBox": {
+    "enterKeywordOrUrl": "YouTubeのキーワードまたはURLを入力"
+  },
+
+  "YTitem": {
+    "views": "回視聴",
+    "ago": "前"
   }
 }

@@ -335,17 +335,79 @@ export default {
     },
     //数値の桁変換を行う関数
     convertNumDigit(numTxt) {
-      let units = ["", "万", "億"];
-      var ext = units[0];
-      let num = numTxt.replace(/[^0-9]/g, "");
+      if (this.$i18n.locale == "ja") {
+        let units = ["", "万", "億"];
+        var ext = units[0];
+        let num = numTxt.replace(/[^0-9]/g, "");
 
-      for (var i = 1; i < units.length; i += 1) {
-        if (parseInt(num) >= 10000) {
-          num = parseInt(num) / 10000;
-          ext = units[i];
+        for (var i = 1; i < units.length; i += 1) {
+          if (parseInt(num) >= 10000) {
+            num = parseInt(num) / 10000;
+            ext = units[i];
+          }
         }
+        return Math.round(num) + ext;
+      } else {
+        let units = ["", "K", "M"];
+        var ext = units[0];
+        let num = numTxt.replace(/[^0-9]/g, "");
+
+        for (var i = 1; i < units.length; i += 1) {
+          if (parseInt(num) >= 1000) {
+            num = parseInt(num) / 1000;
+            ext = units[i];
+          }
+        }
+        return Math.round(num) + ext;
       }
-      return Math.round(num) + ext;
+    },
+    alignUnitLocale(publishedAtInJa) {
+      if (this.$i18n.locale == "ja") {
+        return publishedAtInJa;
+      } else {
+        let result = publishedAtInJa.replaceAll("　", " ").split(" ");
+        let num = result[0];
+        let unitJa = result[1];
+        let unitEn;
+
+        if (unitJa == "分前") {
+          unitEn = " min. ago";
+        } else if (unitJa == "時間前") {
+          if (num == 1) {
+            unitEn = " hr. ago";
+          } else {
+            unitEn = " hrs. ago";
+          }
+        } else if (unitJa == "日前") {
+          if (num == 1) {
+            unitEn = " day ago";
+          } else {
+            unitEn = " days ago";
+          }
+        } else if (unitJa == "週間前") {
+          if (num == 1) {
+            unitEn = " week ago";
+          } else {
+            unitEn = " weeks ago";
+          }
+        } else if (unitJa == "か月前") {
+          if (num == 1) {
+            unitEn = " month ago";
+          } else {
+            unitEn = " months ago";
+          }
+        } else if (unitJa == "年前") {
+          if (num == 1) {
+            unitEn = " year ago";
+          } else {
+            unitEn = " years ago";
+          }
+        } else {
+          unitEn = unitJa;
+        }
+
+        return num + unitEn;
+      }
     },
     replaceDate(dateStr) {
       const regexp = /^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?: ([0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/;

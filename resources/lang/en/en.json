@@ -271,5 +271,20 @@
     "oneAndHalf": "1.5",
     "oneAndThreeFourth": "1.75",
     "double": "2"
+  },
+
+  "YTvideoSelectBox": {
+    "youtubeSearchResult": "YouTube search result",
+    "recentlyClippedYoutube": "Recently clipped YouTube video",
+    "searchVideoToClip": "Search YouTube video to clip"
+  },
+
+  "YTSearchBox": {
+    "enterKeywordOrUrl": "Enter YouTube search keyword or URL"
+  },
+
+  "YTitem": {
+    "views": " views",
+    "ago": " ago"
   }
 }
