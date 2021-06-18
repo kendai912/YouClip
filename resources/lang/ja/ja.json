@@ -129,5 +129,23 @@
       "title": "マイページ - YouClip",
       "description": "YouTube動画の見所切り抜きサイト、YouClipのマイページです。自分の切り抜きを確認・編集出来ます。"
     }
+  },
+
+  "Register": {
+    "socialLogin": "連携済みアカウントでログイン",
+    "emailSignup": "名前・メールアドレス・パスワードで新規登録",
+    "passwordLabel": "Password (確認)",
+    "textFieldHind": "6文字以上で入力下さい",
+    "signup": "新規登録",
+    "MetaInfo": {
+      "title": "新規登録 - YouClip",
+      "description": "YouTube動画の見所切り抜きサイト、YouClipの新規登録画面です。"
+    },
+    "data": {
+      "required": "必須項目です",
+      "nameLengthRule": "名前は10文字以下で記入下さい",
+      "emailRule": "無効なメールアドレスです",
+      "passwordRule": "パスワードは6文字以上で入力下さい"
+    }
   }
 }

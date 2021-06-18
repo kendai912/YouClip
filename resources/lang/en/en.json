@@ -129,5 +129,23 @@
       "title": "My page - YouClip",
       "description": "My page of YouClip - YouTube online clipping app. You can access to your created/liked clips after login."
     }
+  },
+
+  "Register": {
+    "socialLogin": "Login with your social media account",
+    "emailSignup": "Sign up with new account",
+    "passwordLabel": "Password (Confirmation)",
+    "textFieldHind": "Password must be at least 6 characters.",
+    "signup": "Sign up",
+    "MetaInfo": {
+      "title": "Sign up - YouClip",
+      "description": "Sign up of YouClip - YouTube online clipping app. You can access to your created/liked clips after login."
+    },
+    "data": {
+      "required": "Required",
+      "nameLengthRule": "Name should not exceed 10 characters.",
+      "emailRule": "Invalid email address",
+      "passwordRule": "Password must be at least 6 characters."
+    }
   }
 }

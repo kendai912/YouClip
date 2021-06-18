@@ -18,7 +18,7 @@
             <h2
               style="font-size: 1rem !important; font-weight: normal !important;"
             >
-              連携済みアカウントで新規登録
+              {{ $t("Register.socialLogin") }}
             </h2>
           </v-col>
         </v-row>
@@ -64,7 +64,7 @@
             <h2
               style="font-size: 1rem !important; font-weight: normal !important;"
             >
-              名前・メールアドレス・パスワードで新規登録
+              {{ $t("Register.emailSignup") }}
             </h2>
           </v-col>
         </v-row>
@@ -103,7 +103,7 @@
               v-bind:type="passwordField ? 'text' : 'password'"
               v-on:keydown.enter="register"
               label="Password"
-              hint="6文字以上で入力下さい"
+              v-bind:hint="$t('Register.textFieldHind')"
               @click:append="passwordField = !passwordField"
               outlined
               required
@@ -120,8 +120,8 @@
               v-bind:rules="[passwordRules.required, passwordRules.min]"
               v-bind:type="passwordConfirmationField ? 'text' : 'password'"
               v-on:keydown.enter="register"
-              label="Password (確認)"
-              hint="6文字以上で入力下さい"
+              v-bind:label="$t('Register.passwordLabel')"
+              v-bind:hint="$t('Register.textFieldHind')"
               @click:append="
                 passwordConfirmationField = !passwordConfirmationField
               "
@@ -132,7 +132,9 @@
         </v-row>
         <v-row class="ma-0 pa-0 text-right" align="center">
           <v-col class="ma-0 pa-0">
-            <v-btn v-on:click="register" color="primary">新規登録</v-btn>
+            <v-btn v-on:click="register" color="primary">{{
+              $t("Register.signup")
+            }}</v-btn>
           </v-col>
         </v-row>
         <v-row class="ma-0 pa-0" align="center">
@@ -189,12 +191,11 @@ import { mapState } from "vuex";
 export default {
   metaInfo() {
     return {
-      title: "新規登録 - YouClip",
+      title: this.$t("Register.MetaInfo.title"),
       meta: [
         {
           name: "description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipの新規登録ページです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きを見ることも可能です。",
+          content: this.$t("Register.MetaInfo.description"),
         },
         {
           property: "og:site_name",
@@ -210,12 +211,11 @@ export default {
         },
         {
           property: "og:title",
-          content: "新規登録 - YouClip",
+          content: this.$t("Register.MetaInfo.title"),
         },
         {
           property: "og:description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipの新規登録ページです。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。",
+          content: this.$t("Register.MetaInfo.description"),
         },
         {
           property: "og:image",
@@ -241,16 +241,16 @@ export default {
   data() {
     return {
       nameRules: [
-        (v) => !!v || "必須項目です",
-        (v) => v.length <= 10 || "名前は10文字以下で記入下さい",
+        (v) => !!v || this.$t("Register.data.required"),
+        (v) => v.length <= 10 || this.$t("Register.data.nameLengthRule"),
       ],
       emailRules: [
-        (v) => !!v || "必須項目です",
-        (v) => /.+@.+\..+/.test(v) || "無効なメールアドレスです",
+        (v) => !!v || this.$t("Register.data.required"),
+        (v) => /.+@.+\..+/.test(v) || this.$t("Register.data.emailRule"),
       ],
       passwordRules: {
-        required: (value) => !!value || "必須項目です.",
-        min: (v) => v.length >= 6 || "パスワードは6文字以上で入力下さい",
+        required: (value) => !!value || this.$t("Register.data.required"),
+        min: (v) => v.length >= 6 || this.$t("Register.data.passwordRule"),
       },
       passwordField: false,
       passwordConfirmationField: false,
