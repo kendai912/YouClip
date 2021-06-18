@@ -10,7 +10,7 @@
         >
           <v-col class="text-center" cols="12">
             <h2 class="font-weight-bold mb-3 userguideSectionTitle">
-              YouTube動画の見所切り抜き
+              {{ $t("UserGuide.subtitle") }}
             </h2>
 
             <v-row class="ma-2 pa-0" align="center" justify="center">
@@ -31,7 +31,7 @@
 
       <v-container class="text-center">
         <h2 class="font-weight-bold mb-2 userguideSectionTitle">
-          こんな時に便利
+          {{ $t("UserGuide.useCase") }}
         </h2>
 
         <v-row>
@@ -78,7 +78,7 @@
 
       <v-container class="text-center">
         <h2 class="font-weight-bold mb-2 userguideSectionTitle">
-          切り抜き方は簡単
+          {{ $t("UserGuide.howToClip") }}
         </h2>
 
         <v-carousel cycle interval="8000" hide-delimiters height="290px">
@@ -114,12 +114,11 @@ import myMixin from "../util";
 export default {
   metaInfo() {
     return {
-      title: "使い方 - YouClip",
+      title: this.$t("UserGuide.MetaInfo.title"),
       meta: [
         {
           name: "description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipの使い方紹介です。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きを見ることも可能です。",
+          content: this.$t("UserGuide.MetaInfo.description"),
         },
         {
           property: "og:site_name",
@@ -135,12 +134,11 @@ export default {
         },
         {
           property: "og:title",
-          content: "使い方 - YouClip",
+          content: this.$t("UserGuide.MetaInfo.title"),
         },
         {
           property: "og:description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipの使い方紹介です。ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きを見ることも可能です。",
+          content: this.$t("UserGuide.MetaInfo.description"),
         },
         {
           property: "og:image",
@@ -170,37 +168,37 @@ export default {
       features: [
         {
           img: "/storage/imgs/userguide-save.png",
-          title: "動画の一部を繰り返し見返したい",
+          title: this.$t("UserGuide.data.repeatScene"),
         },
         {
           img: "/storage/imgs/userguide-share.png",
-          title: "みんなに動画のある場面を共有したい",
+          title: this.$t("UserGuide.data.shareScene"),
         },
         {
           img: "/storage/imgs/userguide-collect.png",
-          title: "色々な動画のお気に入りの場面を集めたい",
+          title: this.$t("UserGuide.data.collectScene"),
         },
       ],
       howToImgs: [
         {
           img: "/storage/imgs/YouClip-Onboarding2-1.png",
-          text: "① YouTube動画を検索",
+          text: this.$t("UserGuide.data.searchYtVideo"),
         },
         {
           img: "/storage/imgs/YouClip-Onboarding2-2.png",
-          text: "② 切り抜く時間を指定",
+          text: this.$t("UserGuide.data.specifyTime"),
         },
         {
           img: "/storage/imgs/YouClip-Onboarding2-3.png",
-          text: "③ 切り抜いた場面を確認",
+          text: this.$t("UserGuide.data.confirmScene"),
         },
         {
           img: "/storage/imgs/YouClip-Onboarding2-4.png",
-          text: "④ タイトルを入力",
+          text: this.$t("UserGuide.data.inputTitle"),
         },
         {
           img: "/storage/imgs/YouClip-Onboarding2-5.png",
-          text: "⑤ 完成!!",
+          text: this.$t("UserGuide.data.complete"),
         },
       ],
     };

@@ -91,7 +91,7 @@
 
   "Home": {
     "MetaInfo": {
-      "title": "YouClip - YouTube動画の見所切り抜きサイト",
+      "title": "YouClip - YouTube online clipping site",
       "description": "YouClip is YouTube online clipping app. You can highlight and share your favorite moments of YouTube videos (e.g. Gaming, VTuber, etc) with no video editing experience needed. Also you can enjoy popular clips other fans created."
     },
     "data": {
@@ -107,6 +107,13 @@
     "sumOfYTvideos": "(Total of {numberOfYTvideos} videos)",
     "views": " views",
     "ago": " ago"
+  },
+
+  "Result": {
+    "MetaInfo": {
+      "title": "Search result of [{searchQuery}] - YouClip",
+      "description": "Search result of [{searchQuery}] on YouClip - YouTube online clipping app."
+    }
   },
 
   "Login": {
@@ -163,5 +170,25 @@
     "clip": "Clip",
     "views": " views",
     "ago": " ago"
+  },
+
+  "UserGuide": {
+    "subtitle": "YouTube online clipping site",
+    "useCase": "Useful in such cases",
+    "howToClip": "How to clip",
+    "MetaInfo": {
+      "title": "About YouClip",
+      "description": "Introduction of YouClip - YouTube online clipping app. You can access to your created/liked clips after login."
+    },
+    "data": {
+      "repeatScene": "Repeat a scene of the video ",
+      "shareScene": "Share scenes with friends",
+      "collectScene": "Collect favorite scenes",
+      "searchYtVideo": "1. Search YouTube video",
+      "specifyTime": "2. Specify start/end time",
+      "confirmScene": "3. Confirm the clipped scene",
+      "inputTitle": "4. Input a title",
+      "complete": "5. Done!!"
+    }
   }
 }

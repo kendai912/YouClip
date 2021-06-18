@@ -109,6 +109,13 @@
     "ago": "前"
   },
 
+  "Result": {
+    "MetaInfo": {
+      "title": "「{searchQuery}」の切り抜き検索結果 - YouClip",
+      "description": "YouTube長時間動画の見所切り抜きサイト、YouClipでの「{searchQuery}」に関するYouTube動画切り抜きまとめ検索結果です。"
+    }
+  },
+
   "Login": {
     "socialLogin": "連携済みアカウントでログイン",
     "emailLogin": "メールアドレス・パスワードでログイン",
@@ -163,5 +170,25 @@
     "clip": "切り抜き",
     "views": "回視聴",
     "ago": "前"
+  },
+
+  "UserGuide": {
+    "subtitle": "YouTube動画の見所切り抜き",
+    "useCase": "こんな時に便利",
+    "howToClip": "切り抜き方は簡単",
+    "MetaInfo": {
+      "title": "YouClipについて",
+      "description": "YouTube動画の見所切り抜きサイト、YouClipの紹介ページです。"
+    },
+    "data": {
+      "repeatScene": "動画の一部を繰り返し見返したい",
+      "shareScene": "みんなに動画のある場面を共有したい",
+      "collectScene": "色々な動画のお気に入りの場面を集めたい",
+      "searchYtVideo": "① YouTube動画を検索",
+      "specifyTime": "② 切り抜く時間を指定",
+      "confirmScene": "③ 切り抜いた場面を確認",
+      "inputTitle": "④ タイトルを入力",
+      "complete": "⑤ 完成!!"
+    }
   }
 }

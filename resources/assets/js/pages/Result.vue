@@ -14,17 +14,15 @@ import myMixin from "../util";
 export default {
   metaInfo() {
     return {
-      title:
-        "「" +
-        this.$route.query.search_query +
-        "」のYouTube動画切り抜きまとめ検索結果 - YouClip",
+      title: this.$t("Result.MetaInfo.title", {
+        searchQuery: this.$route.query.search_query,
+      }),
       meta: [
         {
           name: "description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipでの「" +
-            this.$route.query.search_query +
-            "」に関するYouTube動画切り抜きまとめ検索結果です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。また、みんなが作った人気の切り抜きを見ることも可能です。",
+          content: this.$t("Result.MetaInfo.description", {
+            searchQuery: this.$route.query.search_query,
+          }),
         },
         {
           property: "og:site_name",
@@ -40,17 +38,15 @@ export default {
         },
         {
           property: "og:title",
-          content:
-            "「" +
-            this.$route.query.search_query +
-            "」のYouTube動画切り抜きまとめ検索結果 - YouClip",
+          content: this.$t("Result.MetaInfo.title", {
+            searchQuery: this.$route.query.search_query,
+          }),
         },
         {
           property: "og:description",
-          content:
-            "YouTube長時間動画の見所切り抜きサイト、YouClipでの「" +
-            this.$route.query.search_query +
-            "」に関するYouTube動画切り抜きまとめ検索結果です。YouClipでは、ゲーム実況やVTuberの動画などから、お気に入りの場面の切り抜きを誰でも簡単に作ることが出来ます。",
+          content: this.$t("Result.MetaInfo.description", {
+            searchQuery: this.$route.query.search_query,
+          }),
         },
         {
           property: "og:image",
@@ -79,7 +75,6 @@ export default {
   data() {
     return {
       tab: null,
-      items: ["切り抜き", "場面"],
       pageOfPlaylist: 1,
       playlistMediaItems: [],
     };
