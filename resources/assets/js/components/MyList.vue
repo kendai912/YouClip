@@ -53,9 +53,9 @@ export default {
       items: [
         {
           tabIcon: "mdi-play-box-multiple-outline",
-          tabName: "作成した切り抜き",
+          tabName: this.$t("MyList.createdClip"),
         },
-        { tabIcon: "mdi-heart-outline", tabName: "いいねした切り抜き" },
+        { tabIcon: "mdi-heart-outline", tabName: this.$t("MyList.likedClip") },
       ],
     };
   },

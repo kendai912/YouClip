@@ -4,7 +4,7 @@
       <v-row align="center" justify="end" class="ma-0 pa-2">
         <v-btn v-on:click="logout" elevation="0" color="white">
           <v-icon>mdi-logout</v-icon>
-          ログアウト
+          {{ $t("MyProfile.logout") }}
         </v-btn>
       </v-row>
       <v-row align="center" justify="center" class="ma-0 pa-2">
@@ -26,7 +26,7 @@
       </v-row>
       <v-row class="ma-0 pt-4 pb-4 px-2">
         <v-btn width="100%" color="white" to="/mypage/edit"
-          ><span class="fz-14">プロフィールを編集</span></v-btn
+          ><span class="fz-14">{{ $t("MyProfile.editProfile") }}</span></v-btn
         >
       </v-row>
     </v-card>

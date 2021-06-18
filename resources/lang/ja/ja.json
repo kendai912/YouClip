@@ -147,5 +147,21 @@
       "emailRule": "無効なメールアドレスです",
       "passwordRule": "パスワードは6文字以上で入力下さい"
     }
+  },
+
+  "MyProfile": {
+    "logout": "ログアウト",
+    "editProfile": "プロフィールを編集"
+  },
+
+  "MyList": {
+    "createdClip": "作成した切り抜き",
+    "likedClip": "いいねした切り抜き"
+  },
+
+  "MyPlaylistItem": {
+    "clip": "切り抜き",
+    "views": "回視聴",
+    "ago": "前"
   }
 }

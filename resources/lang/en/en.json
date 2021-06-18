@@ -147,5 +147,21 @@
       "emailRule": "Invalid email address",
       "passwordRule": "Password must be at least 6 characters."
     }
+  },
+
+  "MyProfile": {
+    "logout": "Logout",
+    "editProfile": "Edit profile"
+  },
+
+  "MyList": {
+    "createdClip": "Created clips",
+    "likedClip": "Favorite clips"
+  },
+
+  "MyPlaylistItem": {
+    "clip": "Clip",
+    "views": " views",
+    "ago": " ago"
   }
 }

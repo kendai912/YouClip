@@ -1,7 +1,7 @@
 <template>
   <div class="container--small full-height">
     <div v-if="isLogin">
-      <My-Profile />
+      <MyProfile />
       <MyList />
     </div>
     <v-card v-else class="text-center pa-3 ma-3 body-color" title elevation="0">

@@ -76,8 +76,9 @@
                         ></video>
                         <div class="ribbon-content-mypage">
                           <span class="ribbon-text-mypage"
-                            ><v-icon size="10">content_cut</v-icon
-                            >&nbsp;切り抜き</span
+                            ><v-icon size="10">content_cut</v-icon>&nbsp;{{
+                              $t("MyPlaylistItem.clip")
+                            }}</span
                           >
                         </div>
                       </router-link>
@@ -139,14 +140,13 @@
                             v-on:click.native="select(item)"
                           >
                             <span
-                              >{{
-                                item.visitCount ? item.visitCount : 0
-                              }}回視聴</span
+                              >{{ item.visitCount ? item.visitCount : 0
+                              }}{{ $t("MyPlaylistItem.views") }}</span
                             >
                             <span class="fz-8">&#8226;</span>
-                            <span>合計{{ item.totalDuration }}</span>
+                            <span>{{ item.totalDuration }}</span>
                             <span class="fz-8">&#8226;</span>
-                            <span>{{ item.timeSince }}前</span>
+                            <span>{{ item.timeSince }}{{ $t("MyPlaylistItem.ago") }}</span>
                             <span v-if="item.likeCount" class="fz-8"
                               >&#8226;</span
                             >
