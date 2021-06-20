@@ -4,9 +4,9 @@
       <v-row class="ma-0 pa-0" v-if="hasMyPlaylists">
         <v-col class="ma-0 pa-0">
           <v-list class="pb-0" dense>
-            <v-list-item-subtitle class="ma-0 pa-2 pb-0"
-              >既存の切り抜きに追加(チェック外すと解除)</v-list-item-subtitle
-            >
+            <v-list-item-subtitle class="ma-0 pa-2 pb-0">{{
+              $t("AddToPlaylistModal.addtoExistingPlaylist")
+            }}</v-list-item-subtitle>
             <v-list-item
               v-for="myPlaylist in myCreatedPlaylist"
               v-show="myPlaylist.playlistName"
@@ -29,13 +29,13 @@
       <v-row class="ma-0 pa-0">
         <v-col class="ma-0 pa-0">
           <v-list class="pb-0" dense>
-            <v-list-item-subtitle class="ma-0 pa-2 pb-3"
-              >新規切り抜きを作成</v-list-item-subtitle
-            >
+            <v-list-item-subtitle class="ma-0 pa-2 pb-3">{{
+              $t("AddToPlaylistModal.createNewPlaylist")
+            }}</v-list-item-subtitle>
             <v-list-item>
               <v-text-field
                 v-model="newPlaylistName"
-                label="新規切り抜き名"
+                v-bind:label="$t('AddToPlaylistModal.newPlaylistName')"
                 outlined
                 dense
                 style="font-size:10px;"
@@ -45,7 +45,7 @@
               <v-select
                 v-model="privacySetting"
                 v-bind:items="privacySettingItems"
-                label="プライバシー設定"
+                v-bind:label="$t('AddToPlaylistModal.privacySetting')"
                 outlined
                 dense
                 style="font-size:14px"
@@ -65,11 +65,11 @@
           width="90px"
           color="default"
           class="mr-1"
-          >キャンセル</v-btn
+          >{{ $t("AddToPlaylistModal.cancel") }}</v-btn
         >
-        <v-btn v-on:click="addToPlaylist" width="90px" color="primary"
-          >完了</v-btn
-        >
+        <v-btn v-on:click="addToPlaylist" width="90px" color="primary">{{
+          $t("AddToPlaylistModal.finish")
+        }}</v-btn>
       </v-row>
     </v-card>
   </v-dialog>
@@ -85,13 +85,13 @@ export default {
       newPlaylistName: "",
       privacySetting: "public",
       privacySettingItems: [
-        { text: "公開", value: "public" },
+        { text: this.$t("AddToPlaylistModal.data.public"), value: "public" },
         {
-          text: "限定公開",
+          text: this.$t("AddToPlaylistModal.data.limited"),
           value: "limited",
         },
         {
-          text: "非公開",
+          text: this.$t("AddToPlaylistModal.data.private"),
           value: "private",
         },
       ],
@@ -139,7 +139,10 @@ export default {
         : "";
 
       //プレイリスト削除完了のトーストを表示
-      this.$store.commit("snackbar/setText", "プレイリストに保存しました");
+      this.$store.commit(
+        "snackbar/setText",
+        this.$t("AddToPlaylistModal.methods.savedToClip")
+      );
       this.$store.commit("snackbar/seVertical", false);
       this.$store.commit("snackbar/setSnackbar", true);
       this.$store.commit("snackbar/setTimeout", 5000);

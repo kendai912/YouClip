@@ -364,5 +364,46 @@
     "clipSceneFromPreviousVideo": "from previous video",
     "clipSceneFromNewVideo": "from new video",
     "or": "OR"
+  },
+
+  "Title": {
+    "enterTitle": "Enter title",
+    "privacySetting": "Privacy setting",
+    "selectCategory": "Select category",
+    "optionalThumbnailSetting": "(Optional) Thumbnail setting",
+    "selectEyeCatchingScene": "Select a scene that shows what's in your clip. A good thumbnail stands out and draws viewers' attention",
+    "ableToInsertText": "Text can be inserted",
+    "selectCustomThumbnail": "Select custom thumbnail",
+    "description": "(Optional) Description of clip",
+    "save": "Save (You can edit later)",
+    "data": {
+      "public": "Public",
+      "limited": "Unlisted",
+      "private": "Private",
+      "game": "Game",
+      "sports": "Sports",
+      "other": "Other"
+    },
+    "methods": {
+      "enterTitleStep": "Enter title",
+      "messageWhenNotLogined": "Please login to save clip title. (Input data is retained)"
+    }
+  },
+
+  "AddToPlaylistModal": {
+    "addtoExistingPlaylist": "Add to existing clip (Uncheck to remove)",
+    "createNewPlaylist": "Create new clip",
+    "newPlaylistName": "New clip name",
+    "privacySetting": "Privacy setting",
+    "cancel": "cancel",
+    "finish": "Finish",
+    "data": {
+      "public": "Public",
+      "limited": "Unlisted",
+      "private": "Private"
+    },
+    "methods": {
+      "savedToClip": "Saved."
+    }
   }
 }

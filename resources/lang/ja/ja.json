@@ -71,7 +71,7 @@
     "originalSceneTime": "の場面",
     "delete": "削除",
     "edit": "編集",
-    "addToPlaylist": "他のまとめに追加",
+    "addToPlaylist": "他の切り抜きに追加",
     "addNewScene": "新しい場面を追加"
   },
 
@@ -112,7 +112,7 @@
   "Result": {
     "MetaInfo": {
       "title": "「{searchQuery}」の切り抜き検索結果 - YouClip",
-      "description": "YouTube動画の見所切り抜きサイト、YouClipでの「{searchQuery}」に関するYouTube動画切り抜きまとめ検索結果です。"
+      "description": "YouTube動画の見所切り抜きサイト、YouClipでの「{searchQuery}」に関するYouTube動画切り抜き検索結果です。"
     }
   },
 
@@ -351,7 +351,7 @@
 
   "SceneList": {
     "clippedSceneList": "切り抜いた場面一覧",
-    "followingsArePlayedContinuously": "(以下が切り抜きまとめとして連続再生されます)",
+    "followingsArePlayedContinuously": "(以下が連続再生されます)",
     "addNewScene": "新しい場面を追加",
     "or": "または",
     "EnterTitle": "タイトル入力へ",
@@ -364,5 +364,46 @@
     "clipSceneFromPreviousVideo": "<span style='font-weight: bold; '>続けて他の</span>場面を切り抜く",
     "clipSceneFromNewVideo": "<span style='font-weight: bold; '>新しい動画の</span>場面を追加",
     "or": "または"
+  },
+
+  "Title": {
+    "enterTitle": "切り抜きのタイトルを入力",
+    "privacySetting": "プライバシー設定",
+    "selectCategory": "カテゴリーを選択",
+    "optionalThumbnailSetting": "(任意)サムネイル設定",
+    "selectEyeCatchingScene": "内容がわかる場面を選択し、目を引くサムネイルにしましょう",
+    "ableToInsertText": "テキストも挿入できます",
+    "selectCustomThumbnail": "好きな場面をサムネイルに選択",
+    "description": "(任意)切り抜きの説明",
+    "save": "保存する(あとからでも編集できます)",
+    "data": {
+      "public": "公開",
+      "limited": "限定公開",
+      "private": "非公開",
+      "game": "ゲーム",
+      "sports": "スポーツ",
+      "other": "その他"
+    },
+    "methods": {
+      "enterTitleStep": "切り抜きのタイトルを入力",
+      "messageWhenNotLogined": "切り抜きを保存するには、ログインしてください。(入力データは保持されます)"
+    }
+  },
+
+  "AddToPlaylistModal": {
+    "addtoExistingPlaylist": "既存の切り抜きに追加(チェック外すと解除)",
+    "createNewPlaylist": "新規切り抜きを作成",
+    "newPlaylistName": "新規切り抜き名",
+    "privacySetting": "プライバシー設定",
+    "cancel": "キャンセル",
+    "finish": "完了",
+    "data": {
+      "public": "公開",
+      "limited": "限定公開",
+      "private": "非公開"
+    },
+    "methods": {
+      "savedToClip": "切り抜きに保存しました"
+    }
   }
 }

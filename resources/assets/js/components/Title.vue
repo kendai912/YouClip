@@ -13,7 +13,7 @@
                   v-bind:rules="rules"
                   type="text"
                   name="playlistName"
-                  label="切り抜きまとめのタイトルを入力"
+                  v-bind:label="$t('Title.enterTitle')"
                   hide-details
                   class="playlistNameInputBox"
                 ></v-text-field>
@@ -25,7 +25,7 @@
                 <v-select
                   v-model="privacySetting"
                   v-bind:items="privacySettingList"
-                  label="プライバシー設定"
+                  v-bind:label="$t('Title.privacySetting')"
                   prepend-icon="mdi-earth"
                   hide-details
                   dense
@@ -40,7 +40,7 @@
                   v-model="playlistCategory"
                   v-bind:items="playlistCategoryList"
                   v-bind:rules="rules"
-                  label="カテゴリーを選択"
+                  v-bind:label="$t('Title.selectCategory')"
                   hide-details
                   dense
                   class="playlistCategoryBox"
@@ -54,8 +54,12 @@
                   <v-card
                     class="text-left pa-0 pt-1 ma-0 mb-2 my-grey"
                     elevation="0"
-                    >(任意)サムネイル設定<v-card-subtitle class="pa-0 ma-0"
-                      >内容がわかる場面を選択し、目を引くサムネイルにしましょう(<span style="font-weight: bold;">テキストも挿入できます</span>)</v-card-subtitle
+                    >{{ $t("Title.optionalThumbnailSetting")
+                    }}<v-card-subtitle class="pa-0 ma-0"
+                      >{{ $t("Title.selectEyeCatchingScene") }}(<span
+                        style="font-weight: bold;"
+                        >{{ $t("Title.ableToInsertText") }}</span
+                      >)</v-card-subtitle
                     >
                   </v-card>
                 </v-row>
@@ -77,7 +81,7 @@
                       color="primary"
                       outlined
                       v-on:click="selectCustomThumbnail"
-                      >好きな場面をサムネイルに選択</v-btn
+                      >{{ $t("Title.selectCustomThumbnail") }}</v-btn
                     >
                   </v-col>
                 </v-row>
@@ -86,8 +90,10 @@
 
             <v-row class="ma-0 mb-6 pa-2">
               <v-col class="ma-0 pa-0 text-center">
-                <v-card class="text-left pa-0 ma-0 mb-2 my-grey" elevation="0"
-                  >(任意)切り抜きまとめの説明</v-card
+                <v-card
+                  class="text-left pa-0 ma-0 mb-2 my-grey"
+                  elevation="0"
+                  >{{ $t("Title.description") }}</v-card
                 >
                 <v-textarea
                   rows="3"
@@ -106,7 +112,7 @@
               class="white--text ma-0 pa-0"
               v-on:click="updateAndMoveToCompletePage"
               style="font-size: 14px; "
-              >保存する(あとからでも編集できます)</v-btn
+              >{{ $t("Title.save") }}</v-btn
             >
           </v-row>
         </v-container>
@@ -130,28 +136,28 @@ export default {
       description: null,
       playlistCategory: null,
       privacySettingList: [
-        { text: "公開", value: "public" },
+        { text: this.$t("Title.data.public"), value: "public" },
         {
-          text: "限定公開",
+          text: this.$t("Title.data.limited"),
           value: "limited",
         },
         {
-          text: "非公開",
+          text: this.$t("Title.data.private"),
           value: "private",
         },
       ],
       playlistCategoryList: [
         { text: "VTuber", value: "VTuber" },
         {
-          text: "ゲーム",
+          text: this.$t("Title.data.game"),
           value: "Game",
         },
         {
-          text: "スポーツ",
+          text: this.$t("Title.data.sports"),
           value: "Sports",
         },
         {
-          text: "その他",
+          text: this.$t("Title.data.other"),
           value: "Other",
         },
       ],
@@ -191,7 +197,7 @@ export default {
       //headerの文言をセット
       this.$store.commit(
         "highlightHeader/setHeaderMessage",
-        "切り抜きまとめのタイトルを入力"
+        this.$t("Title.methods.enterTitleStep")
       );
       this.setStep(5);
 
@@ -224,7 +230,7 @@ export default {
         this.$store.commit("noLoginModal/openLoginModal");
         this.$store.commit(
           "noLoginModal/setMessageWhenNotLogined",
-          "切り抜きまとめを保存するには、ログインしてください。(入力データは保持されます)"
+          this.$t("Title.methods.messageWhenNotLogined")
         );
       } else {
         if (this.$refs.form.validate()) {
