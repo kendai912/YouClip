@@ -40,13 +40,15 @@
                 alt="now playing"
                 loading="lazy"
               />
-              <span>切り抜いた場面({{ start }}-{{ end }})を再生中</span>
+              <span>{{
+                $t("Confirm.playingClippedScene", { start: start, end: end })
+              }}</span>
             </v-col>
           </v-row>
 
           <v-row class="ma-0 pa-0">
             <v-col class="text-left pb-0"
-              >(任意) いま再生中の画面にテロップを挿入
+              >{{ $t("Confirm.insertTelopOption") }}
             </v-col>
           </v-row>
 
@@ -58,7 +60,7 @@
                     <v-select
                       v-model="telopPosition"
                       v-bind:items="telopPositionList"
-                      label="位置"
+                      v-bind:label="$t('Confirm.telopPosition')"
                       hide-details
                       dense
                       v-bind:rules="required"
@@ -69,7 +71,7 @@
                     <v-select
                       v-model="telopColor"
                       v-bind:items="telopColorList"
-                      label="色"
+                      v-bind:label="$t('Confirm.telopColor')"
                       hide-details
                       dense
                       v-bind:rules="required"
@@ -80,7 +82,7 @@
                     <v-select
                       v-model="telopSize"
                       v-bind:items="telopSizeList"
-                      label="サイズ"
+                      v-bind:label="$t('Confirm.telopSize')"
                       hide-details
                       dense
                       v-bind:rules="required"
@@ -93,10 +95,10 @@
                       min="0"
                       max="999"
                       type="number"
-                      label="表示"
+                      v-bind:label="$t('Confirm.telopDuration')"
                       hide-details
                       dense
-                      suffix="秒"
+                      v-bind:suffix="$t('Confirm.telopDurationSuffix')"
                       v-bind:rules="required"
                       class="telopLabel"
                     ></v-text-field>
@@ -109,7 +111,7 @@
                       v-model="telopText"
                       type="text"
                       name="telopText"
-                      label="テロップ"
+                      v-bind:label="$t('Confirm.telopText')"
                       hide-details
                       dense
                       v-bind:rules="required"
@@ -122,7 +124,7 @@
                       color="primary"
                       v-on:click.stop.prevent="insert"
                     >
-                      挿入
+                      {{ $t("Confirm.insert") }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -153,19 +155,19 @@
               <template v-slot:top>
                 <v-dialog v-model="dialogDelete" max-width="500px">
                   <v-card>
-                    <v-card-title class="subtitle-1"
-                      >選択したテロップを削除しますか？</v-card-title
-                    >
+                    <v-card-title class="subtitle-1">{{
+                      $t("Confirm.deleteDialogSubtitle")
+                    }}</v-card-title>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="closeDelete"
-                        >キャンセル</v-btn
-                      >
+                      <v-btn color="blue darken-1" text @click="closeDelete">{{
+                        $t("Confirm.cancel")
+                      }}</v-btn>
                       <v-btn
                         color="blue darken-1"
                         text
                         @click="deleteItemConfirm"
-                        >削除する</v-btn
+                        >{{ $t("Confirm.delete") }}</v-btn
                       >
                       <v-spacer></v-spacer>
                     </v-card-actions>
@@ -186,19 +188,13 @@
                 color="primary darken-2 white--text"
                 v-bind:disabled="isDisabled"
                 v-on:click.stop.prevent="confirm"
-                >次へ</v-btn
+                >{{ $t("Confirm.next") }}</v-btn
               >
             </v-col>
           </v-row>
         </v-container>
       </v-sheet>
     </div>
-    <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
-      {{ text }}
-      <v-btn color="blue" text v-on:click.stop.prevent="snackbar = false"
-        >Close</v-btn
-      >
-    </v-snackbar>
     <NoLoginModal v-if="showLoginModal" />
   </div>
 </template>
@@ -224,9 +220,6 @@ export default {
   },
   data() {
     return {
-      snackbar: false,
-      timeout: 5000,
-      text: "シーンタグを登録しました",
       ytIframeParameterReady: false,
       timer: null,
       highlightBodyRef: this.$refs.highlightBody,
@@ -243,47 +236,52 @@ export default {
       deleteIndex: -1,
       telopPosition: "bottomCenter",
       telopPositionList: [
-        { text: "下段左", value: "bottomLeft" },
-        { text: "下段中央", value: "bottomCenter" },
-        { text: "下段右", value: "bottomRight" },
-        { text: "中段左", value: "middleLeft" },
-        { text: "中段中央", value: "middleCenter" },
-        { text: "中段右", value: "middleRight" },
-        { text: "上段左", value: "upperLeft" },
-        { text: "上段中央", value: "upperCenter" },
-        { text: "上段右", value: "upperRight" },
+        { text: this.$t("Confirm.data.bottomLeft"), value: "bottomLeft" },
+        { text: this.$t("Confirm.data.bottomCenter"), value: "bottomCenter" },
+        { text: this.$t("Confirm.data.bottomRight"), value: "bottomRight" },
+        { text: this.$t("Confirm.data.middleLeft"), value: "middleLeft" },
+        { text: this.$t("Confirm.data.middleCenter"), value: "middleCenter" },
+        { text: this.$t("Confirm.data.middleRight"), value: "middleRight" },
+        { text: this.$t("Confirm.data.upperLeft"), value: "upperLeft" },
+        { text: this.$t("Confirm.data.upperCenter"), value: "upperCenter" },
+        { text: this.$t("Confirm.data.upperRight"), value: "upperRight" },
       ],
       telopColor: "white",
       telopColorList: [
-        { text: "白", value: "white" },
-        { text: "赤", value: "red" },
-        { text: "ピンク", value: "pink" },
-        { text: "黄", value: "yellow" },
-        { text: "緑", value: "green" },
-        { text: "水色", value: "cyan" },
-        { text: "青", value: "blue" },
-        { text: "紫", value: "purple" },
-        { text: "黒", value: "black" },
+        { text: this.$t("Confirm.data.white"), value: "white" },
+        { text: this.$t("Confirm.data.red"), value: "red" },
+        { text: this.$t("Confirm.data.pink"), value: "pink" },
+        { text: this.$t("Confirm.data.yellow"), value: "yellow" },
+        { text: this.$t("Confirm.data.green"), value: "green" },
+        { text: this.$t("Confirm.data.cyan"), value: "cyan" },
+        { text: this.$t("Confirm.data.blue"), value: "blue" },
+        { text: this.$t("Confirm.data.purple"), value: "purple" },
+        { text: this.$t("Confirm.data.black"), value: "black" },
       ],
       telopSize: "medium",
       telopSizeList: [
-        { text: "大", value: "large" },
-        { text: "中", value: "medium" },
-        { text: "小", value: "small" },
+        { text: this.$t("Confirm.data.large"), value: "large" },
+        { text: this.$t("Confirm.data.medium"), value: "medium" },
+        { text: this.$t("Confirm.data.small"), value: "small" },
       ],
       telopDuration: 3,
       telopText: "",
-      required: [(value) => !!value || "必須項目です."],
+      required: [(value) => !!value || this.$t("Confirm.data.required")],
       headers: [
-        { text: "開始", value: "start", sortable: false, width: "15%" },
         {
-          text: "表示(秒)",
+          text: this.$t("Confirm.data.start"),
+          value: "start",
+          sortable: false,
+          width: "15%",
+        },
+        {
+          text: this.$t("Confirm.data.duration"),
           value: "duration",
           sortable: false,
           width: "15%",
         },
         {
-          text: "テロップ",
+          text: this.$t("Confirm.data.telop"),
           value: "text",
           sortable: false,
         },
@@ -347,7 +345,7 @@ export default {
       //headerの文言とステップをセット
       this.$store.commit(
         "highlightHeader/setHeaderMessage",
-        "切り抜いた場面を確認"
+        this.$t("Confirm.methods.confirmClippedScene")
       );
       this.setStep(3);
 
@@ -444,7 +442,7 @@ export default {
         this.$store.commit("noLoginModal/openLoginModal");
         this.$store.commit(
           "noLoginModal/setMessageWhenNotLogined",
-          "切り抜いた場面を保存するには、ログインしてください。(入力データは保持されます)"
+          this.$t("Confirm.methods.messageWhenNotLogined")
         );
       } else {
         clearInterval(this.timer);
@@ -479,7 +477,7 @@ export default {
           self.$store.commit("highlightHeader/setNotLoading");
 
           //display editting a new scene completion snackbar
-          self.$store.commit("snackbar/setText", "場面を更新しました");
+          self.$store.commit("snackbar/setText", this.$t("Confirm.methods.sceneUpdated"));
           self.$store.commit("snackbar/seVertical", false);
           self.$store.commit("snackbar/setSnackbar", true);
           self.$store.commit("snackbar/setTimeout", 5000);
@@ -520,7 +518,7 @@ export default {
           self.$store.commit("highlightHeader/setNotLoading");
 
           //display adding a new scene to existing playlist completion snackbar
-          self.$store.commit("snackbar/setText", "新しい場面を追加しました");
+          self.$store.commit("snackbar/setText", this.$t("Confirm.methods.newSceneAdded"));
           this.$store.commit("snackbar/seVertical", false);
           self.$store.commit("snackbar/setSnackbar", true);
           self.$store.commit("snackbar/setTimeout", 5000);
@@ -570,7 +568,7 @@ export default {
           self.$store.commit("highlightHeader/setNotLoading");
 
           //display adding a new scene to existing playlist completion snackbar
-          self.$store.commit("snackbar/setText", "新しい場面を追加しました");
+          self.$store.commit("snackbar/setText", this.$t("Confirm.methods.newSceneAdded"));
           this.$store.commit("snackbar/seVertical", false);
           self.$store.commit("snackbar/setSnackbar", true);
           self.$store.commit("snackbar/setTimeout", 5000);

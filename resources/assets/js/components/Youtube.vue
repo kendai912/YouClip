@@ -48,7 +48,11 @@
                           elevation="2"
                         >
                           <v-icon x-large>alarm_on</v-icon
-                          >&nbsp;開始時間を指定<br />&nbsp;(押す)</v-btn
+                          ><span
+                            v-html="$t('Youtube.specifyStart')"
+                            style="color: white; "
+                          ></span
+                        ></v-btn
                         >
                       </v-sheet>
                     </v-col>
@@ -82,10 +86,11 @@
                           elevation="2"
                         >
                           <v-icon x-large color="white">alarm_off</v-icon
-                          ><span style="color: white; "
-                            >&nbsp;終了時間を指定<br />&nbsp;(押す)</span
-                          ></v-btn
-                        >
+                          ><span
+                            v-html="$t('Youtube.specifyEnd')"
+                            style="color: white; "
+                          ></span
+                        ></v-btn>
                       </v-sheet>
                     </v-col>
                   </v-row>
@@ -113,9 +118,9 @@
             style="padding-top: 24px !important; padding-bottom: 128px !important; "
           >
             <v-col class="text-right ma-0 pa-2">
-              <v-btn color="primary darken-2 white--text" v-on:click="next"
-                >確認</v-btn
-              >
+              <v-btn color="primary darken-2 white--text" v-on:click="next">{{
+                $t("Youtube.confirm")
+              }}</v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -154,7 +159,7 @@ export default {
       isIOS: false,
       ytInputData: null,
       startRules: [
-        (v) => !!v || "開始時間を入力して下さい",
+        (v) => !!v || this.$t("Youtube.pleaseSpecifyStart"),
         (v) => {
           let regex = /^\d+:\d{1,2}$/;
           if (!v || regex.test(v)) {
@@ -162,12 +167,12 @@ export default {
           }
 
           if (!regex.test(v)) {
-            return "分:秒の形式で入力して下さい";
+            return this.$t("Youtube.pleaseFormatIS");
           }
         },
       ],
       endRules: [
-        (v) => !!v || "終了時間を入力して下さい",
+        (v) => !!v || this.$t("Youtube.pleaseSpecifyEnd"),
         (v) => {
           let regex = /^\d+:\d{1,2}$/;
           if (!v || regex.test(v)) {
@@ -175,7 +180,7 @@ export default {
           }
 
           if (!regex.test(v)) {
-            return "分:秒の形式で入力して下さい";
+            return this.$t("Youtube.pleaseFormatIS");
           }
         },
         (v) => {
@@ -184,7 +189,7 @@ export default {
               parseInt(this.convertToSec(v)) <=
               parseInt(this.convertToSec(this.startTimeInput))
             ) {
-              return "開始時間より後ろの時間を入力下さい";
+              return this.$t("Youtube.endShouldBeLaterThanStart");
             }
           }
           return true;
@@ -222,7 +227,7 @@ export default {
       //headerの文言とステップをセット
       this.$store.commit(
         "highlightHeader/setHeaderMessage",
-        "切り抜く場面を指定"
+        this.$t("Youtube.specifyClipTime")
       );
       this.setStep(2);
 

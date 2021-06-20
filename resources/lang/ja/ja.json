@@ -286,5 +286,65 @@
   "YTitem": {
     "views": "回視聴",
     "ago": "前"
+  },
+
+  "Youtube": {
+    "specifyStart": "&nbsp;開始時間を指定<br />&nbsp;(押す)",
+    "specifyEnd": "&nbsp;終了時間を指定<br />&nbsp;(押す)",
+    "confirm": "確認",
+    "pleaseSpecifyStart": "開始時間を入力して下さい",
+    "pleaseSpecifyEnd": "終了時間を入力して下さい",
+    "pleaseFormatIS": "分:秒の形式で入力して下さい",
+    "endShouldBeLaterThanStart": "開始時間より後ろの時間を入力下さい",
+    "specifyClipTime": "切り抜く場面を指定"
+  },
+
+  "Confirm": {
+    "playingClippedScene": "切り抜いた場面({start}-{end})を再生中",
+    "insertTelopOption": "(任意) いま再生中の画面にテロップを挿入",
+    "telopPosition": "位置",
+    "telopColor": "色",
+    "telopSize": "サイズ",
+    "telopDuration": "表示",
+    "telopDurationSuffix": "秒",
+    "telopText": "テロップ",
+    "insert": "挿入",
+    "deleteDialogSubtitle": "選択したテロップを削除しますか？",
+    "cancel": "キャンセル",
+    "delete": "削除する",
+    "next": "次へ",
+    "data": {
+      "bottomLeft": "下段左",
+      "bottomCenter": "下段中央",
+      "bottomRight": "下段右",
+      "middleLeft": "中段左",
+      "middleCenter": "中段中央",
+      "middleRight": "中段右",
+      "upperLeft": "上段左",
+      "upperCenter": "上段中央",
+      "upperRight": "上段右",
+      "white": "白",
+      "red": "赤",
+      "pink": "ピンク",
+      "yellow": "黄",
+      "green": "緑",
+      "cyan": "水色",
+      "blue": "青",
+      "purple": "紫",
+      "black": "黒",
+      "large": "大",
+      "medium": "中",
+      "small": "小",
+      "required": "必須項目です",
+      "start": "開始",
+      "duration": "表示(秒)",
+      "telop": "テロップ"
+    },
+    "methods": {
+      "confirmClippedScene": "切り抜いた場面を確認",
+      "messageWhenNotLogined": "切り抜いた場面を保存するには、ログインしてください。(入力データは保持されます)",
+      "sceneUpdated": "場面を更新しました",
+      "newSceneAdded": "新しい場面を追加しました"
+    }
   }
 }

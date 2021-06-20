@@ -286,5 +286,65 @@
   "YTitem": {
     "views": " views",
     "ago": " ago"
+  },
+
+  "Youtube": {
+    "specifyStart": "&nbsp;Specify start time<br />&nbsp;(Press)",
+    "specifyEnd": "&nbsp;Specify end time<br />&nbsp;(Press)",
+    "confirm": "Confirm",
+    "pleaseSpecifyStart": "Please specify start time",
+    "pleaseSpecifyEnd": "Please specify end time",
+    "pleaseFormatIS": "Please enter in the format: Mins:Secs",
+    "endShouldBeLaterThanStart": "End time should be later than start time",
+    "specifyClipTime": "Specify scene to clip"
+  },
+
+  "Confirm": {
+    "playingClippedScene": "Playing scene at {start}-{end}",
+    "insertTelopOption": "(Optional) Insert telops to currently playing scene",
+    "telopPosition": "Position",
+    "telopColor": "Color",
+    "telopSize": "Size",
+    "telopDuration": "Duration",
+    "telopDurationSuffix": "sec.",
+    "telopText": "Telop",
+    "insert": "Insert",
+    "deleteDialogSubtitle": "Are you sure you want to delete this telop?",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "next": "Next",
+    "data": {
+      "bottomLeft": "Bottom left",
+      "bottomCenter": "Bottom center",
+      "bottomRight": "Bottom right",
+      "middleLeft": "Middle left",
+      "middleCenter": "Middle center",
+      "middleRight": "Middle right",
+      "upperLeft": "Top left",
+      "upperCenter": "Top center",
+      "upperRight": "Top right",
+      "white": "White",
+      "red": "Red",
+      "pink": "Pink",
+      "yellow": "Yellow",
+      "green": "Green",
+      "cyan": "Cyan",
+      "blue": "Blue",
+      "purple": "Purple",
+      "black": "Black",
+      "large": "Large",
+      "medium": "Medium",
+      "small": "Small",
+      "required": "Required",
+      "start": "Start",
+      "duration": "Duration(sec.)",
+      "telop": "Telop"
+    },
+    "methods": {
+      "confirmClippedScene": "Confirm clipped scene",
+      "messageWhenNotLogined": "Please login to save clipped scene. (Input data is retained)",
+      "sceneUpdated": "Updated the scene",
+      "newSceneAdded": "Added new scene"
+    }
   }
 }
