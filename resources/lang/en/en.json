@@ -341,10 +341,28 @@
       "telop": "Telop"
     },
     "methods": {
-      "confirmClippedScene": "Confirm clipped scene",
+      "telopInsertPage": "(Optional) Insert telops",
       "messageWhenNotLogined": "Please login to save clipped scene. (Input data is retained)",
       "sceneUpdated": "Updated the scene",
-      "newSceneAdded": "Added new scene"
+      "newSceneAdded": "Added new scene",
+      "clippedScene": "Saved clipped scene"
     }
+  },
+
+  "SceneList": {
+    "clippedSceneList": "Clipped scene list",
+    "followingsArePlayedContinuously": "(Followings are played continuously)",
+    "addNewScene": "Add new scene",
+    "or": "OR",
+    "EnterTitle": "Enter title",
+    "methods": {
+      "confirmClippedScene": "Confirm clipped scenes"
+    }
+  },
+
+  "AddNewSceneModal": {
+    "clipSceneFromPreviousVideo": "from previous video",
+    "clipSceneFromNewVideo": "from new video",
+    "or": "OR"
   }
 }

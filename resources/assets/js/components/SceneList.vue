@@ -7,8 +7,8 @@
         v-bind:class="isIOS ? 'iosHighlightBodyUpper' : 'highlightBodyUpper'"
       >
         <v-card class="pa-2 pb-0 ma-0 mt-2" elevation="0">
-          <div>切り抜いた場面一覧</div>
-          <div>(以下が切り抜きまとめとして連続再生されます)</div>
+          <div>{{ $t("SceneList.clippedSceneList") }}</div>
+          <div>{{ $t("SceneList.followingsArePlayedContinuously") }}</div>
         </v-card>
         <SceneTagItem
           v-bind:showAddNewSceneComponent="showAddNewSceneComponent"
@@ -27,7 +27,7 @@
               class="white--text"
               v-on:click="openAddNewSceneModal"
               style="font-size: 14px; "
-              >新しい場面を追加</v-btn
+              >{{ $t("SceneList.addNewScene") }}</v-btn
             >
           </v-row>
           <v-row
@@ -41,7 +41,7 @@
               ></div>
             </v-col>
             <v-col class="ma-0 pa-0 text-center" cols="4">
-              <span>または</span>
+              <span>{{ $t("SceneList.or") }}</span>
             </v-col>
             <v-col class="ma-0 pa-0">
               <div
@@ -57,7 +57,7 @@
               class="white--text"
               to="/highlight/title"
               style="font-size: 14px;"
-              >切り抜きまとめタイトル入力へ</v-btn
+              >{{ $t("SceneList.EnterTitle") }}</v-btn
             >
           </v-row>
         </v-container>
@@ -116,7 +116,7 @@ export default {
       //headerの文言とステップをセット
       this.$store.commit(
         "highlightHeader/setHeaderMessage",
-        "切り抜いた場面からまとめを作成"
+        this.$t("SceneList.methods.confirmClippedScene")
       );
       this.setStep(4);
 

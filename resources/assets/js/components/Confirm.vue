@@ -345,7 +345,7 @@ export default {
       //headerの文言とステップをセット
       this.$store.commit(
         "highlightHeader/setHeaderMessage",
-        this.$t("Confirm.methods.confirmClippedScene")
+        this.$t("Confirm.methods.telopInsertPage")
       );
       this.setStep(3);
 
@@ -568,7 +568,7 @@ export default {
           self.$store.commit("highlightHeader/setNotLoading");
 
           //display adding a new scene to existing playlist completion snackbar
-          self.$store.commit("snackbar/setText", this.$t("Confirm.methods.newSceneAdded"));
+          self.$store.commit("snackbar/setText", this.$t("Confirm.methods.clippedScene"));
           this.$store.commit("snackbar/seVertical", false);
           self.$store.commit("snackbar/setSnackbar", true);
           self.$store.commit("snackbar/setTimeout", 5000);

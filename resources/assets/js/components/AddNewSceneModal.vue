@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="showAddNewSceneModal" max-width="360">
+  <v-dialog v-model="showAddNewSceneModal" max-width="420">
     <v-card>
       <v-container class="ma-0 pa-0" fluid>
         <v-row class="ma-0 pa-0">
@@ -11,9 +11,8 @@
               class="white--text"
               v-on:click="moveToYThighlightPage"
               style="font-size: 16px;"
-              ><span style="font-weight: bold; ">続けて他の</span
-              >場面を切り抜く</v-btn
-            >
+              v-html="$t('AddNewSceneModal.clipSceneFromPreviousVideo')"
+            ></v-btn>
           </v-col>
         </v-row>
 
@@ -29,7 +28,7 @@
             ></div>
           </v-col>
           <v-col class="ma-0 pa-0 text-center" cols="3">
-            <span>または</span>
+            <span>{{ $t("AddNewSceneModal.or") }}</span>
           </v-col>
           <v-col class="ma-0 pa-0">
             <div
@@ -47,9 +46,8 @@
               class="white--text"
               v-on:click="moveToSearchNewYTvideo"
               style="font-size: 16px;"
-              ><span style="font-weight: bold; ">新しい動画の</span
-              >場面を追加</v-btn
-            >
+              v-html="$t('AddNewSceneModal.clipSceneFromNewVideo')"
+            ></v-btn>
           </v-col>
         </v-row>
       </v-container>

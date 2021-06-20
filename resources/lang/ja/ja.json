@@ -341,10 +341,28 @@
       "telop": "テロップ"
     },
     "methods": {
-      "confirmClippedScene": "切り抜いた場面を確認",
+      "telopInsertPage": "(任意)テロップを挿入",
       "messageWhenNotLogined": "切り抜いた場面を保存するには、ログインしてください。(入力データは保持されます)",
       "sceneUpdated": "場面を更新しました",
-      "newSceneAdded": "新しい場面を追加しました"
+      "newSceneAdded": "新しい場面を追加しました",
+      "clippedScene": "切り抜いた場面を保存しました"
     }
+  },
+
+  "SceneList": {
+    "clippedSceneList": "切り抜いた場面一覧",
+    "followingsArePlayedContinuously": "(以下が切り抜きまとめとして連続再生されます)",
+    "addNewScene": "新しい場面を追加",
+    "or": "または",
+    "EnterTitle": "タイトル入力へ",
+    "methods": {
+      "confirmClippedScene": "切り抜いた場面を確認"
+    }
+  },
+
+  "AddNewSceneModal": {
+    "clipSceneFromPreviousVideo": "<span style='font-weight: bold; '>続けて他の</span>場面を切り抜く",
+    "clipSceneFromNewVideo": "<span style='font-weight: bold; '>新しい動画の</span>場面を追加",
+    "or": "または"
   }
 }
