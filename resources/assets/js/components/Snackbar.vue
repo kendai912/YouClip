@@ -13,10 +13,10 @@
         text
         to="/highlight/scenelist"
         v-on:click="snackbar = false"
-        >開く</v-btn
+        >{{ $t("Snackbar.open") }}</v-btn
       >
       <v-btn v-bind:color="color" text v-on:click="snackbar = false"
-        >閉じる</v-btn
+        >{{ $t("Snackbar.close") }}</v-btn
       >
     </template>
   </v-snackbar>

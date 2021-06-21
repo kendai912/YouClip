@@ -14,7 +14,7 @@
               rows="5"
               hide-details
               name="commentReply_box"
-              :placeholder="'コメントを入力'"
+              v-bind:placeholder="$t('CommentReplyModal.commentPlaceholder')"
               class="pa-2"
             ></v-textarea>
           </v-form>
@@ -23,13 +23,13 @@
               href="javascript:void(0)"
               style="color: grey"
               v-on:click="closeCommentReplyModal"
-              >キャンセル</a
+              >{{ $t("CommentReplyModal.cancel") }}</a
             >&nbsp;&nbsp;
             <a
               href="javascript:void(0)"
               style="color: black"
               v-on:click="addReply"
-              >コメント</a
+              >{{ $t("CommentReplyModal.comment") }}</a
             >
           </div>
         </v-col>
@@ -45,7 +45,9 @@ export default {
   data() {
     return {
       content: "",
-      commentRules: [(v) => !!v || "コメントを入力して下さい"],
+      commentRules: [
+        (v) => !!v || this.$t("CommentReplyModal.data.commentRules"),
+      ],
     };
   },
   props: {
@@ -86,7 +88,7 @@ export default {
           this.$store.commit("noLoginModal/openLoginModal");
           this.$store.commit(
             "noLoginModal/setMessageWhenNotLogined",
-            "切り抜きを作成するには、ログインしてください。(入力データは保持されます)"
+            this.$t("CommentReplyModal.methods.messageWhenNotLogined")
           );
         }
       } else if (this.$route.query.tag) {
@@ -105,7 +107,7 @@ export default {
           this.$store.commit("noLoginModal/openLoginModal");
           this.$store.commit(
             "noLoginModal/setMessageWhenNotLogined",
-            "切り抜きを作成するには、ログインしてください。(入力データは保持されます)"
+            this.$t("CommentReplyModal.methods.messageWhenNotLogined")
           );
         }
       }

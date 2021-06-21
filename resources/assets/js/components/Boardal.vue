@@ -13,18 +13,18 @@
             >
               <v-col class="ma-0 pa-0">
                 <v-row class="ma-2 mt-4 pa-0" align="center" justify="center">
-                  <span class="fz-17 font-weight-black"
-                    >YouClipへようこそ！</span
-                  >
+                  <span class="fz-17 font-weight-black">{{
+                    $t("Bordal.welcomeToYouClip")
+                  }}</span>
                 </v-row>
                 <v-row
                   class="ma-2 pa-0 text-center"
                   align="center"
                   justify="center"
                 >
-                  <span class="fz-14"
-                    >YouTube動画の"お気に入りの場面"を切り抜こう</span
-                  >
+                  <span class="fz-14">{{
+                    $t("Bordal.letsClipFavoriteScenes")
+                  }}</span>
                 </v-row>
                 <v-row class="ma-2 pa-0" align="center" justify="center">
                   <v-img
@@ -46,7 +46,9 @@
             >
               <v-col class="ma-0 pa-0">
                 <v-row class="ma-2 mt-4 pa-0" align="center" justify="center">
-                  <span class="fz-17 font-weight-black">こんな時に便利</span>
+                  <span class="fz-17 font-weight-black">{{
+                    $t("Bordal.usefulInSuchCases")
+                  }}</span>
                 </v-row>
                 <v-row class="ma-2 pa-0" align="center" justify="center">
                   <v-col
@@ -156,19 +158,19 @@
               v-if="onboarding == 1"
               v-model="notShowBoarding"
               class="small-checkbox ma-0 pa-0"
-              label="今後表示しない"
+              v-bind:label="$t('Bordal.noPromptMeAgain')"
               style="height: 30px; "
               dense
             ></v-checkbox>
           </v-row>
           <v-row>
             <v-btn v-if="onboarding !== 0" text @click="prev">
-              戻る
+              {{ $t("Bordal.return") }}
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn color="primary" depressed @click="next">
-              <span v-if="onboarding !== 1">次へ</span
-              ><span v-else>使ってみる</span>
+              <span v-if="onboarding !== 1">{{ $t("Bordal.next") }}</span
+              ><span v-else>{{ $t("Bordal.use") }}</span>
             </v-btn>
           </v-row>
         </v-container>
@@ -194,37 +196,37 @@ export default {
       features: [
         {
           img: "/storage/imgs/userguide-save.png",
-          title: "動画の一部をあとで見返したい",
+          title: this.$t("Bordal.data.repeatScene"),
         },
         {
           img: "/storage/imgs/userguide-share.png",
-          title: "みんなに動画のある場面を共有したい",
+          title: this.$t("Bordal.data.shareScene"),
         },
         {
           img: "/storage/imgs/userguide-collect.png",
-          title: "色々な動画のお気に入りの場面をまとめたい",
+          title: this.$t("Bordal.data.collectScene"),
         },
       ],
       howToImgs: [
         {
           img: "/storage/imgs/YouClip-Onboarding2-1.png",
-          text: "① YouTube動画を検索",
+          text: this.$t("Bordal.data.searchYtVideo"),
         },
         {
           img: "/storage/imgs/YouClip-Onboarding2-2.png",
-          text: "② 切り抜く時間を指定",
+          text: this.$t("Bordal.data.specifyTime"),
         },
         {
           img: "/storage/imgs/YouClip-Onboarding2-3.png",
-          text: "③ 切り抜いた場面を確認",
+          text: this.$t("Bordal.data.confirmScene"),
         },
         {
           img: "/storage/imgs/YouClip-Onboarding2-4.png",
-          text: "④ タイトル・公開/非公開を入力",
+          text: this.$t("Bordal.data.inputTitle"),
         },
         {
           img: "/storage/imgs/YouClip-Onboarding2-5.png",
-          text: "⑤ 完成!!",
+          text: this.$t("Bordal.data.complete"),
         },
       ],
     };

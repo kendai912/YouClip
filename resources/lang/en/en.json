@@ -15,10 +15,6 @@
     "years": " years"
   },
 
-  "Navbar": {
-    "subtitle": "YouTube online clipping site"
-  },
-
   "Footer": {
     "home": "Home",
     "clip": "Clip",
@@ -465,5 +461,64 @@
 
   "SystemError": {
     "systemErrorOccurred": "System error occurred"
+  },
+
+  "Bordal": {
+    "welcomeToYouClip": "Welcome to YouClip",
+    "letsClipFavoriteScenes": "Let's clip your favorite scenes!",
+    "usefulInSuchCases": "Useful in such cases",
+    "noPromptMeAgain": "Don't prompt me about this again.",
+    "return": "Return",
+    "next": "Next",
+    "use": "Start YouClip",
+    "data": {
+      "repeatScene": "Repeat a scene of the video ",
+      "shareScene": "Share scenes with friends",
+      "collectScene": "Collect favorite scenes",
+      "searchYtVideo": "1. Search YouTube video",
+      "specifyTime": "2. Specify start/end time",
+      "confirmScene": "3. Confirm the clipped scene",
+      "inputTitle": "4. Input a title",
+      "complete": "5. Done!!"
+    }
+  },
+
+  "CommentReplyModal": {
+    "commentPlaceholder": "Enter your reply comment",
+    "cancel": "Cancel",
+    "comment": "Comment",
+    "data": {
+      "commentRules": "Please enter your comment"
+    },
+    "methods": {
+      "messageWhenNotLogined": "Please login to comment.(Input data is retained)"
+    }
+  },
+
+  "Navbar": {
+    "searchYouTubeClips": "search YouTube clips",
+    "cancel": "Cancel",
+    "subtitle": "YouTube online clipping site",
+    "data": {
+      "home": "Home",
+      "aboutYouClip": "About YouClip",
+      "logout": "Logout",
+      "login": "Login",
+      "termsOfService": "Terms of service",
+      "privacyPolicy": "Privacy policy"
+    }
+  },
+
+  "Snackbar": {
+    "open": "Open",
+    "close": "Close"
+  },
+
+  "TagDeleteModal": {
+    "deleteScene": "Delete scene",
+    "areYouSureToDelete": "Are you sure you want to delete this scene?<br />(Deletion of this scene is permanent.)",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "finishedDeleting": "Deleted."
   }
 }

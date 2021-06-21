@@ -15,7 +15,7 @@
               v-bind:items="items"
               v-bind:search-input.sync="searchquery"
               v-on:keydown.enter="search"
-              placeholder="YouTube切り抜きを検索"
+              v-bind:placeholder="$t('Navbar.searchYouTubeClips')"
               item-text="value"
               item-value="value"
               cache-items
@@ -48,9 +48,9 @@
           </div>
         </v-row>
         <div class="ml-4 ma-0 pa-0 text-center grey--text text--darken-3">
-          <span v-on:click="cancelSearch" class="my-search-span"
-            >キャンセル</span
-          >
+          <span v-on:click="cancelSearch" class="my-search-span">{{
+            $t("Navbar.cancel")
+          }}</span>
         </div>
       </v-row>
     </v-container>
@@ -71,7 +71,7 @@
             loading="lazy"
           />
           <p class="leading-none text-gray-600 text-s">
-            | {{ $t('Navbar.subtitle') }}
+            | {{ $t("Navbar.subtitle") }}
           </p>
         </router-link>
       </v-toolbar-items>
@@ -130,15 +130,15 @@ export default {
     },
     menuItems() {
       return [
-        { title: "ホーム", event: "", to: "/home" },
-        { title: "YouClipについて", event: "", to: "/userguide" },
+        { title: this.$t("Navbar.data.home"), event: "", to: "/home" },
+        { title: this.$t("Navbar.data.aboutYouClip"), event: "", to: "/userguide" },
         {
-          title: this.isLogin ? "ログアウト" : "ログイン",
+          title: this.isLogin ? this.$t("Navbar.data.logout") : this.$t("Navbar.data.login"),
           event: this.isLogin ? "logout" : "login",
           to: this.isLogin ? "/" : "/login",
         },
-        { title: "利用規約", event: "", to: "/termsofservice" },
-        { title: "プライバシーポリシー", event: "", to: "/privacypolicy" },
+        { title: this.$t("Navbar.data.termsOfService"), event: "", to: "/termsofservice" },
+        { title: this.$t("Navbar.data.privacyPolicy"), event: "", to: "/privacypolicy" },
       ];
     },
     //過去の検索履歴と人気の検索履歴を履歴優先で合計7件までサジェストに表示

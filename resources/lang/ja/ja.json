@@ -15,10 +15,6 @@
     "years": "年"
   },
 
-  "Navbar": {
-    "subtitle": "YouTube動画の見所切り抜き"
-  },
-
   "Footer": {
     "home": "みんなの切り抜き",
     "clip": "切り抜き作成",
@@ -465,5 +461,64 @@
 
   "SystemError": {
     "systemErrorOccurred": "システムエラーが発生しました"
+  },
+
+  "Bordal": {
+    "welcomeToYouClip": "YouClipへようこそ",
+    "letsClipFavoriteScenes": "YouTube動画の見所を切り抜こう！",
+    "usefulInSuchCases": "こんな時に便利",
+    "noPromptMeAgain": "今後このメッセージを表示しない",
+    "return": "戻る",
+    "next": "次へ",
+    "use": "使ってみる",
+    "data": {
+      "repeatScene": "動画の一部を繰り返し見返したい",
+      "shareScene": "みんなに動画のある場面を共有したい",
+      "collectScene": "色々な動画のお気に入りの場面を集めたい",
+      "searchYtVideo": "① YouTube動画を検索",
+      "specifyTime": "② 切り抜く時間を指定",
+      "confirmScene": "③ 切り抜いた場面を確認",
+      "inputTitle": "④ タイトルを入力",
+      "complete": "⑤ 完成!!"
+    }
+  },
+
+  "CommentReplyModal": {
+    "commentPlaceholder": "返信コメントを入力",
+    "cancel": "キャンセル",
+    "comment": "コメント",
+    "data": {
+      "commentRules": "コメントを入力して下さい"
+    },
+    "methods": {
+      "messageWhenNotLogined": "コメントするには、ログインしてください。(入力データは保持されます)"
+    }
+  },
+
+  "Navbar": {
+    "searchYouTubeClips": "YouTube切り抜きを検索",
+    "cancel": "キャンセル",
+    "subtitle": "YouTube動画の見所切り抜き",
+    "data": {
+      "home": "ホーム",
+      "aboutYouClip": "YouClipについて",
+      "logout": "ログアウト",
+      "login": "ログイン",
+      "termsOfService": "利用規約",
+      "privacyPolicy": "プライバシーポリシー"
+    }
+  },
+
+  "Snackbar": {
+    "open": "開く",
+    "close": "閉じる"
+  },
+
+  "TagDeleteModal": {
+    "deleteScene": "場面を削除",
+    "areYouSureToDelete": "この場面を削除してもよろしいですか？<br />(削除すると元に戻すことはできません。)",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "finishedDeleting": "削除しました"
   }
 }
