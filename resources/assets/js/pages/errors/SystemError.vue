@@ -5,7 +5,7 @@
         <v-icon class="pa-0 ma-0" size="100">error</v-icon>
       </v-card-title>
       <v-card-title class="pa-1 mt-2 mx-0 justify-center"
-        >システムエラーが発生しました</v-card-title
+        >{{$t("SystemError.systemErrorOccurred")}}</v-card-title
       >
     </v-card>
   </div>

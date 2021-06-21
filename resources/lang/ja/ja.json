@@ -457,5 +457,13 @@
     "shareLinkOfNewPlaylist": "「{newPlaylistName}」の共有リンク:",
     "clip": "切り抜き",
     "copyUrl": "URLをコピー"
+  },
+
+  "ForbiddenError": {
+    "private": "この動画は非公開のため閲覧出来ません"
+  },
+
+  "SystemError": {
+    "systemErrorOccurred": "システムエラーが発生しました"
   }
 }

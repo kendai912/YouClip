@@ -457,5 +457,13 @@
     "shareLinkOfNewPlaylist": "Share [{newPlaylistName}]:",
     "clip": "Clip",
     "copyUrl": "Copy URL"
+  },
+
+  "ForbiddenError": {
+    "private": "This clip is private and cannot be viewed"
+  },
+
+  "SystemError": {
+    "systemErrorOccurred": "System error occurred"
   }
 }
