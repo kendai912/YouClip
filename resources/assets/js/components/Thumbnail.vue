@@ -29,7 +29,7 @@
           class="bottom_navigation_no_shadow"
         >
           <v-stepper-step :complete="thumbStep > 1" step="1">
-            サムネイルに使う場面を選択
+            {{ $t("Thumbnail.pickSceneForThumbnail") }}
           </v-stepper-step>
 
           <v-stepper-content step="1">
@@ -41,14 +41,14 @@
                 height="45px"
                 v-on:click="selectCurrentScene"
                 style="font-size: 14px;"
-                >いま再生中の場面を使う<br />(押すと一時停止します)</v-btn
-              ></v-card
-            >
+                v-html="$t('Thumbnail.pickCurrentScene')"
+              ></v-btn
+            ></v-card>
           </v-stepper-content>
 
-          <v-stepper-step :complete="thumbStep > 2" step="2"
-            >(任意) サムネイルにテキストを挿入</v-stepper-step
-          >
+          <v-stepper-step :complete="thumbStep > 2" step="2">{{
+            $t("Thumbnail.insertText")
+          }}</v-stepper-step>
           <v-stepper-content step="2">
             <v-card elevation="0" class="mb-12">
               <v-container class="ma-0 pa-0" fluid>
@@ -60,7 +60,7 @@
                           <v-select
                             v-model="telopPosition"
                             v-bind:items="telopPositionList"
-                            label="位置"
+                            v-bind:label="$t('Thumbnail.telopPosition')"
                             hide-details
                             dense
                             v-bind:rules="required"
@@ -71,7 +71,7 @@
                           <v-select
                             v-model="telopColor"
                             v-bind:items="telopColorList"
-                            label="色"
+                            v-bind:label="$t('Thumbnail.telopColor')"
                             hide-details
                             dense
                             v-bind:rules="required"
@@ -82,7 +82,7 @@
                           <v-select
                             v-model="telopSize"
                             v-bind:items="telopSizeList"
-                            label="サイズ"
+                            v-bind:label="$t('Thumbnail.telopSize')"
                             hide-details
                             dense
                             v-bind:rules="required"
@@ -97,7 +97,7 @@
                             v-model="telopText"
                             type="text"
                             name="telopText"
-                            label="テキスト"
+                            v-bind:label="$t('Thumbnail.telopText')"
                             hide-details
                             dense
                             v-bind:rules="required"
@@ -110,7 +110,7 @@
                             color="primary"
                             v-on:click.stop.prevent="insert"
                           >
-                            挿入
+                            {{ $t("Thumbnail.insertBtn") }}
                           </v-btn>
                         </v-col>
                       </v-row>
@@ -141,22 +141,22 @@
                     <template v-slot:top>
                       <v-dialog v-model="dialogDelete" max-width="500px">
                         <v-card>
-                          <v-card-title class="subtitle-1"
-                            >選択したテロップを削除しますか？</v-card-title
-                          >
+                          <v-card-title class="subtitle-1">{{
+                            $t("Thumbnail.deleteTelopConfirmation")
+                          }}</v-card-title>
                           <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn
                               color="blue darken-1"
                               text
                               @click="closeDelete"
-                              >キャンセル</v-btn
+                              >{{ $t("Thumbnail.cancel") }}</v-btn
                             >
                             <v-btn
                               color="blue darken-1"
                               text
                               @click="deleteItemConfirm"
-                              >削除する</v-btn
+                              >{{ $t("Thumbnail.delete") }}</v-btn
                             >
                             <v-spacer></v-spacer>
                           </v-card-actions>
@@ -176,13 +176,13 @@
                       color="primary"
                       v-bind:disabled="isDisabled"
                       v-on:click="saveCustomThumbnail"
-                      >完了</v-btn
+                      >{{ $t("Thumbnail.finish") }}</v-btn
                     >
                     <v-btn
                       text
                       v-bind:disabled="isDisabled"
                       v-on:click="returnToSelectCurrentScene"
-                      >キャンセル</v-btn
+                      >{{ $t("Thumbnail.cancel") }}</v-btn
                     >
                   </v-col>
                 </v-row>
@@ -192,13 +192,6 @@
         </v-stepper>
       </v-sheet>
     </div>
-
-    <v-snackbar v-model="snackbar" v-bind:timeout="timeout">
-      {{ text }}
-      <v-btn color="blue" text v-on:click.stop.prevent="snackbar = false"
-        >Close</v-btn
-      >
-    </v-snackbar>
   </div>
 </template>
 
@@ -221,9 +214,6 @@ export default {
   },
   data() {
     return {
-      snackbar: false,
-      timeout: 5000,
-      text: "カスタムサムネイルを設定しました",
       ytIframeParameterReady: false,
       timer: null,
       highlightBodyRef: this.$refs.highlightBody,
@@ -234,40 +224,40 @@ export default {
       deleteIndex: -1,
       telopPosition: "bottomCenter",
       telopPositionList: [
-        { text: "下段左", value: "bottomLeft" },
-        { text: "下段中央", value: "bottomCenter" },
-        { text: "下段右", value: "bottomRight" },
-        { text: "中段左", value: "middleLeft" },
-        { text: "中段中央", value: "middleCenter" },
-        { text: "中段右", value: "middleRight" },
-        { text: "上段左", value: "upperLeft" },
-        { text: "上段中央", value: "upperCenter" },
-        { text: "上段右", value: "upperRight" },
+        { text: this.$t("Thumbnail.data.bottomLeft"), value: "bottomLeft" },
+        { text: this.$t("Thumbnail.data.bottomCenter"), value: "bottomCenter" },
+        { text: this.$t("Thumbnail.data.bottomRight"), value: "bottomRight" },
+        { text: this.$t("Thumbnail.data.middleLeft"), value: "middleLeft" },
+        { text: this.$t("Thumbnail.data.middleCenter"), value: "middleCenter" },
+        { text: this.$t("Thumbnail.data.middleRight"), value: "middleRight" },
+        { text: this.$t("Thumbnail.data.upperLeft"), value: "upperLeft" },
+        { text: this.$t("Thumbnail.data.upperCenter"), value: "upperCenter" },
+        { text: this.$t("Thumbnail.data.upperRight"), value: "upperRight" },
       ],
       telopColor: "white",
       telopColorList: [
-        { text: "白", value: "white" },
-        { text: "赤", value: "red" },
-        { text: "ピンク", value: "pink" },
-        { text: "黄", value: "yellow" },
-        { text: "緑", value: "green" },
-        { text: "水色", value: "cyan" },
-        { text: "青", value: "blue" },
-        { text: "紫", value: "purple" },
-        { text: "黒", value: "black" },
+        { text: this.$t("Thumbnail.data.white"), value: "white" },
+        { text: this.$t("Thumbnail.data.red"), value: "red" },
+        { text: this.$t("Thumbnail.data.pink"), value: "pink" },
+        { text: this.$t("Thumbnail.data.yellow"), value: "yellow" },
+        { text: this.$t("Thumbnail.data.green"), value: "green" },
+        { text: this.$t("Thumbnail.data.cyan"), value: "cyan" },
+        { text: this.$t("Thumbnail.data.blue"), value: "blue" },
+        { text: this.$t("Thumbnail.data.purple"), value: "purple" },
+        { text: this.$t("Thumbnail.data.black"), value: "black" },
       ],
       telopSize: "medium",
       telopSizeList: [
-        { text: "大", value: "large" },
-        { text: "中", value: "medium" },
-        { text: "小", value: "small" },
+        { text: this.$t("Thumbnail.data.large"), value: "large" },
+        { text: this.$t("Thumbnail.data.medium"), value: "medium" },
+        { text: this.$t("Thumbnail.data.small"), value: "small" },
       ],
       telopDuration: 1,
       telopText: "",
-      required: [(value) => !!value || "必須項目です."],
+      required: [(value) => !!value || this.$t("Thumbnail.data.required")],
       headers: [
         {
-          text: "テキスト",
+          text: this.$t("Thumbnail.data.text"),
           value: "text",
           sortable: false,
         },
@@ -326,7 +316,7 @@ export default {
       //headerの文言とステップをセット
       this.$store.commit(
         "highlightHeader/setHeaderMessage",
-        "カスタムサムネイルを選択"
+        this.$t("Thumbnail.methods.setCustomThumbnail")
       );
       this.setStep(5);
 
@@ -429,7 +419,7 @@ export default {
       //display adding a new scene to existing playlist completion snackbar
       this.$store.commit(
         "snackbar/setText",
-        "カスタムサムネイルを設定しました"
+        this.$t("Thumbnail.methods.finishedSettingCustomThumbnail")
       );
       this.$store.commit("snackbar/seVertical", false);
       this.$store.commit("snackbar/setSnackbar", true);

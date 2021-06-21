@@ -22,7 +22,7 @@
   "Footer": {
     "home": "Home",
     "clip": "Clip",
-    "myPage": "My page",
+    "myPage": "My Page",
     "data": {
       "steps": "Clip YouTube video!<br />(Easy 4 steps)",
       "buttonSkip": "Skip",
@@ -133,8 +133,8 @@
     "forNewUser": "For new user",
     "signup": "Sign up",
     "MetaInfo": {
-      "title": "My page - YouClip",
-      "description": "My page of YouClip - YouTube online clipping app. You can access to your created/liked clips after login."
+      "title": "My Page - YouClip",
+      "description": "My Page of YouClip - YouTube online clipping app. You can access to your created/liked clips after login."
     }
   },
 
@@ -405,5 +405,57 @@
     "methods": {
       "savedToClip": "Saved."
     }
+  },
+
+  "Thumbnail": {
+    "pickSceneForThumbnail": "Pick scene for thumbnail",
+    "pickCurrentScene": "Pick current scene<br />(Press and pause)",
+    "insertText": "(Optional) Insert text to thumnail",
+    "telopPosition": "Position",
+    "telopColor": "Color",
+    "telopSize": "Size",
+    "telopText": "Text",
+    "insertBtn": "Insert",
+    "deleteTelopConfirmation": "Are you sure you want to delete this text?",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "finish": "Finish",
+    "data": {
+      "bottomLeft": "Bottom left",
+      "bottomCenter": "Bottom center",
+      "bottomRight": "Bottom right",
+      "middleLeft": "Middle left",
+      "middleCenter": "Middle center",
+      "middleRight": "Middle right",
+      "upperLeft": "Top left",
+      "upperCenter": "Top center",
+      "upperRight": "Top right",
+      "white": "White",
+      "red": "Red",
+      "pink": "Pink",
+      "yellow": "Yellow",
+      "green": "Green",
+      "cyan": "Cyan",
+      "blue": "Blue",
+      "purple": "Purple",
+      "black": "Black",
+      "large": "Large",
+      "medium": "Medium",
+      "small": "Small",
+      "required": "Required",
+      "text": "Text"
+    },
+    "methods": {
+      "setCustomThumbnail": "Set custom thumbnail",
+      "finishedSettingCustomThumbnail": "finished setting custom thumbnail"
+    }
+  },
+
+  "Complete": {
+    "savedNewPlaylist": "Saved [{newPlaylistName}]!!",
+    "ableToEditFromMypage": "(You can watch/edit from My Page )",
+    "shareLinkOfNewPlaylist": "Share [{newPlaylistName}]:",
+    "clip": "Clip",
+    "copyUrl": "Copy URL"
   }
 }

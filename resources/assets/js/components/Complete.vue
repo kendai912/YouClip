@@ -4,12 +4,16 @@
       <v-container class="ma-0 pa-2" fluid fill-height>
         <v-row class="ma-0 pa-0" align="center" justify="center">
           <v-col class="ma-0 pa-0 text-center" cols="auto">
-            <span>「{{ newPlaylistName }}」を保存しました！</span>
+            <span>{{
+              $t("Complete.savedNewPlaylist", {
+                newPlaylistName: newPlaylistName,
+              })
+            }}</span>
           </v-col>
         </v-row>
         <v-row class="ma-0 pa-0" align="center" justify="center">
           <v-col class="ma-0 pa-0 text-center" cols="auto">
-            <span>(マイページからいつでも確認・編集できます)</span>
+            <span>{{ $t("Complete.ableToEditFromMypage") }}</span>
           </v-col>
         </v-row>
       </v-container>
@@ -51,9 +55,11 @@
     <v-sheet class="mx-auto">
       <v-container class="ma-0 mt-4 pa-0" fluid>
         <v-row class="ma-0 pa-2">
-          <v-col class="ma-0 pa-0 text-left"
-            >「{{ newPlaylistName }}」の共有リンク:</v-col
-          >
+          <v-col class="ma-0 pa-0 text-left">{{
+            $t("Complete.shareLinkOfNewPlaylist", {
+              newPlaylistName: newPlaylistName,
+            })
+          }}</v-col>
         </v-row>
 
         <v-row class="ma-0 pt-3 pb-2">
@@ -63,7 +69,9 @@
             v-bind:data-href="
               'https://twitter.com/intent/tweet?url=' +
                 encodedShareURI +
-                '&text=[切り抜き] ' +
+                '&text=[' +
+                $t('Complete.clip') +
+                ']' +
                 shareText
             "
           >
@@ -154,9 +162,9 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <v-card-text class="ma-0 pa-1 grey--text text--darken-3"
-                  >URLをコピー</v-card-text
-                >
+                <v-card-text class="ma-0 pa-1 grey--text text--darken-3">{{
+                  $t("Complete.copyUrl")
+                }}</v-card-text>
               </v-col>
             </v-row>
           </v-col>
