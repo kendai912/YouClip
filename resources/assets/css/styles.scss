@@ -1668,5 +1668,30 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
 }
 
 .twitterBlue::before {
-  color:rgb(29, 161, 242)
+  color: rgb(29, 161, 242);
+}
+
+.list-top-heading {
+  font-size: 1.2em;
+  line-height: 1.785714285714286;
+}
+
+.lower-latin {
+  list-style-type: lower-latin;
+}
+
+.lower-roman {
+  list-style-type: lower-roman;
+}
+
+.underline {
+  text-decoration: underline;
+  text-decoration-line: underline;
+  text-decoration-thickness: initial;
+  text-decoration-style: initial;
+  text-decoration-color: initial;
+}
+
+.termsOfContentText ol, .termsOfContentText li {
+  margin-bottom: 8px;
 }

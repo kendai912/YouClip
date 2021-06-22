@@ -6,216 +6,1021 @@
       elevation="0"
       style="margin-bottom: 70px !important;"
     >
-      <v-card-title class="pa-1 mt-2 mx-0 text-left justify-center"
-        >利用規約</v-card-title
+      <v-card-title class="pa-1 mt-2 mx-0 text-left justify-center">{{
+        $t("TermsOfService.title")
+      }}</v-card-title>
+      <v-card-text
+        v-html="$t('TermsOfService.content')"
+        class="pa-1 mt-2 mx-0 text-left"
       >
-      <v-card-text class="pa-1 mt-2 mx-0 text-left">
-        この利用規約（以下，「本規約」といいます。）は，YouClip運営チーム（以下，「運営チーム」といいます。）がこのウェブサイト上で提供するサービス（以下，「本サービス」といいます。）の利用条件を定めるものです。登録ユーザーの皆さま（以下，「ユーザー」といいます。）には，本規約に従って，本サービスをご利用いただきます。
-        <br />
-        <br />
-        <h4>第1条（適用）</h4>
-        <ol>
-          <li>
-            本規約は，ユーザーと運営チームとの間の本サービスの利用に関わる一切の関係に適用されるものとします。
+        <!-- <ol>
+          <li class="list-top-heading">
+            Acceptance of the Terms and Conditions.
           </li>
-          <li>
-            運営チームは本サービスに関し，本規約のほか，ご利用にあたってのルール等，各種の定め（以下，「個別規定」といいます。）をすることがあります。これら個別規定はその名称のいかんに関わらず，本規約の一部を構成するものとします。
-          </li>
-          <li>
-            本規約の規定が前条の個別規定の規定と矛盾する場合には，個別規定において特段の定めなき限り，個別規定の規定が優先されるものとします。
-          </li>
-        </ol>
-        <br />
-        <h4>第2条（利用登録）</h4>
-        <ol>
-          <li>
-            本サービスにおいては，登録希望者が本規約に同意の上，運営チームの定める方法によって利用登録を申請し，運営チームがこの承認を登録希望者に通知することによって，利用登録が完了するものとします。
-          </li>
-          <li>
-            運営チームは，利用登録の申請者に以下の事由があると判断した場合，利用登録の申請を承認しないことがあり，その理由については一切の開示義務を負わないものとします。
-            <ol>
-              <li>利用登録の申請に際して虚偽の事項を届け出た場合</li>
-              <li>本規約に違反したことがある者からの申請である場合</li>
-              <li>その他，運営チームが利用登録を相当でないと判断した場合</li>
-            </ol>
-          </li>
-        </ol>
-        <br />
-        <h4>第3条（ユーザーIDおよびパスワードの管理）</h4>
-        <ol>
-          <li>
-            ユーザーは，自己の責任において，本サービスのユーザーIDおよびパスワードを適切に管理するものとします。
-          </li>
-          <li>
-            ユーザーは，いかなる場合にも，ユーザーIDおよびパスワードを第三者に譲渡または貸与し，もしくは第三者と共用することはできません。運営チームは，ユーザーIDとパスワードの組み合わせが登録情報と一致してログインされた場合には，そのユーザーIDを登録しているユーザー自身による利用とみなします。
-          </li>
-          <li>
-            ユーザーID及びパスワードが第三者によって使用されたことによって生じた損害は，運営チームに故意又は重大な過失がある場合を除き，運営チームは一切の責任を負わないものとします。
-          </li>
-        </ol>
-        <br />
-        <h4>第4条（禁止事項）</h4>
-        ユーザーは，本サービスの利用にあたり，以下の行為をしてはなりません。
-        <ol>
-          <li>法令または公序良俗に違反する行為 犯罪行為に関連する行為</li>
-          <li>
-            運営チーム，本サービスの他のユーザー，または第三者のサーバーまたはネットワークの機能を破壊したり，妨害したりする行為
-          </li>
-          <li>運営チームのサービスの運営を妨害するおそれのある行為</li>
-          <li>他のユーザーに関する個人情報等を収集または蓄積する行為</li>
-          <li>
-            不正アクセスをし，またはこれを試みる行為
-            他のユーザーに成りすます行為
-          </li>
-          <li>
-            運営チームのサービスに関連して，反社会的勢力に対して直接または間接に利益を供与する行為
-          </li>
-          <li>
-            運営チーム，本サービスの他のユーザーまたは第三者の知的財産権，肖像権，プライバシー，名誉その他の権利または利益を侵害する行為
-          </li>
-          <li>
-            以下の表現を含み，または含むと運営チームが判断する内容を本サービス上に投稿し，または送信する行為
-            <ol>
-              <li>過度に暴力的な表現 露骨な性的表現</li>
+          <ol class="lower-latin">
+            <li>
+              <span class="underline">Binding Agreement; Description.</span>
+              This Terms of Service (“<strong>Agreement</strong>”) is a binding
+              contract between you, an individual user (“<strong>user</strong>”
+              or “<strong>you</strong>”), and YouClip
+              team.(“<strong>YouClip</strong>,” “<strong>we</strong>,”
+              “<strong>us</strong>,”&nbsp;or&nbsp;“<strong>our</strong>”)
+              governing your use of youclip.app and any other websites and/or
+              online services or properties owned and operated by YouClip
+              (collectively, the “<strong>Service</strong>”).<strong>
+                BY ACCESSING OR USING THE SERVICE, YOU AGREE THAT YOU HAVE READ,
+                UNDERSTOOD, AND AGREE TO BE BOUND BY THIS AGREEMENT.IF YOU DO
+                NOT AGREE TO THE TERMS OF THIS AGREEMENT, THEN YOU MAY NOT USE
+                THE SERVICE.</strong
+              >
+            </li>
+            <li>
+              <span class="underline">Material Terms and Notices.</span> As
+              provided in greater detail in this Agreement (and without limiting
+              the express language of this Agreement), you acknowledge the
+              following:
+            </li>
+            <ol class="lower-roman">
               <li>
-                人種，国籍，信条，性別，社会的身分，門地等による差別につながる表現
-              </li>
-              <li>自殺，自傷行為，薬物乱用を誘引または助長する表現</li>
-              <li>その他反社会的な内容を含み他人に不快感を与える表現</li>
-            </ol>
-          </li>
-          <li>
-            以下を目的とし，または目的とすると運営チームが判断する行為
-            <ol>
-              <li>
-                営業，宣伝，広告，勧誘，その他営利を目的とする行為（運営チームの認めたものを除きます。）
-              </li>
-              <li>性行為やわいせつな行為を目的とする行為</li>
-              <li>面識のない異性との出会いや交際を目的とする行為</li>
-              <li>他のユーザーに対する嫌がらせや誹謗中傷を目的とする行為</li>
-              <li>
-                運営チーム，本サービスの他のユーザー，または第三者に不利益，損害または不快感を与えることを目的とする行為
+                the Service is licensed to you, not sold to you, and you may use
+                the Service only as set forth in this Agreement;
               </li>
               <li>
-                その他本サービスが予定している利用目的と異なる目的で本サービスを利用する行為
+                the use of the Service may be subject to separate third party
+                terms of service and fees, which are your sole responsibility;
+              </li>
+              <li>
+                you consent to the collection, use, and disclosure of your
+                personally identifiable information in accordance with the
+                YouClip Privacy Policy <strong>[</strong
+                ><a href="https://youclip.app/privacypolicy"
+                  >https://youclip.app/privacypolicy</a
+                ><strong>] </strong>(“<strong>Privacy Policy</strong>”);
+              </li>
+              <li>
+                the Service is provided “as is” without warranties of any kind
+                and YouClip’s liability to you is limited; and
+              </li>
+              <li>
+                we will resolve disputes arising under this Agreement through
+                binding arbitration.<strong>
+                  By accepting this Agreement, as provided in greater detail in
+                  Section </strong
+                ><strong>10</strong
+                ><strong>
+                  of this Agreement, you and YouClip are each waiving the right
+                  to a trial by jury or to participate in a class action</strong
+                >.
               </li>
             </ol>
-          </li>
-          <li>宗教活動または宗教団体への勧誘行為</li>
-          <li>その他，運営チームが不適切と判断する行為</li>
-        </ol>
-        <br />
-        <h4>第5条（本サービスの提供の停止等）</h4>
-        <ol>
-          <li>
-            運営チームは，以下のいずれかの事由があると判断した場合，ユーザーに事前に通知することなく本サービスの全部または一部の提供を停止または中断することができるものとします。
-            <ol>
+            <li>
+              <span class="underline">Changes to this Agreement.</span> You
+              understand and agree that YouClip may change this Agreement at any
+              time without prior notice; provided that YouClip will endeavor to
+              provide you with prior notice of any material changes.You may read
+              a current, effective copy of this Agreement at any time by
+              selecting the appropriate link on the Service.The revised
+              Agreement will become effective at the time of posting.Any use of
+              the Service after such date will constitute your acceptance of
+              such revised Agreement. If any change to this Agreement is not
+              acceptable to you, then your sole remedy is to stop accessing,
+              browsing, and otherwise using the Service. The terms of this
+              Agreement will govern any updates YouClip provides to you that
+              replace and/or supplement any portion of the Service, unless the
+              upgrade is accompanied by a separate license or revised Agreement,
+              in which case the terms of that license or revised Agreement will
+              govern. Notwithstanding the preceding sentences of this Section
+              1.c, no revisions to this Agreement will apply to any dispute
+              between you and YouClip that arose prior to the effective date of
+              such revision.
+            </li>
+            <li>
+              <span class="underline">Privacy Policy.</span> Your access to and
+              use of the Service is also subject to YouClip’s Privacy Policy
+              located at [<a
+                href="https://www.iubenda.com/privacy-policy/237912/legal"
+                >https://www.iubenda.com/privacy-policy/237912/legal</a
+              >] (“<strong>Privacy Policy</strong>”), the terms and conditions
+              of which are incorporated herein by reference.
+            </li>
+            <li>
+              <span class="underline">Consideration.</span> You understand and
+              agree that this Agreement is entered into in consideration of your
+              use of the Service and other good and valuable consideration, the
+              receipt and sufficiency of which are hereby acknowledged.
+            </li>
+            <li>
+              <span class="underline">Eligibility.</span> THE SERVICE IS NOT FOR
+              PERSONS UNDER THE AGE OF 13 OR FOR ANY USERS PREVIOUSLY SUSPENDED
+              OR REMOVED FROM THE SERVICE BY YouClip. IF YOU ARE UNDER 13 YEARS
+              OF AGE, THEN YOU MUST NOT USE OR ACCESS THE SERVICE AT ANY TIME OR
+              IN ANY MANNER. Furthermore, by accessing or using the Service, you
+              affirm that either you are at least 18 years of age or have been
+              authorized to use the Service by your parent or guardian who is at
+              least 18 years of age.
+            </li>
+          </ol>
+          <li class="list-top-heading">The Service.</li>
+          <ol class="lower-latin">
+            <li>
+              <span class="underline">Description.</span> The Service allows
+              users to create highlight and mashup reels
+              (“<strong>clips</strong>”) from YouTube by linking to different
+              time signatures in one or more source videos (each a “<strong
+                >Source Video</strong
+              >”) using the public APIs of the applicable YouTube or
+              public-facing video files. The Service does not reproduce a Source
+              Video at any time. Because the Service is reliant upon access to
+              Source Videos on YouTube, YouClip does not guarantee continued
+              access to any clips and assumes no liability for your inability to
+              access any clips that you have spent time creating.
+            </li>
+          </ol>
+          <li class="list-top-heading">Registration.</li>
+          <ol class="lower-latin">
+            <li>
+              <span class="underline">Log-In Credentials.</span> While you may
+              always browse the public-facing pages of the Service without
+              registering, in order to enjoy the full benefits of the Service
+              and to Post (as defined in Section 5.a below) user Content (as
+              defined in Section 5.a below), you must create an account with the
+              Service (an “<strong>Account</strong>”).
+            </li>
+            <li>
+              <span class="underline">Account Security.</span> You are
+              responsible for the security of your Account, and are fully
+              responsible for all activities that occur through the use of your
+              credentials.You will notify YouClip immediately at
+              youclip@gmail.com if you suspect or know of any unauthorized use
+              of your log-in credentials or any other breach of security with
+              respect to your Account. YouClip will not be liable for any loss
+              or damage arising from unauthorized use of your credentials prior
+              to you notifying YouClip of such unauthorized use or loss of your
+              credentials. Separate log-in credentials may be required to access
+              External Sites(as defined in Section 7 below).
+            </li>
+            <li>
+              <span class="underline">Accuracy of Information.</span> When
+              creating an Account, you agree to provide true, accurate, current,
+              and complete information as YouClip requires. You will update the
+              information about yourself promptly, and as necessary, to keep it
+              current and accurate.We reserve the right to disallow, cancel,
+              remove, or reassign certain usernames and permalinks in
+              appropriate circumstances, as determined by us in our sole
+              discretion, and may, with or without prior notice, suspend or
+              terminate your Account if activities occur on your Account which,
+              in our sole discretion, would or might constitute a violation of
+              this Agreement, or an infringement or violation of any third party
+              rights, or of any applicable laws or regulations. If messages sent
+              to the email address you provide are returned as undeliverable,
+              then YouClip may terminate your Account immediately without notice
+              to you and without any liability to you or any third party.
+            </li>
+          </ol>
+          <li class="list-top-heading">Intellectual Property Rights</li>
+          <ol class="lower-latin">
+            <li>
+              <span class="underline">License.</span> The Service is licensed,
+              not sold, to you for use only under the terms of this Agreement.
+              YouClip reserves all rights not expressly granted to you. Subject
+              to your complete and ongoing compliance with this Agreement,
+              YouClip hereby grants you a personal, limited, revocable,
+              non-transferable license to access and use the Service solely for
+              your personal, non-commercial use, including the right to use the
+              functionality of the Service to create clips, subject to your
+              clearance of any associated third party rights.
+            </li>
+            <li>
+              <span class="underline">Content.</span> Except for user Content,
+              the content that users may access on or through the Service,
+              including, without limitation, any text, graphics, photos,
+              software, and interactive features, may be protected by copyright
+              or other intellectual property rights and owned by YouClip or
+              YouClip’s third party licensors (the “<strong
+                >YouClip Content</strong
+              >”).You may not copy, reproduce, upload, republish, transmit, Post
+              (as defined in Section5.abelow), create derivative works of,
+              publicly perform, or distribute any materials from the Service in
+              any way without prior express written permission of the copyright
+              owner of such material or as otherwise specified in this Agreement
+              or permitted by the Service’s intended functionalities. You may
+              not modify or use any materials obtained from or available through
+              the Service unless you have obtained the applicable copyright
+              owner’s prior express written authorization. YouClip owns all
+              design rights, databases, and compilation and other intellectual
+              property rights in and to the Service, in each case whether
+              registered or unregistered, and related goodwill.
+            </li>
+            <li>
+              <span class="underline">Marks.</span> The YouClip trademarks,
+              design marks, service marks, and logos (the&nbsp;“<strong
+                >YouClip Trademarks</strong
+              >”) used and displayed on the Service are YouClip’s registered and
+              unregistered trademarks or service marks. Other product and
+              service names located on the Service may be trademarks or service
+              marks owned by third parties (the&nbsp;“<strong
+                >Third-Party Trademarks</strong
+              >,” and, collectively with the YouClip Trademarks,
+              the&nbsp;“<strong>Trademarks</strong>”). Nothing on the Service or
+              in this Agreement should be construed as granting, by implication,
+              estoppel, or otherwise, any license or right to use any Trademark
+              displayed on this Service without YouClip’s prior express written
+              consent for each individual use.You may not use the Trademarks to
+              disparage YouClip or the applicable third party (including
+              YouClip’s or the third party’s products or services) or in any
+              manner, using commercially reasonable judgment, that may damage
+              any goodwill in the Trademarks. You may not use any Trademarks as
+              part of a link to or from any Service without YouClip’s prior
+              express written consent. All goodwill generated from the use of
+              any YouClip Trademark will inure solely to YouClip’s benefit.
+            </li>
+            <li>
+              <span class="underline">Restrictions.</span> You may not sell,
+              transfer, assign, license, sublicense, or modify the YouClip
+              Content, and you may not reproduce, display, publicly perform,
+              make a derivative version of, distribute, or otherwise use the
+              YouClip Content in any way for any public or commercial purpose
+              without YouClip’s prior written consent. The use or posting of any
+              of the YouClip Content on any other website or in a networked
+              computer environment for any purpose is expressly prohibited. If
+              you violate any part of this Agreement, then your right to access
+              and/or use the YouClip Content and Service will automatically
+              terminate and you must immediately destroy any copies you have
+              made of the YouClip Content.
+            </li>
+          </ol>
+          <li class="list-top-heading">user Content</li>
+          <ol class="lower-latin">
+            <li>
+              <span class="underline">Definition.</span> “<strong>User</strong
+              ><strong> Content</strong>” means any content that users upload,
+              post, or transmit (collectively, “<strong>Post</strong>”) to or
+              through the Service including, without limitation, literary works,
+              photographs, audiovisual works, artwork, and any other work
+              subject to protection under the laws of the United States or any
+              other jurisdiction, including, but not limited to, patent,
+              trademark, trade secret, and copyright laws.
+            </li>
+            <li>
+              <span class="underline">Screening User Content.</span> YouClip
+              offers users the ability to submit user Content to the Service.
+              YouClip does not pre-screen any user Content, but reserves the
+              right to refuse or delete any user Content in its sole discretion.
+              In addition, YouClip has the right—but not the obligation—in its
+              sole discretion to refuse or delete any user Content that it
+              reasonably considers to violate this Agreement or be otherwise
+              illegal or inappropriate. YouClip does not guarantee the accuracy,
+              integrity, or quality of any user Content, and under no
+              circumstances will YouClip be liable in any way for any user
+              Content, including liability for any errors or omissions in any
+              user Content or for any loss or damage of any kind incurred as a
+              result of the use of any user Content Posted to or through the
+              Service.
+            </li>
+            <li>
+              <span class="underline">Intellectual Property Rights.</span> YOU
+              RETAIN OWNERSHIP OF ANY RIGHTS YOU MAY HAVE IN YOUR USER CONTENT
+              AND SUBMITTING YOUR USER CONTENT TO THE SERVICE DOES NOT TRANSFER
+              OWNERSHIP OF YOUR RIGHTS.
+            </li>
+            <li>
+              <span class="underline">Licenses to User Content.</span> You
+              hereby grant YouClip an unrestricted, assignable, sublicensable,
+              revocable, royalty-free license throughout the universe to
+              reproduce, distribute, publicly display, communicate to the
+              public, publicly perform(including by means of digital audio
+              transmissions and on a through-to-the-audience basis), make
+              available, create derivative works from, retransmit from External
+              Sites, and otherwise exploit and use (collectively,
+              “<strong>Use</strong>”) all user Content you Post to or through
+              the Service by any means, through any media and formats now known
+              or hereafter developed, for the purposes of (i) advertising,
+              marketing, and promoting YouClip and the Service; and (ii)
+              providing the Service as authorized by this Agreement.You further
+              grant YouClip a royalty-free license to use your username, image,
+              and likeness to identify you as the source of any of your user
+              Content. You must not Post any User Content on or through the
+              Service or transmit to YouClip any user Content that you consider
+              to be confidential or proprietary.Any user Content Posted by you
+              to or through the Service or transmitted to YouClip will be
+              considered non-confidential and non-proprietary, and treated as
+              such by YouClip, and may be used by YouClipin accordance with this
+              Agreement without notice to you and without any liability to
+              YouClip. This means that you are granting YouClip the right to use
+              your User Content without the obligation to pay royalties to any
+              third party, including, but not limited to, a sound recording
+              copyright owner (e.g., a record label), a musical work copyright
+              owner (e.g., a music publisher), a PRO, a sound recording PRO
+              (e.g., SoundExchange), any unions or guilds, and engineers,
+              producers or other royalty participants involved in the creation
+              of User Content.
+            </li>
+            <li>
+              <span class="underline"
+                >You Must Have Rights to the Content You Post.</span
+              >
+              You must not Post any user Content to the Service if you are not
+              the copyright owner of or are not fully authorized to grant rights
+              in all of the elements of the User Content you intend to Post to
+              the Service.You represent and warrant that: (i) you own the user
+              Content Posted by you on or through the Service or otherwise have
+              the right to grant the license set forth in this Agreement; (ii)
+              the Posting and Use of your User Content on or through the Service
+              does not violate the privacy rights, publicity rights, copyrights,
+              contract rights, intellectual property rights, or any other rights
+              of any person; (iii) the Posting of your user Content on the
+              Service will not require us to obtain any further licenses from or
+              pay any royalties, fees, compensation, or other amounts, or
+              provide any attribution to any third parties; and (iv) the Posting
+              of your User Content on the Service does not result in a breach of
+              contract between you and a third party. You agree to pay all
+              monies owing to any person as a result of Posting your User
+              Content on the Service.
+            </li>
+            <li>
+              <span class="underline">Through-To-The-Audience Rights.</span> All
+              of the rights you grant in this Agreement are provided on a
+              through-to-the-audience basis, meaning the owners or operators of
+              External Sites will not have any separate liability to you or any
+              other third party for user Content Posted or Used on such External
+              Sites via the Service.
+            </li>
+            <li>
+              <span class="underline">Waiver of Rights to User Content.</span>
+              By Posting User Content to or through the Service, you waive any
+              rights to prior inspection or approval of any marketing or
+              promotional materials related to such user Content. You also waive
+              any and all rights of privacy, publicity, or any other rights of a
+              similar nature in connection with your User Content, or any
+              portion thereof. To the extent any moral rights are not
+              transferable or assignable, you hereby waive and agree never to
+              assert any and all moral rights, or to support, maintain, or
+              permit any action based on any moral rights that you may have in
+              or with respect to any User Content you Post to or through the
+              Service.
+            </li>
+            <li>
+              <span class="underline">No Liability.</span> YouClip will not be
+              liable for any unauthorized use of user Content by any other user
+              or third party.
+            </li>
+            <li>
+              <span class="underline"
+                >Prohibition on Uploading Objectionable Content.</span
+              >
+              You agree not to Post any user Content to the Service that is or
+              could be interpreted to be (i) abusive, bullying, defamatory,
+              harassing, harmful, hateful, inaccurate, infringing, libelous,
+              objectionable, obscene, offensive, pornographic, shocking,
+              threatening, unlawful, violent, or vulgar; or (ii) promoting
+              bigotry, discrimination, hatred, racism, or inciting violence, as
+              YouClip may determine in its sole discretion (collectively,
+              “<strong>Objectionable Content</strong>”).If you encounter any
+              Objectionable Content on the Service, then please email YouClip at
+              youclip@gmail.com. You acknowledge and agree that YouClip provides
+              you the right to report Objectionable Content as a courtesy, and
+              YouClip has no obligation to remove or take any other action with
+              respect to any Objectionable Content on the Service that you
+              report to us.
+            </li>
+          </ol>
+          <li class="list-top-heading">Restrictions on Use of the Service.</li>
+          <ol class="lower-latin">
+            <li>In using the Service, you agree not to:</li>
+            <ol class="lower-roman">
               <li>
-                本サービスにかかるコンピュータシステムの保守点検または更新を行う場合
+                take any action that imposes an unreasonable load on the
+                Service’s infrastructure;
               </li>
               <li>
-                地震，落雷，火災，停電または天災などの不可抗力により，本サービスの提供が困難となった場合
+                use any device, software, or routine to interfere or attempt to
+                interfere with the proper working of the Service, or any
+                activity conducted on the Service;
               </li>
-              <li>コンピュータまたは通信回線等が事故により停止した場合</li>
-              <li>その他，運営チームが本サービスの提供が困難と判断した場合</li>
+              <li>
+                attempt to decipher, decompile, disassemble, or reverse engineer
+                any of the software comprising or making up the Service;
+              </li>
+              <li>
+                delete or alter any material YouClip or any other person or
+                entity Posts on the Service;
+              </li>
+              <li>
+                intentionally mislabel the category of, or provide any false
+                information with respect to, your clip;
+              </li>
+              <li>
+                alter any Source Video other than as expressly permitted by the
+                intended functionality of the Service, including by
+                impermissibly overlaying audio on your clip or the Source Video
+                or removing or obscuring any notices of third party copyright or
+                other intellectual property rights;
+              </li>
+              <li>
+                frame or link to any of the materials or information available
+                on the Service, or download a Source Video or clip;
+              </li>
+              <li>
+                alter, deface, mutilate, circumvent, or otherwise bypass any
+                approved software through which the Service is made available;
+              </li>
+              <li>
+                use any Trademarks, photographs, or other content belonging to
+                YouClip or obtained from the Service, a Source Video, or a Video
+                Platform with our express written consent;
+              </li>
+              <li>
+                access, tamper with, or use non-public areas of the Service,
+                YouClip’s (and its hosting company’s) computer systems and
+                infrastructure, or the technical delivery systems of YouClip’s
+                providers;
+              </li>
+              <li>
+                abuse, harass, harm, or advocate or incite abuse, harassment, or
+                harm of another person or group, including YouClip employees;
+              </li>
+              <li>provide any false personal information to YouClip;</li>
+              <li>
+                create a false identity or impersonate another person or entity
+                in any way;
+              </li>
+              <li>
+                create a new account with YouClip, without YouClip’s express
+                written consent, if YouClip has previously disabled an account
+                of yours;
+              </li>
+              <li>
+                solicit, or attempt to solicit, personal information from other
+                users of the Service;
+              </li>
+              <li>
+                restrict, discourage, or inhibit any person from using the
+                Service, disclose personal information about a third person on
+                the Service or obtained from the Service without the consent of
+                that person, or collect information about users of the Service;
+              </li>
+              <li>
+                use the Service to send communications to persons who have
+                requested that you not send them communications;
+              </li>
+              <li>
+                use the Service, without YouClip’s express written consent, for
+                any unauthorized purpose, including communicating or
+                facilitating any commercial advertisement or solicitation or
+                spamming;
+              </li>
+              <li>
+                gain unauthorized access to the Service, to other users’
+                accounts, names, or personally identifiable information, or to
+                other computers or websites connected or linked to the Service;
+              </li>
+              <li>
+                Post or otherwise make available any virus, worm, spyware, or
+                any other computer code, file, or program that may or is
+                intended to disable, overburden, impair, damage, or hijack the
+                operation of any hardware, software, or telecommunications
+                equipment, or any other aspect of the Service or communications
+                equipment and computers connected to the Service;
+              </li>
+              <li>
+                interfere with or disrupt the Service, networks, or servers
+                connected to the Service or violate the regulations, policies,
+                or procedures of those networks or servers;
+              </li>
+              <li>
+                violate any applicable federal, state, or local laws or
+                regulations or the terms of this Agreement; or
+              </li>
+              <li>
+                assist or permit any persons in engaging in any of the
+                activities described above.
+              </li>
             </ol>
+          </ol>
+          <li class="list-top-heading">External Sites.</li>
+          <p>
+            The Service may contain links to or the ability to share information
+            with third party websites (“<strong>External Sites</strong>”).These
+            links are provided solely as a convenience to you and not as an
+            endorsement by us of the content on or the operators of such
+            External Sites. The content of such External Sites is developed and
+            provided by others. You should contact the site administrator or
+            webmaster for those External Sites if you have any concerns
+            regarding such links or any content located on such External Sites.
+            YouClip is not responsible for the content of any linked External
+            Sites and does not make any representations regarding the content or
+            accuracy of any materials on such External Sites. You should take
+            precautions when downloading files from all websites to protect your
+            computer from viruses and other destructive programs.If you decide
+            to access any External Sites, you do so at your own risk.You agree
+            that YouClip will have no liability to you arising from your use,
+            engagement, exposure to or interaction with any External Sites.
+          </p>
+          <li class="list-top-heading">Feedback.</li>
+          <p>
+            While we are continually working to develop and evaluate our own
+            product ideas and features, we pride ourselves on paying close
+            attention to the interests, feedback, comments, and suggestions we
+            receive from the user community. If you choose to contribute by
+            sending YouClip or our employees any ideas for products, services,
+            features, modifications, enhancements, content, refinements,
+            technologies, content offerings (such as audio, visual, games, or
+            other types of content), promotions, strategies, or product/feature
+            names, or any related documentation, artwork, computer code,
+            diagrams, or other materials (collectively
+            “<strong>Feedback</strong>”), then regardless of what your
+            accompanying communication may say, the following terms will apply,
+            so that future misunderstandings can be avoided. Accordingly, by
+            sending Feedback to YouClip, you agree that:
+          </p>
+          <ol class="lower-latin">
+            <li>
+              YouClip has no obligation to review, consider, or implement your
+              Feedback, or to return to you all or part of any Feedback for any
+              reason;
+            </li>
+            <li>
+              Feedback is provided on a non-confidential basis, and YouClip is
+              not under any obligation to keep any Feedback you send
+              confidential or to refrain from using or disclosing it in any way;
+              and
+            </li>
+            <li>
+              You irrevocably grant YouClip perpetual and unlimited permission
+              to Use the Feedback and derivatives thereof for any purpose and
+              without restriction, free of charge and without attribution of any
+              kind, including by making, using, selling, offering for sale,
+              importing, and promoting commercial products and services that
+              incorporate or embody Feedback, whether in whole or in part, and
+              whether as provided or as modified.
+            </li>
+          </ol>
+          <li class="list-top-heading">
+            Notice and Procedure for Making Claims of Copyright or Other
+            Intellectual Property Infringements.
           </li>
-          <li>
-            運営チームは，本サービスの提供の停止または中断により，ユーザーまたは第三者が被ったいかなる不利益または損害についても，一切の責任を負わないものとします。
-          </li>
-        </ol>
-        <br />
-        <h4>第6条（著作権）</h4>
-        <ol>
-          <li>
-            ユーザーは，自ら著作権等の必要な知的財産権を有するか，または必要な権利者の許諾を得た文章，画像や映像等の情報に関してのみ，本サービスを利用し，投稿ないしアップロードすることができるものとします。
-          </li>
-          <li>
-            ユーザーが本サービスを利用して投稿ないしアップロードした文章，画像，映像等の著作権については，当該ユーザーその他既存の権利者に留保されるものとします。ただし，運営チームは，本サービスを利用して投稿ないしアップロードされた文章，画像，映像等について，本サービスの改良，品質の向上，または不備の是正等ならびに本サービスの周知宣伝等に必要な範囲で利用できるものとし，ユーザーは，この利用に関して，著作者人格権を行使しないものとします。
-          </li>
-          <li>
-            前項本文の定めるものを除き，本サービスおよび本サービスに関連する一切の情報についての著作権およびその他の知的財産権はすべて運営チームまたは運営チームにその利用を許諾した権利者に帰属し，ユーザーは無断で複製，譲渡，貸与，翻訳，改変，転載，公衆送信（送信可能化を含みます。），伝送，配布，出版，営業使用等をしてはならないものとします。
-          </li>
-        </ol>
-        <br />
-        <h4>第7条（利用制限および登録抹消）</h4>
-        <ol>
-          <li>
-            運営チームは，ユーザーが以下のいずれかに該当する場合には，事前の通知なく，投稿データを削除し，ユーザーに対して本サービスの全部もしくは一部の利用を制限しまたはユーザーとしての登録を抹消することができるものとします。
-            <ol>
-              <li>本規約のいずれかの条項に違反した場合</li>
-              <li>登録事項に虚偽の事実があることが判明した場合</li>
+          <ol class="lower-latin">
+            <li>
+              <span class="underline">Respect of Third Party Rights.</span>
+              YouClip respects the intellectual property of others and takes the
+              protection of intellectual property very seriously, and we ask our
+              users to do the same.Infringing activity will not be tolerated on
+              or through the Service.
+            </li>
+            <li>
+              <span class="underline">Repeat Infringer Policy.</span> YouClip’s
+              intellectual property policy is to (i) remove or disable access to
+              material that YouClip believes in good faith, upon notice from an
+              intellectual property owner or his or her agent, is infringing the
+              intellectual property of a third party by being made available
+              through the Service; and (ii) remove any user Content uploaded to
+              the Service by “repeat infringers.”YouClip considers a “repeat
+              infringer” to be any user that has uploaded user Content or
+              Feedback to or through the Service and for whom YouClip has
+              received more than two takedown notices compliant with the
+              provisions of 17 U.S.C. §&nbsp;512 with respect to such user
+              Content or Feedback. YouClip has discretion, however, to terminate
+              the Account of any user after receipt of a single notification of
+              claimed infringement or upon YouClip’s own determination.
+            </li>
+            <li>
+              <span class="underline"
+                >Procedure for Reporting Claimed Infringement.</span
+              >
+              If you believe that any content made available on or through the
+              Service has been used or exploited in a manner that infringes an
+              intellectual property right you own or control, then please
+              promptly send a “<strong
+                >Notification of Claimed Infringement</strong
+              >” containing the following information to the Designated Agent
+              identified in Section9.dbelow. Your Notification of Claimed
+              Infringement may be shared by YouClip with the user alleged to
+              have infringed a right you own or control and with other third
+              parties, and you hereby consent to YouClip making such disclosure.
+              Your communication must include substantially the following:
+            </li>
+            <ol class="lower-roman">
               <li>
-                決済手段として当該ユーザーが届け出たクレジットカードが利用停止となった場合
+                a physical or electronic signature of a person authorized to act
+                on behalf of the owner of the work(s) that has/have been
+                allegedly infringed;
               </li>
-              <li>料金等の支払債務の不履行があった場合</li>
-              <li>運営チームからの連絡に対し，一定期間返答がない場合</li>
-              <li>本サービスについて，最終の利用から一定期間利用がない場合</li>
               <li>
-                その他，運営チームが本サービスの利用を適当でないと判断した場合
+                identification of works or materials being infringed, or, if
+                multiple works are covered by a single Notification of Claimed
+                Infringement, a representative list of such works;
+              </li>
+              <li>
+                identification of the specific material that is claimed to be
+                infringing or to be the subject of infringing activity and that
+                is to be removed or access to which is to be disabled, and
+                information reasonably sufficient to permit YouClip to locate
+                the material;
+              </li>
+              <li>
+                information reasonably sufficient to permit YouClip to contact
+                you, such as an address, telephone number, and, if available, an
+                email address at which you may be contacted;
+              </li>
+              <li>
+                a statement that you have a good faith belief that the use of
+                the material in the manner complained of is not authorized by
+                the copyright owner, its agent, or the law; and
+              </li>
+              <li>
+                a statement that the information in the Notification of Claimed
+                Infringement is accurate, and under penalty of perjury, that you
+                are authorized to act on behalf of the owner of an exclusive
+                right that is allegedly infringed.
               </li>
             </ol>
+            <p>
+              You should consult with your own lawyer and/or see 17 U.S.C. § 512
+              to confirm your obligations to provide a valid notice of claimed
+              infringement.
+            </p>
+            <li>
+              <span class="underline"
+                >Designated Agent Contact Information.</span
+              >
+              YouClip’s designated agent for receipt of Notifications of Claimed
+              Infringement (the “<strong>Designated Agent</strong>”) can be
+              contacted at:
+            </li>
+            <p>Via Email: youclip@gmail.com</p>
+            <li>
+              <span class="underline">Counter Notification.</span> If you
+              receive a notification from YouClip that material made available
+              by you on or through the Service has been the subject of a
+              Notification of Claimed Infringement, then you will have the right
+              to provide YouClip with what is called a “<strong
+                >Counter Notification</strong
+              >. ”To be effective, a Counter Notification must be in writing,
+              provided to YouClip’s Designated Agent through one of the methods
+              identified in Section 9.d above and include substantially the
+              following information:
+            </li>
+            <ol class="lower-roman">
+              <li>a physical or electronic signature of the subscriber;</li>
+              <li>
+                identification of the material that has been removed or to which
+                access has been disabled and the location at which the material
+                appeared before it was removed or access to it was disabled;
+              </li>
+              <li>
+                a statement under penalty of perjury that the subscriber has a
+                good faith belief that the material was removed or disabled as a
+                result of mistake or misidentification of the material to be
+                removed or disabled; and
+              </li>
+              <li>
+                the subscriber’s name, address, and telephone number, and a
+                statement that the subscriber consents to the jurisdiction of
+                Federal District Court for the judicial district in which the
+                address is located, or if the subscriber’s address is outside of
+                the United States, for any judicial district in which YouClip
+                may be found, and that the subscriber will accept service of
+                process from the person who provided notification under Section
+                9.c&nbsp;above or an agent of such person.
+              </li>
+            </ol>
+            <p>
+              A party submitting a Counter Notification should consult a lawyer
+              or see 17 U.S.C. § 512 to confirm the party’s obligations to
+              provide a valid counter notification under the Copyright Act.
+            </p>
+            <li>
+              <span class="underline"
+                >Reposting of Content Subject to a Counter Notification.</span
+              >
+              If you submit a Counter Notification to YouClip in response to a
+              Notification of Claimed Infringement, then YouClip will promptly
+              provide the person who provided the Notification of Claimed
+              Infringement with a copy of your Counter Notification and inform
+              that person that YouClip will replace the removed user Content or
+              Feedback or cease disabling access to it in 10 business days, and
+              YouClip will replace the removed user Content or Feedback and
+              cease disabling access to it not less than 10, nor more than 14,
+              business days following receipt of the Counter Notification,
+              unless YouClip’s Designated Agent receives notice from the party
+              that submitted the Notification of Claimed Infringement that such
+              person has filed an action seeking a court order to restrain the
+              user from engaging in infringing activity relating to the material
+              on YouClip’s system or network.
+            </li>
+            <li>
+              <span class="underline"
+                >False Notifications of Claimed Infringement or Counter
+                Notifications.</span
+              >
+              The Copyright Act provides that:
+            </li>
+            <p>
+              [a]ny person who knowingly materially misrepresents under [Section
+              512 of the Copyright Act (17 U.S.C. § 512)] (1) that material or
+              activity is infringing, or (2) that material or activity was
+              removed or disabled by mistake or misidentification, will be
+              liable for any damages, including costs and attorneys’ fees,
+              incurred by the alleged infringer, by any copyright owner or
+              copyright owner’s authorized licensee, or by a service provider,
+              who is injured by such misrepresentation, as the result of
+              [YouClip] relying upon such misrepresentation in removing or
+              disabling access to the material or activity claimed to be
+              infringing, or in replacing the removed material or ceasing to
+              disable access to it.
+            </p>
+            <p>17 U.S.C. § 512(f).</p>
+          </ol>
+          <p>
+            YouClip reserves the right to seek damages from any party that
+            submits a Notification of Claimed Infringement or Counter
+            Notification in violation of the law.
+          </p>
+          <li class="list-top-heading">Dispute Resolution.</li>
+          <ol class="lower-latin">
+            <li>
+              <span class="underline">Generally.</span> In the interest of
+              resolving disputes between you and YouClip in the most expedient
+              and cost effective manner, you and YouClip agree that any dispute
+              arising out of or in any way related to this Agreement or your use
+              of the Service will be resolved by binding arbitration.Arbitration
+              is less formal than a lawsuit in court.Arbitration uses a neutral
+              arbitrator instead of a judge or jury, may allow for more limited
+              discovery than in court, and can be subject to very limited review
+              by courts.Arbitrators can award the same damages and relief that a
+              court can award.This agreement to arbitrate disputes includes all
+              claims arising out of or in any way related to this Agreement or
+              your use of the Service, whether based in contract, tort, statute,
+              fraud, misrepresentation, or any other legal theory, and
+              regardless of whether a claim arises during or after the
+              termination of this Agreement.YOU UNDERSTAND AND AGREE THAT, BY
+              ENTERING INTO THIS AGREEMENT, YOU AND YouClip ARE EACH WAIVING THE
+              RIGHT TO A TRIAL BY JURY OR TO PARTICIPATE IN A CLASS ACTION AND
+              THAT THIS AGREEMENT SHALL BE SUBJECT TO AND GOVERNED BY THE
+              FEDERAL ARBITRATION ACT.
+            </li>
+            <li>
+              <span class="underline">Exceptions.</span> Notwithstanding Section
+              10.a above, nothing in this Agreement will be deemed to waive,
+              preclude, or otherwise limit the right of either party to: (i)
+              bring an individual action in small claims court; (ii) pursue an
+              enforcement action through the applicable federal, state, or local
+              agency if that action is available; (iii) seek injunctive relief
+              in aid of arbitration from a court of competent jurisdiction; or
+              (iv) to file suit in a court of law to address an intellectual
+              property infringement claim.
+            </li>
+            <li>
+              <span class="underline">Arbitrator.</span> Any arbitration between
+              you and YouClip will be governed by the Federal Arbitration Act
+              and the Commercial Dispute Resolution Procedures and Supplementary
+              Procedures for Consumer Related Disputes (collectively, “<strong
+                >AAA Rules</strong
+              >”) of the American Arbitration Association
+              (“<strong>AAA</strong>”), as modified by this Agreement, and will
+              be administered by the AAA.The AAA Rules and filing forms are
+              available online at <a href="http://www.adr.org">www.adr.org</a>,
+              by calling the AAA at 1-800-778-7879, or by contacting YouClip.The
+              arbitrator has exclusive authority to resolve any dispute relating
+              to the interpretation, applicability, or enforceability of this
+              binding arbitration agreement.
+            </li>
+            <li>
+              <span class="underline">Notice; Process.</span> A party who
+              intends to seek arbitration must first send a written notice of
+              the dispute to the other party by U.S. Mail or email
+              (“<strong>Notice</strong>”). YouClip’s address for Notice is:
+              youclip@gmail.com. The Notice must: (i) describe the nature and
+              basis of the claim or dispute; and (ii) set forth the specific
+              relief sought (“<strong>Demand</strong>”).The parties will make
+              good faith efforts to resolve the claim directly, but if the
+              parties do not reach an agreement to do so within 30 days after
+              the Notice is received, you or YouClip may commence an arbitration
+              proceeding.During the arbitration, the amount of any settlement
+              offer made by you or YouClip must not be disclosed to the
+              arbitrator until after the arbitrator makes a final decision and
+              award, if any.If the dispute is finally resolved through
+              arbitration in your favor with a monetary award that exceeds the
+              last written settlement amount offered by YouClip prior to
+              selection of an arbitrator, then YouClip will pay you the highest
+              of the following: (i) the amount awarded by the arbitrator, if
+              any; (ii) the last written settlement amount offered by YouClip in
+              settlement of the dispute prior to the arbitrator’s award; or
+              (iii) $15,000.
+            </li>
+            <li>
+              <span class="underline">Fees.</span> If you commence arbitration
+              in accordance with this Agreement, YouClip will reimburse you for
+              your payment of the filing fee, unless your claim is for more than
+              $15,000 or as set forth below, in which case the payment of any
+              fees will be decided by the AAA Rules.Any arbitration hearing will
+              take place at a location to be agreed upon in New York, New York,
+              but if the claim is for $15,000 or less, you may choose whether
+              the arbitration will be conducted: (i) solely on the basis of
+              documents submitted to the arbitrator; (ii) through a
+              non-appearance based telephone hearing; or (iii) by an in-person
+              hearing as established by the AAA Rules in the county (or parish)
+              of your billing address.If the arbitrator finds that either the
+              substance of your claim or the relief sought in the Demand is
+              frivolous or brought for an improper purpose (as measured by the
+              standards set forth in Federal Rule of Civil Procedure 11(b)),
+              then the payment of all fees will be governed by the AAA Rules. In
+              that case, you agree to reimburse YouClip for all monies
+              previously disbursed by it that are otherwise your obligation to
+              pay under the AAA Rules.Regardless of the manner in which the
+              arbitration is conducted, the arbitrator must issue a reasoned
+              written decision sufficient to explain the essential findings and
+              conclusions on which the decision and award, if any, are
+              based.Each party agrees that such written decision, and
+              information exchanged during arbitration, will be kept
+              confidential except to the extent necessary to enforce or permit
+              limited judicial review of the award.The arbitrator may make
+              rulings and resolve disputes as to the payment and reimbursement
+              of fees or expenses at any time during the proceeding and upon
+              request from either party made within 14 days of the arbitrator’s
+              ruling on the merits.
+            </li>
+            <li>
+              <span class="underline">No Class Actions.</span> YOU AND YouClip
+              AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN YOUR OR
+              ITS INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN
+              ANY PURPORTED CLASS OR REPRESENTATIVE PROCEEDING. Further, unless
+              both you and YouClip agree otherwise, the arbitrator may not
+              consolidate more than one person’s claims, and may not otherwise
+              preside over any form of a representative or class proceeding.
+            </li>
+            <li>
+              <span class="underline"
+                >Modifications to this Arbitration Provision.</span
+              >
+              Except as otherwise provided in this Agreement, if YouClip makes
+              any future change to this arbitration provision, other than a
+              change to YouClip’s address for Notice, then you may reject the
+              change by sending us written notice within 30 days of the change
+              to YouClip’s address for Notice, in which case this arbitration
+              provision, as in effect immediately prior to the changes you
+              rejected, will continue to govern any disputes between you and
+              YouClip.
+            </li>
+            <li>
+              <span class="underline">Enforceability.</span> If Section 10.f
+              above is found to be unenforceable or if the entirety of this
+              Section 10 is found to be unenforceable, then the entirety of this
+              Section 10 will be null and void.
+            </li>
+          </ol>
+          <li class="list-top-heading">
+            Limitation of Liability and Disclaimer of Warranties.
           </li>
-          <li>
-            前項各号のいずれかに該当した場合，ユーザーは，当然に運営チームに対する一切の債務について期限の利益を失い，その時点において負担する一切の債務を直ちに一括して弁済しなければなりません。
+          <p>
+            <strong
+              >THE PROVISIONS IN THIS SECTION 11 APPLY TO THE FULLEST EXTENT
+              PERMITTED BY LAW</strong
+            >:
+          </p>
+          <ol class="lower-latin">
+            <li>
+              YouClip, ITS AFFILIATES, AND THEIR RESPECTIVE OFFICERS, DIRECTORS,
+              EMPLOYEES, AGENTS, SUPPLIERS AND LICENSORS (COLLECTIVELY,
+              THE&nbsp;“<strong>YouClip PARTIES</strong>”) MAKE NO WARRANTIES OR
+              REPRESENTATIONS ABOUT THE SERVICE AND ANY CONTENT AVAILABLE ON THE
+              SERVICE, INCLUDING, BUT NOT LIMITED TO, THE ACCURACY, RELIABILITY,
+              COMPLETENESS, TIMELINESS, OR RELIABILITY THEREOF.THE YouClip
+              PARTIES WILL NOT BE SUBJECT TO LIABILITY FOR THE TRUTH, ACCURACY,
+              OR COMPLETENESS OF ANY CONTENT OR ANY OTHER INFORMATION CONVEYED
+              TO ANY user, OR FOR ERRORS, MISTAKES, OR OMISSIONS THEREIN, OR FOR
+              ANY DELAYS OR INTERRUPTIONS OF THE DATA OR INFORMATION STREAM FROM
+              WHATEVER CAUSE.TO THE FULLEST EXTENT PERMITTED BY LAW, AS A user,
+              YOU AGREE THAT YOU USE THE SERVICE AND ANY CONTENT AT YOUR OWN
+              RISK.
+            </li>
+            <li>
+              THE YouClip PARTIES DO NOT WARRANT THAT THE SERVICE WILL OPERATE
+              ERROR FREE, OR THAT THE SERVICE AND ANY CONTENT ARE FREE OF
+              COMPUTER VIRUSES OR SIMILAR CONTAMINATION OR DESTRUCTIVE
+              FEATURES.IF YOUR USE OF THE SERVICE OR ANY CONTENT RESULTS IN THE
+              NEED FOR SERVICING OR REPLACING EQUIPMENT OR DATA, NO YouClip
+              PARTY WILL BE RESPONSIBLE FOR THOSE COSTS.
+            </li>
+            <li>
+              THE SERVICE AND ALL CONTENT ARE PROVIDED ON AN “AS IS” AND “AS
+              AVAILABLE” BASIS WITHOUT ANY WARRANTIES OF ANY KIND.TO THE FULLEST
+              EXTENT PERMITTED BY LAW, THE YouClip PARTIES DISCLAIM ALL
+              WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE WARRANTIES OF
+              TITLE, MERCHANTABILITY, NON-INFRINGEMENT OF THIRD PARTY RIGHTS,
+              AND FITNESS FOR A PARTICULAR PURPOSE.
+            </li>
+            <li>
+              IN NO EVENT WILL ANY YouClip PARTY BE LIABLE FOR ANY SPECIAL,
+              INDIRECT, PUNITIVE, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, LOST
+              PROFITS, OR DAMAGES RESULTING FROM LOST DATA OR BUSINESS
+              INTERRUPTION RESULTING FROM, OR IN CONNECTION WITH, THE USE OR
+              INABILITY TO USE THE SERVICE AND ANY CONTENT, WHETHER BASED ON
+              WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE), OR ANY OTHER
+              LEGAL THEORY, EVEN IF SUCH YouClip PARTY HAS BEEN ADVISED OF THE
+              POSSIBILITY OF SUCH DAMAGES. YouClip’S LIABILITY, AND THE
+              LIABILITY OF ANY OTHER YouClip PARTIES, TO YOU OR ANY THIRD
+              PARTIES IN ANY CIRCUMSTANCE IS LIMITED TO $100.
+            </li>
+          </ol>
+          <li class="list-top-heading">Third Party Disputes.</li>
+          <p>
+            YouClip IS NOT AFFILIATED WITH ANY SERVICE PROVIDER, OR OTHER THIRD
+            PARTY SERVICE, AND ANY DISPUTE YOU HAVE WITH ANY SERVICE PROVIDER,
+            THIRD PARTY SERVICE, OR OTHER THIRD PARTY, INCLUDING, WITHOUT
+            LIMITATION, ANY OTHER USER OF THE SERVICE IS DIRECTLY BETWEEN YOU
+            AND SUCH THIRD PARTY, AND, TO THE FULLEST EXTENT PERMITTED BY LAW,
+            YOU IRREVOCABLY RELEASE THE YouClip PARTIES FROM ANY AND ALL CLAIMS,
+            DEMANDS, AND DAMAGES (ACTUAL AND CONSEQUENTIAL) OF EVERY KIND AND
+            NATURE, KNOWN AND UNKNOWN, ARISING OUT OF OR IN ANY WAY CONNECTED
+            WITH SUCH DISPUTES.
+          </p>
+          <li class="list-top-heading">Indemnification.</li>
+          <p>
+            To the fullest extent permitted by law, you agree to defend,
+            indemnify, and hold harmless the YouClip Parties from and against
+            any claims, actions, or demands, including, without limitation,
+            reasonable legal and accounting fees, arising or resulting from your
+            breach of this Agreement or your access to, use, or misuse of the
+            YouClip Content or Service.YouClip will provide notice to you of any
+            such claim, suit, or proceeding. YouClip reserves the right to, at
+            your expense, assume the exclusive defense and control of any matter
+            which is subject to indemnification under this section. In such
+            case, you agree to cooperate with any reasonable requests assisting
+            YouClip’s defense of such matter. You shall at all times have the
+            option to participate in any matter or litigation, including, but
+            not limited to, participation through counsel of your own selection,
+            if desired, at your own expense.
+          </p>
+          <li class="list-top-heading">Termination of this Agreement.</li>
+          <ol class="lower-latin">
+            <li>
+              YouClip reserves the right, in its sole discretion, to restrict,
+              suspend, or terminate this Agreement and your access to all or any
+              part of the Service at any time and for any reason without prior
+              notice or liability.YouClip also reserves the right to change,
+              suspend, or discontinue all or any part of the Service at any time
+              without prior notice or liability.
+            </li>
+            <li>
+              Sections 1, 4.b, 4.c, 4.d, 5.d, 5.e, 5.f, 5.g, 5.h, 6, and
+              8through 14 survive the termination of this Agreement
+              indefinitely.
+            </li>
+          </ol>
+          <li class="list-top-heading">
+            Consent to Electronic Communications.
           </li>
-          <li>
-            運営チームは，本条に基づき運営チームが行った行為によりユーザーに生じた損害について，一切の責任を負いません。
-          </li>
-        </ol>
-        <br />
-        <h4>第8条（退会）</h4>
-        ユーザーは，運営チームの定める退会手続により，本サービスから退会できるものとします。
-        <br />
-        <br />
-        <h4>第9条（保証の否認および免責事項）</h4>
-        <ol>
-          <li>
-            運営チームは，本サービスに事実上または法律上の瑕疵（安全性，信頼性，正確性，完全性，有効性，特定の目的への適合性，セキュリティなどに関する欠陥，エラーやバグ，権利侵害などを含みます。）がないことを明示的にも黙示的にも保証しておりません。
-          </li>
-          <li>
-            運営チームは，本サービスに起因してユーザーに生じたあらゆる損害について一切の責任を負いません。ただし，本サービスに関する運営チームとユーザーとの間の契約（本規約を含みます。）が消費者契約法に定める消費者契約となる場合，この免責規定は適用されません。
-          </li>
-          <li>
-            前項ただし書に定める場合であっても，運営チームは，運営チームの過失（重過失を除きます。）による債務不履行または不法行為によりユーザーに生じた損害のうち特別な事情から生じた損害（運営チームまたはユーザーが損害発生につき予見し，または予見し得た場合を含みます。）について一切の責任を負いません。また，運営チームの過失（重過失を除きます。）による債務不履行または不法行為によりユーザーに生じた損害の賠償は，ユーザーから当該損害が発生した月に受領した利用料の額を上限とします。
-          </li>
-          <li>
-            運営チームは，本サービスに関して，ユーザーと他のユーザーまたは第三者との間において生じた取引，連絡または紛争等について一切責任を負いません。
-          </li>
-        </ol>
-        <br />
-        <h4>第10条（サービス内容の変更等）</h4>
-        運営チームは，ユーザーに通知することなく，本サービスの内容を変更しまたは本サービスの提供を中止することができるものとし，これによってユーザーに生じた損害について一切の責任を負いません。
-        <br />
-        <br />
-        <h4>第11条（利用規約の変更）</h4>
-        運営チームは，必要と判断した場合には，ユーザーに通知することなくいつでも本規約を変更することができるものとします。なお，本規約の変更後，本サービスの利用を開始した場合には，当該ユーザーは変更後の規約に同意したものとみなします。
-        <br />
-        <br />
-        <h4>第12条（個人情報の取扱い）</h4>
-        運営チームは，本サービスの利用によって取得する個人情報については，運営チーム「プライバシーポリシー」に従い適切に取り扱うものとします。
-        <br />
-        <br />
-        <h4>第13条（通知または連絡）</h4>
-        ユーザーと運営チームとの間の通知または連絡は，運営チームの定める方法によって行うものとします。運営チームは,ユーザーから,運営チームが別途定める方式に従った変更届け出がない限り,現在登録されている連絡先が有効なものとみなして当該連絡先へ通知または連絡を行い,これらは,発信時にユーザーへ到達したものとみなします。
-        <br />
-        <br />
-        <h4>第14条（権利義務の譲渡の禁止）</h4>
-        ユーザーは，運営チームの書面による事前の承諾なく，利用契約上の地位または本規約に基づく権利もしくは義務を第三者に譲渡し，または担保に供することはできません。
-        <br />
-        <br />
-        <h4>第15条（準拠法・裁判管轄）</h4>
-        <ol>
-          <li>本規約の解釈にあたっては，日本法を準拠法とします。</li>
-          <li>
-            本サービスに関して紛争が生じた場合には，運営チームの所在地を管轄する裁判所を専属的合意管轄とします。
-          </li>
-        </ol>
-        <br />
-        <h4 style="margin-top: 2.1rem;">改訂履歴</h4>
-        <ul>
-          <li>2021年4月1日　制定</li>
-        </ul>
+          <p>
+            By using the Service, you consent to receiving certain electronic
+            communications from us as further described in the Privacy Policy.
+            Please read the Privacy Policy to learn more about your choices
+            regarding our electronic communications practices.You agree that any
+            notices, agreements, disclosures, or other communications that we
+            send to you electronically will satisfy any legal communication
+            requirements, including that such communications be in writing.
+          </p>
+          <li class="list-top-heading">Miscellaneous.</li>
+          <p>
+            This Agreement is governed by the internal substantive laws of the
+            State of New York without respect to its conflict of laws
+            provisions. Except as expressly set forth elsewhere in this
+            Agreement, you expressly agree to submit to the exclusive personal
+            jurisdiction of the state and federal courts sitting in New York
+            County, New York. You agree that no joint venture, partnership,
+            employment, or agency relationship exists between you and YouClip as
+            a result of this Agreement or use of the Service.You further
+            acknowledge that by submitting user Content, no confidential,
+            fiduciary, contractually-impliedor other relationship is created
+            between you and YouClip other than pursuant to this Agreement. If any
+            provision of this Agreement is found to be invalid by any court
+            having competent jurisdiction, then the invalidity of such provision
+            will not affect the validity of the remaining provisions of this
+            Agreement, which will remain in full force and effect. Failure of
+            YouClip to act on or enforce any provision of this Agreement will
+            not be construed as a waiver of that provision or any other
+            provision in this Agreement.No waiver will be effective against
+            YouClip unless made in writing, and no such waiver will be construed
+            as a waiver in any other or subsequent instance.Except as expressly
+            agreed by YouClip and you, this Agreement constitutes the entire
+            agreement between you and YouClip with respect to the subject matter
+            hereof, and supersedes all previous or contemporaneous agreements,
+            whether written or oral, between the parties with respect to the
+            subject matter herein.The section headings are provided merely for
+            convenience and will not be given any legal import.This Agreement
+            will inure to the benefit of our successors and assigns.YouClip may
+            assign this Agreement, including all its rights hereunder, without
+            restriction.You may not assign this Agreement or any of the rights
+            or licenses granted hereunder, directly or indirectly, including by
+            sale, merger, change of control, operation of law, or otherwise,
+            without the prior express written consent of YouClip.
+          </p>
+          <li class="list-top-heading">Contact Us.</li>
+          <p>
+            If you would like to contact us in connection with your use of the
+            Service, then please contact us via Email: youclip@gmail.com.
+          </p>
+        </ol> -->
       </v-card-text>
     </v-card>
   </div>
