@@ -87,7 +87,7 @@
 
   "Home": {
     "MetaInfo": {
-      "title": "YouClip - YouTube online clipping site",
+      "title": "YouClip - YouTube online clipping app",
       "description": "YouClip is YouTube online clipping app. You can highlight and share your favorite moments of YouTube videos (e.g. Gaming, VTuber, etc) with no video editing experience needed. Also you can enjoy popular clips other fans created."
     },
     "data": {
@@ -169,7 +169,7 @@
   },
 
   "UserGuide": {
-    "subtitle": "YouTube online clipping site",
+    "subtitle": "YouTube online clipping app",
     "useCase": "Useful in such cases",
     "howToClip": "How to clip",
     "MetaInfo": {
@@ -498,7 +498,7 @@
   "Navbar": {
     "searchYouTubeClips": "search YouTube clips",
     "cancel": "Cancel",
-    "subtitle": "YouTube online clipping site",
+    "subtitle": "YouTube online clipping app",
     "data": {
       "home": "Home",
       "aboutYouClip": "About YouClip",
