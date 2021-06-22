@@ -151,7 +151,7 @@
               responsible for the security of your Account, and are fully
               responsible for all activities that occur through the use of your
               credentials.You will notify YouClip immediately at
-              youclip@gmail.com if you suspect or know of any unauthorized use
+              youclipteam@gmail.com if you suspect or know of any unauthorized use
               of your log-in credentials or any other breach of security with
               respect to your Account. YouClip will not be liable for any loss
               or damage arising from unauthorized use of your credentials prior
@@ -377,7 +377,7 @@
               YouClip may determine in its sole discretion (collectively,
               “<strong>Objectionable Content</strong>”).If you encounter any
               Objectionable Content on the Service, then please email YouClip at
-              youclip@gmail.com. You acknowledge and agree that YouClip provides
+              youclipteam@gmail.com. You acknowledge and agree that YouClip provides
               you the right to report Objectionable Content as a courtesy, and
               YouClip has no obligation to remove or take any other action with
               respect to any Objectionable Content on the Service that you
@@ -647,7 +647,7 @@
               Infringement (the “<strong>Designated Agent</strong>”) can be
               contacted at:
             </li>
-            <p>Via Email: youclip@gmail.com</p>
+            <p>Via Email: youclipteam@gmail.com</p>
             <li>
               <span class="underline">Counter Notification.</span> If you
               receive a notification from YouClip that material made available
@@ -790,7 +790,7 @@
               intends to seek arbitration must first send a written notice of
               the dispute to the other party by U.S. Mail or email
               (“<strong>Notice</strong>”). YouClip’s address for Notice is:
-              youclip@gmail.com. The Notice must: (i) describe the nature and
+              youclipteam@gmail.com. The Notice must: (i) describe the nature and
               basis of the claim or dispute; and (ii) set forth the specific
               relief sought (“<strong>Demand</strong>”).The parties will make
               good faith efforts to resolve the claim directly, but if the
@@ -1018,7 +1018,7 @@
           <li class="list-top-heading">Contact Us.</li>
           <p>
             If you would like to contact us in connection with your use of the
-            Service, then please contact us via Email: youclip@gmail.com.
+            Service, then please contact us via Email: youclipteam@gmail.com.
           </p>
         </ol> -->
       </v-card-text>

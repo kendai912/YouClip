@@ -96,7 +96,7 @@
         settings page. You can do this by visiting your profile settings page:
         https://youclip.app/mypage/edit. Where your user profile does not allow
         you to correct or update your details, or where you wish your personal
-        data to be removed from our systems contact us via youclip@gmail.com<br />
+        data to be removed from our systems contact us via youclipteam@gmail.com<br />
         <br />
         <br />
         <h4>Cookies</h4>
@@ -126,7 +126,7 @@
         <br />
         <h4>Owner and Data Controller</h4>
         YouClip<br />
-        <br />Owner contact email: youclip@gmail.com
+        <br />Owner contact email: youclipteam@gmail.com
         <br />
         <br /> -->
       </v-card-text>
