@@ -255,7 +255,6 @@ const actions = {
       context.commit("setYTSearchPageToken", pageToken);
       //searchとvideosのAPI検索結果をまとめてYTresultに格納
       let YTresult = [];
-      console.log(res);
       for (let i = 0; i < res.length; i++) {
         YTresult[i] = {
           youtubeId: res[i].video.id,

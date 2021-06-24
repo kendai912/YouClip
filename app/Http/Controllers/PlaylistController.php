@@ -969,6 +969,34 @@ class PlaylistController extends Controller
         );
     }
 
+    public function clearCustomThumbnail(Request $request)
+    {
+        $playlist = Playlist::find($request->playlistId);
+        
+        //S3に保存されている既存のサムネイルを削除
+        if ($playlist->custom_thumbnail) {
+            try {
+                Storage::disk('s3')->delete('thumbs/'.$playlist->custom_thumbnail);
+            } catch (\Exception $e) {
+                \Log::debug($e->getMessage());
+                // insert query
+            }
+        }
+        
+        //plyalistsテーブルのcustom_thumbnailをクリア
+        $playlist->custom_thumbnail = "";
+        $playlist->save();
+
+        return response()->json(
+            [
+                'customThumbnail' => ""
+            ],
+            201,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
     public function saveCustomThumbnail(Request $request)
     {
         $tagController = app()->make('App\Http\Controllers\TagController');
@@ -977,48 +1005,52 @@ class PlaylistController extends Controller
         $startSec = $tagController->convertToSec($request->start);
         $customThumbnail = $tagController->getPreviewThumbFileName($request);
 
-        //plyalistsテーブルのcustom_thumbnailにファイル名を保存
-        $playlist = Playlist::find($request->playlistId);
-        //既存のS3に保存されているサムネイルを削除
-        if ($playlist->custom_thumbnail) {
-            Storage::disk('s3')->delete('thumbs/'.$playlist->custom_thumbnail);
-        }
-        $playlist->custom_thumbnail = $customThumbnail;
-        $playlist->save();
-
         //ダウンロードリンクの取得
         $ytDirectUrl = $tagController->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
 
-        //サムネイル用の画像を取得
-        $tempFile = 'temp'. "-" . rand() .'.webp';
-        $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$tempFile.' 2>&1';
-        exec($cmd_webp);
+        if ($request->telops) {
+            //サムネイル用の画像を取得
+            $tempFile = 'temp'. "-" . rand() .'.webp';
+            $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$tempFile.' 2>&1';
+            exec($cmd_webp);
 
-        //テキストを画像に合成
-        $cmd_filter_start = 'ffmpeg -i '.storage_path()."/app/public/imgs/".$tempFile.' -filter_complex "';
-        $cmd_filter_end = '" '.storage_path()."/app/public/imgs/".$customThumbnail;
-        $cmd_drawtext = '';
-        foreach ($request->telops as $key => $telop) {
-            $text_drawtext = $telop['text'];
-            $position_drawtext = $this->convertToDrawtextPosition($telop['position']);
-            $fontcolor_drawtext = $telop['color'];
-            $fontsize_drawtext = $this->convertToDrawtextFontsize($telop['size']);
-            $connection_drawtext = '';
+            //テキストを画像に合成
+            $cmd_filter_start = 'ffmpeg -i '.storage_path()."/app/public/imgs/".$tempFile.' -filter_complex "';
+            $cmd_filter_end = '" '.storage_path()."/app/public/imgs/".$customThumbnail;
+            $cmd_drawtext = '';
+            foreach ($request->telops as $key => $telop) {
+                $text_drawtext = $telop['text'];
+                $position_drawtext = $this->convertToDrawtextPosition($telop['position']);
+                $fontcolor_drawtext = $telop['color'];
+                $fontsize_drawtext = $this->convertToDrawtextFontsize($telop['size']);
+                $connection_drawtext = '';
 
-            if ($key > 0) {
-                $connection_drawtext = ',';
+                if ($key > 0) {
+                    $connection_drawtext = ',';
+                }
+                $cmd_drawtext .=  $connection_drawtext.'drawtext=fontfile='.storage_path().'/app/public/fonts/meiryo.ttc:text='.$text_drawtext.$position_drawtext.':fontcolor='.$fontcolor_drawtext.':bordercolor=black:borderw=1:fontsize='.$fontsize_drawtext;
             }
-            $cmd_drawtext .=  $connection_drawtext.'drawtext=fontfile='.storage_path().'/app/public/fonts/meiryo.ttc:text='.$text_drawtext.$position_drawtext.':fontcolor='.$fontcolor_drawtext.':bordercolor=black:borderw=1:fontsize='.$fontsize_drawtext;
+            $cmd_filter_drawtext = $cmd_filter_start.$cmd_drawtext.$cmd_filter_end;
+            exec($cmd_filter_drawtext);
+        } else {
+            //サムネイル用の画像を取得
+            $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$customThumbnail.' 2>&1';
+            exec($cmd_webp);
         }
-        $cmd_filter_drawtext = $cmd_filter_start.$cmd_drawtext.$cmd_filter_end;
-        exec($cmd_filter_drawtext);
 
         //S3に保存
         Storage::disk('s3')->putFileAs('thumbs', new File(storage_path()."/app/public/imgs/".$customThumbnail), $customThumbnail, 'public');
 
         //一時的にローカルに保存したファイルを削除
-        unlink(storage_path(). "/app/public/imgs/" . $tempFile);
+        if ($request->telops) {
+            unlink(storage_path(). "/app/public/imgs/" . $tempFile);
+        }
         unlink(storage_path(). "/app/public/imgs/" . $customThumbnail);
+
+        //S3に保存後にplyalistsテーブルのcustom_thumbnailにファイル名を保存(S3保存前だとTitleページで空のimageが読み込まれてしまうので注意)
+        $playlist = Playlist::find($request->playlistId);
+        $playlist->custom_thumbnail = $customThumbnail;
+        $playlist->save();
 
         return response()->json(
             [

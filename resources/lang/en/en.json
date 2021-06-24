@@ -369,7 +369,7 @@
     "optionalThumbnailSetting": "(Optional) Thumbnail setting",
     "selectEyeCatchingScene": "Select a scene that shows what's in your clip. A good thumbnail stands out and draws viewers' attention",
     "ableToInsertText": "Text can be inserted",
-    "selectCustomThumbnail": "Select custom thumbnail",
+    "selectCustomThumbnail": "Change thumbnail",
     "description": "(Optional) Description of clip",
     "save": "Save (You can edit later)",
     "data": {
@@ -443,7 +443,7 @@
     },
     "methods": {
       "setCustomThumbnail": "Set custom thumbnail",
-      "finishedSettingCustomThumbnail": "finished setting custom thumbnail"
+      "finishedSettingCustomThumbnail": "Finished setting a custom thumbnail"
     }
   },
 
@@ -464,8 +464,7 @@
   },
 
   "Bordal": {
-    "welcomeToYouClip": "Welcome to YouClip",
-    "letsClipFavoriteScenes": "Let's clip your favorite scenes!",
+    "letsClipFavoriteScenes": "Let's clip your favorite scene",
     "usefulInSuchCases": "Useful in such cases",
     "noPromptMeAgain": "Don't prompt me about this again.",
     "return": "Return",

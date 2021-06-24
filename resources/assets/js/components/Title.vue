@@ -64,18 +64,33 @@
                   </v-card>
                 </v-row>
                 <v-row class="ma-0 pa-0">
-                  <v-col class="ma-0 pa-2">
+                  <v-col class="ma-0 pa-2" cols="5">
                     <div style="position: relative;">
                       <v-img
                         class="align-end rounded"
                         max-height="266.66px"
                         v-bind:src="thumbStoragePath + thumbnail"
+                        lazy-src="/storage/imgs/dummy-image.jpg"
+                        alt="Custom thumbnail"
                         aspect-ratio="1.7777"
+                        v-bind:key="resetKey"
                       >
+                        <template v-slot:placeholder>
+                          <v-row
+                            class="fill-height ma-0"
+                            align="center"
+                            justify="center"
+                          >
+                            <v-progress-circular
+                              indeterminate
+                              color="grey lighten-5"
+                            ></v-progress-circular>
+                          </v-row>
+                        </template>
                       </v-img>
                     </div>
                   </v-col>
-                  <v-col align-self="center" class="ma-0 pa-2">
+                  <v-col align-self="center" class="ma-0 pa-2" cols="7">
                     <v-btn
                       rounded
                       color="primary"
@@ -173,6 +188,7 @@ export default {
       newPlaylistId: "playlist/newPlaylistId",
       currentCategory: "playlist/currentCategory",
       thumbnail: "playlist/thumbnail",
+      resetKey: "playlist/resetKey",
     }),
     privacySetting: {
       get() {
@@ -313,7 +329,7 @@ export default {
       this.initialize();
     },
   },
-  async mounted() {
+  async created() {
     await this.initialize();
 
     //highlightHeaderを設定
@@ -326,7 +342,7 @@ export default {
       this.myPlaylistToSave
     );
 
-    //デフォルトのサムネイルを取得
+    //サムネイルを取得
     await this.getThumbnail(this.myPlaylistToSave);
 
     if (this.currentCategory == "Sports") {

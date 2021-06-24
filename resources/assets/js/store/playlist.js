@@ -750,6 +750,24 @@ const actions = {
       context.commit("setThumbnail", response.data.thumbnail);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    } else {
+      // 上記以外で失敗した時
+      context.commit("error/setCode", response.status, { root: true });
+    }
+  },
+
+  async clearCustomThumbnail(context, params) {
+    const response = await axios.post(
+      "/api/playlist/clearCustomThumbnail",
+      params
+    );
+    if (response.status == CREATED) {
+      context.commit("setThumbnail", "");
+      context.commit("setResetKey", !context.getters["resetKey"]);
+    } else if (response.status == INTERNAL_SERVER_ERROR) {
+      // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
     } else {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });
@@ -765,6 +783,7 @@ const actions = {
       context.commit("setThumbnail", response.data.customThumbnail);
     } else if (response.status == INTERNAL_SERVER_ERROR) {
       // 失敗した時
+      context.commit("error/setCode", response.status, { root: true });
     } else {
       // 上記以外で失敗した時
       context.commit("error/setCode", response.status, { root: true });

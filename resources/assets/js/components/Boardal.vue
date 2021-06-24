@@ -1,9 +1,9 @@
 <template>
   <v-dialog v-if="!isFinished" v-model="boardal" max-width="700px">
-    <v-card flat>
+    <v-card flat color="orange lighten-5">
       <v-window v-model="onboarding">
         <v-window-item v-for="n in length" :key="`card-${n}`">
-          <v-card color="transparent">
+          <v-card color="orange lighten-5">
             <v-row
               class="fill-height px-3"
               align="center"
@@ -12,27 +12,22 @@
               v-if="onboarding == 0"
             >
               <v-col class="ma-0 pa-0">
-                <v-row class="ma-2 mt-4 pa-0" align="center" justify="center">
-                  <span class="fz-17 font-weight-black">{{
-                    $t("Bordal.welcomeToYouClip")
-                  }}</span>
+                <v-row class="ma-2 mb-0 pa-0" align="center" justify="center">
+                  <v-img
+                    src="/storage/logos/YouClip-removebg-preview.png"
+                    max-width="400px"
+                    width="100%"
+                    alt="YouClip logo"
+                  />
                 </v-row>
                 <v-row
-                  class="ma-2 pa-0 text-center"
+                  class="ma-2 mt-0 mb-8 pa-0"
                   align="center"
                   justify="center"
                 >
-                  <span class="fz-14">{{
+                  <span class="fz-17">{{
                     $t("Bordal.letsClipFavoriteScenes")
                   }}</span>
-                </v-row>
-                <v-row class="ma-2 pa-0" align="center" justify="center">
-                  <v-img
-                    src="/storage/imgs/YouClip-Onboarding1.png"
-                    max-width="400px"
-                    width="100%"
-                    alt="YouClip Onboarding1"
-                  />
                 </v-row>
               </v-col>
             </v-row>
@@ -43,6 +38,40 @@
               justify="center"
               width="100%"
               v-if="onboarding == 1"
+            >
+              <v-col class="ma-0 pa-0">
+                <v-row class="ma-2 mt-4 pa-0" align="center" justify="center">
+                  <span class="fz-17">YouClipって？</span>
+                </v-row>
+                <v-row class="ma-2 pa-0" align="center" justify="center">
+                  <v-col class="ma-0 pa-2">
+                    <v-card
+                      class="ma-0 pa-0 text-center justify-center"
+                      justify-center
+                      flat
+                    >
+                      <v-img
+                        src="/storage/imgs/YouClip-Onboarding1.png"
+                        class="pa-0 ma-0"
+                        alt="what is youclip"
+                        v-bind:class="{ maxheight104px: isMobile }"
+                        contain
+                      />
+                      <span class="pa-0 ma-0 fz-14"
+                        >YouTubeの動画から好きな瞬間を切り抜いて紹介するサービスです</span
+                      >
+                    </v-card>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+
+            <v-row
+              class="fill-height px-3"
+              align="center"
+              justify="center"
+              width="100%"
+              v-if="onboarding == 2"
             >
               <v-col class="ma-0 pa-0">
                 <v-row class="ma-2 mt-4 pa-0" align="center" justify="center">
@@ -78,75 +107,6 @@
                 </v-row>
               </v-col>
             </v-row>
-
-            <!-- <v-row
-              class="fill-height px-3"
-              align="center"
-              justify="center"
-              width="100%"
-              v-if="onboarding == 2"
-            >
-              <v-col>
-                <v-row align="center" justify="center">
-                  <v-col class="ma-0 pa-0">
-                    <v-row
-                      class="ma-2 mt-4 pa-0"
-                      align="center"
-                      justify="center"
-                    >
-                      <span class="fz-17 font-weight-black"
-                        >切り抜き方は簡単</span
-                      >
-                    </v-row>
-                    <v-row class="ma-2 pa-0" align="center" justify="center">
-                      <v-carousel
-                        cycle
-                        interval="8000"
-                        height="290px"
-                        progress
-                        progress-color="grey"
-                        hide-delimiters
-                      >
-                        <v-carousel-item
-                          v-for="({ img, text }, i) in howToImgs"
-                          :key="i"
-                        >
-                          <v-row
-                            align="center"
-                            justify="center"
-                            class="ma-0 pa-0 pt-2"
-                          >
-                            <v-col class="ma-0 pa-0">
-                              <v-row
-                                align="center"
-                                justify="center"
-                                class="ma-0 pa-0 pt-2"
-                              >
-                                <span class="fz-14" style="color: black; ">{{
-                                  text
-                                }}</span>
-                              </v-row>
-                              <v-row
-                                align="center"
-                                justify="center"
-                                class="ma-0 pa-0 pt-2"
-                              >
-                                <v-img
-                                  v-bind:src="img"
-                                  alt="How-to image"
-                                  max-width="290"
-                                  contain
-                                />
-                              </v-row>
-                            </v-col>
-                          </v-row>
-                        </v-carousel-item>
-                      </v-carousel>
-                    </v-row>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row> -->
           </v-card>
         </v-window-item>
       </v-window>
@@ -155,7 +115,7 @@
         <v-container>
           <v-row align="center" justify="center">
             <v-checkbox
-              v-if="onboarding == 1"
+              v-if="onboarding == 2"
               v-model="notShowBoarding"
               class="small-checkbox ma-0 pa-0"
               v-bind:label="$t('Bordal.noPromptMeAgain')"
@@ -163,15 +123,34 @@
               dense
             ></v-checkbox>
           </v-row>
+
           <v-row>
-            <v-btn v-if="onboarding !== 0" text @click="prev">
-              {{ $t("Bordal.return") }}
-            </v-btn>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" depressed @click="next">
-              <span v-if="onboarding !== 1">{{ $t("Bordal.next") }}</span
-              ><span v-else>{{ $t("Bordal.use") }}</span>
-            </v-btn>
+            <v-col cols="4" class="pa-0 ma-0 text-left">
+              <v-btn v-if="onboarding !== 0" text @click="prev">
+                {{ $t("Bordal.return") }}
+              </v-btn>
+            </v-col>
+
+            <v-col class="pa-0 ma-0 text-center" align-self="center">
+              <v-item-group v-model="onboarding" class="text-center">
+                <v-item
+                  v-for="n in length"
+                  :key="`btn-${n}`"
+                  v-slot:default="{ active, toggle }"
+                >
+                  <v-btn x-small :input-value="active" icon @click="toggle">
+                    <v-icon>mdi-record</v-icon>
+                  </v-btn>
+                </v-item>
+              </v-item-group>
+            </v-col>
+
+            <v-col cols="4" class="pa-0 ma-0 text-right">
+              <v-btn color="primary" depressed @click="next">
+                <span v-if="onboarding !== 2">{{ $t("Bordal.next") }}</span
+                ><span v-else>{{ $t("Bordal.use") }}</span>
+              </v-btn>
+            </v-col>
           </v-row>
         </v-container>
       </v-card-actions>
@@ -188,7 +167,7 @@ export default {
   data() {
     return {
       boardal: true,
-      length: 2,
+      length: 3,
       onboarding: 0,
       notShowBoarding: false,
       isFinished: false,
@@ -207,28 +186,6 @@ export default {
           title: this.$t("Bordal.data.collectScene"),
         },
       ],
-      howToImgs: [
-        {
-          img: "/storage/imgs/YouClip-Onboarding2-1.png",
-          text: this.$t("Bordal.data.searchYtVideo"),
-        },
-        {
-          img: "/storage/imgs/YouClip-Onboarding2-2.png",
-          text: this.$t("Bordal.data.specifyTime"),
-        },
-        {
-          img: "/storage/imgs/YouClip-Onboarding2-3.png",
-          text: this.$t("Bordal.data.confirmScene"),
-        },
-        {
-          img: "/storage/imgs/YouClip-Onboarding2-4.png",
-          text: this.$t("Bordal.data.inputTitle"),
-        },
-        {
-          img: "/storage/imgs/YouClip-Onboarding2-5.png",
-          text: this.$t("Bordal.data.complete"),
-        },
-      ],
     };
   },
   props: {},
@@ -245,7 +202,7 @@ export default {
         this.onboarding - 1 < 0 ? this.length - 1 : this.onboarding - 1;
     },
     next() {
-      if (this.onboarding == 1) {
+      if (this.onboarding == 2) {
         if (this.notShowBoarding) {
           localStorage.setItem("notShowBoarding", JSON.stringify(true));
         }

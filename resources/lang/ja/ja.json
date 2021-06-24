@@ -369,7 +369,7 @@
     "optionalThumbnailSetting": "(任意)サムネイル設定",
     "selectEyeCatchingScene": "内容がわかる場面を選択し、目を引くサムネイルにしましょう",
     "ableToInsertText": "テキストも挿入できます",
-    "selectCustomThumbnail": "好きな場面をサムネイルに選択",
+    "selectCustomThumbnail": "カスタムサムネイルを選択",
     "description": "(任意)切り抜きの説明",
     "save": "保存する(あとからでも編集できます)",
     "data": {
@@ -464,8 +464,7 @@
   },
 
   "Bordal": {
-    "welcomeToYouClip": "YouClipへようこそ",
-    "letsClipFavoriteScenes": "YouTube動画の見所を切り抜こう！",
+    "letsClipFavoriteScenes": "YouTubeの好きな瞬間を切り抜こう",
     "usefulInSuchCases": "こんな時に便利",
     "noPromptMeAgain": "今後このメッセージを表示しない",
     "return": "戻る",

@@ -411,7 +411,8 @@ export default {
       };
 
       //カスタムサムネイルを保存
-      await this.$store.dispatch("playlist/saveCustomThumbnail", params);
+      await this.$store.dispatch("playlist/clearCustomThumbnail", params);
+      this.$store.dispatch("playlist/saveCustomThumbnail", params);
 
       //ローディングを非表示
       this.$store.commit("highlightHeader/setNotLoading");
