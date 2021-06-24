@@ -413,7 +413,7 @@
     "telopText": "Text",
     "insertBtn": "Insert",
     "deleteTelopConfirmation": "Are you sure you want to delete this text?",
-    "cancel": "Cancel",
+    "cancel": "Pick scene again",
     "delete": "Delete",
     "finish": "Finish",
     "data": {
@@ -465,15 +465,17 @@
 
   "Bordal": {
     "letsClipFavoriteScenes": "Let's clip your favorite scene",
-    "usefulInSuchCases": "Useful in such cases",
+    "whatIsYouClip": "What is YouClip?",
+    "youClipIsOnlineClippingApp": "YouClip is a free YouTube clipping app<br/> which you can <span class='orange--text text--darken-3'>cut & connect <br/>your favorite scenes.</span>",
+    "usefulInSuchCases": "Why use YouClip?",
     "noPromptMeAgain": "Don't prompt me about this again.",
     "return": "Return",
     "next": "Next",
-    "use": "Start YouClip",
+    "use": "Start",
     "data": {
-      "repeatScene": "Repeat a scene of the video ",
-      "shareScene": "Share scenes with friends",
-      "collectScene": "Collect favorite scenes",
+      "repeatScene": "<span class='orange--text text--darken-3'>Cut & repeat </span>favorite<br/> scenes of YouTube",
+      "shareScene": "<span class='orange--text text--darken-3'>Share</span> the favorite <br/>scenes with friends",
+      "collectScene": "<span class='orange--text text--darken-3'>Find & watch</span> trending <br/>YouTube scenes",
       "searchYtVideo": "1. Search YouTube video",
       "specifyTime": "2. Specify start/end time",
       "confirmScene": "3. Confirm the clipped scene",

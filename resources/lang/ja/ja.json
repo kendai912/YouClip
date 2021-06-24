@@ -20,7 +20,7 @@
     "clip": "切り抜き作成",
     "myPage": "マイページ",
     "data": {
-      "steps": "YouTube動画を切り抜く<br />(４ステップで簡単・非公開OK!)",
+      "steps": "YouTube動画を切り抜く<br />(簡単４ステップ・非公開可)",
       "buttonSkip": "スキップ",
       "buttonPrevious": "戻る",
       "buttonNext": "次へ",
@@ -369,7 +369,7 @@
     "optionalThumbnailSetting": "(任意)サムネイル設定",
     "selectEyeCatchingScene": "内容がわかる場面を選択し、目を引くサムネイルにしましょう",
     "ableToInsertText": "テキストも挿入できます",
-    "selectCustomThumbnail": "カスタムサムネイルを選択",
+    "selectCustomThumbnail": "サムネイルを選択",
     "description": "(任意)切り抜きの説明",
     "save": "保存する(あとからでも編集できます)",
     "data": {
@@ -413,7 +413,7 @@
     "telopText": "テキスト",
     "insertBtn": "挿入",
     "deleteTelopConfirmation": "選択したテキストを削除しますか？",
-    "cancel": "キャンセル",
+    "cancel": "場面を再度選択",
     "delete": "削除する",
     "finish": "完了",
     "data": {
@@ -464,16 +464,18 @@
   },
 
   "Bordal": {
-    "letsClipFavoriteScenes": "YouTubeの好きな瞬間を切り抜こう",
-    "usefulInSuchCases": "こんな時に便利",
+    "letsClipFavoriteScenes": "YouTubeの好きな場面を切り抜こう",
+    "whatIsYouClip": "YouClipって？",
+    "youClipIsOnlineClippingApp": "YouTubeの動画から<span class='orange--text text--darken-3'>好きな場面を<br />切り抜いて</span>紹介するサービスです",
+    "usefulInSuchCases": "どんなときに使うの？",
     "noPromptMeAgain": "今後このメッセージを表示しない",
     "return": "戻る",
     "next": "次へ",
     "use": "使ってみる",
     "data": {
-      "repeatScene": "動画の一部を繰り返し見返したい",
-      "shareScene": "みんなに動画のある場面を共有したい",
-      "collectScene": "色々な動画のお気に入りの場面を集めたい",
+      "repeatScene": "YouTubeの好きな瞬間を<br/><span class='orange--text text--darken-3'>切り抜きたい</span>",
+      "shareScene": "みんなにもその場面を<br/><span class='orange--text text--darken-3'>共有したい</span>",
+      "collectScene": "みんなの好きな場面を<br/><span class='orange--text text--darken-3'>知りたい</span>",
       "searchYtVideo": "① YouTube動画を検索",
       "specifyTime": "② 切り抜く時間を指定",
       "confirmScene": "③ 切り抜いた場面を確認",

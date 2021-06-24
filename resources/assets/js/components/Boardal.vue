@@ -16,7 +16,6 @@
                   <v-img
                     src="/storage/logos/YouClip-removebg-preview.png"
                     max-width="400px"
-                    width="100%"
                     alt="YouClip logo"
                   />
                 </v-row>
@@ -40,26 +39,47 @@
               v-if="onboarding == 1"
             >
               <v-col class="ma-0 pa-0">
-                <v-row class="ma-2 mt-4 pa-0" align="center" justify="center">
-                  <span class="fz-17">YouClipって？</span>
+                <v-row class="ma-0 pa-4" align="center" justify="center">
+                  <span
+                    class="fz-17 font-weight-black orange--text text--darken-3"
+                    >{{ $t("Bordal.whatIsYouClip") }}</span
+                  >
                 </v-row>
-                <v-row class="ma-2 pa-0" align="center" justify="center">
+                <v-row
+                  align="center"
+                  justify="center"
+                  v-bind:class="isMobile ? 'ma-0 pa-0' : 'ma-0 pa-0 pt-4'"
+                >
                   <v-col class="ma-0 pa-2">
                     <v-card
                       class="ma-0 pa-0 text-center justify-center"
                       justify-center
                       flat
+                      color="orange lighten-5"
                     >
-                      <v-img
-                        src="/storage/imgs/YouClip-Onboarding1.png"
-                        class="pa-0 ma-0"
-                        alt="what is youclip"
-                        v-bind:class="{ maxheight104px: isMobile }"
-                        contain
-                      />
-                      <span class="pa-0 ma-0 fz-14"
-                        >YouTubeの動画から好きな瞬間を切り抜いて紹介するサービスです</span
+                      <v-row
+                        class="ma-0 pa-2 pb-4"
+                        align="center"
+                        justify="center"
                       >
+                        <v-img
+                          src="/storage/logos/cut-video.svg"
+                          class="pa-0 ma-0"
+                          alt="what is youclip"
+                          max-width="200px"
+                          contain
+                        />
+                      </v-row>
+                      <v-row
+                        class="ma-0 pa-2 py-4"
+                        align="center"
+                        justify="center"
+                      >
+                        <span
+                          class="fz-14"
+                          v-html="$t('Bordal.youClipIsOnlineClippingApp')"
+                        ></span>
+                      </v-row>
                     </v-card>
                   </v-col>
                 </v-row>
@@ -74,15 +94,20 @@
               v-if="onboarding == 2"
             >
               <v-col class="ma-0 pa-0">
-                <v-row class="ma-2 mt-4 pa-0" align="center" justify="center">
-                  <span class="fz-17 font-weight-black">{{
-                    $t("Bordal.usefulInSuchCases")
-                  }}</span>
+                <v-row class="ma-0 pa-4" align="center" justify="center">
+                  <span
+                    class="fz-17 font-weight-black orange--text text--darken-3"
+                    >{{ $t("Bordal.usefulInSuchCases") }}</span
+                  >
                 </v-row>
-                <v-row class="ma-2 pa-0" align="center" justify="center">
+                <v-row
+                  align="center"
+                  justify="center"
+                  v-bind:class="isMobile ? 'ma-0 pa-0' : 'ma-0 pa-0 pt-4'"
+                >
                   <v-col
                     class="ma-0 pa-2"
-                    v-for="({ img, title }, i) in features"
+                    v-for="({ img, text }, i) in features"
                     :key="i"
                     cols="12"
                     md="4"
@@ -93,15 +118,28 @@
                       class="ma-0 pa-0 text-center justify-center"
                       justify-center
                       flat
+                      color="orange lighten-5"
                     >
-                      <v-img
-                        v-bind:src="img"
-                        class="pa-0 ma-0"
-                        v-bind:alt="title"
-                        v-bind:class="{ maxheight104px: isMobile }"
-                        contain
-                      />
-                      <span class="pa-0 ma-0 fz-14">{{ title }}</span>
+                      <v-row
+                        align="center"
+                        justify="center"
+                        v-bind:class="isMobile ? 'ma-0 pa-2' : 'ma-0 pa-2 pb-4'"
+                      >
+                        <v-img
+                          v-bind:src="img"
+                          class="pa-0 ma-0"
+                          v-bind:alt="text"
+                          v-bind:class="{ maxheight88px: isMobile }"
+                          contain
+                        />
+                      </v-row>
+                      <v-row
+                        align="center"
+                        justify="center"
+                        v-bind:class="isMobile ? 'ma-0 pa-2' : 'ma-0 pa-2 py-4'"
+                      >
+                        <span class="pa-0 ma-0 fz-14" v-html="text"></span>
+                      </v-row>
                     </v-card>
                   </v-col>
                 </v-row>
@@ -174,16 +212,16 @@ export default {
       isMobile: false,
       features: [
         {
-          img: "/storage/imgs/userguide-save.png",
-          title: this.$t("Bordal.data.repeatScene"),
+          img: "/storage/imgs/userguide-save.svg",
+          text: this.$t("Bordal.data.repeatScene"),
         },
         {
-          img: "/storage/imgs/userguide-share.png",
-          title: this.$t("Bordal.data.shareScene"),
+          img: "/storage/imgs/userguide-share.svg",
+          text: this.$t("Bordal.data.shareScene"),
         },
         {
-          img: "/storage/imgs/userguide-collect.png",
-          title: this.$t("Bordal.data.collectScene"),
+          img: "/storage/imgs/userguide-collect.svg",
+          text: this.$t("Bordal.data.collectScene"),
         },
       ],
     };
