@@ -20,7 +20,7 @@
     "clip": "Clip",
     "myPage": "My Page",
     "data": {
-      "steps": "Clip YouTube video!<br />(Easy 4 steps)",
+      "steps": "Clip YouTube video<br />(At least 1 min. Telops available)",
       "buttonSkip": "Skip",
       "buttonPrevious": "Return",
       "buttonNext": "Next",
@@ -297,7 +297,8 @@
 
   "Confirm": {
     "playingClippedScene": "Playing scene at {start}-{end}",
-    "insertTelopOption": "(Optional) Insert telops to currently playing scene",
+    "insertTelopOption": "(Optional) Insert telops to currently playing scene.",
+    "easyToUnderstand": "Telops make it easier to convey the content.",
     "telopPosition": "Position",
     "telopColor": "Color",
     "telopSize": "Size",

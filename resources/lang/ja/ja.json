@@ -20,7 +20,7 @@
     "clip": "切り抜き作成",
     "myPage": "マイページ",
     "data": {
-      "steps": "YouTube動画を切り抜く<br />(簡単４ステップ・非公開可)",
+      "steps": "YouTube動画を切り抜く<br />(最短１分・テロップ挿入可)",
       "buttonSkip": "スキップ",
       "buttonPrevious": "戻る",
       "buttonNext": "次へ",
@@ -298,6 +298,7 @@
   "Confirm": {
     "playingClippedScene": "切り抜いた場面({start}-{end})を再生中",
     "insertTelopOption": "(任意) いま再生中の画面にテロップを挿入",
+    "easyToUnderstand": "テロップを入れると、内容が伝わりやすくなります",
     "telopPosition": "位置",
     "telopColor": "色",
     "telopSize": "サイズ",

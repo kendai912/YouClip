@@ -46,9 +46,14 @@
             </v-col>
           </v-row>
 
-          <v-row class="ma-0 pa-0">
-            <v-col class="text-left pb-0"
-              >{{ $t("Confirm.insertTelopOption") }}
+          <v-row class="ma-0 pa-2 pl-3">
+            <v-col class="text-left ma-0 pa-0">
+              <v-row class="ma-0 pa-0">
+                {{ $t("Confirm.insertTelopOption") }}
+              </v-row>
+              <v-row class="ma-0 pa-0 fz-12">
+                {{ $t("Confirm.easyToUnderstand") }}
+              </v-row>
             </v-col>
           </v-row>
 
@@ -477,7 +482,10 @@ export default {
           self.$store.commit("highlightHeader/setNotLoading");
 
           //display editting a new scene completion snackbar
-          self.$store.commit("snackbar/setText", this.$t("Confirm.methods.sceneUpdated"));
+          self.$store.commit(
+            "snackbar/setText",
+            this.$t("Confirm.methods.sceneUpdated")
+          );
           self.$store.commit("snackbar/seVertical", false);
           self.$store.commit("snackbar/setSnackbar", true);
           self.$store.commit("snackbar/setTimeout", 5000);
@@ -518,7 +526,10 @@ export default {
           self.$store.commit("highlightHeader/setNotLoading");
 
           //display adding a new scene to existing playlist completion snackbar
-          self.$store.commit("snackbar/setText", this.$t("Confirm.methods.newSceneAdded"));
+          self.$store.commit(
+            "snackbar/setText",
+            this.$t("Confirm.methods.newSceneAdded")
+          );
           this.$store.commit("snackbar/seVertical", false);
           self.$store.commit("snackbar/setSnackbar", true);
           self.$store.commit("snackbar/setTimeout", 5000);
@@ -568,7 +579,10 @@ export default {
           self.$store.commit("highlightHeader/setNotLoading");
 
           //display adding a new scene to existing playlist completion snackbar
-          self.$store.commit("snackbar/setText", this.$t("Confirm.methods.clippedScene"));
+          self.$store.commit(
+            "snackbar/setText",
+            this.$t("Confirm.methods.clippedScene")
+          );
           this.$store.commit("snackbar/seVertical", false);
           self.$store.commit("snackbar/setSnackbar", true);
           self.$store.commit("snackbar/setTimeout", 5000);
