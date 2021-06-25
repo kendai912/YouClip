@@ -545,6 +545,11 @@ export default {
         this.$refs.ytSeekBar.setYtSeekbarWrapperTop();
       }
     },
+    $route(to, from) {
+      if (to.query.playlist != from.query.playlist) {
+        this.$router.go({ path: this.$router.currentRoute, force: true });
+      }
+    },
   },
   async created() {
     this.initialize();
