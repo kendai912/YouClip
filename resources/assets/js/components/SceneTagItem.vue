@@ -109,7 +109,10 @@
                         >
                           <span>{{ item.start }}</span>
                           <span style="font-size:8px;">-</span>
-                          <span>{{ item.end }}{{ $t("SceneTagItem.originalSceneTime") }}</span>
+                          <span
+                            >{{ item.end
+                            }}{{ $t("SceneTagItem.originalSceneTime") }}</span
+                          >
                         </div>
 
                         <div
@@ -317,6 +320,7 @@ export default {
       //ユーザーが作成したプレイリスト一覧を取得
       this.currentTagId = id;
       await this.$store.dispatch("playlist/loadMyCreatedPlaylist");
+      
       //プレイリストのカテゴリーを取得しセット
       await this.$store.dispatch(
         "playlist/getCurrentCategory",

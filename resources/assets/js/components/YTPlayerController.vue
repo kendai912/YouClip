@@ -50,9 +50,9 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <span style="font-size: calc(1rem * (12 / 14)); color: white"
-                  >{{ $t("YTPlayerController.back") }}</span
-                >
+                <span style="font-size: calc(1rem * (12 / 14)); color: white">{{
+                  $t("YTPlayerController.back")
+                }}</span>
               </v-col>
             </v-row>
           </v-col>
@@ -113,9 +113,9 @@
             </v-row>
             <v-row class="ma-0 pa-0">
               <v-col class="ma-0 pa-0">
-                <span style="font-size: calc(1rem * (12 / 14)); color: white"
-                  >{{ $t("YTPlayerController.next") }}</span
-                >
+                <span style="font-size: calc(1rem * (12 / 14)); color: white">{{
+                  $t("YTPlayerController.next")
+                }}</span>
               </v-col>
             </v-row>
           </v-col>

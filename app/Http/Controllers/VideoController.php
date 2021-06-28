@@ -181,6 +181,7 @@ class VideoController extends Controller
         }
         return $res->getBody();
     }
+    
     //get Youtube Category List from google API
     public function getYTRecentVideoList(Request $request)
     {
