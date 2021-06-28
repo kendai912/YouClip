@@ -434,13 +434,17 @@ class TagController extends Controller
         $previewThumbName = $this->getPreviewThumbFileName($request);
 
         //サムネイル用の画像を取得しS3に保存
-        // FFMpeg::openUrl($ytDirectUrl)->getFrameFromSeconds($startSec)->export()->toDisk('s3')->save('thumbs/'.$previewThumbName);
-        $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -qscale 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$previewThumbName.' 2>&1';
-        exec($cmd_webp);
-        Storage::disk('s3')->putFileAs('thumbs', new File(storage_path()."/app/public/imgs/".$previewThumbName), $previewThumbName, 'public');
+        try {
+            // FFMpeg::openUrl($ytDirectUrl)->getFrameFromSeconds($startSec)->export()->toDisk('s3')->save('thumbs/'.$previewThumbName);
+            $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -qscale 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$previewThumbName.' 2>&1';
+            exec($cmd_webp);
+            Storage::disk('s3')->putFileAs('thumbs', new File(storage_path()."/app/public/imgs/".$previewThumbName), $previewThumbName, 'public');
 
-        //一時的にローカルに保存したファイルを削除
-        unlink(storage_path(). "/app/public/imgs/" . $previewThumbName);
+            //一時的にローカルに保存したファイルを削除
+            unlink(storage_path(). "/app/public/imgs/" . $previewThumbName);
+        } catch (\Exception $e) {
+            \Log::debug($e->getMessage());
+        }
 
         //保存したサムネイル名をリターン
         return $previewThumbName;
@@ -457,12 +461,16 @@ class TagController extends Controller
         $previewGifName =  $this->getPreviewGifFileName($request);
 
         //プレビュー用のmp4を取得しS3に保存
-        $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -qscale 100 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
-        exec($cmd_gif);
-        Storage::disk('s3')->putFileAs('gifs', new File(storage_path()."/app/public/gifs/".$previewGifName), $previewGifName, 'public');
+        try {
+            $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -qscale 100 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
+            exec($cmd_gif);
+            Storage::disk('s3')->putFileAs('gifs', new File(storage_path()."/app/public/gifs/".$previewGifName), $previewGifName, 'public');
 
-        //一時的にローカルに保存したファイルを削除
-        unlink(storage_path(). "/app/public/gifs/" . $previewGifName);
+            //一時的にローカルに保存したファイルを削除
+            unlink(storage_path(). "/app/public/gifs/" . $previewGifName);
+        } catch (\Exception $e) {
+            \Log::debug($e->getMessage());
+        }
 
         //保存したプレビュー名をリターン
         return $previewGifName;
@@ -479,12 +487,16 @@ class TagController extends Controller
         $previewOgpName =  $this->getPreviewOgpFileName($request);
 
         //OGP用の画像を取得しS3に保存
-        $cmd_ogp = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -qscale 80 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/ogps/".$previewOgpName.' 2>&1';
-        exec($cmd_ogp);
-        Storage::disk('s3')->putFileAs('ogps', new File(storage_path()."/app/public/ogps/".$previewOgpName), $previewOgpName, 'public');
+        try {
+            $cmd_ogp = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -qscale 80 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/ogps/".$previewOgpName.' 2>&1';
+            exec($cmd_ogp);
+            Storage::disk('s3')->putFileAs('ogps', new File(storage_path()."/app/public/ogps/".$previewOgpName), $previewOgpName, 'public');
 
-        //一時的にローカルに保存したファイルを削除
-        unlink(storage_path(). "/app/public/ogps/" . $previewOgpName);
+            //一時的にローカルに保存したファイルを削除
+            unlink(storage_path(). "/app/public/ogps/" . $previewOgpName);
+        } catch (\Exception $e) {
+            \Log::debug($e->getMessage());
+        }
 
         //保存したプレビュー名をリターン
         return $previewOgpName;
