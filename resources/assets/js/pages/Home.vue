@@ -128,7 +128,7 @@ export default {
         { tabIcon: "fas fa-fire", tabName: this.$t("Home.data.popular") },
         { tabIcon: "fas fa-gamepad", tabName: "VTuber" },
         { tabIcon: "fas fa-gamepad", tabName: this.$t("Home.data.game") },
-        { tabIcon: "fas fa-running", tabName: this.$t("Home.data.sports") },
+        { tabIcon: "more_horiz", tabName: this.$t("Home.data.others") },
       ],
       page: 1,
       newPage: 1,
