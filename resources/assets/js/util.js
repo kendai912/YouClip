@@ -309,30 +309,6 @@ export default {
 
       return minutes + ":" + seconds;
     },
-    //APIで返ってきたdurationを分:秒に整形
-    convertTYdurationToMinSec(YTduration) {
-      if (YTduration.match(/PT(\d*)H(\d*)M(\d*)S/)) {
-        let result = YTduration.match(/PT(\d*)H(\d*)M(\d*)S/);
-        let hr = result[1];
-        let min = result[2];
-        let sec = result[3];
-        if (sec < 10) sec = "0" + sec;
-        return hr + ":" + min + ":" + sec;
-      } else if (YTduration.match(/PT(\d*)M(\d*)S/)) {
-        let result = YTduration.match(/PT(\d*)M(\d*)S/);
-        let min = result[1];
-        let sec = result[2];
-        if (sec < 10) sec = "0" + sec;
-
-        return min + ":" + sec;
-      } else if (YTduration.match(/PT(\d*)S/)) {
-        let result = YTduration.match(/PT(\d*)S/);
-        let sec = result[1];
-        if (sec < 10) sec = "0" + sec;
-
-        return "0:" + sec;
-      }
-    },
     //数値の桁変換を行う関数
     convertNumDigit(numTxt) {
       if (this.$i18n.locale == "ja") {

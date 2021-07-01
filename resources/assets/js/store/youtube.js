@@ -88,18 +88,18 @@ const mutations = {
       let min = result[1];
       let sec = result[2];
       if (sec < 10) sec = "0" + sec;
-      state.newVideoData.duration = min + ":" + sec;
+      state.newVideoData.duration = "0:" + min + ":" + sec;
     } else if (data.match(/PT(\d*)M/)) {
       let result = data.match(/PT(\d*)M/);
       let min = result[1];
-      state.newVideoData.duration = min + ":00";
+      state.newVideoData.duration = "0:" + min + ":00";
     } else if (data.match(/PT(\d*)S/)) {
       let result = data.match(/PT(\d*)S/);
       let sec = result[1];
       if (sec < 10) sec = "0" + sec;
       state.newVideoData.duration = "0:" + "0:" + sec;
     } else {
-      console.log("API duration format error")
+      console.log("API duration format error");
     }
   },
   setNewVideoCategory(state, data) {
