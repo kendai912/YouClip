@@ -445,6 +445,8 @@ class TagController extends Controller
         } catch (\Exception $e) {
             \Log::debug($e->getMessage());
         }
+        //デバッグ用
+        \Log::debug($cmd_webp);
 
         //保存したサムネイル名をリターン
         return $previewThumbName;
