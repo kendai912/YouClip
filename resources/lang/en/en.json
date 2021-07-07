@@ -20,7 +20,7 @@
     "clip": "Clip",
     "myPage": "My Page",
     "data": {
-      "steps": "Clip YouTube video<br />(At least 1 min. Telops available)",
+      "steps": "Clip YouTube videos<br />(At least 1 min. Captioning available)",
       "buttonSkip": "Skip",
       "buttonPrevious": "Return",
       "buttonNext": "Next",
@@ -51,7 +51,7 @@
     "sort": "Sort (Drag & Drop)",
     "MetaInfo": {
       "title": "Edit playlist - YouClip",
-      "description": "Playlist edit page of YouClip - YouTube online clipping app. You can modify the start/end time and the thumbnail of a clip, add another scene ot the clip, etc."
+      "description": "Playlist editing page for YouClip, the free YouTube online clipping app. With YouClip, you can clip your favorite YouTube videos to create custom clips with unique start/end times, thumbnails, and even join different clips together."
     },
     "data": {
       "public": "Public",
@@ -67,7 +67,7 @@
     "originalSceneTime": "(original)",
     "delete": "Delete",
     "edit": "Edit",
-    "addToPlaylist": "Add to other playlist",
+    "addToPlaylist": "Add to other clips",
     "addNewScene": "Add new scene"
   },
 
@@ -81,14 +81,14 @@
   "Highlight": {
     "MetaInfo": {
       "title": "Clip - YouClip",
-      "description": "Create clip page of YouClip - YouTube online clipping app. You can highlight and share your favorite moments of YouTube videos (e.g. Gaming, VTuber, etc) with no video editing experience needed."
+      "description": "Create clip page for YouClip, the free YouTube online clipping app. You can clip and share your favorite moments of YouTube videos (e.g. Gaming, YouTuber, etc) with no video editing experience needed."
     }
   },
 
   "Home": {
     "MetaInfo": {
       "title": "YouClip - YouTube online clipping app",
-      "description": "YouClip is YouTube online clipping app. You can highlight and share your favorite moments of YouTube videos (e.g. Gaming, VTuber, etc) with no video editing experience needed. Also you can enjoy popular clips other fans created."
+      "description": "YouClip is a free YouTube clipping app. You can clip and share your favorite moments of YouTube videos with no video editing experience needed. Also You can enjoy popular clips created by other fans who share your passion or interests."
     },
     "data": {
       "popular": "Trending",
@@ -108,7 +108,7 @@
   "Result": {
     "MetaInfo": {
       "title": "Search result of [{searchQuery}] - YouClip",
-      "description": "Search result of [{searchQuery}] on YouClip - YouTube online clipping app."
+      "description": "Search result of [{searchQuery}] on YouClip, the free YouTube online clipping app."
     }
   },
 
@@ -118,7 +118,7 @@
     "login": "Login",
     "MetaInfo": {
       "title": "Login - YouClip",
-      "description": "Login page of YouClip - YouTube online clipping app."
+      "description": "Login page for YouClip, the free YouTube online clipping app."
     }
   },
 
@@ -130,7 +130,7 @@
     "signup": "Sign up",
     "MetaInfo": {
       "title": "My Page - YouClip",
-      "description": "My Page of YouClip - YouTube online clipping app. You can access to your created/liked clips after login."
+      "description": "My Page for YouClip, the free YouTube online clipping app. You can access to your created/liked clips after login."
     }
   },
 
@@ -142,7 +142,7 @@
     "signup": "Sign up",
     "MetaInfo": {
       "title": "Sign up - YouClip",
-      "description": "Sign up of YouClip - YouTube online clipping app. You can access to your created/liked clips after login."
+      "description": "Sign up page for YouClip, the free YouTube online clipping app. You can access to your created/liked clips after login."
     },
     "data": {
       "required": "Required",
@@ -169,17 +169,17 @@
   },
 
   "UserGuide": {
-    "subtitle": "YouTube online clipping app",
+    "subtitle": "Free YouTube clipping app",
     "useCase": "Useful in such cases",
     "howToClip": "How to clip",
     "MetaInfo": {
       "title": "About YouClip",
-      "description": "Introduction of YouClip - YouTube online clipping app. You can access to your created/liked clips after login."
+      "description": "Introduction of YouClip, the free YouTube online clipping app. You can access to your created/liked clips after login."
     },
     "data": {
-      "repeatScene": "Repeat a scene of the video ",
-      "shareScene": "Share scenes with friends",
-      "collectScene": "Collect favorite scenes",
+      "repeatScene": "<span class='orange--text text--darken-3'>Cut & repeat </span>your favorite<br/> YouTube scenes",
+      "shareScene": "<span class='orange--text text--darken-3'>Share</span> your favorite <br/>scenes with friends",
+      "collectScene": "<span class='orange--text text--darken-3'>Find & watch</span> trending <br/>YouTube scenes",
       "searchYtVideo": "1. Search YouTube video",
       "specifyTime": "2. Specify start/end time",
       "confirmScene": "3. Confirm the clipped scene",
@@ -197,7 +197,7 @@
     "report": "Report",
     "MetaInfo": {
       "title": "{playlistName} - YouClip",
-      "description": "[{playlistName}] clip playback page of YouClip - YouTube online clipping app."
+      "description": "[{playlistName}] clip playback page for YouClip, the free YouTube online clipping app."
     },
     "methods": {
       "messageWhenNotLogined": "Please login to like this clip"
@@ -226,7 +226,7 @@
       "commentRules": "Please enter your comment"
     },
     "methods": {
-      "messageWhenNotLogined": "Please login to comment.(Input data is retained)"
+      "messageWhenNotLogined": "Please login to comment. (Inputted data will be saved)"
     }
   },
 
@@ -271,8 +271,8 @@
 
   "YTvideoSelectBox": {
     "youtubeSearchResult": "YouTube search result",
-    "recentlyClippedYoutube": "Recently clipped YouTube video",
-    "searchVideoToClip": "Search YouTube video to clip"
+    "recentlyClippedYoutube": "Recently clipped YouTube videos",
+    "searchVideoToClip": "Search YouTube videos to clip"
   },
 
   "YTSearchBox": {
@@ -296,17 +296,17 @@
   },
 
   "Confirm": {
-    "playingClippedScene": "Playing scene at {start}-{end}",
-    "insertTelopOption": "(Optional) Insert telops to currently playing scene.",
-    "easyToUnderstand": "Telops make it easier to convey the content.",
+    "playingClippedScene": "Playing a scene at {start}-{end}",
+    "insertTelopOption": "(Recommended) Add captions to the currently playing scene.",
+    "easyToUnderstand": "Captions make it easier to convey your content to other users.",
     "telopPosition": "Position",
     "telopColor": "Color",
     "telopSize": "Size",
     "telopDuration": "Duration",
     "telopDurationSuffix": "sec.",
-    "telopText": "Telop",
+    "telopText": "Caption",
     "insert": "Insert",
-    "deleteDialogSubtitle": "Are you sure you want to delete this telop?",
+    "deleteDialogSubtitle": "Are you sure you want to delete this caption?",
     "cancel": "Cancel",
     "delete": "Delete",
     "next": "Next",
@@ -338,8 +338,8 @@
       "telop": "Telop"
     },
     "methods": {
-      "telopInsertPage": "(Optional) Insert telops",
-      "messageWhenNotLogined": "Please login to save clipped scene. (Input data is retained)",
+      "telopInsertPage": "(Recommended) Add captions",
+      "messageWhenNotLogined": "Please login to save your clipped scene. (Input data is retained)",
       "sceneUpdated": "Updated the scene",
       "newSceneAdded": "Added new scene",
       "clippedScene": "Saved clipped scene"
@@ -347,13 +347,13 @@
   },
 
   "SceneList": {
-    "clippedSceneList": "Clipped scene list",
-    "followingsArePlayedContinuously": "(Followings are played continuously)",
+    "clippedSceneList": "Your clipped scenes",
+    "followingsArePlayedContinuously": "(Scenes will be played in succession in the order below)",
     "addNewScene": "Add new scene",
     "or": "OR",
     "EnterTitle": "Enter title",
     "methods": {
-      "confirmClippedScene": "Confirm clipped scenes"
+      "confirmClippedScene": "Confirm your clipped scenes"
     }
   },
 
@@ -383,12 +383,12 @@
     },
     "methods": {
       "enterTitleStep": "Enter title",
-      "messageWhenNotLogined": "Please login to save clip title. (Input data is retained)"
+      "messageWhenNotLogined": "Please login to save your clip title. (Inputted data will be saved)"
     }
   },
 
   "AddToPlaylistModal": {
-    "addtoExistingPlaylist": "Add to existing clip (Uncheck to remove)",
+    "addtoExistingPlaylist": "Add to existing clips (Uncheck to remove)",
     "createNewPlaylist": "Create new clip",
     "newPlaylistName": "New clip name",
     "privacySetting": "Privacy setting",
@@ -407,12 +407,12 @@
   "Thumbnail": {
     "pickSceneForThumbnail": "Pick scene for thumbnail",
     "pickCurrentScene": "Pick current scene<br />(Press and pause)",
-    "insertText": "(Optional) Insert text to thumnail",
+    "insertText": "(Optional) Add texts to thumbnail",
     "telopPosition": "Position",
     "telopColor": "Color",
     "telopSize": "Size",
     "telopText": "Text",
-    "insertBtn": "Insert",
+    "insertBtn": "Add",
     "deleteTelopConfirmation": "Are you sure you want to delete this text?",
     "cancel": "Pick scene again",
     "delete": "Delete",
@@ -465,17 +465,17 @@
   },
 
   "Bordal": {
-    "letsClipFavoriteScenes": "Let's clip your favorite scene",
+    "letsClipFavoriteScenes": "Let's clip your favorite YouTube scenes",
     "whatIsYouClip": "What is YouClip?",
-    "youClipIsOnlineClippingApp": "YouClip is a free YouTube clipping app<br/> which you can <span class='orange--text text--darken-3'>cut & connect <br/>your favorite scenes.</span>",
+    "youClipIsOnlineClippingApp": "YouClip is a free YouTube clipping app<br/> which you can use to <span class='orange--text text--darken-3'>cut & connect <br/>your favorite scenes.</span>",
     "usefulInSuchCases": "Why use YouClip?",
     "noPromptMeAgain": "Don't prompt me about this again.",
     "return": "Return",
     "next": "Next",
     "use": "Start",
     "data": {
-      "repeatScene": "<span class='orange--text text--darken-3'>Cut & repeat </span>favorite<br/> scenes of YouTube",
-      "shareScene": "<span class='orange--text text--darken-3'>Share</span> the favorite <br/>scenes with friends",
+      "repeatScene": "<span class='orange--text text--darken-3'>Cut & repeat </span>your favorite<br/> YouTube scenes",
+      "shareScene": "<span class='orange--text text--darken-3'>Share</span> your favorite <br/>scenes with friends",
       "collectScene": "<span class='orange--text text--darken-3'>Find & watch</span> trending <br/>YouTube scenes",
       "searchYtVideo": "1. Search YouTube video",
       "specifyTime": "2. Specify start/end time",
@@ -493,12 +493,12 @@
       "commentRules": "Please enter your comment"
     },
     "methods": {
-      "messageWhenNotLogined": "Please login to comment.(Input data is retained)"
+      "messageWhenNotLogined": "Please login to comment. (Inputted data will be saved)"
     }
   },
 
   "Navbar": {
-    "searchYouTubeClips": "search YouTube clips",
+    "searchYouTubeClips": "Search YouTube clips",
     "cancel": "Cancel",
     "subtitle": "YouTube online clipping app",
     "data": {
