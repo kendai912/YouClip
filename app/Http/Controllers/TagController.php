@@ -437,7 +437,7 @@ class TagController extends Controller
         try {
             // FFMpeg::openUrl($ytDirectUrl)->getFrameFromSeconds($startSec)->export()->toDisk('s3')->save('thumbs/'.$previewThumbName);
             $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -qscale 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$previewThumbName.' 2>&1';
-            exec($cmd_webp);
+            exec($cmd_webp, $output, $value);
             Storage::disk('s3')->putFileAs('thumbs', new File(storage_path()."/app/public/imgs/".$previewThumbName), $previewThumbName, 'public');
 
             //一時的にローカルに保存したファイルを削除
@@ -447,6 +447,8 @@ class TagController extends Controller
         }
         //デバッグ用
         \Log::debug($cmd_webp);
+        \Log::debug($output);
+        \Log::debug($value);
 
         //保存したサムネイル名をリターン
         return $previewThumbName;
