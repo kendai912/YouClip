@@ -362,10 +362,10 @@ class TagController extends Controller
         $links = $result->getAllFormats();
 
         $itagArray = array_column($links, 'itag');
-        $key = array_search(22, $itagArray) ?: array_search(18, $itagArray) ?: array_search(37, $itagArray) ?: array_search(38, $itagArray);
+        $key = array_search(22, $itagArray) ?: array_search(18, $itagArray) ?: array_search(37, $itagArray) ?: array_search(38, $itagArray) ?: array_search(136, $itagArray) ?: array_search(135, $itagArray) ?: array_search(134, $itagArray) ?: array_search(137, $itagArray) ?: array_search(133, $itagArray) ?: array_search(160, $itagArray);
  
         // check in case $key is 0 and then array_search returns false
-        if (!$key && (in_array(22, $itagArray, true) || in_array(18, $itagArray, true) || in_array(37, $itagArray, true) || in_array(38, $itagArray, true))) {
+        if (!$key && (in_array(22, $itagArray, true) || in_array(18, $itagArray, true) || in_array(37, $itagArray, true) || in_array(38, $itagArray, true) || in_array(136, $itagArray, true) || in_array(135, $itagArray, true) || in_array(134, $itagArray, true) || in_array(137, $itagArray, true) || in_array(133, $itagArray, true) || in_array(160, $itagArray, true))) {
             $yturl = $links[0]->url;
         } else {
             $yturl = $links[$key]->url;

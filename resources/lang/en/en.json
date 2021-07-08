@@ -305,11 +305,11 @@
     "telopDuration": "Duration",
     "telopDurationSuffix": "sec.",
     "telopText": "Caption",
-    "insert": "Insert",
+    "insert": "Add",
     "deleteDialogSubtitle": "Are you sure you want to delete this caption?",
     "cancel": "Cancel",
     "delete": "Delete",
-    "next": "Next",
+    "next": "Skip",
     "data": {
       "bottomLeft": "Bottom left",
       "bottomCenter": "Bottom center",
@@ -369,7 +369,7 @@
     "selectCategory": "Select category",
     "optionalThumbnailSetting": "(Optional) Thumbnail setting",
     "selectEyeCatchingScene": "Select a scene that shows what's in your clip. A good thumbnail stands out and draws viewers' attention",
-    "ableToInsertText": "Text can be inserted",
+    "ableToInsertText": "Captions can be added",
     "selectCustomThumbnail": "Change thumbnail",
     "description": "(Optional) Description of clip",
     "save": "Save (You can edit later)",
@@ -407,13 +407,13 @@
   "Thumbnail": {
     "pickSceneForThumbnail": "Pick scene for thumbnail",
     "pickCurrentScene": "Pick current scene<br />(Press and pause)",
-    "insertText": "(Optional) Add texts to thumbnail",
+    "insertText": "(Optional) Add captions to thumbnail",
     "telopPosition": "Position",
     "telopColor": "Color",
     "telopSize": "Size",
-    "telopText": "Text",
+    "telopText": "Caption",
     "insertBtn": "Add",
-    "deleteTelopConfirmation": "Are you sure you want to delete this text?",
+    "deleteTelopConfirmation": "Are you sure you want to delete this caption?",
     "cancel": "Pick scene again",
     "delete": "Delete",
     "finish": "Finish",
@@ -440,7 +440,7 @@
       "medium": "Medium",
       "small": "Small",
       "required": "Required",
-      "text": "Text"
+      "text": "Caption"
     },
     "methods": {
       "setCustomThumbnail": "Set custom thumbnail",
