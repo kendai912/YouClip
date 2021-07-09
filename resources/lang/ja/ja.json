@@ -59,6 +59,10 @@
       "private": "非公開",
       "game": "ゲーム",
       "sports": "スポーツ",
+      "music": "音楽",
+      "entertainment": "エンターテイメント",
+      "fashionBeauty": "ファッションと美容",
+      "learning": "学び",
       "other": "その他"
     }
   },
@@ -379,6 +383,10 @@
       "private": "非公開",
       "game": "ゲーム",
       "sports": "スポーツ",
+      "music": "音楽",
+      "entertainment": "エンターテイメント",
+      "fashionBeauty": "ファッションと美容",
+      "learning": "学び",
       "other": "その他"
     },
     "methods": {

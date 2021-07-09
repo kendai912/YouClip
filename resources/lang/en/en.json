@@ -59,6 +59,10 @@
       "private": "Private",
       "game": "Game",
       "sports": "Sports",
+      "music": "Music",
+      "entertainment": "Entertainment",
+      "fashionBeauty": "Fashion & Beauty",
+      "learning": "Learning",
       "other": "Other"
     }
   },
@@ -379,6 +383,10 @@
       "private": "Private",
       "game": "Game",
       "sports": "Sports",
+      "music": "Music",
+      "entertainment": "Entertainment",
+      "fashionBeauty": "Fashion & Beauty",
+      "learning": "Learning",
       "other": "Other"
     },
     "methods": {

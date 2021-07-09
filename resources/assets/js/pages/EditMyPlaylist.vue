@@ -233,6 +233,22 @@ export default {
           value: "Sports",
         },
         {
+          text: this.$t("EditMyPlaylist.data.music"),
+          value: "Music",
+        },
+        {
+          text: this.$t("EditMyPlaylist.data.entertainment"),
+          value: "Entertainment",
+        },
+        {
+          text: this.$t("EditMyPlaylist.data.fashionBeauty"),
+          value: "FashionBeauty",
+        },
+        {
+          text: this.$t("EditMyPlaylist.data.learning"),
+          value: "Learning",
+        },
+        {
           text: this.$t("EditMyPlaylist.data.other"),
           value: "Other",
         },

@@ -172,6 +172,22 @@ export default {
           value: "Sports",
         },
         {
+          text: this.$t("Title.data.music"),
+          value: "Music",
+        },
+        {
+          text: this.$t("Title.data.entertainment"),
+          value: "Entertainment",
+        },
+        {
+          text: this.$t("Title.data.fashionBeauty"),
+          value: "FashionBeauty",
+        },
+        {
+          text: this.$t("Title.data.learning"),
+          value: "Learning",
+        },
+        {
           text: this.$t("Title.data.other"),
           value: "Other",
         },
@@ -345,11 +361,8 @@ export default {
     //サムネイルを取得
     await this.getThumbnail(this.myPlaylistToSave);
 
-    if (this.currentCategory == "Sports") {
-      this.playlistCategory = "Sports";
-    } else if (this.currentCategory == "Gaming") {
-      this.playlistCategory = "Game";
-    }
+    //set playlist category from recategorized youtube category in Comfirm page
+    this.playlistCategory = this.currentCategory;
   },
 };
 </script>

@@ -677,6 +677,32 @@ export default {
         return "Sports";
       } else if (currentYtCategory == "Gaming") {
         return "Game";
+      } else if (currentYtCategory == "Music") {
+        return "Music";
+      } else if (currentYtCategory == "Film & Animation") {
+        return "Entertainment";
+      } else if (currentYtCategory == "Comedy") {
+        return "Entertainment";
+      } else if (currentYtCategory == "Entertainment") {
+        return "Entertainment";
+      } else if (currentYtCategory == "Howto & Style") {
+        return "Learning";
+      } else if (currentYtCategory == "Education") {
+        return "Learning";
+      } else if (currentYtCategory == "Autos & Vehicles") {
+        return "Other";
+      } else if (currentYtCategory == "Pets & Animals") {
+        return "Other";
+      } else if (currentYtCategory == "Travel & Events") {
+        return "Other";
+      } else if (currentYtCategory == "People & Blogs") {
+        return "Other";
+      } else if (currentYtCategory == "News & Politics") {
+        return "Other";
+      } else if (currentYtCategory == "Science & Technology") {
+        return "Other";
+      } else if (currentYtCategory == "Nonprofits & Activism") {
+        return "Other";
       } else {
         return "Other";
       }
