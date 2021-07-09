@@ -52,8 +52,8 @@
       <v-tab-item>
         <v-card flat>
           <PlaylistMediaItem
-            v-bind:mediaItems="sportsMediaItems"
-            ref="sportsMediaItems"
+            v-bind:mediaItems="otherMediaItems"
+            ref="otherMediaItems"
           />
         </v-card>
       </v-tab-item>
@@ -134,15 +134,15 @@ export default {
       newPage: 1,
       vtuberPage: 1,
       gamePage: 1,
-      sportsPage: 1,
+      otherPage: 1,
       newPeriod: 1,
       vtuberPeriod: 1,
       gamePeriod: 1,
-      sportsPeriod: 1,
+      otherPeriod: 1,
       newMediaItems: [],
       vtuberMediaItems: [],
       gameMediaItems: [],
-      sportsMediaItems: [],
+      otherMediaItems: [],
       topPositionOfItems: 0,
       itemHeight: "",
       contentsPerPage: 5,
@@ -155,24 +155,24 @@ export default {
       playlistAndTagPaginationOfVTuber:
         "playlist/playlistAndTagPaginationOfVTuber",
       playlistAndTagPaginationOfGame: "playlist/playlistAndTagPaginationOfGame",
-      playlistAndTagPaginationOfSports:
-        "playlist/playlistAndTagPaginationOfSports",
+      playlistAndTagPaginationOfOther:
+        "playlist/playlistAndTagPaginationOfOther",
       proceedPeriodOfNew: "playlist/proceedPeriodOfNew",
       proceedPeriodOfVTuber: "playlist/proceedPeriodOfVTuber",
       proceedPeriodOfGame: "playlist/proceedPeriodOfGame",
-      proceedPeriodOfSports: "playlist/proceedPeriodOfSports",
+      proceedPeriodOfOther: "playlist/proceedPeriodOfOther",
       toLoadNew: "playlist/toLoadNew",
       toLoadVTuber: "playlist/toLoadVTuber",
       toLoadGame: "playlist/toLoadGame",
-      toLoadSports: "playlist/toLoadSports",
+      toLoadOther: "playlist/toLoadOther",
       isIndexNewPlaylistAndTagPaginating:
         "playlist/isIndexNewPlaylistAndTagPaginating",
       isIndexVTuberPlaylistAndTagPaginating:
         "playlist/isIndexVTuberPlaylistAndTagPaginating",
       isIndexGamePlaylistAndTagPaginating:
         "playlist/isIndexGamePlaylistAndTagPaginating",
-      isIndexSportsPlaylistAndTagPaginating:
-        "playlist/isIndexSportsPlaylistAndTagPaginating",
+      isIndexOtherPlaylistAndTagPaginating:
+        "playlist/isIndexOtherPlaylistAndTagPaginating",
       resetKey: "playlist/resetKey",
     }),
   },
@@ -199,7 +199,7 @@ export default {
       setProceedPeriodOfNew: "playlist/setProceedPeriodOfNew",
       setProceedPeriodOfVTuber: "playlist/setProceedPeriodOfVTuber",
       setProceedPeriodOfGame: "playlist/setProceedPeriodOfGame",
-      setProceedPeriodOfSports: "playlist/setProceedPeriodOfSports",
+      setProceedPeriodOfOther: "playlist/setProceedPeriodOfOther",
     }),
     setActiveTab(key) {
       //開いたタブをセッションストレージに保存
@@ -211,9 +211,7 @@ export default {
       if (key == 0 && this.newPage == 1) this.infinateLoadPlaylistOfNew();
       if (key == 1 && this.vtuberPage == 1) this.infinateLoadPlaylistOfVTuber();
       if (key == 2 && this.gamePage == 1) this.infinateLoadPlaylistOfGame();
-      if (key == 3 && this.sportsPage == 1) {
-        this.infinateLoadPlaylistOfSports();
-      }
+      if (key == 3 && this.otherPage == 1) this.infinateLoadPlaylistOfOther();
     },
     //i:s形式に変換
     formatToMinSec(His) {
@@ -342,9 +340,9 @@ export default {
         await this.infinateLoadPlaylistOfGame(totalNumOfItems);
       }
     },
-    //【Sports】表示するプレイリストの無限スクロール
-    async infinateLoadPlaylistOfSports(numOfItems = 0) {
-      if (!this.toLoadSports) {
+    //【Other】表示するプレイリストの無限スクロール
+    async infinateLoadPlaylistOfOther(numOfItems = 0) {
+      if (!this.toLoadOther) {
         this.$store.commit("loadingItem/setIsLoading", false);
         return;
       }
@@ -354,32 +352,32 @@ export default {
 
       //無限スクロールに合わせてプレイリストのページネイションを取得
       await this.$store.dispatch(
-        "playlist/indexPlaylistAndTagPaginationOfSports",
-        { page: this.sportsPage++, period: this.sportsPeriod }
+        "playlist/indexPlaylistAndTagPaginationOfOther",
+        { page: this.otherPage++, period: this.otherPeriod }
       );
 
-      //ページネーションのデータをsportsMediaItemsに格納
+      //ページネーションのデータをOtherMediaItemsに格納
       this.putPlaylistTagIntoMediaItems(
-        this.sportsMediaItems,
-        this.playlistAndTagPaginationOfSports.data
+        this.otherMediaItems,
+        this.playlistAndTagPaginationOfOther.data
       );
 
       // 現在のperiodのlast_pageに達したので次のperiodの最初にパラメータを変更
-      if (this.proceedPeriodOfSports) {
-        this.sportsPeriod++;
-        this.sportsPage = 1;
+      if (this.proceedPeriodOfOther) {
+        this.otherPeriod++;
+        this.otherPage = 1;
       }
-      this.setProceedPeriodOfSports(false);
+      this.setProceedPeriodOfOther(false);
 
       let totalNumOfItems =
-        numOfItems + this.playlistAndTagPaginationOfSports.data.length;
+        numOfItems + this.playlistAndTagPaginationOfOther.data.length;
 
       if (totalNumOfItems >= 5) {
         //ローディングを非表示
         this.$store.commit("loadingItem/setIsLoading", false);
       } else if (this.isOnHome) {
         //データ数が5未満の場合は次のデータを再度ロード
-        await this.infinateLoadPlaylistOfSports(totalNumOfItems);
+        await this.infinateLoadPlaylistOfOther(totalNumOfItems);
       }
     },
     getCurrentPagePosition() {
@@ -448,9 +446,9 @@ export default {
             : 128;
       } else if (this.tab == 3) {
         this.topPositionOfItems =
-          typeof this.$refs.sportsMediaItems !== "undefined"
+          typeof this.$refs.otherMediaItems !== "undefined"
             ? this.getOffsetTop(
-                this.$refs.sportsMediaItems.$refs.playlistMediaItemBox
+                this.$refs.otherMediaItems.$refs.playlistMediaItemBox
               )
             : 128;
       }
@@ -477,9 +475,9 @@ export default {
             : 329;
       } else if (this.tab == 3) {
         this.itemHeight =
-          typeof this.$refs.sportsMediaItems?.$refs.playlistMediaItem !==
+          typeof this.$refs.otherMediaItems?.$refs.playlistMediaItem !==
           "undefined"
-            ? this.$refs.sportsMediaItems.$refs.playlistMediaItem[0]
+            ? this.$refs.otherMediaItems.$refs.playlistMediaItem[0]
                 .clientHeight
             : 329;
       }
@@ -489,20 +487,20 @@ export default {
         if (this.tab == 0) await this.infinateLoadPlaylistOfNew();
         if (this.tab == 1) await this.infinateLoadPlaylistOfVTuber();
         if (this.tab == 2) await this.infinateLoadPlaylistOfGame();
-        if (this.tab == 3) await this.infinateLoadPlaylistOfSports();
+        if (this.tab == 3) await this.infinateLoadPlaylistOfOther();
       }
     },
     resetTabPagination() {
       this.newPage = 1;
       this.vtuberPage = 1;
       this.gamePage = 1;
-      this.sportsPage = 1;
+      this.otherPage = 1;
     },
     resetMediaItems() {
       this.newMediaItems = [];
       this.vtuberMediaItems = [];
       this.gameMediaItems = [];
-      this.sportsMediaItems = [];
+      this.otherMediaItems = [];
     },
   },
   async mounted() {
@@ -524,7 +522,7 @@ export default {
     this.$store.commit("playlist/setToLoadNew", true);
     this.$store.commit("playlist/setToLoadVTuber", true);
     this.$store.commit("playlist/setToLoadGame", true);
-    this.$store.commit("playlist/setToLoadSports", true);
+    this.$store.commit("playlist/setToLoadOther", true);
 
     window.onscroll = () => {
       this.page = this.getCurrentPagePosition();
@@ -541,8 +539,8 @@ export default {
           this.infinateLoadPlaylistOfVTuber();
         if (this.tab == 2 && !this.isIndexGamePlaylistAndTagPaginating)
           this.infinateLoadPlaylistOfGame();
-        if (this.tab == 3 && !this.isIndexSportsPlaylistAndTagPaginating)
-          this.infinateLoadPlaylistOfSports();
+        if (this.tab == 3 && !this.isIndexOtherPlaylistAndTagPaginating)
+          this.infinateLoadPlaylistOfOther();
       }
     };
 
