@@ -437,18 +437,28 @@ class TagController extends Controller
         try {
             // FFMpeg::openUrl($ytDirectUrl)->getFrameFromSeconds($startSec)->export()->toDisk('s3')->save('thumbs/'.$previewThumbName);
             $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -qscale 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$previewThumbName.' 2>&1';
+
             exec($cmd_webp, $output, $value);
+            if ($value !== 0) {
+                \Log::debug("Failed to generate thumbnail");
+                \Log::debug($cmd_webp);
+                \Log::debug($output);
+                \Log::debug($value);
+                // retry
+                exec($cmd_webp, $output, $value);
+            }
+
             Storage::disk('s3')->putFileAs('thumbs', new File(storage_path()."/app/public/imgs/".$previewThumbName), $previewThumbName, 'public');
 
             //一時的にローカルに保存したファイルを削除
             unlink(storage_path(). "/app/public/imgs/" . $previewThumbName);
         } catch (\Exception $e) {
+            //デバッグ用
             \Log::debug($e->getMessage());
+            \Log::debug($cmd_webp);
+            \Log::debug($output);
+            \Log::debug($value);
         }
-        //デバッグ用
-        \Log::debug($cmd_webp);
-        \Log::debug($output);
-        \Log::debug($value);
 
         //保存したサムネイル名をリターン
         return $previewThumbName;
@@ -467,13 +477,27 @@ class TagController extends Controller
         //プレビュー用のmp4を取得しS3に保存
         try {
             $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -qscale 100 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
-            exec($cmd_gif);
+            
+            exec($cmd_gif, $output, $value);
+            if ($value !== 0) {
+                \Log::debug("Failed to generate previewGif");
+                \Log::debug($cmd_gif);
+                \Log::debug($output);
+                \Log::debug($value);
+                // retry
+                exec($cmd_gif, $output, $value);
+            }
+
             Storage::disk('s3')->putFileAs('gifs', new File(storage_path()."/app/public/gifs/".$previewGifName), $previewGifName, 'public');
 
             //一時的にローカルに保存したファイルを削除
             unlink(storage_path(). "/app/public/gifs/" . $previewGifName);
         } catch (\Exception $e) {
+            //デバッグ用
             \Log::debug($e->getMessage());
+            \Log::debug($cmd_gif);
+            \Log::debug($output);
+            \Log::debug($value);
         }
 
         //保存したプレビュー名をリターン
@@ -493,13 +517,26 @@ class TagController extends Controller
         //OGP用の画像を取得しS3に保存
         try {
             $cmd_ogp = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -qscale 80 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/ogps/".$previewOgpName.' 2>&1';
-            exec($cmd_ogp);
+            
+            exec($cmd_ogp, $output, $value);
+            if ($value !== 0) {
+                \Log::debug("Failed to generate ogp");
+                \Log::debug($cmd_ogp);
+                \Log::debug($output);
+                \Log::debug($value);
+                // retry
+                exec($cmd_ogp, $output, $value);
+            }
+
             Storage::disk('s3')->putFileAs('ogps', new File(storage_path()."/app/public/ogps/".$previewOgpName), $previewOgpName, 'public');
 
             //一時的にローカルに保存したファイルを削除
             unlink(storage_path(). "/app/public/ogps/" . $previewOgpName);
         } catch (\Exception $e) {
             \Log::debug($e->getMessage());
+            \Log::debug($cmd_ogp);
+            \Log::debug($output);
+            \Log::debug($value);
         }
 
         //保存したプレビュー名をリターン
