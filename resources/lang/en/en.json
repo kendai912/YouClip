@@ -343,7 +343,7 @@
     },
     "methods": {
       "telopInsertPage": "(Recommended) Add captions",
-      "messageWhenNotLogined": "Please login to save your clipped scene. (Input data is retained)",
+      "messageWhenNotLogined": "Please login to save your clipped scene. (Inputted data is retained)",
       "sceneUpdated": "Updated the scene",
       "newSceneAdded": "Added new scene",
       "clippedScene": "Saved clipped scene"

@@ -83,9 +83,10 @@ export default {
           this.$store.commit("snackbar/setTimeout", 5000);
 
           let tags = this.sceneListofPlaylist;
+          tags.splice(this.tagIndex, 1);
 
           //前のページに遷移
-          this.setSceneListofPlaylist(tags.splice(this.tagIndex, 1));
+          this.setSceneListofPlaylist(tags);
         }
       });
 
