@@ -131,7 +131,7 @@ export default {
     menuItems() {
       return [
         { title: this.$t("Navbar.data.home"), event: "", to: "/home" },
-        { title: this.$t("Navbar.data.aboutYouClip"), event: "", to: "/userguide" },
+        // { title: this.$t("Navbar.data.aboutYouClip"), event: "", to: "/userguide" },
         {
           title: this.isLogin ? this.$t("Navbar.data.logout") : this.$t("Navbar.data.login"),
           event: this.isLogin ? "logout" : "login",
