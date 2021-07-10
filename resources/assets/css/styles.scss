@@ -691,7 +691,7 @@
 .telopLabel .v-text-field__suffix,
 .text-start,
 .text-start span {
-  font-size: calc(1rem * (14 / 14)) !important;
+  font-size: calc(1rem * (16 / 14)) !important;
 }
 
 .telopLabel .v-text-field__suffix {
@@ -705,7 +705,7 @@
 
 .telopLabel.v-select.v-input--dense .v-select__selection--comma {
   margin: 0 !important;
-  font-size: calc(1rem * (14 / 14)) !important;
+  font-size: calc(1rem * (16 / 14)) !important;
 }
 
 .smallTelop {
@@ -1692,6 +1692,7 @@ div.row.align-end.ma-0.pa-0.text-center.pb50px {
   text-decoration-color: initial;
 }
 
-.termsOfContentText ol, .termsOfContentText li {
+.termsOfContentText ol,
+.termsOfContentText li {
   margin-bottom: 8px;
 }
