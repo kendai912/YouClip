@@ -676,15 +676,15 @@ export default {
       if (currentYtCategory == "Sports") {
         return "Sports";
       } else if (currentYtCategory == "Gaming") {
-        return "Game";
+        return "Null";
       } else if (currentYtCategory == "Music") {
         return "Music";
       } else if (currentYtCategory == "Film & Animation") {
-        return "Entertainment";
+        return "Null";
       } else if (currentYtCategory == "Comedy") {
         return "Entertainment";
       } else if (currentYtCategory == "Entertainment") {
-        return "Entertainment";
+        return "Null";
       } else if (currentYtCategory == "Howto & Style") {
         return "Learning";
       } else if (currentYtCategory == "Education") {

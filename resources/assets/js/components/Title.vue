@@ -362,7 +362,8 @@ export default {
     await this.getThumbnail(this.myPlaylistToSave);
 
     //set playlist category from recategorized youtube category in Comfirm page
-    this.playlistCategory = this.currentCategory;
+    if (this.currentCategory != "Null")
+      this.playlistCategory = this.currentCategory;
   },
 };
 </script>
