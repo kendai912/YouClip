@@ -84,7 +84,7 @@ export default {
           if (this.playlistAndTagVideoData?.tagVideoData?.length >= 1) {
             this.$store.commit(
               "snackbar/setText",
-              " 作成中の切り抜きがあります"
+              this.$t("Footer.methods.clipBeingCreated")
             );
             this.$store.commit("snackbar/seVertical", true);
             this.$store.commit("snackbar/setSnackbar", true);

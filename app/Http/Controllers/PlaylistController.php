@@ -370,16 +370,6 @@ class PlaylistController extends Controller
                     JSON_UNESCAPED_UNICODE
                 );
             }
-        } elseif (empty($tagVideoDatas)) {
-            // プレイリスト内にシーンがない、もしくは全て非公開の場合はデータを返却しない
-            return response()->json(
-                [
-                    'playlistAndTagVideoData' => 'private'
-                    ],
-                403,
-                [],
-                JSON_UNESCAPED_UNICODE
-            );
         }
 
         return response()->json(

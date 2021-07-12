@@ -84,8 +84,6 @@ export default {
 
           let tags = this.sceneListofPlaylist;
           tags.splice(this.tagIndex, 1);
-
-          //前のページに遷移
           this.setSceneListofPlaylist(tags);
         }
       });

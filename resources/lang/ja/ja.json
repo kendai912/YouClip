@@ -25,6 +25,9 @@
       "buttonPrevious": "戻る",
       "buttonNext": "次へ",
       "buttonStop": "OK"
+    },
+    "methods": {
+      "clipBeingCreated": "作成中の切り抜きがあります"
     }
   },
 

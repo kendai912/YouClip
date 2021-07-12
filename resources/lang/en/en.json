@@ -25,6 +25,9 @@
       "buttonPrevious": "Return",
       "buttonNext": "Next",
       "buttonStop": "OK"
+    },
+    "methods": {
+      "clipBeingCreated": "There is a clip being created."
     }
   },
 
