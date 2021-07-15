@@ -45,9 +45,6 @@ export default {
         {
           target: "#editProfile",
           content: this.$t("MyProfile.data.steps"),
-          params: {
-            placement: "top",
-          },
         },
       ],
       myOptions: {
