@@ -161,7 +161,10 @@
 
   "MyProfile": {
     "logout": "ログアウト",
-    "editProfile": "プロフィールを編集"
+    "editProfile": "プロフィールを編集",
+    "data": {
+      "steps": "YouTube/Twitterアカウントを設定<br/>(再生画面にリンクを表示します)"
+    }
   },
 
   "MyList": {

@@ -1,11 +1,13 @@
 const state = {
   showBoarding: false,
   showFooterTour: false,
+  showProfileTour: false,
 };
 
 const getters = {
   showBoarding: (state) => state.showBoarding,
   showFooterTour: (state) => state.showFooterTour,
+  showProfileTour: (state) => state.showProfileTour,
 };
 
 const mutations = {
@@ -14,6 +16,9 @@ const mutations = {
   },
   setShowFooterTour(state, data) {
     state.showFooterTour = data;
+  },
+  setShowProfileTour(state, data) {
+    state.showProfileTour = data;
   },
 };
 

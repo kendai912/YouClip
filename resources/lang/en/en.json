@@ -161,7 +161,10 @@
 
   "MyProfile": {
     "logout": "Logout",
-    "editProfile": "Edit profile"
+    "editProfile": "Edit profile",
+    "data": {
+      "steps": "Set up your YouTube/Twitter account<br/>(The link appears on playback pages)"
+    }
   },
 
   "MyList": {

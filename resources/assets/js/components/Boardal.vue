@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-if="!isFinished" v-model="boardal" max-width="700px">
-    <v-card flat color="orange lighten-5">
+    <v-card flat color="orange lighten-5" v-click-outside="onClickOutside">
       <v-window v-model="onboarding">
         <v-window-item v-for="n in length" :key="`card-${n}`">
           <v-card color="orange lighten-5">
@@ -20,7 +20,7 @@
                   />
                 </v-row>
                 <v-row
-                  class="ma-2 mt-0 mb-8 pa-0"
+                  class="ma-2 mt-0 mb-8 pa-0 text-center"
                   align="center"
                   justify="center"
                 >
@@ -234,6 +234,7 @@ export default {
   methods: {
     ...mapMutations({
       setShowFooterTour: "onboarding/setShowFooterTour",
+      setShowProfileTour: "onboarding/setShowProfileTour",
     }),
     prev() {
       this.onboarding =
@@ -250,6 +251,9 @@ export default {
         this.onboarding =
           this.onboarding + 1 === this.length ? 0 : this.onboarding + 1;
       }
+    },
+    onClickOutside() {
+      this.setShowProfileTour(true);
     },
   },
   watch: {},

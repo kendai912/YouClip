@@ -24,7 +24,13 @@
         <v-icon large>mdi-account-outline</v-icon>
       </v-btn>
     </v-bottom-navigation>
-    <v-tour name="myTour" :steps="steps" :options="myOptions"> </v-tour>
+    <v-tour
+      name="myTour"
+      :steps="steps"
+      :options="myOptions"
+      :callbacks="myCallbacks"
+    >
+    </v-tour>
   </div>
 </template>
 
@@ -58,11 +64,15 @@ export default {
           buttonStop: this.$t("Footer.data.buttonStop"),
         },
       },
+      myCallbacks: {
+        onFinish: this.myCustomOnFinishCallback,
+      },
     };
   },
   methods: {
     ...mapMutations({
       setShowBoarding: "onboarding/setShowBoarding",
+      setShowProfileTour: "onboarding/setShowProfileTour",
     }),
     //開いたタブをセッションストレージに保存
     saveFooterTabIndex(index) {
@@ -107,6 +117,9 @@ export default {
         "watch/getPlaylistAndTagVideoDataById",
         this.newPlaylistId
       );
+    },
+    myCustomOnFinishCallback() {
+      this.setShowProfileTour(true);
     },
   },
   computed: {

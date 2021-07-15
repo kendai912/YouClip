@@ -25,11 +25,12 @@
         </span>
       </v-row>
       <v-row class="ma-0 pt-4 pb-4 px-2">
-        <v-btn width="100%" color="white" to="/mypage/edit"
+        <v-btn id="editProfile" width="100%" color="white" to="/mypage/edit"
           ><span class="fz-14">{{ $t("MyProfile.editProfile") }}</span></v-btn
         >
       </v-row>
     </v-card>
+    <v-tour name="profileTour" :steps="steps" :options="myOptions"> </v-tour>
   </v-container>
 </template>
 
@@ -38,13 +39,40 @@ import { mapState, mapGetters, mapMutations } from "vuex";
 import myMixin from "../util";
 
 export default {
-  data: () => ({}),
+  data() {
+    return {
+      steps: [
+        {
+          target: "#editProfile",
+          content: this.$t("MyProfile.data.steps"),
+          params: {
+            placement: "top",
+          },
+        },
+      ],
+      myOptions: {
+        useKeyboardNavigation: false,
+        labels: {
+          buttonSkip: this.$t("Footer.data.buttonSkip"),
+          buttonPrevious: this.$t("Footer.data.buttonPrevious"),
+          buttonNext: this.$t("Footer.data.buttonNext"),
+          buttonStop: this.$t("Footer.data.buttonStop"),
+        },
+      },
+    };
+  },
   mixins: [myMixin],
   computed: {
     ...mapGetters({
       username: "auth/username",
       avatar: "auth/avatar",
+      showProfileTour: "onboarding/showProfileTour",
     }),
+  },
+  watch: {
+    showProfileTour() {
+      if (this.showProfileTour) this.$tours["profileTour"].start();
+    },
   },
   methods: {
     async logout() {
@@ -54,6 +82,8 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+    if (this.showProfileTour) this.$tours["profileTour"].start();
+  },
 };
 </script>
