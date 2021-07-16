@@ -2,12 +2,14 @@ const state = {
   showBoarding: false,
   showFooterTour: false,
   showProfileTour: false,
+  isBoardalFinished: false,
 };
 
 const getters = {
   showBoarding: (state) => state.showBoarding,
   showFooterTour: (state) => state.showFooterTour,
   showProfileTour: (state) => state.showProfileTour,
+  isBoardalFinished: (state) => state.isBoardalFinished,
 };
 
 const mutations = {
@@ -19,6 +21,9 @@ const mutations = {
   },
   setShowProfileTour(state, data) {
     state.showProfileTour = data;
+  },
+  setIsBoardalFinished(state, data) {
+    state.isBoardalFinished = data;
   },
 };
 

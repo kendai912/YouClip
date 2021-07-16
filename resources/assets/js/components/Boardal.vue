@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-if="!isFinished" v-model="boardal" max-width="700px">
+  <v-dialog v-if="!isBoardalFinished" v-model="boardal" max-width="700px">
     <v-card flat color="orange lighten-5" v-click-outside="onClickOutside">
       <v-window v-model="onboarding">
         <v-window-item v-for="n in length" :key="`card-${n}`">
@@ -208,7 +208,6 @@ export default {
       length: 3,
       onboarding: 0,
       notShowBoarding: false,
-      isFinished: false,
       isMobile: false,
       features: [
         {
@@ -229,12 +228,17 @@ export default {
   props: {},
   mixins: [myMixin],
   computed: {
-    ...mapGetters({}),
+    ...mapGetters({
+      showFooterTour: "onboarding/showFooterTour",
+      showProfileTour: "onboarding/showProfileTour",
+      isBoardalFinished: "onboarding/isBoardalFinished",
+    }),
   },
   methods: {
     ...mapMutations({
       setShowFooterTour: "onboarding/setShowFooterTour",
       setShowProfileTour: "onboarding/setShowProfileTour",
+      setIsBoardalFinished: "onboarding/setIsBoardalFinished",
     }),
     prev() {
       this.onboarding =
@@ -245,14 +249,19 @@ export default {
         if (this.notShowBoarding) {
           localStorage.setItem("notShowBoarding", JSON.stringify(true));
         }
-        this.setShowFooterTour(true);
-        this.isFinished = true;
+        if (!this.showFooterTour) {
+          this.setShowFooterTour(true);
+        } else {
+          this.setShowProfileTour(true);
+        }
+        this.setIsBoardalFinished(true);
       } else {
         this.onboarding =
           this.onboarding + 1 === this.length ? 0 : this.onboarding + 1;
       }
     },
     onClickOutside() {
+      this.setIsBoardalFinished(true);
       this.setShowProfileTour(true);
     },
   },

@@ -64,6 +64,7 @@ export default {
       username: "auth/username",
       avatar: "auth/avatar",
       showProfileTour: "onboarding/showProfileTour",
+      isBoardalFinished: "onboarding/isBoardalFinished",
     }),
   },
   watch: {
@@ -80,7 +81,7 @@ export default {
     },
   },
   mounted() {
-    if (this.showProfileTour) this.$tours["profileTour"].start();
+    if ( this.isBoardalFinished && this.showProfileTour) this.$tours["profileTour"].start();
   },
 };
 </script>

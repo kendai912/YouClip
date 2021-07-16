@@ -188,7 +188,7 @@
     },
     "data": {
       "repeatScene": "動画の一部を繰り返し見返したい",
-      "shareScene": "みんなに動画のある場面を共有したい",
+      "shareScene": "みんなに動画のある場面を紹介したい",
       "collectScene": "色々な動画のお気に入りの場面を集めたい",
       "searchYtVideo": "① YouTube動画を検索",
       "specifyTime": "② 切り抜く時間を指定",
@@ -489,7 +489,7 @@
     "use": "使ってみる",
     "data": {
       "repeatScene": "YouTubeの好きな瞬間を<br/><span class='orange--text text--darken-3'>切り抜きたい</span>",
-      "shareScene": "みんなにもその場面を<br/><span class='orange--text text--darken-3'>共有したい</span>",
+      "shareScene": "みんなにもその場面を<br/><span class='orange--text text--darken-3'>紹介したい</span>",
       "collectScene": "みんなの好きな場面を<br/><span class='orange--text text--darken-3'>知りたい</span>",
       "searchYtVideo": "① YouTube動画を検索",
       "specifyTime": "② 切り抜く時間を指定",

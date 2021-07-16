@@ -119,7 +119,7 @@ export default {
       );
     },
     myCustomOnFinishCallback() {
-      this.setShowProfileTour(true);
+      if (this.isBoardalFinished) this.setShowProfileTour(true);
     },
   },
   computed: {
@@ -133,6 +133,7 @@ export default {
       newPlaylistId: "playlist/newPlaylistId",
       playlistAndTagVideoData: "watch/playlistAndTagVideoData",
       showFooterTour: "onboarding/showFooterTour",
+      isBoardalFinished: "onboarding/isBoardalFinished",
     }),
   },
   watch: {
