@@ -436,7 +436,7 @@ class TagController extends Controller
         //サムネイル用の画像を取得しS3に保存
         try {
             // FFMpeg::openUrl($ytDirectUrl)->getFrameFromSeconds($startSec)->export()->toDisk('s3')->save('thumbs/'.$previewThumbName);
-            $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -qscale 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$previewThumbName.' 2>&1';
+            $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$previewThumbName.' 2>&1';
 
             exec($cmd_webp, $output, $value);
             if ($value !== 0) {
@@ -476,7 +476,7 @@ class TagController extends Controller
 
         //プレビュー用のmp4を取得しS3に保存
         try {
-            $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -qscale 100 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
+            $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -q:v 100 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
             
             exec($cmd_gif, $output, $value);
             if ($value !== 0) {
@@ -516,7 +516,7 @@ class TagController extends Controller
 
         //OGP用の画像を取得しS3に保存
         try {
-            $cmd_ogp = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -qscale 80 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/ogps/".$previewOgpName.' 2>&1';
+            $cmd_ogp = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -q:v 80 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/ogps/".$previewOgpName.' 2>&1';
             
             exec($cmd_ogp, $output, $value);
             if ($value !== 0) {
