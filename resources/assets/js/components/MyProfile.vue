@@ -30,7 +30,13 @@
         >
       </v-row>
     </v-card>
-    <v-tour name="profileTour" :steps="steps" :options="myOptions"> </v-tour>
+    <v-tour
+      name="profileTour"
+      :steps="steps"
+      :options="myOptions"
+      :callbacks="myCallbacks"
+    >
+    </v-tour>
   </v-container>
 </template>
 
@@ -45,6 +51,9 @@ export default {
         {
           target: "#editProfile",
           content: this.$t("MyProfile.data.steps"),
+          params: {
+            placement: "top",
+          },
         },
       ],
       myOptions: {
@@ -56,6 +65,9 @@ export default {
           buttonStop: this.$t("Footer.data.buttonStop"),
         },
       },
+      myCallbacks: {
+        onFinish: this.myCustomOnFinishCallback,
+      },
     };
   },
   mixins: [myMixin],
@@ -65,6 +77,7 @@ export default {
       avatar: "auth/avatar",
       showProfileTour: "onboarding/showProfileTour",
       isBoardalFinished: "onboarding/isBoardalFinished",
+      isProfileTourFinished: "onboarding/isProfileTourFinished",
     }),
   },
   watch: {
@@ -73,15 +86,26 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      setIsProfileTourFinished: "onboarding/setIsProfileTourFinished",
+    }),
     async logout() {
       await this.$store.dispatch("auth/logout");
       if (this.apiStatus) {
         this.$router.push("/login");
       }
     },
+    myCustomOnFinishCallback() {
+      this.setIsProfileTourFinished(true);
+    },
   },
   mounted() {
-    if ( this.isBoardalFinished && this.showProfileTour) this.$tours["profileTour"].start();
+    if (
+      this.isBoardalFinished &&
+      this.showProfileTour &&
+      !this.isProfileTourFinished
+    )
+      this.$tours["profileTour"].start();
   },
 };
 </script>

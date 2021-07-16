@@ -3,6 +3,7 @@ const state = {
   showFooterTour: false,
   showProfileTour: false,
   isBoardalFinished: false,
+  isProfileTourFinished: false,
 };
 
 const getters = {
@@ -10,6 +11,7 @@ const getters = {
   showFooterTour: (state) => state.showFooterTour,
   showProfileTour: (state) => state.showProfileTour,
   isBoardalFinished: (state) => state.isBoardalFinished,
+  isProfileTourFinished: (state) => state.isProfileTourFinished,
 };
 
 const mutations = {
@@ -24,6 +26,9 @@ const mutations = {
   },
   setIsBoardalFinished(state, data) {
     state.isBoardalFinished = data;
+  },
+  setIsProfileTourFinished(state, data) {
+    state.isProfileTourFinished = data;
   },
 };
 
