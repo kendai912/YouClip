@@ -458,6 +458,10 @@ class TagController extends Controller
             \Log::debug($cmd_webp);
             \Log::debug($output);
             \Log::debug($value);
+
+            // get youtube direct link again and retry
+            $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
+            $previewThumbName = $this->storeTagThumbnail($request, $ytDirectUrl);
         }
 
         //保存したサムネイル名をリターン
@@ -498,6 +502,10 @@ class TagController extends Controller
             \Log::debug($cmd_gif);
             \Log::debug($output);
             \Log::debug($value);
+
+            // get youtube direct link again and retry
+            $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
+            $previewGifName = $this->storeTagPreview($request, $ytDirectUrl);
         }
 
         //保存したプレビュー名をリターン
@@ -537,6 +545,10 @@ class TagController extends Controller
             \Log::debug($cmd_ogp);
             \Log::debug($output);
             \Log::debug($value);
+
+            // get youtube direct link again and retry
+            $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
+            $previewOgpName = $this->storeTagOgp($request, $ytDirectUrl);
         }
 
         //保存したプレビュー名をリターン
