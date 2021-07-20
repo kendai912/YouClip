@@ -23,7 +23,7 @@
                 encodedShareURI +
                 '&text=[' +
                 $t('ShareModal.clip') +
-                '] ' +
+                '✂️] ' +
                 shareText
             "
           >

@@ -49,7 +49,7 @@ class IndexController extends Controller
                     $title = $playlist->playlistName;
                     $description = $playlist->description;
                     if ($description == "" || $description == null) {
-                        $description = "YouTube動画の見所を切り抜いたよ";
+                        $description = 'YouTubeの好きな瞬間を切り抜いたよ';
                     }
                     $image_url = $playlist->custom_thumbnail ? "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . $playlist->custom_thumbnail : "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . Tag::find($tagId)->preview ;
                     
@@ -59,7 +59,7 @@ class IndexController extends Controller
                     $site_name = "YouClip";
                     $url = "https://youclip.app" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
                     $title = "YouClip - YouTube動画の見所切り抜き";
-                    $description = "YouClipはYouTube動画の見所切り抜きツールです。サイト上で１分とかからず見所を切り抜くことが出来ます。みんなの作成した切り抜きを見ることも可能です";
+                    $description = "YouClipはYouTubeの切り抜きウェブアプリです。最短１分で誰でも切り抜きを作ることが出来ます。（DL不要・完全無料）。テロップを入れたり、ホーム画面ではみんなが投稿した切り抜きを見れます";
                     $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/twitter-youclip-logo.png";
                     
                     return view('ogp')->with('site_name', $site_name)->with('url', $url)->with('title', $title)->with('description', $description)->with('image_url', $image_url)->with('fb_app_id', env('FACEBOOK_ID'));
@@ -81,7 +81,7 @@ class IndexController extends Controller
             $title = $playlist->playlistName;
             $description = $playlist->description;
             if ($description == "" || $description == null) {
-                $description = "YouTube動画の見所を切り抜いたよ";
+                $description = "YouTubeの好きな瞬間を切り抜いたよ";
             }
             $image_url = $playlist->custom_thumbnail ? "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . $playlist->custom_thumbnail : "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/thumbs/" . Tag::find($tagId)->preview ;
 
