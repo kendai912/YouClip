@@ -71,8 +71,8 @@
                 encodedShareURI +
                 '&text=[' +
                 $t('Complete.clip') +
-                ']' +
-                shareText
+                '✂️]' +
+                shareText + ' -%20%23YouClip%20'
             "
           >
             <v-row class="ma-0 pa-0">
