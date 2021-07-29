@@ -2,7 +2,7 @@
   <div class="container--small full-height">
     <HighlightHeader />
     <YTSearchBox />
-    <div v-if="YTsearchQuery" class="highlight-body">
+    <!-- <div v-if="YTsearchQuery" class="highlight-body">
       <div class="px-3 pt-4">
         <v-img
           src="/storage/icons/yt_social_red.png"
@@ -32,7 +32,7 @@
         </h2>
       </div>
       <YTitem v-bind:YTitems="YTRecentVideos" />
-    </div>
+    </div> -->
   </div>
 </template>
 

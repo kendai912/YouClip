@@ -282,11 +282,11 @@
   "YTvideoSelectBox": {
     "youtubeSearchResult": "YouTube検索結果",
     "recentlyClippedYoutube": "最近切り抜いたYouTube動画",
-    "searchVideoToClip": "切り抜くYouTube動画を検索"
+    "searchVideoToClip": "切り抜くYouTubeを検索"
   },
 
   "YTSearchBox": {
-    "enterKeywordOrUrl": "YouTubeのキーワードまたはURLを入力"
+    "enterKeywordOrUrl": "YouTube動画のURLを入力"
   },
 
   "YTitem": {

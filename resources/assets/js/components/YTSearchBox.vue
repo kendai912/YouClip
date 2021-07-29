@@ -114,7 +114,7 @@ export default {
       if (this.isLoading) return;
 
       //入力を元に検索候補を取得
-      await this.$store.dispatch("YTsearch/getCandidates", input);
+      // await this.$store.dispatch("YTsearch/getCandidates", input);
     },
   },
   methods: {
@@ -158,8 +158,7 @@ export default {
         }
       } else {
         //キーワードの場合、検索結果表示へ
-        if (this.isAdding) {
-          //in case of adding to existing playlist
+        /** if (this.isAdding) {
           this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
           this.$router
             .push({
@@ -171,7 +170,6 @@ export default {
             })
             .catch((err) => {});
         } else {
-          //in case of adding to new playlist
           if (this.$route.query.return == "true") {
             this.$store.commit("YTsearch/setYTsearchQuery", this.searchquery);
             this.$router
@@ -189,7 +187,7 @@ export default {
               })
               .catch((err) => {});
           }
-        }
+        } **/
       }
 
       //インクリメンタルサーチの表示を消すためフォーカスを外す
@@ -233,7 +231,7 @@ export default {
     },
   },
   async created() {
-    await this.$store.dispatch("YTsearch/getCandidates");
+    // await this.$store.dispatch("YTsearch/getCandidates");
   },
 };
 </script>
