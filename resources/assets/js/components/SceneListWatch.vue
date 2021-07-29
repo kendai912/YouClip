@@ -85,10 +85,10 @@
                                   style="display: flex; flex-wrap: nowrap; align-items: flex-start;"
                                 >
                                   <div
-                                    style="font-size: 20px; color:red; max-height: 18px;"
+                                    style="font-size: 24px; color:red; max-height: 24px;"
                                   >
                                     <i
-                                      class="fab fa-youtube"
+                                      class="fab fa-youtube ma-0 pa-0 pr-2"
                                       style="vertical-align: top;"
                                     ></i>
                                   </div>
@@ -215,10 +215,10 @@
                                 style="display: flex; flex-wrap: nowrap; align-items: flex-start;"
                               >
                                 <div
-                                  style="font-size: 20px; color:red; max-height: 18px;"
+                                  style="font-size: 24px; color:red; max-height: 24px;"
                                 >
                                   <i
-                                    class="fab fa-youtube"
+                                    class="fab fa-youtube ma-0 pa-0 pr-2"
                                     style="vertical-align: top;"
                                   ></i>
                                 </div>

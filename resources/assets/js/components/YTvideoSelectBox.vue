@@ -6,12 +6,14 @@
       <div class="px-3 pt-4">
         <v-img
           src="/storage/icons/yt_social_red.png"
-          width="28px"
-          max-height="28px"
+          width="30px"
+          max-height="30px"
           alt="YouTube logo"
           class="float-left mr-2"
         />
-        <h2 class="fz-14">{{ $t("YTvideoSelectBox.youtubeSearchResult") }}</h2>
+        <h2 class="fz-14">
+          {{ $t("YTvideoSelectBox.youtubeSearchResult") }}
+        </h2>
       </div>
       <YTitem v-bind:YTitems="YTresult" />
     </div>
@@ -20,8 +22,8 @@
       <div class="px-3 pt-3" v-if="YTRecentVideos.length > 0">
         <v-img
           src="/storage/icons/yt_social_red.png"
-          width="28px"
-          max-height="28px"
+          width="30px"
+          max-height="30px"
           alt="YouTube logo"
           class="float-left mr-2"
         />

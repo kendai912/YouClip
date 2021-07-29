@@ -131,7 +131,7 @@
                     class="ma-0 pa-0 narrow-btn"
                     style="z-index: 1;"
                   >
-                    <span>{{ likePlaylistCount }}</span>
+                    <span class="ma-0 pa-0 pt-1">{{ likePlaylistCount }}</span>
                     <i
                       v-if="isLikedPlaylist"
                       class="fas fa-heart isLiked icon-large"
@@ -194,7 +194,7 @@
                     v-on:click="sharePlaylist"
                     class="ma-0 pa-0 narrow-btn"
                   >
-                    <span>{{ $t("Watch.share") }}</span>
+                    <span class="ma-0 pa-0 pt-1">{{ $t("Watch.share") }}</span>
                     <i class="fas fa-share outlined-icon icon-large"></i>
                   </v-btn>
                 </v-bottom-navigation>
@@ -206,7 +206,7 @@
                     v-bind:href="'https://youtube.com/watch?v=' + youtubeId"
                     class="ma-0 pa-0 narrow-btn"
                   >
-                    <span>{{ $t("Watch.playFullVideo") }}</span>
+                    <span class="ma-0 pa-0 pt-1">{{ $t("Watch.playFullVideo") }}</span>
                     <i class="fab fa-youtube icon-large" style="color:red;"></i>
                   </v-btn>
                 </v-bottom-navigation>
@@ -218,7 +218,7 @@
                     v-on:click="openReportModal"
                     class="ma-0 pa-0 narrow-btn"
                   >
-                    <span>{{ $t("Watch.report") }}</span>
+                    <span class="ma-0 pa-0 pt-1">{{ $t("Watch.report") }}</span>
                     <i class="fas fa-flag outlined-icon icon-large"></i>
                   </v-btn>
                 </v-bottom-navigation>
