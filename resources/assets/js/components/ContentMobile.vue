@@ -87,7 +87,7 @@ export default {
       }
     },
     contentWidth() {
-      if (this.isPlayerReady && this.listOfYoutubeIdStartEndTime) {
+      if (this.isPlayerReady && this.listOfYoutubeIdStartEndTime ) {
         return (
           this.seekbarWidth *
           (this.convertToSec(

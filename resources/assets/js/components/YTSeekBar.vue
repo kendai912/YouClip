@@ -250,6 +250,12 @@ export default {
     isPlayerReady() {
       this._setSeekBarWidth();
     },
+    showSeekbar() {
+      if (this.showSeekbar)
+        setTimeout(() => {
+          this._setSeekBarWidth();
+        });
+    },
   },
   methods: {
     ...mapMutations({
@@ -353,15 +359,23 @@ export default {
       if (this.isMobile) {
         $(".ios-wrapper-mask").css(
           "top",
-          ($(".ios-wrapper-mask").width() * 9) / 16 +
-            (952 - ($(".ios-wrapper-mask").width() * 9) / 16) / 2
+          ($(".ios-wrapper-mask").width() * 9) / 16
         );
+        // $(".ios-wrapper-mask").css(
+        //   "top",
+        //   ($(".ios-wrapper-mask").width() * 9) / 16 +
+        //     (952 - ($(".ios-wrapper-mask").width() * 9) / 16) / 2
+        // );
       } else {
         $(".ytseekbar-wrapper").css(
           "top",
-          ($(".ytseekbar-wrapper").width() * 9) / 16 +
-            (952 - ($(".ytseekbar-wrapper").width() * 9) / 16) / 2
+          ($(".ytseekbar-wrapper").width() * 9) / 16
         );
+        // $(".ytseekbar-wrapper").css(
+        //   "top",
+        //   ($(".ytseekbar-wrapper").width() * 9) / 16 +
+        //     (952 - ($(".ytseekbar-wrapper").width() * 9) / 16) / 2
+        // );
       }
     },
     setEventListeners() {

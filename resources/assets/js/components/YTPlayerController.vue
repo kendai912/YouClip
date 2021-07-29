@@ -443,7 +443,6 @@ export default {
         // フルスクリーン表示なら解除する
         if (this.checkFullScreen()) {
           this.mobileCheck() ? "" : this.setIsMobile(false);
-          this.setIsFullscreen(false);
           if (document.exitFullscreen) {
             document.exitFullscreen();
           } else if (document.mozCancelFullScreen) {
@@ -457,7 +456,6 @@ export default {
           // 通常表示ならフルスクリーン表示にする
         } else {
           this.mobileCheck() ? "" : this.setIsMobile(true);
-          this.setIsFullscreen(true);
           if (document.body.requestFullscreen) {
             document.body.requestFullscreen();
           } else if (document.body.mozRequestFullScreen) {
@@ -473,7 +471,6 @@ export default {
         // フルスクリーン表示なら解除する
         if (this.checkFullScreen()) {
           this.mobileCheck() ? "" : this.setIsMobile(false);
-          this.setIsFullscreen(false);
           if (document.exitFullscreen) {
             document.exitFullscreen();
           } else if (document.mozCancelFullScreen) {
@@ -489,10 +486,10 @@ export default {
     },
     expandScreen(event) {
       this.mobileCheck() ? "" : this.setIsMobile(true);
-      this.setIsFullscreen(true);
       this.switchFullScreenMode(event);
       this.$nextTick(() => {
         this.setFullScreenYtPlayerCSS();
+        this.setIsFullscreen(true);
         if (!this.mobileCheck()) this.$emit("setEventListeners");
       });
     },
@@ -501,10 +498,10 @@ export default {
         await this.sleep(500);
       }
       this.mobileCheck() ? "" : this.setIsMobile(false);
-      this.setIsFullscreen(false);
       this.switchFullScreenMode(event);
       this.$nextTick(() => {
         this.revertFullScreenYtPlayerCSS();
+        this.setIsFullscreen(false);
         if (!this.mobileCheck()) this.$emit("setEventListeners");
       });
       this.setShowSeekbar(true);
@@ -539,13 +536,19 @@ export default {
       }
     },
     expandIframe(isWidthBasedFullscreen) {
+      // set iframe width
       if (isWidthBasedFullscreen) {
         $("iframe").width(this.fullscreenWidth);
       } else {
         $("iframe").width((this.fullscreenHeight * 16) / 9);
       }
-      $("iframe").css({ position: "absolute", top: "0px" });
-      $("iframe").height(1904);
+
+      // set iframe height
+      $("iframe").height(($("iframe").width() * 9) / 16);
+      // $("iframe").height(1904);
+
+      // set iframe position
+      $("iframe").css({ position: "absolute !important", top: "0px" });
     },
     adjustYTPlayerWrapper() {
       let playerHeight = ($("iframe").width() * 9) / 16;
@@ -637,7 +640,8 @@ export default {
     revertIframe() {
       $("iframe").width($(".watch-body").width());
       $("iframe").css({ position: "absolute", top: "0px" });
-      $("iframe").height(952);
+      $("iframe").height(($("iframe").width() * 9) / 16);
+      // $("iframe").height(952);
     },
     revertYTPlayerWrapper() {
       let playerHeight = ($("iframe").width() * 9) / 16;

@@ -451,7 +451,8 @@ export default {
       //iframeの縦・横のサイズをセット(縦は952px、横は幅いっぱい)
       $("iframe").width($(".ytPlayerWrapper").width());
       $("iframe").css({ position: "absolute", top: "0px" });
-      $("iframe").height(952);
+      $("iframe").height($("iframe").width() * 9 / 16);
+      // $("iframe").height(952);
 
       //iframeとseekbarが見える範囲の高さをセットし、iframe上部の黒分が見えないよう上にスライド
       let playerHeight = ($("iframe").width() * 9) / 16;
@@ -459,10 +460,10 @@ export default {
         "height",
         playerHeight + ($("iframe").height() - playerHeight) / 2 + 15
       );
-      $(".ytPlayerWrapper").css(
-        "top",
-        (($("iframe").height() - playerHeight) / 2) * -1
-      );
+      // $(".ytPlayerWrapper").css(
+      //   "top",
+      //   (($("iframe").height() - playerHeight) / 2) * -1
+      // );
 
       this.$nextTick(() => {
         //開始・終了ボタンがiframeとseekbarの下に来るようにtopを調整
