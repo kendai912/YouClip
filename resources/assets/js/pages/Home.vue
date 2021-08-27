@@ -86,7 +86,7 @@ export default {
         },
         {
           property: "og:url",
-          content: "https://youclip.app",
+          content: "https://youclip.jp",
         },
         {
           property: "og:title",
@@ -103,16 +103,16 @@ export default {
         },
       ],
       link: [
-        { rel: "canonical", href: "https://youclip.app" },
+        { rel: "canonical", href: "https://youclip.jp" },
         {
           rel: "alternate",
           hreflang: "en",
-          href: "https://youclip.app" + "?hl=en",
+          href: "https://youclip.jp" + "?hl=en",
         },
         {
           rel: "alternate",
           hreflang: "ja",
-          href: "https://youclip.app" + "?hl=ja",
+          href: "https://youclip.jp" + "?hl=ja",
         },
       ],
     };

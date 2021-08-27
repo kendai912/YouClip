@@ -94,7 +94,7 @@
         Internet, or method of electronic storage, is 100% secure.<br /><br />
         You may correct or update your registered details on your profile
         settings page. You can do this by visiting your profile settings page:
-        https://youclip.app/mypage/edit. Where your user profile does not allow
+        https://youclip.jp/mypage/edit. Where your user profile does not allow
         you to correct or update your details, or where you wish your personal
         data to be removed from our systems contact us via youclipteam@gmail.com<br />
         <br />

@@ -45,7 +45,7 @@ class IndexController extends Controller
                     // get parameter contents by playlistId
                     $playlist = Playlist::find($playlistId);
                     $site_name = "YouClip";
-                    $url = "https://youclip.app" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
+                    $url = "https://youclip.jp" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
                     $title = $playlist->playlistName;
                     $description = $playlist->description;
                     if ($description == "" || $description == null) {
@@ -57,7 +57,7 @@ class IndexController extends Controller
                 } else {
                     // watchページ以外の場合
                     $site_name = "YouClip";
-                    $url = "https://youclip.app" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
+                    $url = "https://youclip.jp" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
                     $title = "YouClip - YouTube動画の見所切り抜き";
                     $description = "YouClipはYouTubeの切り抜きウェブアプリです。最短１分で誰でも切り抜きを作ることが出来ます。（DL不要・完全無料）。テロップを入れたり、ホーム画面ではみんなが投稿した切り抜きを見れます";
                     $image_url = "https://youclip-storage.s3-ap-northeast-1.amazonaws.com/logo/twitter-youclip-logo.png";
@@ -77,7 +77,7 @@ class IndexController extends Controller
             // get parameter contents by playlistId
             $playlist = Playlist::find($playlistId);
             $site_name = "YouClip";
-            $url = "https://youclip.app" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
+            $url = "https://youclip.jp" . htmlspecialchars_decode($_SERVER["REQUEST_URI"]);
             $title = $playlist->playlistName;
             $description = $playlist->description;
             if ($description == "" || $description == null) {

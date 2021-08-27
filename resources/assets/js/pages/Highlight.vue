@@ -36,7 +36,7 @@ export default {
         },
         {
           property: "og:url",
-          content: "https://youclip.app",
+          content: "https://youclip.jp",
         },
         {
           property: "og:title",
@@ -53,16 +53,16 @@ export default {
         },
       ],
       link: [
-        { rel: "canonical", href: "https://youclip.app/youtube" },
+        { rel: "canonical", href: "https://youclip.jp/youtube" },
         {
           rel: "alternate",
           hreflang: "en",
-          href: "https://youclip.app/youtube" + "?hl=en",
+          href: "https://youclip.jp/youtube" + "?hl=en",
         },
         {
           rel: "alternate",
           hreflang: "ja",
-          href: "https://youclip.app/youtube" + "?hl=ja",
+          href: "https://youclip.jp/youtube" + "?hl=ja",
         },
       ],
     };

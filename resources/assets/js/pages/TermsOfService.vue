@@ -25,7 +25,7 @@
               or “<strong>you</strong>”), and YouClip
               team.(“<strong>YouClip</strong>,” “<strong>we</strong>,”
               “<strong>us</strong>,”&nbsp;or&nbsp;“<strong>our</strong>”)
-              governing your use of youclip.app and any other websites and/or
+              governing your use of youclip.jp and any other websites and/or
               online services or properties owned and operated by YouClip
               (collectively, the “<strong>Service</strong>”).<strong>
                 BY ACCESSING OR USING THE SERVICE, YOU AGREE THAT YOU HAVE READ,
@@ -53,8 +53,8 @@
                 you consent to the collection, use, and disclosure of your
                 personally identifiable information in accordance with the
                 YouClip Privacy Policy <strong>[</strong
-                ><a href="https://youclip.app/privacypolicy"
-                  >https://youclip.app/privacypolicy</a
+                ><a href="https://youclip.jp/privacypolicy"
+                  >https://youclip.jp/privacypolicy</a
                 ><strong>] </strong>(“<strong>Privacy Policy</strong>”);
               </li>
               <li>

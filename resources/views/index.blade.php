@@ -26,13 +26,13 @@
         "@type": "ListItem",
         "position": 1,
         "name": "ホーム",
-        "item": "https://youclip.app"
+        "item": "https://youclip.jp"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "再生",
-        "item": "https://youclip.app/watch"
+        "item": "https://youclip.jp/watch"
       }
     ]
   },
@@ -44,7 +44,7 @@
         "@type": "ListItem",
         "position": 1,
         "name": "切り抜き作成",
-        "item": "https://youclip.app/youtube"
+        "item": "https://youclip.jp/youtube"
       }
     ]
   },
@@ -56,13 +56,13 @@
         "@type": "ListItem",
         "position": 1,
         "name": "マイページ",
-        "item": "https://youclip.app/mypage"
+        "item": "https://youclip.jp/mypage"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "ログイン",
-        "item": "https://youclip.app/login"
+        "item": "https://youclip.jp/login"
       }
     ]
   },
@@ -74,13 +74,13 @@
         "@type": "ListItem",
         "position": 1,
         "name": "マイページ",
-        "item": "https://youclip.app/mypage"
+        "item": "https://youclip.jp/mypage"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "新規登録",
-        "item": "https://youclip.app/register"
+        "item": "https://youclip.jp/register"
       }
     ]
   }

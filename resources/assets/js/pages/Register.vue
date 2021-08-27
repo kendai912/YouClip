@@ -207,7 +207,7 @@ export default {
         },
         {
           property: "og:url",
-          content: "https://youclip.app" + this.$route.fullPath,
+          content: "https://youclip.jp" + this.$route.fullPath,
         },
         {
           property: "og:title",
@@ -224,16 +224,16 @@ export default {
         },
       ],
       link: [
-        { rel: "canonical", href: "https://youclip.app" + this.$route.path },
+        { rel: "canonical", href: "https://youclip.jp" + this.$route.path },
         {
           rel: "alternate",
           hreflang: "en",
-          href: "https://youclip.app" + this.$route.path + "?hl=en",
+          href: "https://youclip.jp" + this.$route.path + "?hl=en",
         },
         {
           rel: "alternate",
           hreflang: "ja",
-          href: "https://youclip.app" + this.$route.path + "?hl=ja",
+          href: "https://youclip.jp" + this.$route.path + "?hl=ja",
         },
       ],
     };
