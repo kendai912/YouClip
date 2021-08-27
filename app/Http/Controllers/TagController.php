@@ -428,6 +428,8 @@ class TagController extends Controller
     //サムネイル画像を取得しS3に保存
     public function storeTagThumbnail(Request $request, $ytDirectUrl)
     {
+        static $recursionCount = 3;
+
         $startSec = $this->convertToSec($request->start);
 
         //サムネイル用のファイル名を取得
@@ -435,6 +437,7 @@ class TagController extends Controller
 
         //サムネイル用の画像を取得しS3に保存
         try {
+            $recursionCount--;
             // FFMpeg::openUrl($ytDirectUrl)->getFrameFromSeconds($startSec)->export()->toDisk('s3')->save('thumbs/'.$previewThumbName);
             $cmd_webp = 'ffmpeg -ss '.$startSec.' -i "'.$ytDirectUrl.'" -vframes 1 -q:v 100 -vf scale=420:-1 '.storage_path()."/app/public/imgs/".$previewThumbName.' 2>&1';
 
@@ -460,8 +463,10 @@ class TagController extends Controller
             \Log::debug($value);
 
             // get youtube direct link again and retry
-            $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
-            $previewThumbName = $this->storeTagThumbnail($request, $ytDirectUrl);
+            if ($recursionCount != 0) {
+                $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
+                $previewThumbName = $this->storeTagThumbnail($request, $ytDirectUrl);
+            }
         }
 
         //保存したサムネイル名をリターン
@@ -471,6 +476,8 @@ class TagController extends Controller
     //プレビュー動画を取得しS3に保存
     public function storeTagPreview(Request $request, $ytDirectUrl)
     {
+        static $recursionCount = 3;
+
         $startSec = $this->convertToSec($request->start);
         $duration = 7;
         $endSec = $startSec + $duration;
@@ -480,6 +487,7 @@ class TagController extends Controller
 
         //プレビュー用のmp4を取得しS3に保存
         try {
+            $recursionCount--;
             $cmd_gif = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -vcodec libx264 -q:v 100 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/gifs/".$previewGifName.' 2>&1';
             
             exec($cmd_gif, $output, $value);
@@ -504,8 +512,10 @@ class TagController extends Controller
             \Log::debug($value);
 
             // get youtube direct link again and retry
-            $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
-            $previewGifName = $this->storeTagPreview($request, $ytDirectUrl);
+            if ($recursionCount != 0) {
+                $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
+                $previewGifName = $this->storeTagPreview($request, $ytDirectUrl);
+            }
         }
 
         //保存したプレビュー名をリターン
@@ -515,6 +525,8 @@ class TagController extends Controller
     //OGP画像を取得しS3に保存
     public function storeTagOgp(Request $request, $ytDirectUrl)
     {
+        static $recursionCount = 3;
+
         $startSec = $this->convertToSec($request->start);
         $duration = 3;
         $endSec = $startSec + $duration;
@@ -524,6 +536,7 @@ class TagController extends Controller
 
         //OGP用の画像を取得しS3に保存
         try {
+            $recursionCount--;
             $cmd_ogp = 'ffmpeg -ss '.$startSec.' -t '.$duration.' -i "'.$ytDirectUrl.'" -q:v 80 -an -vf "fps=19,scale=480:-1:flags=lanczos" -loop 0 '.storage_path()."/app/public/ogps/".$previewOgpName.' 2>&1';
             
             exec($cmd_ogp, $output, $value);
@@ -547,8 +560,10 @@ class TagController extends Controller
             \Log::debug($value);
 
             // get youtube direct link again and retry
-            $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
-            $previewOgpName = $this->storeTagOgp($request, $ytDirectUrl);
+            if ($recursionCount != 0) {
+                $ytDirectUrl = $this->getYoutubeDirectLinkMp4("https://www.youtube.com/watch?v=" . $request->youtubeId);
+                $previewOgpName = $this->storeTagOgp($request, $ytDirectUrl);
+            }
         }
 
         //保存したプレビュー名をリターン
