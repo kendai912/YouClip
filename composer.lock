@@ -149,26 +149,26 @@
         },
         {
             "name": "athlon1600/youtube-downloader",
-            "version": "v3.0.0",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Athlon1600/youtube-downloader.git",
-                "reference": "bf0eb5381460de1f7818a6abe799b2423a5b4c26"
+                "reference": "8845eb5efcfb0891fce32508b229efea1adce2b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Athlon1600/youtube-downloader/zipball/bf0eb5381460de1f7818a6abe799b2423a5b4c26",
-                "reference": "bf0eb5381460de1f7818a6abe799b2423a5b4c26",
+                "url": "https://api.github.com/repos/Athlon1600/youtube-downloader/zipball/8845eb5efcfb0891fce32508b229efea1adce2b6",
+                "reference": "8845eb5efcfb0891fce32508b229efea1adce2b6",
                 "shasum": ""
             },
             "require": {
                 "athlon1600/php-curl-file-downloader": "^1.0",
                 "ext-curl": "*",
                 "ext-json": "*",
-                "php": "^5.6 || ^7.0"
+                "php": "^5.6 || ^7.0 || ^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.7|6.2|^7.0"
+                "phpunit/phpunit": "^5.7|6.2|^7.0|^8.0"
             },
             "type": "library",
             "autoload": {
@@ -188,9 +188,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Athlon1600/youtube-downloader/issues",
-                "source": "https://github.com/Athlon1600/youtube-downloader/tree/v3.0.0"
+                "source": "https://github.com/Athlon1600/youtube-downloader/tree/v3.0.2"
             },
-            "time": "2021-02-27T19:06:41+00:00"
+            "time": "2021-07-14T20:43:31+00:00"
         },
         {
             "name": "aws/aws-sdk-php",
