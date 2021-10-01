@@ -214,7 +214,7 @@ export default {
 
     window.onPlayerReady = (event) => {
       event.target.mute();
-      if (event.target.m.classList.value == self.player.m.classList.value) {
+      if (event.target.h.classList.value == self.player.h.classList.value) {
         if (self.startIs) event.target.seekTo(self.convertToSec(self.startIs));
         self.$store.dispatch("ytPlayer/startTimer");
       }
@@ -229,20 +229,20 @@ export default {
 
         if (
           !self.isIOS &&
-          event.target.m.classList.value != self.player.m.classList.value
+          event.target.h.classList.value != self.player.h.classList.value
         ) {
           event.target.pauseVideo();
         }
 
         if (
           !self.isMuted &&
-          event.target.m.classList.value == self.player.m.classList.value
+          event.target.h.classList.value == self.player.h.classList.value
         ) {
           self.mute();
           self.unmute();
         } else if (
           self.isMuted &&
-          event.target.m.classList.value == self.player.m.classList.value
+          event.target.h.classList.value == self.player.h.classList.value
         ) {
           self.mute();
         }
@@ -252,7 +252,7 @@ export default {
         //選択されたシーン以外のプレイヤーは停止
         if (
           self.isIOS &&
-          event.target.m.classList.value != self.player.m.classList.value
+          event.target.h.classList.value != self.player.h.classList.value
         ) {
           setTimeout(() => {
             event.target.pauseVideo();
